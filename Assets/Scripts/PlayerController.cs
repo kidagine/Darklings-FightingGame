@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private Player _player;
     private PlayerMovement _playerMovement;
+    private PlayerInput _playerInput;
 
 
     public bool DisableThoughtsInput { private get; set; }
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     {
         _player = GetComponent<Player>();
         _playerMovement = GetComponent<PlayerMovement>();
+        _playerInput = GetComponent<PlayerInput>();
     }
 
     public void Movement(InputAction.CallbackContext context)
@@ -53,5 +55,15 @@ public class PlayerController : MonoBehaviour
         {
             _player.AttackAction();
         }
+    }
+
+    public void ActivateInput()
+    {
+        _playerInput.ActivateInput();
+    }
+
+    public void DeactivateInput()
+    {
+        _playerInput.DeactivateInput();
     }
 }

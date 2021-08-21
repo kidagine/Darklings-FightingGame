@@ -24,8 +24,6 @@ public class Hitbox : MonoBehaviour
         RaycastHit2D[] hit = Physics2D.BoxCastAll(hitboxPosition, _hitboxSize, 0.0f, Vector2.zero, 0.0f, _hurtboxLayerMask);
         if (hit.Length > 0)
         {
-            Debug.Log("3");
-
             for (int i = 0; i < hit.Length; i++)
             {
                 if (hit[i].collider != null)

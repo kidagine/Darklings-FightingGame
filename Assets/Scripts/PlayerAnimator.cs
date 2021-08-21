@@ -33,4 +33,14 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator.SetTrigger("Hurt");
     }
+
+    public void Death()
+    {
+        animator.SetTrigger("Death");
+    }
+
+    public void Rebind()
+    {
+        animator.Rebind();
+    }
 }
