@@ -7,6 +7,7 @@ public class Player : MonoBehaviour, IHurtboxResponder
 	[SerializeField] private PlayerUI _playerUI = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _pushbox = default;
+	[SerializeField] private bool _isPlayerOne = default;
 	private PlayerMovement _playerMovement;
 	private float _health;
 	private int _lives = 2;
@@ -27,7 +28,14 @@ public class Player : MonoBehaviour, IHurtboxResponder
 	{
 		_isDead = false;
 		_playerAnimator.Rebind();
+		SetPushbox(true);
 		InitializeStats();
+	}
+
+	public void ResetLives()
+	{
+		_lives = 2;
+		_playerUI.ResetLives();
 	}
 
 	private void InitializeStats()
@@ -68,23 +76,29 @@ public class Player : MonoBehaviour, IHurtboxResponder
 		_playerAnimator.Hurt();
 		if (_health <= 0)
 		{
-			_playerAnimator.Death();
-			SetPushbox(false);
-			if (!_isDead)
-			{
-				_lives--;
-				_playerUI.SetLives(_lives);
-				if (_lives <= 0)
-				{
-					GameManager.Instance.MatchOver();
-				}
-				else
-				{
-					GameManager.Instance.RoundOver();
-				}
-			}
-			_isDead = true;
+			Die();
 		}
+	}
+
+	private void Die()
+	{
+		_playerAnimator.Death();
+		SetPushbox(false);
+		if (!_isDead)
+		{
+			GameManager.Instance.PlayerOneWon = _isPlayerOne is true ? true : false;
+			_lives--;
+			_playerUI.SetLives(_lives);
+			if (_lives <= 0)
+			{
+				GameManager.Instance.MatchOver();
+			}
+			else
+			{
+				GameManager.Instance.RoundOver();
+			}
+		}
+		_isDead = true;
 	}
 
 	private void SetPushbox(bool state)

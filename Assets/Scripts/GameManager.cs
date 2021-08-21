@@ -12,9 +12,12 @@ public class GameManager : MonoBehaviour
     private PlayerController _playerTwoController;
     private bool _hasGameStarted;
     private float _countdown = 99.0f;
-    public static GameManager Instance { get; private set; }
 
-    void Awake()
+    public static GameManager Instance { get; private set; }
+	public bool PlayerOneWon { private get; set; }
+
+
+	void Awake()
     {
         CheckInstance();
     }
@@ -33,7 +36,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        StartMatch();
+        StartRound();
     }
 
 	void Update()
@@ -49,9 +52,8 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-    private void StartMatch()
+    private void StartRound()
     {
-        _hasGameStarted = false;
         _countdown = 99.0f;
         _countdownText.text = "99";
         _playerOneController = _playerOne.GetComponent<PlayerController>();
@@ -85,9 +87,14 @@ public class GameManager : MonoBehaviour
 
     IEnumerator RoundOverCoroutine()
     {
+        _hasGameStarted = false;
+        _readyText.text = "ROUND OVER";
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(2.5f);
-        StartMatch();
+        _readyText.text = PlayerOneWon is false ? "P1 WINS" : "P2 WINS";
+        yield return new WaitForSeconds(2.0f);
+        _readyText.text = "";
+        StartRound();
     }
 
     public void MatchOver()
@@ -97,8 +104,13 @@ public class GameManager : MonoBehaviour
 
     IEnumerator MatchOverCoroutine()
     {
+        _hasGameStarted = false;
+        _readyText.text = "MATCH OVER";
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(2.5f);
-        Debug.Log("Match over");
+        _readyText.text = PlayerOneWon is false ? "P1 WINS" : "P2 WINS";
+		_playerOne.ResetLives();
+        _playerTwo.ResetLives();
+		StartRound();
     }
 }

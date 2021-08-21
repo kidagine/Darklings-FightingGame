@@ -23,4 +23,11 @@ public class PlayerUI : MonoBehaviour
         _lostLives[_currentLifeIndex].SetActive(true);
         _currentLifeIndex++;
     }
+
+    public void ResetLives()
+    {
+        _lostLives[0].SetActive(false);
+        _lostLives[1].SetActive(false);
+        _currentLifeIndex = 0;
+    }
 }
