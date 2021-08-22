@@ -9,14 +9,20 @@ public class Player : MonoBehaviour, IHurtboxResponder
 	[SerializeField] private GameObject _pushbox = default;
 	[SerializeField] private bool _isPlayerOne = default;
 	private PlayerMovement _playerMovement;
+	private PlayerComboSystem _playerComboSystem;
+	private Audio _audio;
 	private float _health;
 	private int _lives = 2;
 	private bool _isDead;
+
+	public bool IsAttacking { get; set; }
 
 
 	void Awake()
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
+		_playerComboSystem = GetComponent<PlayerComboSystem>();
+		_audio = GetComponent<Audio>();
 	}
 
 	void Start()
@@ -27,6 +33,7 @@ public class Player : MonoBehaviour, IHurtboxResponder
 	public void ResetPlayer()
 	{
 		_isDead = false;
+		IsAttacking = false;
 		_playerAnimator.Rebind();
 		SetPushbox(true);
 		InitializeStats();
@@ -62,10 +69,17 @@ public class Player : MonoBehaviour, IHurtboxResponder
 
 	public void AttackAction()
 	{
-		if (_playerMovement.IsGrounded)
+		if (_playerMovement.IsGrounded && !IsAttacking)
 		{
+			IsAttacking = true;
 			_playerAnimator.Attack();
-			_playerMovement.SetLockMovement(true);
+			AttackSO attack = _playerComboSystem.GetComboAttack();
+			if (!string.IsNullOrEmpty(attack.attackSound))
+			{
+				_audio.Sound(attack.attackSound).Play();
+			}
+			_playerMovement.TravelDistance(attack.travelDistance * transform.localScale.x);
+			//_playerMovement.SetLockMovement(true);
 		}
 	}
 

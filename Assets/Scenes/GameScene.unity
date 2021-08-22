@@ -927,6 +927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71bc45b9d7a26534592c4041db23c677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
   _playerMovement: {fileID: 2030570743}
   _audio: {fileID: 0}
 --- !u!4 &501743792
@@ -1558,6 +1559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71bc45b9d7a26534592c4041db23c677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 1803766342}
   _playerMovement: {fileID: 1803766337}
   _audio: {fileID: 1803766343}
 --- !u!1 &1506265206
@@ -1705,6 +1707,7 @@ GameObject:
   - component: {fileID: 1602535363}
   - component: {fileID: 1602535364}
   - component: {fileID: 1602535365}
+  - component: {fileID: 1602535366}
   m_Layer: 7
   m_Name: Main_hitbox
   m_TagString: Untagged
@@ -1764,6 +1767,31 @@ MonoBehaviour:
     m_Bits: 64
   _destroyOnImpact: 0
   _hitPrefab: {fileID: 0}
+--- !u!114 &1602535366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602535362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: -3276983034543540519, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 5df03db9d26ba2247a8d4ff017c369fa, type: 3}
+    volume: 1
+    pitch: 1
+    name: Hit
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!1 &1614655862
 GameObject:
   m_ObjectHideFlags: 0
@@ -1951,6 +1979,7 @@ GameObject:
   - component: {fileID: 1803766338}
   - component: {fileID: 1803766339}
   - component: {fileID: 1803766342}
+  - component: {fileID: 1803766344}
   - component: {fileID: 1803766337}
   - component: {fileID: 1803766341}
   - component: {fileID: 1803766340}
@@ -2006,9 +2035,9 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -2196,6 +2225,21 @@ MonoBehaviour:
       playOnAwake: 0
       playOneInstanceAtATime: 0
   _soundGroups3D: []
+--- !u!114 &1803766344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803766336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a53627335d37d469ce25fb81f912dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _2L: {fileID: 11400000, guid: 8605b98e1a42ca9429bf2c2af9894849, type: 2}
+  _5L: {fileID: 11400000, guid: 9138ba50e181cad42a901b7e92b9ab90, type: 2}
+  _6L: {fileID: 11400000, guid: 13647a44cbd3fb84ea14f7efbf174676, type: 2}
 --- !u!1 &1856510696
 GameObject:
   m_ObjectHideFlags: 0

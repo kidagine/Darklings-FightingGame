@@ -111,7 +111,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(2.5f);
         _readyText.text = PlayerOneWon is false ? "P1 WINS" : "P2 WINS";
-		_playerOne.ResetLives();
+        yield return new WaitForSeconds(2.0f);
+        _playerOne.ResetLives();
         _playerTwo.ResetLives();
 		StartRound();
     }

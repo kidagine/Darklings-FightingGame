@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         }
         if (context.canceled)
         {
-           // _playerMovement.JumpStopAction();
+            _playerMovement.JumpStopAction();
         }
     }
 

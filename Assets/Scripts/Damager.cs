@@ -9,14 +9,14 @@ public class Damager : MonoBehaviour, IHitboxResponder
 	[SerializeField] private UnityEngine.LayerMask _impactLayers = default;
 	[SerializeField] private bool _destroyOnImpact = default;
 	[SerializeField] private GameObject _hitPrefab = default;
-	private Audio _damagerAudio;
+	private Audio _audio;
 	private SpriteRenderer _spriteRenderer;
 	private Hitbox _hitbox;
 	private Rigidbody2D _rigidbody;
 
 	void Awake()
 	{
-		_damagerAudio = GetComponent<Audio>();
+		_audio = GetComponent<Audio>();
 		_spriteRenderer = GetComponent<SpriteRenderer>();
 		_hitbox = GetComponent<Hitbox>();
 		_rigidbody = GetComponent<Rigidbody2D>();
@@ -24,6 +24,7 @@ public class Damager : MonoBehaviour, IHitboxResponder
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
+		_audio.Sound("Hit").Play();
 		hurtbox.TakeDamage(_damage, _knockbackDirection, _knockbackForce);
 
 		//if (hurtbox != null)
@@ -50,7 +51,7 @@ public class Damager : MonoBehaviour, IHitboxResponder
 
 	private void Hit(RaycastHit2D hit)
 	{
-		_damagerAudio.Sound3D("Hit").Play();
+		//_damagerAudio.Sound3D("Hit").Play();
 		if (_destroyOnImpact)
 		{
 			_spriteRenderer.enabled = false;

@@ -5,7 +5,6 @@ public class Hitbox : MonoBehaviour
     [SerializeField] private Vector2 _hitboxSize = default;
     [SerializeField] private Vector2 _offset = default;
     private Color _hitboxColor = Color.red;
-    private UnityEngine.LayerMask _groundLayerMask;
     private UnityEngine.LayerMask _hurtboxLayerMask;
     private IHitboxResponder _hitboxResponder;
     [HideInInspector] public bool _hasHit;
@@ -15,7 +14,6 @@ public class Hitbox : MonoBehaviour
 	{
         _hitboxResponder = GetComponent<IHitboxResponder>();
         _hurtboxLayerMask = LayerProvider.GetLayerMask(LayerMaskEnum.Hurtbox);
-        _groundLayerMask = LayerProvider.GetLayerMask(LayerMaskEnum.Ground);
     }
 
     void Update()
