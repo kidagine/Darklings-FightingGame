@@ -9,9 +9,9 @@ public class PlayerAnimator : MonoBehaviour
         animator = GetComponent<Animator>();    
     }
 
-    public void SetMove(float value)
+    public void SetMove(bool state)
     {
-        animator.SetFloat("MovementX", value);
+        animator.SetBool("IsMoving", state);
     }
 
     public void IsCrouching(bool state)

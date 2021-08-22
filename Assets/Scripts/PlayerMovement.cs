@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private PlayerStatsSO _playerStatsSO = default;
     private Rigidbody2D _rigidbody;
+    private Audio _audio;
     private bool _isCrouching;
 
 
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
 	void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _audio = GetComponent<Audio>();
     }
 
 	void Update()
@@ -33,8 +35,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!_isCrouching)
         {
-            _playerAnimator.SetMove(MovementInput.x);
             _rigidbody.velocity = new Vector2(MovementInput.x * _playerStatsSO.walkSpeed, _rigidbody.velocity.y);
+            if (_rigidbody.velocity.x != 0.0f)
+            {
+                _playerAnimator.SetMove(true);
+            }
+            else
+            {
+                _playerAnimator.SetMove(false);
+            }
         }
     }
 
@@ -55,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
 	{
         if (IsGrounded)
         {
+            _audio.Sound("Jump").Play();
             IsGrounded = false;
             _playerAnimator.IsJumping(true);
             _rigidbody.AddForce(new Vector2(0.0f, _playerStatsSO.jumpForce), ForceMode2D.Impulse);
@@ -68,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
             RaycastHit2D raycastHit2D = Raycast.Cast(transform.position, Vector2.down, 0.1f, LayerMaskEnum.Ground, Color.red);
             if (raycastHit2D.collider != null)
             {
+                _audio.Sound("Landed").Play();
                 _playerAnimator.IsJumping(false);
                 IsGrounded = true;
             }

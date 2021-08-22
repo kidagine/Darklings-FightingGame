@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Player _playerTwo = default;
     [SerializeField] private TextMeshProUGUI _countdownText = default;
     [SerializeField] private TextMeshProUGUI _readyText = default;
+    [SerializeField] private GameObject _leftStopper = default;
+    [SerializeField] private GameObject _rightStopper = default;
     private PlayerController _playerOneController;
     private PlayerController _playerTwoController;
     private bool _hasGameStarted;
@@ -58,10 +60,10 @@ public class GameManager : MonoBehaviour
         _countdownText.text = "99";
         _playerOneController = _playerOne.GetComponent<PlayerController>();
         _playerTwoController = _playerTwo.GetComponent<PlayerController>();
-        _playerOneController.DeactivateInput();
-        _playerTwoController.DeactivateInput();
         _playerOne.ResetPlayer();
         _playerTwo.ResetPlayer();
+        _leftStopper.SetActive(true);
+        _rightStopper.SetActive(true);
         _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
         _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
         StartCoroutine(ReadyCoroutine());
@@ -75,8 +77,8 @@ public class GameManager : MonoBehaviour
         _readyText.text = "GO!";
         yield return new WaitForSeconds(0.5f);
         _readyText.text = "";
-        _playerOneController.ActivateInput();
-        _playerTwoController.ActivateInput();
+        _leftStopper.SetActive(false);
+        _rightStopper.SetActive(false);
         _hasGameStarted = true;
     }
 
