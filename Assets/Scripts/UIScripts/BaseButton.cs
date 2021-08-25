@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler
 {
     [SerializeField] public UnityEvent _onClickedAnimationEnd = default;
+    [SerializeField] public UnityEvent _onSelected = default;
     [SerializeField] private RectTransform _scrollView = default;
     [SerializeField] private float _scrollAmount = default;
     [SerializeField] private bool _ignoreFirstSelectSound = default;
@@ -27,6 +28,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     public void OnSelect(BaseEventData eventData)
     {
+        _onSelected?.Invoke();
         if (!_isIgnoringFirstSelectSound)
         {
             _audio.Sound("Selected").Play();
@@ -86,7 +88,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         {
             _isIgnoringFirstSelectSound = true;
         }
-        EventSystem.current.SetSelectedGameObject(null);
+        //EventSystem.current.SetSelectedGameObject(null);
         _animator.Rebind();
     }
 }
