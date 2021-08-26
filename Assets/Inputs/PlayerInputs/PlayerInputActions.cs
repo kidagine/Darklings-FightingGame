@@ -15,6 +15,74 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     ""name"": ""PlayerInputActions"",
     ""maps"": [
         {
+            ""name"": ""Prompts"",
+            ""id"": ""8aa59497-d4ca-4c8b-b42a-8d97b7a11582"",
+            ""actions"": [
+                {
+                    ""name"": ""Confirm"",
+                    ""type"": ""Button"",
+                    ""id"": ""67dd21de-f194-48f5-a58d-6e23dc9431ab"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""ed9bc005-7d83-4115-8e7e-b74c782cf709"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""7e690e68-7ff4-4115-8971-52d22e4406c4"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Confirm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5e85dad-a8b2-492a-8d30-52d7a85aa1e1"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""Confirm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5931b5f-a567-4bc3-89ba-4da9dbf2d1d2"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd725590-c8df-4b72-bfb4-581b5d927660"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Gameplay"",
             ""id"": ""33df3f33-5790-40be-88ec-9ca134c4b697"",
             ""actions"": [
@@ -239,6 +307,10 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         }
     ]
 }");
+        // Prompts
+        m_Prompts = asset.FindActionMap("Prompts", throwIfNotFound: true);
+        m_Prompts_Confirm = m_Prompts.FindAction("Confirm", throwIfNotFound: true);
+        m_Prompts_Back = m_Prompts.FindAction("Back", throwIfNotFound: true);
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
@@ -290,6 +362,47 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     {
         asset.Disable();
     }
+
+    // Prompts
+    private readonly InputActionMap m_Prompts;
+    private IPromptsActions m_PromptsActionsCallbackInterface;
+    private readonly InputAction m_Prompts_Confirm;
+    private readonly InputAction m_Prompts_Back;
+    public struct PromptsActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public PromptsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Confirm => m_Wrapper.m_Prompts_Confirm;
+        public InputAction @Back => m_Wrapper.m_Prompts_Back;
+        public InputActionMap Get() { return m_Wrapper.m_Prompts; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PromptsActions set) { return set.Get(); }
+        public void SetCallbacks(IPromptsActions instance)
+        {
+            if (m_Wrapper.m_PromptsActionsCallbackInterface != null)
+            {
+                @Confirm.started -= m_Wrapper.m_PromptsActionsCallbackInterface.OnConfirm;
+                @Confirm.performed -= m_Wrapper.m_PromptsActionsCallbackInterface.OnConfirm;
+                @Confirm.canceled -= m_Wrapper.m_PromptsActionsCallbackInterface.OnConfirm;
+                @Back.started -= m_Wrapper.m_PromptsActionsCallbackInterface.OnBack;
+                @Back.performed -= m_Wrapper.m_PromptsActionsCallbackInterface.OnBack;
+                @Back.canceled -= m_Wrapper.m_PromptsActionsCallbackInterface.OnBack;
+            }
+            m_Wrapper.m_PromptsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Confirm.started += instance.OnConfirm;
+                @Confirm.performed += instance.OnConfirm;
+                @Confirm.canceled += instance.OnConfirm;
+                @Back.started += instance.OnBack;
+                @Back.performed += instance.OnBack;
+                @Back.canceled += instance.OnBack;
+            }
+        }
+    }
+    public PromptsActions @Prompts => new PromptsActions(this);
 
     // Gameplay
     private readonly InputActionMap m_Gameplay;
@@ -364,6 +477,11 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
             if (m_XboxSchemeIndex == -1) m_XboxSchemeIndex = asset.FindControlSchemeIndex("Xbox");
             return asset.controlSchemes[m_XboxSchemeIndex];
         }
+    }
+    public interface IPromptsActions
+    {
+        void OnConfirm(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
     }
     public interface IGameplayActions
     {

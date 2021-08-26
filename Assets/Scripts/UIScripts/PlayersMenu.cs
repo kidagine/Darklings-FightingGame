@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayersMenu : BaseMenu
 {
+    [SerializeField] private BaseMenu _otherMenu = default;
     [SerializeField] private RectTransform _playerOne = default;
     [SerializeField] private RectTransform _playerTwo = default;
 
@@ -34,6 +35,15 @@ public class PlayersMenu : BaseMenu
                     _playerOne.anchoredPosition = new Vector2(-375.0f, 0.0f);
                 }
             }
+        }
+    }
+
+    public void OpenOtherMenu()
+    {
+        if (_playerOne.anchoredPosition.x != 25.0f)
+        {
+            gameObject.SetActive(false);
+            _otherMenu.Show();
         }
     }
 }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69a919c6d6de6f42b53821879aac9d1, type: 3}
+  m_Name: DeviceConfigurator
+  m_EditorClassIdentifier: 
+  listDeviceSets:
+  - deviceRawPath: Keyboard:/Keyboard
+    deviceDisplaySettings: {fileID: 11400000, guid: b8069b4256eab22458120d128c53ef73,
+      type: 2}
+  - deviceRawPath: XInputControllerWindows:/XInputControllerWindows
+    deviceDisplaySettings: {fileID: 11400000, guid: 2bb142a6008896242baba1fa06636534,
+      type: 2}
+  disconnectedDeviceSettings:
+    disconnectedDisplayName: 
+    disconnectedDisplayColor: {r: 0, g: 0, b: 0, a: 0}
