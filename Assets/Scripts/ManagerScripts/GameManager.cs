@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _readyText = default;
     [SerializeField] private GameObject _leftStopper = default;
     [SerializeField] private GameObject _rightStopper = default;
+    [SerializeField] private GameObject[] _stages = default;
     private PlayerController _playerOneController;
     private PlayerController _playerTwoController;
     private bool _hasGameStarted;
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
 	void Awake()
     {
         CheckInstance();
+        CheckSceneSettings();
     }
 
     private void CheckInstance()
@@ -34,6 +36,11 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private void CheckSceneSettings()
+    {
+        _stages[SceneSettings.StageIndex].SetActive(true);
     }
 
     void Start()

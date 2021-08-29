@@ -211,7 +211,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9a052867-fd8f-44d6-8ac5-5328df089ab9"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""path"": ""<Gamepad>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Xbox"",
@@ -297,13 +297,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         {
             ""name"": ""Xbox"",
             ""bindingGroup"": ""Xbox"",
-            ""devices"": [
-                {
-                    ""devicePath"": ""<XInputController>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
-                }
-            ]
+            ""devices"": []
         }
     ]
 }");
