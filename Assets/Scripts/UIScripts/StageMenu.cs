@@ -18,10 +18,15 @@ public class StageMenu : BaseMenu
 		SceneSettings.StageIndex = index;
 	}
 
+	public void SetSceneIndex(int index)
+	{
+		SceneSettings.SceneIndex = index;
+	}
+
 	IEnumerator SelectStageCoroutine(Sprite sprite)
 	{
 		_stageImage.sprite = sprite;
 		yield return new WaitForSeconds(1.0f);
-		SceneManager.LoadScene(2);
+		SceneManager.LoadScene(SceneSettings.SceneIndex);
 	}
 }

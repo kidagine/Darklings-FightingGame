@@ -19,7 +19,6 @@ public class Pushbox : MonoBehaviour
             Gizmos.matrix = Matrix4x4.TRS(pushboxPosition, transform.rotation, transform.localScale);
 
             Vector2 gizmoPosition = new Vector2(_boxCollider.size.x, _boxCollider.size.y);
-            Gizmos.DrawCube(Vector3.zero, gizmoPosition);
             Gizmos.DrawWireCube(Vector3.zero, gizmoPosition);
             Gizmos.DrawWireCube(Vector3.zero, gizmoPosition);
         }

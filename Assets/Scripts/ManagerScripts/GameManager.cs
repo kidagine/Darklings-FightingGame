@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Player _playerOne = default;
-    [SerializeField] private Player _playerTwo = default;
-    [SerializeField] private TextMeshProUGUI _countdownText = default;
-    [SerializeField] private TextMeshProUGUI _readyText = default;
-    [SerializeField] private GameObject _leftStopper = default;
-    [SerializeField] private GameObject _rightStopper = default;
-    [SerializeField] private GameObject[] _stages = default;
+    [SerializeField] protected Player _playerOne = default;
+    [SerializeField] protected Player _playerTwo = default;
+    [SerializeField] protected TextMeshProUGUI _countdownText = default;
+    [SerializeField] protected TextMeshProUGUI _readyText = default;
+    [SerializeField] protected GameObject _leftStopper = default;
+    [SerializeField] protected GameObject _rightStopper = default;
+    [SerializeField] protected GameObject[] _stages = default;
+    [SerializeField] protected bool _hasCountDown = true;
+    [SerializeField] protected bool _hasTimer = true;
     private PlayerController _playerOneController;
     private PlayerController _playerTwoController;
     private bool _hasGameStarted;
@@ -38,7 +40,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void CheckSceneSettings()
+    public void CheckSceneSettings()
     {
         _stages[SceneSettings.StageIndex].SetActive(true);
     }
@@ -50,7 +52,7 @@ public class GameManager : MonoBehaviour
 
 	void Update()
 	{
-	    if (_hasGameStarted)
+	    if (_hasGameStarted && _hasCountDown)
 		{
             _countdown -= Time.deltaTime;
             _countdownText.text = Mathf.Round(_countdown).ToString();
@@ -61,7 +63,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-    private void StartRound()
+    public virtual void StartRound()
     {
         _countdown = 99.0f;
         _countdownText.text = "99";
@@ -89,7 +91,7 @@ public class GameManager : MonoBehaviour
         _hasGameStarted = true;
     }
 
-    public void RoundOver()
+    public virtual void RoundOver()
     {
         StartCoroutine(RoundOverCoroutine());
     }

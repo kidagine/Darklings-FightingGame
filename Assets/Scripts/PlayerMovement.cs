@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private PlayerStatsSO _playerStatsSO = default;
@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Audio _audio;
     private bool _isJumping;
-
 
     public Vector2 MovementInput { private get; set; }
     public bool IsGrounded { get; private set; } = true;
@@ -22,11 +21,6 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _audio = GetComponent<Audio>();
     }
-
-	void Update()
-	{
-        CheckGrounded();
-	}
 
 	void FixedUpdate()
     {
@@ -103,20 +97,6 @@ public class PlayerMovement : MonoBehaviour
         _isJumping = false;
     }
 
-    private void CheckGrounded()
-    {
-        if (_rigidbody.velocity.y < 0.0f && !IsGrounded)
-        {
-            RaycastHit2D raycastHit2D = Raycast.Cast(transform.position, Vector2.down, 0.2f, LayerMaskEnum.Ground, Color.red);
-            if (raycastHit2D.collider != null)
-            {
-                _audio.Sound("Landed").Play();
-                _playerAnimator.IsJumping(false);
-                IsGrounded = true;
-            }
-        }
-    }
-
     public void SetLockMovement(bool state)
     {
         _rigidbody.velocity = Vector2.zero;
@@ -128,5 +108,21 @@ public class PlayerMovement : MonoBehaviour
         {
             _rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
         }
+    }
+
+	public void OnGrounded()
+	{
+        if (!IsGrounded)
+        {
+            _audio.Sound("Landed").Play();
+            _playerAnimator.IsJumping(false);
+            IsGrounded = true;
+        }
+    }
+
+    public void OnAir()
+	{
+        IsGrounded = false;
+        _playerAnimator.IsJumping(true);
     }
 }

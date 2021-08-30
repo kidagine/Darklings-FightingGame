@@ -45,7 +45,6 @@ public class Hurtbox : MonoBehaviour
             Gizmos.matrix = Matrix4x4.TRS(hurtboxPosition, transform.rotation, transform.localScale);
 
             Vector2 gizmoPosition = new Vector2(_boxCollider.size.x, _boxCollider.size.y);
-            Gizmos.DrawCube(Vector3.zero, gizmoPosition);
             Gizmos.DrawWireCube(Vector3.zero, gizmoPosition);
             Gizmos.DrawWireCube(Vector3.zero, gizmoPosition);
         }

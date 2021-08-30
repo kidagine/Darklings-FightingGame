@@ -61,7 +61,6 @@ public class Hitbox : MonoBehaviour
         Gizmos.color = _hitboxColor;
         Gizmos.matrix = Matrix4x4.TRS(hitboxPosition, transform.rotation, Vector2.one);
 
-        Gizmos.DrawCube(Vector3.zero, new Vector3(_hitboxSize.x, _hitboxSize.y, 1.0f));
         Gizmos.DrawWireCube(Vector3.zero, new Vector3(_hitboxSize.x, _hitboxSize.y, 1.0f));
         Gizmos.DrawWireCube(Vector3.zero, new Vector3(_hitboxSize.x * 1.01f, _hitboxSize.y * 1.01f, 1.0f));
     }
