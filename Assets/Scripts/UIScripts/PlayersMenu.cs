@@ -17,22 +17,22 @@ public class PlayersMenu : BaseMenu
             {
                 if (_playerOne.anchoredPosition.x == -375.0f)
                 {
-                    _playerOne.anchoredPosition = new Vector2(25.0f, 0.0f);
+                    _playerOne.anchoredPosition = new Vector2(25.0f, _playerOne.anchoredPosition.y);
                 }
                 else
                 {
-                    _playerOne.anchoredPosition = new Vector2(375.0f, 0.0f);
-                }
+                    _playerOne.anchoredPosition = new Vector2(375.0f, _playerOne.anchoredPosition.y);
+                }   
             }
             else if (movement.x < 0.0f)
             {
                 if (_playerOne.anchoredPosition.x == 375.0f)
                 {
-                    _playerOne.anchoredPosition = new Vector2(25.0f, 0.0f);
+                    _playerOne.anchoredPosition = new Vector2(25.0f, _playerOne.anchoredPosition.y);
                 }
                 else
                 {
-                    _playerOne.anchoredPosition = new Vector2(-375.0f, 0.0f);
+                    _playerOne.anchoredPosition = new Vector2(-375.0f, _playerOne.anchoredPosition.y);
                 }
             }
         }
