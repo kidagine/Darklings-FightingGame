@@ -48,6 +48,7 @@ public class PlayersMenu : BaseMenu
         }
         else if (movement < 0.0f)
         {
+            _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
             if (_playerIcons[index].anchoredPosition.x == 375.0f)
             {
                 _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
