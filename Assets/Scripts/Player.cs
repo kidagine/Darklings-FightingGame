@@ -16,7 +16,7 @@ public class Player : MonoBehaviour, IHurtboxResponder
 	private bool _isDead;
 
 	public bool IsAttacking { get; set; }
-
+	public bool IsPlayerOne { get { return _isPlayerOne; } private set { } }
 
 	void Awake()
 	{

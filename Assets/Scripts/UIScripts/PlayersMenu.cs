@@ -4,43 +4,64 @@ using UnityEngine.InputSystem;
 public class PlayersMenu : BaseMenu
 {
     [SerializeField] private BaseMenu _otherMenu = default;
-    [SerializeField] private RectTransform _playerOne = default;
-    [SerializeField] private RectTransform _playerTwo = default;
+    [SerializeField] private RectTransform[] _playerIcons = default;
 
 
-    public void Movement(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+	void Start()
+	{
+        InputSystem.onDeviceChange +=
+        (device, change) =>
         {
-            Vector2 movement = context.ReadValue<Vector2>();
-            if (movement.x > 0.0f)
+            switch (change)
             {
-                if (_playerOne.anchoredPosition.x == -375.0f)
-                {
-                    _playerOne.anchoredPosition = new Vector2(25.0f, 0.0f);
-                }
-                else
-                {
-                    _playerOne.anchoredPosition = new Vector2(375.0f, 0.0f);
-                }
+                case InputDeviceChange.Added:
+                    Debug.Log("New device added: " + device);
+                    break;
+
+                case InputDeviceChange.Removed:
+                    Debug.Log("Device removed: " + device);
+                    break;
             }
-            else if (movement.x < 0.0f)
+        };
+    }
+
+	void Update()
+	{
+        Movement("Keyboard", 0);
+        Movement("ControllerOne", 1);
+        Movement("ControllerTwo", 2);
+    }
+
+    private void Movement(string inputName, int index)
+    {
+        float movement = Input.GetAxisRaw(inputName + "Horizontal");
+        if (movement > 0.0f)
+        {
+            if (_playerIcons[index].anchoredPosition.x == -375.0f)
             {
-                if (_playerOne.anchoredPosition.x == 375.0f)
-                {
-                    _playerOne.anchoredPosition = new Vector2(25.0f, 0.0f);
-                }
-                else
-                {
-                    _playerOne.anchoredPosition = new Vector2(-375.0f, 0.0f);
-                }
+                _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
+            }
+            else
+            {
+                _playerIcons[index].anchoredPosition = new Vector2(375.0f, _playerIcons[index].anchoredPosition.y);
+            }
+        }
+        else if (movement < 0.0f)
+        {
+            if (_playerIcons[index].anchoredPosition.x == 375.0f)
+            {
+                _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
+            }
+            else
+            {
+                _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
             }
         }
     }
 
     public void OpenOtherMenu()
     {
-        if (_playerOne.anchoredPosition.x != 25.0f)
+        if (_playerIcons[0].anchoredPosition.x != 25.0f)
         {
             gameObject.SetActive(false);
             _otherMenu.Show();

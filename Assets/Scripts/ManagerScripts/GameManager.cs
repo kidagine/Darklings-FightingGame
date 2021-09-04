@@ -13,9 +13,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject[] _stages = default;
     [SerializeField] protected bool _hasCountDown = true;
     [SerializeField] protected bool _hasTimer = true;
-    private PlayerController _playerOneController;
-    private PlayerController _playerTwoController;
-    private bool _hasGameStarted;
+    protected PlayerController _playerOneController;
+    protected PlayerController _playerTwoController;
+    protected bool _hasGameStarted;
     private float _countdown = 99.0f;
 
     public static GameManager Instance { get; private set; }

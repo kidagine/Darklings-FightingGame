@@ -4,6 +4,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private PlayerStatsSO _playerStatsSO = default;
+    [SerializeField] private GameObject _dustUpPrefab = default;
+    [SerializeField] private GameObject _dustDownPrefab = default;
     private Player _player;
     private Rigidbody2D _rigidbody;
     private Audio _audio;
@@ -68,7 +70,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         if (!_player.IsAttacking)
         {
-            _rigidbody.velocity = Vector2.zero;
+            if (IsGrounded)
+            {
+                _rigidbody.velocity = Vector2.zero;
+            }
             IsCrouching = true;
             _playerAnimator.IsCrouching(true);
         }
@@ -84,6 +89,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
         if (IsGrounded && !_player.IsAttacking)
         {
+            Instantiate(_dustUpPrefab, transform.position, Quaternion.identity);
             _isJumping = true;
             _audio.Sound("Jump").Play();
             IsGrounded = false;
@@ -114,6 +120,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
         if (!IsGrounded)
         {
+            Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
             _playerAnimator.IsJumping(false);
             IsGrounded = true;

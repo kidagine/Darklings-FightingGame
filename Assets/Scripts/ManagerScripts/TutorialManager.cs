@@ -3,12 +3,6 @@ using UnityEngine;
 
 public class TutorialManager : GameManager
 {
-    private PlayerController _playerOneController;
-    private PlayerController _playerTwoController;
-    private bool _hasGameStarted;
-    private float _countdown = 99.0f;
-
-
     public override void StartRound()
     {
         _playerOneController = _playerOne.GetComponent<PlayerController>();
