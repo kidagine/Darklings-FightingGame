@@ -5,9 +5,12 @@ public class PlayersMenu : BaseMenu
 {
     [SerializeField] private BaseMenu _otherMenu = default;
     [SerializeField] private RectTransform[] _playerIcons = default;
+    private string _inputOne;
+    private string _inputTwo;
+    private bool _isMovenentInUse;
 
 
-	void Start()
+    void Start()
 	{
         InputSystem.onDeviceChange +=
         (device, change) =>
@@ -15,11 +18,27 @@ public class PlayersMenu : BaseMenu
             switch (change)
             {
                 case InputDeviceChange.Added:
-                    Debug.Log("New device added: " + device);
+                    if (device.name == "XInputControllerWindows")
+                    {
+                        _playerIcons[1].gameObject.SetActive(true);
+                    }
+                    else if (device.name == "XInputControllerWindows1")
+                    {
+                        _playerIcons[2].gameObject.SetActive(true);
+                    }
                     break;
 
                 case InputDeviceChange.Removed:
-                    Debug.Log("Device removed: " + device);
+                    if (device.name == "XInputControllerWindows")
+                    {
+                        _playerIcons[1].anchoredPosition = new Vector2(25.0f, _playerIcons[1].anchoredPosition.y);
+                        _playerIcons[1].gameObject.SetActive(false);
+                    }
+                    else if (device.name == "XInputControllerWindows1")
+                    {
+                        _playerIcons[2].anchoredPosition = new Vector2(25.0f, _playerIcons[2].anchoredPosition.y);
+                        _playerIcons[2].gameObject.SetActive(false);
+                    }
                     break;
             }
         };
@@ -35,37 +54,106 @@ public class PlayersMenu : BaseMenu
     private void Movement(string inputName, int index)
     {
         float movement = Input.GetAxisRaw(inputName + "Horizontal");
-        if (movement > 0.0f)
+        if (movement != 0.0f)
         {
-            if (_playerIcons[index].anchoredPosition.x == -375.0f)
+            if (!_isMovenentInUse)
             {
-                _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
-            }
-            else
-            {
-                _playerIcons[index].anchoredPosition = new Vector2(375.0f, _playerIcons[index].anchoredPosition.y);
+                if (movement > 0.0f)
+                {
+                    if (_playerIcons[index].anchoredPosition.x == -375.0f)
+                    {
+                        _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
+                    }
+                    else if (!IsOnRight())
+                    {
+                        _playerIcons[index].anchoredPosition = new Vector2(375.0f, _playerIcons[index].anchoredPosition.y);
+                        _playerIcons[index].GetChild(1).gameObject.SetActive(false);
+                    }
+                }
+                else if (movement < 0.0f)
+                {
+                    if (_playerIcons[index].anchoredPosition.x == 375.0f)
+                    {
+                        _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
+                    }
+                    else if (!IsOnLeft())
+                    {
+                        _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
+                        _playerIcons[index].GetChild(0).gameObject.SetActive(false);
+                    }
+                }
+                _isMovenentInUse = true;
             }
         }
-        else if (movement < 0.0f)
+        else if (movement == 0.0f)
         {
-            _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
-            if (_playerIcons[index].anchoredPosition.x == 375.0f)
+            Debug.Log("a");
+            _isMovenentInUse = false;
+        }
+    }
+
+    private bool IsOnRight()
+    {
+		for (int i = 0; i < _playerIcons.Length; i++)
+		{
+            if (_playerIcons[i].anchoredPosition.x == 375.0f)
             {
-                _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
+                return true;
             }
-            else
+		}
+        return false;
+    }
+
+    private bool IsOnLeft()
+    {
+        for (int i = 0; i < _playerIcons.Length; i++)
+        {
+            if (_playerIcons[i].anchoredPosition.x == -375.0f)
             {
-                _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
+                return true;
             }
         }
+        return false;
     }
 
     public void OpenOtherMenu()
     {
-        if (_playerIcons[0].anchoredPosition.x != 25.0f)
+        if (_playerIcons[0].anchoredPosition.x != 25.0f || _playerIcons[1].anchoredPosition.x != 25.0f || _playerIcons[2].anchoredPosition.x != 25.0f)
         {
+            if (_playerIcons[0].anchoredPosition.x == 375.0f)
+            {
+                SceneSettings.ControllerOne = "Keyboard";
+            }
+            else if (_playerIcons[1].anchoredPosition.x == 375.0f)
+            {
+                SceneSettings.ControllerOne = "ControllerOne";
+            }
+            else if (_playerIcons[2].anchoredPosition.x == 375.0f)
+            {
+                SceneSettings.ControllerOne = "ControllerTwo";
+            }
+            if (_playerIcons[0].anchoredPosition.x == -375.0f)
+            {
+                SceneSettings.ControllerTwo = "Keyboard";
+            }
+            else if (_playerIcons[1].anchoredPosition.x == -375.0f)
+            {
+                SceneSettings.ControllerTwo = "ControllerOne";
+            }
+            else if (_playerIcons[2].anchoredPosition.x == -375.0f)
+            {
+                SceneSettings.ControllerTwo = "ControllerTwo";
+            }
             gameObject.SetActive(false);
             _otherMenu.Show();
+        }
+    }
+
+	void OnDisable()
+	{
+		for (int i = 0; i < _playerIcons.Length; i++)
+		{
+            _playerIcons[i].anchoredPosition = new Vector2(25.0f, _playerIcons[i].anchoredPosition.y);
         }
     }
 }

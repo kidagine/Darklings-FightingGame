@@ -16,10 +16,11 @@ public class PlayerController : MonoBehaviour
     {
         _player = GetComponent<Player>();
         _playerMovement = GetComponent<PlayerMovement>();
-        _controllerInputName = _player.IsPlayerOne is true ? SceneSettings.ControllerOne : SceneSettings.ControllerTwo;
+        _controllerInputName = _player.IsPlayerOne is false ? SceneSettings.ControllerOne : SceneSettings.ControllerTwo;
+        Debug.Log(gameObject.name + "| " + _controllerInputName);
     }
 
-	void Update()
+    void Update()
 	{
         Movement();
         Jump();
