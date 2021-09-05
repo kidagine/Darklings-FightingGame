@@ -438,6 +438,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -60
       objectReference: {fileID: 0}
+    - target: {fileID: 2841504432217619119, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3320892015413500859, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_Name
       value: LiveLost_image
@@ -453,6 +457,12 @@ PrefabInstance:
     - target: {fileID: 4635441272170935179, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920763466147835620, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_text
+      value: 'Hits 0
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 6238647328156754236, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_SizeDelta.x
@@ -496,6 +506,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7699761047756761519, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825027852409118670, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825027852409118670, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8125629589741885140, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
@@ -602,6 +620,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7767700e958f03b4e9a5f2c43bcc28db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerOneUI: {fileID: 1260952191800132862}
+  _playerTwoUI: {fileID: 591461554}
   _playerOne: {fileID: 1803766342}
   _playerTwo: {fileID: 2034684119}
   _countdownText: {fileID: 0}
@@ -867,6 +887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lostLives: []
   _healthSlider: {fileID: 0}
+  _comboText: {fileID: 0}
 --- !u!114 &591461554 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
@@ -1202,6 +1223,18 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 2.1
       objectReference: {fileID: 0}
+    - target: {fileID: 3121622969731471992, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 2034684119}
+    - target: {fileID: 3121622969731471993, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 2034684119}
+    - target: {fileID: 3121622969731471993, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _playerUI
+      value: 
+      objectReference: {fileID: 591461554}
     - target: {fileID: 3121622970300259822, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1234,6 +1267,10 @@ PrefabInstance:
       propertyPath: _otherPlayer
       value: 
       objectReference: {fileID: 1803766338}
+    - target: {fileID: 3121622970603974650, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _otherPlayerUI
+      value: 
+      objectReference: {fileID: 1260952191800132862}
     - target: {fileID: 3121622970603974652, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: m_Name
       value: Kim_playerOne (1)
@@ -1526,6 +1563,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -60
       objectReference: {fileID: 0}
+    - target: {fileID: 2841504432217619119, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3320892015413500859, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_Name
       value: LiveLost_image
@@ -1553,6 +1594,16 @@ PrefabInstance:
     - target: {fileID: 4635441272170935179, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -200
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920763466147835620, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_text
+      value: 'Hits 0
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920763466147835620, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6238647328156754236, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1602,6 +1653,26 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 7825027852409118670, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825027852409118670, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825027852409118670, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825027852409118670, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825027852409118670, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8308553648427075089, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -1623,6 +1694,18 @@ PrefabInstance:
       propertyPath: _damageable
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3121622969731471992, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 1803766342}
+    - target: {fileID: 3121622969731471993, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 1803766342}
+    - target: {fileID: 3121622969731471993, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _playerUI
+      value: 
+      objectReference: {fileID: 1260952191800132862}
     - target: {fileID: 3121622969731471993, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: _destroyOnImpact
       value: 0
@@ -1639,6 +1722,10 @@ PrefabInstance:
       propertyPath: _otherPlayer
       value: 
       objectReference: {fileID: 2034684120}
+    - target: {fileID: 3121622970603974650, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _otherPlayerUI
+      value: 
+      objectReference: {fileID: 591461554}
     - target: {fileID: 3121622970603974652, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: m_Name
       value: Kim_playerOne

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] protected PlayerUI _playerOneUI = default;
+    [SerializeField] protected PlayerUI _playerTwoUI = default;
     [SerializeField] protected Player _playerOne = default;
     [SerializeField] protected Player _playerTwo = default;
     [SerializeField] protected TextMeshProUGUI _countdownText = default;
@@ -75,6 +77,8 @@ public class GameManager : MonoBehaviour
         _rightStopper.SetActive(true);
         _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
         _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+        _playerOneUI.ResetCombo();
+        _playerTwoUI.ResetCombo();
         StartCoroutine(ReadyCoroutine());
     }
 

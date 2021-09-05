@@ -1,16 +1,21 @@
+using System.Collections;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IHurtboxResponder
+public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
 	[SerializeField] private Transform _otherPlayer = default;
 	[SerializeField] private PlayerStatsSO _playerStats = default;
 	[SerializeField] private PlayerUI _playerUI = default;
+	[SerializeField] private PlayerUI _otherPlayerUI = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _pushbox = default;
 	[SerializeField] private bool _isPlayerOne = default;
 	private PlayerMovement _playerMovement;
 	private PlayerComboSystem _playerComboSystem;
+	private PlayerController _playerController;
 	private Audio _audio;
+	private AttackSO _currentAttack;
+	private Coroutine _stunCoroutine;
 	private float _health;
 	private int _lives = 2;
 	private bool _isDead;
@@ -22,6 +27,7 @@ public class Player : MonoBehaviour, IHurtboxResponder
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
 		_playerComboSystem = GetComponent<PlayerComboSystem>();
+		_playerController = GetComponent<PlayerController>();
 		_audio = GetComponent<Audio>();
 	}
 
@@ -71,15 +77,15 @@ public class Player : MonoBehaviour, IHurtboxResponder
 	{
 		if (_playerMovement.IsGrounded && !IsAttacking)
 		{
+
 			IsAttacking = true;
 			_playerAnimator.Attack();
-			AttackSO attack = _playerComboSystem.GetComboAttack();
-			if (!string.IsNullOrEmpty(attack.attackSound))
+			_currentAttack = _playerComboSystem.GetComboAttack();
+			if (!string.IsNullOrEmpty(_currentAttack.attackSound))
 			{
-				_audio.Sound(attack.attackSound).Play();
+				_audio.Sound(_currentAttack.attackSound).Play();
 			}
-			_playerMovement.TravelDistance(attack.travelDistance * transform.localScale.x);
-			//_playerMovement.SetLockMovement(true);
+			_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
 		}
 	}
 
@@ -87,7 +93,8 @@ public class Player : MonoBehaviour, IHurtboxResponder
 	{
 		_health--;
 		_playerUI.SetHealth(_health);
-		_playerAnimator.Hurt();
+		_playerAnimator.Hurt(true);
+		IsAttacking = false;
 		if (_health <= 0)
 		{
 			Die();
@@ -118,5 +125,33 @@ public class Player : MonoBehaviour, IHurtboxResponder
 	private void SetPushbox(bool state)
 	{
 		_pushbox.SetActive(state);
+	}
+
+	public void Stun(float stunTime)
+	{
+		if (_stunCoroutine != null)
+		{
+			StopCoroutine(_stunCoroutine);
+		}
+		_stunCoroutine = StartCoroutine(StunCoroutine(stunTime));
+	}
+
+	IEnumerator StunCoroutine(float stunTime)
+	{
+		_playerMovement.SetLockMovement(true);
+		_playerController.DeactivateInput();
+		yield return new WaitForSeconds(stunTime);
+		_playerController.ActivateInput();
+		_playerMovement.SetLockMovement(false);
+		_playerAnimator.Hurt(false);
+		_otherPlayerUI.ResetCombo();
+	}
+
+	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
+	{
+		_audio.Sound("Hit").Play();
+		hurtbox.TakeDamage(1);
+		_playerUI.IncreaseCombo();
+		hit.collider.transform.root.GetComponent<Player>().Stun(_currentAttack.hitStun);
 	}
 }

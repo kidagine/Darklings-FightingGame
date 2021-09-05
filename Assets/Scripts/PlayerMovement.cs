@@ -105,16 +105,17 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void SetLockMovement(bool state)
     {
+        MovementInput = Vector2.zero;
         _rigidbody.velocity = Vector2.zero;
-        if (state)
-        {
-            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-        }
-        else
-        {
-            _rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-        }
-    }
+		if (state)
+		{
+			_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+		}
+		else
+		{
+			_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+		}
+	}
 
 	public void OnGrounded()
 	{

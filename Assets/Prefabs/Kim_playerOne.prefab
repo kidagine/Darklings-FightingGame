@@ -503,6 +503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hitboxSize: {x: 1, y: 1}
   _offset: {x: 0, y: 0}
+  _player: {fileID: 0}
   _hasHit: 0
 --- !u!114 &3121622969731471993
 MonoBehaviour:
@@ -516,6 +517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95560bd59fd31e34d8368fe1864db755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerUI: {fileID: 0}
   _damage: 1
   _knockbackDirection: {x: 0, y: 0}
   _knockbackForce: 1
@@ -835,6 +837,14 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     name: Landed
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 5df03db9d26ba2247a8d4ff017c369fa, type: 3}
+    volume: 1
+    pitch: 1
+    name: Hit
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0

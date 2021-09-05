@@ -4,6 +4,7 @@ using UnityEngine;
 public class AttackSO : ScriptableObject
 {
 	public float travelDistance;
+	public float hitStun;
 	public string attackSound;
 	public string impactSound;
 }

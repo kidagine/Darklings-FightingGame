@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,10 +6,7 @@ public class PlayerController : MonoBehaviour
     private PlayerMovement _playerMovement;
     private string _controllerInputName;
     private bool _hasJumped;
-
-    public bool DisableThoughtsInput { private get; set; }
-    public bool DisableCodexInput { private get; set; }
-
+    private bool _isControllerEnabled = true;
 
     void Awake()
     {
@@ -21,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
 	{
-        if (!string.IsNullOrEmpty(_controllerInputName))
+        if (!string.IsNullOrEmpty(_controllerInputName) && _isControllerEnabled)
         {
             Movement();
             Jump();
@@ -69,13 +65,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //public void ActivateInput()
-    //{
-    //    _playerInput.ActivateInput();
-    //}
+	public void ActivateInput()
+	{
+        _isControllerEnabled = true;
+    }
 
-    //public void DeactivateInput()
-    //{
-    //    _playerInput.DeactivateInput();
-    //}
+	public void DeactivateInput()
+	{
+        _isControllerEnabled = false;
+    }
 }
