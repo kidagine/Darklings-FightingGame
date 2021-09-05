@@ -10,6 +10,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _comboText = default;
     private int _currentLifeIndex;
     private int _currentComboCount;
+    private bool _hasComboEnded;
 
 
     public void SetMaxHealth(float value)
@@ -37,6 +38,13 @@ public class PlayerUI : MonoBehaviour
 
     public void IncreaseCombo()
     {
+        if (_hasComboEnded)
+        {
+            _hasComboEnded = false;
+            _comboText.gameObject.SetActive(false);
+            _currentComboCount = 0;
+            _comboText.text = "Hits 0";
+        }
         _currentComboCount++;
         _comboText.text = "Hits " + _currentComboCount.ToString();
         if (_currentComboCount > 1)
@@ -52,7 +60,8 @@ public class PlayerUI : MonoBehaviour
 
     IEnumerator ResetComboCoroutine()
     {
-        yield return new WaitForSeconds(0.25f);
+        _hasComboEnded = true;
+        yield return new WaitForSeconds(1.0f);
         _comboText.gameObject.SetActive(false);
         _currentComboCount = 0;
         _comboText.text = "Hits 0";

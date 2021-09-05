@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerComboSystem : MonoBehaviour
@@ -7,6 +5,7 @@ public class PlayerComboSystem : MonoBehaviour
 	[SerializeField] private AttackSO _2L = default;
 	[SerializeField] private AttackSO _5L = default;
 	[SerializeField] private AttackSO _6L = default;
+	[SerializeField] private AttackSO _jumpL = default;
 	private PlayerMovement _playerMovement;
 
 
@@ -23,7 +22,11 @@ public class PlayerComboSystem : MonoBehaviour
 		}
 		else
 		{
-			if (_playerMovement.IsMoving)
+			if (!_playerMovement.IsGrounded)
+			{
+				return _jumpL;
+			}
+			else if (_playerMovement.IsMoving)
 			{
 				return _6L;
 			}

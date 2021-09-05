@@ -5,6 +5,7 @@ public class AttackSO : ScriptableObject
 {
 	public float travelDistance;
 	public float hitStun;
+	public float knockback;
 	public string attackSound;
 	public string impactSound;
 }

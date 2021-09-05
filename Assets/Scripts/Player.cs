@@ -75,9 +75,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void AttackAction()
 	{
-		if (_playerMovement.IsGrounded && !IsAttacking)
+		if (!IsAttacking)
 		{
-
 			IsAttacking = true;
 			_playerAnimator.Attack();
 			_currentAttack = _playerComboSystem.GetComboAttack();
@@ -89,11 +88,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public void TakeDamage(int damage, Vector2 knockbackDirection = default, float knockbackForce = 0)
+	public void TakeDamage(int damage, float hitStun = 0, Vector2 knockbackDirection = default, float knockbackForce = 0)
 	{
 		_health--;
+		Stun(hitStun);
 		_playerUI.SetHealth(_health);
+		_playerAnimator.Rebind();
 		_playerAnimator.Hurt(true);
+		_playerMovement.Knockback(knockbackDirection, knockbackForce);
 		IsAttacking = false;
 		if (_health <= 0)
 		{
@@ -127,20 +129,20 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_pushbox.SetActive(state);
 	}
 
-	public void Stun(float stunTime)
+	public void Stun(float hitStun)
 	{
 		if (_stunCoroutine != null)
 		{
 			StopCoroutine(_stunCoroutine);
 		}
-		_stunCoroutine = StartCoroutine(StunCoroutine(stunTime));
+		_stunCoroutine = StartCoroutine(StunCoroutine(hitStun));
 	}
 
-	IEnumerator StunCoroutine(float stunTime)
+	IEnumerator StunCoroutine(float hitStun)
 	{
 		_playerMovement.SetLockMovement(true);
 		_playerController.DeactivateInput();
-		yield return new WaitForSeconds(stunTime);
+		yield return new WaitForSeconds(hitStun);
 		_playerController.ActivateInput();
 		_playerMovement.SetLockMovement(false);
 		_playerAnimator.Hurt(false);
@@ -150,8 +152,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
 		_audio.Sound("Hit").Play();
-		hurtbox.TakeDamage(1);
+		hurtbox.TakeDamage(1, _currentAttack.hitStun, new Vector2(transform.localScale.x, 0.0f), _currentAttack.knockback);
 		_playerUI.IncreaseCombo();
-		hit.collider.transform.root.GetComponent<Player>().Stun(_currentAttack.hitStun);
 	}
 }

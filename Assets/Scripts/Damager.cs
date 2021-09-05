@@ -26,9 +26,7 @@ public class Damager : MonoBehaviour, IHitboxResponder
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
 		_audio.Sound("Hit").Play();
-		hurtbox.TakeDamage(_damage, _knockbackDirection, _knockbackForce);
 		_playerUI.IncreaseCombo();
-		hit.collider.transform.root.GetComponent<Player>().Stun(50.0f);
 		//if (hurtbox != null)
 		//{
 		//	if ((((1 << hit.collider.transform.root.gameObject.layer) & _damageLayers) != 0) || (((1 << hit.collider.gameObject.layer) & _damageLayers) != 0))

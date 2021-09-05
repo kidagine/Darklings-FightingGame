@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     private Rigidbody2D _rigidbody;
     private Audio _audio;
     private bool _isJumping;
+    private bool _isMovementLocked;
 
     public Vector2 MovementInput { private get; set; }
     public bool IsGrounded { get; private set; } = true;
@@ -44,8 +45,9 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     private void Movement()
     {
-        if (!IsCrouching && !_player.IsAttacking)
+        if (!IsCrouching && !_player.IsAttacking && !_isMovementLocked)
         {
+            Debug.Log(gameObject.name);
             _rigidbody.velocity = new Vector2(MovementInput.x * _playerStatsSO.walkSpeed, _rigidbody.velocity.y);
             if (_rigidbody.velocity.x != 0.0f)
             {
@@ -107,14 +109,15 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         MovementInput = Vector2.zero;
         _rigidbody.velocity = Vector2.zero;
-		if (state)
-		{
-			_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-		}
-		else
-		{
-			_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-		}
+        _isMovementLocked = state;
+  //      if (state)
+		//{
+		//	_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+		//}
+		//else
+		//{
+		//	_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+		//}
 	}
 
 	public void OnGrounded()
@@ -123,6 +126,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         {
             Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
+            _player.IsAttacking = false;
             _playerAnimator.IsJumping(false);
             IsGrounded = true;
         }
@@ -132,5 +136,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
         IsGrounded = false;
         _playerAnimator.IsJumping(true);
+    }
+
+    public void Knockback(Vector2 knockbackDirection, float knockbackForce)
+    {
+        Debug.Log("a");
+        _rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
     }
 }
