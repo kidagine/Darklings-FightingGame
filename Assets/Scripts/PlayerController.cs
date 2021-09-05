@@ -17,15 +17,17 @@ public class PlayerController : MonoBehaviour
         _player = GetComponent<Player>();
         _playerMovement = GetComponent<PlayerMovement>();
         _controllerInputName = _player.IsPlayerOne is false ? SceneSettings.ControllerOne : SceneSettings.ControllerTwo;
-        Debug.Log(gameObject.name + "| " + _controllerInputName);
     }
 
     void Update()
 	{
-        Movement();
-        Jump();
-        Crouch();
-        Attack();
+        if (!string.IsNullOrEmpty(_controllerInputName))
+        {
+            Movement();
+            Jump();
+            Crouch();
+            Attack();
+        }
 	}
 
 	public void Movement()

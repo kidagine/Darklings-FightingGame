@@ -5,6 +5,7 @@ public class PlayersMenu : BaseMenu
 {
     [SerializeField] private BaseMenu _otherMenu = default;
     [SerializeField] private RectTransform[] _playerIcons = default;
+    [SerializeField] private bool _onePlayerOnly = default;
     private string _inputOne;
     private string _inputTwo;
     private bool _isMovenentInUse;
@@ -64,6 +65,14 @@ public class PlayersMenu : BaseMenu
                     {
                         _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
                     }
+                    else if (_onePlayerOnly)
+                    {
+                        if (!IsOnLeft() && !IsOnRight())
+                        {
+                            _playerIcons[index].anchoredPosition = new Vector2(375.0f, _playerIcons[index].anchoredPosition.y);
+                            _playerIcons[index].GetChild(0).gameObject.SetActive(false);
+                        }
+                    }
                     else if (!IsOnRight())
                     {
                         _playerIcons[index].anchoredPosition = new Vector2(375.0f, _playerIcons[index].anchoredPosition.y);
@@ -76,6 +85,14 @@ public class PlayersMenu : BaseMenu
                     {
                         _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
                     }
+                    else if (_onePlayerOnly)
+                    {
+                        if (!IsOnLeft() && !IsOnRight())
+                        {
+                            _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
+                            _playerIcons[index].GetChild(0).gameObject.SetActive(false);
+                        }
+                    }
                     else if (!IsOnLeft())
                     {
                         _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
@@ -87,7 +104,6 @@ public class PlayersMenu : BaseMenu
         }
         else if (movement == 0.0f)
         {
-            Debug.Log("a");
             _isMovenentInUse = false;
         }
     }

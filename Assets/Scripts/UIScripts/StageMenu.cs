@@ -27,6 +27,6 @@ public class StageMenu : BaseMenu
 	{
 		_stageImage.sprite = sprite;
 		yield return new WaitForSeconds(1.0f);
-		SceneManager.LoadScene(_sceneIndex);
+		SceneManager.LoadScene(SceneSettings.SceneIndex);
 	}
 }
