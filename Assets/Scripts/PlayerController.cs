@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private bool _trainingController = default;
     private Player _player;
     private PlayerMovement _playerMovement;
     private string _controllerInputName;
@@ -23,15 +24,19 @@ public class PlayerController : MonoBehaviour
             Jump();
             Crouch();
             Attack();
+            if (_trainingController)
+            {
+                ResetRound();
+            }
         }
 	}
 
-	public void Movement()
+    private void Movement()
     {
-        _playerMovement.MovementInput = new Vector2(Input.GetAxisRaw(_controllerInputName + "Horizontal"), 0.0f);
+        _playerMovement.MovementInput = new Vector2(Input.GetAxisRaw(_controllerInputName + "Horizontal"), Input.GetAxisRaw(_controllerInputName + "Vertical"));
 	}
 
-    public void Jump()
+    private void Jump()
     {
         if (Input.GetAxisRaw(_controllerInputName + "Vertical") > 0.0f && !_hasJumped)
         {
@@ -45,7 +50,7 @@ public class PlayerController : MonoBehaviour
         }
 	}
 
-    public void Crouch()
+    private void Crouch()
     {
 		if (Input.GetAxisRaw(_controllerInputName + "Vertical") < 0.0f)
 		{
@@ -57,11 +62,19 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-    public void Attack()
+    private void Attack()
     {
         if (Input.GetButtonDown(_controllerInputName + "Light"))
         {
             _player.AttackAction();
+        }
+    }
+
+	private void ResetRound()
+	{
+        if (Input.GetButtonDown(_controllerInputName + "Reset"))
+        {
+            TutorialManager.Instance.ResetRound(_playerMovement.MovementInput);
         }
     }
 

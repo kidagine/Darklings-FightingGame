@@ -17,9 +17,9 @@ public class Groundedbox : MonoBehaviour
 		_boxCollider = GetComponent<BoxCollider2D>();
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
-		RaycastHit2D raycastHit2D = Physics2D.BoxCast(new Vector2(transform.position.x, transform.position.y), _boxCollider.bounds.size, 0f, Vector2.down, .05f, LayerProvider.GetLayerMask(LayerMaskEnum.Ground));
+		RaycastHit2D raycastHit2D = Physics2D.BoxCast(new Vector2(transform.position.x, transform.position.y), _boxCollider.bounds.size, 0f, Vector2.zero, .1f, LayerProvider.GetLayerMask(LayerMaskEnum.Ground));
 		if (raycastHit2D.collider != null)
 		{
 			_pushboxResponder.OnGrounded();

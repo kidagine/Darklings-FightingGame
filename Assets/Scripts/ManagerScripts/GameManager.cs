@@ -116,6 +116,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public virtual void ResetRound(Vector2 movementInput)
+    {
+    }
+
     IEnumerator RoundOverCoroutine()
     {
         HasGameStarted = false;

@@ -42,6 +42,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_isDead = false;
 		IsAttacking = false;
+		_playerMovement.IsGrounded = true;
+		_playerMovement.SetLockMovement(false);
 		_playerAnimator.Rebind();
 		SetPushbox(true);
 		SetHurtbox(true);

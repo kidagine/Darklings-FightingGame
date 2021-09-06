@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     private bool _isMovementLocked;
 
     public Vector2 MovementInput { get; set; }
-    public bool IsGrounded { get; private set; } = true;
+    public bool IsGrounded { get; set; } = true;
     public bool IsCrouching { get; private set; }
     public bool IsMoving { get; private set; }
 
