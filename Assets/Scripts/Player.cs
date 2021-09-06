@@ -78,11 +78,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (!IsAttacking)
 		{
+			_audio.Sound("Hit").Play();
 			IsAttacking = true;
 			_playerAnimator.Attack();
 			_currentAttack = _playerComboSystem.GetComboAttack();
-			Quaternion rotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEfffectRotation);
-			Instantiate(_currentAttack.hitEffect, new Vector2(transform.position.x + _currentAttack.hitEffectPosition.x, transform.position.y + _currentAttack.hitEffectPosition.y), rotation, transform);
+			GameObject hitEffect = Instantiate(_currentAttack.hitEffect, transform);
+			hitEffect.transform.localPosition = _currentAttack.hitEffectPosition;
+			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEffectRotation);
 			if (!string.IsNullOrEmpty(_currentAttack.attackSound))
 			{
 				_audio.Sound(_currentAttack.attackSound).Play();
@@ -91,14 +93,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public void TakeDamage(int damage, float hitStun = 0, Vector2 knockbackDirection = default, float knockbackForce = 0)
+	public void TakeDamage(AttackSO attackSO)
 	{
+		//_audio.Sound("Hurt").Play();
 		_health--;
-		Stun(hitStun);
+		Stun(attackSO.hitStun);
 		_playerUI.SetHealth(_health);
 		_playerAnimator.Rebind();
 		_playerAnimator.Hurt(true);
-		_playerMovement.Knockback(knockbackDirection, knockbackForce);
+		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
+		_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), attackSO.knockback);
 		IsAttacking = false;
 		if (_health <= 0)
 		{
@@ -154,8 +158,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
-		_audio.Sound("Hit").Play();
-		hurtbox.TakeDamage(1, _currentAttack.hitStun, new Vector2(transform.localScale.x, 0.0f), _currentAttack.knockback);
+		_currentAttack.hurtEffectPosition = hit.point;
+		hurtbox.TakeDamage(_currentAttack);
 		_playerUI.IncreaseCombo();
 	}
 }

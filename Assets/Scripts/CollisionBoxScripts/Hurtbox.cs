@@ -19,11 +19,11 @@ public class Hurtbox : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage, float hitStun = 0, Vector2 knockbackDirection = default, float knockbackForce = default)
+    public void TakeDamage(AttackSO attackSO)
     {
         if (_damageable)
         {
-            _hurtboxResponder.TakeDamage(damage, hitStun, knockbackDirection, knockbackForce);
+            _hurtboxResponder.TakeDamage(attackSO);
         }
     }
 #if UNITY_EDITOR
