@@ -95,7 +95,16 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             _audio.Sound("Jump").Play();
             IsGrounded = false;
             _playerAnimator.IsJumping(true);
-            _rigidbody.AddForce(new Vector2(0.0f, _playerStatsSO.jumpForce), ForceMode2D.Impulse);
+            _isMovementLocked = true;
+            _rigidbody.velocity = Vector2.zero;
+            if (MovementInput.x == 0.0f)
+            {
+                _rigidbody.AddForce(new Vector2(0.0f, _playerStatsSO.jumpForce), ForceMode2D.Impulse);
+            }
+            else
+            {
+                _rigidbody.AddForce(new Vector2(Mathf.Round(MovementInput.x) * (_playerStatsSO.jumpForce / 2.5f), _playerStatsSO.jumpForce), ForceMode2D.Impulse);
+            }
         }
     }
 
@@ -121,13 +130,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void OnGrounded()
 	{
-        if (!IsGrounded)
+        if (!IsGrounded && _rigidbody.velocity.y < 0.0f)
         {
             Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
             _player.IsAttacking = false;
             _playerAnimator.IsJumping(false);
             IsGrounded = true;
+            _isMovementLocked = false;
         }
     }
 
