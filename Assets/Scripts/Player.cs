@@ -9,7 +9,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private PlayerUI _otherPlayerUI = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _pushbox = default;
-	[SerializeField] private GameObject _hitEffect1 = default;
+	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] private bool _isPlayerOne = default;
 	private PlayerMovement _playerMovement;
 	private PlayerComboSystem _playerComboSystem;
@@ -44,6 +44,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		IsAttacking = false;
 		_playerAnimator.Rebind();
 		SetPushbox(true);
+		SetHurtbox(true);
 		InitializeStats();
 	}
 
@@ -146,11 +147,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerAnimator.Death();
 		SetPushbox(false);
+		SetHurtbox(false);
 		if (!_isDead)
 		{
-			GameManager.Instance.PlayerOneWon = _isPlayerOne is true ? true : false;
-			_lives--;
-			_playerUI.SetLives(_lives);
+			if (GameManager.Instance.HasGameStarted)
+			{
+				GameManager.Instance.PlayerOneWon = _isPlayerOne is true ? true : false;
+				_lives--;
+				_playerUI.SetLives(_lives);
+			}
 			if (_lives <= 0)
 			{
 				GameManager.Instance.MatchOver();
@@ -166,6 +171,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private void SetPushbox(bool state)
 	{
 		_pushbox.SetActive(state);
+	}
+
+	public void SetHurtbox(bool state)
+	{
+		_hurtbox.SetActive(state);
 	}
 
 	public void Stun(float hitStun)

@@ -24,7 +24,7 @@ public class TutorialManager : GameManager
 
     IEnumerator RoundOverCoroutine()
     {
-        _hasGameStarted = false;
+        HasGameStarted = false;
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(1.5f);
         StartRound();

@@ -143,6 +143,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3121622970603974650, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _hurtbox
+      value: 
+      objectReference: {fileID: 861183017}
+    - target: {fileID: 3121622970603974650, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: _playerUI
       value: 
       objectReference: {fileID: 372267967}
@@ -154,6 +158,10 @@ PrefabInstance:
       propertyPath: _otherPlayer
       value: 
       objectReference: {fileID: 725657983}
+    - target: {fileID: 3121622970603974650, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _otherPlayerUI
+      value: 
+      objectReference: {fileID: 1311574451}
     - target: {fileID: 3121622970603974652, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: m_Name
       value: Kim_playerOne (3)
@@ -533,7 +541,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8830145531611861227, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
@@ -740,6 +748,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -60
       objectReference: {fileID: 0}
+    - target: {fileID: 2841504432217619119, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3320892015413500859, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_Name
       value: LiveLost_image
@@ -822,7 +834,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: f29476b644654d949b39212e351e228d, type: 3}
     - target: {fileID: 8830145531611861227, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
@@ -845,6 +857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lostLives: []
   _healthSlider: {fileID: 0}
+  _comboText: {fileID: 0}
 --- !u!114 &372267967 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
@@ -942,6 +955,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee34fd0a2311cf1499332a4f01184100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerOneUI: {fileID: 1311574451}
+  _playerTwoUI: {fileID: 372267967}
   _playerOne: {fileID: 277834140}
   _playerTwo: {fileID: 1223191365}
   _countdownText: {fileID: 1506265208}
@@ -1207,6 +1222,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 76c9906412466f044bc17ccd54228508, type: 2}
     - target: {fileID: 3121622970603974650, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _hurtbox
+      value: 
+      objectReference: {fileID: 1681050812}
+    - target: {fileID: 3121622970603974650, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: _playerUI
       value: 
       objectReference: {fileID: 1311574451}
@@ -1214,6 +1233,10 @@ PrefabInstance:
       propertyPath: _otherPlayer
       value: 
       objectReference: {fileID: 107097825}
+    - target: {fileID: 3121622970603974650, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _otherPlayerUI
+      value: 
+      objectReference: {fileID: 372267967}
     - target: {fileID: 3121622970603974652, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: m_Name
       value: Kim_playerOne (2)
@@ -1276,6 +1299,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3121622970603974654, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
   m_PrefabInstance: {fileID: 725657982}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &861183017 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3121622968825025005, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+  m_PrefabInstance: {fileID: 107097824}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1111427297
 GameObject:
@@ -1463,6 +1491,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1506265206}
   m_CullTransparentMesh: 1
+--- !u!1 &1681050812 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3121622968825025005, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+  m_PrefabInstance: {fileID: 725657982}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1856510696
 GameObject:
   m_ObjectHideFlags: 0
@@ -1544,10 +1577,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8031722346311646710, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8031722347820620212, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_RootOrder
       value: 12

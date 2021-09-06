@@ -15,6 +15,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void ResetTimeScale()
     {
         Time.timeScale = 1.0f;
+        _player.SetHurtbox(true);
     }
 
     public void PlayerFootstepAnimationEvent()

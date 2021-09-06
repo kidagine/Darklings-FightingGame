@@ -17,10 +17,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected bool _hasTimer = true;
     protected PlayerController _playerOneController;
     protected PlayerController _playerTwoController;
-    protected bool _hasGameStarted;
-    private float _countdown = 99.0f;
+    private float _countdown;
 
-    public static GameManager Instance { get; private set; }
+	public bool HasGameStarted { get; set; }
+	public static GameManager Instance { get; private set; }
 	public bool PlayerOneWon { private get; set; }
 
 
@@ -54,21 +54,33 @@ public class GameManager : MonoBehaviour
 
 	void Update()
 	{
-	    if (_hasGameStarted && _hasCountDown)
+	    if (HasGameStarted && _hasCountDown)
 		{
             _countdown -= Time.deltaTime;
             _countdownText.text = Mathf.Round(_countdown).ToString();
             if (_countdown <= 0.0f)
             {
-                _hasGameStarted = false;
+                StartCoroutine(RoundTieCoroutine());
             }
 		}
 	}
 
+    IEnumerator RoundTieCoroutine()
+    {
+        HasGameStarted = false;
+        _readyText.text = "ROUND OVER";
+        Time.timeScale = 0.25f;
+        yield return new WaitForSeconds(0.5f);
+        _readyText.text = "TIME OUT";
+        yield return new WaitForSeconds(0.5f);
+        _readyText.text = "";
+        StartRound();
+    }
+
     public virtual void StartRound()
     {
         _countdown = 99.0f;
-        _countdownText.text = "99";
+        _countdownText.text = Mathf.Round(_countdown).ToString();
         _playerOneController = _playerOne.GetComponent<PlayerController>();
         _playerTwoController = _playerTwo.GetComponent<PlayerController>();
         _playerOne.ResetPlayer();
@@ -84,6 +96,7 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator ReadyCoroutine()
     {
+        Time.timeScale = 1.0f;
         yield return new WaitForSeconds(0.5f);
         _readyText.text = "Ready?";
         yield return new WaitForSeconds(1.0f);
@@ -92,17 +105,20 @@ public class GameManager : MonoBehaviour
         _readyText.text = "";
         _leftStopper.SetActive(false);
         _rightStopper.SetActive(false);
-        _hasGameStarted = true;
+        HasGameStarted = true;
     }
 
     public virtual void RoundOver()
     {
-        StartCoroutine(RoundOverCoroutine());
+        if (HasGameStarted)
+        {
+            StartCoroutine(RoundOverCoroutine());
+        }
     }
 
     IEnumerator RoundOverCoroutine()
     {
-        _hasGameStarted = false;
+        HasGameStarted = false;
         _readyText.text = "ROUND OVER";
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(2.5f);
@@ -114,12 +130,15 @@ public class GameManager : MonoBehaviour
 
     public void MatchOver()
     {
-        StartCoroutine(MatchOverCoroutine());
+        if (HasGameStarted)
+        {
+            StartCoroutine(MatchOverCoroutine());
+        }
     }
 
     IEnumerator MatchOverCoroutine()
     {
-        _hasGameStarted = false;
+        HasGameStarted = false;
         _readyText.text = "MATCH OVER";
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(2.5f);
