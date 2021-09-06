@@ -29,9 +29,14 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetTrigger("Attack");
     }
 
-    public void Hurt(bool state)
+    public void IsHurt(bool state)
     {
         animator.SetBool("IsHurt", state);
+    }
+
+    public void IsBlocking(bool state)
+    {
+        animator.SetBool("IsBlocking", state);
     }
 
     public void Death()

@@ -21,6 +21,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private int _lives = 2;
 	private bool _isDead;
 
+	public bool IsBlocking { get; private set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get { return _isPlayerOne; } private set { } }
 
@@ -76,7 +77,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void AttackAction()
 	{
-		if (!IsAttacking)
+		if (!IsAttacking && !IsBlocking)
 		{
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;
@@ -95,19 +96,50 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void TakeDamage(AttackSO attackSO)
 	{
-		//_audio.Sound("Hurt").Play();
-		_health--;
-		Stun(attackSO.hitStun);
-		_playerUI.SetHealth(_health);
-		_playerAnimator.Rebind();
-		_playerAnimator.Hurt(true);
+		_playerAnimator.IsHurt(true);
 		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
-		_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), attackSO.knockback);
-		IsAttacking = false;
-		if (_health <= 0)
+		if (CheckIsBlocking())
 		{
-			Die();
+			IsBlocking = true;
+			_playerAnimator.IsBlocking(true);
+			_playerMovement.SetLockMovement(true);
+			StartCoroutine(ResetBlockingCoroutine());
 		}
+		else
+		{
+			//_audio.Sound("Hurt").Play();
+			_health--;
+			_otherPlayerUI.IncreaseCombo();
+			Stun(attackSO.hitStun);
+			_playerUI.SetHealth(_health);
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), attackSO.knockback);
+			IsAttacking = false;
+			if (_health <= 0)
+			{
+				Die();
+			}
+		}
+	}
+
+	IEnumerator ResetBlockingCoroutine()
+	{
+		yield return new WaitForSeconds(0.25f);
+		IsBlocking = false;
+		_playerMovement.SetLockMovement(false);
+		_playerAnimator.IsHurt(false);
+		_playerAnimator.IsBlocking(false);
+	}
+
+	private bool CheckIsBlocking()
+	{
+		if (_playerMovement.IsGrounded && !IsAttacking)
+		{
+			if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void Die()
@@ -152,7 +184,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		yield return new WaitForSeconds(hitStun);
 		_playerController.ActivateInput();
 		_playerMovement.SetLockMovement(false);
-		_playerAnimator.Hurt(false);
+		_playerAnimator.IsHurt(false);
 		_otherPlayerUI.ResetCombo();
 	}
 
@@ -160,6 +192,5 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_currentAttack.hurtEffectPosition = hit.point;
 		hurtbox.TakeDamage(_currentAttack);
-		_playerUI.IncreaseCombo();
 	}
 }

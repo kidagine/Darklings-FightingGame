@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     private bool _isJumping;
     private bool _isMovementLocked;
 
-    public Vector2 MovementInput { private get; set; }
+    public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; private set; } = true;
     public bool IsCrouching { get; private set; }
     public bool IsMoving { get; private set; }
@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     private void Movement()
     {
-        if (!IsCrouching && !_player.IsAttacking && !_isMovementLocked)
+        if (!IsCrouching && !_player.IsAttacking && !_isMovementLocked && !_player.IsBlocking)
         {
             _rigidbody.velocity = new Vector2(MovementInput.x * _playerStatsSO.walkSpeed, _rigidbody.velocity.y);
             if (_rigidbody.velocity.x != 0.0f)
@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void CrouchAction()
     {
-        if (!_player.IsAttacking)
+        if (!_player.IsAttacking && !_player.IsBlocking)
         {
             if (IsGrounded)
             {
@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void JumpAction()
 	{
-        if (IsGrounded && !_player.IsAttacking)
+        if (IsGrounded && !_player.IsAttacking && !_player.IsBlocking)
         {
             Instantiate(_dustUpPrefab, transform.position, Quaternion.identity);
             _isJumping = true;
