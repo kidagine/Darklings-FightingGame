@@ -8,4 +8,7 @@ public class AttackSO : ScriptableObject
 	public float knockback;
 	public string attackSound;
 	public string impactSound;
+	public GameObject hitEffect;
+	public Vector2 hitEffectPosition;
+	public float hitEfffectRotation;
 }

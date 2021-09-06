@@ -47,7 +47,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         if (!IsCrouching && !_player.IsAttacking && !_isMovementLocked)
         {
-            Debug.Log(gameObject.name);
             _rigidbody.velocity = new Vector2(MovementInput.x * _playerStatsSO.walkSpeed, _rigidbody.velocity.y);
             if (_rigidbody.velocity.x != 0.0f)
             {
@@ -140,7 +139,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void Knockback(Vector2 knockbackDirection, float knockbackForce)
     {
-        Debug.Log("a");
         _rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
     }
 }

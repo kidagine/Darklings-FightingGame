@@ -9,6 +9,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private PlayerUI _otherPlayerUI = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _pushbox = default;
+	[SerializeField] private GameObject _hitEffect1 = default;
 	[SerializeField] private bool _isPlayerOne = default;
 	private PlayerMovement _playerMovement;
 	private PlayerComboSystem _playerComboSystem;
@@ -80,6 +81,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			IsAttacking = true;
 			_playerAnimator.Attack();
 			_currentAttack = _playerComboSystem.GetComboAttack();
+			Quaternion rotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEfffectRotation);
+			Instantiate(_currentAttack.hitEffect, new Vector2(transform.position.x + _currentAttack.hitEffectPosition.x, transform.position.y + _currentAttack.hitEffectPosition.y), rotation, transform);
 			if (!string.IsNullOrEmpty(_currentAttack.attackSound))
 			{
 				_audio.Sound(_currentAttack.attackSound).Play();
