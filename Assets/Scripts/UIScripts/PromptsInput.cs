@@ -23,6 +23,7 @@ public class PromptsInput : MonoBehaviour
         _promptsInputActions = new PlayerInputActions();
         _promptsInputActions.Prompts.Confirm.performed += Confirm;
         _promptsInputActions.Prompts.Back.performed += Back;
+        _promptsInputActions.Prompts.Special.performed += MainSpecial;
     }
 
     private void Confirm(InputAction.CallbackContext context)

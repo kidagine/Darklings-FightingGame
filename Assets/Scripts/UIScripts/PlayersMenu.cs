@@ -165,6 +165,14 @@ public class PlayersMenu : BaseMenu
         }
     }
 
+    public void OpenKeyboardCoOp()
+    {
+        SceneSettings.ControllerOne = "KeyboardTwo";
+        SceneSettings.ControllerTwo = "KeyboardOne";
+        gameObject.SetActive(false);
+        _otherMenu.Show();
+    }
+
 	void OnDisable()
 	{
 		for (int i = 0; i < _playerIcons.Length; i++)

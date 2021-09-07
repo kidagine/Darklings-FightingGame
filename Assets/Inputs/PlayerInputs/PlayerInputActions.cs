@@ -33,6 +33,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Special"",
+                    ""type"": ""Button"",
+                    ""id"": ""b96a3d2e-e7a1-438a-ab2f-c59137486a97"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -77,6 +85,28 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Xbox"",
                     ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""68fe2899-53e3-44ed-b627-b69a833e9b1c"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""Special"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ce06a18-da8b-4a2a-8df1-8ef88583a2d2"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Special"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -305,6 +335,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Prompts = asset.FindActionMap("Prompts", throwIfNotFound: true);
         m_Prompts_Confirm = m_Prompts.FindAction("Confirm", throwIfNotFound: true);
         m_Prompts_Back = m_Prompts.FindAction("Back", throwIfNotFound: true);
+        m_Prompts_Special = m_Prompts.FindAction("Special", throwIfNotFound: true);
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
@@ -362,12 +393,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private IPromptsActions m_PromptsActionsCallbackInterface;
     private readonly InputAction m_Prompts_Confirm;
     private readonly InputAction m_Prompts_Back;
+    private readonly InputAction m_Prompts_Special;
     public struct PromptsActions
     {
         private @PlayerInputActions m_Wrapper;
         public PromptsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Confirm => m_Wrapper.m_Prompts_Confirm;
         public InputAction @Back => m_Wrapper.m_Prompts_Back;
+        public InputAction @Special => m_Wrapper.m_Prompts_Special;
         public InputActionMap Get() { return m_Wrapper.m_Prompts; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -383,6 +416,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Back.started -= m_Wrapper.m_PromptsActionsCallbackInterface.OnBack;
                 @Back.performed -= m_Wrapper.m_PromptsActionsCallbackInterface.OnBack;
                 @Back.canceled -= m_Wrapper.m_PromptsActionsCallbackInterface.OnBack;
+                @Special.started -= m_Wrapper.m_PromptsActionsCallbackInterface.OnSpecial;
+                @Special.performed -= m_Wrapper.m_PromptsActionsCallbackInterface.OnSpecial;
+                @Special.canceled -= m_Wrapper.m_PromptsActionsCallbackInterface.OnSpecial;
             }
             m_Wrapper.m_PromptsActionsCallbackInterface = instance;
             if (instance != null)
@@ -393,6 +429,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Back.started += instance.OnBack;
                 @Back.performed += instance.OnBack;
                 @Back.canceled += instance.OnBack;
+                @Special.started += instance.OnSpecial;
+                @Special.performed += instance.OnSpecial;
+                @Special.canceled += instance.OnSpecial;
             }
         }
     }
@@ -476,6 +515,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     {
         void OnConfirm(InputAction.CallbackContext context);
         void OnBack(InputAction.CallbackContext context);
+        void OnSpecial(InputAction.CallbackContext context);
     }
     public interface IGameplayActions
     {
