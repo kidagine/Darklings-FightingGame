@@ -130,7 +130,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void OnGrounded()
 	{
-        if (!IsGrounded && _rigidbody.velocity.y < 0.0f)
+        if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
             Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
