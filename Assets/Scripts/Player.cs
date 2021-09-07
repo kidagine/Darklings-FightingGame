@@ -110,7 +110,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else
 		{
-			//_audio.Sound("Hurt").Play();
+			_audio.Sound("Hurt").Play();
 			_health--;
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
