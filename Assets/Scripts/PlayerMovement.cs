@@ -48,6 +48,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         if (!IsCrouching && !_player.IsAttacking && !_isMovementLocked && !_player.IsBlocking)
         {
             _rigidbody.velocity = new Vector2(MovementInput.x * _playerStatsSO.walkSpeed, _rigidbody.velocity.y);
+            _playerAnimator.SetMovement(MovementInput.x);
             if (_rigidbody.velocity.x != 0.0f)
             {
                 IsMoving = true;

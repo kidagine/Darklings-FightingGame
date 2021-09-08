@@ -14,6 +14,11 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool("IsMoving", state);
     }
 
+    public void SetMovement(float value)
+    {
+        animator.SetFloat("MovementInputX", value);
+    }
+
     public void IsCrouching(bool state)
     {
         animator.SetBool("IsCrouching", state);
