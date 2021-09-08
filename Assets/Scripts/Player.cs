@@ -42,6 +42,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_isDead = false;
 		IsAttacking = false;
+		_playerController.enabled = true;
 		_playerMovement.IsGrounded = true;
 		_playerMovement.SetLockMovement(false);
 		_playerAnimator.Rebind();
@@ -148,6 +149,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private void Die()
 	{
 		_playerAnimator.Death();
+		_playerController.enabled = false;
 		SetPushbox(false);
 		SetHurtbox(false);
 		if (!_isDead)
