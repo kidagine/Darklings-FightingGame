@@ -98,7 +98,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public void TakeDamage(AttackSO attackSO)
+	public bool TakeDamage(AttackSO attackSO)
 	{
 		_playerAnimator.IsHurt(true);
 		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
@@ -108,6 +108,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerAnimator.IsBlocking(true);
 			_playerMovement.SetLockMovement(true);
 			StartCoroutine(ResetBlockingCoroutine());
+			return false;
 		}
 		else
 		{
@@ -122,6 +123,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				Die();
 			}
+			return true;
 		}
 	}
 
@@ -205,6 +207,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
 		_currentAttack.hurtEffectPosition = hit.point;
-		hurtbox.TakeDamage(_currentAttack);
+		bool gotHit = hurtbox.TakeDamage(_currentAttack);
+		if (!gotHit)
+		{
+			_playerMovement.SetLockMovement(true);
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback);
+		}
+		else
+		{
+			_playerMovement.SetLockMovement(true);
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 2);
+		}
 	}
 }

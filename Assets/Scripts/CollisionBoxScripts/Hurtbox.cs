@@ -19,12 +19,13 @@ public class Hurtbox : MonoBehaviour
         }
     }
 
-    public void TakeDamage(AttackSO attackSO)
+    public bool TakeDamage(AttackSO attackSO)
     {
         if (_damageable)
         {
-            _hurtboxResponder.TakeDamage(attackSO);
+            return _hurtboxResponder.TakeDamage(attackSO);
         }
+        return false;
     }
 #if UNITY_EDITOR
     private void OnDrawGizmos()

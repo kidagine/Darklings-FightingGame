@@ -1,4 +1,4 @@
 ﻿public interface IHurtboxResponder
 {
-	void TakeDamage(AttackSO attackSO);
+	bool TakeDamage(AttackSO attackSO);
 }
