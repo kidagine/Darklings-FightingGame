@@ -102,7 +102,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerAnimator.IsHurt(true);
 		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
-		if (CheckIsBlocking())
+		if (CheckIsBlocking() && !attackSO.canGuardBreak)
 		{
 			IsBlocking = true;
 			_playerAnimator.IsBlocking(true);

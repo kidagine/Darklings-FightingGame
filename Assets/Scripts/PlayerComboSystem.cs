@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerComboSystem : MonoBehaviour
 {
 	[SerializeField] private AttackSO _2L = default;
+	[SerializeField] private AttackSO _4L = default;
 	[SerializeField] private AttackSO _5L = default;
 	[SerializeField] private AttackSO _6L = default;
 	[SerializeField] private AttackSO _jumpL = default;
@@ -28,7 +29,14 @@ public class PlayerComboSystem : MonoBehaviour
 			}
 			else if (_playerMovement.IsMoving)
 			{
-				return _6L;
+				if (_playerMovement.MovementInput.x > 0.0f)
+				{
+					return _6L;
+				}
+				else
+				{
+					return _4L;
+				}
 			}
 			else
 			{
