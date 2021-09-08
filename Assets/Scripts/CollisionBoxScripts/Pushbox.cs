@@ -4,10 +4,15 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Pushbox : MonoBehaviour
 {
-    [SerializeField] private BoxCollider2D _boxCollider = default;
+	[SerializeField] private BoxCollider2D _boxCollider = default;
     [SerializeField] private bool _showGizmo = true;
     private Color _pushboxColor = Color.blue;
 
+
+	void Start()
+	{
+		_boxCollider = GetComponent<BoxCollider2D>();
+	}
 
 	private void OnDrawGizmos()
     {
@@ -23,5 +28,14 @@ public class Pushbox : MonoBehaviour
             Gizmos.DrawWireCube(Vector3.zero, gizmoPosition);
         }
     }
+
+
+	private void OnCollisionStay2D(Collision2D collision)
+	{
+		if (collision.transform.root.TryGetComponent(out IPushboxResponder pushboxResponder))
+		{
+			pushboxResponder.GroundedPoint(collision.transform, collision.contacts[0].normal.y);
+		}
+	}
 }
 #endif

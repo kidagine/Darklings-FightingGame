@@ -11,6 +11,6 @@ public class Raycast : MonoBehaviour
 		}
 		Debug.DrawRay(start, dir * length, color);
 #endif
-		return Physics2D.Raycast(start, dir, length, LayerProvider.GetLayerMask(LayerMaskEnum.Ground), 0);
+		return Physics2D.Raycast(start, dir, length, LayerProvider.GetLayerMask(layerMask), 0);
 	}
 }
