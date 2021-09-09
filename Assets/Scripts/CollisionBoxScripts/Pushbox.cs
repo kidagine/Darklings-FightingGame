@@ -7,7 +7,7 @@ public class Pushbox : MonoBehaviour
     [SerializeField] private bool _showGizmo = true;
     private Color _pushboxColor = Color.blue;
 
-
+     
 	void Start()
 	{
 		_boxCollider = GetComponent<BoxCollider2D>();

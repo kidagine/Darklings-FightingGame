@@ -29,7 +29,7 @@ public class PlayerComboSystem : MonoBehaviour
 			}
 			else if (_playerMovement.IsMoving)
 			{
-				if (_playerMovement.MovementInput.x > 0.0f)
+				if (_playerMovement.MovementInput.x * transform.localScale.x > 0.0f)
 				{
 					return _6L;
 				}

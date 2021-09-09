@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     private Audio _audio;
     private bool _isJumping;
     private bool _isMovementLocked;
-    private bool t;
+
     public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
     public bool IsCrouching { get; private set; }
@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         if (!IsCrouching && !_player.IsAttacking && !_isMovementLocked && !_player.IsBlocking)
         {
             _rigidbody.velocity = new Vector2(MovementInput.x * _playerStatsSO.walkSpeed, _rigidbody.velocity.y);
-            _playerAnimator.SetMovement(MovementInput.x);
+            _playerAnimator.SetMovement(MovementInput.x * transform.localScale.x);
             if (_rigidbody.velocity.x != 0.0f)
             {
                 IsMoving = true;
@@ -133,7 +133,18 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         if (point == -1.0f && _rigidbody.velocity.y < 0.0f)
         {
-            transform.position += new Vector3(-0.5f * transform.localScale.x, -1.5f, 0.0f);
+            if (transform.position.x > 7.85f)
+            {
+                transform.position += new Vector3(-1f, -1.5f, 0.0f);
+            }
+            else if (transform.position.x < -7.85f)
+            {
+                transform.position += new Vector3(1f, -1.5f, 0.0f);
+            }
+            else 
+            {
+                transform.position += new Vector3(-0.5f * transform.localScale.x, -1.5f, 0.0f);
+            }
             _rigidbody.velocity = Vector2.zero;
         }
     }
@@ -142,7 +153,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
         if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
-            t = false;
             Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
             _player.IsAttacking = false;

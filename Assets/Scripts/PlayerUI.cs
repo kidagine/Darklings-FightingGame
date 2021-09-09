@@ -19,7 +19,6 @@ public class PlayerUI : MonoBehaviour
     {
         float healthSliderWidth = _healthSlider.GetComponent<RectTransform>().sizeDelta.x;
         _healthSlider.maxValue = value;
-        Debug.Log(healthSliderWidth);
         float increaseValue = healthSliderWidth / value;
         float currentPositionX = 0.0f;
         for (int i = 0; i < value + 1; i++)
