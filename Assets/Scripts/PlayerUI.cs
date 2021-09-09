@@ -8,6 +8,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject[] _lostLives = default;
     [SerializeField] private Slider _healthSlider = default;
     [SerializeField] private TextMeshProUGUI _comboText = default;
+    [SerializeField] private Transform _healthDividerPivot = default;
+    [SerializeField] private GameObject _healthDividerPrefab = default;
     private int _currentLifeIndex;
     private int _currentComboCount;
     private bool _hasComboEnded;
@@ -15,7 +17,17 @@ public class PlayerUI : MonoBehaviour
 
     public void SetMaxHealth(float value)
     {
+        float healthSliderWidth = _healthSlider.GetComponent<RectTransform>().sizeDelta.x;
         _healthSlider.maxValue = value;
+        Debug.Log(healthSliderWidth);
+        float increaseValue = healthSliderWidth / value;
+        float currentPositionX = 0.0f;
+        for (int i = 0; i < value + 1; i++)
+		{
+            GameObject healthDivider = Instantiate(_healthDividerPrefab, _healthDividerPivot);
+            healthDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
+            currentPositionX -= increaseValue;
+		}
     }
 
     public void SetHealth(float value)
