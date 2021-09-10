@@ -125,9 +125,9 @@ public class GameManager : MonoBehaviour
         HasGameStarted = false;
         _readyText.text = "ROUND OVER";
         Time.timeScale = 0.25f;
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
         _readyText.text = PlayerOneWon is false ? "P1 WINS" : "P2 WINS";
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         _readyText.text = "";
         StartRound();
     }
@@ -145,9 +145,9 @@ public class GameManager : MonoBehaviour
         HasGameStarted = false;
         _readyText.text = "MATCH OVER";
         Time.timeScale = 0.25f;
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
         _readyText.text = PlayerOneWon is false ? "P1 WINS" : "P2 WINS";
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         _playerOne.ResetLives();
         _playerTwo.ResetLives();
 		StartRound();

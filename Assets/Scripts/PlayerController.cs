@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private bool _trainingController = default;
+    [SerializeField] private bool _isCpu = default;
     private Player _player;
     private PlayerMovement _playerMovement;
     private string _controllerInputName;
@@ -18,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
 	{
-        if (!string.IsNullOrEmpty(_controllerInputName) && _isControllerEnabled)
+        if (!string.IsNullOrEmpty(_controllerInputName) && !_isCpu)
         {
             Movement();
             Jump();
