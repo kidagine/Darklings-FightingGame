@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _pushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
+	[SerializeField] private Transform _effectsParent = default;
 	[SerializeField] private bool _isPlayerOne = default;
 	private PlayerMovement _playerMovement;
 	private PlayerComboSystem _playerComboSystem;
@@ -54,6 +55,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		IsAttacking = false;
 		_playerController.enabled = true;
 		_playerMovement.IsGrounded = true;
+		_effectsParent.gameObject.SetActive(true);
 		_playerMovement.SetLockMovement(false);
 		_playerAnimator.Rebind();
 		SetPushbox(true);
@@ -98,7 +100,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			IsAttacking = true;
 			_playerAnimator.Attack();
 			_currentAttack = _playerComboSystem.GetComboAttack();
-			GameObject hitEffect = Instantiate(_currentAttack.hitEffect, transform);
+			GameObject hitEffect = Instantiate(_currentAttack.hitEffect, _effectsParent);
 			hitEffect.transform.localPosition = _currentAttack.hitEffectPosition;
 			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEffectRotation);
 			if (!string.IsNullOrEmpty(_currentAttack.attackSound))
@@ -111,6 +113,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool TakeDamage(AttackSO attackSO)
 	{
+		DestroyEffects();
 		_playerAnimator.IsHurt(true);
 		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
 		if (CheckIsBlocking() && !attackSO.canGuardBreak)
@@ -161,6 +164,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void Die()
 	{
+		DestroyEffects();
 		_playerAnimator.Death();
 		_playerController.enabled = false;
 		SetPushbox(false);
@@ -205,6 +209,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			StopCoroutine(_stunCoroutine);
 		}
 		_stunCoroutine = StartCoroutine(StunCoroutine(hitStun));
+	}
+
+	private void DestroyEffects()
+	{
+		foreach (Transform effect in _effectsParent)
+		{
+			Destroy(effect.gameObject);
+		}
 	}
 
 	IEnumerator StunCoroutine(float hitStun)

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _sceneSettingsDecide = true;
     [SerializeField] private string _controllerOne = default;
     [SerializeField] private string _controllerTwo = default;
+    [SerializeField] private bool _isTrainingMode = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
     [SerializeField] protected PlayerUI _playerTwoUI = default;
     [SerializeField] protected TextMeshProUGUI _countdownText = default;
@@ -16,15 +17,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
     [SerializeField] protected GameObject[] _stages = default;
-    [SerializeField] protected bool _hasCountDown = true;
-    [SerializeField] protected bool _hasTimer = true;
     protected Player _playerOne;
     protected Player _playerTwo;
     protected BaseController _playerOneController;
     protected BaseController _playerTwoController;
+    private Vector2 _lastPlayerOnePosition;
+    private Vector2 _lastPlayerTwoPosition;
     private float _countdown;
+    private bool _reverseReset;
 
-	public bool HasGameStarted { get; set; }
+    public bool HasGameStarted { get; set; }
 	public static GameManager Instance { get; private set; }
 
 
@@ -57,6 +59,10 @@ public class GameManager : MonoBehaviour
         {
             SceneSettings.ControllerOne = _controllerOne;
             SceneSettings.ControllerTwo = _controllerTwo;
+        }
+        else
+        {
+            _isTrainingMode = SceneSettings.IsTrainingMode;
         }
         GameObject playerOneObject;
         GameObject playerTwoObject;
@@ -97,12 +103,24 @@ public class GameManager : MonoBehaviour
         _playerTwo.SetOtherPlayer(_playerOne.transform);
         _playerTwo.IsPlayerOne = false;
         _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
-        StartRound();
+
+        if (_isTrainingMode)
+        {
+            _playerOneUI.transform.GetChild(2).gameObject.SetActive(false);
+            _playerTwoUI.transform.GetChild(2).gameObject.SetActive(false);
+            _countdownText.gameObject.SetActive(false);
+            HasGameStarted = true;
+            StartTrainingRound();
+        }
+        else
+        {
+            StartRound();
+        }
     }
 
 	void Update()
 	{
-	    if (HasGameStarted && _hasCountDown)
+	    if (HasGameStarted && !_isTrainingMode)
 		{
             _countdown -= Time.deltaTime;
             _countdownText.text = Mathf.Round(_countdown).ToString();
@@ -140,6 +158,20 @@ public class GameManager : MonoBehaviour
         StartCoroutine(ReadyCoroutine());
     }
 
+    private void StartTrainingRound()
+    {
+        _playerOneController = _playerOne.GetComponent<PlayerController>();
+        _playerTwoController = _playerTwo.GetComponent<PlayerController>();
+        _playerOne.ResetPlayer();
+        _playerTwo.ResetPlayer();
+        _playerOne.ResetLives();
+        _playerTwo.ResetLives();
+        _leftStopper.SetActive(false);
+        _rightStopper.SetActive(false);
+        _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
+        _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+    }
+
 	IEnumerator ReadyCoroutine()
     {
         Time.timeScale = 1.0f;
@@ -158,12 +190,96 @@ public class GameManager : MonoBehaviour
     {
         if (HasGameStarted)
         {
-            StartCoroutine(RoundOverCoroutine());
+            if (_isTrainingMode)
+            {
+                StartCoroutine(RoundOverTrainingCoroutine());
+            }
+            else
+            {
+                StartCoroutine(RoundOverCoroutine());
+            }
         }
+    }
+
+    IEnumerator RoundOverTrainingCoroutine()
+    {
+        HasGameStarted = false;
+        Time.timeScale = 0.25f;
+        yield return new WaitForSeconds(1.5f);
+        StartTrainingRound();
     }
 
     public virtual void ResetRound(Vector2 movementInput)
     {
+        if (_isTrainingMode)
+        {
+            _playerOneController = _playerOne.GetComponent<PlayerController>();
+            _playerTwoController = _playerTwo.GetComponent<PlayerController>();
+            _playerOne.ResetPlayer();
+            _playerTwo.ResetPlayer();
+            _playerOne.ResetLives();
+            _playerTwo.ResetLives();
+            _leftStopper.SetActive(false);
+            _rightStopper.SetActive(false);
+            if (movementInput.y > 0.0f)
+            {
+                _reverseReset = !_reverseReset;
+            }
+            if (movementInput.x > 0.0f)
+            {
+                if (_reverseReset)
+                {
+                    _playerOne.transform.position = new Vector2(8.5f, -4.75f);
+                    _playerTwo.transform.position = new Vector2(5.5f, -4.75f);
+                }
+                else
+                {
+                    _playerOne.transform.position = new Vector2(5.5f, -4.75f);
+                    _playerTwo.transform.position = new Vector2(8.5f, -4.75f);
+                }
+            }
+            else if (movementInput.x < 0.0f)
+            {
+                if (_reverseReset)
+                {
+                    _playerOne.transform.position = new Vector2(-5.5f, -4.75f);
+                    _playerTwo.transform.position = new Vector2(-8.5f, -4.75f);
+                }
+                else
+                {
+                    _playerOne.transform.position = new Vector2(-8.5f, -4.75f);
+                    _playerTwo.transform.position = new Vector2(-5.5f, -4.75f);
+                }
+            }
+            else if (movementInput.y < 0.0f)
+            {
+                if (_reverseReset)
+                {
+                    _playerOne.transform.position = new Vector2(3.5f, -4.75f);
+                    _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
+                }
+                else
+                {
+                    _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
+                    _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+                }
+            }
+            else
+            {
+                if (_reverseReset)
+                {
+                    _playerOne.transform.position = new Vector2(3.5f, -4.75f);
+                    _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
+                }
+                else
+                {
+                    _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
+                    _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+                }
+            }
+            _lastPlayerOnePosition = _playerOne.transform.position;
+            _lastPlayerTwoPosition = _playerTwo.transform.position;
+        }
     }
 
     IEnumerator RoundOverCoroutine()

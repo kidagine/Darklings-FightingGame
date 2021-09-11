@@ -5,6 +5,8 @@ public class PlayersMenu : BaseMenu
 {
     [SerializeField] private BaseMenu _otherMenu = default;
     [SerializeField] private RectTransform[] _playerIcons = default;
+    [SerializeField] private GameObject _cpuTextRight = default;
+    [SerializeField] private GameObject _cpuTextLeft = default;
     [SerializeField] private bool _onePlayerOnly = default;
     private string _inputOne;
     private string _inputTwo;
@@ -63,6 +65,7 @@ public class PlayersMenu : BaseMenu
                 {
                     if (_playerIcons[index].anchoredPosition.x == -375.0f)
                     {
+                        _cpuTextLeft.SetActive(true);
                         _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
                     }
                     else if (_onePlayerOnly)
@@ -70,19 +73,18 @@ public class PlayersMenu : BaseMenu
                         if (!IsOnLeft() && !IsOnRight())
                         {
                             _playerIcons[index].anchoredPosition = new Vector2(375.0f, _playerIcons[index].anchoredPosition.y);
-                            _playerIcons[index].GetChild(0).gameObject.SetActive(false);
                         }
                     }
                     else if (!IsOnRight())
                     {
                         _playerIcons[index].anchoredPosition = new Vector2(375.0f, _playerIcons[index].anchoredPosition.y);
-                        _playerIcons[index].GetChild(1).gameObject.SetActive(false);
                     }
                 }
                 else if (movement < 0.0f)
                 {
                     if (_playerIcons[index].anchoredPosition.x == 375.0f)
                     {
+                        _cpuTextRight.SetActive(true);
                         _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
                     }
                     else if (_onePlayerOnly)
@@ -90,13 +92,11 @@ public class PlayersMenu : BaseMenu
                         if (!IsOnLeft() && !IsOnRight())
                         {
                             _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
-                            _playerIcons[index].GetChild(0).gameObject.SetActive(false);
                         }
                     }
                     else if (!IsOnLeft())
                     {
                         _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
-                        _playerIcons[index].GetChild(0).gameObject.SetActive(false);
                     }
                 }
                 _isMovenentInUse = true;
@@ -114,6 +114,7 @@ public class PlayersMenu : BaseMenu
 		{
             if (_playerIcons[i].anchoredPosition.x == 375.0f)
             {
+                _cpuTextRight.SetActive(false);
                 return true;
             }
 		}
@@ -126,6 +127,7 @@ public class PlayersMenu : BaseMenu
         {
             if (_playerIcons[i].anchoredPosition.x == -375.0f)
             {
+                _cpuTextLeft.SetActive(false);
                 return true;
             }
         }
@@ -138,27 +140,27 @@ public class PlayersMenu : BaseMenu
         {
             if (_playerIcons[0].anchoredPosition.x == 375.0f)
             {
-                SceneSettings.ControllerOne = "Keyboard";
+                SceneSettings.ControllerTwo = "Keyboard";
             }
             else if (_playerIcons[1].anchoredPosition.x == 375.0f)
             {
-                SceneSettings.ControllerOne = "ControllerOne";
+                SceneSettings.ControllerTwo = "ControllerOne";
             }
             else if (_playerIcons[2].anchoredPosition.x == 375.0f)
             {
-                SceneSettings.ControllerOne = "ControllerTwo";
+                SceneSettings.ControllerTwo = "ControllerTwo";
             }
             if (_playerIcons[0].anchoredPosition.x == -375.0f)
             {
-                SceneSettings.ControllerTwo = "Keyboard";
+                SceneSettings.ControllerOne = "Keyboard";
             }
             else if (_playerIcons[1].anchoredPosition.x == -375.0f)
             {
-                SceneSettings.ControllerTwo = "ControllerOne";
+                SceneSettings.ControllerOne = "ControllerOne";
             }
             else if (_playerIcons[2].anchoredPosition.x == -375.0f)
             {
-                SceneSettings.ControllerTwo = "ControllerTwo";
+                SceneSettings.ControllerOne = "ControllerTwo";
             }
             gameObject.SetActive(false);
             _otherMenu.Show();
@@ -167,8 +169,8 @@ public class PlayersMenu : BaseMenu
 
     public void OpenKeyboardCoOp()
     {
-        SceneSettings.ControllerOne = "KeyboardTwo";
-        SceneSettings.ControllerTwo = "KeyboardOne";
+        SceneSettings.ControllerTwo = "KeyboardTwo";
+        SceneSettings.ControllerOne = "KeyboardOne";
         gameObject.SetActive(false);
         _otherMenu.Show();
     }

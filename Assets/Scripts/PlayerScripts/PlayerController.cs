@@ -68,7 +68,7 @@ public class PlayerController : BaseController
 	{
         if (Input.GetButtonDown(ControllerInputName + "Reset"))
         {
-            TutorialManager.Instance.ResetRound(_playerMovement.MovementInput);
+            GameManager.Instance.ResetRound(_playerMovement.MovementInput);
         }
     }
 }

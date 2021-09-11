@@ -908,9 +908,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 3121622970603974652, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
   _cpuPrefab: {fileID: 1039603198093386292, guid: 0ecd74519d8db044bab366c26a5fd71b, type: 3}
-  _sceneSettingsDecide: 0
-  _controllerOne: 
+  _sceneSettingsDecide: 1
+  _controllerOne: KeyboardOne
   _controllerTwo: 
+  _isTrainingMode: 1
   _playerOneUI: {fileID: 1311574451}
   _playerTwoUI: {fileID: 372267967}
   _countdownText: {fileID: 1506265208}
@@ -920,8 +921,6 @@ MonoBehaviour:
   _stages:
   - {fileID: 2105726864}
   - {fileID: 2105726863}
-  _hasCountDown: 1
-  _hasTimer: 1
 --- !u!1 &394163168
 GameObject:
   m_ObjectHideFlags: 0
