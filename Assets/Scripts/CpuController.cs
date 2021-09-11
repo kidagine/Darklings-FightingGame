@@ -1,12 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class CpuController : MonoBehaviour
+public class CpuController : BaseController
 {
     [SerializeField] private Transform _otherPlayer = default;
-    private Player _player;
-    private PlayerMovement _playerMovement;
-    private bool _isControllerEnabled = true;
     private float _movementInputX;
     private float _distance;
 
@@ -76,24 +73,12 @@ public class CpuController : MonoBehaviour
     {
         while (_isControllerEnabled)
         {
-            if (_distance <= 7.0f)
+            if (_distance <= 6.5f)
             {
                 if (GameManager.Instance.HasGameStarted)
                 {
-                    float attackWaitRandom = Random.Range(0.25f, 1.0f);
-                    int movementRandom = Random.Range(0, 4);
-                    switch (movementRandom)
-                    {
-                        case 1:
-                            _player.AttackAction();
-                            break;
-                        case 2:
-                            _player.AttackAction();
-                            break;
-                        case 3:
-                            _player.AttackAction();
-                            break;
-                    }
+                    float attackWaitRandom = Random.Range(0.25f, 0.8f);
+                    _player.AttackAction();
                     yield return new WaitForSeconds(attackWaitRandom);
                 }
             }
@@ -101,13 +86,15 @@ public class CpuController : MonoBehaviour
         }
     }
 
-    public void ActivateInput()
+    public override void ActivateInput()
     {
-        _isControllerEnabled = true;
+        base.ActivateInput();
+        StartCoroutine(MovementCoroutine());
+        StartCoroutine(AttackCoroutine());
     }
-
-    public void DeactivateInput()
+    public override void DeactivateInput()
     {
-        _isControllerEnabled = false;
+        base.DeactivateInput();
+        StopAllCoroutines();
     }
 }

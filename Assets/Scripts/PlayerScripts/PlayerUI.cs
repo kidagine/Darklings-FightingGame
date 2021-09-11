@@ -7,6 +7,7 @@ public class PlayerUI : MonoBehaviour
 {
     [SerializeField] private GameObject[] _lostLives = default;
     [SerializeField] private Slider _healthSlider = default;
+    [SerializeField] private Image _portraitImage = default;
     [SerializeField] private TextMeshProUGUI _comboText = default;
     [SerializeField] private Transform _healthDividerPivot = default;
     [SerializeField] private GameObject _healthDividerPrefab = default;
@@ -14,6 +15,11 @@ public class PlayerUI : MonoBehaviour
     private int _currentComboCount;
     private bool _hasComboEnded;
 
+
+    public void SetPortrait(Sprite portrait)
+    {
+        _portraitImage.sprite = portrait;
+    }
 
     public void SetMaxHealth(float value)
     {

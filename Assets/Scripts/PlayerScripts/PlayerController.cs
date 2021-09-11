@@ -1,14 +1,8 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : BaseController
 {
-    [SerializeField] private bool _trainingController = default;
-    [SerializeField] private bool _isCpu = default;
-    private Player _player;
-    private PlayerMovement _playerMovement;
-    private string _controllerInputName;
     private bool _hasJumped;
-    private bool _isControllerEnabled = true;
 
     void Awake()
     {
@@ -19,7 +13,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
 	{
-        if (!string.IsNullOrEmpty(_controllerInputName) && !_isCpu)
+        if (!string.IsNullOrEmpty(_controllerInputName) && _isControllerEnabled)
         {
             Movement();
             Jump();
@@ -77,15 +71,5 @@ public class PlayerController : MonoBehaviour
         {
             TutorialManager.Instance.ResetRound(_playerMovement.MovementInput);
         }
-    }
-
-	public void ActivateInput()
-	{
-        _isControllerEnabled = true;
-    }
-
-	public void DeactivateInput()
-	{
-        _isControllerEnabled = false;
     }
 }

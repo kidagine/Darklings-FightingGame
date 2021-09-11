@@ -13,7 +13,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private bool _isPlayerOne = default;
 	private PlayerMovement _playerMovement;
 	private PlayerComboSystem _playerComboSystem;
-	private PlayerController _playerController;
+	private BaseController _playerController;
 	private Audio _audio;
 	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
@@ -29,7 +29,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
 		_playerComboSystem = GetComponent<PlayerComboSystem>();
-		_playerController = GetComponent<PlayerController>();
+		_playerController = GetComponent<BaseController>();
 		_audio = GetComponent<Audio>();
 	}
 
@@ -59,6 +59,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void InitializeStats()
 	{
+		_playerUI.SetPortrait(_playerStats.portrait);
 		_health = _playerStats.currentHealth;
 		_playerUI.SetMaxHealth(_playerStats.maxHealth);
 		_playerUI.SetHealth(_health);
