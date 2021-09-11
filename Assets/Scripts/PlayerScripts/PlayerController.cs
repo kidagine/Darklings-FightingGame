@@ -8,12 +8,11 @@ public class PlayerController : BaseController
     {
         _player = GetComponent<Player>();
         _playerMovement = GetComponent<PlayerMovement>();
-        _controllerInputName = _player.IsPlayerOne is false ? SceneSettings.ControllerOne : SceneSettings.ControllerTwo;
     }
 
     void Update()
 	{
-        if (!string.IsNullOrEmpty(_controllerInputName) && _isControllerEnabled)
+        if (!string.IsNullOrEmpty(ControllerInputName) && _isControllerEnabled)
         {
             Movement();
             Jump();
@@ -28,17 +27,17 @@ public class PlayerController : BaseController
 
     private void Movement()
     {
-        _playerMovement.MovementInput = new Vector2(Input.GetAxisRaw(_controllerInputName + "Horizontal"), Input.GetAxisRaw(_controllerInputName + "Vertical"));
+        _playerMovement.MovementInput = new Vector2(Input.GetAxisRaw(ControllerInputName + "Horizontal"), Input.GetAxisRaw(ControllerInputName + "Vertical"));
 	}
 
     private void Jump()
     {
-        if (Input.GetAxisRaw(_controllerInputName + "Vertical") > 0.0f && !_hasJumped)
+        if (Input.GetAxisRaw(ControllerInputName + "Vertical") > 0.0f && !_hasJumped)
         {
             _hasJumped = true;
             _playerMovement.JumpAction();
         }
-        else if (Input.GetAxisRaw(_controllerInputName + "Vertical") <= 0.0f && _hasJumped)
+        else if (Input.GetAxisRaw(ControllerInputName + "Vertical") <= 0.0f && _hasJumped)
         {
             _hasJumped = false;
             _playerMovement.JumpStopAction();
@@ -47,11 +46,11 @@ public class PlayerController : BaseController
 
     private void Crouch()
     {
-		if (Input.GetAxisRaw(_controllerInputName + "Vertical") < 0.0f)
+		if (Input.GetAxisRaw(ControllerInputName + "Vertical") < 0.0f)
 		{
 			_playerMovement.CrouchAction();
 		}
-		else if (Input.GetAxisRaw(_controllerInputName + "Vertical") == 0.0f)
+		else if (Input.GetAxisRaw(ControllerInputName + "Vertical") == 0.0f)
 		{
 			_playerMovement.StandUpAction();
 		}
@@ -59,7 +58,7 @@ public class PlayerController : BaseController
 
     private void Attack()
     {
-        if (Input.GetButtonDown(_controllerInputName + "Light"))
+        if (Input.GetButtonDown(ControllerInputName + "Light"))
         {
             _player.AttackAction();
         }
@@ -67,7 +66,7 @@ public class PlayerController : BaseController
 
 	private void ResetRound()
 	{
-        if (Input.GetButtonDown(_controllerInputName + "Reset"))
+        if (Input.GetButtonDown(ControllerInputName + "Reset"))
         {
             TutorialManager.Instance.ResetRound(_playerMovement.MovementInput);
         }

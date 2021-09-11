@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CpuController : BaseController
 {
-    [SerializeField] private Transform _otherPlayer = default;
+    private Transform _otherPlayer;
     private float _movementInputX;
     private float _distance;
 
@@ -18,6 +18,11 @@ public class CpuController : BaseController
 	{
         StartCoroutine(MovementCoroutine());
         StartCoroutine(AttackCoroutine());
+    }
+
+    public void SetOtherPlayer(Transform otherPlayer)
+    {
+        _otherPlayer = otherPlayer;
     }
 
     private void Update()

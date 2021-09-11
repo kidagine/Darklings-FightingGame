@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameObject _playerPrefab = default;
+    [SerializeField] private GameObject _cpuPrefab = default;
+    [SerializeField] private bool _sceneSettingsDecide = true;
+    [SerializeField] private string _controllerOne = default;
+    [SerializeField] private string _controllerTwo = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
     [SerializeField] protected PlayerUI _playerTwoUI = default;
-    [SerializeField] protected Player _playerOne = default;
-    [SerializeField] protected Player _playerTwo = default;
     [SerializeField] protected TextMeshProUGUI _countdownText = default;
     [SerializeField] protected TextMeshProUGUI _readyText = default;
     [SerializeField] protected GameObject _leftStopper = default;
@@ -15,13 +18,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject[] _stages = default;
     [SerializeField] protected bool _hasCountDown = true;
     [SerializeField] protected bool _hasTimer = true;
-    protected PlayerController _playerOneController;
-    protected PlayerController _playerTwoController;
+    protected Player _playerOne;
+    protected Player _playerTwo;
+    protected BaseController _playerOneController;
+    protected BaseController _playerTwoController;
     private float _countdown;
 
 	public bool HasGameStarted { get; set; }
 	public static GameManager Instance { get; private set; }
-	public bool PlayerOneWon { private get; set; }
 
 
 	void Awake()
@@ -49,6 +53,50 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (!_sceneSettingsDecide)
+        {
+            SceneSettings.ControllerOne = _controllerOne;
+            SceneSettings.ControllerTwo = _controllerTwo;
+        }
+        GameObject playerOneObject;
+        GameObject playerTwoObject;
+        if (SceneSettings.ControllerOne != "")
+        {
+            playerOneObject = Instantiate(_playerPrefab);
+        }
+        else
+        {
+            playerOneObject = Instantiate(_cpuPrefab);
+        }
+        if (SceneSettings.ControllerTwo != "")
+        {
+            playerTwoObject = Instantiate(_playerPrefab);
+        }
+        else
+        {
+            playerTwoObject = Instantiate(_cpuPrefab);
+            playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
+        }
+        if (SceneSettings.ControllerOne == "")
+        {
+            playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
+        }
+        if (SceneSettings.ControllerTwo == "")
+        {
+            playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
+        }
+        _playerOne = playerOneObject.GetComponent<Player>();
+        _playerTwo = playerTwoObject.GetComponent<Player>();
+        _playerOneController = playerOneObject.GetComponent<BaseController>();
+        _playerTwoController = playerTwoObject.GetComponent<BaseController>();
+        _playerOne.SetPlayerUI(_playerOneUI);
+        _playerOne.SetOtherPlayer(_playerTwo.transform);
+        _playerOne.IsPlayerOne = true;
+        _playerOneController.ControllerInputName = SceneSettings.ControllerOne;
+        _playerTwo.SetPlayerUI(_playerTwoUI);
+        _playerTwo.SetOtherPlayer(_playerOne.transform);
+        _playerTwo.IsPlayerOne = false;
+        _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
         StartRound();
     }
 
@@ -81,8 +129,6 @@ public class GameManager : MonoBehaviour
     {
         _countdown = 99.0f;
         _countdownText.text = Mathf.Round(_countdown).ToString();
-        _playerOneController = _playerOne.GetComponent<PlayerController>();
-        _playerTwoController = _playerTwo.GetComponent<PlayerController>();
         _playerOne.ResetPlayer();
         _playerTwo.ResetPlayer();
         _leftStopper.SetActive(true);
@@ -126,7 +172,25 @@ public class GameManager : MonoBehaviour
         _readyText.text = "ROUND OVER";
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(1.5f);
-        _readyText.text = PlayerOneWon is false ? "P1 WINS" : "P2 WINS";
+        bool hasPlayerOneDied = _playerOne.Health <= 0.0f;
+        bool hasPlayerTwoDied = _playerTwo.Health <= 0.0f;
+        if (hasPlayerOneDied && hasPlayerTwoDied)
+        {
+            _readyText.text = "TIE";
+        }
+        else
+        {
+            if (!hasPlayerOneDied)
+            {
+                _playerTwo.LoseLife();
+                _readyText.text = "P1 WINS";
+            }
+            else
+            {
+                _playerOne.LoseLife();
+                _readyText.text = "P2 WINS";
+            }
+        }
         yield return new WaitForSeconds(1.0f);
         _readyText.text = "";
         StartRound();
@@ -146,7 +210,25 @@ public class GameManager : MonoBehaviour
         _readyText.text = "MATCH OVER";
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(1.5f);
-        _readyText.text = PlayerOneWon is false ? "P1 WINS" : "P2 WINS";
+        bool hasPlayerOneDied = _playerOne.Health <= 0.0f;
+        bool hasPlayerTwoDied = _playerTwo.Health <= 0.0f;
+        if (hasPlayerOneDied && hasPlayerTwoDied)
+        {
+            _readyText.text = "TIE";
+        }
+        else
+        {
+            if (!hasPlayerOneDied)
+            {
+                _playerTwo.LoseLife();
+                _readyText.text = "P1 WINS";
+            }
+            else
+            {
+                _playerOne.LoseLife();
+                _readyText.text = "P2 WINS";
+            }
+        }
         yield return new WaitForSeconds(1.0f);
         _playerOne.ResetLives();
         _playerTwo.ResetLives();

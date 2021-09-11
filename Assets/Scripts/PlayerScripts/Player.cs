@@ -17,13 +17,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Audio _audio;
 	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
-	private float _health;
 	private int _lives = 2;
 	private bool _isDead;
 
+	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
 	public bool IsAttacking { get; set; }
-	public bool IsPlayerOne { get { return _isPlayerOne; } private set { } }
+	public bool IsPlayerOne { get { return _isPlayerOne; } set { } }
 
 	void Awake()
 	{
@@ -36,6 +36,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	void Start()
 	{
 		InitializeStats();
+	}
+
+	public void SetPlayerUI(PlayerUI playerUI)
+	{
+		_playerUI = playerUI;
+	}
+
+	public void SetOtherPlayer(Transform otherPlayer)
+	{
+		_otherPlayer = otherPlayer;
 	}
 
 	public void ResetPlayer()
@@ -60,9 +70,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private void InitializeStats()
 	{
 		_playerUI.SetPortrait(_playerStats.portrait);
-		_health = _playerStats.currentHealth;
+		Health = _playerStats.currentHealth;
 		_playerUI.SetMaxHealth(_playerStats.maxHealth);
-		_playerUI.SetHealth(_health);
+		_playerUI.SetHealth(Health);
 	}
 
 	void Update()
@@ -114,13 +124,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		else
 		{
 			_audio.Sound("Hurt").Play();
-			_health--;
-			_otherPlayerUI.IncreaseCombo();
+			Health--;
+			//_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
-			_playerUI.SetHealth(_health);
+			_playerUI.SetHealth(Health);
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), attackSO.knockback);
 			IsAttacking = false;
-			if (_health <= 0)
+			if (Health <= 0)
 			{
 				Die();
 			}
@@ -159,9 +169,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			if (GameManager.Instance.HasGameStarted)
 			{
-				GameManager.Instance.PlayerOneWon = _isPlayerOne is true ? true : false;
 				_lives--;
-				_playerUI.SetLives(_lives);
 			}
 			if (_lives <= 0)
 			{
@@ -173,6 +181,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 		}
 		_isDead = true;
+	}
+
+	public void LoseLife()
+	{
+		_playerUI.SetLives(_lives);
 	}
 
 	private void SetPushbox(bool state)
@@ -202,7 +215,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerController.ActivateInput();
 		_playerMovement.SetLockMovement(false);
 		_playerAnimator.IsHurt(false);
-		_otherPlayerUI.ResetCombo();
+		//_otherPlayerUI.ResetCombo();
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
