@@ -4,6 +4,7 @@ using UnityEngine;
 public class CpuController : BaseController
 {
     private Transform _otherPlayer;
+    private Coroutine _movementCoroutine;
     private float _movementInputX;
     private float _distance;
 
@@ -16,7 +17,7 @@ public class CpuController : BaseController
 
 	private void Start()
 	{
-        StartCoroutine(MovementCoroutine());
+        _movementCoroutine = StartCoroutine(MovementCoroutine());
         StartCoroutine(AttackCoroutine());
     }
 
@@ -33,43 +34,46 @@ public class CpuController : BaseController
 
     IEnumerator MovementCoroutine()
     {
+        float waitTime = 0.0f;
         while (_isControllerEnabled)
         {
-            float waitTime = 0.0f;
-            int movementRandom = Random.Range(0, 4);
-            int jumpRandom = Random.Range(0, 8);
-            int crouchRandom = Random.Range(0, 12);
-            int standingRandom = Random.Range(0, 4);
-            switch (movementRandom)
-            {
-                case 1:
-                    _movementInputX = 0.0f;
-                    waitTime = Random.Range(0.2f, 0.35f);
-                    break;
-                case 2:
-                    _movementInputX = -1.0f;
-                    waitTime = Random.Range(0.5f, 1.2f);
-                    break;
-                case 3:
-                    _movementInputX = 1.0f;
-                    waitTime = Random.Range(0.5f, 1.2f);
-                    break;
-            }
-            if (jumpRandom == 2)
-            {
-                _playerMovement.JumpAction();
-            }
-            if (crouchRandom == 2)
-            {
-                _playerMovement.CrouchAction();
-            }
-            if (_playerMovement.IsCrouching)
-            {
-                if (standingRandom == 2)
+                int movementRandom = Random.Range(0, 4);
+                int jumpRandom = Random.Range(0, 8);
+                int crouchRandom = Random.Range(0, 12);
+                int standingRandom = Random.Range(0, 4);
+                switch (movementRandom)
                 {
-                    _playerMovement.StandUpAction();
+                    case 1:
+                        _movementInputX = 0.0f;
+                        waitTime = Random.Range(0.2f, 0.35f);
+                        break;
+                    case 2:
+                        _movementInputX = -1.0f;
+                        waitTime = Random.Range(0.5f, 1.2f);
+                        break;
+                    case 3:
+                        _movementInputX = 1.0f;
+                        waitTime = Random.Range(0.5f, 1.2f);
+                        break;
                 }
-            }
+                if (jumpRandom == 2)
+                {
+                    if (GameManager.Instance.HasGameStarted)
+                    {
+                        _playerMovement.JumpAction();
+                    }
+                }
+                if (crouchRandom == 2)
+                {
+                    _playerMovement.CrouchAction();
+                }
+                if (_playerMovement.IsCrouching)
+                {
+                    if (standingRandom == 2)
+                    {
+                        _playerMovement.StandUpAction();
+                    }
+                }
             yield return new WaitForSeconds(waitTime);
         }
     }
@@ -100,6 +104,6 @@ public class CpuController : BaseController
     public override void DeactivateInput()
     {
         base.DeactivateInput();
-        StopAllCoroutines();
+        StopCoroutine(_movementCoroutine);
     }
 }

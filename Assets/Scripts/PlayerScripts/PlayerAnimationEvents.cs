@@ -12,6 +12,11 @@ public class PlayerAnimationEvents : MonoBehaviour
         _playerMovement.SetLockMovement(false);
     }
 
+    public void CreateEffectAnimationEvent()
+    {
+        _player.CreateEffect();
+    }
+
     public void ResetTimeScale()
     {
         Time.timeScale = 1.0f;

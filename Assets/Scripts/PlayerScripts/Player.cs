@@ -100,15 +100,20 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			IsAttacking = true;
 			_playerAnimator.Attack();
 			_currentAttack = _playerComboSystem.GetComboAttack();
-			GameObject hitEffect = Instantiate(_currentAttack.hitEffect, _effectsParent);
-			hitEffect.transform.localPosition = _currentAttack.hitEffectPosition;
-			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEffectRotation);
+
 			if (!string.IsNullOrEmpty(_currentAttack.attackSound))
 			{
 				_audio.Sound(_currentAttack.attackSound).Play();
 			}
 			_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
 		}
+	}
+
+	public void CreateEffect()
+	{
+		GameObject hitEffect = Instantiate(_currentAttack.hitEffect, _effectsParent);
+		hitEffect.transform.localPosition = _currentAttack.hitEffectPosition;
+		hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEffectRotation);
 	}
 
 	public bool TakeDamage(AttackSO attackSO)
