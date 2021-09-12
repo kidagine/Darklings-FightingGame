@@ -25,8 +25,10 @@ public class DeviceConfigurator : ScriptableObject
 
 
     public Sprite GetDeviceBindingIcon(PlayerInput playerInput, string playerInputDeviceInputBinding)
-    {       
-		string currentDeviceRawPath = playerInput.devices[0].ToString();
+    {
+        Debug.Log(playerInput.devices[0].ToString() +"a");
+
+        string currentDeviceRawPath = playerInput.devices[0].ToString();
 		Sprite displaySpriteIcon = null;
 		for (int i = 0; i < listDeviceSets.Count; i++)
 		{
