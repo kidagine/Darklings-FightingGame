@@ -12,12 +12,22 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private Animator _characterTwoAnimator = default;
 	[SerializeField] private TextMeshProUGUI _playerOneName = default;
 	[SerializeField] private TextMeshProUGUI _playerTwoName = default;
+	[SerializeField] private PlayerCharacterSelector _playerOneSelector = default;
+	[SerializeField] private PlayerCharacterSelector _playerTwoSelector = default;
 
 
 	public void SetCharacterOneImage(PlayerStatsSO playerStatsSO)
 	{
-		_characterOneImage.enabled = true;
-		_playerOneName.text = playerStatsSO.name;
+		if (!_playerTwoSelector.gameObject.activeSelf)
+		{
+			_characterOneImage.enabled = true;
+			_playerOneName.text = playerStatsSO.name;
+		}
+		else
+		{
+			_characterTwoImage.enabled = true;
+			_playerTwoName.text = playerStatsSO.name;
+		}
 	}
 
 	public void SetCharacterTwoImage(PlayerStatsSO playerStatsSO)
@@ -28,19 +38,37 @@ public class CharacterMenu : BaseMenu
 
 	public void SelectCharacterOneImage(PlayerStatsSO playerStatsSO)
 	{
-		_characterOneAnimator.SetBool("IsTaunting", true);
-		StartCoroutine(TauntEndCoroutine());
+		if (!_playerTwoSelector.gameObject.activeSelf)
+		{
+			_characterOneAnimator.SetBool("IsTaunting", true);
+			StartCoroutine(TauntEndCoroutine());
+		}
+		else
+		{
+			SelectCharacterTwoImage(null);
+		}
 	}
 
 	public void SelectCharacterTwoImage(PlayerStatsSO playerStatsSO)
 	{
 		_characterTwoAnimator.SetBool("IsTaunting", true);
+		StartCoroutine(TauntEndCoroutine());
 	}
 
 	IEnumerator TauntEndCoroutine()
 	{
 		yield return new WaitForSeconds(2.0f);
-		_baseMenu.Show();
-		gameObject.SetActive(false);
+		if (_playerTwoSelector.gameObject.activeSelf)
+		{
+			gameObject.SetActive(false);
+		}
+		else
+		{
+			_playerTwoSelector.gameObject.SetActive(true);
+		}
+		if (_playerOneSelector.HasSelected && _playerTwoSelector.HasSelected)
+		{
+			_baseMenu.Show();
+		}
 	}
 }
