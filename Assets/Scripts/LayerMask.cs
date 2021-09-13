@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public enum LayerMaskEnum { Ground, Hurtbox, Player };
+public enum LayerMaskEnum { Ground, Hurtbox, Default, UI, Player };
 
 public class LayerMask : MonoBehaviour
 {
