@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BaseMenu : MonoBehaviour	
@@ -9,6 +10,7 @@ public class BaseMenu : MonoBehaviour
 
 	public void OpenMenuHideCurrent(BaseMenu menu)
 	{
+		EventSystem.current.SetSelectedGameObject(null);
 		gameObject.SetActive(false);
 		menu.Show();
 	}

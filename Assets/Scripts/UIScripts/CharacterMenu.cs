@@ -52,7 +52,7 @@ public class CharacterMenu : BaseMenu
 
 	IEnumerator TauntEndCoroutine(bool isPlayerOne)
 	{
-		yield return new WaitForSeconds(2.0f);
+		yield return new WaitForSeconds(1.25f);
 		if (isPlayerOne)
 		{
 			_playerTwoSelector.gameObject.SetActive(true);
@@ -62,5 +62,22 @@ public class CharacterMenu : BaseMenu
 			_baseMenu.Show();
 			gameObject.SetActive(false);
 		}
+	}
+
+	public void ResetControllerInput()
+	{
+		SceneSettings.ControllerOne = "";
+		SceneSettings.ControllerTwo = "";
+	}
+
+	private void OnDisable()
+	{
+		_characterTwoImage.enabled = false;
+		_playerTwoName.enabled = false;
+		_playerOneSelector.transform.localPosition = new Vector2(-180.0f, -190.0f);
+		_playerTwoSelector.transform.localPosition = new Vector2(-180.0f, -190.0f);
+		_playerTwoSelector.gameObject.SetActive(false);
+		_playerOneSelector.HasSelected = false;
+		_playerTwoSelector.HasSelected = false;
 	}
 }

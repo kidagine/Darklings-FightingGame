@@ -167,6 +167,8 @@ public class PlayersMenu : BaseMenu
 
 	void OnDisable()
 	{
+        _cpuTextLeft.SetActive(true);
+        _cpuTextRight.SetActive(true);
 		for (int i = 0; i < _playerIcons.Length; i++)
 		{
             _playerIcons[i].anchoredPosition = new Vector2(25.0f, _playerIcons[i].anchoredPosition.y);

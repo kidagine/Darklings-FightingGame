@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerCharacterSelector : MonoBehaviour
 {
@@ -16,11 +15,10 @@ public class PlayerCharacterSelector : MonoBehaviour
     private bool _canGoDown;
     private bool _inputDeactivated;
 
-	public bool HasSelected { get; private set; }
+	public bool HasSelected { get; set; }
 
 	private void Start()
 	{
-        _characterMenu.SetCharacterOneImage(_isPlayerOne);
         _rectTransform = GetComponent<RectTransform>();
         if (_isPlayerOne)
         {
@@ -46,7 +44,12 @@ public class PlayerCharacterSelector : MonoBehaviour
         }
     }
 
-	void Update()
+	private void OnEnable()
+	{
+        _characterMenu.SetCharacterOneImage(_isPlayerOne);
+    }
+
+    void Update()
     {
         if (!HasSelected)
         {
