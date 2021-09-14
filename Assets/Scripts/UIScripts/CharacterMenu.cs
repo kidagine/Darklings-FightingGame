@@ -26,11 +26,13 @@ public class CharacterMenu : BaseMenu
 		if (isPlayerOne)
 		{
 			_characterOneImage.enabled = true;
+			_playerOneName.enabled = true;
 			//_playerOneName.text = playerStatsSO.name;
 		}
 		else
 		{
 			_characterTwoImage.enabled = true;
+			_playerTwoName.enabled = true;
 			//_playerTwoName.text = playerStatsSO.name;
 		}
 	}

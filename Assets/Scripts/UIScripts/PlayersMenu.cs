@@ -7,7 +7,6 @@ public class PlayersMenu : BaseMenu
     [SerializeField] private RectTransform[] _playerIcons = default;
     [SerializeField] private GameObject _cpuTextRight = default;
     [SerializeField] private GameObject _cpuTextLeft = default;
-    [SerializeField] private bool _onePlayerOnly = default;
     private bool _isMovenentInUse;
 
 
@@ -66,13 +65,6 @@ public class PlayersMenu : BaseMenu
                         _cpuTextLeft.SetActive(true);
                         _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
                     }
-                    else if (_onePlayerOnly)
-                    {
-                        if (!IsOnLeft() && !IsOnRight())
-                        {
-                            _playerIcons[index].anchoredPosition = new Vector2(375.0f, _playerIcons[index].anchoredPosition.y);
-                        }
-                    }
                     else if (!IsOnRight())
                     {
                         _playerIcons[index].anchoredPosition = new Vector2(375.0f, _playerIcons[index].anchoredPosition.y);
@@ -84,13 +76,6 @@ public class PlayersMenu : BaseMenu
                     {
                         _cpuTextRight.SetActive(true);
                         _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
-                    }
-                    else if (_onePlayerOnly)
-                    {
-                        if (!IsOnLeft() && !IsOnRight())
-                        {
-                            _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
-                        }
                     }
                     else if (!IsOnLeft())
                     {
