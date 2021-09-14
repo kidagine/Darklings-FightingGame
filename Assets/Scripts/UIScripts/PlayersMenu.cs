@@ -3,13 +3,11 @@ using UnityEngine.InputSystem;
 
 public class PlayersMenu : BaseMenu
 {
-    [SerializeField] private BaseMenu _otherMenu = default;
+    [SerializeField] private CharacterMenu _characterMenu = default;
     [SerializeField] private RectTransform[] _playerIcons = default;
     [SerializeField] private GameObject _cpuTextRight = default;
     [SerializeField] private GameObject _cpuTextLeft = default;
     [SerializeField] private bool _onePlayerOnly = default;
-    private string _inputOne;
-    private string _inputTwo;
     private bool _isMovenentInUse;
 
 
@@ -162,8 +160,14 @@ public class PlayersMenu : BaseMenu
             {
                 SceneSettings.ControllerOne = "ControllerTwo";
             }
+            if (_playerIcons[0].anchoredPosition.x != 25.0f && _playerIcons[1].anchoredPosition.x != 25.0f 
+                || _playerIcons[0].anchoredPosition.x != 25.0f && _playerIcons[2].anchoredPosition.x != 25.0f
+                || _playerIcons[1].anchoredPosition.x != 25.0f && _playerIcons[2].anchoredPosition.x != 25.0f)
+            {
+                _characterMenu.EnablePlayerTwoSelector();
+            }
             gameObject.SetActive(false);
-            _otherMenu.Show();
+            _characterMenu.Show();
         }
     }
 
@@ -171,8 +175,9 @@ public class PlayersMenu : BaseMenu
     {
         SceneSettings.ControllerTwo = "KeyboardTwo";
         SceneSettings.ControllerOne = "KeyboardOne";
+        _characterMenu.EnablePlayerTwoSelector();
         gameObject.SetActive(false);
-        _otherMenu.Show();
+        _characterMenu.Show();
     }
 
 	void OnDisable()

@@ -1,15 +1,15 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlayerCharacterSelector : MonoBehaviour
 {
-    [SerializeField] private Button _currentButton;
+    [SerializeField] private CharacterMenu _characterMenu = default;
+    [SerializeField] private bool _isPlayerOne = default;
+    private readonly float _moveDistance = 180.0f;
     private RectTransform _rectTransform;
     private Vector2 _directionInput;
     private string _controllerInputName;
-    private float _moveDistance = 180.0f;
     private bool _canGoRight;
     private bool _canGoLeft;
     private bool _canGoUp;
@@ -20,9 +20,30 @@ public class PlayerCharacterSelector : MonoBehaviour
 
 	private void Start()
 	{
-        _currentButton.Select();
+        _characterMenu.SetCharacterOneImage(_isPlayerOne);
         _rectTransform = GetComponent<RectTransform>();
-        _controllerInputName = "Keyboard";
+        if (_isPlayerOne)
+        {
+            if (SceneSettings.ControllerOne == "")
+            {
+                _controllerInputName = "Keyboard";
+            }
+            else
+            {
+                _controllerInputName = SceneSettings.ControllerOne;
+            }
+        }
+        else
+        {
+            if (SceneSettings.ControllerTwo == "")
+            {
+                _controllerInputName = "Keyboard";
+            }
+            else
+            {
+                _controllerInputName = SceneSettings.ControllerTwo;
+            }
+        }
     }
 
 	void Update()
@@ -36,7 +57,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoRight)
                     {
-                        _currentButton.Select();
+                        _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(_moveDistance, 0.0f);
                         StartCoroutine(ResetInput());
                     }
@@ -45,7 +66,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoLeft)
                     {
-                        _currentButton.Select();
+                        _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(-_moveDistance, 0.0f);
                         StartCoroutine(ResetInput());
                     }
@@ -54,7 +75,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoUp)
                     {
-                        _currentButton.Select();
+                        _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(0.0f, _moveDistance);
                         StartCoroutine(ResetInput());
                     }
@@ -63,17 +84,16 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoDown)
                     {
-                        _currentButton.Select();
+                        _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(0.0f, -_moveDistance);
                         StartCoroutine(ResetInput());
                     }
                 }
             }
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetButtonDown(_controllerInputName + "Confirm"))
             {
                 HasSelected = true;
-                _currentButton.onClick.Invoke();
-                EventSystem.current.SetSelectedGameObject(null);
+                _characterMenu.SelectCharacterOneImage(_isPlayerOne);
             }
         }
     }
@@ -96,23 +116,18 @@ public class PlayerCharacterSelector : MonoBehaviour
         if (collision.transform.localPosition.x > currentPosition.x)
         {
             _canGoRight = true;
-            _currentButton = collision.GetComponent<Button>();
         }
         if (collision.transform.localPosition.x < currentPosition.x)
         {
             _canGoLeft = true;
-            _currentButton = collision.GetComponent<Button>();
         }
         if (collision.transform.localPosition.y > currentPosition.y)
         {
             _canGoUp = true;
-            _currentButton = collision.GetComponent<Button>();
-            Debug.Log(collision.name + " | " + transform.localPosition + " | " + collision.transform.localPosition);
         }
         if (collision.transform.localPosition.y > currentPosition.y)
         {
             _canGoDown = true;
-            _currentButton = collision.GetComponent<Button>();
         }
     }
 }
