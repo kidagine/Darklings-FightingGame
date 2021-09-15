@@ -17,12 +17,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
     [SerializeField] protected GameObject[] _stages = default;
+    [Range(1, 10)]
+    [SerializeField] private int _gameSpeed = 1;
     protected Player _playerOne;
     protected Player _playerTwo;
     protected BaseController _playerOneController;
     protected BaseController _playerTwoController;
-    private Vector2 _lastPlayerOnePosition;
-    private Vector2 _lastPlayerTwoPosition;
     private float _countdown;
     private bool _reverseReset;
 
@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator ReadyCoroutine()
     {
-        Time.timeScale = 1.0f;
+        Time.timeScale = _gameSpeed;
         yield return new WaitForSeconds(0.5f);
         _readyText.text = "Ready?";
         yield return new WaitForSeconds(1.0f);
@@ -277,8 +277,6 @@ public class GameManager : MonoBehaviour
                     _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
                 }
             }
-            _lastPlayerOnePosition = _playerOne.transform.position;
-            _lastPlayerTwoPosition = _playerTwo.transform.position;
         }
     }
 

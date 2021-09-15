@@ -8,6 +8,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject[] _lostLives = default;
     [SerializeField] private Slider _healthSlider = default;
     [SerializeField] private Image _portraitImage = default;
+    [SerializeField] private TextMeshProUGUI _characterName = default;
+    [SerializeField] private TextMeshProUGUI _playerName = default;
     [SerializeField] private TextMeshProUGUI _comboText = default;
     [SerializeField] private Transform _healthDividerPivot = default;
     [SerializeField] private GameObject _healthDividerPrefab = default;
@@ -16,12 +18,41 @@ public class PlayerUI : MonoBehaviour
     private bool _hasComboEnded;
 
 
-    public void SetPortrait(Sprite portrait)
+    public void InitializeUI(PlayerStatsSO playerStats, bool isPlayerOne)
+    {
+        if (isPlayerOne)
+        {
+            if (SceneSettings.ControllerOne == "")
+            {
+                _playerName.text = "Cpu 1";
+            }
+            else
+            {
+                _playerName.text = "Player 1";
+            }
+        }
+        else
+        {
+            if (SceneSettings.ControllerTwo == "")
+            {
+                _playerName.text = "Cpu 2";
+            }
+            else
+            {
+                _playerName.text = "Player 2";
+            }
+        }
+        _characterName.text = playerStats.name;
+        SetPortrait(playerStats.portrait);
+        SetMaxHealth(playerStats.maxHealth);
+    }
+
+    private void SetPortrait(Sprite portrait)
     {
         _portraitImage.sprite = portrait;
     }
 
-    public void SetMaxHealth(float value)
+    private void SetMaxHealth(float value)
     {
         float healthSliderWidth = _healthSlider.GetComponent<RectTransform>().sizeDelta.x;
         _healthSlider.maxValue = value;
@@ -40,7 +71,7 @@ public class PlayerUI : MonoBehaviour
         _healthSlider.value = value;
     }
 
-    public void SetLives(int lives)
+    public void SetLives()
     {
         _lostLives[_currentLifeIndex].SetActive(true);
         _currentLifeIndex++;

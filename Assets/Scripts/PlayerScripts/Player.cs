@@ -11,7 +11,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private GameObject _pushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] private Transform _effectsParent = default;
-	[SerializeField] private bool _isPlayerOne = default;
 	private PlayerMovement _playerMovement;
 	private PlayerComboSystem _playerComboSystem;
 	private BaseController _playerController;
@@ -24,7 +23,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
 	public bool IsAttacking { get; set; }
-	public bool IsPlayerOne { get { return _isPlayerOne; } set { } }
+	public bool IsPlayerOne { get; set; }
 
 	void Awake()
 	{
@@ -71,9 +70,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void InitializeStats()
 	{
-		_playerUI.SetPortrait(_playerStats.portrait);
+		_playerUI.InitializeUI(_playerStats, IsPlayerOne);
 		Health = _playerStats.currentHealth;
-		_playerUI.SetMaxHealth(_playerStats.maxHealth);
 		_playerUI.SetHealth(Health);
 	}
 
@@ -195,7 +193,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void LoseLife()
 	{
-		_playerUI.SetLives(_lives);
+		_playerUI.SetLives();
 	}
 
 	private void SetPushbox(bool state)
