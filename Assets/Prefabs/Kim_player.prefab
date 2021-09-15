@@ -461,7 +461,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.25, y: 2.625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -865,6 +865,14 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     name: Hurt
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: e8dc1810c29633e4488c8857a91d87bc, type: 3}
+    volume: 1
+    pitch: 1
+    name: Block
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0

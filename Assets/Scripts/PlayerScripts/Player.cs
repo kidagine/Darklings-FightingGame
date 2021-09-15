@@ -123,6 +123,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
 		if (CheckIsBlocking() && !attackSO.canGuardBreak)
 		{
+			_audio.Sound("Block").Play();
 			IsBlocking = true;
 			_playerAnimator.IsBlocking(true);
 			_playerMovement.SetLockMovement(true);
