@@ -34,46 +34,54 @@ public class CpuController : BaseController
 
     IEnumerator MovementCoroutine()
     {
-        float waitTime = 0.0f;
+        float waitTime;
         while (_isControllerEnabled)
         {
-                int movementRandom = Random.Range(0, 4);
-                int jumpRandom = Random.Range(0, 8);
-                int crouchRandom = Random.Range(0, 12);
-                int standingRandom = Random.Range(0, 4);
-                switch (movementRandom)
+            int movementRandom;
+            if (_distance <= 6.5f)
+            {
+                movementRandom = Random.Range(0, 3);
+            }
+            else
+            {
+                movementRandom = Random.Range(0, 6);
+            }
+            int jumpRandom = Random.Range(0, 8);
+            int crouchRandom = Random.Range(0, 12);
+            int standingRandom = Random.Range(0, 4);
+            switch (movementRandom)
+            {
+                case 1:
+                    _movementInputX = 0.0f;
+                    waitTime = Random.Range(0.2f, 0.35f);
+                    break;
+                case 2:
+                    _movementInputX = transform.localScale.x * -1.0f;
+                    waitTime = Random.Range(0.5f, 1.2f);
+                    break;
+                default:
+                    _movementInputX = transform.localScale.x * 1.0f;
+                    waitTime = Random.Range(0.5f, 1.2f);
+                    break;
+            }
+            if (jumpRandom == 2)
+            {
+                if (GameManager.Instance.HasGameStarted)
                 {
-                    case 1:
-                        _movementInputX = 0.0f;
-                        waitTime = Random.Range(0.2f, 0.35f);
-                        break;
-                    case 2:
-                        _movementInputX = -1.0f;
-                        waitTime = Random.Range(0.5f, 1.2f);
-                        break;
-                    case 3:
-                        _movementInputX = 1.0f;
-                        waitTime = Random.Range(0.5f, 1.2f);
-                        break;
+                    _playerMovement.JumpAction();
                 }
-                if (jumpRandom == 2)
+            }
+            if (crouchRandom == 2)
+            {
+                _playerMovement.CrouchAction();
+            }
+            if (_playerMovement.IsCrouching)
+            {
+                if (standingRandom == 2)
                 {
-                    if (GameManager.Instance.HasGameStarted)
-                    {
-                        _playerMovement.JumpAction();
-                    }
+                    _playerMovement.StandUpAction();
                 }
-                if (crouchRandom == 2)
-                {
-                    _playerMovement.CrouchAction();
-                }
-                if (_playerMovement.IsCrouching)
-                {
-                    if (standingRandom == 2)
-                    {
-                        _playerMovement.StandUpAction();
-                    }
-                }
+            }
             yield return new WaitForSeconds(waitTime);
         }
     }
