@@ -9,6 +9,7 @@ public class AttackSO : ScriptableObject
 	public float knockback;
 	public float selfKnockback;
 	public bool canGuardBreak;
+	public bool isAirAttack;
 	[Header("Sounds")]
 	public string attackSound;
 	public string impactSound;

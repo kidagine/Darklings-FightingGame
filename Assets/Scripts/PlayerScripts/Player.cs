@@ -103,7 +103,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				_audio.Sound(_currentAttack.attackSound).Play();
 			}
-			_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
+			if (!_currentAttack.isAirAttack)
+			{
+				_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
+			}
 		}
 	}
 
