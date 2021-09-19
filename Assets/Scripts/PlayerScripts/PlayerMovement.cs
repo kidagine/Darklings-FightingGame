@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     private Player _player;
     private Rigidbody2D _rigidbody;
     private Audio _audio;
-    private bool _isJumping;
     private bool _isMovementLocked;
 
     public Vector2 MovementInput { get; set; }
@@ -35,29 +34,32 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         if (_rigidbody.velocity.y < 0)
         {
-            _rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (3 - 1) * Time.deltaTime;
+            _rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (4 - 1) * Time.deltaTime;
         }
-        else if (_rigidbody.velocity.y > 0 && !_isJumping)
+        else if (_rigidbody.velocity.y > 0)
         {
-            _rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (6 - 1) * Time.deltaTime;
+            _rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (3 - 1) * Time.deltaTime;
         }
     }
 
     private void Movement()
     {
-        if (!IsCrouching && !_player.IsAttacking && !_isMovementLocked && !_player.IsBlocking)
+        if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking)
         {
-            _rigidbody.velocity = new Vector2(MovementInput.x * _playerStatsSO.walkSpeed, _rigidbody.velocity.y);
-            _playerAnimator.SetMovement(MovementInput.x * transform.localScale.x);
-            if (_rigidbody.velocity.x != 0.0f)
+            if (!_isMovementLocked)
             {
-                IsMoving = true;
-                _playerAnimator.SetMove(true);
-            }
-            else
-            {
-                IsMoving = false;
-                _playerAnimator.SetMove(false);
+                _rigidbody.velocity = new Vector2(MovementInput.x * _playerStatsSO.walkSpeed, _rigidbody.velocity.y);
+                _playerAnimator.SetMovement(MovementInput.x * transform.localScale.x);
+                if (_rigidbody.velocity.x != 0.0f)
+                {
+                    IsMoving = true;
+                    _playerAnimator.SetMove(true);
+                }
+                else
+                {
+                    IsMoving = false;
+                    _playerAnimator.SetMove(false);
+                }
             }
         }
     }
@@ -92,10 +94,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         if (IsGrounded && !_player.IsAttacking && !_player.IsBlocking)
         {
             Instantiate(_dustUpPrefab, transform.position, Quaternion.identity);
-            _isJumping = true;
             _audio.Sound("Jump").Play();
             IsGrounded = false;
             _playerAnimator.IsJumping(true);
+            _playerAnimator.SetMovement(MovementInput.x * transform.localScale.x);
             _isMovementLocked = true;
             _rigidbody.velocity = Vector2.zero;
             if (MovementInput.x == 0.0f)
@@ -111,7 +113,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void JumpStopAction()
     {
-        _isJumping = false;
     }
 
     public void SetLockMovement(bool state)

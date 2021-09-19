@@ -3,14 +3,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
-	[SerializeField] private Transform _otherPlayer = default;
 	[SerializeField] private PlayerStatsSO _playerStats = default;
-	[SerializeField] private PlayerUI _playerUI = default;
-	[SerializeField] private PlayerUI _otherPlayerUI = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _pushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] private Transform _effectsParent = default;
+	private Transform _otherPlayer;
+	private PlayerUI _playerUI;
 	private PlayerMovement _playerMovement;
 	private PlayerComboSystem _playerComboSystem;
 	private BaseController _playerController;

@@ -20,9 +20,10 @@ public class SoundGroup
 		}
 	}
 
-	public void PlayInRandom()
+	public Sound PlayInRandom()
 	{
 		Sound randomSound = sounds[UnityEngine.Random.Range(0, sounds.Length)];
 		randomSound.source.Play();
+		return randomSound;
 	}
 }

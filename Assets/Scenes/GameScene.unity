@@ -977,6 +977,7 @@ GameObject:
   m_Component:
   - component: {fileID: 392163758}
   - component: {fileID: 392163759}
+  - component: {fileID: 392163760}
   m_Layer: 0
   m_Name: Game_manager
   m_TagString: Untagged
@@ -1026,6 +1027,66 @@ MonoBehaviour:
   - {fileID: 2105726864}
   - {fileID: 2105726863}
   _gameSpeed: 1
+--- !u!114 &392163760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392163757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 3976621417299948276, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds: []
+  _sounds3D: []
+  _soundGroups:
+  - name: Music
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: ea755af53de71f54587be75ac0a5b587, type: 3}
+      volume: 0.5
+      pitch: 1
+      name: 
+      loop: 1
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 87a56925bb6e7bc4b8d72827918d05fb, type: 3}
+      volume: 0.5
+      pitch: 1
+      name: 
+      loop: 1
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: fe2b4491056a95742ba221fa762f8230, type: 3}
+      volume: 0.5
+      pitch: 1
+      name: 
+      loop: 1
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 2d30a16bd689575469d356ab2320c7fc, type: 3}
+      volume: 0.5
+      pitch: 1
+      name: 
+      loop: 1
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 9dcc8ea581562344ca4092aeaf45eee1, type: 3}
+      volume: 0.5
+      pitch: 1
+      name: 
+      loop: 1
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+  _soundGroups3D: []
 --- !u!1 &394163168
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,10 +14,17 @@ public class PlayerCharacterSelector : MonoBehaviour
     private bool _canGoUp;
     private bool _canGoDown;
     private bool _inputDeactivated;
+    private Audio _audio;
 
-	public bool HasSelected { get; set; }
+    public bool HasSelected { get; set; }
 
-	private void Start()
+
+    void Awake()
+    {
+        _audio = GetComponent<Audio>();
+    }
+
+    private void Start()
 	{
         _rectTransform = GetComponent<RectTransform>();
         if (_isPlayerOne)
@@ -60,6 +67,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoRight)
                     {
+                        _audio.Sound("Selected").Play();
                         _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(_moveDistance, 0.0f);
                         StartCoroutine(ResetInput());
@@ -69,6 +77,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoLeft)
                     {
+                        _audio.Sound("Selected").Play();
                         _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(-_moveDistance, 0.0f);
                         StartCoroutine(ResetInput());
@@ -78,6 +87,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoUp)
                     {
+                        _audio.Sound("Selected").Play();
                         _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(0.0f, _moveDistance);
                         StartCoroutine(ResetInput());
@@ -87,6 +97,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoDown)
                     {
+                        _audio.Sound("Selected").Play();
                         _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(0.0f, -_moveDistance);
                         StartCoroutine(ResetInput());
@@ -95,6 +106,7 @@ public class PlayerCharacterSelector : MonoBehaviour
             }
             if (Input.GetButtonDown(_controllerInputName + "Confirm"))
             {
+                _audio.Sound("Pressed").Play();
                 HasSelected = true;
                 _characterMenu.SelectCharacterOneImage(_isPlayerOne);
             }

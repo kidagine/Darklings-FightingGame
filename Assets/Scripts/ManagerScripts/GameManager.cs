@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     protected Player _playerTwo;
     protected BaseController _playerOneController;
     protected BaseController _playerTwoController;
+    private Audio _audio;
+    private Sound _currentMusic;
     private float _countdown;
     private bool _reverseReset;
 
@@ -32,6 +34,7 @@ public class GameManager : MonoBehaviour
 
 	void Awake()
     {
+        _audio = GetComponent<Audio>();
         CheckInstance();
         CheckSceneSettings();
     }
@@ -55,6 +58,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        _currentMusic = _audio.SoundGroup("Music").PlayInRandom();
         if (!_sceneSettingsDecide)
         {
             SceneSettings.ControllerOne = _controllerOne;
@@ -346,6 +350,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         _playerOne.ResetLives();
         _playerTwo.ResetLives();
-		StartRound();
+        _currentMusic.Stop();
+        _currentMusic = _audio.SoundGroup("Music").PlayInRandom();
+        StartRound();
     }
 }

@@ -7,10 +7,16 @@ public class PlayersMenu : BaseMenu
     [SerializeField] private RectTransform[] _playerIcons = default;
     [SerializeField] private GameObject _cpuTextRight = default;
     [SerializeField] private GameObject _cpuTextLeft = default;
+    private Audio _audio;
     private bool _isMovenentInUse;
 
 
-    void Start()
+	void Awake()
+	{
+        _audio = GetComponent<Audio>();
+    }
+
+	void Start()
 	{
         InputSystem.onDeviceChange +=
         (device, change) =>
@@ -62,11 +68,13 @@ public class PlayersMenu : BaseMenu
                 {
                     if (_playerIcons[index].anchoredPosition.x == -375.0f)
                     {
+                        _audio.Sound("Selected").Play();
                         _cpuTextLeft.SetActive(true);
                         _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
                     }
                     else if (!IsOnRight())
                     {
+                        _audio.Sound("Selected").Play();
                         _playerIcons[index].anchoredPosition = new Vector2(375.0f, _playerIcons[index].anchoredPosition.y);
                     }
                 }
@@ -74,11 +82,13 @@ public class PlayersMenu : BaseMenu
                 {
                     if (_playerIcons[index].anchoredPosition.x == 375.0f)
                     {
+                        _audio.Sound("Selected").Play();
                         _cpuTextRight.SetActive(true);
                         _playerIcons[index].anchoredPosition = new Vector2(25.0f, _playerIcons[index].anchoredPosition.y);
                     }
                     else if (!IsOnLeft())
                     {
+                        _audio.Sound("Selected").Play();
                         _playerIcons[index].anchoredPosition = new Vector2(-375.0f, _playerIcons[index].anchoredPosition.y);
                     }
                 }
@@ -121,6 +131,7 @@ public class PlayersMenu : BaseMenu
     {
         if (_playerIcons[0].anchoredPosition.x != 25.0f || _playerIcons[1].anchoredPosition.x != 25.0f || _playerIcons[2].anchoredPosition.x != 25.0f)
         {
+            _audio.Sound("Pressed").Play();
             if (_playerIcons[0].anchoredPosition.x == 375.0f)
             {
                 SceneSettings.ControllerTwo = "Keyboard";
@@ -158,6 +169,7 @@ public class PlayersMenu : BaseMenu
 
     public void OpenKeyboardCoOp()
     {
+        _audio.Sound("Pressed").Play();
         SceneSettings.ControllerTwo = "KeyboardTwo";
         SceneSettings.ControllerOne = "KeyboardOne";
         _characterMenu.EnablePlayerTwoSelector();

@@ -8,6 +8,7 @@ public class StageMenu : BaseMenu
 	[SerializeField] private Image _stageImage = default;
 	[SerializeField] private int _sceneIndex = 2;
 
+
 	public void SelectStageImage()
 	{
 		StartCoroutine(SelectStageCoroutine());
