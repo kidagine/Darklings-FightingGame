@@ -10,7 +10,6 @@ public class PlayerCharacterSelector : MonoBehaviour
     private RectTransform _rectTransform;
     private Vector2 _directionInput;
     private Audio _audio;
-    private AnimatorController _animatorController;
     private string _controllerInputName;
     private bool _canGoRight;
     private bool _canGoLeft;
@@ -52,11 +51,6 @@ public class PlayerCharacterSelector : MonoBehaviour
                 _controllerInputName = SceneSettings.ControllerTwo;
             }
         }
-    }
-
-	private void OnEnable()
-	{
-        _characterMenu.SetCharacterOneImage(_isPlayerOne, _animatorController);
     }
 
     void Update()
@@ -126,8 +120,9 @@ public class PlayerCharacterSelector : MonoBehaviour
         if (currentPosition == new Vector2(collision.transform.localPosition.x, collision.transform.localPosition.y))
         {
             _audio.Sound("Selected").Play();
-            _animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
-            _characterMenu.SetCharacterOneImage(_isPlayerOne, _animatorController);
+            AnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
+            string characterName = collision.GetComponent<CharacterButton>().CharacterName;
+            _characterMenu.SetCharacterOneImage(_isPlayerOne, animatorController, characterName);
             //Debug.Log(collision.transform.localPosition);
             //Debug.Log(currentPosition);
             //Debug.Log(_animatorController.name);

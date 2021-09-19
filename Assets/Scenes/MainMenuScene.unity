@@ -1475,6 +1475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 3543166443512718189}
   _stageImage: {fileID: 2142523171}
+  _stageName: {fileID: 385885776}
 --- !u!1 &205137886
 GameObject:
   m_ObjectHideFlags: 0
@@ -2265,6 +2266,10 @@ PrefabInstance:
     - target: {fileID: 4797689788153262386, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: m_Color.r
       value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292133793367007441, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
+      propertyPath: _characterName
+      value: Daru
       objectReference: {fileID: 0}
     - target: {fileID: 5292133793367007441, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: _characterAnimatorController
@@ -3111,7 +3116,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The Void
+  m_text: Random
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
@@ -5043,7 +5048,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692339769}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -5056,7 +5061,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Kim
+  m_text: Daru
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
@@ -5493,7 +5498,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 0}
   _baseMenu: {fileID: 185766593}
-  _characterOneImage: {fileID: 1494893155}
   _characterTwoImage: {fileID: 1096199074}
   _characterOneAnimator: {fileID: 1494893157}
   _characterTwoAnimator: {fileID: 1096199073}
@@ -5596,6 +5600,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: _onSelected.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
       propertyPath: _onClickedAnimationEnd.m_PersistentCalls.m_Calls.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -5605,6 +5613,10 @@ PrefabInstance:
       objectReference: {fileID: 185766593}
     - target: {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
       propertyPath: _onSelected.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: _onSelected.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
@@ -5645,6 +5657,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
       propertyPath: _onSelected.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: StageMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: _onSelected.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: StageMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
@@ -9357,6 +9373,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5292133793367007441, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
+      propertyPath: _characterName
+      value: Daru
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292133793367007441, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: _characterAnimatorController
       value: 
       objectReference: {fileID: 9100000, guid: e2ca7b579010ea645a7d641eb8b411ea, type: 2}
@@ -9406,7 +9426,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1343585132}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -9419,7 +9439,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Kim
+  m_text: Daru
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
@@ -10337,6 +10357,10 @@ PrefabInstance:
     - target: {fileID: 4797689788153262386, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: m_Color.r
       value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292133793367007441, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
+      propertyPath: _characterName
+      value: Daru
       objectReference: {fileID: 0}
     - target: {fileID: 5292133793367007441, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: _characterAnimatorController
@@ -11898,6 +11922,10 @@ PrefabInstance:
     - target: {fileID: 4797689788153262386, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: m_Color.r
       value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292133793367007441, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
+      propertyPath: _characterName
+      value: Daru
       objectReference: {fileID: 0}
     - target: {fileID: 5292133793367007441, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: _characterAnimatorController
@@ -15234,6 +15262,10 @@ PrefabInstance:
     - target: {fileID: 4797689788153262386, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: m_Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292133793367007441, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
+      propertyPath: _characterName
+      value: Daru
       objectReference: {fileID: 0}
     - target: {fileID: 5292133793367007441, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: _characterAnimatorController

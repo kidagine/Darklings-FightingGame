@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 public class StageMenu : BaseMenu
 {
 	[SerializeField] private Image _stageImage = default;
-
+	[SerializeField] private TextMeshProUGUI _stageName = default;
 
 	public void SelectStageImage()
 	{
@@ -16,6 +17,7 @@ public class StageMenu : BaseMenu
 	public void SetStageImage(Sprite sprite)
 	{
 		_stageImage.sprite = sprite;
+		_stageName.text = sprite.name;
 	}
 
 	public void SetStageIndex(int index)
