@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,18 +22,20 @@ public class CharacterMenu : BaseMenu
 		_playerTwoSelector.gameObject.SetActive(true);
 	}
 
-	public void SetCharacterOneImage(bool isPlayerOne)
+	public void SetCharacterOneImage(bool isPlayerOne, AnimatorController animatorController)
 	{
 		if (isPlayerOne)
 		{
 			_characterOneImage.enabled = true;
 			_playerOneName.enabled = true;
+			_characterOneAnimator.runtimeAnimatorController = animatorController;
 			//_playerOneName.text = playerStatsSO.name;
 		}
 		else
 		{
 			_characterTwoImage.enabled = true;
 			_playerTwoName.enabled = true;
+			_characterTwoAnimator.runtimeAnimatorController = animatorController;
 			//_playerTwoName.text = playerStatsSO.name;
 		}
 	}

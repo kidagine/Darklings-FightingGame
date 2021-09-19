@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerCharacterSelector : MonoBehaviour
@@ -8,13 +9,15 @@ public class PlayerCharacterSelector : MonoBehaviour
     private readonly float _moveDistance = 180.0f;
     private RectTransform _rectTransform;
     private Vector2 _directionInput;
+    private Audio _audio;
+    private AnimatorController _animatorController;
     private string _controllerInputName;
     private bool _canGoRight;
     private bool _canGoLeft;
     private bool _canGoUp;
     private bool _canGoDown;
     private bool _inputDeactivated;
-    private Audio _audio;
+
 
     public bool HasSelected { get; set; }
 
@@ -53,7 +56,7 @@ public class PlayerCharacterSelector : MonoBehaviour
 
 	private void OnEnable()
 	{
-        _characterMenu.SetCharacterOneImage(_isPlayerOne);
+        _characterMenu.SetCharacterOneImage(_isPlayerOne, _animatorController);
     }
 
     void Update()
@@ -67,8 +70,6 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoRight)
                     {
-                        _audio.Sound("Selected").Play();
-                        _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(_moveDistance, 0.0f);
                         StartCoroutine(ResetInput());
                     }
@@ -77,8 +78,6 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoLeft)
                     {
-                        _audio.Sound("Selected").Play();
-                        _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(-_moveDistance, 0.0f);
                         StartCoroutine(ResetInput());
                     }
@@ -87,8 +86,6 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoUp)
                     {
-                        _audio.Sound("Selected").Play();
-                        _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(0.0f, _moveDistance);
                         StartCoroutine(ResetInput());
                     }
@@ -97,8 +94,6 @@ public class PlayerCharacterSelector : MonoBehaviour
                 {
                     if (_canGoDown)
                     {
-                        _audio.Sound("Selected").Play();
-                        _characterMenu.SetCharacterOneImage(_isPlayerOne);
                         _rectTransform.anchoredPosition += new Vector2(0.0f, -_moveDistance);
                         StartCoroutine(ResetInput());
                     }
@@ -128,6 +123,15 @@ public class PlayerCharacterSelector : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
 	{
         Vector2 currentPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + 190.0f);
+        if (currentPosition == new Vector2(collision.transform.localPosition.x, collision.transform.localPosition.y))
+        {
+            _audio.Sound("Selected").Play();
+            _animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
+            _characterMenu.SetCharacterOneImage(_isPlayerOne, _animatorController);
+            //Debug.Log(collision.transform.localPosition);
+            //Debug.Log(currentPosition);
+            //Debug.Log(_animatorController.name);
+        }
         if (collision.transform.localPosition.x > currentPosition.x)
         {
             _canGoRight = true;

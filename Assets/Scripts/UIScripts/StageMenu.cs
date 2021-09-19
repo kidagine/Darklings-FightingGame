@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class StageMenu : BaseMenu
 {
 	[SerializeField] private Image _stageImage = default;
-	[SerializeField] private int _sceneIndex = 2;
 
 
 	public void SelectStageImage()
@@ -22,6 +21,12 @@ public class StageMenu : BaseMenu
 	public void SetStageIndex(int index)
 	{
 		SceneSettings.StageIndex = index;
+	}
+
+	public void SetStageIndexRandom()
+	{
+		int randomStageIndex = Random.Range(0, 2);
+		SceneSettings.StageIndex = randomStageIndex;
 	}
 
 	public void SetTrainingMode(bool state)
