@@ -106,7 +106,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             }
             else
             {
-                _rigidbody.AddForce(new Vector2(Mathf.Round(MovementInput.x) * (_playerStatsSO.jumpForce / 2.0f), _playerStatsSO.jumpForce), ForceMode2D.Impulse);
+                _rigidbody.AddForce(new Vector2(Mathf.Round(MovementInput.x) * (_playerStatsSO.jumpForce / 2.5f), _playerStatsSO.jumpForce), ForceMode2D.Impulse);
             }
         }
     }

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class CharacterMenu : BaseMenu
 {
 	[SerializeField] private BaseMenu _baseMenu = default;
+	[SerializeField] private Image _characterOneImage = default;
 	[SerializeField] private Image _characterTwoImage = default;
 	[SerializeField] private Animator _characterOneAnimator = default;
 	[SerializeField] private Animator _characterTwoAnimator = default;
@@ -25,6 +26,7 @@ public class CharacterMenu : BaseMenu
 	{
 		if (isPlayerOne)
 		{
+			_characterOneImage.enabled = true;
 			_playerOneName.text = characterName;
 			_characterOneAnimator.runtimeAnimatorController = animatorController;
 		}
@@ -40,6 +42,7 @@ public class CharacterMenu : BaseMenu
 				_characterTwoImage.transform.localScale = new Vector2(-1.0f, 1.0f);
 				_playerTwoName.transform.localScale = new Vector2(-1.0f, 1.0f);
 			}
+			_characterTwoImage.enabled = true;
 			_playerTwoName.text = characterName;
 			_characterTwoAnimator.runtimeAnimatorController = animatorController;
 		}
@@ -80,7 +83,12 @@ public class CharacterMenu : BaseMenu
 
 	private void OnDisable()
 	{
-		_playerTwoName.enabled = false;
+		_playerOneName.text = "";
+		_characterOneImage.enabled = false;
+		_characterOneAnimator.runtimeAnimatorController = null;
+		_playerTwoName.text = "";
+		_characterTwoImage.enabled = false;
+		_characterTwoAnimator.runtimeAnimatorController = null;
 		_playerOneSelector.transform.localPosition = new Vector2(-180.0f, -190.0f);
 		_playerTwoSelector.transform.localPosition = new Vector2(-180.0f, -190.0f);
 		_playerTwoSelector.gameObject.SetActive(false);

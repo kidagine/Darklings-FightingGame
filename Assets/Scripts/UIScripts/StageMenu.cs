@@ -11,7 +11,8 @@ public class StageMenu : BaseMenu
 
 	public void SelectStageImage()
 	{
-		StartCoroutine(SelectStageCoroutine());
+		SceneManager.LoadScene(2);
+		//StartCoroutine(SelectStageCoroutine());
 	}
 
 	public void SetStageImage(Sprite sprite)
