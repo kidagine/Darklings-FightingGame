@@ -1,14 +1,12 @@
 using System.Collections;
 using TMPro;
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CharacterMenu : BaseMenu
 {
 	[SerializeField] private BaseMenu _baseMenu = default;
-	[SerializeField] private Image _characterOneImage = default;
-	[SerializeField] private Image _characterTwoImage = default;
+	[SerializeField] private SpriteRenderer _characterOneImage = default;
+	[SerializeField] private SpriteRenderer _characterTwoImage = default;
 	[SerializeField] private Animator _characterOneAnimator = default;
 	[SerializeField] private Animator _characterTwoAnimator = default;
 	[SerializeField] private TextMeshProUGUI _playerOneName = default;
@@ -22,25 +20,31 @@ public class CharacterMenu : BaseMenu
 		_playerTwoSelector.gameObject.SetActive(true);
 	}
 
-	public void SetCharacterOneImage(bool isPlayerOne, AnimatorController animatorController, string characterName)
+	public void SetCharacterOneImage(bool isPlayerOne, RuntimeAnimatorController animatorController, string characterName)
 	{
 		if (isPlayerOne)
 		{
+			_playerOneName.enabled = true;
+			if (animatorController.name == "RandomSelectAnimator")
+			{
+				_characterTwoImage.flipX = false;
+				_playerOneName.enabled = false;
+			}
 			_characterOneImage.enabled = true;
 			_playerOneName.text = characterName;
 			_characterOneAnimator.runtimeAnimatorController = animatorController;
 		}
 		else
 		{
+			_playerTwoName.enabled = true;
 			if (animatorController.name == "RandomSelectAnimator")
 			{
-				_characterTwoImage.transform.localScale = Vector2.one;
-				_playerTwoName.transform.localScale = Vector2.one;
+				_characterTwoImage.flipX = false;
+				_playerTwoName.enabled = false;
 			}
 			else
 			{
-				_characterTwoImage.transform.localScale = new Vector2(-1.0f, 1.0f);
-				_playerTwoName.transform.localScale = new Vector2(-1.0f, 1.0f);
+				_characterTwoImage.flipX = true;
 			}
 			_characterTwoImage.enabled = true;
 			_playerTwoName.text = characterName;
@@ -50,6 +54,8 @@ public class CharacterMenu : BaseMenu
 
 	public void SelectCharacterOneImage(bool isPlayerOne)
 	{
+		_playerOneName.enabled = true;
+		_playerTwoName.enabled = true;
 		if (isPlayerOne)
 		{
 			_characterOneAnimator.SetBool("IsTaunting", true);

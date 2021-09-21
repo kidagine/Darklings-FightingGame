@@ -5,7 +5,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
 	[SerializeField] private PlayerStatsSO _playerStats = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
-	[SerializeField] private GameObject _pushbox = default;
+	[SerializeField] private Pushbox _pushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] private Transform _effectsParent = default;
 	private Transform _otherPlayer;
@@ -198,14 +198,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerUI.SetLives();
 	}
 
-	private void SetPushbox(bool state)
+	public void SetPushboxTrigger(bool state)
 	{
-		_pushbox.SetActive(state);
+		_pushbox.SetIsTrigger(state);
+	}
+
+	public void SetPushbox(bool state)
+	{
+		_pushbox.gameObject.SetActive(state);
 	}
 
 	public void SetHurtbox(bool state)
 	{
-		_hurtbox.SetActive(state);
+		_hurtbox.gameObject.SetActive(state);
 	}
 
 	public void Stun(float hitStun)

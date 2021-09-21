@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerCharacterSelector : MonoBehaviour
@@ -120,7 +119,7 @@ public class PlayerCharacterSelector : MonoBehaviour
         if (currentPosition == new Vector2(collision.transform.localPosition.x, collision.transform.localPosition.y))
         {
             _audio.Sound("Selected").Play();
-            AnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
+            RuntimeAnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
             string characterName = collision.GetComponent<CharacterButton>().CharacterName;
             _characterMenu.SetCharacterOneImage(_isPlayerOne, animatorController, characterName);
             //Debug.Log(collision.transform.localPosition);

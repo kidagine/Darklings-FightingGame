@@ -107,6 +107,8 @@ public class GameManager : MonoBehaviour
         _playerTwo.SetOtherPlayer(_playerOne.transform);
         _playerTwo.IsPlayerOne = false;
         _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
+        _playerOne.name = "PlayerOne";
+        _playerTwo.name = "PlayerTwo";
 
         if (_isTrainingMode)
         {
@@ -286,6 +288,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator RoundOverCoroutine()
     {
+        _audio.Sound("Round").Play();
         HasGameStarted = false;
         _readyText.text = "ROUND OVER";
         Time.timeScale = 0.25f;

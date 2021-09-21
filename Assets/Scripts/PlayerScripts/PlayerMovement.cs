@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     private Rigidbody2D _rigidbody;
     private Audio _audio;
     private bool _isMovementLocked;
+    private bool _onTopOfPlayer;
 
     public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
@@ -44,7 +45,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     private void Movement()
     {
-        if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking)
+        if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_onTopOfPlayer)
         {
             if (!_isMovementLocked)
             {
@@ -106,7 +107,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             }
             else
             {
-                _rigidbody.AddForce(new Vector2(Mathf.Round(MovementInput.x) * (_playerStatsSO.jumpForce / 2.5f), _playerStatsSO.jumpForce), ForceMode2D.Impulse);
+                _rigidbody.AddForce(new Vector2(Mathf.Round(MovementInput.x) * (_playerStatsSO.jumpForce / 2.5f), _playerStatsSO.jumpForce + 1.0f), ForceMode2D.Impulse);
             }
         }
     }
@@ -132,25 +133,36 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void GroundedPoint(Transform other, float point)
     {
-        if (point == -1.0f && _rigidbody.velocity.y < 0.0f)
+        if (_rigidbody.velocity.y < 0.0f)
         {
-            if (transform.position.x > 7.85f)
-            {
-                transform.position += new Vector3(-1f, -1.5f, 0.0f);
-            }
-            else if (transform.position.x < -7.85f)
-            {
-                transform.position += new Vector3(1f, -1.5f, 0.0f);
-            }
-            else 
-            {
-                transform.position += new Vector3(-0.5f * transform.localScale.x, -1.5f, 0.0f);
-            }
+            _onTopOfPlayer = true;
             _rigidbody.velocity = Vector2.zero;
+            float pushForceX = 8.0f;
+            float pushForceY = -2.0f;
+            if (other.position.x > 9.25f)
+            {
+                _rigidbody.AddForce(new Vector2(-pushForceX, pushForceY), ForceMode2D.Impulse);
+            }
+            else if (other.position.x < -9.25f)
+            {
+                _rigidbody.AddForce(new Vector2(pushForceX, pushForceY), ForceMode2D.Impulse);
+            }
+            else
+            {
+                _rigidbody.AddForce(new Vector2(-pushForceX * transform.localScale.x, pushForceY), ForceMode2D.Impulse);
+            }
         }
     }
 
-	public void OnGrounded()
+    public void GroundedPointExit()
+    {
+        if (_onTopOfPlayer)
+        {
+            _onTopOfPlayer = false;
+        }
+    }
+
+    public void OnGrounded()
 	{
         if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
