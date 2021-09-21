@@ -5,7 +5,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
 	[SerializeField] private PlayerStatsSO _playerStats = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
-	[SerializeField] private Pushbox _pushbox = default;
+	[SerializeField] private Pushbox _groundPushbox = default;
+	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] private Transform _effectsParent = default;
 	private Transform _otherPlayer;
@@ -56,7 +57,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_effectsParent.gameObject.SetActive(true);
 		_playerMovement.SetLockMovement(false);
 		_playerAnimator.Rebind();
-		SetPushbox(true);
+		SetGroundPushBox(true);
 		SetHurtbox(true);
 		InitializeStats();
 	}
@@ -173,7 +174,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		DestroyEffects();
 		_playerAnimator.Death();
 		_playerController.enabled = false;
-		SetPushbox(false);
+		SetGroundPushBox(false);
 		SetHurtbox(false);
 		if (!_isDead)
 		{
@@ -200,12 +201,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void SetPushboxTrigger(bool state)
 	{
-		_pushbox.SetIsTrigger(state);
+		_groundPushbox.SetIsTrigger(state);
 	}
 
-	public void SetPushbox(bool state)
+	public void SetGroundPushBox(bool state)
 	{
-		_pushbox.gameObject.SetActive(state);
+		_groundPushbox.gameObject.SetActive(state);
+	}
+
+	public void SetAirPushBox(bool state)
+	{
+		_airPushbox.gameObject.SetActive(state);
 	}
 
 	public void SetHurtbox(bool state)

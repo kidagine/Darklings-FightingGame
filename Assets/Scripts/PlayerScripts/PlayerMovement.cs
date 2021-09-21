@@ -94,6 +94,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
         if (IsGrounded && !_player.IsAttacking && !_player.IsBlocking)
         {
+            _player.SetPushboxTrigger(true);
+            _player.SetAirPushBox(true);
             Instantiate(_dustUpPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Jump").Play();
             IsGrounded = false;
@@ -135,21 +137,19 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         if (_rigidbody.velocity.y < 0.0f)
         {
-            _onTopOfPlayer = true;
-            _rigidbody.velocity = Vector2.zero;
             float pushForceX = 8.0f;
-            float pushForceY = -2.0f;
-            if (other.position.x > 9.25f)
+            float pushForceY = -4.0f;
+            if (other.position.x > 9.0f)
             {
+                _onTopOfPlayer = true;
+                _rigidbody.velocity = Vector2.zero;
                 _rigidbody.AddForce(new Vector2(-pushForceX, pushForceY), ForceMode2D.Impulse);
             }
-            else if (other.position.x < -9.25f)
+            else if (other.position.x < -9.0f)
             {
+                _onTopOfPlayer = true;
+                _rigidbody.velocity = Vector2.zero;
                 _rigidbody.AddForce(new Vector2(pushForceX, pushForceY), ForceMode2D.Impulse);
-            }
-            else
-            {
-                _rigidbody.AddForce(new Vector2(-pushForceX * transform.localScale.x, pushForceY), ForceMode2D.Impulse);
             }
         }
     }
@@ -166,6 +166,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
         if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
+            _player.SetPushboxTrigger(false);
+            _player.SetAirPushBox(false);
             Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
             _player.IsAttacking = false;

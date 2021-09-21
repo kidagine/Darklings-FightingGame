@@ -31,19 +31,19 @@ public class Pushbox : MonoBehaviour
         }
     }
 
-	private void OnCollisionEnter2D(Collision2D collision)
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.transform.root.TryGetComponent(out IPushboxResponder pushboxResponder))
 		{
-			float point = collision.contacts[0].normal.y;
+			float point = -1;
 			if (point == -1.0f)
 			{
-				pushboxResponder.GroundedPoint(transform, collision.contacts[0].normal.y);
+				pushboxResponder.GroundedPoint(transform, point);
 			}
 		}
 	}
 
-	private void OnCollisionExit2D(Collision2D collision)
+	private void OnTriggerExit2D(Collider2D collision)
 	{
 		if (collision.transform.root.TryGetComponent(out IPushboxResponder pushboxResponder))
 		{
