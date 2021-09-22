@@ -22,6 +22,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
+	public bool HitMiddair { get; set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
 
@@ -79,11 +80,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (!_isDead)
 		{
-			if (_otherPlayer.position.x > transform.position.x)
+			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.0f && !IsAttacking)
 			{
 				transform.localScale = new Vector2(1.0f, transform.localScale.y);
 			}
-			else
+			else if (transform.position.x > -9.0f && !IsAttacking)
 			{
 				transform.localScale = new Vector2(-1.0f, transform.localScale.y);
 			}
@@ -120,6 +121,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool TakeDamage(AttackSO attackSO)
 	{
 		DestroyEffects();
+		if (!_playerMovement.IsGrounded)
+		{
+			HitMiddair = true;
+		}
 		_playerAnimator.IsHurt(true);
 		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
 		if (CheckIsBlocking() && !attackSO.canGuardBreak)
@@ -138,7 +143,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			//_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
 			_playerUI.SetHealth(Health);
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), attackSO.knockback);
+			if (HitMiddair)
+			{
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), 7.0f);
+			}
+			else
+			{
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), attackSO.knockback);
+			}
 			IsAttacking = false;
 			if (Health <= 0)
 			{
@@ -241,9 +253,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerMovement.SetLockMovement(true);
 		_playerController.DeactivateInput();
 		yield return new WaitForSeconds(hitStun);
-		_playerController.ActivateInput();
-		_playerMovement.SetLockMovement(false);
-		_playerAnimator.IsHurt(false);
+		if (!HitMiddair)
+		{
+			_playerController.ActivateInput();
+			_playerMovement.SetLockMovement(false);
+			_playerAnimator.IsHurt(false);
+		}
 		//_otherPlayerUI.ResetCombo();
 	}
 

@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     [SerializeField] private GameObject _dustUpPrefab = default;
     [SerializeField] private GameObject _dustDownPrefab = default;
     private Player _player;
+    private BaseController _playerController;
     private Rigidbody2D _rigidbody;
     private Audio _audio;
     private bool _isMovementLocked;
@@ -23,9 +24,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _player = GetComponent<Player>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _audio = GetComponent<Audio>();
+        _playerController = GetComponent<BaseController>();
     }
 
-	void FixedUpdate()
+    void FixedUpdate()
     {
         Movement();
         JumpControl();
@@ -123,14 +125,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         MovementInput = Vector2.zero;
         _rigidbody.velocity = Vector2.zero;
         _isMovementLocked = state;
-  //      if (state)
-		//{
-		//	_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-		//}
-		//else
-		//{
-		//	_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-		//}
 	}
 
     public void GroundedPoint(Transform other, float point)
@@ -166,6 +160,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
         if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
+            _onTopOfPlayer = false;
             _player.SetPushboxTrigger(false);
             _player.SetAirPushBox(false);
             Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
@@ -174,6 +169,13 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             _playerAnimator.IsJumping(false);
             IsGrounded = true;
             _isMovementLocked = false;
+            if (_player.HitMiddair)
+            {
+                _player.HitMiddair = false;
+                SetLockMovement(false);
+                _playerController.ActivateInput();
+                _playerAnimator.IsHurt(false);
+            }
         }
     }
 

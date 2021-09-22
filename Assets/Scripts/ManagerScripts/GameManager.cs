@@ -141,10 +141,12 @@ public class GameManager : MonoBehaviour
     IEnumerator RoundTieCoroutine()
     {
         HasGameStarted = false;
+        _audio.Sound("TextSound").Play();
         _readyText.text = "ROUND OVER";
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(0.5f);
-        _readyText.text = "TIME OUT";
+        _audio.Sound("TextSound").Play();
+        _readyText.text = "TIME'S OUT";
         yield return new WaitForSeconds(0.5f);
         _readyText.text = "";
         StartRound();
@@ -184,8 +186,10 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = _gameSpeed;
         yield return new WaitForSeconds(0.5f);
+        _audio.Sound("TextSound").Play();
         _readyText.text = "Ready?";
         yield return new WaitForSeconds(1.0f);
+        _audio.Sound("TextSound").Play();
         _readyText.text = "GO!";
         yield return new WaitForSeconds(0.5f);
         _readyText.text = "";
@@ -291,26 +295,36 @@ public class GameManager : MonoBehaviour
     IEnumerator RoundOverCoroutine()
     {
         _audio.Sound("Round").Play();
+        bool hasPlayerOneDied = _playerOne.Health <= 0.0f;
+        bool hasPlayerTwoDied = _playerTwo.Health <= 0.0f;
+        if (!hasPlayerOneDied && hasPlayerTwoDied)
+        {
+            _playerTwo.LoseLife();
+        }
+        else
+        {
+            _playerOne.LoseLife();
+        }
         HasGameStarted = false;
+        _audio.Sound("TextSound").Play();
         _readyText.text = "ROUND OVER";
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(1.5f);
-        bool hasPlayerOneDied = _playerOne.Health <= 0.0f;
-        bool hasPlayerTwoDied = _playerTwo.Health <= 0.0f;
         if (hasPlayerOneDied && hasPlayerTwoDied)
         {
+            _audio.Sound("TextSound").Play();
             _readyText.text = "TIE";
         }
         else
         {
             if (!hasPlayerOneDied)
             {
-                _playerTwo.LoseLife();
+                _audio.Sound("TextSound").Play();
                 _readyText.text = "P1 WINS";
             }
             else
             {
-                _playerOne.LoseLife();
+                _audio.Sound("TextSound").Play();
                 _readyText.text = "P2 WINS";
             }
         }
@@ -330,25 +344,36 @@ public class GameManager : MonoBehaviour
     IEnumerator MatchOverCoroutine()
     {
         HasGameStarted = false;
+        _audio.Sound("Round").Play();
+        bool hasPlayerOneDied = _playerOne.Health <= 0.0f;
+        bool hasPlayerTwoDied = _playerTwo.Health <= 0.0f;
+        if (!hasPlayerOneDied && hasPlayerTwoDied)
+        {
+            _playerTwo.LoseLife();
+        }
+        else
+        {
+            _playerOne.LoseLife();
+        }
+        _audio.Sound("TextSound").Play();
         _readyText.text = "MATCH OVER";
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(1.5f);
-        bool hasPlayerOneDied = _playerOne.Health <= 0.0f;
-        bool hasPlayerTwoDied = _playerTwo.Health <= 0.0f;
         if (hasPlayerOneDied && hasPlayerTwoDied)
         {
+            _audio.Sound("TextSound").Play();
             _readyText.text = "TIE";
         }
         else
         {
             if (!hasPlayerOneDied)
             {
-                _playerTwo.LoseLife();
+                _audio.Sound("TextSound").Play();
                 _readyText.text = "P1 WINS";
             }
             else
             {
-                _playerOne.LoseLife();
+                _audio.Sound("TextSound").Play();
                 _readyText.text = "P2 WINS";
             }
         }
