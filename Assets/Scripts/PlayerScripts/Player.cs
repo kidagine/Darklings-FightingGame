@@ -133,7 +133,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else
 		{
-			_audio.Sound("Hurt").Play();
+			_audio.Sound(attackSO.impactSound).Play();
 			Health--;
 			//_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
@@ -178,7 +178,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		SetHurtbox(false);
 		if (!_isDead)
 		{
-			if (GameManager.Instance.HasGameStarted)
+			if (GameManager.Instance.HasGameStarted && !GameManager.Instance.IsTrainingMode)
 			{
 				_lives--;
 			}

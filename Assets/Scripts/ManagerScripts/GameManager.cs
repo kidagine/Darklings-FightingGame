@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     private bool _reverseReset;
 
     public bool HasGameStarted { get; set; }
+	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public static GameManager Instance { get; private set; }
 
 
@@ -176,9 +177,10 @@ public class GameManager : MonoBehaviour
         _rightStopper.SetActive(false);
         _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
         _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+        HasGameStarted = true;
     }
 
-	IEnumerator ReadyCoroutine()
+    IEnumerator ReadyCoroutine()
     {
         Time.timeScale = _gameSpeed;
         yield return new WaitForSeconds(0.5f);
