@@ -122,9 +122,9 @@ public class PlayerCharacterSelector : MonoBehaviour
             RuntimeAnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
             string characterName = collision.GetComponent<CharacterButton>().CharacterName;
             _characterMenu.SetCharacterOneImage(_isPlayerOne, animatorController, characterName);
-            //Debug.Log(collision.transform.localPosition);
-            //Debug.Log(currentPosition);
-            //Debug.Log(_animatorController.name);
+                //Debug.Log(collision.transform.localPosition);
+                //Debug.Log(currentPosition);
+                //Debug.Log(_animatorController.name);
         }
         if (collision.transform.localPosition.x > currentPosition.x)
         {

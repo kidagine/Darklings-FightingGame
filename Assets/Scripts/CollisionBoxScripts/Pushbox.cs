@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Pushbox : MonoBehaviour
 {
@@ -56,4 +55,3 @@ public class Pushbox : MonoBehaviour
 		_boxCollider.isTrigger = state;
 	}
 }
-#endif
