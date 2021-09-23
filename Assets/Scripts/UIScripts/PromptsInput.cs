@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
 public class PromptsInput : MonoBehaviour
 {
@@ -12,13 +11,17 @@ public class PromptsInput : MonoBehaviour
 
 	private void Update()
     {
-        if (Input.GetButtonDown("Keyboard" + "Confirm"))
+        if (Input.GetButtonDown("Keyboard" + "Confirm") || Input.GetButtonDown("ControllerOne" + "Confirm") || Input.GetButtonDown("ControllerTwo" + "Confirm"))
         {
             _confirmUnityEvent?.Invoke();
         }
-        if (Input.GetButtonDown("Keyboard" + "Back"))
+        if (Input.GetButtonDown("Keyboard" + "Back") || Input.GetButtonDown("ControllerOne" + "Back"))
         {
             _backUnityEvent?.Invoke();
+        }
+        if (Input.GetButtonDown("Keyboard" + "Reset"))
+        {
+            _mainSpecialUnityEvent?.Invoke();
         }
     }
  }

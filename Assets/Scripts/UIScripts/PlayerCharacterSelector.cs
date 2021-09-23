@@ -25,7 +25,7 @@ public class PlayerCharacterSelector : MonoBehaviour
         _audio = GetComponent<Audio>();
     }
 
-    private void Start()
+    private void OnEnable()
 	{
         _rectTransform = GetComponent<RectTransform>();
         if (_isPlayerOne)
@@ -43,7 +43,14 @@ public class PlayerCharacterSelector : MonoBehaviour
         {
             if (SceneSettings.ControllerTwo == "")
             {
-                _controllerInputName = "Keyboard";
+                if (SceneSettings.ControllerOne == "")
+                {
+                    _controllerInputName = "Keyboard";
+                }
+                else
+                {
+                    _controllerInputName = SceneSettings.ControllerOne;
+                }
             }
             else
             {
@@ -94,6 +101,7 @@ public class PlayerCharacterSelector : MonoBehaviour
             }
             if (Input.GetButtonDown(_controllerInputName + "Confirm"))
             {
+                Debug.Log(_controllerInputName);
                 _audio.Sound("Pressed").Play();
                 HasSelected = true;
                 _characterMenu.SelectCharacterOneImage(_isPlayerOne);
@@ -122,9 +130,6 @@ public class PlayerCharacterSelector : MonoBehaviour
             RuntimeAnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
             string characterName = collision.GetComponent<CharacterButton>().CharacterName;
             _characterMenu.SetCharacterOneImage(_isPlayerOne, animatorController, characterName);
-                //Debug.Log(collision.transform.localPosition);
-                //Debug.Log(currentPosition);
-                //Debug.Log(_animatorController.name);
         }
         if (collision.transform.localPosition.x > currentPosition.x)
         {

@@ -172,7 +172,6 @@ public class PlayersMenu : BaseMenu
         _audio.Sound("Pressed").Play();
         SceneSettings.ControllerTwo = "KeyboardTwo";
         SceneSettings.ControllerOne = "KeyboardOne";
-        _characterMenu.EnablePlayerTwoSelector();
         gameObject.SetActive(false);
         _characterMenu.Show();
     }
