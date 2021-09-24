@@ -27,7 +27,6 @@ public class PlayerController : BaseController
 
     private void Movement()
     {
-        Debug.Log(Input.GetAxisRaw(ControllerInputName + "Vertical"));
         _playerMovement.MovementInput = new Vector2(Input.GetAxisRaw(ControllerInputName + "Horizontal"), Input.GetAxisRaw(ControllerInputName + "Vertical"));
 	}
 

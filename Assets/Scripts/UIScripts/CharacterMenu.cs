@@ -13,10 +13,12 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _playerTwoName = default;
 	[SerializeField] private PlayerCharacterSelector _playerOneSelector = default;
 	[SerializeField] private PlayerCharacterSelector _playerTwoSelector = default;
+	private bool _isPlayerTwoEnabled;
 
 
 	public void EnablePlayerTwoSelector()
 	{
+		_isPlayerTwoEnabled = true;
 		_playerTwoSelector.gameObject.SetActive(true);
 	}
 
@@ -72,7 +74,12 @@ public class CharacterMenu : BaseMenu
 		yield return new WaitForSeconds(1.25f);
 		if (isPlayerOne)
 		{
+			_playerOneSelector.HasSelected = true;
 			_playerTwoSelector.gameObject.SetActive(true);
+		}
+		else
+		{
+			_playerTwoSelector.HasSelected = true;
 		}
 		if (_playerOneSelector.HasSelected && _playerTwoSelector.HasSelected)
 		{
@@ -85,6 +92,8 @@ public class CharacterMenu : BaseMenu
 	{
 		SceneSettings.ControllerOne = "";
 		SceneSettings.ControllerTwo = "";
+		_isPlayerTwoEnabled = false;
+		_playerTwoSelector.gameObject.SetActive(false);
 	}
 
 	private void OnDisable()
@@ -97,8 +106,13 @@ public class CharacterMenu : BaseMenu
 		_characterTwoAnimator.runtimeAnimatorController = null;
 		_playerOneSelector.transform.localPosition = new Vector2(-180.0f, -190.0f);
 		_playerTwoSelector.transform.localPosition = new Vector2(-180.0f, -190.0f);
-		_playerTwoSelector.gameObject.SetActive(false);
 		_playerOneSelector.HasSelected = false;
 		_playerTwoSelector.HasSelected = false;
+		_playerOneSelector.ResetCanGoPositions();
+		_playerTwoSelector.ResetCanGoPositions();
+		if (!_isPlayerTwoEnabled)
+		{
+			_playerTwoSelector.gameObject.SetActive(false);
+		}
 	}
 }

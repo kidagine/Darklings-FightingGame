@@ -101,9 +101,7 @@ public class PlayerCharacterSelector : MonoBehaviour
             }
             if (Input.GetButtonDown(_controllerInputName + "Confirm"))
             {
-                Debug.Log(_controllerInputName);
                 _audio.Sound("Pressed").Play();
-                HasSelected = true;
                 _characterMenu.SelectCharacterOneImage(_isPlayerOne);
             }
         }
@@ -147,5 +145,13 @@ public class PlayerCharacterSelector : MonoBehaviour
         {
             _canGoDown = true;
         }
+    }
+
+    public void ResetCanGoPositions()
+    {
+        _canGoDown = false;
+        _canGoLeft = false;
+        _canGoRight = false;
+        _canGoUp = false;
     }
 }
