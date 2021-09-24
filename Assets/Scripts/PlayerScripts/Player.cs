@@ -277,4 +277,24 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 2);
 		}
 	}
+
+	public void Pause()
+	{
+		if (GameManager.Instance.IsTrainingMode)
+		{
+			_playerUI.OpenPause();
+		}
+		else
+		{
+
+		}
+	}
+
+	public void UnPause()
+	{
+		if (!GameManager.Instance.IsTrainingMode)
+		{
+			_playerUI.ClosePause();
+		}
+	}
 }

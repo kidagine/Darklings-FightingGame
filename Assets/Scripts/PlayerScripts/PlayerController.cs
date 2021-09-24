@@ -18,6 +18,7 @@ public class PlayerController : BaseController
             Jump();
             Crouch();
             Attack();
+            Pause();
             if (_trainingController)
             {
                 ResetRound();
@@ -69,6 +70,18 @@ public class PlayerController : BaseController
         if (Input.GetButtonDown(ControllerInputName + "Reset"))
         {
             GameManager.Instance.ResetRound(_playerMovement.MovementInput);
+        }
+    }
+
+    private void Pause()
+    {
+        if (Input.GetButtonDown(ControllerInputName + "Pause"))
+        {
+            _player.Pause();
+        }
+        if (Input.GetButtonUp(ControllerInputName + "Pause"))
+        {
+            _player.UnPause();
         }
     }
 }

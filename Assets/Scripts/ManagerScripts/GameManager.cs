@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -383,5 +384,33 @@ public class GameManager : MonoBehaviour
         _currentMusic.Stop();
         _currentMusic = _audio.SoundGroup("Music").PlayInRandom();
         StartRound();
+    }
+
+    public void PauseMusic()
+    {
+        _currentMusic.Pause();
+    }
+
+    public void PlayMusic()
+    {
+        _currentMusic.Play();
+    }
+
+    public void LoadScene(int index)
+    {
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene(index);
+    }
+
+    public void DisableAllInput()
+    {
+        _playerOneController.enabled = false;
+        _playerTwoController.enabled = false;
+    }
+
+    public void EnableAllInput()
+    {
+        _playerOneController.enabled = true;
+        _playerTwoController.enabled = true;
     }
 }

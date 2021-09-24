@@ -26,6 +26,12 @@ public class BaseMenu : MonoBehaviour
 		StartCoroutine(ActivateCoroutine());
 	}
 
+	public void Hide()
+	{
+		EventSystem.current.SetSelectedGameObject(null);
+		gameObject.SetActive(false);
+	}
+
 	void OnEnable()
 	{
 		StartCoroutine(ActivateCoroutine());

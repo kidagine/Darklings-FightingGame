@@ -13,6 +13,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _comboText = default;
     [SerializeField] private Transform _healthDividerPivot = default;
     [SerializeField] private GameObject _healthDividerPrefab = default;
+    [SerializeField] private BaseMenu _pauseMenu = default;
     private int _currentLifeIndex;
     private int _currentComboCount;
     private bool _hasComboEnded;
@@ -104,6 +105,22 @@ public class PlayerUI : MonoBehaviour
     public void ResetCombo()
     {
         StartCoroutine(ResetComboCoroutine());
+    }
+
+    public void OpenPause()
+    {
+        Time.timeScale = 0.0f;
+        GameManager.Instance.DisableAllInput();
+        GameManager.Instance.PauseMusic();
+        _pauseMenu.Show();
+    }
+
+    public void ClosePause()
+    {
+        Time.timeScale = 1.0f;
+        GameManager.Instance.EnableAllInput();
+        GameManager.Instance.PlayMusic();
+        _pauseMenu.Hide();
     }
 
     IEnumerator ResetComboCoroutine()
