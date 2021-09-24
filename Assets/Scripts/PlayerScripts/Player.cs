@@ -286,7 +286,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else
 		{
-
+			_playerUI.OpenPauseHold();
 		}
 	}
 
@@ -294,7 +294,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (!GameManager.Instance.IsTrainingMode)
 		{
-			_playerUI.ClosePause();
+			_playerUI.ClosePauseHold();
 		}
 	}
 }
