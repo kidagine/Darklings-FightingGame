@@ -32,7 +32,14 @@ public class PlayerCharacterSelector : MonoBehaviour
         {
             if (SceneSettings.ControllerOne == "")
             {
-                _controllerInputName = "Keyboard";
+                if (SceneSettings.ControllerTwo == "")
+                {
+                    _controllerInputName = "Keyboard";
+                }
+                else
+                {
+                    _controllerInputName = SceneSettings.ControllerTwo;
+                }
             }
             else
             {
