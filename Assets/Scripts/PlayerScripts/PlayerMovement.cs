@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void CrouchAction()
     {
-        if (!_player.IsAttacking && !_player.IsBlocking)
+        if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing)
         {
             if (IsGrounded)
             {
@@ -200,7 +200,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         {
             _audio.Sound("Dash").Play();
             _playerAnimator.IsDashing(true);
-            Instantiate(_dashPrefab, transform.position, Quaternion.identity);
+            //Instantiate(_dashPrefab, transform.position, Quaternion.identity);
             _rigidbody.velocity = new Vector2(directionX, 0.0f) * _playerStatsSO.dashForce;
             IsDashing = true;
             ZeroGravity();
@@ -220,6 +220,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _rigidbody.velocity = Vector2.zero;
         ResetGravity();
         yield return new WaitForSeconds(0.1f);
+        IsDashing = false;
+    }
+
+    public void StopDash()
+    {
+        _playerAnimator.IsDashing(false);
+        _rigidbody.velocity = Vector2.zero;
+        ResetGravity();
         IsDashing = false;
     }
 

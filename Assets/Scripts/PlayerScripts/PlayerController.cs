@@ -2,13 +2,15 @@ using UnityEngine;
 
 public class PlayerController : BaseController
 {
-    private float timeOfFirstButton = 0.0f;
     private bool _hasJumped;
-    private bool firstButtonPressed;
     private bool reset;
     private bool k;
     private bool j;
-
+    private float _dashInputCooldown;
+    private bool reset2;
+    private bool k2;
+    private bool j2;
+    private float _dashInputCooldown2;
     void Awake()
     {
         _player = GetComponent<Player>();
@@ -93,22 +95,28 @@ public class PlayerController : BaseController
 
     private void Dash()
     {
+        DoubleTapAxis(1);
+        DoubleTapAxis2(-1);
+    }
+
+    private void DoubleTapAxis(int directionX)
+    {
         float input = Input.GetAxisRaw(ControllerInputName + "Horizontal");
-        if (input == 1.0f || input == -1.0f)
+        if (input == directionX)
         {
-			if (k)
-			{
+            if (_dashInputCooldown > 0 && k)
+            {
                 if (!j)
                 {
-                    Debug.Log("DoubleClicked");
                     _playerMovement.Dash(input);
                 }
                 j = true;
             }
             else
             {
+                _dashInputCooldown = 0.15f;
                 reset = true;
-			}
+            }
         }
         else if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 0.0f && reset)
         {
@@ -121,38 +129,57 @@ public class PlayerController : BaseController
             }
         }
 
-        //if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 1.0f && firstButtonPressed)
-        //{
-        //    if (Time.time - timeOfFirstButton < 0.5f)
-        //    {
-        //        Debug.Log("DoubleClicked");
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Too late");
-        //    }
+        if (_dashInputCooldown > 0)
+        {
+            _dashInputCooldown -= 1 * Time.deltaTime;
+        }
+        else
+        {
+            reset = false;
+            k = false;
+            j = false;
+        }
+    }
 
-        //    reset = true;
-        //}
-        //else if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 0.0f)
-        //{
-        //    Debug.Log("1");
-        //    k = true;
-        //}
-        //if (k)
-        //{
-        //    if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 1.0 && !firstButtonPressed)
-        //    {
-        //        firstButtonPressed = true;
-        //        timeOfFirstButton = Time.time;
-        //    }
+    private void DoubleTapAxis2(int directionX)
+    {
+        float input = Input.GetAxisRaw(ControllerInputName + "Horizontal");
+        if (input == directionX)
+        {
+            if (_dashInputCooldown2 > 0 && k2)
+            {
+                if (!j2)
+                {
+                    _playerMovement.Dash(input);
+                }
+                j2 = true;
+            }
+            else
+            {
+                _dashInputCooldown2 = 0.15f;
+                reset2 = true;
+            }
+        }
+        else if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 0.0f && reset2)
+        {
+            k2 = true;
+            if (j2)
+            {
+                reset2 = false;
+                k2 = false;
+                j2 = false;
+            }
+        }
 
-        //    if (reset)
-        //    {
-        //        firstButtonPressed = false;
-        //        reset = false;
-        //    }
-        //}
-
+        if (_dashInputCooldown2 > 0)
+        {
+            _dashInputCooldown2 -= 1 * Time.deltaTime;
+        }
+        else
+        {
+            reset2 = false;
+            k2 = false;
+            j2 = false;
+        }
     }
 }

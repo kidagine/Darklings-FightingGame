@@ -140,6 +140,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_audio.Sound(attackSO.impactSound).Play();
 			Health--;
+			_playerMovement.StopDash();
 			//_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
 			_playerUI.SetHealth(Health);
