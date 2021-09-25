@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour, IPushboxResponder
@@ -6,6 +7,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     [SerializeField] private PlayerStatsSO _playerStatsSO = default;
     [SerializeField] private GameObject _dustUpPrefab = default;
     [SerializeField] private GameObject _dustDownPrefab = default;
+    [SerializeField] private GameObject _dashPrefab = default;
+    [SerializeField] private GameObject _playerGhostPrefab = default;
     private Player _player;
     private BaseController _playerController;
     private Rigidbody2D _rigidbody;
@@ -17,9 +20,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     public bool IsGrounded { get; set; } = true;
     public bool IsCrouching { get; private set; }
     public bool IsMoving { get; private set; }
+	public bool IsDashing { get; private set; }
 
 
-    void Awake()
+	void Awake()
     {
         _player = GetComponent<Player>();
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -47,7 +51,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     private void Movement()
     {
-        if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_onTopOfPlayer)
+        if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_onTopOfPlayer && !IsDashing)
         {
             if (!_isMovementLocked)
             {
@@ -94,7 +98,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void JumpAction()
 	{
-        if (IsGrounded && !_player.IsAttacking && !_player.IsBlocking)
+        if (IsGrounded && !_player.IsAttacking && !_player.IsBlocking && !IsDashing)
         {
             _player.SetPushboxTrigger(true);
             _player.SetAirPushBox(true);
@@ -188,5 +192,44 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     public void Knockback(Vector2 knockbackDirection, float knockbackForce)
     {
         _rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+    }
+
+    public void Dash(float directionX)
+    {
+        if (IsGrounded && !IsDashing && !IsCrouching && !_player.IsAttacking)
+        {
+            _audio.Sound("Dash").Play();
+            _playerAnimator.IsDashing(true);
+            Instantiate(_dashPrefab, transform.position, Quaternion.identity);
+            _rigidbody.velocity = new Vector2(directionX, 0.0f) * _playerStatsSO.dashForce;
+            IsDashing = true;
+            ZeroGravity();
+            StartCoroutine(DashCoroutine());
+        }
+    }
+
+    IEnumerator DashCoroutine()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject playerGhost = Instantiate(_playerGhostPrefab, transform.position, Quaternion.identity);
+            playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.localScale.x, Color.white);
+            yield return new WaitForSeconds(0.08f);
+        }
+        _playerAnimator.IsDashing(false);
+        _rigidbody.velocity = Vector2.zero;
+        ResetGravity();
+        yield return new WaitForSeconds(0.1f);
+        IsDashing = false;
+    }
+
+    public void ResetGravity()
+    {
+        _rigidbody.gravityScale = 2.0f;
+    }
+
+    private void ZeroGravity()
+    {
+        _rigidbody.gravityScale = 0.0f;
     }
 }

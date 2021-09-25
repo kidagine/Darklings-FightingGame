@@ -3,10 +3,13 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     private Animator animator;
-    
+    private SpriteRenderer _spriteRenderer;
+
+
     void Awake()
     {
-        animator = GetComponent<Animator>();    
+        animator = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void SetMove(bool state)
@@ -43,6 +46,10 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator.SetBool("IsBlocking", state);
     }
+    public void IsDashing(bool state)
+    {
+        animator.SetBool("IsDashing", state);
+    }
 
     public void Death()
     {
@@ -52,5 +59,10 @@ public class PlayerAnimator : MonoBehaviour
     public void Rebind()
     {
         animator.Rebind();
+    }
+
+    public Sprite GetCurrentSprite()
+    {
+        return _spriteRenderer.sprite;
     }
 }

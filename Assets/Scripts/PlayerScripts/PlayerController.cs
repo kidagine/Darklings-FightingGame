@@ -2,7 +2,12 @@ using UnityEngine;
 
 public class PlayerController : BaseController
 {
+    private float timeOfFirstButton = 0.0f;
     private bool _hasJumped;
+    private bool firstButtonPressed;
+    private bool reset;
+    private bool k;
+    private bool j;
 
     void Awake()
     {
@@ -19,6 +24,7 @@ public class PlayerController : BaseController
             Crouch();
             Attack();
             Pause();
+            Dash();
             if (_trainingController)
             {
                 ResetRound();
@@ -83,5 +89,70 @@ public class PlayerController : BaseController
         {
             _player.UnPause();
         }
+    }
+
+    private void Dash()
+    {
+        float input = Input.GetAxisRaw(ControllerInputName + "Horizontal");
+        if (input == 1.0f || input == -1.0f)
+        {
+			if (k)
+			{
+                if (!j)
+                {
+                    Debug.Log("DoubleClicked");
+                    _playerMovement.Dash(input);
+                }
+                j = true;
+            }
+            else
+            {
+                reset = true;
+			}
+        }
+        else if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 0.0f && reset)
+        {
+            k = true;
+            if (j)
+            {
+                reset = false;
+                k = false;
+                j = false;
+            }
+        }
+
+        //if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 1.0f && firstButtonPressed)
+        //{
+        //    if (Time.time - timeOfFirstButton < 0.5f)
+        //    {
+        //        Debug.Log("DoubleClicked");
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Too late");
+        //    }
+
+        //    reset = true;
+        //}
+        //else if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 0.0f)
+        //{
+        //    Debug.Log("1");
+        //    k = true;
+        //}
+        //if (k)
+        //{
+        //    if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 1.0 && !firstButtonPressed)
+        //    {
+        //        firstButtonPressed = true;
+        //        timeOfFirstButton = Time.time;
+        //    }
+
+        //    if (reset)
+        //    {
+        //        firstButtonPressed = false;
+        //        reset = false;
+        //    }
+        //}
+
     }
 }
