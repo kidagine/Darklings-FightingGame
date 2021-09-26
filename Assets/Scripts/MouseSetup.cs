@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MouseSetup : MonoBehaviour
 {
-    void Start()
+    void OnApplicationFocus(bool hasFocus)
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

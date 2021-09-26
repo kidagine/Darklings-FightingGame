@@ -18,8 +18,8 @@
       </div>
       <div id="unity-warning"> </div>
       <div id="unity-footer">
-          <div id="unity-mute-button"></div>
           <div id="unity-fullscreen-button"></div>
+          <div id="unity-mute-button"></div>
           <div id="unity-build-title">{{{ PRODUCT_NAME }}}</div>
       </div>
     </div>
@@ -29,6 +29,7 @@
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
       var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var muteButton = document.querySelector("#unity-mute-button");
       var warningBanner = document.querySelector("#unity-warning");
 
       // Shows a temporary message banner/ribbon for a few seconds, or
@@ -119,7 +120,10 @@
           loadingBar.style.display = "none";
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
-          };
+            };
+            muteButton.onclick = () => {
+                unityInstance.SendMessage('Sound_manager', 'ToggleMusic');
+            };
         }).catch((message) => {
           alert(message);
         });

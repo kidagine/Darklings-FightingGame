@@ -27,6 +27,11 @@ public class Sound
 		source.Stop();
 	}
 
+	public void Pause()
+	{
+		source.Pause();
+	}
+
 	public bool IsPlaying()
 	{
 		return source.isPlaying;

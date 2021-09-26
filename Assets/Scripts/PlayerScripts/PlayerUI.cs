@@ -13,6 +13,9 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _comboText = default;
     [SerializeField] private Transform _healthDividerPivot = default;
     [SerializeField] private GameObject _healthDividerPrefab = default;
+    [SerializeField] private Slider _pauseSlider = default;
+    [SerializeField] private BaseMenu _pauseMenu = default;
+    private Coroutine _openPauseHoldCoroutine;
     private int _currentLifeIndex;
     private int _currentComboCount;
     private bool _hasComboEnded;
@@ -104,6 +107,51 @@ public class PlayerUI : MonoBehaviour
     public void ResetCombo()
     {
         StartCoroutine(ResetComboCoroutine());
+    }
+
+    public void OpenPauseHold()
+    {
+        _pauseSlider.gameObject.SetActive(true);
+        _openPauseHoldCoroutine = StartCoroutine(OpenPauseHoldCoroutine());
+    }
+
+    IEnumerator OpenPauseHoldCoroutine()
+    {
+        float t = 0.0f;
+        while (_pauseSlider.value < _pauseSlider.maxValue)
+        {
+            _pauseSlider.value = Mathf.Lerp(0.0f, _pauseSlider.maxValue, t);
+            t += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        _pauseSlider.value = 0.0f;
+        _pauseSlider.gameObject.SetActive(false);
+        OpenPause();
+    }
+
+    public void ClosePauseHold()
+    {
+        if (_openPauseHoldCoroutine != null)
+        {
+            _pauseSlider.gameObject.SetActive(false);
+            StopCoroutine(_openPauseHoldCoroutine);
+        }
+    }
+
+    public void OpenPause()
+    {
+        Time.timeScale = 0.0f;
+        GameManager.Instance.DisableAllInput();
+        GameManager.Instance.PauseMusic();
+        _pauseMenu.Show();
+    }
+
+    public void ClosePause()
+    {
+        Time.timeScale = 1.0f;
+        GameManager.Instance.EnableAllInput();
+        GameManager.Instance.PlayMusic();
+        _pauseMenu.Hide();
     }
 
     IEnumerator ResetComboCoroutine()

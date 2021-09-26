@@ -1,3 +1,0 @@
-﻿internal interface IEnumeator
-{
-}

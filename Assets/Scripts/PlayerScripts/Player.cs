@@ -93,7 +93,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void AttackAction()
 	{
-		if (!IsAttacking && !IsBlocking)
+		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing)
 		{
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;
@@ -140,6 +140,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_audio.Sound(attackSO.impactSound).Play();
 			Health--;
+			_playerMovement.StopDash();
 			//_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
 			_playerUI.SetHealth(Health);
@@ -275,6 +276,26 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_playerMovement.SetLockMovement(true);
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 2);
+		}
+	}
+
+	public void Pause()
+	{
+		if (GameManager.Instance.IsTrainingMode)
+		{
+			_playerUI.OpenPause();
+		}
+		else
+		{
+			_playerUI.OpenPauseHold();
+		}
+	}
+
+	public void UnPause()
+	{
+		if (!GameManager.Instance.IsTrainingMode)
+		{
+			_playerUI.ClosePauseHold();
 		}
 	}
 }
