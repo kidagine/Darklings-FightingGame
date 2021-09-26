@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
     [SerializeField] protected GameObject[] _stages = default;
+    [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [Range(1, 10)]
     [SerializeField] private int _gameSpeed = 1;
     protected Player _playerOne;
@@ -111,6 +113,9 @@ public class GameManager : MonoBehaviour
         _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
         _playerOne.name = "PlayerOne";
         _playerTwo.name = "PlayerTwo";
+
+        _cinemachineTargetGroup.AddMember(_playerOne.transform, 0.5f, 0.5f);
+        _cinemachineTargetGroup.AddMember(_playerTwo.transform, 0.5f, 0.5f);
 
         if (_isTrainingMode)
         {
