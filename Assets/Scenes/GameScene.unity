@@ -742,7 +742,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.7786459, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -759,7 +759,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360034937}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: -5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1524101023}
@@ -779,8 +779,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BoundingShape2D: {fileID: 365773108}
-  m_Damping: 0.5
-  m_MaxWindowSize: -1
+  m_Damping: 4.49
+  m_MaxWindowSize: 0
 --- !u!1 &365773107
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,7 +836,7 @@ Transform:
   m_GameObject: {fileID: 365773107}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.375, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.05, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1878579724}
   m_RootOrder: 3
@@ -1392,7 +1392,7 @@ MonoBehaviour:
   _cpuPrefab: {fileID: 1039603198093386292, guid: 0ecd74519d8db044bab366c26a5fd71b, type: 3}
   _sceneSettingsDecide: 0
   _controllerOne: KeyboardOne
-  _controllerTwo: 
+  _controllerTwo: KeyboardTwo
   _isTrainingMode: 0
   _playerOneUI: {fileID: 1311574451}
   _playerTwoUI: {fileID: 372267967}
@@ -1710,7 +1710,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0.33983994, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1878579724}
@@ -2659,7 +2659,7 @@ MonoBehaviour:
     m_VelocityFilterStrength: 4
     m_Bias: 0
   m_RecenterToTargetHeading:
-    m_enabled: 1
+    m_enabled: 0
     m_WaitTime: 0
     m_RecenteringTime: 0
     m_LegacyHeadingDefinition: -1
@@ -2667,15 +2667,15 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 1111111
-    m_AccelTime: 0
-    m_DecelTime: 0
+    m_MaxSpeed: 300
+    m_AccelTime: 0.1
+    m_DecelTime: 0.1
     m_InputAxisName: 
     m_InputAxisValue: 0
     m_InvertInput: 1
     m_MinValue: -180
     m_MaxValue: 180
-    m_Wrap: 0
+    m_Wrap: 1
     m_Recentering:
       m_enabled: 0
       m_WaitTime: 1
@@ -3266,7 +3266,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1821676144}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1878579724}
@@ -3523,6 +3523,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8031722346743422817, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.75
+      objectReference: {fileID: 0}
     - target: {fileID: 8031722347820620212, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -3570,6 +3574,10 @@ PrefabInstance:
     - target: {fileID: 8031722347820620213, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_Name
       value: Stage_group
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031722348150631678, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
