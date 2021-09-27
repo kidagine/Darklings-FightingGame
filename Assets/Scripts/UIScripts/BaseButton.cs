@@ -17,6 +17,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     protected Button _button;
     protected Animator _animator;
     private bool _isIgnoringFirstSelectSound;
+    private bool _wasClicked;
 
 
     void Awake()
@@ -49,8 +50,12 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
 	public virtual void OnPress()
 	{
-        _audio.Sound("Pressed").Play();
-        _animator.SetTrigger("Pressed");
+        if (!_wasClicked)
+        {
+            _wasClicked = true;
+            _audio.Sound("Pressed").Play();
+            _animator.SetTrigger("Pressed");
+        }
     }
 
     public void OnClickedEndAnimationEvent()
@@ -84,6 +89,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     void OnDisable()
     {
+        _wasClicked = false;
         if (_ignoreFirstSelectSound)
         {
             _isIgnoringFirstSelectSound = true;

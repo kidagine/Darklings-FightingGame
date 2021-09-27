@@ -15,6 +15,7 @@ public class PlayerCharacterSelector : MonoBehaviour
     private bool _canGoUp;
     private bool _canGoDown;
     private bool _inputDeactivated;
+    private bool _wasClicked;
 
 
     public bool HasSelected { get; set; }
@@ -106,8 +107,9 @@ public class PlayerCharacterSelector : MonoBehaviour
                     }
                 }
             }
-            if (Input.GetButtonDown(_controllerInputName + "Confirm"))
+            if (Input.GetButtonDown(_controllerInputName + "Confirm") && !_wasClicked)
             {
+                _wasClicked = true;
                 _audio.Sound("Pressed").Play();
                 _characterMenu.SelectCharacterOneImage(_isPlayerOne);
             }
@@ -156,6 +158,7 @@ public class PlayerCharacterSelector : MonoBehaviour
 
     public void ResetCanGoPositions()
     {
+        _wasClicked = false;
         _canGoDown = false;
         _canGoLeft = false;
         _canGoRight = false;
