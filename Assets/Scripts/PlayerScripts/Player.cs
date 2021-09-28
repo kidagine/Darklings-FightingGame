@@ -17,6 +17,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Audio _audio;
 	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
+	private float _arcana;
+	private float _maxArcana = 2.0f;
 	private int _lives = 2;
 	private bool _isDead;
 
@@ -25,6 +27,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool HitMiddair { get; set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
+	public float ArcaneSlowdown { get; set; }
+
 
 	void Awake()
 	{
@@ -60,6 +64,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.Rebind();
 		SetGroundPushBox(true);
 		SetHurtbox(true);
+		_arcana = 0.0f;
+		_playerUI.SetArcana(_arcana);
 		InitializeStats();
 	}
 
@@ -78,11 +84,34 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	void Update()
 	{
-		//REPLACE
-		if (Input.GetKeyDown(KeyCode.R))
+		if (_arcana < _maxArcana && GameManager.Instance.HasGameStarted)
 		{
-			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing)
+			_arcana += Time.deltaTime / ArcaneSlowdown;
+			_playerUI.SetArcana(_arcana);
+		}
+
+		if (!_isDead)
+		{
+			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.0f && !IsAttacking)
 			{
+				transform.localScale = new Vector2(1.0f, transform.localScale.y);
+			}
+			else if (transform.position.x > -9.0f && !IsAttacking)
+			{
+				transform.localScale = new Vector2(-1.0f, transform.localScale.y);
+			}
+		}
+	}
+
+	public void ArcaneAction()
+	{
+		//REPLACE
+		if (_arcana >= 1.0f)
+		{
+			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && _playerMovement.IsGrounded)
+			{
+				_arcana -= 1.0f;
+				_playerUI.SetArcana(_arcana);
 				_audio.Sound("Hit").Play();
 				IsAttacking = true;
 				_playerAnimator.Arcana();
@@ -99,19 +128,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 		}
 		//REPLACE
-
-
-		if (!_isDead)
-		{
-			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.0f && !IsAttacking)
-			{
-				transform.localScale = new Vector2(1.0f, transform.localScale.y);
-			}
-			else if (transform.position.x > -9.0f && !IsAttacking)
-			{
-				transform.localScale = new Vector2(-1.0f, transform.localScale.y);
-			}
-		}
 	}
 
 	public void AttackAction()
@@ -173,7 +189,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 			else
 			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), attackSO.knockback);
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, attackSO.knockbackDirection.y	), attackSO.knockback);
 			}
 			IsAttacking = false;
 			if (Health <= 0)
@@ -195,7 +211,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private bool CheckIsBlocking()
 	{
-		if (_playerMovement.IsGrounded && !IsAttacking)
+		if (_playerMovement.IsGrounded && !IsAttacking && !_playerMovement.IsDashing)
 		{
 			if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
 			{

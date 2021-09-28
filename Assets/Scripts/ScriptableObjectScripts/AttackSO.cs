@@ -7,6 +7,7 @@ public class AttackSO : ScriptableObject
 	public float travelDistance;
 	public float hitStun;
 	public float knockback;
+	public Vector2 knockbackDirection;
 	public float selfKnockback;
 	public bool canGuardBreak;
 	public bool isAirAttack;

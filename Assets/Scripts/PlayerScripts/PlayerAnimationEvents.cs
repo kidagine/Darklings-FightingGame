@@ -27,4 +27,9 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         _audio.SoundGroup("Footsteps").PlayInRandom();
     }
+
+    public void PlayerSoundAnimationEvent(string soundName)
+    {
+        _audio.Sound(soundName).Play();
+    }
 }

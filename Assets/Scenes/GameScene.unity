@@ -179,6 +179,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _healthSlider: {fileID: 335460014}
+  _arcanaSlider: {fileID: 0}
   _portraitImage: {fileID: 0}
   _characterName: {fileID: 0}
   _playerName: {fileID: 0}
@@ -597,6 +598,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3121622969731471992, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _offset.y
+      value: 0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121622969731471992, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _hitboxSize.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121622970603974651, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _sounds.Array.data[10].volume
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 3121622970603974652, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: m_Name
       value: TobiDark_player
@@ -742,8 +755,8 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 2
-  m_WholeNumbers: 1
-  m_Value: 2
+  m_WholeNumbers: 0
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -790,6 +803,10 @@ PrefabInstance:
       propertyPath: _pauseSlider
       value: 
       objectReference: {fileID: 1700402952}
+    - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: _arcanaSlider
+      value: 
+      objectReference: {fileID: 1604159752396828376}
     - target: {fileID: 1604159751985950000, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_Camera
       value: 
@@ -1413,6 +1430,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1700402952}
     - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: _arcanaSlider
+      value: 
+      objectReference: {fileID: 335460014}
+    - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: _healthDividerPivot
       value: 
       objectReference: {fileID: 1371886168}
@@ -1900,7 +1921,7 @@ MonoBehaviour:
   _cpuPrefab: {fileID: 1039603198093386292, guid: 0ecd74519d8db044bab366c26a5fd71b, type: 3}
   _sceneSettingsDecide: 0
   _controllerOne: KeyboardOne
-  _controllerTwo: ControllerTwo
+  _controllerTwo: KeyboardTwo
   _isTrainingMode: 0
   _playerOneUI: {fileID: 1311574451}
   _playerTwoUI: {fileID: 372267967}
@@ -1909,8 +1930,8 @@ MonoBehaviour:
   _leftStopper: {fileID: 2105726866}
   _rightStopper: {fileID: 2105726865}
   _stages:
-  - {fileID: 2105726863}
   - {fileID: 2105726864}
+  - {fileID: 2105726863}
   _cinemachineTargetGroup: {fileID: 1821676145}
   _gameSpeed: 1
 --- !u!114 &392163760
@@ -5097,6 +5118,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _healthSlider: {fileID: 1604159752396828376}
+  _arcanaSlider: {fileID: 0}
   _portraitImage: {fileID: 0}
   _characterName: {fileID: 0}
   _playerName: {fileID: 0}
@@ -5324,8 +5346,8 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 2
-  m_WholeNumbers: 1
-  m_Value: 2
+  m_WholeNumbers: 0
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

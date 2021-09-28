@@ -25,6 +25,7 @@ public class PlayerController : BaseController
             Jump();
             Crouch();
             Attack();
+            Arcane();
             Pause();
             Dash();
             if (_trainingController)
@@ -73,7 +74,15 @@ public class PlayerController : BaseController
         }
     }
 
-	private void ResetRound()
+    private void Arcane()
+    {
+        if (Input.GetButtonDown(ControllerInputName + "Arcane"))
+        {
+            _player.ArcaneAction();
+        }
+    }
+
+    private void ResetRound()
 	{
         if (Input.GetButtonDown(ControllerInputName + "Reset"))
         {
