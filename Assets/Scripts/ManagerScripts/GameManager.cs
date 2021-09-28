@@ -166,8 +166,8 @@ public class GameManager : MonoBehaviour
         _playerTwo.ResetPlayer();
         _leftStopper.SetActive(true);
         _rightStopper.SetActive(true);
-        _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
-        _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+        _playerOne.transform.position = new Vector2(-3.5f, -4.5f);
+        _playerTwo.transform.position = new Vector2(3.5f, -4.5f);
         _playerOneUI.ResetCombo();
         _playerTwoUI.ResetCombo();
         StartCoroutine(ReadyCoroutine());
