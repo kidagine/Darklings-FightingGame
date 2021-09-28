@@ -606,10 +606,6 @@ PrefabInstance:
       propertyPath: _hitboxSize.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3121622970603974651, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
-      propertyPath: _sounds.Array.data[10].volume
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 3121622970603974652, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: m_Name
       value: TobiDark_player
@@ -1930,8 +1926,8 @@ MonoBehaviour:
   _leftStopper: {fileID: 2105726866}
   _rightStopper: {fileID: 2105726865}
   _stages:
-  - {fileID: 2105726864}
   - {fileID: 2105726863}
+  - {fileID: 2105726864}
   _cinemachineTargetGroup: {fileID: 1821676145}
   _gameSpeed: 1
 --- !u!114 &392163760
@@ -2003,6 +1999,14 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 9dcc8ea581562344ca4092aeaf45eee1, type: 3}
+      volume: 0.5
+      pitch: 1
+      name: 
+      loop: 1
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 98e7120f17a914b44ba5721fc6831879, type: 3}
       volume: 0.5
       pitch: 1
       name: 

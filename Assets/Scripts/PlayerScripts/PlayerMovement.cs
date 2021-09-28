@@ -61,18 +61,18 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
                 {
                     if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
                     {
-                        _player.ArcaneSlowdown = 3.5f;
+                        _player.ArcaneSlowdown = 4.5f;
                     }
                     else if (_rigidbody.velocity.x < 0.0f && transform.localScale.x == -1.0f)
                     {
-                        _player.ArcaneSlowdown = 3.5f;
+                        _player.ArcaneSlowdown = 4.5f;
                     }
                     IsMoving = true;
                     _playerAnimator.SetMove(true);
                 }
                 else
                 {
-                    _player.ArcaneSlowdown = 5.0f;
+                    _player.ArcaneSlowdown = 6.0f;
                     IsMoving = false;
                     _playerAnimator.SetMove(false);
                 }
