@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BaseController : MonoBehaviour
 {
-    [SerializeField] protected bool _trainingController = default;
+    protected bool _trainingController;
     protected Player _player;
     protected PlayerMovement _playerMovement;
     protected bool _isControllerEnabled = true;

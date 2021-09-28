@@ -78,6 +78,29 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	void Update()
 	{
+		//REPLACE
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing)
+			{
+				_audio.Sound("Hit").Play();
+				IsAttacking = true;
+				_playerAnimator.Arcana();
+				_currentAttack = _playerComboSystem.GetArcana();
+
+				if (!string.IsNullOrEmpty(_currentAttack.attackSound))
+				{
+					_audio.Sound(_currentAttack.attackSound).Play();
+				}
+				if (!_currentAttack.isAirAttack)
+				{
+					_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
+				}
+			}
+		}
+		//REPLACE
+
+
 		if (!_isDead)
 		{
 			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.0f && !IsAttacking)

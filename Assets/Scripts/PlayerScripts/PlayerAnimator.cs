@@ -36,6 +36,10 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator.SetTrigger("Attack");
     }
+    public void Arcana()
+    {
+        animator.SetTrigger("Arcana");
+    }
 
     public void IsHurt(bool state)
     {
