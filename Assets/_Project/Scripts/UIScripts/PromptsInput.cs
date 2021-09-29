@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class PromptsInput : MonoBehaviour
 {
-    [SerializeField] private PlayerInputActions _promptsInputActions = default;
     [SerializeField] private UnityEvent _confirmUnityEvent = default;
     [SerializeField] private UnityEvent _backUnityEvent = default;
     [SerializeField] private UnityEvent _mainSpecialUnityEvent = default;

@@ -1,4 +1,4 @@
-using Demonics;
+using Demonics.Sounds;
 using UnityEngine;
 
 public class PlayerAnimationEvents : MonoBehaviour

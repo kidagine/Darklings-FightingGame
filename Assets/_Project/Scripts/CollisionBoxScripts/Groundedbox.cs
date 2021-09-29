@@ -1,4 +1,5 @@
-﻿using Demonics;
+﻿using Demonics.Enum;
+using Demonics.Utility;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]

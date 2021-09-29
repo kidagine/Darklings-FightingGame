@@ -1,3 +1,4 @@
+using Demonics.UI;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -12,7 +13,6 @@ public class StageMenu : BaseMenu
 	public void SelectStageImage()
 	{
 		SceneManager.LoadScene(2);
-		//StartCoroutine(SelectStageCoroutine());
 	}
 
 	public void SetStageImage(Sprite sprite)
@@ -35,11 +35,5 @@ public class StageMenu : BaseMenu
 	public void SetTrainingMode(bool state)
 	{
 		SceneSettings.IsTrainingMode = state;
-	}
-
-	IEnumerator SelectStageCoroutine()
-	{
-		yield return new WaitForSeconds(1.0f);
-		SceneManager.LoadScene(2);
 	}
 }

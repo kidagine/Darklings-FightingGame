@@ -1,4 +1,4 @@
-using Demonics;
+using Demonics.Utility;
 using UnityEngine;
 
 public class PlayerGhost : MonoBehaviour

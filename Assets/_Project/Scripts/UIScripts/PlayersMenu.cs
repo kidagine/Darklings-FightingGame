@@ -1,4 +1,6 @@
 using Demonics;
+using Demonics.Sounds;
+using Demonics.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

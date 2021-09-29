@@ -1744,6 +1744,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 209485232}
   m_CullTransparentMesh: 1
+--- !u!1 &209515364 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3543166444540643268, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+  m_PrefabInstance: {fileID: 755979731}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &209515365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209515364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605f8dca04646a040aecf7973ceabbe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onClickedAnimationEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 185766593}
+        m_TargetAssemblyTypeName: StageMenu, Assembly-CSharp
+        m_MethodName: SetStageIndex
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 185766593}
+        m_TargetAssemblyTypeName: StageMenu, Assembly-CSharp
+        m_MethodName: SelectStageImage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onSelected:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 185766593}
+        m_TargetAssemblyTypeName: StageMenu, Assembly-CSharp
+        m_MethodName: SetStageImage
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 21300000, guid: 15fb9432f2bf3e04fa05aaf19724e2d6, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Sprite, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _scrollView: {fileID: 0}
+  _scrollAmount: 0
+  _ignoreFirstSelectSound: 0
 --- !u!1 &211052350
 GameObject:
   m_ObjectHideFlags: 0
@@ -1878,50 +1940,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 211052350}
   m_CullTransparentMesh: 1
---- !u!1 &226907568
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 226907569}
-  - component: {fileID: 226907570}
-  m_Layer: 0
-  m_Name: Sound_manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &226907569
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226907568}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &226907570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226907568}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7159794128f52b40b5a4524914032fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixer: {fileID: 24100000, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
 --- !u!1 &258251918
 GameObject:
   m_ObjectHideFlags: 0
@@ -2631,12 +2649,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 185766593}
-        m_TargetAssemblyTypeName: BaseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 742601086}
-          m_ObjectArgumentAssemblyTypeName: BaseMenu, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2689,9 +2707,33 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 860767416}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 367525712}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPress
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Demonics.UI.BaseButton, Demonics
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2862,19 +2904,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 367525710}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f23b06785262f0e4f8c948f79e9355dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 605f8dca04646a040aecf7973ceabbe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 9123090234613714750}
-        m_TargetAssemblyTypeName: BaseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 394778459}
-          m_ObjectArgumentAssemblyTypeName: BaseMenu, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2887,7 +2929,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -3882,12 +3924,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 742601086}
-        m_TargetAssemblyTypeName: BaseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 394778459}
-          m_ObjectArgumentAssemblyTypeName: BaseMenu, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6065,7 +6107,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -250
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 765981395}
+    - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPress
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Demonics.UI.BaseButton, Demonics
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3543166444540643267, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+    - {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
 --- !u!224 &755979732 stripped
 RectTransform:
@@ -6211,6 +6267,63 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3543166444540643268, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
   m_PrefabInstance: {fileID: 1901506565}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &765981395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765981394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605f8dca04646a040aecf7973ceabbe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onClickedAnimationEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 185766593}
+        m_TargetAssemblyTypeName: StageMenu, Assembly-CSharp
+        m_MethodName: SetStageIndex
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 185766593}
+        m_TargetAssemblyTypeName: StageMenu, Assembly-CSharp
+        m_MethodName: SelectStageImage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onSelected:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 185766593}
+        m_TargetAssemblyTypeName: StageMenu, Assembly-CSharp
+        m_MethodName: SetStageImage
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 21300000, guid: 939315b812aeab441b59b872c17fdeb5, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Sprite, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _scrollView: {fileID: 0}
+  _scrollAmount: 0
+  _ignoreFirstSelectSound: 0
 --- !u!1 &768858358
 GameObject:
   m_ObjectHideFlags: 0
@@ -6570,12 +6683,60 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1162407423}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 860767417}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 9123090234613714750}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnPress
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OpenMenuHideCurrent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Demonics.UI.BaseButton, Demonics
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Demonics.UI.BaseMenu, Demonics
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 1292066734}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Demonics.UI.BaseMenu, Demonics
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Pivot.x
@@ -6701,19 +6862,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 860767415}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f23b06785262f0e4f8c948f79e9355dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 605f8dca04646a040aecf7973ceabbe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 9123090234613714750}
-        m_TargetAssemblyTypeName: BaseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1292066734}
-          m_ObjectArgumentAssemblyTypeName: BaseMenu, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -7503,12 +7664,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 394778459}
-        m_TargetAssemblyTypeName: BaseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 9123090234613714750}
-          m_ObjectArgumentAssemblyTypeName: BaseMenu, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -8790,19 +8951,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1162407421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f23b06785262f0e4f8c948f79e9355dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 605f8dca04646a040aecf7973ceabbe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 9123090234613714750}
-        m_TargetAssemblyTypeName: BaseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 394778459}
-          m_ObjectArgumentAssemblyTypeName: BaseMenu, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -8815,7 +8976,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -9353,7 +9514,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1292066732}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a80f1db15541b2d46a2d494e53ffd04c, type: 3}
+  m_Script: {fileID: 11500000, guid: f78b0b020ae396047ab9fef4d0e4d60e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 0}
@@ -11220,7 +11381,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1559375829
 GameObject:
@@ -11318,6 +11479,68 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1559375829}
   m_CullTransparentMesh: 1
+--- !u!1 &1577402205 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3543166444540643268, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+  m_PrefabInstance: {fileID: 3543166443512718188}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1577402206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577402205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605f8dca04646a040aecf7973ceabbe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onClickedAnimationEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 185766593}
+        m_TargetAssemblyTypeName: StageMenu, Assembly-CSharp
+        m_MethodName: SetStageIndexRandom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 185766593}
+        m_TargetAssemblyTypeName: StageMenu, Assembly-CSharp
+        m_MethodName: SelectStageImage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onSelected:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 185766593}
+        m_TargetAssemblyTypeName: StageMenu, Assembly-CSharp
+        m_MethodName: SetStageImage
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 21300000, guid: 91320132ee6f6134b986c46ced3bb885, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Sprite, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _scrollView: {fileID: 0}
+  _scrollAmount: 0
+  _ignoreFirstSelectSound: 0
 --- !u!1 &1614127507
 GameObject:
   m_ObjectHideFlags: 0
@@ -12676,6 +12899,63 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!1001 &1820566726
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1237382185827577928, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_Name
+      value: Sound_manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
 --- !u!1 &1841136825
 GameObject:
   m_ObjectHideFlags: 0
@@ -13365,10 +13645,24 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 765981395}
+    - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPress
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Demonics.UI.BaseButton, Demonics
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3543166444540643267, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+    - {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
 --- !u!224 &1901506566 stripped
 RectTransform:
@@ -13923,12 +14217,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1292066734}
-        m_TargetAssemblyTypeName: BaseMenu, Assembly-CSharp
+        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 9123090234613714750}
-          m_ObjectArgumentAssemblyTypeName: BaseMenu, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -15301,17 +15595,31 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1577402206}
+    - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPress
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Demonics.UI.BaseButton, Demonics
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3543166444540643264, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
+    - {fileID: 3543166444540643267, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
 --- !u!114 &3543166443512718189 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3543166444540643270, guid: fe9aec40b1177c44b9491596f7c9e9b2, type: 3}
   m_PrefabInstance: {fileID: 3543166443512718188}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1577402205}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -15350,9 +15658,33 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 367525714}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1162407424}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPress
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Demonics.UI.BaseButton, Demonics
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -15789,7 +16121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9123090234613714745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a80f1db15541b2d46a2d494e53ffd04c, type: 3}
+  m_Script: {fileID: 11500000, guid: f78b0b020ae396047ab9fef4d0e4d60e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1162407423}

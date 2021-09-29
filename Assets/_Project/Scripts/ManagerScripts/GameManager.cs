@@ -1,5 +1,5 @@
 using Cinemachine;
-using Demonics;
+using Demonics.Sounds;
 using System.Collections;
 using TMPro;
 using UnityEngine;

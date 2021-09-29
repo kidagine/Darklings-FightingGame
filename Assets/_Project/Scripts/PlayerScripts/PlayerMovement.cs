@@ -1,4 +1,4 @@
-using Demonics;
+using Demonics.Sounds;
 using System.Collections;
 using UnityEngine;
 
@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     [SerializeField] private PlayerStatsSO _playerStatsSO = default;
     [SerializeField] private GameObject _dustUpPrefab = default;
     [SerializeField] private GameObject _dustDownPrefab = default;
-    [SerializeField] private GameObject _dashPrefab = default;
     [SerializeField] private GameObject _playerGhostPrefab = default;
     private Player _player;
     private BaseController _playerController;

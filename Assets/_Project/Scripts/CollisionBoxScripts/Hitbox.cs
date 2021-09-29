@@ -1,4 +1,5 @@
-﻿using Demonics;
+﻿using Demonics.Enum;
+using Demonics.Utility;
 using UnityEngine;
 
 public class Hitbox : MonoBehaviour
