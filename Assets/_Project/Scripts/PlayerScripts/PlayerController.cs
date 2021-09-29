@@ -50,7 +50,6 @@ public class PlayerController : BaseController
         else if (Input.GetAxisRaw(ControllerInputName + "Vertical") <= 0.0f && _hasJumped)
         {
             _hasJumped = false;
-            _playerMovement.JumpStopAction();
         }
 	}
 
