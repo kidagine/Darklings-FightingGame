@@ -111,6 +111,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && _playerMovement.IsGrounded && !_playerMovement.IsCrouching)
 			{
+				_playerMovement.ResetToWalkSpeed();
 				_arcana -= 1.0f;
 				_playerUI.SetArcana(_arcana);
 				_audio.Sound("Hit").Play();

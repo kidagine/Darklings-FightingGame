@@ -77,20 +77,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
                     }
                     else
                     {
-                        if (_movementSpeed == _playerStatsSO.runSpeed)
-                        {
-                            _movementSpeed = _playerStatsSO.walkSpeed;
-                        }
+                        ResetToWalkSpeed();
                     }
                     IsMoving = true;
                     _playerAnimator.SetMove(true);
                 }
                 else
                 {
-                    if (_movementSpeed == _playerStatsSO.runSpeed)
-                    {
-                        _movementSpeed = _playerStatsSO.walkSpeed;
-                    }
+                    ResetToWalkSpeed();
                     _player.ArcaneSlowdown = 6.0f;
                     IsMoving = false;
                     _playerAnimator.SetMove(false);
@@ -109,10 +103,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing)
         {
-            if (_movementSpeed == _playerStatsSO.runSpeed)
-            {
-                _movementSpeed = _playerStatsSO.walkSpeed;
-            }
+            ResetToWalkSpeed();
             if (IsGrounded)
             {
                 _rigidbody.velocity = Vector2.zero;
@@ -147,10 +138,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     private void Jump(float jumpForce)
     {
-        if (_movementSpeed == _playerStatsSO.runSpeed)
-        {
-            _movementSpeed = _playerStatsSO.walkSpeed;
-        }
+        ResetToWalkSpeed();
         _player.SetPushboxTrigger(true);
         _player.SetAirPushBox(true);
         Instantiate(_dustUpPrefab, transform.position, Quaternion.identity);
@@ -259,6 +247,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             else if (!_hasDashedMiddair)
             {
                 _hasDashedMiddair = true;
+                _player.SetPushboxTrigger(false);
                 _audio.Sound("Dash").Play();
                 _playerAnimator.IsDashing(true);
                 //Instantiate(_dashPrefab, transform.position, Quaternion.identity);
@@ -278,11 +267,12 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.localScale.x, Color.white);
             yield return new WaitForSeconds(0.07f);
         }
-        _playerAnimator.SetMovement(MovementInput.x * transform.localScale.x);
         if (MovementInput.x * transform.localScale.x > 0.0f && IsGrounded)
         {
+            _playerAnimator.IsRunning(true);
             _movementSpeed = _playerStatsSO.runSpeed;
         }
+        yield return new WaitForSeconds(0.03f);
         StopDash();
     }
 
@@ -291,6 +281,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _playerAnimator.IsDashing(false);
         _rigidbody.velocity = Vector2.zero;
         ResetGravity();
+        if (!IsGrounded)
+        {
+            _player.SetPushboxTrigger(true);
+        }
         IsDashing = false;
     }
 
@@ -302,5 +296,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     private void ZeroGravity()
     {
         _rigidbody.gravityScale = 0.0f;
+    }
+
+    public void ResetToWalkSpeed()
+    {
+        _playerAnimator.IsRunning(false);
+        if (_movementSpeed == _playerStatsSO.runSpeed)
+        {
+            _movementSpeed = _playerStatsSO.walkSpeed;
+        }
     }
 }
