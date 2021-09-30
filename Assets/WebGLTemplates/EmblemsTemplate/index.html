@@ -122,7 +122,7 @@
             unityInstance.SetFullscreen(1);
             };
             muteButton.onclick = () => {
-                unityInstance.SendMessage('Sound_manager', 'ToggleMusic');
+                unityInstance.SendMessage('Sound_manager', 'ToggleMusicVolume');
             };
         }).catch((message) => {
           alert(message);
