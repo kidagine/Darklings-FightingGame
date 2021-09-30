@@ -135,7 +135,6 @@ GameObject:
   - component: {fileID: 79347515}
   - component: {fileID: 79347514}
   - component: {fileID: 79347513}
-  - component: {fileID: 79347512}
   m_Layer: 5
   m_Name: SecondPlayerBottom_canvas
   m_TagString: Untagged
@@ -163,31 +162,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &79347512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 79347510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2a0a95dbd899e74f83d8942b055431a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lostLives:
-  - {fileID: 0}
-  - {fileID: 0}
-  _healthSlider: {fileID: 335460014}
-  _arcanaSlider: {fileID: 0}
-  _portraitImage: {fileID: 0}
-  _characterName: {fileID: 0}
-  _playerName: {fileID: 0}
-  _comboText: {fileID: 0}
-  _healthDividerPivot: {fileID: 421888430}
-  _healthDividerPrefab: {fileID: 5592667340369626980, guid: c8e765c1947768d429ca00f98abcdea5, type: 3}
-  _pauseSlider: {fileID: 1700402952}
-  _pauseMenu: {fileID: 355764829}
 --- !u!114 &79347513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,7 +768,7 @@ PrefabInstance:
     - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: _pauseMenu
       value: 
-      objectReference: {fileID: 355764829}
+      objectReference: {fileID: 860885408}
     - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: _pauseSlider
       value: 
@@ -1419,7 +1393,7 @@ PrefabInstance:
     - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: _pauseMenu
       value: 
-      objectReference: {fileID: 355764829}
+      objectReference: {fileID: 860885408}
     - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: _pauseSlider
       value: 
@@ -2848,6 +2822,7 @@ GameObject:
   - component: {fileID: 860885406}
   - component: {fileID: 860885405}
   - component: {fileID: 860885404}
+  - component: {fileID: 860885408}
   m_Layer: 5
   m_Name: Pause_canvas
   m_TagString: Untagged
@@ -2937,6 +2912,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &860885408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860885403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f78b0b020ae396047ab9fef4d0e4d60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingOption: {fileID: 0}
 --- !u!1 &863666487
 GameObject:
   m_ObjectHideFlags: 0
@@ -5086,31 +5074,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
---- !u!114 &1260952192016987376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1604159751981576970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2a0a95dbd899e74f83d8942b055431a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lostLives:
-  - {fileID: 0}
-  - {fileID: 0}
-  _healthSlider: {fileID: 1604159752396828376}
-  _arcanaSlider: {fileID: 0}
-  _portraitImage: {fileID: 0}
-  _characterName: {fileID: 0}
-  _playerName: {fileID: 0}
-  _comboText: {fileID: 0}
-  _healthDividerPivot: {fileID: 3915933149034970274}
-  _healthDividerPrefab: {fileID: 5592667340369626980, guid: c8e765c1947768d429ca00f98abcdea5, type: 3}
-  _pauseSlider: {fileID: 1700402952}
-  _pauseMenu: {fileID: 355764829}
 --- !u!224 &1604159751816649131
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5199,7 +5162,6 @@ GameObject:
   - component: {fileID: 1604159751981576975}
   - component: {fileID: 1604159751981576968}
   - component: {fileID: 1604159751981576969}
-  - component: {fileID: 1260952192016987376}
   m_Layer: 5
   m_Name: FirstPlayerBottom_canvas
   m_TagString: Untagged

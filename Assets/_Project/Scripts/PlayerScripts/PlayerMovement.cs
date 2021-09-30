@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     private bool _canDoubleJump = true;
     private bool _isMovementLocked;
     private bool _onTopOfPlayer;
+    private bool _hasDashedMiddair;
 
     public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
@@ -108,6 +109,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing)
         {
+            if (_movementSpeed == _playerStatsSO.runSpeed)
+            {
+                _movementSpeed = _playerStatsSO.walkSpeed;
+            }
             if (IsGrounded)
             {
                 _rigidbody.velocity = Vector2.zero;
@@ -142,6 +147,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     private void Jump(float jumpForce)
     {
+        if (_movementSpeed == _playerStatsSO.runSpeed)
+        {
+            _movementSpeed = _playerStatsSO.walkSpeed;
+        }
         _player.SetPushboxTrigger(true);
         _player.SetAirPushBox(true);
         Instantiate(_dustUpPrefab, transform.position, Quaternion.identity);
@@ -201,6 +210,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
         if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
+            _hasDashedMiddair = false;
             _canDoubleJump = true;
             _onTopOfPlayer = false;
             _player.SetPushboxTrigger(false);
@@ -234,15 +244,29 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void Dash(float directionX)
     {
-        if ( !IsDashing && !IsCrouching && !_player.IsAttacking)
+        if (!IsCrouching && !_player.IsAttacking)
         {
-            _audio.Sound("Dash").Play();
-            _playerAnimator.IsDashing(true);
-            //Instantiate(_dashPrefab, transform.position, Quaternion.identity);
-            _rigidbody.velocity = new Vector2(directionX, 0.0f) * _playerStatsSO.dashForce;
-            IsDashing = true;
-            ZeroGravity();
-            StartCoroutine(DashCoroutine());
+            if (IsGrounded)
+            {
+                _audio.Sound("Dash").Play();
+                _playerAnimator.IsDashing(true);
+                //Instantiate(_dashPrefab, transform.position, Quaternion.identity);
+                _rigidbody.velocity = new Vector2(directionX, 0.0f) * _playerStatsSO.dashForce;
+                IsDashing = true;
+                ZeroGravity();
+                StartCoroutine(DashCoroutine());
+            }
+            else if (!_hasDashedMiddair)
+            {
+                _hasDashedMiddair = true;
+                _audio.Sound("Dash").Play();
+                _playerAnimator.IsDashing(true);
+                //Instantiate(_dashPrefab, transform.position, Quaternion.identity);
+                _rigidbody.velocity = new Vector2(directionX, 0.0f) * _playerStatsSO.dashForce;
+                IsDashing = true;
+                ZeroGravity();
+                StartCoroutine(DashCoroutine());
+            }
         }
     }
 
@@ -252,18 +276,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         {
             GameObject playerGhost = Instantiate(_playerGhostPrefab, transform.position, Quaternion.identity);
             playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.localScale.x, Color.white);
-            yield return new WaitForSeconds(0.08f);
+            yield return new WaitForSeconds(0.07f);
         }
         _playerAnimator.SetMovement(MovementInput.x * transform.localScale.x);
-        _playerAnimator.IsDashing(false);
-        _rigidbody.velocity = Vector2.zero;
-        ResetGravity();
-        //yield return new WaitForSeconds(0.03f);
         if (MovementInput.x * transform.localScale.x > 0.0f && IsGrounded)
         {
             _movementSpeed = _playerStatsSO.runSpeed;
         }
-        IsDashing = false;
+        StopDash();
     }
 
     public void StopDash()

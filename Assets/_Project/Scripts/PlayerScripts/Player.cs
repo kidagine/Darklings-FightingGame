@@ -109,7 +109,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		//REPLACE
 		if (_arcana >= 1.0f)
 		{
-			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && _playerMovement.IsGrounded)
+			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && _playerMovement.IsGrounded && !_playerMovement.IsCrouching)
 			{
 				_arcana -= 1.0f;
 				_playerUI.SetArcana(_arcana);
