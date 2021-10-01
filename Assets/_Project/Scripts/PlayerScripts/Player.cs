@@ -35,8 +35,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
 		_playerComboSystem = GetComponent<PlayerComboSystem>();
-		_playerController = GetComponent<BaseController>();
 		_audio = GetComponent<Audio>();
+	}
+
+	public void SetController()
+	{
+		_playerController = GetComponent<BaseController>();
 	}
 
 	void Start()

@@ -709,7 +709,6 @@ GameObject:
   - component: {fileID: 3121622970603974650}
   - component: {fileID: 3121622970603974644}
   - component: {fileID: 3121622970603974653}
-  - component: {fileID: 3121622970603974649}
   - component: {fileID: 3121622970603974651}
   m_Layer: 10
   m_Name: TobiDark_player
@@ -809,18 +808,6 @@ MonoBehaviour:
   _dustDownPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
   _dashPrefab: {fileID: 5833315189278568593, guid: d1a8205ac964ba545b3fc474fd11b27e, type: 3}
   _playerGhostPrefab: {fileID: 904796691893738277, guid: 0cfcd7936a9c5c54294ba46e75c919d5, type: 3}
---- !u!114 &3121622970603974649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3121622970603974652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a0086d4419d1d449b979602e6ea7745, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3121622970603974651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -921,6 +908,14 @@ MonoBehaviour:
     pitch: 1
     name: Slam
     loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 2037d56b27f1e5142929d8ca0f51610a, type: 3}
+    volume: 0.2
+    pitch: 1
+    name: Run
+    loop: 1
     playOnAwake: 0
     playOneInstanceAtATime: 0
   _sounds3D: []

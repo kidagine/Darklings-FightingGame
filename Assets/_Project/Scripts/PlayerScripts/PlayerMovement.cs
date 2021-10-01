@@ -32,8 +32,13 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _player = GetComponent<Player>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _audio = GetComponent<Audio>();
+    }
+
+    public void SetController()
+    {
         _playerController = GetComponent<BaseController>();
     }
+
 
     void Start()
     {
@@ -285,6 +290,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         }
         if (MovementInput.x * transform.localScale.x > 0.0f && IsGrounded)
         {
+            _audio.Sound("Run").Play();
             _playerAnimator.IsRunning(true);
             _movementSpeed = _playerStatsSO.runSpeed;
             IsDashing = false;
@@ -335,6 +341,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _playerAnimator.IsRunning(false);
         if (_movementSpeed == _playerStatsSO.runSpeed)
         {
+            _audio.Sound("Run").Stop();
             _movementSpeed = _playerStatsSO.walkSpeed;
         }
     }

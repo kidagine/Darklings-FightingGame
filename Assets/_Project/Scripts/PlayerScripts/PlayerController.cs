@@ -11,11 +11,7 @@ public class PlayerController : BaseController
     private bool k2;
     private bool j2;
     private float _dashInputCooldown2;
-    void Awake()
-    {
-        _player = GetComponent<Player>();
-        _playerMovement = GetComponent<PlayerMovement>();
-    }
+
 
     void Update()
 	{
