@@ -288,6 +288,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             _playerAnimator.IsRunning(true);
             _movementSpeed = _playerStatsSO.runSpeed;
             IsDashing = false;
+            StartCoroutine(RunCoroutine());
         }
         else
         {
@@ -295,6 +296,17 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             IsDashing = false;
         }
     }
+
+    IEnumerator RunCoroutine()
+    {
+        while(_movementSpeed == _playerStatsSO.runSpeed)
+        {
+            GameObject playerGhost = Instantiate(_playerGhostPrefab, transform.position, Quaternion.identity);
+            playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.localScale.x, Color.white);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
 
     public void StopDash()
     {
