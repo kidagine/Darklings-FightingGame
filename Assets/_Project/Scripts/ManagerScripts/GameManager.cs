@@ -1,5 +1,6 @@
 using Cinemachine;
 using Demonics.Sounds;
+using Demonics.UI;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
     [SerializeField] protected GameObject[] _stages = default;
+    [SerializeField] private BaseMenu _matchOverMenu = default;
     [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [Range(1, 10)]
     [SerializeField] private int _gameSpeed = 1;
@@ -387,12 +389,27 @@ public class GameManager : MonoBehaviour
             }
         }
         yield return new WaitForSeconds(1.0f);
+        _matchOverMenu.Hide();
         _playerOne.ResetLives();
         _playerTwo.ResetLives();
         _currentMusic.Stop();
         _currentMusic = _audio.SoundGroup("Music").PlayInRandom();
         StartRound();
+        //StartRound();
+        //_matchOverMenu.Show();
+        //Time.timeScale = 0.0f;
+        //DisableAllInput();
     }
+
+    public void StartMatch()
+    {
+        _matchOverMenu.Hide();
+		_playerOne.ResetLives();
+		_playerTwo.ResetLives();
+		_currentMusic.Stop();
+		_currentMusic = _audio.SoundGroup("Music").PlayInRandom();
+		StartRound();
+	}
 
     public void PauseMusic()
     {
