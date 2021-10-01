@@ -116,7 +116,7 @@ public class PlayerController : BaseController
             {
                 if (!j)
                 {
-                    _playerMovement.Dash(input);
+                    _playerMovement.DashAction(input);
                 }
                 j = true;
             }
@@ -158,7 +158,7 @@ public class PlayerController : BaseController
             {
                 if (!j2)
                 {
-                    _playerMovement.Dash(input);
+                    _playerMovement.DashAction(input);
                 }
                 j2 = true;
             }
