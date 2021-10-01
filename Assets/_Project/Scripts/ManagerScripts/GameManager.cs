@@ -17,10 +17,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected PlayerUI _playerTwoUI = default;
     [SerializeField] protected TextMeshProUGUI _countdownText = default;
     [SerializeField] protected TextMeshProUGUI _readyText = default;
+    [SerializeField] protected TextMeshProUGUI _winnerNameText = default;
+    [SerializeField] protected GameObject _bottomLine = default;
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
     [SerializeField] protected GameObject[] _stages = default;
     [SerializeField] private BaseMenu _matchOverMenu = default;
+    [SerializeField] private Animator _readyAnimator = default;
     [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [Range(1, 10)]
     [SerializeField] private int _gameSpeed = 1;
@@ -31,6 +34,7 @@ public class GameManager : MonoBehaviour
     private Audio _audio;
     private Sound _currentMusic;
     private float _countdown;
+    private int _currentRound = 1;
     private bool _reverseReset;
 
     public bool HasGameStarted { get; set; }
@@ -198,11 +202,22 @@ public class GameManager : MonoBehaviour
         Time.timeScale = _gameSpeed;
         yield return new WaitForSeconds(0.5f);
         _audio.Sound("TextSound").Play();
-        _readyText.text = "Ready?";
+        _readyAnimator.SetTrigger("Show");
+        _bottomLine.SetActive(true);
+        if (_currentRound == 3)
+        {
+            _readyText.text = $"Final Round";
+        }
+        else
+        {
+            _readyText.text = $"Round {_currentRound}";
+        }
         yield return new WaitForSeconds(1.0f);
+        _readyAnimator.SetTrigger("Show");
         _audio.Sound("TextSound").Play();
-        _readyText.text = "GO!";
-        yield return new WaitForSeconds(0.5f);
+        _readyText.text = "Fight!";
+        yield return new WaitForSeconds(1.0f);
+        _bottomLine.SetActive(false);
         _readyText.text = "";
         _leftStopper.SetActive(false);
         _rightStopper.SetActive(false);
@@ -317,29 +332,35 @@ public class GameManager : MonoBehaviour
             _playerOne.LoseLife();
         }
         HasGameStarted = false;
+        _bottomLine.SetActive(true);
         _audio.Sound("TextSound").Play();
-        _readyText.text = "ROUND OVER";
+        _readyAnimator.SetTrigger("Show");
+        _readyText.text = "KO";
         Time.timeScale = 0.25f;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSecondsRealtime(1.0f);
+        _audio.Sound("TextSound").Play();
+        _readyAnimator.SetTrigger("Show");
         if (hasPlayerOneDied && hasPlayerTwoDied)
         {
-            _audio.Sound("TextSound").Play();
             _readyText.text = "TIE";
         }
         else
         {
+            _readyText.text = "WINNER";
             if (!hasPlayerOneDied)
             {
-                _audio.Sound("TextSound").Play();
-                _readyText.text = "P1 WINS";
+                _winnerNameText.text = $"{"Player1"}\n{"Tobi Dark"}";
+                _currentRound++;
             }
             else
             {
-                _audio.Sound("TextSound").Play();
-                _readyText.text = "P2 WINS";
+                _winnerNameText.text = $"{"Player1"}\n{"Tobi Dark"}";
+                _currentRound++;
             }
         }
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSecondsRealtime(2.0f);
+        _bottomLine.SetActive(false);
+        _winnerNameText.text = "";
         _readyText.text = "";
         StartRound();
     }
@@ -366,31 +387,41 @@ public class GameManager : MonoBehaviour
         {
             _playerOne.LoseLife();
         }
+        _bottomLine.SetActive(true);
         _audio.Sound("TextSound").Play();
-        _readyText.text = "MATCH OVER";
+        _readyAnimator.SetTrigger("Show");
+        _readyText.text = "KO";
         Time.timeScale = 0.25f;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSecondsRealtime(1.0f);
+        _audio.Sound("TextSound").Play();
+        _readyAnimator.SetTrigger("Show");
         if (hasPlayerOneDied && hasPlayerTwoDied)
         {
-            _audio.Sound("TextSound").Play();
             _readyText.text = "TIE";
         }
         else
         {
+            _readyText.text = "WINNER";
             if (!hasPlayerOneDied)
             {
                 _playerOneUI.IncreaseWins();
-                _audio.Sound("TextSound").Play();
-                _readyText.text = "P1 WINS";
+                _winnerNameText.text = $"{"Player1"}\n{"Tobi Dark"}";
+                _currentRound++;
             }
             else
             {
                 _playerTwoUI.IncreaseWins();
-                _audio.Sound("TextSound").Play();
-                _readyText.text = "P2 WINS";
+                _winnerNameText.text = $"{"Player1"}\n{"Tobi Dark"}";
+                _currentRound++;
             }
         }
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSecondsRealtime(2.0f);
+        _playerOne.Taunt();
+        yield return new WaitForSecondsRealtime(2.0f);
+        _bottomLine.SetActive(false);
+        _winnerNameText.text = "";
+        _readyText.text = "";
+        _currentRound = 1;
 		_matchOverMenu.Show();
 		Time.timeScale = 0.0f;
 		DisableAllInput();

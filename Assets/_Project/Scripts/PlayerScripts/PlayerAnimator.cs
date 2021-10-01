@@ -60,6 +60,11 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool("IsRunning", state);
     }
 
+    public void Taunt()
+    {
+        animator.SetTrigger("Taunt");
+    }
+
     public void Death()
     {
         animator.SetTrigger("Death");
