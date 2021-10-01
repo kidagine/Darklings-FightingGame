@@ -55,6 +55,11 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool("IsDashing", state);
     }
 
+    public void IsRunning(bool state)
+    {
+        animator.SetBool("IsRunning", state);
+    }
+
     public void Death()
     {
         animator.SetTrigger("Death");

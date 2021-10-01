@@ -11,11 +11,7 @@ public class PlayerController : BaseController
     private bool k2;
     private bool j2;
     private float _dashInputCooldown2;
-    void Awake()
-    {
-        _player = GetComponent<Player>();
-        _playerMovement = GetComponent<PlayerMovement>();
-    }
+
 
     void Update()
 	{
@@ -116,7 +112,7 @@ public class PlayerController : BaseController
             {
                 if (!j)
                 {
-                    _playerMovement.Dash(input);
+                    _playerMovement.DashAction(input);
                 }
                 j = true;
             }
@@ -158,7 +154,7 @@ public class PlayerController : BaseController
             {
                 if (!j2)
                 {
-                    _playerMovement.Dash(input);
+                    _playerMovement.DashAction(input);
                 }
                 j2 = true;
             }

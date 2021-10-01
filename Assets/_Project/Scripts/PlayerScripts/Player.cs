@@ -35,8 +35,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
 		_playerComboSystem = GetComponent<PlayerComboSystem>();
-		_playerController = GetComponent<BaseController>();
 		_audio = GetComponent<Audio>();
+	}
+
+	public void SetController()
+	{
+		_playerController = GetComponent<BaseController>();
 	}
 
 	void Start()
@@ -111,6 +115,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && _playerMovement.IsGrounded && !_playerMovement.IsCrouching)
 			{
+				_playerMovement.ResetToWalkSpeed();
 				_arcana -= 1.0f;
 				_playerUI.SetArcana(_arcana);
 				_audio.Sound("Hit").Play();

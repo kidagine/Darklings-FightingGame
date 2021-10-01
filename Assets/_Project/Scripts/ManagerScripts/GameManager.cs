@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject _playerPrefab = default;
-    [SerializeField] private GameObject _cpuPrefab = default;
     [SerializeField] private bool _sceneSettingsDecide = true;
     [SerializeField] private string _controllerOne = default;
     [SerializeField] private string _controllerTwo = default;
@@ -73,24 +72,23 @@ public class GameManager : MonoBehaviour
         {
             _isTrainingMode = SceneSettings.IsTrainingMode;
         }
-        GameObject playerOneObject;
-        GameObject playerTwoObject;
+        GameObject playerOneObject = Instantiate(_playerPrefab);
+        GameObject playerTwoObject = Instantiate(_playerPrefab);
         if (SceneSettings.ControllerOne != "")
         {
-            playerOneObject = Instantiate(_playerPrefab);
+            playerOneObject.AddComponent<PlayerController>();
         }
         else
         {
-            playerOneObject = Instantiate(_cpuPrefab);
+            playerOneObject.AddComponent<CpuController>();
         }
         if (SceneSettings.ControllerTwo != "")
         {
-            playerTwoObject = Instantiate(_playerPrefab);
+            playerTwoObject.AddComponent<PlayerController>();
         }
         else
         {
-            playerTwoObject = Instantiate(_cpuPrefab);
-            playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
+            playerTwoObject.AddComponent<CpuController>();
         }
         if (SceneSettings.ControllerOne == "")
         {
@@ -102,6 +100,10 @@ public class GameManager : MonoBehaviour
         }
         _playerOne = playerOneObject.GetComponent<Player>();
         _playerTwo = playerTwoObject.GetComponent<Player>();
+        _playerOne.SetController();
+        _playerTwo.SetController();
+        _playerOne.GetComponent<PlayerMovement>().SetController();
+        _playerTwo.GetComponent<PlayerMovement>().SetController();
         _playerOneController = playerOneObject.GetComponent<BaseController>();
         _playerTwoController = playerTwoObject.GetComponent<BaseController>();
         _playerOne.SetPlayerUI(_playerOneUI);
