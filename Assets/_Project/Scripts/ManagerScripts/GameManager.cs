@@ -379,27 +379,22 @@ public class GameManager : MonoBehaviour
         {
             if (!hasPlayerOneDied)
             {
+                _playerOneUI.IncreaseWins();
                 _audio.Sound("TextSound").Play();
                 _readyText.text = "P1 WINS";
             }
             else
             {
+                _playerTwoUI.IncreaseWins();
                 _audio.Sound("TextSound").Play();
                 _readyText.text = "P2 WINS";
             }
         }
         yield return new WaitForSeconds(1.0f);
-        _matchOverMenu.Hide();
-        _playerOne.ResetLives();
-        _playerTwo.ResetLives();
-        _currentMusic.Stop();
-        _currentMusic = _audio.SoundGroup("Music").PlayInRandom();
-        StartRound();
-        //StartRound();
-        //_matchOverMenu.Show();
-        //Time.timeScale = 0.0f;
-        //DisableAllInput();
-    }
+		_matchOverMenu.Show();
+		Time.timeScale = 0.0f;
+		DisableAllInput();
+	}
 
     public void StartMatch()
     {
