@@ -349,12 +349,12 @@ public class GameManager : MonoBehaviour
             _readyText.text = "WINNER";
             if (!hasPlayerOneDied)
             {
-                _winnerNameText.text = $"{"Player1"}\n{"Tobi Dark"}";
+                _winnerNameText.text = $"{_playerOneUI.PlayerName}\n{_playerOneUI.CharacterName}";
                 _currentRound++;
             }
             else
             {
-                _winnerNameText.text = $"{"Player1"}\n{"Tobi Dark"}";
+                _winnerNameText.text = $"{_playerTwoUI.PlayerName}\n{_playerTwoUI.CharacterName}";
                 _currentRound++;
             }
         }
@@ -405,13 +405,13 @@ public class GameManager : MonoBehaviour
             if (!hasPlayerOneDied)
             {
                 _playerOneUI.IncreaseWins();
-                _winnerNameText.text = $"{"Player1"}\n{"Tobi Dark"}";
+                _winnerNameText.text = $"{_playerOneUI.PlayerName}\n{_playerOneUI.CharacterName}";
                 _currentRound++;
             }
             else
             {
                 _playerTwoUI.IncreaseWins();
-                _winnerNameText.text = $"{"Player1"}\n{"Tobi Dark"}";
+                _winnerNameText.text = $"{_playerTwoUI.PlayerName}\n{_playerTwoUI.CharacterName}";
                 _currentRound++;
             }
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerStatsSO : ScriptableObject
 {
 	public Sprite portrait;
-	public string name;
+	public string characterName;
 	public float walkSpeed = 3;
 	public float runSpeed = 5;
 	public float jumpForce = 2;
