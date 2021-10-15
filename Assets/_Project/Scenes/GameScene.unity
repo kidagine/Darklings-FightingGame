@@ -942,7 +942,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3121622970603974651, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
 --- !u!1 &335460012
 GameObject:
@@ -2219,6 +2220,7 @@ GameObject:
   - component: {fileID: 392163758}
   - component: {fileID: 392163759}
   - component: {fileID: 392163760}
+  - component: {fileID: 392163761}
   m_Layer: 0
   m_Name: Game_manager
   m_TagString: Untagged
@@ -2272,6 +2274,8 @@ MonoBehaviour:
   _matchOverMenu: {fileID: 1202960004}
   _readyAnimator: {fileID: 9123090234613714750}
   _cinemachineTargetGroup: {fileID: 1821676145}
+  _musicAudio: {fileID: 392163761}
+  _uiAudio: {fileID: 392163760}
   _gameSpeed: 1
 --- !u!114 &392163760
 MonoBehaviour:
@@ -2282,19 +2286,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 392163757}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 3976621417299948276, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
   _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 7b68d43164fb1644ba0d83b780178c7e, type: 3}
-    volume: 1
-    pitch: 1
-    name: Round
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 35679d7e204f8524d9265b94aca274dc, type: 3}
     volume: 1
@@ -2303,57 +2299,82 @@ MonoBehaviour:
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 7b68d43164fb1644ba0d83b780178c7e, type: 3}
+    volume: 1
+    pitch: 1
+    name: Round
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
+--- !u!114 &392163761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392163757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 3976621417299948276, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds: []
   _sounds3D: []
   _soundGroups:
   - name: Music
     lastPlayedSoundIndex: 0
     sounds:
     - source: {fileID: 0}
-      clip: {fileID: 8300000, guid: ea755af53de71f54587be75ac0a5b587, type: 3}
-      volume: 0.5
-      pitch: 1
-      name: 
-      loop: 1
-      playOnAwake: 0
-      playOneInstanceAtATime: 0
-    - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 87a56925bb6e7bc4b8d72827918d05fb, type: 3}
-      volume: 0.5
+      volume: 1
       pitch: 1
       name: 
-      loop: 1
+      loop: 0
       playOnAwake: 0
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: fe2b4491056a95742ba221fa762f8230, type: 3}
-      volume: 0.5
+      volume: 1
       pitch: 1
       name: 
-      loop: 1
+      loop: 0
       playOnAwake: 0
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
-      clip: {fileID: 8300000, guid: 2d30a16bd689575469d356ab2320c7fc, type: 3}
-      volume: 0.5
+      clip: {fileID: 8300000, guid: ea755af53de71f54587be75ac0a5b587, type: 3}
+      volume: 1
       pitch: 1
       name: 
-      loop: 1
-      playOnAwake: 0
-      playOneInstanceAtATime: 0
-    - source: {fileID: 0}
-      clip: {fileID: 8300000, guid: 9dcc8ea581562344ca4092aeaf45eee1, type: 3}
-      volume: 0.5
-      pitch: 1
-      name: 
-      loop: 1
+      loop: 0
       playOnAwake: 0
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 98e7120f17a914b44ba5721fc6831879, type: 3}
-      volume: 0.5
+      volume: 1
       pitch: 1
       name: 
-      loop: 1
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 2d30a16bd689575469d356ab2320c7fc, type: 3}
+      volume: 1
+      pitch: 1
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 9dcc8ea581562344ca4092aeaf45eee1, type: 3}
+      volume: 1
+      pitch: 1
+      name: 
+      loop: 0
       playOnAwake: 0
       playOneInstanceAtATime: 0
   _soundGroups3D: []
@@ -2911,27 +2932,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &648355716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2965,6 +2965,23 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollAmount: 0
   _ignoreFirstSelectSound: 0
+--- !u!114 &648355717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648355714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 0}
+  _sounds: []
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!114 &648355718 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -3840,24 +3857,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
+--- !u!114 &1142198865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142198861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 0}
+  _sounds: []
   _sounds3D: []
   _soundGroups: []
   _soundGroups3D: []
@@ -4086,24 +4099,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
+--- !u!114 &1263741167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263741163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 0}
+  _sounds: []
   _sounds3D: []
   _soundGroups: []
   _soundGroups3D: []
@@ -5251,27 +5260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &1702887906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5316,6 +5304,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1702887908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702887904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 0}
+  _sounds: []
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!1 &1726020067
 GameObject:
   m_ObjectHideFlags: 0
@@ -6150,6 +6155,98 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _audioMixerGroup
+      value: 
+      objectReference: {fileID: 3976621417299948276, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _sounds.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].name
+      value: Music
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 87a56925bb6e7bc4b8d72827918d05fb, type: 3}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: fe2b4491056a95742ba221fa762f8230, type: 3}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: ea755af53de71f54587be75ac0a5b587, type: 3}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 98e7120f17a914b44ba5721fc6831879, type: 3}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[4].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2d30a16bd689575469d356ab2320c7fc, type: 3}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[5].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 9dcc8ea581562344ca4092aeaf45eee1, type: 3}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[0].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[1].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[2].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[3].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[4].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[5].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[0].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[1].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[2].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[3].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[4].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6663253261313676773, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _soundGroups.Array.data[0].sounds.Array.data[5].volume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1237382185827577928, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
       propertyPath: m_Name
       value: Sound_manager
@@ -6201,6 +6298,10 @@ PrefabInstance:
     - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237382185827577931, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
+      propertyPath: _audio
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}

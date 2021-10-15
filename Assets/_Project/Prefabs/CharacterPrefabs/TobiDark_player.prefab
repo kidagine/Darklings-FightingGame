@@ -414,7 +414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 3121622970603974650}
   _playerMovement: {fileID: 3121622970603974653}
-  _audio: {fileID: 3121622970603974651}
+  _audio: {fileID: 3673139625294208710}
 --- !u!212 &3121622969633075690
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -496,7 +496,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3121622969731471999}
   - component: {fileID: 3121622969731471992}
-  - component: {fileID: 3121622969731471994}
   m_Layer: 7
   m_Name: Main_hitbox
   m_TagString: Untagged
@@ -534,31 +533,6 @@ MonoBehaviour:
   _offset: {x: 0, y: 0}
   _player: {fileID: 3121622970603974650}
   _hasHit: 0
---- !u!114 &3121622969731471994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3121622969731471998}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: -3276983034543540519, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 5df03db9d26ba2247a8d4ff017c369fa, type: 3}
-    volume: 1
-    pitch: 1
-    name: Hit
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!1 &3121622970170896645
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,7 +683,7 @@ GameObject:
   - component: {fileID: 3121622970603974650}
   - component: {fileID: 3121622970603974644}
   - component: {fileID: 3121622970603974653}
-  - component: {fileID: 3121622970603974651}
+  - component: {fileID: 3673139625294208710}
   m_Layer: 10
   m_Name: TobiDark_player
   m_TagString: Untagged
@@ -808,7 +782,7 @@ MonoBehaviour:
   _dustDownPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
   _dashPrefab: {fileID: 5833315189278568593, guid: d1a8205ac964ba545b3fc474fd11b27e, type: 3}
   _playerGhostPrefab: {fileID: 904796691893738277, guid: 0cfcd7936a9c5c54294ba46e75c919d5, type: 3}
---- !u!114 &3121622970603974651
+--- !u!114 &3673139625294208710
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -817,7 +791,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3121622970603974652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _audioMixerGroup: {fileID: -3276983034543540519, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
@@ -847,10 +821,66 @@ MonoBehaviour:
     playOnAwake: 0
     playOneInstanceAtATime: 0
   - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: afac0f65b0fb5e048a466025da6e2970, type: 3}
-    volume: 0.35
+    clip: {fileID: 8300000, guid: 48f892a0bc81d4f4fa459b8ab651168b, type: 3}
+    volume: 1
+    pitch: 1
+    name: Dash
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 2037d56b27f1e5142929d8ca0f51610a, type: 3}
+    volume: 1
+    pitch: 1
+    name: Run
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 68b24d19592e7aa4883c6955f062dd22, type: 3}
+    volume: 0.5
     pitch: 1
     name: Impact1
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 6ea977eadf2c8394c95a9d9e6c3eb263, type: 3}
+    volume: 0.5
+    pitch: 1
+    name: Impact2
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: f24d8ef3923a78e44b989571a79f684d, type: 3}
+    volume: 0.5
+    pitch: 1
+    name: Impact3
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: d65740b147953714a914cf97e3b8a99c, type: 3}
+    volume: 0.5
+    pitch: 1
+    name: Impact4
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: d65740b147953714a914cf97e3b8a99c, type: 3}
+    volume: 0.5
+    pitch: 1
+    name: Impact4
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 6ea977eadf2c8394c95a9d9e6c3eb263, type: 3}
+    volume: 0.5
+    pitch: 1
+    name: Impact5
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0
@@ -863,59 +893,11 @@ MonoBehaviour:
     playOnAwake: 0
     playOneInstanceAtATime: 0
   - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 68b24d19592e7aa4883c6955f062dd22, type: 3}
-    volume: 0.3
-    pitch: 1
-    name: Impact2
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 6ea977eadf2c8394c95a9d9e6c3eb263, type: 3}
-    volume: 0.15
-    pitch: 1
-    name: Impact3
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: f24d8ef3923a78e44b989571a79f684d, type: 3}
-    volume: 0.15
-    pitch: 1
-    name: Impact4
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: d65740b147953714a914cf97e3b8a99c, type: 3}
-    volume: 0.15
-    pitch: 1
-    name: Impact5
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 48f892a0bc81d4f4fa459b8ab651168b, type: 3}
-    volume: 0.15
-    pitch: 1
-    name: Dash
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 9b0e9f32fb0e18241ad1334617591878, type: 3}
-    volume: 0.75
+    volume: 1
     pitch: 1
     name: Slam
     loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 2037d56b27f1e5142929d8ca0f51610a, type: 3}
-    volume: 0.2
-    pitch: 1
-    name: Run
-    loop: 1
     playOnAwake: 0
     playOneInstanceAtATime: 0
   _sounds3D: []
