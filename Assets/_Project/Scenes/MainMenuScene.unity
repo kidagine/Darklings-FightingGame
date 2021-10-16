@@ -1028,24 +1028,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 119897296}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
   _sounds:
   - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
     volume: 1
     pitch: 1
     name: Selected
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
+    volume: 1
+    pitch: 1
+    name: Pressed
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0
@@ -1806,6 +1806,39 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollAmount: 0
   _ignoreFirstSelectSound: 0
+--- !u!114 &209515366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209515364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
+    volume: 1
+    pitch: 1
+    name: Selected
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
+    volume: 1
+    pitch: 1
+    name: Pressed
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!1 &211052350
 GameObject:
   m_ObjectHideFlags: 0
@@ -2862,39 +2895,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4703080449929076746, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
   m_PrefabInstance: {fileID: 367525708}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &367525711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 367525710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &367525712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2940,6 +2940,23 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollAmount: 0
   _ignoreFirstSelectSound: 0
+--- !u!114 &367525713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367525710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 0}
+  _sounds: []
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!114 &367525714 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -3520,7 +3537,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 394778453}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
@@ -4244,7 +4261,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ver 0.12.0
+  m_text: Ver 0.13.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
@@ -4837,14 +4854,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _audioMixerGroup: {fileID: 3976621417299948276, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
   _sounds:
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 42d954c0ca8a8d845bb186b72177d7fd, type: 3}
-    volume: 0.6
+    volume: 1
     pitch: 1
     name: 
     loop: 1
@@ -6324,6 +6341,39 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollAmount: 0
   _ignoreFirstSelectSound: 0
+--- !u!114 &765981396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765981394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
+    volume: 1
+    pitch: 1
+    name: Selected
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
+    volume: 1
+    pitch: 1
+    name: Pressed
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!1 &768858358
 GameObject:
   m_ObjectHideFlags: 0
@@ -6905,7 +6955,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &860767419
+--- !u!114 &860767420
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6914,27 +6964,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 860767415}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
+  _audioMixerGroup: {fileID: 0}
+  _sounds: []
   _sounds3D: []
   _soundGroups: []
   _soundGroups3D: []
@@ -7064,27 +7098,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &866083924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7422,27 +7435,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 929103958}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 929103957}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &929103960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7520,27 +7512,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &941203421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7886,27 +7857,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &1002551151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8209,24 +8159,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1042935558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
   _sounds:
   - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
     volume: 1
     pitch: 1
     name: Selected
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
+    volume: 1
+    pitch: 1
+    name: Pressed
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0
@@ -8418,27 +8368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &1061335980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8987,7 +8916,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollAmount: 0
   _ignoreFirstSelectSound: 0
---- !u!114 &1162407425
+--- !u!114 &1162407426
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8996,27 +8925,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1162407421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
+  _audioMixerGroup: {fileID: 0}
+  _sounds: []
   _sounds3D: []
   _soundGroups: []
   _soundGroups3D: []
@@ -11348,7 +11261,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1531965370}
-  - component: {fileID: 1531965369}
   m_Layer: 0
   m_Name: Input_manager
   m_TagString: Untagged
@@ -11356,19 +11268,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1531965369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1531965368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06e26f14de65c9447abe9612363fffd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerInput: {fileID: 394778458}
 --- !u!4 &1531965370
 Transform:
   m_ObjectHideFlags: 0
@@ -11541,6 +11440,39 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollAmount: 0
   _ignoreFirstSelectSound: 0
+--- !u!114 &1577402207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577402205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
+    volume: 1
+    pitch: 1
+    name: Selected
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
+    volume: 1
+    pitch: 1
+    name: Pressed
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!1 &1614127507
 GameObject:
   m_ObjectHideFlags: 0
@@ -12205,27 +12137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 1679731510}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 1679731509}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &1679731512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12852,27 +12763,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &1754887542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14655,27 +14545,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 2065791090}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 2065791089}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &2065791092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15157,27 +15026,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 2117361150}
-    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
-    volume: 1
-    pitch: 1
-    name: Selected
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  - source: {fileID: 2117361149}
-    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
-    volume: 1
-    pitch: 1
-    name: Pressed
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &2117361152
 MonoBehaviour:
   m_ObjectHideFlags: 0

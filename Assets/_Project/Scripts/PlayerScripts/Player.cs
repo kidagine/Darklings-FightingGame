@@ -252,6 +252,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_isDead = true;
 	}
 
+	public void Taunt()
+	{
+		_playerAnimator.Taunt();
+		_playerMovement.SetLockMovement(true);
+		_playerController.enabled = false;
+	}
+
 	public void LoseLife()
 	{
 		_playerUI.SetLives();

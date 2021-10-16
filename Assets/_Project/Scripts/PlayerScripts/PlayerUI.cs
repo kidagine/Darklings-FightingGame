@@ -13,6 +13,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _characterName = default;
     [SerializeField] private TextMeshProUGUI _playerName = default;
     [SerializeField] private TextMeshProUGUI _comboText = default;
+    [SerializeField] private TextMeshProUGUI _winsText = default;
     [SerializeField] private Transform _healthDividerPivot = default;
     [SerializeField] private GameObject _healthDividerPrefab = default;
     [SerializeField] private Slider _pauseSlider = default;
@@ -20,7 +21,11 @@ public class PlayerUI : MonoBehaviour
     private Coroutine _openPauseHoldCoroutine;
     private int _currentLifeIndex;
     private int _currentComboCount;
+    private int _currentWins;
     private bool _hasComboEnded;
+
+	public string PlayerName { get; private set; }
+    public string CharacterName { get; private set; }
 
 
     public void InitializeUI(PlayerStatsSO playerStats, bool isPlayerOne)
@@ -29,25 +34,30 @@ public class PlayerUI : MonoBehaviour
         {
             if (SceneSettings.ControllerOne == "")
             {
-                _playerName.text = "Cpu 1";
+                PlayerName = "Cpu 1";
+                _playerName.text = PlayerName;
             }
             else
             {
-                _playerName.text = "Player 1";
+                PlayerName = "Player 1";
+                _playerName.text = PlayerName;
             }
         }
         else
         {
             if (SceneSettings.ControllerTwo == "")
             {
-                _playerName.text = "Cpu 2";
+                PlayerName = "Cpu 2";
+                _playerName.text = PlayerName;
             }
             else
             {
-                _playerName.text = "Player 2";
+                PlayerName = "Player 2";
+                _playerName.text = PlayerName;
             }
         }
-        _characterName.text = playerStats.name;
+        CharacterName = playerStats.characterName;
+        _characterName.text = CharacterName;
         SetPortrait(playerStats.portrait);
         SetMaxHealth(playerStats.maxHealth);
     }
@@ -92,6 +102,19 @@ public class PlayerUI : MonoBehaviour
         _lostLives[0].SetActive(false);
         _lostLives[1].SetActive(false);
         _currentLifeIndex = 0;
+    }
+
+    public void IncreaseWins()
+    {
+        _currentWins++;
+        if (_currentWins == 1)
+        {
+            _winsText.text = $"{_currentWins} Win";
+        }
+        else
+        {
+            _winsText.text = $"{_currentWins} Wins";
+        }
     }
 
     public void IncreaseCombo()

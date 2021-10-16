@@ -17,20 +17,25 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected PlayerUI _playerTwoUI = default;
     [SerializeField] protected TextMeshProUGUI _countdownText = default;
     [SerializeField] protected TextMeshProUGUI _readyText = default;
+    [SerializeField] protected TextMeshProUGUI _winnerNameText = default;
+    [SerializeField] protected GameObject _bottomLine = default;
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
     [SerializeField] protected GameObject[] _stages = default;
     [SerializeField] private BaseMenu _matchOverMenu = default;
+    [SerializeField] private Animator _readyAnimator = default;
     [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
+    [SerializeField] private Audio _musicAudio = default;
+    [SerializeField] private Audio _uiAudio = default;
     [Range(1, 10)]
     [SerializeField] private int _gameSpeed = 1;
     protected Player _playerOne;
     protected Player _playerTwo;
     protected BaseController _playerOneController;
     protected BaseController _playerTwoController;
-    private Audio _audio;
     private Sound _currentMusic;
     private float _countdown;
+    private int _currentRound = 1;
     private bool _reverseReset;
 
     public bool HasGameStarted { get; set; }
@@ -40,7 +45,6 @@ public class GameManager : MonoBehaviour
 
 	void Awake()
     {
-        _audio = GetComponent<Audio>();
         CheckInstance();
         CheckSceneSettings();
     }
@@ -64,7 +68,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        _currentMusic = _audio.SoundGroup("Music").PlayInRandom();
+        _currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
         if (!_sceneSettingsDecide)
         {
             SceneSettings.ControllerOne = _controllerOne;
@@ -152,11 +156,11 @@ public class GameManager : MonoBehaviour
     IEnumerator RoundTieCoroutine()
     {
         HasGameStarted = false;
-        _audio.Sound("TextSound").Play();
+        _uiAudio.Sound("TextSound").Play();
         _readyText.text = "ROUND OVER";
         Time.timeScale = 0.25f;
         yield return new WaitForSeconds(0.5f);
-        _audio.Sound("TextSound").Play();
+        _uiAudio.Sound("TextSound").Play();
         _readyText.text = "TIME'S OUT";
         yield return new WaitForSeconds(0.5f);
         _readyText.text = "";
@@ -197,12 +201,23 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = _gameSpeed;
         yield return new WaitForSeconds(0.5f);
-        _audio.Sound("TextSound").Play();
-        _readyText.text = "Ready?";
+        _uiAudio.Sound("TextSound").Play();
+        _readyAnimator.SetTrigger("Show");
+        _bottomLine.SetActive(true);
+        if (_currentRound == 3)
+        {
+            _readyText.text = $"Final Round";
+        }
+        else
+        {
+            _readyText.text = $"Round {_currentRound}";
+        }
         yield return new WaitForSeconds(1.0f);
-        _audio.Sound("TextSound").Play();
-        _readyText.text = "GO!";
-        yield return new WaitForSeconds(0.5f);
+        _readyAnimator.SetTrigger("Show");
+        _uiAudio.Sound("TextSound").Play();
+        _readyText.text = "Fight!";
+        yield return new WaitForSeconds(1.0f);
+        _bottomLine.SetActive(false);
         _readyText.text = "";
         _leftStopper.SetActive(false);
         _rightStopper.SetActive(false);
@@ -305,7 +320,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator RoundOverCoroutine()
     {
-        _audio.Sound("Round").Play();
+        _uiAudio.Sound("Round").Play();
         bool hasPlayerOneDied = _playerOne.Health <= 0.0f;
         bool hasPlayerTwoDied = _playerTwo.Health <= 0.0f;
         if (!hasPlayerOneDied && hasPlayerTwoDied)
@@ -317,29 +332,35 @@ public class GameManager : MonoBehaviour
             _playerOne.LoseLife();
         }
         HasGameStarted = false;
-        _audio.Sound("TextSound").Play();
-        _readyText.text = "ROUND OVER";
+        _bottomLine.SetActive(true);
+        _uiAudio.Sound("TextSound").Play();
+        _readyAnimator.SetTrigger("Show");
+        _readyText.text = "KO";
         Time.timeScale = 0.25f;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSecondsRealtime(1.0f);
+        _uiAudio.Sound("TextSound").Play();
+        _readyAnimator.SetTrigger("Show");
         if (hasPlayerOneDied && hasPlayerTwoDied)
         {
-            _audio.Sound("TextSound").Play();
             _readyText.text = "TIE";
         }
         else
         {
+            _readyText.text = "WINNER";
             if (!hasPlayerOneDied)
             {
-                _audio.Sound("TextSound").Play();
-                _readyText.text = "P1 WINS";
+                _winnerNameText.text = $"{_playerOneUI.PlayerName}\n{_playerOneUI.CharacterName}";
+                _currentRound++;
             }
             else
             {
-                _audio.Sound("TextSound").Play();
-                _readyText.text = "P2 WINS";
+                _winnerNameText.text = $"{_playerTwoUI.PlayerName}\n{_playerTwoUI.CharacterName}";
+                _currentRound++;
             }
         }
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSecondsRealtime(2.0f);
+        _bottomLine.SetActive(false);
+        _winnerNameText.text = "";
         _readyText.text = "";
         StartRound();
     }
@@ -355,7 +376,7 @@ public class GameManager : MonoBehaviour
     IEnumerator MatchOverCoroutine()
     {
         HasGameStarted = false;
-        _audio.Sound("Round").Play();
+        _uiAudio.Sound("Round").Play();
         bool hasPlayerOneDied = _playerOne.Health <= 0.0f;
         bool hasPlayerTwoDied = _playerTwo.Health <= 0.0f;
         if (!hasPlayerOneDied && hasPlayerTwoDied)
@@ -366,40 +387,45 @@ public class GameManager : MonoBehaviour
         {
             _playerOne.LoseLife();
         }
-        _audio.Sound("TextSound").Play();
-        _readyText.text = "MATCH OVER";
+        _bottomLine.SetActive(true);
+        _uiAudio.Sound("TextSound").Play();
+        _readyAnimator.SetTrigger("Show");
+        _readyText.text = "KO";
         Time.timeScale = 0.25f;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSecondsRealtime(1.0f);
+        _uiAudio.Sound("TextSound").Play();
+        _readyAnimator.SetTrigger("Show");
         if (hasPlayerOneDied && hasPlayerTwoDied)
         {
-            _audio.Sound("TextSound").Play();
             _readyText.text = "TIE";
         }
         else
         {
+            _readyText.text = "WINNER";
             if (!hasPlayerOneDied)
             {
-                _audio.Sound("TextSound").Play();
-                _readyText.text = "P1 WINS";
+                _playerOneUI.IncreaseWins();
+                _winnerNameText.text = $"{_playerOneUI.PlayerName}\n{_playerOneUI.CharacterName}";
+                _currentRound++;
             }
             else
             {
-                _audio.Sound("TextSound").Play();
-                _readyText.text = "P2 WINS";
+                _playerTwoUI.IncreaseWins();
+                _winnerNameText.text = $"{_playerTwoUI.PlayerName}\n{_playerTwoUI.CharacterName}";
+                _currentRound++;
             }
         }
-        yield return new WaitForSeconds(1.0f);
-        _matchOverMenu.Hide();
-        _playerOne.ResetLives();
-        _playerTwo.ResetLives();
-        _currentMusic.Stop();
-        _currentMusic = _audio.SoundGroup("Music").PlayInRandom();
-        StartRound();
-        //StartRound();
-        //_matchOverMenu.Show();
-        //Time.timeScale = 0.0f;
-        //DisableAllInput();
-    }
+        yield return new WaitForSecondsRealtime(2.0f);
+        _playerOne.Taunt();
+        yield return new WaitForSecondsRealtime(2.0f);
+        _bottomLine.SetActive(false);
+        _winnerNameText.text = "";
+        _readyText.text = "";
+        _currentRound = 1;
+		_matchOverMenu.Show();
+		Time.timeScale = 0.0f;
+		DisableAllInput();
+	}
 
     public void StartMatch()
     {
@@ -407,7 +433,7 @@ public class GameManager : MonoBehaviour
 		_playerOne.ResetLives();
 		_playerTwo.ResetLives();
 		_currentMusic.Stop();
-		_currentMusic = _audio.SoundGroup("Music").PlayInRandom();
+		_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
 		StartRound();
 	}
 
