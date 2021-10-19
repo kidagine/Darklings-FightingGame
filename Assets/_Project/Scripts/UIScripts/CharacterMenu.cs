@@ -1,4 +1,3 @@
-using Demonics;
 using Demonics.UI;
 using System.Collections;
 using TMPro;
@@ -9,6 +8,8 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private BaseMenu _baseMenu = default;
 	[SerializeField] private SpriteRenderer _characterOneImage = default;
 	[SerializeField] private SpriteRenderer _characterTwoImage = default;
+	[SerializeField] private GameObject _colorsOne = default;
+	[SerializeField] private GameObject _colorsTwo = default;
 	[SerializeField] private Animator _characterOneAnimator = default;
 	[SerializeField] private Animator _characterTwoAnimator = default;
 	[SerializeField] private TextMeshProUGUI _playerOneName = default;
@@ -62,11 +63,27 @@ public class CharacterMenu : BaseMenu
 		_playerTwoName.enabled = true;
 		if (isPlayerOne)
 		{
-			_characterOneAnimator.SetBool("IsTaunting", true);
+			_colorsOne.SetActive(true);
+			_playerOneSelector.HasSelected = true;
+			_playerOneSelector.gameObject.SetActive(false);
 		}
 		else
 		{
-			_characterTwoAnimator.SetBool("IsTaunting", true);
+			_colorsTwo.SetActive(true);
+			_playerTwoSelector.HasSelected = true;
+			_playerTwoSelector.gameObject.SetActive(false);
+		}
+	}
+
+	public void SetCharacter(bool isPlayerOne)
+	{
+		if (isPlayerOne)
+		{
+			_characterOneAnimator.SetTrigger("Taunt");
+		}
+		else
+		{
+			_characterTwoAnimator.SetTrigger("Taunt");
 		}
 		StartCoroutine(TauntEndCoroutine(isPlayerOne));
 	}

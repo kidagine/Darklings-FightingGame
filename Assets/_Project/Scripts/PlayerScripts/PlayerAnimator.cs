@@ -7,6 +7,7 @@ public class PlayerAnimator : MonoBehaviour
     private Animator animator;
     private SpriteLibrary _spriteLibrary;
     private SpriteRenderer _spriteRenderer;
+    private int _currentLibraryAsset;
 
     void Awake()
     {
@@ -83,8 +84,17 @@ public class PlayerAnimator : MonoBehaviour
         return _spriteRenderer.sprite;
     }
 
-    public void SetSpriteLibraryAsset(int skinNumber)
+    public int SetSpriteLibraryAsset(int skinNumber)
     {
+        if (skinNumber > _spriteLibraryAssets.Length - 1)
+        {
+            skinNumber = 0;
+        }
+        else if (skinNumber < 0)
+        {
+            skinNumber = _spriteLibraryAssets.Length - 1;
+        }
         _spriteLibrary.spriteLibraryAsset = _spriteLibraryAssets[skinNumber];
+        return skinNumber;
     }
 }
