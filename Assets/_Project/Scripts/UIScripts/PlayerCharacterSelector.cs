@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerCharacterSelector : MonoBehaviour
 {
     [SerializeField] private CharacterMenu _characterMenu = default;
+    [SerializeField] private SpriteRenderer _randomSpriteRenderer = default;
     [SerializeField] private bool _isPlayerOne = default;
     private readonly float _moveDistance = 180.0f;
     private RectTransform _rectTransform;
@@ -112,6 +113,7 @@ public class PlayerCharacterSelector : MonoBehaviour
             {
                 _wasClicked = true;
                 _audio.Sound("Pressed").Play();
+                _randomSpriteRenderer.gameObject.SetActive(false);
                 _characterMenu.SelectCharacterOneImage(_isPlayerOne);
             }
         }
@@ -138,6 +140,14 @@ public class PlayerCharacterSelector : MonoBehaviour
             RuntimeAnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
             string characterName = collision.GetComponent<CharacterButton>().CharacterName;
             _characterMenu.SetCharacterOneImage(_isPlayerOne, animatorController, characterName);
+            if (collision.GetComponent<CharacterButton>().IsRandomizer)
+            {
+                _randomSpriteRenderer.gameObject.SetActive(true);
+            }
+            else
+            {
+                _randomSpriteRenderer.gameObject.SetActive(false);
+            }
         }
         if (collision.transform.localPosition.x > currentPosition.x)
         {

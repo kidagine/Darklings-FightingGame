@@ -1,14 +1,18 @@
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 public class PlayerAnimator : MonoBehaviour
 {
+    [SerializeField] private SpriteLibraryAsset[] _spriteLibraryAssets = default;
     private Animator animator;
+    private SpriteLibrary _spriteLibrary;
     private SpriteRenderer _spriteRenderer;
-
+    private int _currentLibraryAsset;
 
     void Awake()
     {
         animator = GetComponent<Animator>();
+        _spriteLibrary = GetComponent<SpriteLibrary>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -78,5 +82,19 @@ public class PlayerAnimator : MonoBehaviour
     public Sprite GetCurrentSprite()
     {
         return _spriteRenderer.sprite;
+    }
+
+    public int SetSpriteLibraryAsset(int skinNumber)
+    {
+        if (skinNumber > _spriteLibraryAssets.Length - 1)
+        {
+            skinNumber = 0;
+        }
+        else if (skinNumber < 0)
+        {
+            skinNumber = _spriteLibraryAssets.Length - 1;
+        }
+        _spriteLibrary.spriteLibraryAsset = _spriteLibraryAssets[skinNumber];
+        return skinNumber;
     }
 }
