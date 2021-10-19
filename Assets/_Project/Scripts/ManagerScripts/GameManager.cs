@@ -110,8 +110,13 @@ public class GameManager : MonoBehaviour
         _playerTwo.SetController();
         _playerOne.GetComponent<PlayerMovement>().SetController();
         _playerTwo.GetComponent<PlayerMovement>().SetController();
-        _playerOne.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(0);
-        _playerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(1);
+        _playerOne.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorOne);
+        int colorTwo = SceneSettings.ColorTwo;
+        if (colorTwo == SceneSettings.ColorOne)
+        {
+            colorTwo++;
+        }
+        _playerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(colorTwo);
         _playerOneController = playerOneObject.GetComponent<BaseController>();
         _playerTwoController = playerTwoObject.GetComponent<BaseController>();
         _playerOne.SetPlayerUI(_playerOneUI);

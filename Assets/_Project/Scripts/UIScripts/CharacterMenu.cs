@@ -65,13 +65,13 @@ public class CharacterMenu : BaseMenu
 		{
 			_colorsOne.SetActive(true);
 			_playerOneSelector.HasSelected = true;
-			_playerOneSelector.gameObject.SetActive(false);
+			//_playerOneSelector.gameObject.SetActive(false);
 		}
 		else
 		{
 			_colorsTwo.SetActive(true);
 			_playerTwoSelector.HasSelected = true;
-			_playerTwoSelector.gameObject.SetActive(false);
+			//_playerTwoSelector.gameObject.SetActive(false);
 		}
 	}
 

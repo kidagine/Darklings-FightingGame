@@ -64,13 +64,6 @@ public class CharacterColorSelector : MonoBehaviour
                 _controllerInputName = SceneSettings.ControllerTwo;
             }
         }
-
-        if (_otherCharacterColorSelector.ColorNumber == ColorNumber && !_isPlayerOne)
-        {
-            ColorNumber++;
-            ColorNumber = _playerAnimator.SetSpriteLibraryAsset(ColorNumber);
-            _playerOneColorNumber.text = $"Color {ColorNumber + 1}";
-        }
 	}
 
 	private void Update()
@@ -95,6 +88,14 @@ public class CharacterColorSelector : MonoBehaviour
 
             if (Input.GetButtonDown(_controllerInputName + "Confirm"))
             {
+                if (_isPlayerOne)
+                {
+                    SceneSettings.ColorOne = ColorNumber;
+                }
+                else
+                {
+                    SceneSettings.ColorTwo = ColorNumber;
+                }
                 _audio.Sound("Selected").Play();
                 _inputDeactivated = true;
                 _arrows.SetActive(false);
@@ -105,7 +106,7 @@ public class CharacterColorSelector : MonoBehaviour
 
 	IEnumerator ResetInput()
 	{
-		_inputDeactivated = true;
+        _inputDeactivated = true;
 		_directionInput = Vector2.zero;
 		yield return new WaitForSeconds(0.2f);
 		_inputDeactivated = false;
@@ -113,8 +114,10 @@ public class CharacterColorSelector : MonoBehaviour
 
 	private void OnDisable()
     {
+        _playerAnimator.SetSpriteLibraryAsset(0);
         ColorNumber = 0;
         _inputDeactivated = false;
         _arrows.SetActive(true);
+        gameObject.SetActive(false);
     }
 }
