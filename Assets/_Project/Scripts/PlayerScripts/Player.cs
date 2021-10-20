@@ -22,6 +22,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private float _maxArcana = 2.0f;
 	private int _lives = 2;
 	private bool _isDead;
+	private bool _isBlockingHigh;
+	private bool _isBlockingLow;
 
 	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
@@ -172,16 +174,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		_playerAnimator.IsHurt(true);
 		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
-		if (CheckIsBlocking() && !attackSO.canGuardBreak)
-		{
-			_audio.Sound("Block").Play();
-			IsBlocking = true;
-			_playerAnimator.IsBlocking(true);
-			_playerMovement.SetLockMovement(true);
-			StartCoroutine(ResetBlockingCoroutine());
-			return false;
-		}
-		else
+		CheckIsBlocking();
+		if (_isBlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || _isBlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
 			_audio.Sound(attackSO.impactSound).Play();
 			Health--;
@@ -195,7 +189,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 			else
 			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, attackSO.knockbackDirection.y	), attackSO.knockback);
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback);
 			}
 			IsAttacking = false;
 			if (Health <= 0)
@@ -203,6 +197,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				Die();
 			}
 			return true;
+		}
+		else
+		{
+			_audio.Sound("Block").Play();
+			IsBlocking = true;
+			_playerAnimator.IsBlocking(true);
+			_playerMovement.SetLockMovement(true);
+			StartCoroutine(ResetBlockingCoroutine());
+			return false;
 		}
 	}
 
@@ -215,16 +218,29 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.IsBlocking(false);
 	}
 
-	private bool CheckIsBlocking()
+	private void CheckIsBlocking()
 	{
 		if (_playerMovement.IsGrounded && !IsAttacking && !_playerMovement.IsDashing)
 		{
 			if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
 			{
-				return true;
+				if (_playerMovement.MovementInput.y < 0.0f)
+				{
+					_isBlockingLow = true;
+					_isBlockingHigh = false;
+				}
+				else
+				{
+					_isBlockingLow = false;
+					_isBlockingHigh = true;
+				}
 			}
 		}
-		return false;
+		else
+		{
+			_isBlockingLow = false;
+			_isBlockingHigh = false;
+		}
 	}
 
 	private void Die()

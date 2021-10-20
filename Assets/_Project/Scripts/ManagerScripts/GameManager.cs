@@ -423,7 +423,14 @@ public class GameManager : MonoBehaviour
             }
         }
         yield return new WaitForSecondsRealtime(2.0f);
-        _playerOne.Taunt();
+        if (!hasPlayerOneDied)
+        {
+            _playerOne.Taunt();
+        }
+        else if (hasPlayerOneDied)
+        {
+            _playerTwo.Taunt();
+        }
         yield return new WaitForSecondsRealtime(2.0f);
         _bottomLine.SetActive(false);
         _winnerNameText.text = "";
