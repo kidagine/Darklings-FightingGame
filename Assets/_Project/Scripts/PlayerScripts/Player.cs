@@ -202,7 +202,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_audio.Sound("Block").Play();
 			IsBlocking = true;
-			_playerAnimator.IsBlocking(true);
+			if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
+			{
+				_playerAnimator.IsBlockingLow(true);
+			}
+			else
+			{
+				_playerAnimator.IsBlocking(true);
+			}
 			_playerMovement.SetLockMovement(true);
 			StartCoroutine(ResetBlockingCoroutine());
 			return false;
@@ -216,6 +223,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerMovement.SetLockMovement(false);
 		_playerAnimator.IsHurt(false);
 		_playerAnimator.IsBlocking(false);
+		_playerAnimator.IsBlockingLow(false);
 	}
 
 	private void CheckIsBlocking()

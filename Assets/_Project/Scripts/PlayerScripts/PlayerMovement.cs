@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             if (!_isMovementLocked)
             {
                 _rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
-                _playerAnimator.SetMovement(MovementInput.x * transform.localScale.x);
+                _playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
                 if (_rigidbody.velocity.x != 0.0f)
                 {
                     if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
@@ -151,7 +151,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _audio.Sound("Jump").Play();
         IsGrounded = false;
         _playerAnimator.IsJumping(true);
-        _playerAnimator.SetMovement(MovementInput.x * transform.localScale.x);
+        _playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
         _isMovementLocked = true;
         _rigidbody.velocity = Vector2.zero;
         if (MovementInput.x == 0.0f)
