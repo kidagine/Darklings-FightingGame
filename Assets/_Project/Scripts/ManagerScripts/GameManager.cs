@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _playerPrefab = default;
+    [SerializeField] private Player _playerOnePrefab = default;
+    [SerializeField] private Player _playerTwoPrefab = default;
     [SerializeField] private bool _sceneSettingsDecide = true;
     [SerializeField] private string _controllerOne = default;
     [SerializeField] private string _controllerTwo = default;
@@ -47,28 +48,6 @@ public class GameManager : MonoBehaviour
     {
         CheckInstance();
         CheckSceneSettings();
-    }
-
-    private void CheckInstance()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
-
-    public void CheckSceneSettings()
-    {
-        _stages[SceneSettings.StageIndex].SetActive(true);
-    }
-
-    void Start()
-    {
-        _currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
         if (!_sceneSettingsDecide)
         {
             SceneSettings.ControllerOne = _controllerOne;
@@ -78,8 +57,10 @@ public class GameManager : MonoBehaviour
         {
             _isTrainingMode = SceneSettings.IsTrainingMode;
         }
-        GameObject playerOneObject = Instantiate(_playerPrefab);
-        GameObject playerTwoObject = Instantiate(_playerPrefab);
+        GameObject playerOneObject = Instantiate(_playerOnePrefab.gameObject);
+        GameObject playerTwoObject = Instantiate(_playerTwoPrefab.gameObject);
+        playerOneObject.SetActive(true);
+        playerTwoObject.SetActive(true);
         if (SceneSettings.ControllerOne != "")
         {
             playerOneObject.AddComponent<PlayerController>();
@@ -111,12 +92,11 @@ public class GameManager : MonoBehaviour
         _playerOne.GetComponent<PlayerMovement>().SetController();
         _playerTwo.GetComponent<PlayerMovement>().SetController();
         _playerOne.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorOne);
-        int colorTwo = SceneSettings.ColorTwo;
-        if (colorTwo == SceneSettings.ColorOne)
+        if (SceneSettings.ColorTwo == SceneSettings.ColorOne && _playerOne.PlayerStats.characterName == _playerTwo.PlayerStats.characterName)
         {
-            colorTwo++;
+            SceneSettings.ColorTwo++;
         }
-        _playerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(colorTwo);
+        _playerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorTwo);
         _playerOneController = playerOneObject.GetComponent<BaseController>();
         _playerTwoController = playerTwoObject.GetComponent<BaseController>();
         _playerOne.SetPlayerUI(_playerOneUI);
@@ -133,6 +113,28 @@ public class GameManager : MonoBehaviour
         _cinemachineTargetGroup.AddMember(_playerOne.transform, 0.5f, 0.5f);
         _cinemachineTargetGroup.AddMember(_playerTwo.transform, 0.5f, 0.5f);
 
+    }
+
+    private void CheckInstance()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
+
+    public void CheckSceneSettings()
+    {
+        _stages[SceneSettings.StageIndex].SetActive(true);
+    }
+
+    void Start()
+    {
+        _currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
         if (_isTrainingMode)
         {
             _playerOneUI.transform.GetChild(2).gameObject.SetActive(false);
@@ -147,7 +149,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-	void Update()
+    void Update()
 	{
 	    if (HasGameStarted && !_isTrainingMode)
 		{
@@ -191,12 +193,15 @@ public class GameManager : MonoBehaviour
 
     private void StartTrainingRound()
     {
+        _countdownText.gameObject.SetActive(true);
         _playerOneController = _playerOne.GetComponent<PlayerController>();
         _playerTwoController = _playerTwo.GetComponent<PlayerController>();
         _playerOne.ResetPlayer();
         _playerTwo.ResetPlayer();
         _playerOne.ResetLives();
         _playerTwo.ResetLives();
+        _playerOneUI.FadeIn();
+        _playerTwoUI.FadeIn();
         _leftStopper.SetActive(false);
         _rightStopper.SetActive(false);
         _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
@@ -223,6 +228,9 @@ public class GameManager : MonoBehaviour
         _readyAnimator.SetTrigger("Show");
         _uiAudio.Sound("TextSound").Play();
         _readyText.text = "Fight!";
+        _countdownText.gameObject.SetActive(true);
+        _playerOneUI.FadeIn();
+        _playerTwoUI.FadeIn();
         yield return new WaitForSeconds(1.0f);
         _bottomLine.SetActive(false);
         _readyText.text = "";
@@ -423,7 +431,14 @@ public class GameManager : MonoBehaviour
             }
         }
         yield return new WaitForSecondsRealtime(2.0f);
-        _playerOne.Taunt();
+        if (!hasPlayerOneDied)
+        {
+            _playerOne.Taunt();
+        }
+        else if (hasPlayerOneDied)
+        {
+            _playerTwo.Taunt();
+        }
         yield return new WaitForSecondsRealtime(2.0f);
         _bottomLine.SetActive(false);
         _winnerNameText.text = "";

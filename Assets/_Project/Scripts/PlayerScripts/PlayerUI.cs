@@ -16,50 +16,71 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _winsText = default;
     [SerializeField] private Transform _healthDividerPivot = default;
     [SerializeField] private GameObject _healthDividerPrefab = default;
+    [SerializeField] private Transform _arcanaDividerPivot = default;
+    [SerializeField] private GameObject _arcanaDividerPrefab = default;
     [SerializeField] private Slider _pauseSlider = default;
     [SerializeField] private BaseMenu _pauseMenu = default;
     private Coroutine _openPauseHoldCoroutine;
+    private Animator _animator;
     private int _currentLifeIndex;
     private int _currentComboCount;
     private int _currentWins;
     private bool _hasComboEnded;
+    private bool _initializedStats;
 
 	public string PlayerName { get; private set; }
     public string CharacterName { get; private set; }
 
 
-    public void InitializeUI(PlayerStatsSO playerStats, bool isPlayerOne)
+	void Awake()
+	{
+        _animator = GetComponent<Animator>();
+    }
+
+	public void InitializeUI(PlayerStatsSO playerStats, bool isPlayerOne)
     {
-        if (isPlayerOne)
+        if (!_initializedStats)
         {
-            if (SceneSettings.ControllerOne == "")
+            if (isPlayerOne)
             {
-                PlayerName = "Cpu 1";
-                _playerName.text = PlayerName;
+                if (SceneSettings.ControllerOne == "")
+                {
+                    PlayerName = "Cpu 1";
+                    _playerName.text = PlayerName;
+                }
+                else
+                {
+                    PlayerName = "Player 1";
+                    _playerName.text = PlayerName;
+                }
             }
             else
             {
-                PlayerName = "Player 1";
-                _playerName.text = PlayerName;
+                if (SceneSettings.ControllerTwo == "")
+                {
+                    PlayerName = "Cpu 2";
+                    _playerName.text = PlayerName;
+                }
+                else
+                {
+                    PlayerName = "Player 2";
+                    _playerName.text = PlayerName;
+                }
             }
-        }
-        else
-        {
-            if (SceneSettings.ControllerTwo == "")
+            CharacterName = playerStats.characterName;
+            _characterName.text = CharacterName;
+            if (isPlayerOne)
             {
-                PlayerName = "Cpu 2";
-                _playerName.text = PlayerName;
+                SetPortrait(playerStats.portraits[SceneSettings.ColorOne]);
             }
-            else
+            else 
             {
-                PlayerName = "Player 2";
-                _playerName.text = PlayerName;
+                SetPortrait(playerStats.portraits[SceneSettings.ColorTwo]);
             }
+            SetMaxHealth(playerStats.maxHealth);
+            SetMaxArcana(playerStats.maxArcana);
+            _initializedStats = true;
         }
-        CharacterName = playerStats.characterName;
-        _characterName.text = CharacterName;
-        SetPortrait(playerStats.portrait);
-        SetMaxHealth(playerStats.maxHealth);
     }
 
     private void SetPortrait(Sprite portrait)
@@ -79,6 +100,30 @@ public class PlayerUI : MonoBehaviour
             healthDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
             currentPositionX -= increaseValue;
 		}
+    }
+
+    private void SetMaxArcana(float value)
+    {
+        float arcanaSliderWidth = _arcanaSlider.GetComponent<RectTransform>().sizeDelta.x;
+        _arcanaSlider.maxValue = value;
+        float increaseValue = arcanaSliderWidth / value;
+        float currentPositionX = increaseValue;
+        for (int i = 0; i < value - 1; i++)
+        {
+            GameObject arcanaDivider = Instantiate(_arcanaDividerPrefab, _arcanaDividerPivot);
+            arcanaDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
+            currentPositionX += increaseValue;
+        }
+    }
+
+    public void FadeIn()
+    {
+        _animator.SetTrigger("FadeIn");
+    }
+
+    public void FadeOut()
+    {
+        _animator.SetTrigger("FadeOut");
     }
 
     public void SetArcana(float value)

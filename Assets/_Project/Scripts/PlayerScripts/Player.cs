@@ -19,10 +19,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
 	private float _arcana;
-	private float _maxArcana = 2.0f;
 	private int _lives = 2;
 	private bool _isDead;
+	private bool _isBlockingHigh;
+	private bool _isBlockingLow;
 
+	public PlayerStatsSO PlayerStats { get { return _playerStats; } private set { } }
 	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
 	public bool HitMiddair { get; set; }
@@ -83,15 +85,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private void InitializeStats()
 	{
 		_playerUI.InitializeUI(_playerStats, IsPlayerOne);
-		Health = _playerStats.currentHealth;
+		Health = _playerStats.maxHealth;
 		_playerUI.SetHealth(Health);
 	}
 
 	void Update()
 	{
-		if (_arcana < _maxArcana && GameManager.Instance.HasGameStarted)
+		if (_arcana < _playerStats.maxArcana && GameManager.Instance.HasGameStarted)
 		{
-			_arcana += Time.deltaTime / ArcaneSlowdown;
+			_arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.arcanaRecharge);
 			_playerUI.SetArcana(_arcana);
 		}
 
@@ -172,16 +174,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		_playerAnimator.IsHurt(true);
 		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
-		if (CheckIsBlocking() && !attackSO.canGuardBreak)
-		{
-			_audio.Sound("Block").Play();
-			IsBlocking = true;
-			_playerAnimator.IsBlocking(true);
-			_playerMovement.SetLockMovement(true);
-			StartCoroutine(ResetBlockingCoroutine());
-			return false;
-		}
-		else
+		CheckIsBlocking();
+		if (!_isBlockingLow && !_isBlockingHigh || _isBlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || _isBlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
 			_audio.Sound(attackSO.impactSound).Play();
 			Health--;
@@ -195,7 +189,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 			else
 			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, attackSO.knockbackDirection.y	), attackSO.knockback);
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback);
 			}
 			IsAttacking = false;
 			if (Health <= 0)
@@ -203,6 +197,29 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				Die();
 			}
 			return true;
+		}
+		else
+		{
+			_audio.Sound("Block").Play();
+			IsBlocking = true;
+			if (_playerMovement.IsGrounded)
+			{
+				if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
+				{
+					_playerAnimator.IsBlockingLow(true);
+				}
+				else
+				{
+					_playerAnimator.IsBlocking(true);
+				}
+			}
+			else
+			{
+				_playerAnimator.IsBlockingAir(true);
+			}
+			_playerMovement.SetLockMovement(true);
+			StartCoroutine(ResetBlockingCoroutine());
+			return false;
 		}
 	}
 
@@ -213,18 +230,33 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerMovement.SetLockMovement(false);
 		_playerAnimator.IsHurt(false);
 		_playerAnimator.IsBlocking(false);
+		_playerAnimator.IsBlockingLow(false);
+		_playerAnimator.IsBlockingAir(false);
 	}
 
-	private bool CheckIsBlocking()
+	private void CheckIsBlocking()
 	{
-		if (_playerMovement.IsGrounded && !IsAttacking && !_playerMovement.IsDashing)
+		if (!IsAttacking && !_playerMovement.IsDashing)
 		{
 			if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
 			{
-				return true;
+				if (_playerMovement.MovementInput.y < 0.0f)
+				{
+					_isBlockingLow = true;
+					_isBlockingHigh = false;
+				}
+				else
+				{
+					_isBlockingLow = false;
+					_isBlockingHigh = true;
+				}
 			}
 		}
-		return false;
+		else
+		{
+			_isBlockingLow = false;
+			_isBlockingHigh = false;
+		}
 	}
 
 	private void Die()

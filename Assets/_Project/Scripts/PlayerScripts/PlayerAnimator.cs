@@ -21,7 +21,7 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool("IsMoving", state);
     }
 
-    public void SetMovement(float value)
+    public void SetMovementX(float value)
     {
         animator.SetFloat("MovementInputX", value);
     }
@@ -54,6 +54,16 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator.SetBool("IsBlocking", state);
     }
+
+    public void IsBlockingLow(bool state)
+    {
+        animator.SetBool("IsBlockingLow", state);
+    }
+    public void IsBlockingAir(bool state)
+    {
+        animator.SetBool("IsBlockingAir", state);
+    }
+
     public void IsDashing(bool state)
     {
         animator.SetBool("IsDashing", state);
