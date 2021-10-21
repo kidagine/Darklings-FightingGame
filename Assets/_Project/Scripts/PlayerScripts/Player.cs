@@ -19,7 +19,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
 	private float _arcana;
-	private float _maxArcana = 2.0f;
 	private int _lives = 2;
 	private bool _isDead;
 	private bool _isBlockingHigh;
@@ -86,15 +85,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private void InitializeStats()
 	{
 		_playerUI.InitializeUI(_playerStats, IsPlayerOne);
-		Health = _playerStats.currentHealth;
+		Health = _playerStats.maxHealth;
 		_playerUI.SetHealth(Health);
 	}
 
 	void Update()
 	{
-		if (_arcana < _maxArcana && GameManager.Instance.HasGameStarted)
+		if (_arcana < _playerStats.maxArcana && GameManager.Instance.HasGameStarted)
 		{
-			_arcana += Time.deltaTime / ArcaneSlowdown;
+			_arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.arcanaRecharge);
 			_playerUI.SetArcana(_arcana);
 		}
 

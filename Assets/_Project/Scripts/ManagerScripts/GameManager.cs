@@ -113,18 +113,6 @@ public class GameManager : MonoBehaviour
         _cinemachineTargetGroup.AddMember(_playerOne.transform, 0.5f, 0.5f);
         _cinemachineTargetGroup.AddMember(_playerTwo.transform, 0.5f, 0.5f);
 
-        if (_isTrainingMode)
-        {
-            _playerOneUI.transform.GetChild(2).gameObject.SetActive(false);
-            _playerTwoUI.transform.GetChild(2).gameObject.SetActive(false);
-            _countdownText.gameObject.SetActive(false);
-            HasGameStarted = true;
-            StartTrainingRound();
-        }
-        else
-        {
-            StartRound();
-        }
     }
 
     private void CheckInstance()
@@ -147,6 +135,18 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+        if (_isTrainingMode)
+        {
+            _playerOneUI.transform.GetChild(2).gameObject.SetActive(false);
+            _playerTwoUI.transform.GetChild(2).gameObject.SetActive(false);
+            _countdownText.gameObject.SetActive(false);
+            HasGameStarted = true;
+            StartTrainingRound();
+        }
+        else
+        {
+            StartRound();
+        }
     }
 
     void Update()
@@ -193,12 +193,15 @@ public class GameManager : MonoBehaviour
 
     private void StartTrainingRound()
     {
+        _countdownText.gameObject.SetActive(true);
         _playerOneController = _playerOne.GetComponent<PlayerController>();
         _playerTwoController = _playerTwo.GetComponent<PlayerController>();
         _playerOne.ResetPlayer();
         _playerTwo.ResetPlayer();
         _playerOne.ResetLives();
         _playerTwo.ResetLives();
+        _playerOneUI.FadeIn();
+        _playerTwoUI.FadeIn();
         _leftStopper.SetActive(false);
         _rightStopper.SetActive(false);
         _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
@@ -225,6 +228,9 @@ public class GameManager : MonoBehaviour
         _readyAnimator.SetTrigger("Show");
         _uiAudio.Sound("TextSound").Play();
         _readyText.text = "Fight!";
+        _countdownText.gameObject.SetActive(true);
+        _playerOneUI.FadeIn();
+        _playerTwoUI.FadeIn();
         yield return new WaitForSeconds(1.0f);
         _bottomLine.SetActive(false);
         _readyText.text = "";
