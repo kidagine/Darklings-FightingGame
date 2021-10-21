@@ -25,6 +25,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private bool _isBlockingHigh;
 	private bool _isBlockingLow;
 
+	public PlayerStatsSO PlayerStats { get { return _playerStats; } private set { } }
 	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
 	public bool HitMiddair { get; set; }
@@ -175,7 +176,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.IsHurt(true);
 		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
 		CheckIsBlocking();
-		if (_isBlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || _isBlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
+		if (!_isBlockingLow && !_isBlockingHigh || _isBlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || _isBlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
 			_audio.Sound(attackSO.impactSound).Play();
 			Health--;
@@ -202,13 +203,20 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_audio.Sound("Block").Play();
 			IsBlocking = true;
-			if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
+			if (_playerMovement.IsGrounded)
 			{
-				_playerAnimator.IsBlockingLow(true);
+				if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
+				{
+					_playerAnimator.IsBlockingLow(true);
+				}
+				else
+				{
+					_playerAnimator.IsBlocking(true);
+				}
 			}
 			else
 			{
-				_playerAnimator.IsBlocking(true);
+				_playerAnimator.IsBlockingAir(true);
 			}
 			_playerMovement.SetLockMovement(true);
 			StartCoroutine(ResetBlockingCoroutine());
@@ -224,11 +232,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.IsHurt(false);
 		_playerAnimator.IsBlocking(false);
 		_playerAnimator.IsBlockingLow(false);
+		_playerAnimator.IsBlockingAir(false);
 	}
 
 	private void CheckIsBlocking()
 	{
-		if (_playerMovement.IsGrounded && !IsAttacking && !_playerMovement.IsDashing)
+		if (!IsAttacking && !_playerMovement.IsDashing)
 		{
 			if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
 			{

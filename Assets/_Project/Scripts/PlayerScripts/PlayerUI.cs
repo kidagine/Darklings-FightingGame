@@ -58,7 +58,14 @@ public class PlayerUI : MonoBehaviour
         }
         CharacterName = playerStats.characterName;
         _characterName.text = CharacterName;
-        SetPortrait(playerStats.portrait);
+        if (isPlayerOne)
+        {
+            SetPortrait(playerStats.portraits[SceneSettings.ColorOne]);
+        }
+        else 
+        {
+            SetPortrait(playerStats.portraits[SceneSettings.ColorTwo]);
+        }
         SetMaxHealth(playerStats.maxHealth);
     }
 

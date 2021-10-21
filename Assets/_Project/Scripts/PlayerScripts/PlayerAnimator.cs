@@ -59,6 +59,10 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator.SetBool("IsBlockingLow", state);
     }
+    public void IsBlockingAir(bool state)
+    {
+        animator.SetBool("IsBlockingAir", state);
+    }
 
     public void IsDashing(bool state)
     {

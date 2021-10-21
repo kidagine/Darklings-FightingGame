@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Player Stats", menuName = "Scriptable Objects/Player Stat", order = 1)]
 public class PlayerStatsSO : ScriptableObject
 {
-	public Sprite portrait;
+	public Sprite[] portraits;
 	public string characterName;
 	public float walkSpeed = 3;
 	public float runSpeed = 5;
