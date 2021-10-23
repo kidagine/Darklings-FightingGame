@@ -8,9 +8,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Player _playerOnePrefab = default;
-    [SerializeField] private Player _playerTwoPrefab = default;
     [SerializeField] private bool _sceneSettingsDecide = true;
+    [SerializeField] private int _characterOne = default;
+    [SerializeField] private int _characterTwo = default;
     [SerializeField] private string _controllerOne = default;
     [SerializeField] private string _controllerTwo = default;
     [SerializeField] private bool _isTrainingMode = default;
@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject _bottomLine = default;
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
+    [SerializeField] private Player[] _characters = default;
     [SerializeField] protected GameObject[] _stages = default;
     [SerializeField] private BaseMenu _matchOverMenu = default;
     [SerializeField] private Animator _readyAnimator = default;
@@ -52,13 +53,15 @@ public class GameManager : MonoBehaviour
         {
             SceneSettings.ControllerOne = _controllerOne;
             SceneSettings.ControllerTwo = _controllerTwo;
+            SceneSettings.PlayerOne = _characterOne;
+            SceneSettings.PlayerTwo = _characterTwo;
         }
         else
         {
             _isTrainingMode = SceneSettings.IsTrainingMode;
         }
-        GameObject playerOneObject = Instantiate(_playerOnePrefab.gameObject);
-        GameObject playerTwoObject = Instantiate(_playerTwoPrefab.gameObject);
+        GameObject playerOneObject = Instantiate(_characters[SceneSettings.PlayerOne].gameObject);
+        GameObject playerTwoObject = Instantiate(_characters[SceneSettings.PlayerTwo].gameObject);
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
         if (SceneSettings.ControllerOne != "")

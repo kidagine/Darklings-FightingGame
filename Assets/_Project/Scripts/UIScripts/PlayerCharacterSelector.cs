@@ -139,6 +139,14 @@ public class PlayerCharacterSelector : MonoBehaviour
             _audio.Sound("Selected").Play();
             RuntimeAnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
             string characterName = collision.GetComponent<CharacterButton>().CharacterName;
+            if (_isPlayerOne)
+            {
+                SceneSettings.PlayerOne = collision.GetComponent<CharacterButton>().CharacterIndex;
+            }
+            else
+            {
+                SceneSettings.PlayerTwo = collision.GetComponent<CharacterButton>().CharacterIndex;
+            }
             _characterMenu.SetCharacterOneImage(_isPlayerOne, animatorController, characterName);
             if (collision.GetComponent<CharacterButton>().IsRandomizer)
             {
