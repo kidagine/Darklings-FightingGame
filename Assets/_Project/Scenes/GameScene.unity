@@ -1999,9 +1999,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee34fd0a2311cf1499332a4f01184100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerOnePrefab: {fileID: 1242567833}
-  _playerTwoPrefab: {fileID: 1430807677}
   _sceneSettingsDecide: 0
+  _characterOne: 0
+  _characterTwo: 1
   _controllerOne: KeyboardOne
   _controllerTwo: KeyboardTwo
   _isTrainingMode: 0
@@ -2013,6 +2013,9 @@ MonoBehaviour:
   _bottomLine: {fileID: 738055907}
   _leftStopper: {fileID: 2105726866}
   _rightStopper: {fileID: 2105726865}
+  _characters:
+  - {fileID: 1430807677}
+  - {fileID: 1242567833}
   _stages:
   - {fileID: 2105726863}
   - {fileID: 2105726864}

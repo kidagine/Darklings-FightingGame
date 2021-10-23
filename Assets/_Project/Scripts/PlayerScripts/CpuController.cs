@@ -101,10 +101,19 @@ public class CpuController : BaseController
             {
                 if (GameManager.Instance.HasGameStarted)
                 {
+                    int arcanaRandom = Random.Range(0, 3);
                     float attackWaitRandom = Random.Range(0.25f, 0.8f);
                     if (!_didAction)
                     {
-                        _player.AttackAction();
+                        if (arcanaRandom == 2)
+                        {
+                            _player.ArcaneAction();
+                            attackWaitRandom = 0.0f;
+                        }
+                        else
+                        {
+                            _player.AttackAction();
+                        }
                         yield return new WaitForSeconds(attackWaitRandom);
                     }
                     yield return new WaitForSeconds(0.25f);
