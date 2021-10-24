@@ -213,6 +213,12 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    public void QuitMatch()
+    {
+        SceneSettings.ControllerOne = "";
+        SceneSettings.ControllerTwo = "";
+    }
+
     public void OpenPause()
     {
         Time.timeScale = 0.0f;
