@@ -14,6 +14,7 @@ public class Hitbox : MonoBehaviour
 
     void Start()
 	{
+        _hitboxResponder = transform.root.GetComponent<IHitboxResponder>();
         _hurtboxLayerMask = LayerProvider.GetLayerMask(LayerMaskEnum.Hurtbox);
     }
 

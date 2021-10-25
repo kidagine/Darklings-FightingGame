@@ -564,7 +564,7 @@ PrefabInstance:
     - target: {fileID: 3121622969633075690, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -11559017837854535, guid: 93e500ebbc2769a4d848786e7ad37c3a, type: 3}
+      objectReference: {fileID: 3596609712562965640, guid: 93e500ebbc2769a4d848786e7ad37c3a, type: 3}
     - target: {fileID: 3121622969731471992, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: _offset.y
       value: 0.67
@@ -2004,7 +2004,7 @@ MonoBehaviour:
   _characterTwo: 0
   _controllerOne: KeyboardOne
   _controllerTwo: KeyboardTwo
-  _isTrainingMode: 0
+  _isTrainingMode: 1
   _playerOneUI: {fileID: 1311574451}
   _playerTwoUI: {fileID: 372267967}
   _countdownText: {fileID: 1506265208}
@@ -3713,7 +3713,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1506265207
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4693,10 +4693,18 @@ PrefabInstance:
     - target: {fileID: 3121622969633075690, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 5970694841854359220, guid: ff4864f5db38d904693bb74888e9246b, type: 3}
+      objectReference: {fileID: -6925791199756128562, guid: ff4864f5db38d904693bb74888e9246b, type: 3}
     - target: {fileID: 3121622969633075690, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121622969731471992, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
+      propertyPath: _offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121622969731471992, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
+      propertyPath: _offset.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3121622969731471992, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
       propertyPath: _hitboxSize.y
@@ -5123,6 +5131,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 939315b812aeab441b59b872c17fdeb5, type: 3}
+    - target: {fileID: 8031722347086737935, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8031722347273086364, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_Sprite
       value: 
