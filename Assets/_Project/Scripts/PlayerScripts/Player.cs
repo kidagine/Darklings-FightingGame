@@ -251,6 +251,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 					_isBlockingHigh = true;
 				}
 			}
+			else
+			{
+				_isBlockingLow = false;
+				_isBlockingHigh = false;
+			}
 		}
 		else
 		{
