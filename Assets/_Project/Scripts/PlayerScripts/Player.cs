@@ -204,7 +204,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			IsBlocking = true;
 			if (_playerMovement.IsGrounded)
 			{
-				if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
+				if (_playerMovement.IsCrouching)
 				{
 					_playerAnimator.IsBlockingLow(true);
 				}
