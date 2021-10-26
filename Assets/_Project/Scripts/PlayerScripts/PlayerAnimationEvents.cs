@@ -24,6 +24,16 @@ public class PlayerAnimationEvents : MonoBehaviour
         _player.SetHurtbox(true);
     }
 
+    public void ZeroGravity()
+    {
+        _playerMovement.ZeroGravity();
+    }
+
+    public void ResetGravity()
+    {
+        _playerMovement.ResetGravity();
+    }
+
     public void PlayerFootstepAnimationEvent()
     {
         _audio.SoundGroup("Footsteps").PlayInRandom();

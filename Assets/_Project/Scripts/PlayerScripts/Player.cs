@@ -115,8 +115,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		//REPLACE
 		if (_arcana >= 1.0f)
 		{
-			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && _playerMovement.IsGrounded && !_playerMovement.IsCrouching)
+			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !_playerMovement.IsCrouching)
 			{
+				if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded) ;
 				_playerMovement.ResetToWalkSpeed();
 				_arcana -= 1.0f;
 				_playerUI.SetArcana(_arcana);
@@ -160,9 +161,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void CreateEffect()
 	{
-		GameObject hitEffect = Instantiate(_currentAttack.hitEffect, _effectsParent);
-		hitEffect.transform.localPosition = _currentAttack.hitEffectPosition;
-		hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEffectRotation);
+		if (_currentAttack.hitEffect != null)
+		{
+			GameObject hitEffect = Instantiate(_currentAttack.hitEffect, _effectsParent);
+			hitEffect.transform.localPosition = _currentAttack.hitEffectPosition;
+			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEffectRotation);
+		}
 	}
 
 	public bool TakeDamage(AttackSO attackSO)
@@ -204,7 +208,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			IsBlocking = true;
 			if (_playerMovement.IsGrounded)
 			{
-				if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
+				if (_playerMovement.IsCrouching)
 				{
 					_playerAnimator.IsBlockingLow(true);
 				}
@@ -250,6 +254,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 					_isBlockingLow = false;
 					_isBlockingHigh = true;
 				}
+			}
+			else
+			{
+				_isBlockingLow = false;
+				_isBlockingHigh = false;
 			}
 		}
 		else

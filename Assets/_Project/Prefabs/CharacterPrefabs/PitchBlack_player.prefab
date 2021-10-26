@@ -71,7 +71,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boxCollider: {fileID: 1300555761721398066}
-  _damageable: 1
   _hurtboxResponderObject: {fileID: 3121622970603974652}
 --- !u!1 &458773767584324331
 GameObject:
@@ -245,7 +244,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boxCollider: {fileID: 1796864624361557909}
-  _damageable: 1
   _hurtboxResponderObject: {fileID: 3121622970603974652}
 --- !u!1 &3121622968825025005
 GameObject:
@@ -351,7 +349,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boxCollider: {fileID: 3121622969354282292}
-  _damageable: 1
   _hurtboxResponderObject: {fileID: 3121622970603974652}
 --- !u!1 &3121622969633075695
 GameObject:
@@ -461,15 +458,15 @@ SpriteRenderer:
   m_SortingLayerID: -906744669
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -513894479165761794, guid: 788cd3f266459f44294351ae7f8b22a2, type: 3}
+  m_Sprite: {fileID: 790999643833702719, guid: 788cd3f266459f44294351ae7f8b22a2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.25, y: 2.75}
+  m_Size: {x: 2.3125, y: 2.9375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &3121622969633075689
@@ -482,7 +479,7 @@ Animator:
   m_GameObject: {fileID: 3121622969633075695}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d07b4c2442277164a847eaaa08ae9e05, type: 2}
+  m_Controller: {fileID: 22100000, guid: 1c9a0abc7732ddd46a62d7382a86852c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -565,7 +562,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hitboxSize: {x: 1, y: 1}
   _offset: {x: 0, y: 0}
-  _player: {fileID: 3121622970603974650}
   _hasHit: 0
 --- !u!1 &3121622970170896645
 GameObject:
@@ -792,12 +788,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3a53627335d37d469ce25fb81f912dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _2L: {fileID: 11400000, guid: 8605b98e1a42ca9429bf2c2af9894849, type: 2}
-  _4L: {fileID: 11400000, guid: 50a10f9b4a7e3b149bc4ceba874faed1, type: 2}
-  _5L: {fileID: 11400000, guid: 9138ba50e181cad42a901b7e92b9ab90, type: 2}
-  _6L: {fileID: 11400000, guid: 13647a44cbd3fb84ea14f7efbf174676, type: 2}
-  _jumpL: {fileID: 11400000, guid: 28f7ae5d9df158743bb65975b3db276b, type: 2}
-  _smackDown: {fileID: 11400000, guid: b2f0d4ba525c8bf4ca884e865f6f6436, type: 2}
+  _2L: {fileID: 11400000, guid: c9cf47fd1ea725c45b44a2fe35971e90, type: 2}
+  _4L: {fileID: 11400000, guid: 42a31c9ef79c5c744bb0825e23430934, type: 2}
+  _5L: {fileID: 11400000, guid: 4239967d40340514091e8f88f10e7f84, type: 2}
+  _6L: {fileID: 11400000, guid: c9aa9e1c80b62c642aa381305003288c, type: 2}
+  _jumpL: {fileID: 11400000, guid: 87b28da711a50cf4c8e766c9dbd2f354, type: 2}
+  _arcana: {fileID: 11400000, guid: 14b50eca062122e4b87da56743246fa6, type: 2}
 --- !u!114 &3121622970603974653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,7 +807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerAnimator: {fileID: 3121622969633075691}
-  _playerStatsSO: {fileID: 11400000, guid: 9fad6f01eb20d174da80212d97759474, type: 2}
+  _playerStatsSO: {fileID: 11400000, guid: c9e23a7166185be40a239bb9e6a2d29e, type: 2}
   _dustUpPrefab: {fileID: 9041336035022670361, guid: ad15da3df396bae498f8ee45fe235ca4, type: 3}
   _dustDownPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
   _dashPrefab: {fileID: 5833315189278568593, guid: d1a8205ac964ba545b3fc474fd11b27e, type: 3}

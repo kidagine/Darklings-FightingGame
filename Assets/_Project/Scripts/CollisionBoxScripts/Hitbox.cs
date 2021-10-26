@@ -1,12 +1,13 @@
 ﻿using Demonics.Enum;
 using Demonics.Utility;
+using System;
 using UnityEngine;
 
 public class Hitbox : MonoBehaviour
 {
     [SerializeField] private Vector2 _hitboxSize = default;
     [SerializeField] private Vector2 _offset = default;
-    [SerializeField] private Player _player = default;
+    public Action OnCollision;
     private Color _hitboxColor = Color.red;
     private UnityEngine.LayerMask _hurtboxLayerMask;
     private IHitboxResponder _hitboxResponder;
@@ -15,7 +16,7 @@ public class Hitbox : MonoBehaviour
 
     void Start()
 	{
-        _hitboxResponder = _player.GetComponent<IHitboxResponder>();
+        _hitboxResponder = transform.root.GetComponent<IHitboxResponder>();
         _hurtboxLayerMask = LayerProvider.GetLayerMask(LayerMaskEnum.Hurtbox);
     }
 
@@ -33,11 +34,8 @@ public class Hitbox : MonoBehaviour
                     {
                         if (hit[i].collider.transform.TryGetComponent(out Hurtbox hurtbox))
                         {
+                            OnCollision?.Invoke();
                             _hitboxResponder.HitboxCollided(hit[i], hurtbox);
-                        }
-                        else
-                        {
-                            _hitboxResponder.HitboxCollided(hit[i]);
                         }
                         _hasHit = true;
                     }
