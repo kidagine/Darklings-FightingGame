@@ -7,7 +7,7 @@ public class PlayerComboSystem : MonoBehaviour
 	[SerializeField] private AttackSO _5L = default;
 	[SerializeField] private AttackSO _6L = default;
 	[SerializeField] private AttackSO _jumpL = default;
-	[SerializeField] private AttackSO _smackDown = default;
+	[SerializeField] private ArcanaSO _arcana = default;
 	private PlayerMovement _playerMovement;
 
 
@@ -46,8 +46,8 @@ public class PlayerComboSystem : MonoBehaviour
 		}
 	}
 
-	public AttackSO GetArcana()
+	public ArcanaSO GetArcana()
 	{
-		return _smackDown;
+		return _arcana;
 	}
 }

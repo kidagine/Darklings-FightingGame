@@ -15,6 +15,6 @@ public class MoveInDirection : MonoBehaviour
 
 	void Update()
     {
-		_rigidbody.velocity = _direction * _speed;
+		_rigidbody.velocity = new Vector2(transform.root.localScale.x, 0.0f) * _speed;
 	}
 }

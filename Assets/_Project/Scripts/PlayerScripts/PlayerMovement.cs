@@ -331,7 +331,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _rigidbody.gravityScale = 2.0f;
     }
 
-    private void ZeroGravity()
+    public void ZeroGravity()
     {
         _rigidbody.gravityScale = 0.0f;
     }
