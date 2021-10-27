@@ -2,6 +2,7 @@ using Demonics.UI;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 public class CharacterMenu : BaseMenu
 {
@@ -10,8 +11,14 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private SpriteRenderer _characterTwoImage = default;
 	[SerializeField] private GameObject _colorsOne = default;
 	[SerializeField] private GameObject _colorsTwo = default;
+	[SerializeField] private GameObject _randomOne = default;
+	[SerializeField] private GameObject _randomTwo = default;
 	[SerializeField] private Animator _characterOneAnimator = default;
 	[SerializeField] private Animator _characterTwoAnimator = default;
+	[SerializeField] private PlayerAnimator _playerAnimatorOne = default;
+	[SerializeField] private PlayerAnimator _playerAnimatorTwo = default;
+	[SerializeField] private SpriteLibrary _spriteLibraryOne = default;
+	[SerializeField] private SpriteLibrary _spriteLibraryTwo = default;
 	[SerializeField] private TextMeshProUGUI _playerOneName = default;
 	[SerializeField] private TextMeshProUGUI _playerTwoName = default;
 	[SerializeField] private PlayerCharacterSelector _playerOneSelector = default;
@@ -25,7 +32,7 @@ public class CharacterMenu : BaseMenu
 		_playerTwoSelector.gameObject.SetActive(true);
 	}
 
-	public void SetCharacterOneImage(bool isPlayerOne, RuntimeAnimatorController animatorController, string characterName)
+	public void SetCharacterOneImage(bool isPlayerOne, RuntimeAnimatorController animatorController, PlayerStatsSO playerStats)
 	{
 		if (isPlayerOne)
 		{
@@ -36,7 +43,9 @@ public class CharacterMenu : BaseMenu
 				_playerOneName.enabled = false;
 			}
 			_characterOneImage.enabled = true;
-			_playerOneName.text = characterName;
+			_playerOneName.text = playerStats.characterName;
+			_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
+			_playerAnimatorOne.playerStatsSO = playerStats;
 			_characterOneAnimator.runtimeAnimatorController = animatorController;
 		}
 		else
@@ -52,7 +61,9 @@ public class CharacterMenu : BaseMenu
 				_characterTwoImage.flipX = true;
 			}
 			_characterTwoImage.enabled = true;
-			_playerTwoName.text = characterName;
+			_playerTwoName.text = playerStats.characterName;
+			_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
+			_playerAnimatorTwo.playerStatsSO = playerStats;
 			_characterTwoAnimator.runtimeAnimatorController = animatorController;
 		}
 	}
@@ -117,6 +128,8 @@ public class CharacterMenu : BaseMenu
 
 	private void OnDisable()
 	{
+		_randomOne.SetActive(false);
+		_randomTwo.SetActive(false);
 		_playerOneName.text = "";
 		_characterOneImage.enabled = false;
 		_characterOneAnimator.runtimeAnimatorController = null;

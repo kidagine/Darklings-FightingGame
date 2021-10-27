@@ -1,6 +1,7 @@
 using Demonics.Sounds;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 public class PlayerCharacterSelector : MonoBehaviour
 {
@@ -134,11 +135,11 @@ public class PlayerCharacterSelector : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
 	{
         Vector2 currentPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + 190.0f);
-        if (currentPosition == new Vector2(collision.transform.localPosition.x, collision.transform.localPosition.y))
+        if (Mathf.Approximately(currentPosition.x,collision.transform.localPosition.x))
         {
             _audio.Sound("Selected").Play();
             RuntimeAnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
-            string characterName = collision.GetComponent<CharacterButton>().CharacterName;
+            PlayerStatsSO playerStats = collision.GetComponent<CharacterButton>().PlayerStatsSO;
             if (_isPlayerOne)
             {
                 SceneSettings.PlayerOne = collision.GetComponent<CharacterButton>().CharacterIndex;
@@ -147,7 +148,7 @@ public class PlayerCharacterSelector : MonoBehaviour
             {
                 SceneSettings.PlayerTwo = collision.GetComponent<CharacterButton>().CharacterIndex;
             }
-            _characterMenu.SetCharacterOneImage(_isPlayerOne, animatorController, characterName);
+            _characterMenu.SetCharacterOneImage(_isPlayerOne, animatorController, playerStats);
             if (collision.GetComponent<CharacterButton>().IsRandomizer)
             {
                 _randomSpriteRenderer.gameObject.SetActive(true);

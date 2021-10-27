@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 [CreateAssetMenu(fileName = "Player Stats", menuName = "Scriptable Objects/Player Stat", order = 1)]
 public class PlayerStatsSO : ScriptableObject
 {
 	[Header("Main")]
 	public Sprite[] portraits;
+	public SpriteLibraryAsset[] spriteLibraryAssets;
 	public string characterName;
 	public float maxHealth = 3;
 	[Header("Movement")]
