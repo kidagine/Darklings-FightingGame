@@ -5,8 +5,10 @@ using UnityEngine.U2D.Animation;
 public class PlayerStatsSO : ScriptableObject
 {
 	[Header("Main")]
+	public int characterIndex;
 	public Sprite[] portraits;
 	public SpriteLibraryAsset[] spriteLibraryAssets;
+	public RuntimeAnimatorController runtimeAnimatorController;
 	public string characterName;
 	public float maxHealth = 3;
 	[Header("Movement")]
