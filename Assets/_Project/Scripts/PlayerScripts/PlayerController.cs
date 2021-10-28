@@ -89,7 +89,7 @@ public class PlayerController : BaseController
     {
         if (Input.GetButtonDown(ControllerInputName + "Pause"))
         {
-            _player.Pause();
+            _player.Pause(IsPlayerOne);
         }
         if (Input.GetButtonUp(ControllerInputName + "Pause"))
         {

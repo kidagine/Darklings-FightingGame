@@ -102,6 +102,7 @@ public class GameManager : MonoBehaviour
         }
         _playerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorTwo);
         _playerOneController = playerOneObject.GetComponent<BaseController>();
+        _playerOneController.IsPlayerOne = true;
         _playerTwoController = playerTwoObject.GetComponent<BaseController>();
         _playerOne.SetPlayerUI(_playerOneUI);
         _playerOne.SetOtherPlayer(_playerTwo.transform);

@@ -7,6 +7,7 @@ public class BaseController : MonoBehaviour
     protected PlayerMovement _playerMovement;
     protected bool _isControllerEnabled = true;
 
+	public bool IsPlayerOne { get; set; }
 	public string ControllerInputName { get; set; }
 
 
