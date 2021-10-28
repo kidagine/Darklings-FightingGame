@@ -15,6 +15,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _comboText = default;
     [SerializeField] private TextMeshProUGUI _winsText = default;
     [SerializeField] private TextMeshProUGUI _whoPausedText = default;
+    [SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
+    [SerializeField] private Animator _arcanaAnimator = default;
     [SerializeField] private Transform _healthDividerPivot = default;
     [SerializeField] private GameObject _healthDividerPrefab = default;
     [SerializeField] private Transform _arcanaDividerPivot = default;
@@ -127,9 +129,15 @@ public class PlayerUI : MonoBehaviour
         _animator.SetTrigger("FadeOut");
     }
 
+    public void DecreaseArcana()
+    {
+        _arcanaAnimator.SetTrigger("Decrease");
+    }
+
     public void SetArcana(float value)
     {
         _arcanaSlider.value = value;
+        _arcanaAmountText.text = Mathf.Floor(value).ToString();
     }
 
     public void SetHealth(float value)
