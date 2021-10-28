@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _isTrainingMode = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
     [SerializeField] protected PlayerUI _playerTwoUI = default;
+    [SerializeField] private Animator _timerAnimator = default;
     [SerializeField] protected TextMeshProUGUI _countdownText = default;
     [SerializeField] protected TextMeshProUGUI _readyText = default;
     [SerializeField] protected TextMeshProUGUI _winnerNameText = default;
@@ -204,6 +205,7 @@ public class GameManager : MonoBehaviour
         _playerTwo.ResetLives();
         _playerOneUI.FadeIn();
         _playerTwoUI.FadeIn();
+        _timerAnimator.SetTrigger("FadeIn");
         _leftStopper.SetActive(false);
         _rightStopper.SetActive(false);
         _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
@@ -233,6 +235,7 @@ public class GameManager : MonoBehaviour
         _countdownText.gameObject.SetActive(true);
         _playerOneUI.FadeIn();
         _playerTwoUI.FadeIn();
+        _timerAnimator.SetTrigger("FadeIn");
         yield return new WaitForSeconds(1.0f);
         _bottomLine.SetActive(false);
         _readyText.text = "";
