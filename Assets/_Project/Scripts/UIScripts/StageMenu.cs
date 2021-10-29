@@ -30,7 +30,7 @@ public class StageMenu : BaseMenu
 
 	public void SetStageIndexRandom()
 	{
-		int randomStageIndex = Random.Range(0, 2);
+		int randomStageIndex = Random.Range(0, 3);
 		SceneSettings.StageIndex = randomStageIndex;
 	}
 

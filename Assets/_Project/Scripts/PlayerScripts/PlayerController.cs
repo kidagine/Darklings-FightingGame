@@ -78,7 +78,7 @@ public class PlayerController : BaseController
     }
 
     private void ResetRound()
-	{
+    {
         if (Input.GetButtonDown(ControllerInputName + "Reset"))
         {
             GameManager.Instance.ResetRound(_playerMovement.MovementInput);

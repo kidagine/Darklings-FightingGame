@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject _bottomLine = default;
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
+    [SerializeField] protected GameObject _infiniteTime = default;
     [SerializeField] private Player[] _characters = default;
     [SerializeField] protected GameObject[] _stages = default;
     [SerializeField] private BaseMenu _matchOverMenu = default;
@@ -65,7 +66,7 @@ public class GameManager : MonoBehaviour
         GameObject playerTwoObject = Instantiate(_characters[SceneSettings.PlayerTwo].gameObject);
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
-        if (SceneSettings.ControllerOne != "")
+        if (SceneSettings.ControllerOne != "Cpu")
         {
             playerOneObject.AddComponent<PlayerController>();
         }
@@ -73,7 +74,7 @@ public class GameManager : MonoBehaviour
         {
             playerOneObject.AddComponent<CpuController>();
         }
-        if (SceneSettings.ControllerTwo != "")
+        if (SceneSettings.ControllerTwo != "Cpu")
         {
             playerTwoObject.AddComponent<PlayerController>();
         }
@@ -81,11 +82,11 @@ public class GameManager : MonoBehaviour
         {
             playerTwoObject.AddComponent<CpuController>();
         }
-        if (SceneSettings.ControllerOne == "")
+        if (SceneSettings.ControllerOne == "Cpu")
         {
             playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
         }
-        if (SceneSettings.ControllerTwo == "")
+        if (SceneSettings.ControllerTwo == "Cpu")
         {
             playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
         }
@@ -142,8 +143,6 @@ public class GameManager : MonoBehaviour
         _currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
         if (_isTrainingMode)
         {
-            _playerOneUI.transform.GetChild(2).gameObject.SetActive(false);
-            _playerTwoUI.transform.GetChild(2).gameObject.SetActive(false);
             _countdownText.gameObject.SetActive(false);
             HasGameStarted = true;
             StartTrainingRound();
@@ -198,8 +197,6 @@ public class GameManager : MonoBehaviour
 
     private void StartTrainingRound()
     {
-        _playerOneController = _playerOne.GetComponent<PlayerController>();
-        _playerTwoController = _playerTwo.GetComponent<PlayerController>();
         _playerOne.ResetPlayer();
         _playerTwo.ResetPlayer();
         _playerOne.ResetLives();
@@ -207,6 +204,7 @@ public class GameManager : MonoBehaviour
         _playerOneUI.FadeIn();
         _playerTwoUI.FadeIn();
         _timerAnimator.SetTrigger("FadeIn");
+        _infiniteTime.SetActive(true);
         _leftStopper.SetActive(false);
         _rightStopper.SetActive(false);
         _playerOne.transform.position = new Vector2(-3.5f, -4.75f);

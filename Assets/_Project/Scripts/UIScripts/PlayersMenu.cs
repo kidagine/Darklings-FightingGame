@@ -147,6 +147,10 @@ public class PlayersMenu : BaseMenu
             {
                 SceneSettings.ControllerTwo = "ControllerTwo";
             }
+            else
+            {
+                SceneSettings.ControllerTwo = "Cpu";
+            }
             if (_playerIcons[0].anchoredPosition.x == -375.0f)
             {
                 SceneSettings.ControllerOne = "Keyboard";
@@ -158,6 +162,10 @@ public class PlayersMenu : BaseMenu
             else if (_playerIcons[2].anchoredPosition.x == -375.0f)
             {
                 SceneSettings.ControllerOne = "ControllerTwo";
+            }
+            else
+            {
+                SceneSettings.ControllerOne = "Cpu";
             }
             if (_playerIcons[0].anchoredPosition.x != 25.0f && _playerIcons[1].anchoredPosition.x != 25.0f 
                 || _playerIcons[0].anchoredPosition.x != 25.0f && _playerIcons[2].anchoredPosition.x != 25.0f

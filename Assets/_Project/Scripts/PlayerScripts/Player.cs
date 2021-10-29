@@ -30,7 +30,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool HitMiddair { get; set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
-	public float ArcaneSlowdown { get; set; }
+	public float ArcaneSlowdown { get; set; } = 4.5f;
 
 
 	void Awake()
@@ -99,12 +99,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (!_isDead)
 		{
-			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking)
+			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking && transform.localScale.x != 1.0f)
 			{
+				_playerAnimator.IsRunning(false);
 				transform.localScale = new Vector2(1.0f, transform.localScale.y);
 			}
-			else if (transform.position.x > -9.2f && !IsAttacking)
+			else if (_otherPlayer.position.x < transform.position.x && transform.position.x > -9.2f && !IsAttacking && transform.localScale.x != -1.0f)
 			{
+				_playerAnimator.IsRunning(false);
 				transform.localScale = new Vector2(-1.0f, transform.localScale.y);
 			}
 		}
@@ -115,25 +117,27 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		//REPLACE
 		if (_arcana >= 1.0f)
 		{
-			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !_playerMovement.IsCrouching)
+			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing)
 			{
-				if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded) ;
-				_playerMovement.ResetToWalkSpeed();
-				_arcana -= 1.0f;
-				_playerUI.DecreaseArcana();
-				_playerUI.SetArcana(_arcana);
-				_audio.Sound("Hit").Play();
-				IsAttacking = true;
-				_playerAnimator.Arcana();
-				_currentAttack = _playerComboSystem.GetArcana();
+				if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded)
+				{
+					_playerMovement.ResetToWalkSpeed();
+					_arcana -= 1.0f;
+					_playerUI.DecreaseArcana();
+					_playerUI.SetArcana(_arcana);
+					_audio.Sound("Hit").Play();
+					IsAttacking = true;
+					_playerAnimator.Arcana();
+					_currentAttack = _playerComboSystem.GetArcana();
 
-				if (!string.IsNullOrEmpty(_currentAttack.attackSound))
-				{
-					_audio.Sound(_currentAttack.attackSound).Play();
-				}
-				if (!_currentAttack.isAirAttack)
-				{
-					_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
+					if (!string.IsNullOrEmpty(_currentAttack.attackSound))
+					{
+						_audio.Sound(_currentAttack.attackSound).Play();
+					}
+					if (!_currentAttack.isAirAttack)
+					{
+						_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
+					}
 				}
 			}
 		}

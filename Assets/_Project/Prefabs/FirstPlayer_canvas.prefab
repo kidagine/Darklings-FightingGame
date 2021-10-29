@@ -859,9 +859,9 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 1604159752663817566}
   - {fileID: 1604159752376004838}
   - {fileID: 3743079405119891791}
+  - {fileID: 1604159752663817566}
   - {fileID: 4635441272170935179}
   - {fileID: 7825027852409118670}
   - {fileID: 817889992105687174}
@@ -959,6 +959,8 @@ MonoBehaviour:
   _comboText: {fileID: 5920763466147835620}
   _winsText: {fileID: 0}
   _whoPausedText: {fileID: 0}
+  _arcanaAmountText: {fileID: 0}
+  _arcanaAnimator: {fileID: 0}
   _healthDividerPivot: {fileID: 3915933149156680349}
   _healthDividerPrefab: {fileID: 5592667340369626980, guid: c8e765c1947768d429ca00f98abcdea5, type: 3}
   _arcanaDividerPivot: {fileID: 0}
@@ -1067,7 +1069,7 @@ RectTransform:
   - {fileID: 1789873993153064040}
   - {fileID: 3751033136091956329}
   m_Father: {fileID: 1604159751985950001}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -1155,7 +1157,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1604159751985950001}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -2775,7 +2777,7 @@ RectTransform:
   - {fileID: 6238647328156754236}
   - {fileID: 2099200366334951476}
   m_Father: {fileID: 1604159751985950001}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
