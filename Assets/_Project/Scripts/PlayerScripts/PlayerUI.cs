@@ -2,6 +2,7 @@ using Demonics.UI;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
@@ -226,6 +227,7 @@ public class PlayerUI : MonoBehaviour
     {
         SceneSettings.ControllerOne = "";
         SceneSettings.ControllerTwo = "";
+        SceneManager.LoadScene(1);
     }
 
     public void OpenPause(bool isPlayerOne)
