@@ -197,8 +197,6 @@ public class GameManager : MonoBehaviour
 
     private void StartTrainingRound()
     {
-        _playerOneController = _playerOne.GetComponent<PlayerController>();
-        _playerTwoController = _playerTwo.GetComponent<PlayerController>();
         _playerOne.ResetPlayer();
         _playerTwo.ResetPlayer();
         _playerOne.ResetLives();

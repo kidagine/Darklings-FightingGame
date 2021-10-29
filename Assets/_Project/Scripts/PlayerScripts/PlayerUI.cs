@@ -81,7 +81,6 @@ public class PlayerUI : MonoBehaviour
                 SetPortrait(playerStats.portraits[SceneSettings.ColorTwo]);
             }
             SetMaxHealth(playerStats.maxHealth);
-            Debug.Log(playerStats.maxArcana);
             SetMaxArcana(playerStats.maxArcana);
             _initializedStats = true;
         }
