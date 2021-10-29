@@ -99,12 +99,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (!_isDead)
 		{
-			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking)
+			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking && transform.localScale.x != 1.0f)
 			{
+				_playerAnimator.IsRunning(false);
 				transform.localScale = new Vector2(1.0f, transform.localScale.y);
 			}
-			else if (transform.position.x > -9.2f && !IsAttacking)
+			else if (_otherPlayer.position.x < transform.position.x && transform.position.x > -9.2f && !IsAttacking && transform.localScale.x != -1.0f)
 			{
+				_playerAnimator.IsRunning(false);
 				transform.localScale = new Vector2(-1.0f, transform.localScale.y);
 			}
 		}

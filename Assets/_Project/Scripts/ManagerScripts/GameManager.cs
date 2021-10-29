@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject _bottomLine = default;
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
+    [SerializeField] protected GameObject _infiniteTime = default;
     [SerializeField] private Player[] _characters = default;
     [SerializeField] protected GameObject[] _stages = default;
     [SerializeField] private BaseMenu _matchOverMenu = default;
@@ -142,8 +143,6 @@ public class GameManager : MonoBehaviour
         _currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
         if (_isTrainingMode)
         {
-            _playerOneUI.transform.GetChild(2).gameObject.SetActive(false);
-            _playerTwoUI.transform.GetChild(2).gameObject.SetActive(false);
             _countdownText.gameObject.SetActive(false);
             HasGameStarted = true;
             StartTrainingRound();
@@ -207,6 +206,7 @@ public class GameManager : MonoBehaviour
         _playerOneUI.FadeIn();
         _playerTwoUI.FadeIn();
         _timerAnimator.SetTrigger("FadeIn");
+        _infiniteTime.SetActive(true);
         _leftStopper.SetActive(false);
         _rightStopper.SetActive(false);
         _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
