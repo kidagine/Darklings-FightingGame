@@ -14,6 +14,9 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _playerName = default;
     [SerializeField] private TextMeshProUGUI _comboText = default;
     [SerializeField] private TextMeshProUGUI _winsText = default;
+    [SerializeField] private TextMeshProUGUI _whoPausedText = default;
+    [SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
+    [SerializeField] private Animator _arcanaAnimator = default;
     [SerializeField] private Transform _healthDividerPivot = default;
     [SerializeField] private GameObject _healthDividerPrefab = default;
     [SerializeField] private Transform _arcanaDividerPivot = default;
@@ -126,9 +129,15 @@ public class PlayerUI : MonoBehaviour
         _animator.SetTrigger("FadeOut");
     }
 
+    public void DecreaseArcana()
+    {
+        _arcanaAnimator.SetTrigger("Decrease");
+    }
+
     public void SetArcana(float value)
     {
         _arcanaSlider.value = value;
+        _arcanaAmountText.text = Mathf.Floor(value).ToString();
     }
 
     public void SetHealth(float value)
@@ -184,13 +193,13 @@ public class PlayerUI : MonoBehaviour
         StartCoroutine(ResetComboCoroutine());
     }
 
-    public void OpenPauseHold()
+    public void OpenPauseHold(bool isPlayerOne)
     {
         _pauseSlider.gameObject.SetActive(true);
-        _openPauseHoldCoroutine = StartCoroutine(OpenPauseHoldCoroutine());
+        _openPauseHoldCoroutine = StartCoroutine(OpenPauseHoldCoroutine(isPlayerOne));
     }
 
-    IEnumerator OpenPauseHoldCoroutine()
+    IEnumerator OpenPauseHoldCoroutine(bool isPlayerOne)
     {
         float t = 0.0f;
         while (_pauseSlider.value < _pauseSlider.maxValue)
@@ -201,7 +210,7 @@ public class PlayerUI : MonoBehaviour
         }
         _pauseSlider.value = 0.0f;
         _pauseSlider.gameObject.SetActive(false);
-        OpenPause();
+        OpenPause(isPlayerOne);
     }
 
     public void ClosePauseHold()
@@ -219,8 +228,16 @@ public class PlayerUI : MonoBehaviour
         SceneSettings.ControllerTwo = "";
     }
 
-    public void OpenPause()
+    public void OpenPause(bool isPlayerOne)
     {
+        if (isPlayerOne)
+        {
+            _whoPausedText.text = "Player 1 Paused";
+        }
+        else
+        {
+            _whoPausedText.text = "Player 2 Paused";
+        }
         Time.timeScale = 0.0f;
         GameManager.Instance.DisableAllInput();
         GameManager.Instance.PauseMusic();

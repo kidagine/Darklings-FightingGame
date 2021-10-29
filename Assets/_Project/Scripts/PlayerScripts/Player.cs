@@ -120,6 +120,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded) ;
 				_playerMovement.ResetToWalkSpeed();
 				_arcana -= 1.0f;
+				_playerUI.DecreaseArcana();
 				_playerUI.SetArcana(_arcana);
 				_audio.Sound("Hit").Play();
 				IsAttacking = true;
@@ -372,15 +373,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public void Pause()
+	public void Pause(bool isPlayerOne)
 	{
 		if (GameManager.Instance.IsTrainingMode)
 		{
-			_playerUI.OpenPause();
+			_playerUI.OpenPause(isPlayerOne);
 		}
 		else
 		{
-			_playerUI.OpenPauseHold();
+			_playerUI.OpenPauseHold(isPlayerOne);
 		}
 	}
 

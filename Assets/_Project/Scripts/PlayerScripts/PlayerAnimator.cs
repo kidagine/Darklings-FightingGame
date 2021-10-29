@@ -3,11 +3,10 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    [SerializeField] private SpriteLibraryAsset[] _spriteLibraryAssets = default;
+    public PlayerStatsSO playerStatsSO;
     private Animator animator;
     private SpriteLibrary _spriteLibrary;
     private SpriteRenderer _spriteRenderer;
-    private int _currentLibraryAsset;
 
     void Awake()
     {
@@ -96,15 +95,15 @@ public class PlayerAnimator : MonoBehaviour
 
     public int SetSpriteLibraryAsset(int skinNumber)
     {
-        if (skinNumber > _spriteLibraryAssets.Length - 1)
+        if (skinNumber > playerStatsSO.spriteLibraryAssets.Length - 1)
         {
             skinNumber = 0;
         }
         else if (skinNumber < 0)
         {
-            skinNumber = _spriteLibraryAssets.Length - 1;
+            skinNumber = playerStatsSO.spriteLibraryAssets.Length - 1;
         }
-        _spriteLibrary.spriteLibraryAsset = _spriteLibraryAssets[skinNumber];
+        _spriteLibrary.spriteLibraryAsset = playerStatsSO.spriteLibraryAssets[skinNumber];
         return skinNumber;
     }
 }
