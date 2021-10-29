@@ -30,9 +30,9 @@ public class CharacterColorSelector : MonoBehaviour
 	{
         if (_isPlayerOne)
         {
-            if (SceneSettings.ControllerOne == "")
+            if (SceneSettings.ControllerOne == "Cpu")
             {
-                if (SceneSettings.ControllerTwo == "")
+                if (SceneSettings.ControllerTwo == "Cpu")
                 {
                     _controllerInputName = "Keyboard";
                 }
@@ -48,9 +48,9 @@ public class CharacterColorSelector : MonoBehaviour
         }
         else
         {
-            if (SceneSettings.ControllerTwo == "")
+            if (SceneSettings.ControllerTwo == "Cpu")
             {
-                if (SceneSettings.ControllerOne == "")
+                if (SceneSettings.ControllerOne == "Cpu")
                 {
                     _controllerInputName = "Keyboard";
                 }

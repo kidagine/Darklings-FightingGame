@@ -165,8 +165,8 @@ public class CharacterMenu : BaseMenu
 
 	public void ResetControllerInput()
 	{
-		SceneSettings.ControllerOne = "";
-		SceneSettings.ControllerTwo = "";
+		SceneSettings.ControllerOne = "Cpu";
+		SceneSettings.ControllerTwo = "Cpu";
 		_isPlayerTwoEnabled = false;
 		_playerTwoSelector.gameObject.SetActive(false);
 	}

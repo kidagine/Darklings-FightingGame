@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         GameObject playerTwoObject = Instantiate(_characters[SceneSettings.PlayerTwo].gameObject);
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
-        if (SceneSettings.ControllerOne != "")
+        if (SceneSettings.ControllerOne != "Cpu")
         {
             playerOneObject.AddComponent<PlayerController>();
         }
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         {
             playerOneObject.AddComponent<CpuController>();
         }
-        if (SceneSettings.ControllerTwo != "")
+        if (SceneSettings.ControllerTwo != "Cpu")
         {
             playerTwoObject.AddComponent<PlayerController>();
         }
@@ -82,11 +82,11 @@ public class GameManager : MonoBehaviour
         {
             playerTwoObject.AddComponent<CpuController>();
         }
-        if (SceneSettings.ControllerOne == "")
+        if (SceneSettings.ControllerOne == "Cpu")
         {
             playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
         }
-        if (SceneSettings.ControllerTwo == "")
+        if (SceneSettings.ControllerTwo == "Cpu")
         {
             playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
         }

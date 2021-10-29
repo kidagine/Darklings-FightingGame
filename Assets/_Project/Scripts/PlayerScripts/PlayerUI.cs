@@ -47,7 +47,7 @@ public class PlayerUI : MonoBehaviour
         {
             if (isPlayerOne)
             {
-                if (SceneSettings.ControllerOne == "")
+                if (SceneSettings.ControllerOne == "Cpu")
                 {
                     PlayerName = "Cpu 1";
                     _playerName.text = PlayerName;
@@ -60,7 +60,7 @@ public class PlayerUI : MonoBehaviour
             }
             else
             {
-                if (SceneSettings.ControllerTwo == "")
+                if (SceneSettings.ControllerTwo == "Cpu")
                 {
                     PlayerName = "Cpu 2";
                     _playerName.text = PlayerName;
@@ -225,8 +225,6 @@ public class PlayerUI : MonoBehaviour
 
     public void QuitMatch()
     {
-        SceneSettings.ControllerOne = "";
-        SceneSettings.ControllerTwo = "";
         SceneManager.LoadScene(1);
     }
 
