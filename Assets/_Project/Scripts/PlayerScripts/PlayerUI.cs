@@ -223,6 +223,11 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    public void ChangeCharacter()
+    {
+        SceneManager.LoadScene(1);
+    }
+
     public void QuitMatch()
     {
         SceneManager.LoadScene(1);
