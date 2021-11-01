@@ -91,6 +91,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.F))
+		{
+			Taunt();
+		}
 		if (_arcana < _playerStats.maxArcana && GameManager.Instance.HasGameStarted)
 		{
 			_arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.arcanaRecharge);
@@ -114,6 +118,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ArcaneAction()
 	{
+
 		//REPLACE
 		if (_arcana >= 1.0f)
 		{
