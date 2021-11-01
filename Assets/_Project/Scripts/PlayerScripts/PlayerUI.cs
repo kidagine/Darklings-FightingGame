@@ -225,11 +225,15 @@ public class PlayerUI : MonoBehaviour
 
     public void ChangeCharacter()
     {
+        Time.timeScale = 1.0f;
+        SceneSettings.ChangeCharacter = true;
         SceneManager.LoadScene(1);
     }
 
     public void QuitMatch()
     {
+        Time.timeScale = 1.0f;
+        SceneSettings.ChangeCharacter = false;
         SceneManager.LoadScene(1);
     }
 

@@ -2572,6 +2572,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4797689787146866179, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4797689787146866180, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: m_Interactable
       value: 0
@@ -3123,6 +3127,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1367646977}
     m_Modifications:
+    - target: {fileID: 1439075139381376838, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4703080449152406411, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Color.b
       value: 0
@@ -4492,7 +4500,7 @@ Transform:
   m_Children:
   - {fileID: 132711572}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &437183747
 MonoBehaviour:
@@ -7842,7 +7850,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 0bfa287c34589f847aa8257262d4f23a, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -9830,7 +9838,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1112624244
 GameObject:
@@ -10144,6 +10152,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1367646977}
     m_Modifications:
+    - target: {fileID: 1439075139381376838, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4703080449925156751, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Color.b
       value: 0.2509804
@@ -11161,6 +11173,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 88abffe3b6d620845b87f2abf0853afa, type: 2}
+    - target: {fileID: 4797689787146866179, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4797689787146866180, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 0
@@ -11817,7 +11833,7 @@ Transform:
   m_Children:
   - {fileID: 2021865578}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1381785189
 MonoBehaviour:
@@ -12644,6 +12660,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1013080784}
     m_Modifications:
+    - target: {fileID: 4797689787146866179, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4797689787146866180, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: m_Interactable
       value: 0
@@ -14251,6 +14271,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 88abffe3b6d620845b87f2abf0853afa, type: 2}
+    - target: {fileID: 4797689787146866179, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4797689787146866180, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: m_Interactable
       value: 1
@@ -16712,6 +16736,51 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &2059813177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2059813179}
+  - component: {fileID: 2059813178}
+  m_Layer: 0
+  m_Name: Main_mainMenuSceneSettingsChecker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2059813178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059813177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e2af416d0a5d334c900d20a67dd36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mainMenu: {fileID: 9123090234613714750}
+  _characterSelectMenu: {fileID: 742601086}
+--- !u!4 &2059813179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059813177}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2063121853
 GameObject:
   m_ObjectHideFlags: 0
@@ -17845,7 +17914,7 @@ Transform:
   - {fileID: 185766591}
   - {fileID: 1292066733}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2142523169
 GameObject:
@@ -18264,6 +18333,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1367646977}
     m_Modifications:
+    - target: {fileID: 1439075139381376838, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4703080449152406411, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Color.b
       value: 0
@@ -18497,6 +18570,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 88abffe3b6d620845b87f2abf0853afa, type: 2}
+    - target: {fileID: 4797689787146866179, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4797689787146866180, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 2
