@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     protected BaseController _playerOneController;
     protected BaseController _playerTwoController;
     private Sound _currentMusic;
+    private GameObject _currentStage;
     private float _countdown;
     private int _currentRound = 1;
     private bool _reverseReset;
@@ -135,7 +136,17 @@ public class GameManager : MonoBehaviour
 
     public void CheckSceneSettings()
     {
-        _stages[SceneSettings.StageIndex].SetActive(true);
+        if (SceneSettings.RandomStage)
+        {
+            int randomStageIndex = Random.Range(0, _stages.Length);
+            _currentStage = _stages[randomStageIndex];
+            _currentStage.SetActive(true);
+        }
+        else
+        {
+            _currentStage = _stages[SceneSettings.StageIndex];
+            _currentStage.SetActive(true);
+        }   
     }
 
     void Start()
@@ -455,6 +466,13 @@ public class GameManager : MonoBehaviour
 
     public void StartMatch()
     {
+        if (SceneSettings.RandomStage)
+        {
+            _currentStage.SetActive(false);
+            int randomStageIndex = Random.Range(0, _stages.Length);
+            _currentStage = _stages[randomStageIndex];
+            _currentStage.SetActive(true);
+        }
         _matchOverMenu.Hide();
 		_playerOne.ResetLives();
 		_playerTwo.ResetLives();

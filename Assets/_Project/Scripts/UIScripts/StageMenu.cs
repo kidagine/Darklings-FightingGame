@@ -25,13 +25,13 @@ public class StageMenu : BaseMenu
 
 	public void SetStageIndex(int index)
 	{
+		SceneSettings.RandomStage = false;
 		SceneSettings.StageIndex = index;
 	}
 
 	public void SetStageIndexRandom()
 	{
-		int randomStageIndex = Random.Range(0, 3);
-		SceneSettings.StageIndex = randomStageIndex;
+		SceneSettings.RandomStage = true;
 	}
 
 	public void SetTrainingMode(bool state)
