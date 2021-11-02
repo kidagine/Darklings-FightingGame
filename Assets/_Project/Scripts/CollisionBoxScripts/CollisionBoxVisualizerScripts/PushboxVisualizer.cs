@@ -1,18 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PushboxVisualizer : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	private BoxCollider2D _boxCollider;
+	private SpriteRenderer _spriteRenderer;
+	private Pushbox _pushbox;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+	void Awake()
+	{
+		_pushbox = transform.parent.GetComponent<Pushbox>();
+		_spriteRenderer = GetComponent<SpriteRenderer>();
+		_boxCollider = transform.parent.GetComponent<BoxCollider2D>();
+	}
+
+	void LateUpdate()
+	{
+		if (TrainingSettings.ShowHitboxes)
+		{
+			transform.localPosition = _boxCollider.offset;
+			transform.localScale = _boxCollider.size;
+			_spriteRenderer.color = _pushbox.PushboxColor;
+			_spriteRenderer.enabled = _boxCollider.enabled;
+		}
+		else
+		{
+			_spriteRenderer.enabled = false;
+		}
+	}
 }
+

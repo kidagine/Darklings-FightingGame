@@ -5,9 +5,9 @@ public class Hurtbox : MonoBehaviour
 {
     [SerializeField] private BoxCollider2D _boxCollider = default;
     [SerializeField] private GameObject _hurtboxResponderObject = default;
-    private Color _hitboxDamageableColor = Color.green;
     private IHurtboxResponder _hurtboxResponder;
 
+	public Color HurtboxColor { get; private set; } = Color.green;
 
     void Awake()
 	{
@@ -23,8 +23,9 @@ public class Hurtbox : MonoBehaviour
     {
         if (_boxCollider.enabled)
         {
-            _hitboxDamageableColor.a = 0.35f;
-            Gizmos.color = _hitboxDamageableColor;
+            Color color = HurtboxColor;
+            color.a = 0.35f;
+            Gizmos.color = color;
             Vector2 hurtboxPosition = new Vector2(transform.position.x + (_boxCollider.offset.x * transform.root.localScale.x), transform.position.y + (_boxCollider.offset.y * transform.root.localScale.y));
             Gizmos.matrix = Matrix4x4.TRS(hurtboxPosition, transform.rotation, transform.localScale);
 
