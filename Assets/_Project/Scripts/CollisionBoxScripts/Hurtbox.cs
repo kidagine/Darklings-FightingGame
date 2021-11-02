@@ -14,7 +14,27 @@ public class Hurtbox : MonoBehaviour
         _hurtboxResponder = _hurtboxResponderObject.GetComponent<IHurtboxResponder>();
     }
 
-    public bool TakeDamage(AttackSO attackSO)
+	private void Update()
+	{
+        if (_hurtboxResponder.BlockingLow)
+        {
+            HurtboxColor = new Color(0.0f, 0.45f, 0.45f, 1.0f);
+        }
+        else if (_hurtboxResponder.BlockingHigh)
+        {
+            HurtboxColor = Color.cyan;
+        }
+        else if (_hurtboxResponder.BlockingMiddair)
+        {
+            HurtboxColor = new Color(0.65f, 0.18f, 0.18f, 1.0f);
+        }
+        else
+        {
+            HurtboxColor = Color.green;
+        }
+    }
+
+	public bool TakeDamage(AttackSO attackSO)
     {
         return _hurtboxResponder.TakeDamage(attackSO);
     }
