@@ -386,7 +386,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (GameManager.Instance.IsTrainingMode)
 		{
-			_playerUI.OpenPause(isPlayerOne);
+			_playerUI.OpenTrainingPause(isPlayerOne);
 		}
 		else
 		{
