@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     private int _currentRound = 1;
     private bool _reverseReset;
 
-    public bool HasGameStarted { get; set; }
+	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public static GameManager Instance { get; private set; }
 

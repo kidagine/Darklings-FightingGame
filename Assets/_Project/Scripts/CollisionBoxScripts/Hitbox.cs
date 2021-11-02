@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Hitbox : MonoBehaviour
 {
-    [SerializeField] private Vector2 _hitboxSize = default;
-    [SerializeField] private Vector2 _offset = default;
+    public Vector2 _hitboxSize = default;
+    public Vector2 _offset = default;
     public Action OnCollision;
     private Color _hitboxColor = Color.red;
     private UnityEngine.LayerMask _hurtboxLayerMask;
