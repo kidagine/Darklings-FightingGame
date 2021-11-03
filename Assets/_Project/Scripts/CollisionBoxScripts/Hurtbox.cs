@@ -9,6 +9,7 @@ public class Hurtbox : MonoBehaviour
 
 	public Color HurtboxColor { get; private set; } = Color.green;
 
+
     void Awake()
 	{
         _hurtboxResponder = _hurtboxResponderObject.GetComponent<IHurtboxResponder>();

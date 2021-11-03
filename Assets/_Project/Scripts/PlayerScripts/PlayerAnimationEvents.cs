@@ -6,6 +6,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     [SerializeField] private Player _player = default;
     [SerializeField] private PlayerMovement _playerMovement = default;
     [SerializeField] private Audio _audio = default;
+    private float _startFrames;
 
     public void UnlockMovement()
     {
@@ -42,5 +43,15 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void PlayerSoundAnimationEvent(string soundName)
     {
         _audio.Sound(soundName).Play();
+    }
+
+    public void StartFrameCount()
+    {
+        _startFrames = Time.frameCount;
+    }
+
+    public void StopFrameCount()
+    {
+        Debug.Log(Time.frameCount - _startFrames);
     }
 }
