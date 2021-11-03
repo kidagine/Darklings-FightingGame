@@ -8,11 +8,15 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private int _characterOne = default;
-    [SerializeField] private int _characterTwo = default;
+    [Header("Debug")]
+    [SerializeField] private CharacterTypeEnum _characterOne = default;
+    [SerializeField] private CharacterTypeEnum _characterTwo = default;
     [SerializeField] private ControllerTypeEnum _controllerOne = default;
     [SerializeField] private ControllerTypeEnum _controllerTwo = default;
     [SerializeField] private bool _isTrainingMode = default;
+    [Range(1, 10)]
+    [SerializeField] private int _gameSpeed = 1;
+    [Header("Data")]
     [SerializeField] protected PlayerUI _playerOneUI = default;
     [SerializeField] protected PlayerUI _playerTwoUI = default;
     [SerializeField] private Animator _timerAnimator = default;
@@ -30,8 +34,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [SerializeField] private Audio _musicAudio = default;
     [SerializeField] private Audio _uiAudio = default;
-    [Range(1, 10)]
-    [SerializeField] private int _gameSpeed = 1;
     protected Player _playerOne;
     protected Player _playerTwo;
     protected BaseController _playerOneController;
@@ -57,8 +59,8 @@ public class GameManager : MonoBehaviour
         {
             SceneSettings.ControllerOne = _controllerOne.ToString();
             SceneSettings.ControllerTwo = _controllerTwo.ToString();
-            SceneSettings.PlayerOne = _characterOne;
-            SceneSettings.PlayerTwo = _characterTwo;
+            SceneSettings.PlayerOne = (int)_characterOne;
+            SceneSettings.PlayerTwo = (int)_characterTwo;
         }
         else
         {
