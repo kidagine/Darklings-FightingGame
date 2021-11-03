@@ -1,9 +1,10 @@
 using Demonics.UI;
+using TMPro;
 using UnityEngine;
 
 public class TrainingMenu : BaseMenu
 {
-	[SerializeField] private GameObject _framedataText = default;
+	[SerializeField] private TextMeshProUGUI _framedataText = default;
 	public void SetHitboxes(int value)
 	{
 		if (value == 1)
@@ -20,11 +21,16 @@ public class TrainingMenu : BaseMenu
 	{
 		if (value == 1)
 		{
-			_framedataText.SetActive(true);
+			_framedataText.gameObject.SetActive(true);
 		}
 		else
 		{
-			_framedataText.SetActive(false);
+			_framedataText.gameObject.SetActive(false);
 		}
+	}
+
+	public void FramedataValue(int value)
+	{
+		_framedataText.text = value.ToString();
 	}
 }

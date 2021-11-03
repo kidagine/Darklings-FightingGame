@@ -6,9 +6,15 @@ public class PlayerAnimationEvents : MonoBehaviour
     [SerializeField] private Player _player = default;
     [SerializeField] private PlayerMovement _playerMovement = default;
     [SerializeField] private Audio _audio = default;
-    private float _startFrames;
+    [SerializeField] private TrainingMenu _trainingMenu = default;
+    private Animator _animator;
 
-    public void UnlockMovement()
+	private void Awake()
+	{
+        _animator = GetComponent<Animator>();
+	}
+
+	public void UnlockMovement()
     {
         _player.IsAttacking = false;
         _playerMovement.SetLockMovement(false);
@@ -45,13 +51,8 @@ public class PlayerAnimationEvents : MonoBehaviour
         _audio.Sound(soundName).Play();
     }
 
-    public void StartFrameCount()
+    public void StartFrameCount(int currentFrame)
     {
-        _startFrames = Time.frameCount;
-    }
-
-    public void StopFrameCount()
-    {
-        Debug.Log(Time.frameCount - _startFrames);
+        _trainingMenu.FramedataValue(currentFrame);
     }
 }

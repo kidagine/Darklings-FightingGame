@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _sceneSettingsDecide = true;
     [SerializeField] private int _characterOne = default;
     [SerializeField] private int _characterTwo = default;
-    [SerializeField] private string _controllerOne = default;
-    [SerializeField] private string _controllerTwo = default;
+    [SerializeField] private ControllerTypeEnum _controllerOne = default;
+    [SerializeField] private ControllerTypeEnum _controllerTwo = default;
     [SerializeField] private bool _isTrainingMode = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
     [SerializeField] protected PlayerUI _playerTwoUI = default;
@@ -56,8 +56,8 @@ public class GameManager : MonoBehaviour
         CheckSceneSettings();
         if (!_sceneSettingsDecide)
         {
-            SceneSettings.ControllerOne = _controllerOne;
-            SceneSettings.ControllerTwo = _controllerTwo;
+            SceneSettings.ControllerOne = _controllerOne.ToString();
+            SceneSettings.ControllerTwo = _controllerTwo.ToString();
             SceneSettings.PlayerOne = _characterOne;
             SceneSettings.PlayerTwo = _characterTwo;
         }

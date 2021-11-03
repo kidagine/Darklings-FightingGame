@@ -1181,6 +1181,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3121622969633075684, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
+      propertyPath: _trainingMenu
+      value: 
+      objectReference: {fileID: 1782348766}
     - target: {fileID: 3121622969633075688, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
@@ -1907,7 +1911,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7777778, y: 1}
+    m_SensorSize: {x: 1.7786459, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2747,8 +2751,8 @@ MonoBehaviour:
   _sceneSettingsDecide: 0
   _characterOne: 1
   _characterTwo: 0
-  _controllerOne: KeyboardOne
-  _controllerTwo: KeyboardTwo
+  _controllerOne: 1
+  _controllerTwo: 2
   _isTrainingMode: 1
   _playerOneUI: {fileID: 1311574451}
   _playerTwoUI: {fileID: 372267967}
@@ -2961,7 +2965,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1/25
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
@@ -8572,7 +8576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1264978719}
-  _framedataText: {fileID: 425313732}
+  _framedataText: {fileID: 425313734}
 --- !u!224 &1782348767
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8898,6 +8902,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3121622969633075684, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
+      propertyPath: _trainingMenu
+      value: 
+      objectReference: {fileID: 1782348766}
     - target: {fileID: 3121622969633075690, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
       propertyPath: m_Size.y
       value: 2.125
