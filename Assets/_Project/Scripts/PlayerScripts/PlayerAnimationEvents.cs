@@ -28,7 +28,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     public void ResetTimeScale()
     {
-        Time.timeScale = 1.0f;
+        Time.timeScale = GameManager.Instance.GameSpeed;
         _player.SetHurtbox(true);
     }
 
