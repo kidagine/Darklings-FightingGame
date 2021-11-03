@@ -204,6 +204,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
         if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
+            ResetGravity();
             _hasDashedMiddair = false;
             _canDoubleJump = true;
             _onTopOfPlayer = false;
