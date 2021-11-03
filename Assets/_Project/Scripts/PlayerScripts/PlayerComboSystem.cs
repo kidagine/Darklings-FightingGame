@@ -18,7 +18,7 @@ public class PlayerComboSystem : MonoBehaviour
 
 	public AttackSO GetComboAttack()
 	{
-		if (_playerMovement.IsCrouching)
+		if (_playerMovement.IsCrouching && _playerMovement.IsGrounded)
 		{
 			return _2L;
 		}

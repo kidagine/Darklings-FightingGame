@@ -8,6 +8,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     [SerializeField] private Audio _audio = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
     private Animator _animator;
+    private Animation anim;
 
 	private void Awake()
 	{
@@ -53,6 +54,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     public void StartFrameCount(int currentFrame)
     {
-        _trainingMenu.FramedataValue(currentFrame);
+        int recovery = (int)(_animator.GetCurrentAnimatorStateInfo(0).length * -60);
+        _trainingMenu.FramedataValue(currentFrame, recovery);
     }
 }

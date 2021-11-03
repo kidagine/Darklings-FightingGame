@@ -1192,7 +1192,7 @@ PrefabInstance:
     - target: {fileID: 3121622969633075690, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -11559017837854535, guid: 93e500ebbc2769a4d848786e7ad37c3a, type: 3}
+      objectReference: {fileID: 762197808904557122, guid: 93e500ebbc2769a4d848786e7ad37c3a, type: 3}
     - target: {fileID: 3121622969731471992, guid: bb3e87f527311e5439f0aad4ffb30179, type: 3}
       propertyPath: _offset.x
       value: 0
@@ -1911,7 +1911,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7786459, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2748,12 +2748,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee34fd0a2311cf1499332a4f01184100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneSettingsDecide: 0
   _characterOne: 1
   _characterTwo: 0
-  _controllerOne: 1
+  _controllerOne: 3
   _controllerTwo: 2
   _isTrainingMode: 1
+  _gameSpeed: 1
   _playerOneUI: {fileID: 1311574451}
   _playerTwoUI: {fileID: 372267967}
   _timerAnimator: {fileID: 436993071}
@@ -2776,7 +2776,6 @@ MonoBehaviour:
   _cinemachineTargetGroup: {fileID: 1821676145}
   _musicAudio: {fileID: 392163761}
   _uiAudio: {fileID: 392163760}
-  _gameSpeed: 1
 --- !u!114 &392163760
 MonoBehaviour:
   m_ObjectHideFlags: 0

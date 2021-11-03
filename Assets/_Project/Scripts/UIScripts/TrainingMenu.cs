@@ -5,6 +5,8 @@ using UnityEngine;
 public class TrainingMenu : BaseMenu
 {
 	[SerializeField] private TextMeshProUGUI _framedataText = default;
+
+
 	public void SetHitboxes(int value)
 	{
 		if (value == 1)
@@ -29,8 +31,11 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
-	public void FramedataValue(int value)
+	public void FramedataValue(int value, int recovery)
 	{
-		_framedataText.text = value.ToString();
+		if (_framedataText.gameObject.activeSelf)
+		{
+			_framedataText.text = $"{value}/{recovery}";
+		}
 	}
 }
