@@ -273,7 +273,7 @@ public class PlayerUI : MonoBehaviour
 
     public void ClosePause()
     {
-        Time.timeScale = 1.0f;
+        Time.timeScale = GameManager.Instance.GameSpeed;
         GameManager.Instance.EnableAllInput();
         GameManager.Instance.PlayMusic();
         _pauseMenu.Hide();

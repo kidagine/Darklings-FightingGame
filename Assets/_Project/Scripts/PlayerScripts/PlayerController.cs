@@ -24,12 +24,9 @@ public class PlayerController : BaseController
             Arcane();
             Pause();
             Dash();
-            if (_trainingController)
-            {
-                ResetRound();
-            }
+            ResetRound();
         }
-	}
+    }
 
     private void Movement()
     {

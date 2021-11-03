@@ -31,6 +31,28 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
+	public void SetSlowdown(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				GameManager.Instance.GameSpeed = 1.0f;
+				break;
+			case 1:
+				GameManager.Instance.GameSpeed = 0.75f;
+				break;
+			case 2:
+				GameManager.Instance.GameSpeed = 0.5f;
+				break;
+			case 3:
+				GameManager.Instance.GameSpeed = 0.25f;
+				break;
+			case 4:
+				GameManager.Instance.GameSpeed = 0.10f;
+				break;
+		}
+	}
+
 	public void FramedataValue(int value, int recovery)
 	{
 		if (_framedataText.gameObject.activeSelf)

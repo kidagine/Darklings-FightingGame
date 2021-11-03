@@ -47,10 +47,12 @@ public class GameManager : MonoBehaviour
 	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public static GameManager Instance { get; private set; }
+    public float GameSpeed { get; set; }
 
 
 	void Awake()
     {
+        GameSpeed = _gameSpeed;
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 1;
         CheckInstance();
@@ -228,7 +230,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ReadyCoroutine()
     {
-        Time.timeScale = _gameSpeed;
+        Time.timeScale = GameSpeed;
         yield return new WaitForSeconds(0.5f);
         _uiAudio.Sound("TextSound").Play();
         _readyAnimator.SetTrigger("Show");
@@ -296,58 +298,55 @@ public class GameManager : MonoBehaviour
             {
                 _reverseReset = !_reverseReset;
             }
-            if (movementInput.x > 0.0f)
+            if (_reverseReset)
             {
-                if (_reverseReset)
-                {
-                    _playerOne.transform.position = new Vector2(8.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(5.5f, -4.75f);
-                }
-                else
-                {
-                    _playerOne.transform.position = new Vector2(5.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(8.5f, -4.75f);
-                }
-            }
-            else if (movementInput.x < 0.0f)
-            {
-                if (_reverseReset)
-                {
-                    _playerOne.transform.position = new Vector2(-5.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(-8.5f, -4.75f);
-                }
-                else
-                {
-                    _playerOne.transform.position = new Vector2(-8.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(-5.5f, -4.75f);
-                }
-            }
-            else if (movementInput.y < 0.0f)
-            {
-                if (_reverseReset)
-                {
-                    _playerOne.transform.position = new Vector2(3.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
-                }
-                else
-                {
-                    _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
-                }
+                _playerOne.transform.position = new Vector2(3.5f, -4.485f);
+                _playerTwo.transform.position = new Vector2(-3.5f, -4.485f);
             }
             else
             {
-                if (_reverseReset)
-                {
-                    _playerOne.transform.position = new Vector2(3.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
-                }
-                else
-                {
-                    _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
-                }
+                _playerOne.transform.position = new Vector2(-3.5f, -4.485f);
+                _playerTwo.transform.position = new Vector2(3.5f, -4.485f);
             }
+            //else if (movementInput.x < 0.0f)
+            //{
+            //    if (_reverseReset)
+            //    {
+            //        _playerOne.transform.position = new Vector2(-5.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(-8.5f, -4.75f);
+            //    }
+            //    else
+            //    {
+            //        _playerOne.transform.position = new Vector2(-8.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(-5.5f, -4.75f);
+            //    }
+            //}
+            //else if (movementInput.y < 0.0f)
+            //{
+            //    if (_reverseReset)
+            //    {
+            //        _playerOne.transform.position = new Vector2(3.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
+            //    }
+            //    else
+            //    {
+            //        _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+            //    }
+            //}
+            //else
+            //{
+            //    if (_reverseReset)
+            //    {
+            //        _playerOne.transform.position = new Vector2(3.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
+            //    }
+            //    else
+            //    {
+            //        _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+            //    }
+            //}
         }
     }
 

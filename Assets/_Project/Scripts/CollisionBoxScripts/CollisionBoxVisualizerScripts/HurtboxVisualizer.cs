@@ -19,7 +19,7 @@ public class HurtboxVisualizer : MonoBehaviour
 		if (TrainingSettings.ShowHitboxes)
 		{
 			transform.localPosition = _boxCollider.offset;
-			transform.localScale = _boxCollider.size;
+			_spriteRenderer.size = _boxCollider.size;
 			_spriteRenderer.color = _hurtbox.HurtboxColor;
 			_spriteRenderer.enabled = _boxCollider.enabled;
 		}

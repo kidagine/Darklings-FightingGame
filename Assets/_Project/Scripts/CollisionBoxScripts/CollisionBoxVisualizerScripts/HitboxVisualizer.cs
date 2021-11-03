@@ -17,7 +17,7 @@ public class HitboxVisualizer : MonoBehaviour
 		if (TrainingSettings.ShowHitboxes)
 		{
 			transform.localPosition = _hitbox._offset;
-			transform.localScale = _hitbox._hitboxSize;
+			_spriteRenderer.size = _hitbox._hitboxSize;
 			_spriteRenderer.enabled = _hitbox.enabled;
 		}
 		else
