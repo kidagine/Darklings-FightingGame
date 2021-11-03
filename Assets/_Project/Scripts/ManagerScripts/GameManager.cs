@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private bool _sceneSettingsDecide = true;
     [SerializeField] private int _characterOne = default;
     [SerializeField] private int _characterTwo = default;
     [SerializeField] private ControllerTypeEnum _controllerOne = default;
@@ -54,7 +53,7 @@ public class GameManager : MonoBehaviour
         QualitySettings.vSyncCount = 1;
         CheckInstance();
         CheckSceneSettings();
-        if (!_sceneSettingsDecide)
+        if (!SceneSettings.SceneSettingsDecide)
         {
             SceneSettings.ControllerOne = _controllerOne.ToString();
             SceneSettings.ControllerTwo = _controllerTwo.ToString();
@@ -69,7 +68,7 @@ public class GameManager : MonoBehaviour
         GameObject playerTwoObject = Instantiate(_characters[SceneSettings.PlayerTwo].gameObject);
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
-        if (SceneSettings.ControllerOne != "Cpu")
+        if (SceneSettings.ControllerOne != ControllerTypeEnum.Cpu.ToString())
         {
             playerOneObject.AddComponent<PlayerController>();
         }
@@ -77,7 +76,7 @@ public class GameManager : MonoBehaviour
         {
             playerOneObject.AddComponent<CpuController>();
         }
-        if (SceneSettings.ControllerTwo != "Cpu")
+        if (SceneSettings.ControllerTwo != ControllerTypeEnum.Cpu.ToString())
         {
             playerTwoObject.AddComponent<PlayerController>();
         }
@@ -85,11 +84,11 @@ public class GameManager : MonoBehaviour
         {
             playerTwoObject.AddComponent<CpuController>();
         }
-        if (SceneSettings.ControllerOne == "Cpu")
+        if (SceneSettings.ControllerOne == ControllerTypeEnum.Cpu.ToString())
         {
             playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
         }
-        if (SceneSettings.ControllerTwo == "Cpu")
+        if (SceneSettings.ControllerTwo == ControllerTypeEnum.Cpu.ToString())
         {
             playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
         }
