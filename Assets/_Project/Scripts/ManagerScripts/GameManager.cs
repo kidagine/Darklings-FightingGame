@@ -8,12 +8,15 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private bool _sceneSettingsDecide = true;
-    [SerializeField] private int _characterOne = default;
-    [SerializeField] private int _characterTwo = default;
-    [SerializeField] private string _controllerOne = default;
-    [SerializeField] private string _controllerTwo = default;
+    [Header("Debug")]
+    [SerializeField] private CharacterTypeEnum _characterOne = default;
+    [SerializeField] private CharacterTypeEnum _characterTwo = default;
+    [SerializeField] private ControllerTypeEnum _controllerOne = default;
+    [SerializeField] private ControllerTypeEnum _controllerTwo = default;
     [SerializeField] private bool _isTrainingMode = default;
+    [Range(1, 10)]
+    [SerializeField] private int _gameSpeed = 1;
+    [Header("Data")]
     [SerializeField] protected PlayerUI _playerOneUI = default;
     [SerializeField] protected PlayerUI _playerTwoUI = default;
     [SerializeField] private Animator _timerAnimator = default;
@@ -31,8 +34,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [SerializeField] private Audio _musicAudio = default;
     [SerializeField] private Audio _uiAudio = default;
-    [Range(1, 10)]
-    [SerializeField] private int _gameSpeed = 1;
     protected Player _playerOne;
     protected Player _playerTwo;
     protected BaseController _playerOneController;
@@ -43,21 +44,25 @@ public class GameManager : MonoBehaviour
     private int _currentRound = 1;
     private bool _reverseReset;
 
-    public bool HasGameStarted { get; set; }
+	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public static GameManager Instance { get; private set; }
+    public float GameSpeed { get; set; }
 
 
 	void Awake()
     {
+        GameSpeed = _gameSpeed;
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 1;
         CheckInstance();
         CheckSceneSettings();
-        if (!_sceneSettingsDecide)
+        if (!SceneSettings.SceneSettingsDecide)
         {
-            SceneSettings.ControllerOne = _controllerOne;
-            SceneSettings.ControllerTwo = _controllerTwo;
-            SceneSettings.PlayerOne = _characterOne;
-            SceneSettings.PlayerTwo = _characterTwo;
+            SceneSettings.ControllerOne = _controllerOne.ToString();
+            SceneSettings.ControllerTwo = _controllerTwo.ToString();
+            SceneSettings.PlayerOne = (int)_characterOne;
+            SceneSettings.PlayerTwo = (int)_characterTwo;
         }
         else
         {
@@ -67,7 +72,7 @@ public class GameManager : MonoBehaviour
         GameObject playerTwoObject = Instantiate(_characters[SceneSettings.PlayerTwo].gameObject);
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
-        if (SceneSettings.ControllerOne != "Cpu")
+        if (SceneSettings.ControllerOne != ControllerTypeEnum.Cpu.ToString())
         {
             playerOneObject.AddComponent<PlayerController>();
         }
@@ -75,7 +80,7 @@ public class GameManager : MonoBehaviour
         {
             playerOneObject.AddComponent<CpuController>();
         }
-        if (SceneSettings.ControllerTwo != "Cpu")
+        if (SceneSettings.ControllerTwo != ControllerTypeEnum.Cpu.ToString())
         {
             playerTwoObject.AddComponent<PlayerController>();
         }
@@ -83,11 +88,11 @@ public class GameManager : MonoBehaviour
         {
             playerTwoObject.AddComponent<CpuController>();
         }
-        if (SceneSettings.ControllerOne == "Cpu")
+        if (SceneSettings.ControllerOne == ControllerTypeEnum.Cpu.ToString())
         {
             playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
         }
-        if (SceneSettings.ControllerTwo == "Cpu")
+        if (SceneSettings.ControllerTwo == ControllerTypeEnum.Cpu.ToString())
         {
             playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
         }
@@ -225,7 +230,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ReadyCoroutine()
     {
-        Time.timeScale = _gameSpeed;
+        Time.timeScale = GameSpeed;
         yield return new WaitForSeconds(0.5f);
         _uiAudio.Sound("TextSound").Play();
         _readyAnimator.SetTrigger("Show");
@@ -293,58 +298,55 @@ public class GameManager : MonoBehaviour
             {
                 _reverseReset = !_reverseReset;
             }
-            if (movementInput.x > 0.0f)
+            if (_reverseReset)
             {
-                if (_reverseReset)
-                {
-                    _playerOne.transform.position = new Vector2(8.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(5.5f, -4.75f);
-                }
-                else
-                {
-                    _playerOne.transform.position = new Vector2(5.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(8.5f, -4.75f);
-                }
-            }
-            else if (movementInput.x < 0.0f)
-            {
-                if (_reverseReset)
-                {
-                    _playerOne.transform.position = new Vector2(-5.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(-8.5f, -4.75f);
-                }
-                else
-                {
-                    _playerOne.transform.position = new Vector2(-8.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(-5.5f, -4.75f);
-                }
-            }
-            else if (movementInput.y < 0.0f)
-            {
-                if (_reverseReset)
-                {
-                    _playerOne.transform.position = new Vector2(3.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
-                }
-                else
-                {
-                    _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
-                }
+                _playerOne.transform.position = new Vector2(3.5f, -4.485f);
+                _playerTwo.transform.position = new Vector2(-3.5f, -4.485f);
             }
             else
             {
-                if (_reverseReset)
-                {
-                    _playerOne.transform.position = new Vector2(3.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
-                }
-                else
-                {
-                    _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
-                    _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
-                }
+                _playerOne.transform.position = new Vector2(-3.5f, -4.485f);
+                _playerTwo.transform.position = new Vector2(3.5f, -4.485f);
             }
+            //else if (movementInput.x < 0.0f)
+            //{
+            //    if (_reverseReset)
+            //    {
+            //        _playerOne.transform.position = new Vector2(-5.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(-8.5f, -4.75f);
+            //    }
+            //    else
+            //    {
+            //        _playerOne.transform.position = new Vector2(-8.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(-5.5f, -4.75f);
+            //    }
+            //}
+            //else if (movementInput.y < 0.0f)
+            //{
+            //    if (_reverseReset)
+            //    {
+            //        _playerOne.transform.position = new Vector2(3.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
+            //    }
+            //    else
+            //    {
+            //        _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+            //    }
+            //}
+            //else
+            //{
+            //    if (_reverseReset)
+            //    {
+            //        _playerOne.transform.position = new Vector2(3.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
+            //    }
+            //    else
+            //    {
+            //        _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
+            //        _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+            //    }
+            //}
         }
     }
 

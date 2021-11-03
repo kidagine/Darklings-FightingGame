@@ -16,6 +16,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _comboText = default;
     [SerializeField] private TextMeshProUGUI _winsText = default;
     [SerializeField] private TextMeshProUGUI _whoPausedText = default;
+    [SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
     [SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
     [SerializeField] private Animator _arcanaAnimator = default;
     [SerializeField] private Transform _healthDividerPivot = default;
@@ -24,6 +25,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject _arcanaDividerPrefab = default;
     [SerializeField] private Slider _pauseSlider = default;
     [SerializeField] private BaseMenu _pauseMenu = default;
+    [SerializeField] private BaseMenu _trainingPauseMenu = default;
     private Coroutine _openPauseHoldCoroutine;
     private Animator _animator;
     private int _currentLifeIndex;
@@ -253,12 +255,29 @@ public class PlayerUI : MonoBehaviour
         _pauseMenu.Show();
     }
 
+    public void OpenTrainingPause(bool isPlayerOne)
+    {
+        if (isPlayerOne)
+        {
+            _whoPausedTrainingText.text = "Player 1 Paused";
+        }
+        else
+        {
+            _whoPausedTrainingText.text = "Player 2 Paused";
+        }
+        Time.timeScale = 0.0f;
+        GameManager.Instance.DisableAllInput();
+        GameManager.Instance.PauseMusic();
+        _trainingPauseMenu.Show();
+    }
+
     public void ClosePause()
     {
-        Time.timeScale = 1.0f;
+        Time.timeScale = GameManager.Instance.GameSpeed;
         GameManager.Instance.EnableAllInput();
         GameManager.Instance.PlayMusic();
         _pauseMenu.Hide();
+        _trainingPauseMenu.Hide();
     }
 
     IEnumerator ResetComboCoroutine()

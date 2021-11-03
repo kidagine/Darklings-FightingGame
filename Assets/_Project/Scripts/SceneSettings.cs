@@ -10,6 +10,7 @@ public class SceneSettings
 	public static int ColorOne = 0;
 	public static int ColorTwo = 0;
 	public static bool RandomStage = false;
+	public static bool SceneSettingsDecide = false;
 	//Local Fight
 	public static bool IsTrainingMode = false;
 	//Main Menu

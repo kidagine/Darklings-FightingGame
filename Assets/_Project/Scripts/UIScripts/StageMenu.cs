@@ -1,8 +1,6 @@
 using Demonics.UI;
-using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -14,6 +12,7 @@ public class StageMenu : BaseMenu
 
 	public void SelectStageImage()
 	{
+		SceneSettings.SceneSettingsDecide = true;
 		SceneManager.LoadScene(2);
 	}
 

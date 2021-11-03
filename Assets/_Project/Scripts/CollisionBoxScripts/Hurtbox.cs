@@ -5,8 +5,9 @@ public class Hurtbox : MonoBehaviour
 {
     [SerializeField] private BoxCollider2D _boxCollider = default;
     [SerializeField] private GameObject _hurtboxResponderObject = default;
-    private Color _hitboxDamageableColor = Color.green;
     private IHurtboxResponder _hurtboxResponder;
+
+	public Color HurtboxColor { get; private set; } = Color.green;
 
 
     void Awake()
@@ -14,7 +15,27 @@ public class Hurtbox : MonoBehaviour
         _hurtboxResponder = _hurtboxResponderObject.GetComponent<IHurtboxResponder>();
     }
 
-    public bool TakeDamage(AttackSO attackSO)
+	private void Update()
+	{
+        if (_hurtboxResponder.BlockingLow)
+        {
+            HurtboxColor = new Color(0.0f, 0.45f, 0.45f, 1.0f);
+        }
+        else if (_hurtboxResponder.BlockingHigh)
+        {
+            HurtboxColor = Color.cyan;
+        }
+        else if (_hurtboxResponder.BlockingMiddair)
+        {
+            HurtboxColor = new Color(0.65f, 0.18f, 0.18f, 1.0f);
+        }
+        else
+        {
+            HurtboxColor = Color.green;
+        }
+    }
+
+	public bool TakeDamage(AttackSO attackSO)
     {
         return _hurtboxResponder.TakeDamage(attackSO);
     }
@@ -23,8 +44,9 @@ public class Hurtbox : MonoBehaviour
     {
         if (_boxCollider.enabled)
         {
-            _hitboxDamageableColor.a = 0.35f;
-            Gizmos.color = _hitboxDamageableColor;
+            Color color = HurtboxColor;
+            color.a = 0.35f;
+            Gizmos.color = color;
             Vector2 hurtboxPosition = new Vector2(transform.position.x + (_boxCollider.offset.x * transform.root.localScale.x), transform.position.y + (_boxCollider.offset.y * transform.root.localScale.y));
             Gizmos.matrix = Matrix4x4.TRS(hurtboxPosition, transform.rotation, transform.localScale);
 
