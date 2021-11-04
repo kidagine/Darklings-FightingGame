@@ -8,7 +8,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     [SerializeField] private Audio _audio = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
     private Animator _animator;
-    private Animation anim;
+
 
 	private void Awake()
 	{
