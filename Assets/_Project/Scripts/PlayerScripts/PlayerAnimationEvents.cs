@@ -55,6 +55,6 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void StartFrameCount(int currentFrame)
     {
         int recovery = (int)(_animator.GetCurrentAnimatorStateInfo(0).length * -60);
-        _trainingMenu.FramedataValue(currentFrame, recovery);
+        _trainingMenu.FramedataValue(_player.IsPlayerOne, currentFrame, recovery);
     }
 }

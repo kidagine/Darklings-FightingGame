@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class TrainingMenu : BaseMenu
 {
-	[SerializeField] private TextMeshProUGUI _framedataText = default;
+	[SerializeField] private GameObject _p1 = default;
+	[SerializeField] private GameObject _p2 = default;
+	[SerializeField] private TextMeshProUGUI _framedataOneText = default;
+	[SerializeField] private TextMeshProUGUI _framedataTwoText = default;
 
 
 	public void SetHitboxes(int value)
@@ -19,17 +22,6 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
-	public void SetFramedata(int value)
-	{
-		if (value == 1)
-		{
-			_framedataText.gameObject.SetActive(true);
-		}
-		else
-		{
-			_framedataText.gameObject.SetActive(false);
-		}
-	}
 
 	public void SetSlowdown(int value)
 	{
@@ -53,11 +45,44 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
-	public void FramedataValue(int value, int recovery)
+	public void SetDisplay(int value)
 	{
-		if (_framedataText.gameObject.activeSelf)
+		switch (value)
 		{
-			_framedataText.text = $"{value}/{recovery}";
+			case 0:
+				_p1.SetActive(false);
+				_p2.SetActive(false);
+				break;
+			case 1:
+				_p1.SetActive(true);
+				_p2.SetActive(false);
+				break;
+			case 2:
+				_p1.SetActive(false);
+				_p2.SetActive(true);
+				break;
+			case 3:
+				_p1.SetActive(true);
+				_p2.SetActive(true);
+				break;
+		}
+	}
+
+	public void FramedataValue(bool isPlayerOne, int value, int recovery)
+	{
+		if (isPlayerOne)
+		{
+			if (_framedataOneText.gameObject.activeSelf)
+			{
+				_framedataOneText.text = $"{value}/{recovery}";
+			}
+		}
+		else
+		{
+			if (_framedataTwoText.gameObject.activeSelf)
+			{
+				_framedataTwoText.text = $"{value}/{recovery}";
+			}
 		}
 	}
 }
