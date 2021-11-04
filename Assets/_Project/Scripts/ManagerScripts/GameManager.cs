@@ -112,10 +112,10 @@ public class GameManager : MonoBehaviour
         _playerOneController.IsPlayerOne = true;
         _playerTwoController = playerTwoObject.GetComponent<BaseController>();
         _playerOne.SetPlayerUI(_playerOneUI);
+        _playerTwo.SetPlayerUI(_playerTwoUI);
         _playerOne.SetOtherPlayer(_playerTwo.transform);
         _playerOne.IsPlayerOne = true;
         _playerOneController.ControllerInputName = SceneSettings.ControllerOne;
-        _playerTwo.SetPlayerUI(_playerTwoUI);
         _playerTwo.SetOtherPlayer(_playerOne.transform);
         _playerTwo.IsPlayerOne = false;
         _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
@@ -509,5 +509,17 @@ public class GameManager : MonoBehaviour
     {
         _playerOneController.enabled = true;
         _playerTwoController.enabled = true;
+    }
+
+    public void SlowdownPunish()
+	{
+        StartCoroutine(SlowdownPunishCoroutine());
+	}
+
+    IEnumerator SlowdownPunishCoroutine()
+    {
+        Time.timeScale = 0.25f;
+        yield return new WaitForSecondsRealtime(0.25f);
+        Time.timeScale = GameSpeed;
     }
 }
