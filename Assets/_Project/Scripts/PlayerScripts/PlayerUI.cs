@@ -1,3 +1,4 @@
+using Demonics.Sounds;
 using Demonics.UI;
 using System.Collections;
 using TMPro;
@@ -13,7 +14,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Image _portraitImage = default;
     [SerializeField] private TextMeshProUGUI _characterName = default;
     [SerializeField] private TextMeshProUGUI _playerName = default;
-    [SerializeField] private TextMeshProUGUI _comboText = default;
+    [SerializeField] private TextMeshProUGUI _notificationText = default;
     [SerializeField] private TextMeshProUGUI _winsText = default;
     [SerializeField] private TextMeshProUGUI _whoPausedText = default;
     [SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
@@ -27,7 +28,9 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private BaseMenu _pauseMenu = default;
     [SerializeField] private BaseMenu _trainingPauseMenu = default;
     private Coroutine _openPauseHoldCoroutine;
+    private Coroutine _notificiationCoroutine;
     private Animator _animator;
+    private Audio _audio;
     private int _currentLifeIndex;
     private int _currentComboCount;
     private int _currentWins;
@@ -41,6 +44,7 @@ public class PlayerUI : MonoBehaviour
 	void Awake()
 	{
         _animator = GetComponent<Animator>();
+        _audio = GetComponent<Audio>();
     }
 
 	public void InitializeUI(PlayerStatsSO playerStats, bool isPlayerOne)
@@ -179,15 +183,15 @@ public class PlayerUI : MonoBehaviour
         if (_hasComboEnded)
         {
             _hasComboEnded = false;
-            _comboText.gameObject.SetActive(false);
+            _notificationText.gameObject.SetActive(false);
             _currentComboCount = 0;
-            _comboText.text = "Hits 0";
+            _notificationText.text = "Hits 0";
         }
         _currentComboCount++;
-        _comboText.text = "Hits " + _currentComboCount.ToString();
+        _notificationText.text = "Hits " + _currentComboCount.ToString();
         if (_currentComboCount > 1)
         {
-            _comboText.gameObject.SetActive(true);
+            _notificationText.gameObject.SetActive(true);
         }
     }
 
@@ -280,12 +284,24 @@ public class PlayerUI : MonoBehaviour
         _trainingPauseMenu.Hide();
     }
 
+    public void DisplayNotification(string text)
+    {
+        _audio.Sound("Punish").Play();
+        _notificationText.gameObject.SetActive(true);
+        _notificationText.text = text;
+        if (_notificiationCoroutine != null)
+        {
+            StopCoroutine(_notificiationCoroutine);
+        }
+        _notificiationCoroutine = StartCoroutine(ResetComboCoroutine());
+    }
+
     IEnumerator ResetComboCoroutine()
     {
         _hasComboEnded = true;
         yield return new WaitForSeconds(1.0f);
-        _comboText.gameObject.SetActive(false);
+        _notificationText.gameObject.SetActive(false);
         _currentComboCount = 0;
-        _comboText.text = "Hits 0";
+        _notificationText.text = "";
     }
 }

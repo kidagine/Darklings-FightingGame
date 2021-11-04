@@ -841,6 +841,7 @@ GameObject:
   - component: {fileID: 1260952192020572879}
   - component: {fileID: 7796490837188691190}
   - component: {fileID: 1939431748219472702}
+  - component: {fileID: 3279332729760061273}
   m_Layer: 5
   m_Name: FirstPlayer_canvas
   m_TagString: Untagged
@@ -956,9 +957,10 @@ MonoBehaviour:
   _portraitImage: {fileID: 3707602403031938593}
   _characterName: {fileID: 1604159752663817567}
   _playerName: {fileID: 6044207841894367826}
-  _comboText: {fileID: 5920763466147835620}
+  _notificationText: {fileID: 0}
   _winsText: {fileID: 0}
   _whoPausedText: {fileID: 0}
+  _whoPausedTrainingText: {fileID: 0}
   _arcanaAmountText: {fileID: 0}
   _arcanaAnimator: {fileID: 0}
   _healthDividerPivot: {fileID: 3915933149156680349}
@@ -967,6 +969,7 @@ MonoBehaviour:
   _arcanaDividerPrefab: {fileID: 0}
   _pauseSlider: {fileID: 0}
   _pauseMenu: {fileID: 0}
+  _trainingPauseMenu: {fileID: 0}
 --- !u!225 &7796490837188691190
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -998,6 +1001,31 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3279332729760061273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604159751985950005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 62b8503b430dddc47b5de79bef02b781, type: 3}
+    volume: 1
+    pitch: 1
+    name: Punish
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!1 &1604159752058825818
 GameObject:
   m_ObjectHideFlags: 0
@@ -1534,13 +1562,14 @@ GameObject:
   - component: {fileID: 7825027852409118670}
   - component: {fileID: 2574884427095349092}
   - component: {fileID: 5920763466147835620}
+  - component: {fileID: 3084069287409044628}
   m_Layer: 5
-  m_Name: ComboCount_text
+  m_Name: Notification_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7825027852409118670
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1657,6 +1686,25 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!95 &3084069287409044628
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2841504432217619119}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 83a9baad5c9e04841aeb7e3213f94b28, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3320892015413500859
 GameObject:
   m_ObjectHideFlags: 0
