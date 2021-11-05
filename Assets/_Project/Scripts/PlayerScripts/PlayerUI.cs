@@ -30,6 +30,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private BaseMenu _trainingPauseMenu = default;
     private Coroutine _openPauseHoldCoroutine;
     private Coroutine _notificiationCoroutine;
+    private Coroutine _resetComboCoroutine;
     private Animator _animator;
     private Audio _audio;
     private int _currentLifeIndex;
@@ -267,6 +268,7 @@ public class PlayerUI : MonoBehaviour
     {
         if (_hasComboEnded)
         {
+            StopCoroutine(_resetComboCoroutine);
             _hasComboEnded = false;
             _comboText.gameObject.SetActive(false);
             _currentComboCount = 0;
@@ -274,7 +276,6 @@ public class PlayerUI : MonoBehaviour
         }
         _currentComboCount++;
         _comboText.text = "Hits " + _currentComboCount.ToString();
-        Debug.Log("a" + _currentComboCount);
         if (_currentComboCount > 1)
         {
             _comboText.gameObject.SetActive(true);
@@ -284,7 +285,7 @@ public class PlayerUI : MonoBehaviour
     public void ResetCombo()
     {
         _hasComboEnded = true;
-        StartCoroutine(ResetComboCoroutine());
+        _resetComboCoroutine = StartCoroutine(ResetComboCoroutine());
     }
 
     public void DisplayNotification(string text)

@@ -397,7 +397,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerMovement.SetLockMovement(false);
 			_playerAnimator.IsHurt(false);
 		}
-		Debug.Log("reset");
 		_otherPlayerUI.ResetCombo();
 	}
 
