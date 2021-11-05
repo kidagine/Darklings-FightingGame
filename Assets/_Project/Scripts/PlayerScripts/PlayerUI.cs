@@ -274,6 +274,7 @@ public class PlayerUI : MonoBehaviour
         }
         _currentComboCount++;
         _comboText.text = "Hits " + _currentComboCount.ToString();
+        Debug.Log("a" + _currentComboCount);
         if (_currentComboCount > 1)
         {
             _comboText.gameObject.SetActive(true);
@@ -282,6 +283,7 @@ public class PlayerUI : MonoBehaviour
 
     public void ResetCombo()
     {
+        _hasComboEnded = true;
         StartCoroutine(ResetComboCoroutine());
     }
 
@@ -306,7 +308,6 @@ public class PlayerUI : MonoBehaviour
 
     IEnumerator ResetComboCoroutine()
     {
-        _hasComboEnded = true;
         yield return new WaitForSeconds(1.0f);
         _comboText.gameObject.SetActive(false);
         _currentComboCount = 0;
