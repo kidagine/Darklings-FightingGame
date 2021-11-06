@@ -144,9 +144,12 @@ public class CpuController : BaseController
 
     public override void ActivateInput()
     {
-        base.ActivateInput();
-        StartCoroutine(MovementCoroutine());
-        StartCoroutine(AttackCoroutine());
+        if (!GameManager.Instance.IsCpuOff)
+        {
+            base.ActivateInput();
+            StartCoroutine(MovementCoroutine());
+            StartCoroutine(AttackCoroutine());
+        }
     }
     public override void DeactivateInput()
     {

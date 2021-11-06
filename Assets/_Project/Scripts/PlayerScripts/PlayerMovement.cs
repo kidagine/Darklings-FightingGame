@@ -69,6 +69,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         {
             if (!_isMovementLocked)
             {
+                if (!_player.IsPlayerOne)
+                {
+                    Debug.Log("a");
+                }
                 _rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
                 _playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
                 if (_rigidbody.velocity.x != 0.0f)
@@ -169,7 +173,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         MovementInput = Vector2.zero;
         _rigidbody.velocity = Vector2.zero;
         _isMovementLocked = state;
-	}
+        _playerAnimator.SetMove(false);
+    }
 
     public void GroundedPoint(Transform other, float point)
     {

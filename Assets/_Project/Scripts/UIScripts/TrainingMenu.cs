@@ -52,6 +52,7 @@ public class TrainingMenu : BaseMenu
 		switch (value)
 		{
 			case 0:
+				Debug.Log("A");
 				GameManager.Instance.IsCpuOff = true;
 				GameManager.Instance.Cpu.StopCpu();
 				break;

@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
             SceneSettings.ControllerTwo = _controllerTwo.ToString();
             SceneSettings.PlayerOne = (int)_characterOne;
             SceneSettings.PlayerTwo = (int)_characterTwo;
+            SceneSettings.IsTrainingMode = _isTrainingMode;
         }
         else
         {
