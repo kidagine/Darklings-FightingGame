@@ -25,6 +25,7 @@ public class PlayerController : BaseController
             Pause();
             Dash();
             ResetRound();
+            SwitchCharacter();
         }
     }
 
@@ -79,6 +80,14 @@ public class PlayerController : BaseController
         if (Input.GetButtonDown(ControllerInputName + "Reset"))
         {
             GameManager.Instance.ResetRound(_playerMovement.MovementInput);
+        }
+    }
+
+    private void SwitchCharacter()
+    {
+        if (Input.GetButtonDown(ControllerInputName + "Switch"))
+        {
+            GameManager.Instance.SwitchCharacters();
         }
     }
 

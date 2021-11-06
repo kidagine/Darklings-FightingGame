@@ -38,11 +38,14 @@ public class GameManager : MonoBehaviour
     protected Player _playerTwo;
     protected BaseController _playerOneController;
     protected BaseController _playerTwoController;
+    private Coroutine _roundOverTrainingCoroutine;
     private Sound _currentMusic;
     private GameObject _currentStage;
     private float _countdown;
     private int _currentRound = 1;
     private bool _reverseReset;
+    private bool _hasSwitchedCharacters;
+    private bool _canCallSwitchCharacter = true;
 
 	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
@@ -265,7 +268,7 @@ public class GameManager : MonoBehaviour
         {
             if (_isTrainingMode)
             {
-                StartCoroutine(RoundOverTrainingCoroutine());
+                _roundOverTrainingCoroutine = StartCoroutine(RoundOverTrainingCoroutine());
             }
             else
             {
@@ -282,11 +285,41 @@ public class GameManager : MonoBehaviour
         StartTrainingRound();
     }
 
+    public void SwitchCharacters()
+    {
+        if (IsTrainingMode && _canCallSwitchCharacter)
+        {
+            StartCoroutine(SwitchCharactersCoroutine());
+        }
+    }
+
+    IEnumerator SwitchCharactersCoroutine()
+    {
+        _canCallSwitchCharacter = false;
+        if (_hasSwitchedCharacters)
+        {
+            _playerOneController.ControllerInputName = SceneSettings.ControllerOne;
+            _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
+        }
+        else
+        {
+            _playerOneController.ControllerInputName = SceneSettings.ControllerTwo;
+            _playerTwoController.ControllerInputName = SceneSettings.ControllerOne;
+        }
+        _hasSwitchedCharacters = !_hasSwitchedCharacters;
+        yield return new WaitForSecondsRealtime(0.1f);
+        _canCallSwitchCharacter = true;
+    }
+
     public virtual void ResetRound(Vector2 movementInput)
     {
         if (_isTrainingMode)
         {
             Time.timeScale = GameSpeed;
+            if (_roundOverTrainingCoroutine != null)
+            {
+                StopCoroutine(_roundOverTrainingCoroutine);
+            }
             _playerOneController = _playerOne.GetComponent<PlayerController>();
             _playerTwoController = _playerTwo.GetComponent<PlayerController>();
             _playerOne.ResetPlayer();

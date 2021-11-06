@@ -22,6 +22,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private float _arcana;
 	private int _lives = 2;
 	private bool _isDead;
+	private bool _canAttack;
 
 	public PlayerStatsSO PlayerStats { get { return _playerStats; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
@@ -171,7 +172,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
-		IsAttacking = false;
+		_canAttack = true;
 		_currentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(_currentAttack);
 		if (!gotHit)
