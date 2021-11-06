@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
 
 	void Awake()
     {
+        HasGameStarted = true;
         GameSpeed = _gameSpeed;
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 1;
