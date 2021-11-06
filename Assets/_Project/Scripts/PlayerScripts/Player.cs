@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Transform _effectsParent = default;
 	private Transform _otherPlayer;
 	private PlayerUI _playerUI;
+	private PlayerUI _otherPlayerUI;
 	private PlayerMovement _playerMovement;
 	private PlayerComboSystem _playerComboSystem;
 	private BaseController _playerController;
@@ -21,8 +22,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private float _arcana;
 	private int _lives = 2;
 	private bool _isDead;
+	private bool _canAttack;
 
 	public PlayerStatsSO PlayerStats { get { return _playerStats; } private set { } }
+	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
 	public bool HitMiddair { get; set; }
@@ -58,6 +61,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void SetOtherPlayer(Transform otherPlayer)
 	{
 		_otherPlayer = otherPlayer;
+		_otherPlayerUI = otherPlayer.GetComponent<Player>().PlayerUI;
 	}
 
 	public void ResetPlayer()
@@ -166,6 +170,23 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
+	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
+	{
+		_canAttack = true;
+		_currentAttack.hurtEffectPosition = hit.point;
+		bool gotHit = hurtbox.TakeDamage(_currentAttack);
+		if (!gotHit)
+		{
+			_playerMovement.SetLockMovement(true);
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback);
+		}
+		else
+		{
+			_playerMovement.SetLockMovement(true);
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 2);
+		}
+	}
+
 	public void CreateEffect()
 	{
 		if (_currentAttack.hitEffect != null)
@@ -187,10 +208,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
+			if (IsAttacking)
+			{
+				//GameManager.Instance.SlowdownPunish();
+				_otherPlayerUI.DisplayNotification("Punish");
+			}
 			_audio.Sound(attackSO.impactSound).Play();
 			Health--;
 			_playerMovement.StopDash();
-			//_otherPlayerUI.IncreaseCombo();
+			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
 			_playerUI.SetHealth(Health);
 			if (HitMiddair)
@@ -373,23 +399,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerMovement.SetLockMovement(false);
 			_playerAnimator.IsHurt(false);
 		}
-		//_otherPlayerUI.ResetCombo();
-	}
-
-	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
-	{
-		_currentAttack.hurtEffectPosition = hit.point;
-		bool gotHit = hurtbox.TakeDamage(_currentAttack);
-		if (!gotHit)
-		{
-			_playerMovement.SetLockMovement(true);
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback);
-		}
-		else
-		{
-			_playerMovement.SetLockMovement(true);
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 2);
-		}
+		_otherPlayerUI.ResetCombo();
 	}
 
 	public void Pause(bool isPlayerOne)

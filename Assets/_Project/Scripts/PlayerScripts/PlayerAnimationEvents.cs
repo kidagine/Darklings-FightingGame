@@ -8,7 +8,7 @@ public class PlayerAnimationEvents : MonoBehaviour
     [SerializeField] private Audio _audio = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
     private Animator _animator;
-    private Animation anim;
+
 
 	private void Awake()
 	{
@@ -28,7 +28,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
     public void ResetTimeScale()
     {
-        Time.timeScale = 1.0f;
+        Time.timeScale = GameManager.Instance.GameSpeed;
         _player.SetHurtbox(true);
     }
 
@@ -55,6 +55,6 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void StartFrameCount(int currentFrame)
     {
         int recovery = (int)(_animator.GetCurrentAnimatorStateInfo(0).length * -60);
-        _trainingMenu.FramedataValue(currentFrame, recovery);
+        _trainingMenu.FramedataValue(_player.IsPlayerOne, currentFrame, recovery);
     }
 }

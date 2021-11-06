@@ -38,20 +38,26 @@ public class GameManager : MonoBehaviour
     protected Player _playerTwo;
     protected BaseController _playerOneController;
     protected BaseController _playerTwoController;
+    private Coroutine _roundOverTrainingCoroutine;
     private Sound _currentMusic;
     private GameObject _currentStage;
     private float _countdown;
     private int _currentRound = 1;
     private bool _reverseReset;
+    private bool _hasSwitchedCharacters;
+    private bool _canCallSwitchCharacter = true;
 
+	public bool IsCpuOff { get; set; }
 	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public static GameManager Instance { get; private set; }
-    public float GameSpeed { get; set; }
+	public CpuController Cpu { get; private set; }
+	public float GameSpeed { get; set; }
 
 
 	void Awake()
     {
+        HasGameStarted = true;
         GameSpeed = _gameSpeed;
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 1;
@@ -63,6 +69,7 @@ public class GameManager : MonoBehaviour
             SceneSettings.ControllerTwo = _controllerTwo.ToString();
             SceneSettings.PlayerOne = (int)_characterOne;
             SceneSettings.PlayerTwo = (int)_characterTwo;
+            SceneSettings.IsTrainingMode = _isTrainingMode;
         }
         else
         {
@@ -79,6 +86,7 @@ public class GameManager : MonoBehaviour
         else
         {
             playerOneObject.AddComponent<CpuController>();
+            Cpu = playerOneObject.GetComponent<CpuController>();
         }
         if (SceneSettings.ControllerTwo != ControllerTypeEnum.Cpu.ToString())
         {
@@ -87,6 +95,7 @@ public class GameManager : MonoBehaviour
         else
         {
             playerTwoObject.AddComponent<CpuController>();
+            Cpu = playerTwoObject.GetComponent<CpuController>();
         }
         if (SceneSettings.ControllerOne == ControllerTypeEnum.Cpu.ToString())
         {
@@ -112,10 +121,10 @@ public class GameManager : MonoBehaviour
         _playerOneController.IsPlayerOne = true;
         _playerTwoController = playerTwoObject.GetComponent<BaseController>();
         _playerOne.SetPlayerUI(_playerOneUI);
+        _playerTwo.SetPlayerUI(_playerTwoUI);
         _playerOne.SetOtherPlayer(_playerTwo.transform);
         _playerOne.IsPlayerOne = true;
         _playerOneController.ControllerInputName = SceneSettings.ControllerOne;
-        _playerTwo.SetPlayerUI(_playerTwoUI);
         _playerTwo.SetOtherPlayer(_playerOne.transform);
         _playerTwo.IsPlayerOne = false;
         _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
@@ -159,6 +168,7 @@ public class GameManager : MonoBehaviour
         _currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
         if (_isTrainingMode)
         {
+            IsCpuOff = true;
             _countdownText.gameObject.SetActive(false);
             HasGameStarted = true;
             StartTrainingRound();
@@ -265,7 +275,7 @@ public class GameManager : MonoBehaviour
         {
             if (_isTrainingMode)
             {
-                StartCoroutine(RoundOverTrainingCoroutine());
+                _roundOverTrainingCoroutine = StartCoroutine(RoundOverTrainingCoroutine());
             }
             else
             {
@@ -282,10 +292,41 @@ public class GameManager : MonoBehaviour
         StartTrainingRound();
     }
 
+    public void SwitchCharacters()
+    {
+        if (IsTrainingMode && _canCallSwitchCharacter)
+        {
+            StartCoroutine(SwitchCharactersCoroutine());
+        }
+    }
+
+    IEnumerator SwitchCharactersCoroutine()
+    {
+        _canCallSwitchCharacter = false;
+        if (_hasSwitchedCharacters)
+        {
+            _playerOneController.ControllerInputName = SceneSettings.ControllerOne;
+            _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
+        }
+        else
+        {
+            _playerOneController.ControllerInputName = SceneSettings.ControllerTwo;
+            _playerTwoController.ControllerInputName = SceneSettings.ControllerOne;
+        }
+        _hasSwitchedCharacters = !_hasSwitchedCharacters;
+        yield return new WaitForSecondsRealtime(0.1f);
+        _canCallSwitchCharacter = true;
+    }
+
     public virtual void ResetRound(Vector2 movementInput)
     {
         if (_isTrainingMode)
         {
+            Time.timeScale = GameSpeed;
+            if (_roundOverTrainingCoroutine != null)
+            {
+                StopCoroutine(_roundOverTrainingCoroutine);
+            }
             _playerOneController = _playerOne.GetComponent<PlayerController>();
             _playerTwoController = _playerTwo.GetComponent<PlayerController>();
             _playerOne.ResetPlayer();
@@ -509,5 +550,17 @@ public class GameManager : MonoBehaviour
     {
         _playerOneController.enabled = true;
         _playerTwoController.enabled = true;
+    }
+
+    public void SlowdownPunish()
+	{
+        StartCoroutine(SlowdownPunishCoroutine());
+	}
+
+    IEnumerator SlowdownPunishCoroutine()
+    {
+        Time.timeScale = 0.25f;
+        yield return new WaitForSecondsRealtime(0.25f);
+        Time.timeScale = GameSpeed;
     }
 }

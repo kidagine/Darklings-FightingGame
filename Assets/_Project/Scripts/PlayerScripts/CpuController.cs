@@ -5,6 +5,7 @@ public class CpuController : BaseController
 {
     private Transform _otherPlayer;
     private Coroutine _movementCoroutine;
+    private Coroutine _attackCoroutine;
     private float _movementInputX;
     private float _distance;
     private bool _didAction;
@@ -15,10 +16,28 @@ public class CpuController : BaseController
         _playerMovement = GetComponent<PlayerMovement>();
     }
 
-	private void Start()
-	{
+    void Start()
+    {
+        if (!GameManager.Instance.IsCpuOff)
+        {
+            StartCpu();
+        }
+    }
+
+    public void StartCpu()
+    {
         _movementCoroutine = StartCoroutine(MovementCoroutine());
-        StartCoroutine(AttackCoroutine());
+        _attackCoroutine = StartCoroutine(AttackCoroutine());
+        _playerMovement.SetLockMovement(false);
+    }
+
+    public void StopCpu()
+    {
+        StopCoroutine(_movementCoroutine);
+        StopCoroutine(_attackCoroutine);
+        _playerMovement.MovementInput = Vector2.zero;
+        _playerMovement.SetLockMovement(true);
+        _playerMovement.StandUpAction();
     }
 
     public void SetOtherPlayer(Transform otherPlayer)
@@ -26,7 +45,7 @@ public class CpuController : BaseController
         _otherPlayer = otherPlayer;
     }
 
-    private void Update()
+    void Update()
     {
         _distance = Mathf.Abs(_otherPlayer.transform.position.x - transform.position.x);
         _playerMovement.MovementInput = new Vector2(_movementInputX, 0.0f);
@@ -125,9 +144,12 @@ public class CpuController : BaseController
 
     public override void ActivateInput()
     {
-        base.ActivateInput();
-        StartCoroutine(MovementCoroutine());
-        StartCoroutine(AttackCoroutine());
+        if (!GameManager.Instance.IsCpuOff)
+        {
+            base.ActivateInput();
+            StartCoroutine(MovementCoroutine());
+            StartCoroutine(AttackCoroutine());
+        }
     }
     public override void DeactivateInput()
     {
