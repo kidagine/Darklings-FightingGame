@@ -171,6 +171,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
+		IsAttacking = false;
 		_currentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(_currentAttack);
 		if (!gotHit)

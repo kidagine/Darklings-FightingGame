@@ -286,6 +286,7 @@ public class GameManager : MonoBehaviour
     {
         if (_isTrainingMode)
         {
+            Time.timeScale = GameSpeed;
             _playerOneController = _playerOne.GetComponent<PlayerController>();
             _playerTwoController = _playerTwo.GetComponent<PlayerController>();
             _playerOne.ResetPlayer();
