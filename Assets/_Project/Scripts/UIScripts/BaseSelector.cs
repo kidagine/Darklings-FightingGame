@@ -15,7 +15,8 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
     [SerializeField] private Image _leftArrowImage = default;
     [SerializeField] private UnityEventInt _eventInt = default;
     [SerializeField] private RectTransform _scrollView = default;
-    [SerializeField] private float _scrollAmount = default;
+    [SerializeField] private float _scrollUpAmount = default;
+    [SerializeField] private float _scrollDownAmount = default;
     [SerializeField] private bool _ignoreFirstSelectSound = default;
     protected Audio _audio;
     protected Button _button;
@@ -102,7 +103,7 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
         AxisEventData axisEventData = eventData as AxisEventData;
         if (axisEventData.moveDir == MoveDirection.Down)
         {
-            _scrollView.anchoredPosition += new Vector2(0.0f, _scrollAmount);
+            _scrollView.anchoredPosition += new Vector2(0.0f, _scrollDownAmount);
         }
     }
 
@@ -111,7 +112,7 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
         AxisEventData axisEventData = eventData as AxisEventData;
         if (axisEventData.moveDir == MoveDirection.Up)
         {
-            _scrollView.anchoredPosition += new Vector2(0.0f, _scrollAmount);
+            _scrollView.anchoredPosition += new Vector2(0.0f, _scrollUpAmount);
         }
     }
 

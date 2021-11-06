@@ -1,6 +1,7 @@
 using Demonics.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TrainingMenu : BaseMenu
 {
@@ -8,7 +9,7 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private GameObject _p2 = default;
 	[SerializeField] private TextMeshProUGUI _framedataOneText = default;
 	[SerializeField] private TextMeshProUGUI _framedataTwoText = default;
-
+	[SerializeField] private RectTransform _scrollView = default;
 
 	public void SetHitboxes(int value)
 	{
@@ -41,6 +42,22 @@ public class TrainingMenu : BaseMenu
 				break;
 			case 4:
 				GameManager.Instance.GameSpeed = 0.10f;
+				break;
+		}
+	}
+
+
+	public void SetCpu(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				GameManager.Instance.IsCpuOff = true;
+				GameManager.Instance.Cpu.StopCpu();
+				break;
+			case 1:
+				GameManager.Instance.IsCpuOff = false;
+				GameManager.Instance.Cpu.StartCpu();
 				break;
 		}
 	}
@@ -84,5 +101,10 @@ public class TrainingMenu : BaseMenu
 				_framedataTwoText.text = $"{value}/{recovery}";
 			}
 		}
+	}
+
+	private void OnEnable()
+	{
+		_scrollView.anchoredPosition = Vector2.zero;
 	}
 }

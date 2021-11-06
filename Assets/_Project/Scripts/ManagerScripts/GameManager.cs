@@ -47,10 +47,12 @@ public class GameManager : MonoBehaviour
     private bool _hasSwitchedCharacters;
     private bool _canCallSwitchCharacter = true;
 
+	public bool IsCpuOff { get; set; }
 	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public static GameManager Instance { get; private set; }
-    public float GameSpeed { get; set; }
+	public CpuController Cpu { get; private set; }
+	public float GameSpeed { get; set; }
 
 
 	void Awake()
@@ -83,6 +85,7 @@ public class GameManager : MonoBehaviour
         else
         {
             playerOneObject.AddComponent<CpuController>();
+            Cpu = playerOneObject.GetComponent<CpuController>();
         }
         if (SceneSettings.ControllerTwo != ControllerTypeEnum.Cpu.ToString())
         {
@@ -91,6 +94,7 @@ public class GameManager : MonoBehaviour
         else
         {
             playerTwoObject.AddComponent<CpuController>();
+            Cpu = playerTwoObject.GetComponent<CpuController>();
         }
         if (SceneSettings.ControllerOne == ControllerTypeEnum.Cpu.ToString())
         {
@@ -163,6 +167,7 @@ public class GameManager : MonoBehaviour
         _currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
         if (_isTrainingMode)
         {
+            IsCpuOff = true;
             _countdownText.gameObject.SetActive(false);
             HasGameStarted = true;
             StartTrainingRound();
