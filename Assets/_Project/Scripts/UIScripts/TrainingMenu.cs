@@ -1,7 +1,6 @@
 using Demonics.UI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class TrainingMenu : BaseMenu
 {
@@ -52,7 +51,6 @@ public class TrainingMenu : BaseMenu
 		switch (value)
 		{
 			case 0:
-				Debug.Log("A");
 				GameManager.Instance.IsCpuOff = true;
 				GameManager.Instance.Cpu.StopCpu();
 				break;

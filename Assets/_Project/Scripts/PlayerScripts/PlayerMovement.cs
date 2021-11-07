@@ -65,14 +65,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     private void Movement()
     {
-        if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_onTopOfPlayer && !IsDashing)
+        if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_onTopOfPlayer && !IsDashing && _playerController.enabled)
         {
             if (!_isMovementLocked)
             {
-                if (!_player.IsPlayerOne)
-                {
-                    Debug.Log("a");
-                }
                 _rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
                 _playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
                 if (_rigidbody.velocity.x != 0.0f)

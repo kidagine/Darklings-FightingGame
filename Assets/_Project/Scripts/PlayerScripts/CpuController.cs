@@ -28,15 +28,12 @@ public class CpuController : BaseController
     {
         _movementCoroutine = StartCoroutine(MovementCoroutine());
         _attackCoroutine = StartCoroutine(AttackCoroutine());
-        _playerMovement.SetLockMovement(false);
     }
 
     public void StopCpu()
     {
         StopCoroutine(_movementCoroutine);
         StopCoroutine(_attackCoroutine);
-        _playerMovement.MovementInput = Vector2.zero;
-        _playerMovement.SetLockMovement(true);
         _playerMovement.StandUpAction();
     }
 
@@ -47,14 +44,21 @@ public class CpuController : BaseController
 
     void Update()
     {
-        _distance = Mathf.Abs(_otherPlayer.transform.position.x - transform.position.x);
-        _playerMovement.MovementInput = new Vector2(_movementInputX, 0.0f);
+        if (!GameManager.Instance.IsCpuOff)
+        {
+            _distance = Mathf.Abs(_otherPlayer.transform.position.x - transform.position.x);
+            _playerMovement.MovementInput = new Vector2(_movementInputX, 0.0f);
+        }
+        else
+        {
+            _playerMovement.MovementInput = Vector2.zero;
+        }
     }
 
     IEnumerator MovementCoroutine()
     {
         float waitTime;
-        while (_isControllerEnabled)
+        while (_isControllerEnabled && !GameManager.Instance.IsCpuOff)
         {
             int movementRandom;
             if (_distance <= 6.5f)
@@ -114,7 +118,7 @@ public class CpuController : BaseController
 
     IEnumerator AttackCoroutine()
     {
-        while (_isControllerEnabled)
+        while (_isControllerEnabled && !GameManager.Instance.IsCpuOff)
         {
             if (_distance <= 6.5f)
             {
@@ -153,7 +157,11 @@ public class CpuController : BaseController
     }
     public override void DeactivateInput()
     {
-        base.DeactivateInput();
-        StopCoroutine(_movementCoroutine);
+        if (!GameManager.Instance.IsCpuOff)
+        {
+            base.DeactivateInput();
+            StopCoroutine(_movementCoroutine);
+            StopCoroutine(_attackCoroutine);
+        }
     }
 }
