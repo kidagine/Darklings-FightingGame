@@ -21,6 +21,7 @@ public class BrainController : MonoBehaviour
     public void SetControllerToPlayer()
     {
         ActiveController = _playerController;
+        _cpuController.StopCpu();
         _playerController.enabled = true;
         _cpuController.enabled = false;
     }
@@ -28,6 +29,7 @@ public class BrainController : MonoBehaviour
     public void SetControllerToCpu()
     {
         ActiveController = _cpuController;
+        _cpuController.StartCpu();
         _playerController.enabled = false;
         _cpuController.enabled = true;
     }

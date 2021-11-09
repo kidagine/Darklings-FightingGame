@@ -85,6 +85,8 @@ public class GameManager : MonoBehaviour
         _playerTwo = playerTwoObject.GetComponent<Player>();
         _playerMovementOne = playerOneObject.GetComponent<PlayerMovement>();
         _playerMovementTwo = playerTwoObject.GetComponent<PlayerMovement>();
+        playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
+        playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
 
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
@@ -105,14 +107,6 @@ public class GameManager : MonoBehaviour
         {
             _playerTwoController.SetControllerToCpu();
             Cpu = playerTwoObject.GetComponent<CpuController>();
-        }
-        if (SceneSettings.ControllerOne == ControllerTypeEnum.Cpu.ToString())
-        {
-            playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
-        }
-        if (SceneSettings.ControllerTwo == ControllerTypeEnum.Cpu.ToString())
-        {
-            playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
         }
         _playerOne.SetController();
         _playerTwo.SetController();
@@ -565,14 +559,14 @@ public class GameManager : MonoBehaviour
 
     public void DisableAllInput()
     {
-        _playerOneController.enabled = false;
-        _playerTwoController.enabled = false;
+        _playerOneController.ActiveController.enabled = false;
+        _playerTwoController.ActiveController.enabled = false;
     }
 
     public void EnableAllInput()
     {
-        _playerOneController.enabled = true;
-        _playerTwoController.enabled = true;
+        _playerOneController.ActiveController.enabled = true;
+        _playerTwoController.ActiveController.enabled = true;
     }
 
     public void SlowdownPunish()

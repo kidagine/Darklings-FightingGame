@@ -27,9 +27,12 @@ public class CpuController : BaseController
 
     public void StopCpu()
     {
-        StopCoroutine(_movementCoroutine);
-        StopCoroutine(_attackCoroutine);
-        _playerMovement.StandUpAction();
+        if (_movementCoroutine != null && _attackCoroutine != null)
+        {
+            StopCoroutine(_movementCoroutine);
+            StopCoroutine(_attackCoroutine);
+            _playerMovement.StandUpAction();
+        }
     }
 
     public void SetOtherPlayer(Transform otherPlayer)
