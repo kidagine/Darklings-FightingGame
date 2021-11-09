@@ -10,6 +10,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] private Transform _effectsParent = default;
+	[SerializeField] private Transform _keepFlip = default;
+	[SerializeField] private GameObject[] _playerIcons = default;
 	private Transform _otherPlayer;
 	private PlayerUI _playerUI;
 	private PlayerUI _otherPlayerUI;
@@ -88,7 +90,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void InitializeStats()
 	{
-		_playerUI.InitializeUI(_playerStats, IsPlayerOne);
+		_playerUI.InitializeUI(_playerStats, _controller, _playerIcons);
 		Health = _playerStats.maxHealth;
 		_playerUI.SetHealth(Health);
 	}
@@ -107,11 +109,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				_playerAnimator.IsRunning(false);
 				transform.localScale = new Vector2(1.0f, transform.localScale.y);
+				_keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
 			}
 			else if (_otherPlayer.position.x < transform.position.x && transform.position.x > -9.2f && !IsAttacking && transform.localScale.x != -1.0f)
 			{
 				_playerAnimator.IsRunning(false);
 				transform.localScale = new Vector2(-1.0f, transform.localScale.y);
+				_keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
 			}
 			CheckIsBlocking();
 		}
@@ -119,7 +123,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ArcaneAction()
 	{
-
 		//REPLACE
 		if (_arcana >= 1.0f)
 		{

@@ -28,11 +28,14 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Slider _pauseSlider = default;
     [SerializeField] private BaseMenu _pauseMenu = default;
     [SerializeField] private BaseMenu _trainingPauseMenu = default;
+    private GameObject[] _playerIcons;
     private Coroutine _openPauseHoldCoroutine;
     private Coroutine _notificiationCoroutine;
     private Coroutine _resetComboCoroutine;
+    private Coroutine _showPlayerIconCoroutine;
     private Animator _animator;
     private Audio _audio;
+    private BrainController _controller;
     private int _currentLifeIndex;
     private int _currentComboCount;
     private int _currentWins;
@@ -49,11 +52,13 @@ public class PlayerUI : MonoBehaviour
         _audio = GetComponent<Audio>();
     }
 
-	public void InitializeUI(PlayerStatsSO playerStats, bool isPlayerOne)
+	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
     {
+        _playerIcons = playerIcons;
+        _controller = controller;
         if (!_initializedStats)
         {
-            if (isPlayerOne)
+            if (_controller.IsPlayerOne)
             {
                 if (SceneSettings.ControllerOne == "Cpu")
                 {
@@ -81,7 +86,7 @@ public class PlayerUI : MonoBehaviour
             }
             CharacterName = playerStats.characterName;
             _characterName.text = CharacterName;
-            if (isPlayerOne)
+            if (_controller.IsPlayerOne)
             {
                 SetPortrait(playerStats.portraits[SceneSettings.ColorOne]);
             }
@@ -313,5 +318,26 @@ public class PlayerUI : MonoBehaviour
         _comboText.gameObject.SetActive(false);
         _currentComboCount = 0;
         _comboText.text = "";
+    }
+
+    public void ShowPlayerIcon()
+    {
+        if (_showPlayerIconCoroutine != null)
+        {
+			for (int i = 0; i < _playerIcons.Length; i++)
+			{
+                _playerIcons[i].SetActive(false);
+            }
+            StopCoroutine(_showPlayerIconCoroutine);
+        }
+        _showPlayerIconCoroutine = StartCoroutine(ShowPlayerIconCoroutine());
+    }
+
+    IEnumerator ShowPlayerIconCoroutine()
+    {
+        int index = _controller.IsPlayerOne == true ? 0 : 1;
+        _playerIcons[index].SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        _playerIcons[index].SetActive(false);
     }
 }

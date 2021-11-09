@@ -301,6 +301,8 @@ public class GameManager : MonoBehaviour
     {
         _playerTwoController.IsPlayerOne = !_playerTwoController.IsPlayerOne;
         _playerOneController.IsPlayerOne = !_playerOneController.IsPlayerOne;
+        _playerOneUI.ShowPlayerIcon();
+        _playerTwoUI.ShowPlayerIcon();
         _canCallSwitchCharacter = false;
         if (_hasSwitchedCharacters)
         {
