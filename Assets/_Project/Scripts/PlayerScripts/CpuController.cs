@@ -10,11 +10,6 @@ public class CpuController : BaseController
     private float _distance;
     private bool _didAction;
 
-    void Awake()
-    {
-        _player = GetComponent<Player>();
-        _playerMovement = GetComponent<PlayerMovement>();
-    }
 
     void Start()
     {

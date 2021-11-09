@@ -15,7 +15,7 @@ public class PlayerController : BaseController
 
     void Update()
 	{
-        if (!string.IsNullOrEmpty(ControllerInputName) && _isControllerEnabled)
+        if (!string.IsNullOrEmpty(_brainController.ControllerInputName) && _isControllerEnabled)
         {
             Movement();
             Jump();
@@ -31,17 +31,17 @@ public class PlayerController : BaseController
 
     private void Movement()
     {
-        _playerMovement.MovementInput = new Vector2(Input.GetAxisRaw(ControllerInputName + "Horizontal"), Input.GetAxisRaw(ControllerInputName + "Vertical"));
+        _playerMovement.MovementInput = new Vector2(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
 	}
 
     private void Jump()
     {
-        if (Input.GetAxisRaw(ControllerInputName + "Vertical") > 0.0f && !_hasJumped)
+        if (Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical") > 0.0f && !_hasJumped)
         {
             _hasJumped = true;
             _playerMovement.JumpAction();
         }
-        else if (Input.GetAxisRaw(ControllerInputName + "Vertical") <= 0.0f && _hasJumped)
+        else if (Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical") <= 0.0f && _hasJumped)
         {
             _hasJumped = false;
         }
@@ -49,19 +49,19 @@ public class PlayerController : BaseController
 
     private void Crouch()
     {
-		if (Input.GetAxisRaw(ControllerInputName + "Vertical") < 0.0f)
+		if (Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical") < 0.0f)
 		{
-			_playerMovement.CrouchAction();
+            _playerMovement.CrouchAction();
 		}
-		else if (Input.GetAxisRaw(ControllerInputName + "Vertical") == 0.0f)
+		else if (Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical") == 0.0f)
 		{
-			_playerMovement.StandUpAction();
+            _playerMovement.StandUpAction();
 		}
 	}
 
     private void Attack()
     {
-        if (Input.GetButtonDown(ControllerInputName + "Light"))
+        if (Input.GetButtonDown(_brainController.ControllerInputName + "Light"))
         {
             _player.AttackAction();
         }
@@ -69,7 +69,7 @@ public class PlayerController : BaseController
 
     private void Arcane()
     {
-        if (Input.GetButtonDown(ControllerInputName + "Arcane"))
+        if (Input.GetButtonDown(_brainController.ControllerInputName + "Arcane"))
         {
             _player.ArcaneAction();
         }
@@ -77,7 +77,7 @@ public class PlayerController : BaseController
 
     private void ResetRound()
     {
-        if (Input.GetButtonDown(ControllerInputName + "Reset"))
+        if (Input.GetButtonDown(_brainController.ControllerInputName + "Reset"))
         {
             GameManager.Instance.ResetRound(_playerMovement.MovementInput);
         }
@@ -85,7 +85,7 @@ public class PlayerController : BaseController
 
     private void SwitchCharacter()
     {
-        if (Input.GetButtonDown(ControllerInputName + "Switch"))
+        if (Input.GetButtonDown(_brainController.ControllerInputName + "Switch"))
         {
             GameManager.Instance.SwitchCharacters();
         }
@@ -93,11 +93,11 @@ public class PlayerController : BaseController
 
     private void Pause()
     {
-        if (Input.GetButtonDown(ControllerInputName + "Pause"))
+        if (Input.GetButtonDown(_brainController.ControllerInputName + "Pause"))
         {
-            _player.Pause(IsPlayerOne);
+            _player.Pause(_brainController.IsPlayerOne);
         }
-        if (Input.GetButtonUp(ControllerInputName + "Pause"))
+        if (Input.GetButtonUp(_brainController.ControllerInputName + "Pause"))
         {
             _player.UnPause();
         }
@@ -111,7 +111,7 @@ public class PlayerController : BaseController
 
     private void DoubleTapAxis(int directionX)
     {
-        float input = Input.GetAxisRaw(ControllerInputName + "Horizontal");
+        float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
         if (input == directionX)
         {
             if (_dashInputCooldown > 0 && k)
@@ -128,7 +128,7 @@ public class PlayerController : BaseController
                 reset = true;
             }
         }
-        else if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 0.0f && reset)
+        else if (Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal") == 0.0f && reset)
         {
             k = true;
             if (j)
@@ -153,7 +153,7 @@ public class PlayerController : BaseController
 
     private void DoubleTapAxis2(int directionX)
     {
-        float input = Input.GetAxisRaw(ControllerInputName + "Horizontal");
+        float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
         if (input == directionX)
         {
             if (_dashInputCooldown2 > 0 && k2)
@@ -170,7 +170,7 @@ public class PlayerController : BaseController
                 reset2 = true;
             }
         }
-        else if (Input.GetAxisRaw(ControllerInputName + "Horizontal") == 0.0f && reset2)
+        else if (Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal") == 0.0f && reset2)
         {
             k2 = true;
             if (j2)

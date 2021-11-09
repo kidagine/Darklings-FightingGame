@@ -15,7 +15,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private PlayerUI _otherPlayerUI;
 	private PlayerMovement _playerMovement;
 	private PlayerComboSystem _playerComboSystem;
-	private BaseController _playerController;
+	private BrainController _controller;
 	private Audio _audio;
 	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
@@ -45,7 +45,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void SetController()
 	{
-		_playerController = GetComponent<BaseController>();
+		_controller = GetComponent<BrainController>();
 	}
 
 	void Start()
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_isDead = false;
 		IsAttacking = false;
-		_playerController.enabled = true;
+		_controller.ActiveController.enabled = true;
 		_playerMovement.IsGrounded = true;
 		_effectsParent.gameObject.SetActive(true);
 		_playerMovement.SetLockMovement(false);
@@ -318,7 +318,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		DestroyEffects();
 		_playerAnimator.Death();
-		_playerController.enabled = false;
+		_controller.enabled = false;
 		SetGroundPushBox(false);
 		SetHurtbox(false);
 		if (!_isDead)
@@ -343,7 +343,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerAnimator.Taunt();
 		_playerMovement.SetLockMovement(true);
-		_playerController.enabled = false;
+		_controller.enabled = false;
 	}
 
 	public void LoseLife()
@@ -391,11 +391,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	IEnumerator StunCoroutine(float hitStun)
 	{
 		_playerMovement.SetLockMovement(true);
-		_playerController.DeactivateInput();
+		_controller.DeactivateInput();
 		yield return new WaitForSeconds(hitStun);
 		if (!HitMiddair)
 		{
-			_playerController.ActivateInput();
+			_controller.ActivateInput();
 			_playerMovement.SetLockMovement(false);
 			_playerAnimator.IsHurt(false);
 		}

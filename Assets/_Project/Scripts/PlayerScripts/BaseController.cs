@@ -3,18 +3,17 @@ using UnityEngine;
 public class BaseController : MonoBehaviour
 {
     protected bool _trainingController;
+    protected bool _isControllerEnabled = true;
+    protected BrainController _brainController;
     protected Player _player;
     protected PlayerMovement _playerMovement;
-    protected bool _isControllerEnabled = true;
-
-	public bool IsPlayerOne { get; set; }
-	public string ControllerInputName { get; set; }
 
 
-	void Awake()
+    void Awake()
     {
         _player = GetComponent<Player>();
         _playerMovement = GetComponent<PlayerMovement>();
+        _brainController = GetComponent<BrainController>();
     }
 
     public virtual void ActivateInput()
