@@ -71,6 +71,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_isDead = false;
 		IsAttacking = false;
 		_controller.ActiveController.enabled = true;
+		_controller.ActivateInput();
 		_playerMovement.IsGrounded = true;
 		_effectsParent.gameObject.SetActive(true);
 		_playerMovement.SetLockMovement(false);
