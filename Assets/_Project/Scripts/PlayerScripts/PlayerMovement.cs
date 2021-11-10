@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     [SerializeField] private GameObject _dashPrefab = default;
     [SerializeField] private GameObject _playerGhostPrefab = default;
     private Player _player;
-    private BaseController _playerController;
+    private BrainController _playerController;
     private Rigidbody2D _rigidbody;
     private Audio _audio;
     private float _movementSpeed;
@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void SetController()
     {
-        _playerController = GetComponent<BaseController>();
+        _playerController = GetComponent<BrainController>();
     }
 
 
@@ -65,14 +65,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     private void Movement()
     {
-        if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_onTopOfPlayer && !IsDashing)
+        if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_onTopOfPlayer && !IsDashing    )
         {
             if (!_isMovementLocked)
             {
-                if (!_player.IsPlayerOne)
-                {
-                    Debug.Log("a");
-                }
                 _rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
                 _playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
                 if (_rigidbody.velocity.x != 0.0f)
@@ -318,7 +314,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             yield return new WaitForSeconds(0.1f);
         }
     }
-
 
     public void StopDash()
     {

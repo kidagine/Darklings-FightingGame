@@ -36,8 +36,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Audio _uiAudio = default;
     protected Player _playerOne;
     protected Player _playerTwo;
-    protected BaseController _playerOneController;
-    protected BaseController _playerTwoController;
+    private PlayerMovement _playerMovementOne;
+    private PlayerMovement _playerMovementTwo;
+    protected BrainController _playerOneController;
+    protected BrainController _playerTwoController;
     private Coroutine _roundOverTrainingCoroutine;
     private Sound _currentMusic;
     private GameObject _currentStage;
@@ -77,49 +79,46 @@ public class GameManager : MonoBehaviour
         }
         GameObject playerOneObject = Instantiate(_characters[SceneSettings.PlayerOne].gameObject);
         GameObject playerTwoObject = Instantiate(_characters[SceneSettings.PlayerTwo].gameObject);
+        _playerOneController = playerOneObject.GetComponent<BrainController>();
+        _playerTwoController = playerTwoObject.GetComponent<BrainController>();
+        _playerOne = playerOneObject.GetComponent<Player>();
+        _playerTwo = playerTwoObject.GetComponent<Player>();
+        _playerMovementOne = playerOneObject.GetComponent<PlayerMovement>();
+        _playerMovementTwo = playerTwoObject.GetComponent<PlayerMovement>();
+        playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
+        playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
+
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
         if (SceneSettings.ControllerOne != ControllerTypeEnum.Cpu.ToString())
         {
-            playerOneObject.AddComponent<PlayerController>();
+            _playerOneController.SetControllerToPlayer();
         }
         else
         {
-            playerOneObject.AddComponent<CpuController>();
+            _playerOneController.SetControllerToCpu();
             Cpu = playerOneObject.GetComponent<CpuController>();
         }
         if (SceneSettings.ControllerTwo != ControllerTypeEnum.Cpu.ToString())
         {
-            playerTwoObject.AddComponent<PlayerController>();
+            _playerTwoController.SetControllerToPlayer();
         }
         else
         {
-            playerTwoObject.AddComponent<CpuController>();
+            _playerTwoController.SetControllerToCpu();
             Cpu = playerTwoObject.GetComponent<CpuController>();
         }
-        if (SceneSettings.ControllerOne == ControllerTypeEnum.Cpu.ToString())
-        {
-            playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
-        }
-        if (SceneSettings.ControllerTwo == ControllerTypeEnum.Cpu.ToString())
-        {
-            playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
-        }
-        _playerOne = playerOneObject.GetComponent<Player>();
-        _playerTwo = playerTwoObject.GetComponent<Player>();
         _playerOne.SetController();
         _playerTwo.SetController();
-        _playerOne.GetComponent<PlayerMovement>().SetController();
-        _playerTwo.GetComponent<PlayerMovement>().SetController();
+        _playerMovementOne.SetController();
+        _playerMovementTwo.SetController();
         _playerOne.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorOne);
         if (SceneSettings.ColorTwo == SceneSettings.ColorOne && _playerOne.PlayerStats.characterName == _playerTwo.PlayerStats.characterName)
         {
             SceneSettings.ColorTwo++;
         }
         _playerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorTwo);
-        _playerOneController = playerOneObject.GetComponent<BaseController>();
         _playerOneController.IsPlayerOne = true;
-        _playerTwoController = playerTwoObject.GetComponent<BaseController>();
         _playerOne.SetPlayerUI(_playerOneUI);
         _playerTwo.SetPlayerUI(_playerTwoUI);
         _playerOne.SetOtherPlayer(_playerTwo.transform);
@@ -130,10 +129,8 @@ public class GameManager : MonoBehaviour
         _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
         _playerOne.name = "PlayerOne";
         _playerTwo.name = "PlayerTwo";
-
         _cinemachineTargetGroup.AddMember(_playerOne.transform, 0.5f, 0.5f);
         _cinemachineTargetGroup.AddMember(_playerTwo.transform, 0.5f, 0.5f);
-
     }
 
     private void CheckInstance()
@@ -302,14 +299,38 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SwitchCharactersCoroutine()
     {
+        _playerTwoController.IsPlayerOne = !_playerTwoController.IsPlayerOne;
+        _playerOneController.IsPlayerOne = !_playerOneController.IsPlayerOne;
+        _playerOneUI.ShowPlayerIcon();
+        _playerTwoUI.ShowPlayerIcon();
         _canCallSwitchCharacter = false;
         if (_hasSwitchedCharacters)
         {
+            if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
+            {
+                _playerOneController.SetControllerToCpu();
+                _playerTwoController.SetControllerToPlayer();
+            }
+            else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
+            {
+                _playerOneController.SetControllerToPlayer();
+                _playerTwoController.SetControllerToCpu();
+            }
             _playerOneController.ControllerInputName = SceneSettings.ControllerOne;
             _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
         }
         else
         {
+            if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
+            {
+                _playerOneController.SetControllerToCpu();
+                _playerTwoController.SetControllerToPlayer();
+            }
+            else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
+            {
+                _playerOneController.SetControllerToPlayer();
+                _playerTwoController.SetControllerToCpu();
+            }
             _playerOneController.ControllerInputName = SceneSettings.ControllerTwo;
             _playerTwoController.ControllerInputName = SceneSettings.ControllerOne;
         }
@@ -327,8 +348,6 @@ public class GameManager : MonoBehaviour
             {
                 StopCoroutine(_roundOverTrainingCoroutine);
             }
-            _playerOneController = _playerOne.GetComponent<PlayerController>();
-            _playerTwoController = _playerTwo.GetComponent<PlayerController>();
             _playerOne.ResetPlayer();
             _playerTwo.ResetPlayer();
             _playerOne.ResetLives();
@@ -542,14 +561,14 @@ public class GameManager : MonoBehaviour
 
     public void DisableAllInput()
     {
-        _playerOneController.enabled = false;
-        _playerTwoController.enabled = false;
+        _playerOneController.ActiveController.enabled = false;
+        _playerTwoController.ActiveController.enabled = false;
     }
 
     public void EnableAllInput()
     {
-        _playerOneController.enabled = true;
-        _playerTwoController.enabled = true;
+        _playerOneController.ActiveController.enabled = true;
+        _playerTwoController.ActiveController.enabled = true;
     }
 
     public void SlowdownPunish()
