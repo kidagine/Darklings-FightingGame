@@ -14,7 +14,7 @@ public class PlayerController : BaseController
 
 
     void Update()
-	{
+    {
         if (!string.IsNullOrEmpty(_brainController.ControllerInputName) && _isControllerEnabled)
         {
             Movement();

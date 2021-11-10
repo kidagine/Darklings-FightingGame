@@ -11,7 +11,7 @@ public class CpuController : BaseController
     private bool _didAction;
 
 
-    public void StartCpu()
+	public void StartCpu()
     {
         _movementCoroutine = StartCoroutine(MovementCoroutine());
         _attackCoroutine = StartCoroutine(AttackCoroutine());

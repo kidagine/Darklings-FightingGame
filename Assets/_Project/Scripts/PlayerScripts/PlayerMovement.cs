@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     [SerializeField] private GameObject _dashPrefab = default;
     [SerializeField] private GameObject _playerGhostPrefab = default;
     private Player _player;
-    private BaseController _playerController;
+    private BrainController _playerController;
     private Rigidbody2D _rigidbody;
     private Audio _audio;
     private float _movementSpeed;
@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void SetController()
     {
-        _playerController = GetComponent<BaseController>();
+        _playerController = GetComponent<BrainController>();
     }
 
 
@@ -314,7 +314,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             yield return new WaitForSeconds(0.1f);
         }
     }
-
 
     public void StopDash()
     {
