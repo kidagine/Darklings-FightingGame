@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour
 	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public static GameManager Instance { get; private set; }
-	public CpuController Cpu { get; private set; }
 	public float GameSpeed { get; set; }
 
 
@@ -97,7 +96,6 @@ public class GameManager : MonoBehaviour
         else
         {
             _playerOneController.SetControllerToCpu();
-            Cpu = playerOneObject.GetComponent<CpuController>();
         }
         if (SceneSettings.ControllerTwo != ControllerTypeEnum.Cpu.ToString())
         {
@@ -106,7 +104,6 @@ public class GameManager : MonoBehaviour
         else
         {
             _playerTwoController.SetControllerToCpu();
-            Cpu = playerTwoObject.GetComponent<CpuController>();
         }
         _playerOne.SetController();
         _playerTwo.SetController();
@@ -158,6 +155,18 @@ public class GameManager : MonoBehaviour
             _currentStage = _stages[SceneSettings.StageIndex];
             _currentStage.SetActive(true);
         }   
+    }
+
+    public void ActivateCpus()
+    {
+        _playerOneController.ActivateCpu();
+        _playerTwoController.ActivateCpu();
+    }
+
+    public void DeactivateCpus()
+    {
+        _playerOneController.DeactivateCpu();
+        _playerTwoController.DeactivateCpu();
     }
 
     void Start()

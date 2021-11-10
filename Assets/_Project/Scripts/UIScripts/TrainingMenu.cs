@@ -52,11 +52,11 @@ public class TrainingMenu : BaseMenu
 		{
 			case 0:
 				GameManager.Instance.IsCpuOff = true;
-				GameManager.Instance.Cpu.StopCpu();
+				GameManager.Instance.DeactivateCpus();
 				break;
 			case 1:
 				GameManager.Instance.IsCpuOff = false;
-				GameManager.Instance.Cpu.StartCpu();
+				GameManager.Instance.ActivateCpus();
 				break;
 		}
 	}

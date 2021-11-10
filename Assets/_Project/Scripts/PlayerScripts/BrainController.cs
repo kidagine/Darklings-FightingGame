@@ -6,6 +6,7 @@ public class BrainController : MonoBehaviour
 {
     private PlayerController _playerController;
     private CpuController _cpuController;
+    private bool cpuActive;
 
     public bool IsPlayerOne { get; set; }
     public string ControllerInputName { get; set; }
@@ -22,6 +23,7 @@ public class BrainController : MonoBehaviour
     {
         ActiveController = _playerController;
         _cpuController.StopCpu();
+        cpuActive = false;
         _playerController.enabled = true;
         _cpuController.enabled = false;
     }
@@ -30,8 +32,25 @@ public class BrainController : MonoBehaviour
     {
         ActiveController = _cpuController;
         _cpuController.StartCpu();
+        cpuActive = true;
         _playerController.enabled = false;
         _cpuController.enabled = true;
+    }
+
+    public void ActivateCpu()
+    {
+        if (cpuActive)
+        {
+            _cpuController.StartCpu();
+        }
+    }
+
+    public void DeactivateCpu()
+    {
+        if (cpuActive)
+        {
+            _cpuController.StopCpu();
+        }
     }
 
     public void ActivateInput()
