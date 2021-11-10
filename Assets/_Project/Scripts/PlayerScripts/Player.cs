@@ -80,6 +80,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_arcana = 0.0f;
 		_playerUI.SetArcana(_arcana);
 		InitializeStats();
+		_playerUI.ShowPlayerIcon();
 	}
 
 	public void ResetLives()
@@ -321,7 +322,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		DestroyEffects();
 		_playerAnimator.Death();
-		_controller.enabled = false;
+		_controller.ActiveController.enabled = false;
 		SetGroundPushBox(false);
 		SetHurtbox(false);
 		if (!_isDead)

@@ -11,14 +11,6 @@ public class CpuController : BaseController
     private bool _didAction;
 
 
-    void Start()
-    {
-        if (!GameManager.Instance.IsCpuOff)
-        {
-            StartCpu();
-        }
-    }
-
     public void StartCpu()
     {
         _movementCoroutine = StartCoroutine(MovementCoroutine());
@@ -146,7 +138,7 @@ public class CpuController : BaseController
 
     public override void ActivateInput()
     {
-        if (!GameManager.Instance.IsCpuOff)
+        if (!GameManager.Instance.IsCpuOff && GetComponent<CpuController>().enabled)
         {
             base.ActivateInput();
             StartCoroutine(MovementCoroutine());
@@ -158,8 +150,14 @@ public class CpuController : BaseController
         if (!GameManager.Instance.IsCpuOff)
         {
             base.DeactivateInput();
-            StopCoroutine(_movementCoroutine);
-            StopCoroutine(_attackCoroutine);
+            if (_movementCoroutine != null)
+            {
+                StopCoroutine(_movementCoroutine);
+            }
+            if (_attackCoroutine != null)
+            {
+                StopCoroutine(_attackCoroutine);
+            }
         }
     }
 }
