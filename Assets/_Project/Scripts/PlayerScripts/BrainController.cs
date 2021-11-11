@@ -22,35 +22,32 @@ public class BrainController : MonoBehaviour
     public void SetControllerToPlayer()
     {
         ActiveController = _playerController;
-        _cpuController.StopCpu();
         cpuActive = false;
         _playerController.enabled = true;
         _cpuController.enabled = false;
+        DeactivateCpu();
     }
 
     public void SetControllerToCpu()
     {
         ActiveController = _cpuController;
-        _cpuController.StartCpu();
         cpuActive = true;
         _playerController.enabled = false;
         _cpuController.enabled = true;
+        ActivateCpu();
     }
 
     public void ActivateCpu()
     {
         if (cpuActive)
         {
-            _cpuController.StartCpu();
+            _cpuController.ActivateInput();
         }
     }
 
     public void DeactivateCpu()
     {
-        if (cpuActive)
-        {
-            _cpuController.StopCpu();
-        }
+        _cpuController.DeactivateInput();
     }
 
     public void ActivateInput()

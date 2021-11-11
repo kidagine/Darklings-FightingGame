@@ -11,22 +11,6 @@ public class CpuController : BaseController
     private bool _didAction;
 
 
-	public void StartCpu()
-    {
-        _movementCoroutine = StartCoroutine(MovementCoroutine());
-        _attackCoroutine = StartCoroutine(AttackCoroutine());
-    }
-
-    public void StopCpu()
-    {
-        if (_movementCoroutine != null && _attackCoroutine != null)
-        {
-            StopCoroutine(_movementCoroutine);
-            StopCoroutine(_attackCoroutine);
-            _playerMovement.StandUpAction();
-        }
-    }
-
     public void SetOtherPlayer(Transform otherPlayer)
     {
         _otherPlayer = otherPlayer;
@@ -138,13 +122,16 @@ public class CpuController : BaseController
 
     public override void ActivateInput()
     {
-        if (!GameManager.Instance.IsCpuOff && GetComponent<CpuController>().enabled)
+        Debug.Log(GameManager.Instance.IsCpuOff);
+        Debug.Log(GetComponent<CpuController>().enabled);
+        if (!GameManager.Instance.IsCpuOff)
         {
             base.ActivateInput();
             StartCoroutine(MovementCoroutine());
             StartCoroutine(AttackCoroutine());
         }
     }
+
     public override void DeactivateInput()
     {
         if (!GameManager.Instance.IsCpuOff)
@@ -152,6 +139,7 @@ public class CpuController : BaseController
             base.DeactivateInput();
             if (_movementCoroutine != null)
             {
+                Debug.Log("stop");
                 StopCoroutine(_movementCoroutine);
             }
             if (_attackCoroutine != null)
