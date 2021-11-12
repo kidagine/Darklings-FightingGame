@@ -86,9 +86,9 @@ public class GameManager : MonoBehaviour
         _playerMovementTwo = playerTwoObject.GetComponent<PlayerMovement>();
         playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
         playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
-
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
+
         if (SceneSettings.ControllerOne != ControllerTypeEnum.Cpu.ToString())
         {
             _playerOneController.SetControllerToPlayer();
@@ -159,14 +159,20 @@ public class GameManager : MonoBehaviour
 
     public void ActivateCpus()
     {
-        _playerOneController.ActivateCpu();
-        _playerTwoController.ActivateCpu();
+        if (IsTrainingMode)
+        {
+            _playerOneController.ActivateCpu();
+            _playerTwoController.ActivateCpu();
+        }
     }
 
     public void DeactivateCpus()
     {
-        _playerOneController.DeactivateCpu();
-        _playerTwoController.DeactivateCpu();
+        if (IsTrainingMode)
+        {
+            _playerOneController.DeactivateCpu();
+            _playerTwoController.DeactivateCpu();
+        }
     }
 
     void Start()

@@ -122,8 +122,6 @@ public class CpuController : BaseController
 
     public override void ActivateInput()
     {
-        Debug.Log(GameManager.Instance.IsCpuOff);
-        Debug.Log(GetComponent<CpuController>().enabled);
         if (!GameManager.Instance.IsCpuOff)
         {
             base.ActivateInput();

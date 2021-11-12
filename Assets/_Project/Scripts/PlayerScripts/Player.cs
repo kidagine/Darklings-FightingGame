@@ -77,6 +77,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerMovement.SetLockMovement(false);
 		_playerAnimator.Rebind();
 		SetGroundPushBox(true);
+		SetAirPushBox(false);
+		SetPushboxTrigger(false);
 		SetHurtbox(true);
 		_arcana = 0.0f;
 		_playerUI.SetArcana(_arcana);
