@@ -62,6 +62,39 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
+	public void SetArcana(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				GameManager.Instance.IsCpuOff = true;
+				GameManager.Instance.DeactivateCpus();
+				break;
+			case 1:
+				GameManager.Instance.IsCpuOff = false;
+				GameManager.Instance.DeactivateCpus();
+				GameManager.Instance.ActivateCpus();
+				break;
+		}
+	}
+
+	public void SetHealth(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				GameManager.Instance.IsCpuOff = true;
+				GameManager.Instance.DeactivateCpus();
+				break;
+			case 1:
+				GameManager.Instance.IsCpuOff = false;
+				GameManager.Instance.DeactivateCpus();
+				GameManager.Instance.ActivateCpus();
+				break;
+		}
+	}
+
+
 	public void SetDisplay(int value)
 	{
 		switch (value)
