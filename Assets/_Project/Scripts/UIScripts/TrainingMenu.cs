@@ -56,6 +56,7 @@ public class TrainingMenu : BaseMenu
 				break;
 			case 1:
 				GameManager.Instance.IsCpuOff = false;
+				GameManager.Instance.DeactivateCpus();
 				GameManager.Instance.ActivateCpus();
 				break;
 		}

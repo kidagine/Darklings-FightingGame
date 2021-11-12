@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
     [SerializeField] protected GameObject _infiniteTime = default;
+    [SerializeField] private GameObject _trainingPrompts = default;
     [SerializeField] private Player[] _characters = default;
     [SerializeField] protected GameObject[] _stages = default;
     [SerializeField] private BaseMenu _matchOverMenu = default;
@@ -159,20 +160,17 @@ public class GameManager : MonoBehaviour
 
     public void ActivateCpus()
     {
-        if (IsTrainingMode)
-        {
-            _playerOneController.ActivateCpu();
-            _playerTwoController.ActivateCpu();
-        }
+        _playerOneController.ActivateCpu();
+        _playerTwoController.ActivateCpu();
     }
 
     public void DeactivateCpus()
     {
         if (IsTrainingMode)
         {
-            _playerOneController.DeactivateCpu();
-            _playerTwoController.DeactivateCpu();
-        }
+			_playerOneController.DeactivateCpu();
+			_playerTwoController.DeactivateCpu();
+		}
     }
 
     void Start()
@@ -182,6 +180,7 @@ public class GameManager : MonoBehaviour
         {
             IsCpuOff = true;
             _countdownText.gameObject.SetActive(false);
+            _trainingPrompts.gameObject.SetActive(true);
             HasGameStarted = true;
             StartTrainingRound();
         }
