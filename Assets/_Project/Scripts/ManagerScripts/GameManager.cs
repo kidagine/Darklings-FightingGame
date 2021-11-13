@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject _leftStopper = default;
     [SerializeField] protected GameObject _rightStopper = default;
     [SerializeField] protected GameObject _infiniteTime = default;
+    [SerializeField] private GameObject _trainingPrompts = default;
     [SerializeField] private Player[] _characters = default;
     [SerializeField] protected GameObject[] _stages = default;
     [SerializeField] private BaseMenu _matchOverMenu = default;
@@ -52,8 +53,10 @@ public class GameManager : MonoBehaviour
 	public bool IsCpuOff { get; set; }
 	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
-	public static GameManager Instance { get; private set; }
-	public CpuController Cpu { get; private set; }
+	public bool InfiniteHealth { get; set; }
+    public bool InfiniteArcana { get; set; }
+
+    public static GameManager Instance { get; private set; }
 	public float GameSpeed { get; set; }
 
 
@@ -87,9 +90,9 @@ public class GameManager : MonoBehaviour
         _playerMovementTwo = playerTwoObject.GetComponent<PlayerMovement>();
         playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
         playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
-
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
+
         if (SceneSettings.ControllerOne != ControllerTypeEnum.Cpu.ToString())
         {
             _playerOneController.SetControllerToPlayer();
@@ -97,7 +100,6 @@ public class GameManager : MonoBehaviour
         else
         {
             _playerOneController.SetControllerToCpu();
-            Cpu = playerOneObject.GetComponent<CpuController>();
         }
         if (SceneSettings.ControllerTwo != ControllerTypeEnum.Cpu.ToString())
         {
@@ -106,7 +108,6 @@ public class GameManager : MonoBehaviour
         else
         {
             _playerTwoController.SetControllerToCpu();
-            Cpu = playerTwoObject.GetComponent<CpuController>();
         }
         _playerOne.SetController();
         _playerTwo.SetController();
@@ -160,6 +161,39 @@ public class GameManager : MonoBehaviour
         }   
     }
 
+    public void ActivateCpus()
+    {
+        _playerOneController.ActivateCpu();
+        _playerTwoController.ActivateCpu();
+    }
+
+    public void DeactivateCpus()
+    {
+        if (IsTrainingMode)
+        {
+			_playerOneController.DeactivateCpu();
+			_playerTwoController.DeactivateCpu();
+		}
+    }
+
+    public void MaxHealths()
+    {
+        if (IsTrainingMode)
+        {
+            _playerOne.MaxHealthStats();
+            _playerTwo.MaxHealthStats();
+        }
+    }
+
+    public void MaxArcana()
+    {
+        if (IsTrainingMode)
+        {
+            _playerOne.MaxArcanaStats();
+            _playerTwo.MaxArcanaStats();
+        }
+    }
+
     void Start()
     {
         _currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
@@ -167,6 +201,7 @@ public class GameManager : MonoBehaviour
         {
             IsCpuOff = true;
             _countdownText.gameObject.SetActive(false);
+            _trainingPrompts.gameObject.SetActive(true);
             HasGameStarted = true;
             StartTrainingRound();
         }

@@ -52,14 +52,44 @@ public class TrainingMenu : BaseMenu
 		{
 			case 0:
 				GameManager.Instance.IsCpuOff = true;
-				GameManager.Instance.Cpu.StopCpu();
+				GameManager.Instance.DeactivateCpus();
 				break;
 			case 1:
 				GameManager.Instance.IsCpuOff = false;
-				GameManager.Instance.Cpu.StartCpu();
+				GameManager.Instance.DeactivateCpus();
+				GameManager.Instance.ActivateCpus();
 				break;
 		}
 	}
+
+	public void SetArcana(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				GameManager.Instance.InfiniteArcana = false;
+				break;
+			case 1:
+				GameManager.Instance.MaxArcana();
+				GameManager.Instance.InfiniteArcana = true;
+				break;
+		}
+	}
+
+	public void SetHealth(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				GameManager.Instance.InfiniteHealth = false;
+				break;
+			case 1:
+				GameManager.Instance.MaxHealths();
+				GameManager.Instance.InfiniteHealth = true;
+				break;
+		}
+	}
+
 
 	public void SetDisplay(int value)
 	{

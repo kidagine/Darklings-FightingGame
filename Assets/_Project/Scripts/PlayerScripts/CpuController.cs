@@ -11,22 +11,6 @@ public class CpuController : BaseController
     private bool _didAction;
 
 
-	public void StartCpu()
-    {
-        _movementCoroutine = StartCoroutine(MovementCoroutine());
-        _attackCoroutine = StartCoroutine(AttackCoroutine());
-    }
-
-    public void StopCpu()
-    {
-        if (_movementCoroutine != null && _attackCoroutine != null)
-        {
-            StopCoroutine(_movementCoroutine);
-            StopCoroutine(_attackCoroutine);
-            _playerMovement.StandUpAction();
-        }
-    }
-
     public void SetOtherPlayer(Transform otherPlayer)
     {
         _otherPlayer = otherPlayer;
@@ -138,26 +122,36 @@ public class CpuController : BaseController
 
     public override void ActivateInput()
     {
-        if (!GameManager.Instance.IsCpuOff && GetComponent<CpuController>().enabled)
+        if (!GameManager.Instance.IsCpuOff)
         {
             base.ActivateInput();
-            StartCoroutine(MovementCoroutine());
-            StartCoroutine(AttackCoroutine());
+            if (_movementCoroutine == null)
+            {
+                _movementCoroutine = StartCoroutine(MovementCoroutine());
+			}
+            if (_attackCoroutine == null)
+            {
+                _attackCoroutine = StartCoroutine(AttackCoroutine());
+            }
         }
-    }
-    public override void DeactivateInput()
+	}
+
+
+	public override void DeactivateInput()
     {
         if (!GameManager.Instance.IsCpuOff)
         {
             base.DeactivateInput();
-            if (_movementCoroutine != null)
+			if (_movementCoroutine != null)
             {
                 StopCoroutine(_movementCoroutine);
-            }
-            if (_attackCoroutine != null)
-            {
-                StopCoroutine(_attackCoroutine);
-            }
-        }
+                _movementCoroutine = null;
+			}
+			if (_attackCoroutine != null)
+			{
+				StopCoroutine(_attackCoroutine);
+                _attackCoroutine = null;
+			}
+		}
     }
 }

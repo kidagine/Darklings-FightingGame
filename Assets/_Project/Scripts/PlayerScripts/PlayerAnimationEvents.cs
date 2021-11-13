@@ -52,9 +52,13 @@ public class PlayerAnimationEvents : MonoBehaviour
         _audio.Sound(soundName).Play();
     }
 
-    public void StartFrameCount(int currentFrame)
+    public void StartFrameCount(AnimationEvent animationEvent)
     {
         int recovery = (int)(_animator.GetCurrentAnimatorStateInfo(0).length * -60);
-        _trainingMenu.FramedataValue(_player.IsPlayerOne, currentFrame, recovery);
+        if (animationEvent.intParameter > 0)
+        {
+            recovery = -animationEvent.intParameter;
+        }
+        _trainingMenu.FramedataValue(_player.IsPlayerOne, (int)animationEvent.floatParameter, recovery);
     }
 }
