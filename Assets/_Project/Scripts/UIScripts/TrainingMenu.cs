@@ -67,13 +67,11 @@ public class TrainingMenu : BaseMenu
 		switch (value)
 		{
 			case 0:
-				GameManager.Instance.IsCpuOff = true;
-				GameManager.Instance.DeactivateCpus();
+				GameManager.Instance.InfiniteArcana = false;
 				break;
 			case 1:
-				GameManager.Instance.IsCpuOff = false;
-				GameManager.Instance.DeactivateCpus();
-				GameManager.Instance.ActivateCpus();
+				GameManager.Instance.MaxArcana();
+				GameManager.Instance.InfiniteArcana = true;
 				break;
 		}
 	}
@@ -83,13 +81,11 @@ public class TrainingMenu : BaseMenu
 		switch (value)
 		{
 			case 0:
-				GameManager.Instance.IsCpuOff = true;
-				GameManager.Instance.DeactivateCpus();
+				GameManager.Instance.InfiniteHealth = false;
 				break;
 			case 1:
-				GameManager.Instance.IsCpuOff = false;
-				GameManager.Instance.DeactivateCpus();
-				GameManager.Instance.ActivateCpus();
+				GameManager.Instance.MaxHealths();
+				GameManager.Instance.InfiniteHealth = true;
 				break;
 		}
 	}

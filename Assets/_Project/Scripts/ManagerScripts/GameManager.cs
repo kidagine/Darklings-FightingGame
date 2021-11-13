@@ -53,7 +53,10 @@ public class GameManager : MonoBehaviour
 	public bool IsCpuOff { get; set; }
 	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
-	public static GameManager Instance { get; private set; }
+	public bool InfiniteHealth { get; set; }
+    public bool InfiniteArcana { get; set; }
+
+    public static GameManager Instance { get; private set; }
 	public float GameSpeed { get; set; }
 
 
@@ -171,6 +174,24 @@ public class GameManager : MonoBehaviour
 			_playerOneController.DeactivateCpu();
 			_playerTwoController.DeactivateCpu();
 		}
+    }
+
+    public void MaxHealths()
+    {
+        if (IsTrainingMode)
+        {
+            _playerOne.MaxHealthStats();
+            _playerTwo.MaxHealthStats();
+        }
+    }
+
+    public void MaxArcana()
+    {
+        if (IsTrainingMode)
+        {
+            _playerOne.MaxArcanaStats();
+            _playerTwo.MaxArcanaStats();
+        }
     }
 
     void Start()

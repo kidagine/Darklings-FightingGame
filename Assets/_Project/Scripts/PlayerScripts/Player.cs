@@ -92,6 +92,18 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerUI.ResetLives();
 	}
 
+	public void MaxArcanaStats()
+	{
+		_arcana = _playerStats.maxArcana;
+		_playerUI.SetArcana(_arcana);
+	}
+
+	public void MaxHealthStats()
+	{
+		Health = _playerStats.maxHealth;
+		_playerUI.SetHealth(Health);
+	}
+
 	private void InitializeStats()
 	{
 		_playerUI.InitializeUI(_playerStats, _controller, _playerIcons);
@@ -101,7 +113,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	void Update()
 	{
-		if (_arcana < _playerStats.maxArcana && GameManager.Instance.HasGameStarted)
+		if (_arcana < _playerStats.maxArcana && GameManager.Instance.HasGameStarted )
 		{
 			_arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.arcanaRecharge);
 			_playerUI.SetArcana(_arcana);
@@ -135,7 +147,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded)
 				{
 					_playerMovement.ResetToWalkSpeed();
-					_arcana -= 1.0f;
+					if (!GameManager.Instance.InfiniteArcana)
+					{
+						_arcana--;
+					}
 					_playerUI.DecreaseArcana();
 					_playerUI.SetArcana(_arcana);
 					_audio.Sound("Hit").Play();
@@ -221,7 +236,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				_otherPlayerUI.DisplayNotification("Punish");
 			}
 			_audio.Sound(attackSO.impactSound).Play();
-			Health--;
+			if (!GameManager.Instance.InfiniteHealth)
+			{
+				Health--;
+			}
 			_playerMovement.StopDash();
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
