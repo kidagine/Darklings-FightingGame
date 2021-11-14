@@ -35,8 +35,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [SerializeField] private Audio _musicAudio = default;
     [SerializeField] private Audio _uiAudio = default;
-    protected Player _playerOne;
-    protected Player _playerTwo;
     private PlayerMovement _playerMovementOne;
     private PlayerMovement _playerMovementTwo;
     protected BrainController _playerOneController;
@@ -55,8 +53,9 @@ public class GameManager : MonoBehaviour
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public bool InfiniteHealth { get; set; }
     public bool InfiniteArcana { get; set; }
-
-    public static GameManager Instance { get; private set; }
+	public Player PlayerOne { get; private set; }
+	public Player PlayerTwo { get; private set; }
+	public static GameManager Instance { get; private set; }
 	public float GameSpeed { get; set; }
 
 
@@ -84,8 +83,8 @@ public class GameManager : MonoBehaviour
         GameObject playerTwoObject = Instantiate(_characters[SceneSettings.PlayerTwo].gameObject);
         _playerOneController = playerOneObject.GetComponent<BrainController>();
         _playerTwoController = playerTwoObject.GetComponent<BrainController>();
-        _playerOne = playerOneObject.GetComponent<Player>();
-        _playerTwo = playerTwoObject.GetComponent<Player>();
+        PlayerOne = playerOneObject.GetComponent<Player>();
+        PlayerTwo = playerTwoObject.GetComponent<Player>();
         _playerMovementOne = playerOneObject.GetComponent<PlayerMovement>();
         _playerMovementTwo = playerTwoObject.GetComponent<PlayerMovement>();
         playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
@@ -109,29 +108,29 @@ public class GameManager : MonoBehaviour
         {
             _playerTwoController.SetControllerToCpu();
         }
-        _playerOne.SetController();
-        _playerTwo.SetController();
+        PlayerOne.SetController();
+        PlayerTwo.SetController();
         _playerMovementOne.SetController();
         _playerMovementTwo.SetController();
-        _playerOne.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorOne);
-        if (SceneSettings.ColorTwo == SceneSettings.ColorOne && _playerOne.PlayerStats.characterName == _playerTwo.PlayerStats.characterName)
+        PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorOne);
+        if (SceneSettings.ColorTwo == SceneSettings.ColorOne && PlayerOne.PlayerStats.characterName == PlayerTwo.PlayerStats.characterName)
         {
             SceneSettings.ColorTwo++;
         }
-        _playerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorTwo);
+        PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorTwo);
         _playerOneController.IsPlayerOne = true;
-        _playerOne.SetPlayerUI(_playerOneUI);
-        _playerTwo.SetPlayerUI(_playerTwoUI);
-        _playerOne.SetOtherPlayer(_playerTwo.transform);
-        _playerOne.IsPlayerOne = true;
+        PlayerOne.SetPlayerUI(_playerOneUI);
+        PlayerTwo.SetPlayerUI(_playerTwoUI);
+        PlayerOne.SetOtherPlayer(PlayerTwo.transform);
+        PlayerOne.IsPlayerOne = true;
         _playerOneController.ControllerInputName = SceneSettings.ControllerOne;
-        _playerTwo.SetOtherPlayer(_playerOne.transform);
-        _playerTwo.IsPlayerOne = false;
+        PlayerTwo.SetOtherPlayer(PlayerOne.transform);
+        PlayerTwo.IsPlayerOne = false;
         _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
-        _playerOne.name = "PlayerOne";
-        _playerTwo.name = "PlayerTwo";
-        _cinemachineTargetGroup.AddMember(_playerOne.transform, 0.5f, 0.5f);
-        _cinemachineTargetGroup.AddMember(_playerTwo.transform, 0.5f, 0.5f);
+        PlayerOne.name = "PlayerOne";
+        PlayerTwo.name = "PlayerTwo";
+        _cinemachineTargetGroup.AddMember(PlayerOne.transform, 0.5f, 0.5f);
+        _cinemachineTargetGroup.AddMember(PlayerTwo.transform, 0.5f, 0.5f);
     }
 
     private void CheckInstance()
@@ -180,8 +179,8 @@ public class GameManager : MonoBehaviour
     {
         if (IsTrainingMode)
         {
-            _playerOne.MaxHealthStats();
-            _playerTwo.MaxHealthStats();
+            PlayerOne.MaxHealthStats();
+            PlayerTwo.MaxHealthStats();
         }
     }
 
@@ -189,8 +188,8 @@ public class GameManager : MonoBehaviour
     {
         if (IsTrainingMode)
         {
-            _playerOne.MaxArcanaStats();
-            _playerTwo.MaxArcanaStats();
+            PlayerOne.MaxArcanaStats();
+            PlayerTwo.MaxArcanaStats();
         }
     }
 
@@ -242,12 +241,12 @@ public class GameManager : MonoBehaviour
     {
         _countdown = 99.0f;
         _countdownText.text = Mathf.Round(_countdown).ToString();
-        _playerOne.ResetPlayer();
-        _playerTwo.ResetPlayer();
+        PlayerOne.ResetPlayer();
+        PlayerTwo.ResetPlayer();
         _leftStopper.SetActive(true);
         _rightStopper.SetActive(true);
-        _playerOne.transform.position = new Vector2(-3.5f, -4.5f);
-        _playerTwo.transform.position = new Vector2(3.5f, -4.5f);
+        PlayerOne.transform.position = new Vector2(-3.5f, -4.5f);
+        PlayerTwo.transform.position = new Vector2(3.5f, -4.5f);
         _playerOneUI.ResetCombo();
         _playerTwoUI.ResetCombo();
         StartCoroutine(ReadyCoroutine());
@@ -255,18 +254,18 @@ public class GameManager : MonoBehaviour
 
     private void StartTrainingRound()
     {
-        _playerOne.ResetPlayer();
-        _playerTwo.ResetPlayer();
-        _playerOne.ResetLives();
-        _playerTwo.ResetLives();
+        PlayerOne.ResetPlayer();
+        PlayerTwo.ResetPlayer();
+        PlayerOne.ResetLives();
+        PlayerTwo.ResetLives();
         _playerOneUI.FadeIn();
         _playerTwoUI.FadeIn();
         _timerAnimator.SetTrigger("FadeIn");
         _infiniteTime.SetActive(true);
         _leftStopper.SetActive(false);
         _rightStopper.SetActive(false);
-        _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
-        _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
+        PlayerOne.transform.position = new Vector2(-3.5f, -4.75f);
+        PlayerTwo.transform.position = new Vector2(3.5f, -4.75f);
         HasGameStarted = true;
     }
 
@@ -383,10 +382,10 @@ public class GameManager : MonoBehaviour
             {
                 StopCoroutine(_roundOverTrainingCoroutine);
             }
-            _playerOne.ResetPlayer();
-            _playerTwo.ResetPlayer();
-            _playerOne.ResetLives();
-            _playerTwo.ResetLives();
+            PlayerOne.ResetPlayer();
+            PlayerTwo.ResetPlayer();
+            PlayerOne.ResetLives();
+            PlayerTwo.ResetLives();
             _leftStopper.SetActive(false);
             _rightStopper.SetActive(false);
             if (movementInput.y > 0.0f)
@@ -395,13 +394,13 @@ public class GameManager : MonoBehaviour
             }
             if (_reverseReset)
             {
-                _playerOne.transform.position = new Vector2(3.5f, -4.485f);
-                _playerTwo.transform.position = new Vector2(-3.5f, -4.485f);
+                PlayerOne.transform.position = new Vector2(3.5f, -4.485f);
+                PlayerTwo.transform.position = new Vector2(-3.5f, -4.485f);
             }
             else
             {
-                _playerOne.transform.position = new Vector2(-3.5f, -4.485f);
-                _playerTwo.transform.position = new Vector2(3.5f, -4.485f);
+                PlayerOne.transform.position = new Vector2(-3.5f, -4.485f);
+                PlayerTwo.transform.position = new Vector2(3.5f, -4.485f);
             }
             //else if (movementInput.x < 0.0f)
             //{
@@ -448,15 +447,15 @@ public class GameManager : MonoBehaviour
     IEnumerator RoundOverCoroutine()
     {
         _uiAudio.Sound("Round").Play();
-        bool hasPlayerOneDied = _playerOne.Health <= 0.0f;
-        bool hasPlayerTwoDied = _playerTwo.Health <= 0.0f;
+        bool hasPlayerOneDied = PlayerOne.Health <= 0.0f;
+        bool hasPlayerTwoDied = PlayerTwo.Health <= 0.0f;
         if (!hasPlayerOneDied && hasPlayerTwoDied)
         {
-            _playerTwo.LoseLife();
+            PlayerTwo.LoseLife();
         }
         else
         {
-            _playerOne.LoseLife();
+            PlayerOne.LoseLife();
         }
         HasGameStarted = false;
         _bottomLine.SetActive(true);
@@ -504,15 +503,15 @@ public class GameManager : MonoBehaviour
     {
         HasGameStarted = false;
         _uiAudio.Sound("Round").Play();
-        bool hasPlayerOneDied = _playerOne.Health <= 0.0f;
-        bool hasPlayerTwoDied = _playerTwo.Health <= 0.0f;
+        bool hasPlayerOneDied = PlayerOne.Health <= 0.0f;
+        bool hasPlayerTwoDied = PlayerTwo.Health <= 0.0f;
         if (!hasPlayerOneDied && hasPlayerTwoDied)
         {
-            _playerTwo.LoseLife();
+            PlayerTwo.LoseLife();
         }
         else
         {
-            _playerOne.LoseLife();
+            PlayerOne.LoseLife();
         }
         _bottomLine.SetActive(true);
         _uiAudio.Sound("TextSound").Play();
@@ -545,11 +544,11 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(2.0f);
         if (!hasPlayerOneDied)
         {
-            _playerOne.Taunt();
+            PlayerOne.Taunt();
         }
         else if (hasPlayerOneDied)
         {
-            _playerTwo.Taunt();
+            PlayerTwo.Taunt();
         }
         yield return new WaitForSecondsRealtime(2.0f);
         _bottomLine.SetActive(false);
@@ -571,8 +570,8 @@ public class GameManager : MonoBehaviour
             _currentStage.SetActive(true);
         }
         _matchOverMenu.Hide();
-		_playerOne.ResetLives();
-		_playerTwo.ResetLives();
+		PlayerOne.ResetLives();
+		PlayerTwo.ResetLives();
 		_currentMusic.Stop();
 		_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
 		StartRound();
