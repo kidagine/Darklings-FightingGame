@@ -132,6 +132,15 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
+	public void ResetTrainingOptions()
+	{
+		TrainingSettings.ShowHitboxes = false;
+		GameManager.Instance.InfiniteHealth = false;
+		GameManager.Instance.InfiniteArcana = false;
+		GameManager.Instance.GameSpeed = 1.0f;
+		GameManager.Instance.ActivateCpus();
+	}
+
 	private void OnEnable()
 	{
 		_scrollView.anchoredPosition = Vector2.zero;

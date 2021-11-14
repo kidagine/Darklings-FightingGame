@@ -197,14 +197,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_canAttack = true;
 		_currentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(_currentAttack);
+		_playerMovement.SetLockMovement(true);
 		if (!gotHit)
 		{
-			_playerMovement.SetLockMovement(true);
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback);
 		}
 		else
 		{
-			_playerMovement.SetLockMovement(true);
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 2);
 		}
 	}
