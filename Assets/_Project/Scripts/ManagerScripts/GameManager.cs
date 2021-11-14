@@ -377,6 +377,7 @@ public class GameManager : MonoBehaviour
     {
         if (_isTrainingMode)
         {
+            HasGameStarted = true;
             Time.timeScale = GameSpeed;
             if (_roundOverTrainingCoroutine != null)
             {
@@ -402,45 +403,6 @@ public class GameManager : MonoBehaviour
                 PlayerOne.transform.position = new Vector2(-3.5f, -4.485f);
                 PlayerTwo.transform.position = new Vector2(3.5f, -4.485f);
             }
-            //else if (movementInput.x < 0.0f)
-            //{
-            //    if (_reverseReset)
-            //    {
-            //        _playerOne.transform.position = new Vector2(-5.5f, -4.75f);
-            //        _playerTwo.transform.position = new Vector2(-8.5f, -4.75f);
-            //    }
-            //    else
-            //    {
-            //        _playerOne.transform.position = new Vector2(-8.5f, -4.75f);
-            //        _playerTwo.transform.position = new Vector2(-5.5f, -4.75f);
-            //    }
-            //}
-            //else if (movementInput.y < 0.0f)
-            //{
-            //    if (_reverseReset)
-            //    {
-            //        _playerOne.transform.position = new Vector2(3.5f, -4.75f);
-            //        _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
-            //    }
-            //    else
-            //    {
-            //        _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
-            //        _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
-            //    }
-            //}
-            //else
-            //{
-            //    if (_reverseReset)
-            //    {
-            //        _playerOne.transform.position = new Vector2(3.5f, -4.75f);
-            //        _playerTwo.transform.position = new Vector2(-3.5f, -4.75f);
-            //    }
-            //    else
-            //    {
-            //        _playerOne.transform.position = new Vector2(-3.5f, -4.75f);
-            //        _playerTwo.transform.position = new Vector2(3.5f, -4.75f);
-            //    }
-            //}
         }
     }
 

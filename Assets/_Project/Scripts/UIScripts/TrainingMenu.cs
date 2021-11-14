@@ -11,18 +11,16 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
 	private TrainingMenu _trainingMenu;
-	private string _controllerInputName;
 
 
 	void Start()
 	{
 		_trainingMenu = GetComponent<TrainingMenu>();
-		_controllerInputName = GameManager.Instance.PlayerOne.GetComponent<BrainController>().ControllerInputName;
 	}
 
 	void Update()
 	{
-		if (Input.GetButtonDown(_controllerInputName + "Pause"))
+		if (Input.GetButtonDown("ControllerOne" + "Pause") || Input.GetButtonDown("ControllerTwo" + "Pause") || Input.GetButtonDown("Keyboard" + "Pause"))
 		{
 			_trainingMenu.OpenMenuHideCurrent(_trainingPauseMenu);
 		}
