@@ -286,6 +286,7 @@ public class PlayerUI : MonoBehaviour
         _comboText.text = "Hits " + _currentComboCount.ToString();
         if (_currentComboCount > 1)
         {
+            _comboText.gameObject.SetActive(false);
             _comboText.gameObject.SetActive(true);
         }
     }
