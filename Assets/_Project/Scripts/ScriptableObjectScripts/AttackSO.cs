@@ -9,6 +9,7 @@ public class AttackSO : ScriptableObject
 	public float knockback;
 	public Vector2 knockbackDirection;
 	public float selfKnockback;
+	public float knockbackDuration;
 	public AttackTypeEnum attackTypeEnum;
 	public bool isAirAttack;
 	[Header("Sounds")]

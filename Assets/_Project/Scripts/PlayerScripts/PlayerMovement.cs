@@ -203,8 +203,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void OnGrounded()
 	{
+        StartCoroutine(OnGroundedCoroutine());
+    }
+
+    IEnumerator OnGroundedCoroutine()
+    {
         if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
+            _playerAnimator.IsJumping(false);
             ResetGravity();
             _hasDashedMiddair = false;
             _canDoubleJump = true;
@@ -213,8 +219,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             _player.SetAirPushBox(false);
             Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
-            _player.IsAttacking = false;
-            _playerAnimator.IsJumping(false);
             IsGrounded = true;
             _isMovementLocked = false;
             if (_player.HitMiddair)
@@ -224,6 +228,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
                 _playerController.ActivateInput();
                 _playerAnimator.IsHurt(false);
             }
+            yield return null;
+            _player.IsAttacking = false;
         }
     }
 
@@ -233,7 +239,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _playerAnimator.IsJumping(true);
     }
 
-    public void Knockback(Vector2 knockbackDirection, float knockbackForce)
+    public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
     {
         _rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
     }

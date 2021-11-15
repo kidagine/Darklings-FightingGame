@@ -113,12 +113,21 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	void Update()
 	{
-		if (_arcana < _playerStats.maxArcana && GameManager.Instance.HasGameStarted )
+		ArcanaCharge();
+		CheckFlip();
+	}
+
+	private void ArcanaCharge()
+	{
+		if (_arcana < _playerStats.maxArcana && GameManager.Instance.HasGameStarted)
 		{
 			_arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.arcanaRecharge);
 			_playerUI.SetArcana(_arcana);
 		}
+	}
 
+	private void CheckFlip()
+	{
 		if (!_isDead)
 		{
 			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking && transform.localScale.x != 1.0f)
@@ -180,7 +189,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			IsAttacking = true;
 			_playerAnimator.Attack();
 			_currentAttack = _playerComboSystem.GetComboAttack();
-
 			if (!string.IsNullOrEmpty(_currentAttack.attackSound))
 			{
 				_audio.Sound(_currentAttack.attackSound).Play();
@@ -197,15 +205,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_canAttack = true;
 		_currentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(_currentAttack);
+		_playerMovement.SetLockMovement(true);
 		if (!gotHit)
 		{
-			_playerMovement.SetLockMovement(true);
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback);
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback, _currentAttack.knockbackDuration);
 		}
 		else
 		{
-			_playerMovement.SetLockMovement(true);
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 2);
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 2, _currentAttack.knockbackDuration);
 		}
 	}
 
@@ -246,11 +253,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerUI.SetHealth(Health);
 			if (HitMiddair)
 			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), 7.0f);
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), 7.0f, attackSO.knockbackDuration);
 			}
 			else
 			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback);
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
 			}
 			IsAttacking = false;
 			if (Health <= 0)

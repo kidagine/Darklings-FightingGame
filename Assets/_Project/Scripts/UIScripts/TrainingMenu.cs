@@ -9,6 +9,22 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _framedataOneText = default;
 	[SerializeField] private TextMeshProUGUI _framedataTwoText = default;
 	[SerializeField] private RectTransform _scrollView = default;
+	[SerializeField] private BaseMenu _trainingPauseMenu = default;
+	private TrainingMenu _trainingMenu;
+
+
+	void Start()
+	{
+		_trainingMenu = GetComponent<TrainingMenu>();
+	}
+
+	void Update()
+	{
+		if (Input.GetButtonDown("ControllerOne" + "Pause") || Input.GetButtonDown("ControllerTwo" + "Pause") || Input.GetButtonDown("Keyboard" + "Pause"))
+		{
+			_trainingMenu.OpenMenuHideCurrent(_trainingPauseMenu);
+		}
+	}
 
 	public void SetHitboxes(int value)
 	{
@@ -21,7 +37,6 @@ public class TrainingMenu : BaseMenu
 			TrainingSettings.ShowHitboxes = false;
 		}
 	}
-
 
 	public void SetSlowdown(int value)
 	{
@@ -130,6 +145,15 @@ public class TrainingMenu : BaseMenu
 				_framedataTwoText.text = $"{value}/{recovery}";
 			}
 		}
+	}
+
+	public void ResetTrainingOptions()
+	{
+		TrainingSettings.ShowHitboxes = false;
+		GameManager.Instance.InfiniteHealth = false;
+		GameManager.Instance.InfiniteArcana = false;
+		GameManager.Instance.GameSpeed = 1.0f;
+		GameManager.Instance.ActivateCpus();
 	}
 
 	private void OnEnable()

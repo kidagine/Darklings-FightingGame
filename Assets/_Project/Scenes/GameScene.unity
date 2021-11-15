@@ -1606,6 +1606,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1604159752396828376}
     - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: _trainingMenu
+      value: 
+      objectReference: {fileID: 1782348766}
+    - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: _whoPausedText
       value: 
       objectReference: {fileID: 868862009}
@@ -2640,6 +2644,10 @@ PrefabInstance:
       propertyPath: _arcanaSlider
       value: 
       objectReference: {fileID: 372267966}
+    - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: _trainingMenu
+      value: 
+      objectReference: {fileID: 1782348766}
     - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: _whoPausedText
       value: 
@@ -9916,7 +9924,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 450}
+  m_AnchoredPosition: {x: 0, y: 425}
   m_SizeDelta: {x: 700, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1558020415
@@ -11640,6 +11648,7 @@ MonoBehaviour:
   _framedataOneText: {fileID: 425313734}
   _framedataTwoText: {fileID: 1228247591}
   _scrollView: {fileID: 1882022765}
+  _trainingPauseMenu: {fileID: 750415171}
 --- !u!224 &1782348767
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12353,14 +12362,14 @@ PrefabInstance:
     - target: {fileID: 3121622969633075690, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -3780446774994614677, guid: ff4864f5db38d904693bb74888e9246b, type: 3}
+      objectReference: {fileID: 6171895634919953889, guid: ff4864f5db38d904693bb74888e9246b, type: 3}
     - target: {fileID: 3121622969633075690, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3121622969731471992, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
       propertyPath: _offset.x
-      value: 0.25
+      value: 1.26
       objectReference: {fileID: 0}
     - target: {fileID: 3121622969731471992, guid: 350fd2dfcb01edf46857cbcc5646e834, type: 3}
       propertyPath: _offset.y

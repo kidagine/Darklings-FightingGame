@@ -28,6 +28,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Slider _pauseSlider = default;
     [SerializeField] private BaseMenu _pauseMenu = default;
     [SerializeField] private BaseMenu _trainingPauseMenu = default;
+    [SerializeField] private TrainingMenu _trainingMenu = default;
     private GameObject[] _playerIcons;
     private Coroutine _openPauseHoldCoroutine;
     private Coroutine _notificiationCoroutine;
@@ -216,6 +217,7 @@ public class PlayerUI : MonoBehaviour
 
     public void ChangeCharacter()
     {
+        _trainingMenu.ResetTrainingOptions();
         Time.timeScale = 1.0f;
         SceneSettings.ChangeCharacter = true;
         SceneManager.LoadScene(1);
@@ -223,6 +225,7 @@ public class PlayerUI : MonoBehaviour
 
     public void QuitMatch()
     {
+        _trainingMenu.ResetTrainingOptions();
         Time.timeScale = 1.0f;
         SceneSettings.ChangeCharacter = false;
         SceneManager.LoadScene(1);
@@ -283,6 +286,7 @@ public class PlayerUI : MonoBehaviour
         _comboText.text = "Hits " + _currentComboCount.ToString();
         if (_currentComboCount > 1)
         {
+            _comboText.gameObject.SetActive(false);
             _comboText.gameObject.SetActive(true);
         }
     }
