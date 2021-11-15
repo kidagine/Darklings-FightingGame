@@ -51,6 +51,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         JumpControl();
     }
 
+    public void ResetPlayerMovement()
+    {
+        IsGrounded = true;
+        SetLockMovement(false);
+        _canDoubleJump = true;
+        ResetGravity();
+    }
+
     private void JumpControl()
     {
         if (_rigidbody.velocity.y < 0)
