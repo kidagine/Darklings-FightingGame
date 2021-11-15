@@ -72,15 +72,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		IsAttacking = false;
 		_controller.ActiveController.enabled = true;
 		_controller.ActivateInput();
-		_playerMovement.IsGrounded = true;
 		_effectsParent.gameObject.SetActive(true);
-		_playerMovement.SetLockMovement(false);
 		_playerAnimator.Rebind();
 		SetGroundPushBox(true);
 		SetAirPushBox(false);
 		SetPushboxTrigger(false);
 		SetHurtbox(true);
 		_arcana = 0.0f;
+		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(_arcana);
 		InitializeStats();
 		_playerUI.ShowPlayerIcon();
