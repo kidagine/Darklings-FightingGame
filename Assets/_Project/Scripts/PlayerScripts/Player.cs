@@ -78,7 +78,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		SetAirPushBox(false);
 		SetPushboxTrigger(false);
 		SetHurtbox(true);
-		_arcana = 0.0f;
+		if (!GameManager.Instance.InfiniteArcana)
+		{
+			_arcana = 0.0f;
+		}
 		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(_arcana);
 		InitializeStats();
@@ -374,7 +377,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerAnimator.Taunt();
 		_playerMovement.SetLockMovement(true);
-		_controller.enabled = false;
+		_controller.ActiveController.enabled = false;
 	}
 
 	public void LoseLife()
