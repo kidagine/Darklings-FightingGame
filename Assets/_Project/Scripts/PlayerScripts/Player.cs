@@ -210,7 +210,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		if (_currentAttack.selfKnockback > 0.0f)
 		{
 			_playerMovement.SetLockMovement(true);
-		}
+			}
 		if (!gotHit)
 		{
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback, _currentAttack.knockbackDuration);
@@ -221,13 +221,18 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public void CreateEffect()
+	public void CreateEffect(bool isProjectile = false)
 	{
 		if (_currentAttack.hitEffect != null)
 		{
-			GameObject hitEffect = Instantiate(_currentAttack.hitEffect, _effectsParent);
+			GameObject hitEffect;
+			hitEffect = Instantiate(_currentAttack.hitEffect, _effectsParent);
 			hitEffect.transform.localPosition = _currentAttack.hitEffectPosition;
 			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEffectRotation);
+			if (isProjectile)
+			{
+				hitEffect.transform.SetParent(null);
+			}
 		}
 	}
 
