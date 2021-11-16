@@ -211,6 +211,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void OnGrounded()
 	{
+        _player.StopStun();
         StartCoroutine(OnGroundedCoroutine());
     }
 

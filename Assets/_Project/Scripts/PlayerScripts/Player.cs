@@ -415,11 +415,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Stun(float hitStun)
 	{
+		StopStun();
+		_stunCoroutine = StartCoroutine(StunCoroutine(hitStun));
+	}
+
+	public void StopStun()
+	{
 		if (_stunCoroutine != null)
 		{
 			StopCoroutine(_stunCoroutine);
 		}
-		_stunCoroutine = StartCoroutine(StunCoroutine(hitStun));
 	}
 
 	private void DestroyEffects()
