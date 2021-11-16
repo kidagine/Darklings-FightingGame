@@ -1,4 +1,5 @@
 using Demonics.Sounds;
+using System;
 using UnityEngine;
 
 public class PlayerAnimationEvents : MonoBehaviour
@@ -21,9 +22,9 @@ public class PlayerAnimationEvents : MonoBehaviour
         _playerMovement.SetLockMovement(false);
     }
 
-    public void CreateEffectAnimationEvent()
+    public void CreateEffectAnimationEvent(int isProjectile)
     {
-        _player.CreateEffect();
+        _player.CreateEffect(Convert.ToBoolean(isProjectile));
     }
 
     public void ResetTimeScale()

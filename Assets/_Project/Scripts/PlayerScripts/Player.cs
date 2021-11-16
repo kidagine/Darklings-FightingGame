@@ -207,7 +207,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_canAttack = true;
 		_currentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(_currentAttack);
-		_playerMovement.SetLockMovement(true);
+		if (_currentAttack.selfKnockback > 0.0f)
+		{
+			_playerMovement.SetLockMovement(true);
+			}
 		if (!gotHit)
 		{
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback, _currentAttack.knockbackDuration);
@@ -218,13 +221,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public void CreateEffect()
+	public void CreateEffect(bool isProjectile = false)
 	{
 		if (_currentAttack.hitEffect != null)
 		{
-			GameObject hitEffect = Instantiate(_currentAttack.hitEffect, _effectsParent);
+			GameObject hitEffect;
+			hitEffect = Instantiate(_currentAttack.hitEffect, _effectsParent);
 			hitEffect.transform.localPosition = _currentAttack.hitEffectPosition;
 			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEffectRotation);
+			if (isProjectile)
+			{
+				hitEffect.transform.SetParent(null);
+				hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
+			}
 		}
 	}
 
@@ -407,11 +416,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Stun(float hitStun)
 	{
+		StopStun();
+		_stunCoroutine = StartCoroutine(StunCoroutine(hitStun));
+	}
+
+	public void StopStun()
+	{
 		if (_stunCoroutine != null)
 		{
 			StopCoroutine(_stunCoroutine);
 		}
-		_stunCoroutine = StartCoroutine(StunCoroutine(hitStun));
 	}
 
 	private void DestroyEffects()
