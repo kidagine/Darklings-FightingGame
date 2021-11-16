@@ -211,7 +211,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void OnGrounded()
 	{
-        _player.StopStun();
         StartCoroutine(OnGroundedCoroutine());
     }
 
@@ -232,6 +231,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             _isMovementLocked = false;
             if (_player.HitMiddair)
             {
+                _player.StopStun();
                 _player.HitMiddair = false;
                 SetLockMovement(false);
                 _playerController.ActivateInput();
