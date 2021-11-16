@@ -232,6 +232,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			if (isProjectile)
 			{
 				hitEffect.transform.SetParent(null);
+				hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
 			}
 		}
 	}
