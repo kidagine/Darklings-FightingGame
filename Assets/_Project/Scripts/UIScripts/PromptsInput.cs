@@ -18,7 +18,7 @@ public class PromptsInput : MonoBehaviour
         {
             _backUnityEvent?.Invoke();
         }
-        if (Input.GetButtonDown("Keyboard" + "Reset"))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             _mainSpecialUnityEvent?.Invoke();
         }
