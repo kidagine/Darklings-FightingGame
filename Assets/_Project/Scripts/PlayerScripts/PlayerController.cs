@@ -22,6 +22,7 @@ public class PlayerController : BaseController
             Crouch();
             Attack();
             Arcane();
+            Assist();
             Pause();
             Dash();
             ResetRound();
@@ -72,6 +73,14 @@ public class PlayerController : BaseController
         if (Input.GetButtonDown(_brainController.ControllerInputName + "Arcane"))
         {
             _player.ArcaneAction();
+        }
+    }
+
+    private void Assist()
+    {
+        if (Input.GetButtonDown(_brainController.ControllerInputName + "Assist"))
+        {
+            _player.AssistAction();
         }
     }
 

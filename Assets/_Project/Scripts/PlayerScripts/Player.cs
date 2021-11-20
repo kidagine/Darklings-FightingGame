@@ -202,6 +202,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
+	public void AssistAction()
+	{
+		Debug.Log("assist");
+	}
+
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
 		_canAttack = true;
