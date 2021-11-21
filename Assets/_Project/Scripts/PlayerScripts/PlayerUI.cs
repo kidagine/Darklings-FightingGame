@@ -11,6 +11,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private GameObject[] _lostLives = default;
     [SerializeField] private Slider _healthSlider = default;
     [SerializeField] private Slider _arcanaSlider = default;
+    [SerializeField] private Slider _assistSlider = default;
     [SerializeField] private Image _portraitImage = default;
     [SerializeField] private TextMeshProUGUI _characterName = default;
     [SerializeField] private TextMeshProUGUI _playerName = default;
@@ -153,6 +154,11 @@ public class PlayerUI : MonoBehaviour
     {
         _arcanaSlider.value = value;
         _arcanaAmountText.text = Mathf.Floor(value).ToString();
+    }
+
+    public void SetAssist(float value)
+    {
+        _assistSlider.value = value;
     }
 
     public void SetHealth(float value)

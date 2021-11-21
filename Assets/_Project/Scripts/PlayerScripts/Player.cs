@@ -22,6 +22,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
 	private float _arcana;
+	private float _assist = 1.0f;
 	private int _lives = 2;
 	private bool _isDead;
 	private bool _canAttack;
@@ -116,7 +117,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	void Update()
 	{
 		ArcanaCharge();
+		AssistCharge();
 		CheckFlip();
+	}
+
+	private void AssistCharge()
+	{
+		if (_assist < 1.0f && GameManager.Instance.HasGameStarted)
+		{
+			_assist += Time.deltaTime / (2);
+			_playerUI.SetAssist(_assist);
+		}
 	}
 
 	private void ArcanaCharge()
@@ -204,7 +215,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void AssistAction()
 	{
-		Debug.Log("assist");
+		if (_assist >= 1.0f)
+		{
+			_assist--;
+			_playerUI.SetAssist(_assist);
+			Debug.Log("assist");
+		}
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
