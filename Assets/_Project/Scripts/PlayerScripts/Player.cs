@@ -6,6 +6,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
 	[SerializeField] private PlayerStatsSO _playerStats = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
+	[SerializeField] private Assist _assist = default;
 	[SerializeField] private Pushbox _groundPushbox = default;
 	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
@@ -22,7 +23,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
 	private float _arcana;
-	private float _assist = 1.0f;
+	private float _assistGauge = 1.0f;
 	private int _lives = 2;
 	private bool _isDead;
 	private bool _canAttack;
@@ -123,10 +124,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void AssistCharge()
 	{
-		if (_assist < 1.0f && GameManager.Instance.HasGameStarted)
+		if (_assistGauge < 1.0f && GameManager.Instance.HasGameStarted)
 		{
-			_assist += Time.deltaTime / (2);
-			_playerUI.SetAssist(_assist);
+			_assistGauge += Time.deltaTime / (5.0f - _assist.AssistStats.assistRecharge);
+			_playerUI.SetAssist(_assistGauge);
 		}
 	}
 
@@ -215,10 +216,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void AssistAction()
 	{
-		if (_assist >= 1.0f)
+		if (_assistGauge >= 1.0f)
 		{
-			_assist--;
-			_playerUI.SetAssist(_assist);
+			_assist.Attack();
+			_assistGauge--;
+			_playerUI.SetAssist(_assistGauge);
 			Debug.Log("assist");
 		}
 	}
