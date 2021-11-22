@@ -4,5 +4,8 @@ using UnityEngine;
 public class AssistStatsSO : ScriptableObject
 {
 	[Header("Main")]
-	public float assistRecharge = 1;
+	public float assistRecharge = 1.0f;
+	public float assistRotation = 0.0f;
+	public Vector2 assistPosition = Vector2.zero;
+	public AttackSO attackSO = default;
 }

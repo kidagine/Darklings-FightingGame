@@ -221,7 +221,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_assist.Attack();
 			_assistGauge--;
 			_playerUI.SetAssist(_assistGauge);
-			Debug.Log("assist");
 		}
 	}
 
@@ -233,7 +232,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		if (_currentAttack.selfKnockback > 0.0f)
 		{
 			_playerMovement.SetLockMovement(true);
-			}
+		}
 		if (!gotHit)
 		{
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback, _currentAttack.knockbackDuration);
@@ -268,7 +267,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			HitMiddair = true;
 		}
 		_playerAnimator.IsHurt(true);
-		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
+		GameObject effect = Instantiate(attackSO.hurtEffect);
+		effect.transform.localPosition = attackSO.hurtEffectPosition;
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
 			if (IsAttacking)
