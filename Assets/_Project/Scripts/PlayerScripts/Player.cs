@@ -6,6 +6,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
 	[SerializeField] private PlayerStatsSO _playerStats = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
+	[SerializeField] private Assist _assist = default;
 	[SerializeField] private Pushbox _groundPushbox = default;
 	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
 	private float _arcana;
+	private float _assistGauge = 1.0f;
 	private int _lives = 2;
 	private bool _isDead;
 	private bool _canAttack;
@@ -116,7 +118,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	void Update()
 	{
 		ArcanaCharge();
+		AssistCharge();
 		CheckFlip();
+	}
+
+	private void AssistCharge()
+	{
+		if (_assistGauge < 1.0f && GameManager.Instance.HasGameStarted)
+		{
+			_assistGauge += Time.deltaTime / (5.0f - _assist.AssistStats.assistRecharge);
+			_playerUI.SetAssist(_assistGauge);
+		}
 	}
 
 	private void ArcanaCharge()
@@ -204,7 +216,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void AssistAction()
 	{
-		Debug.Log("assist");
+		if (_assistGauge >= 1.0f)
+		{
+			_assist.Attack();
+			_assistGauge--;
+			_playerUI.SetAssist(_assistGauge);
+		}
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
@@ -215,7 +232,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		if (_currentAttack.selfKnockback > 0.0f)
 		{
 			_playerMovement.SetLockMovement(true);
-			}
+		}
 		if (!gotHit)
 		{
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback, _currentAttack.knockbackDuration);
@@ -250,7 +267,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			HitMiddair = true;
 		}
 		_playerAnimator.IsHurt(true);
-		Instantiate(attackSO.hurtEffect, attackSO.hurtEffectPosition, Quaternion.identity);
+		GameObject effect = Instantiate(attackSO.hurtEffect);
+		effect.transform.localPosition = attackSO.hurtEffectPosition;
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
 			if (IsAttacking)
