@@ -80,12 +80,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		SetAirPushBox(false);
 		SetPushboxTrigger(false);
 		SetHurtbox(true);
+		_assistGauge = 1.0f;
 		if (!GameManager.Instance.InfiniteArcana)
 		{
 			_arcana = 0.0f;
 		}
 		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(_arcana);
+		_playerUI.SetAssist(_assistGauge);
 		InitializeStats();
 		_playerUI.ShowPlayerIcon();
 	}
@@ -491,5 +493,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_playerUI.ClosePauseHold();
 		}
+	}
+
+	public void HitboxCollidedGround(RaycastHit2D hit)
+	{
+		throw new System.NotImplementedException();
 	}
 }
