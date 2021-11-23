@@ -5,6 +5,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
     [SerializeField] private Animator _animator = default;
     [SerializeField] private AssistStatsSO _assistStatsSO = default;
 	[SerializeField] private GameObject _projectilePrefab = default;
+	[SerializeField] private GameObject _smokePrefab = default;
 	private Transform _player;
 
 	public AssistStatsSO AssistStats { get { return _assistStatsSO; } private set { } }
@@ -44,5 +45,11 @@ public class Assist : MonoBehaviour, IHitboxResponder
 	{
 		AssistStats.attackSO.hurtEffectPosition = hit.point;
 		hurtbox.TakeDamage(AssistStats.attackSO);
+	}
+
+	public void HitboxCollidedGround(RaycastHit2D hit)
+	{
+		GameObject effect = Instantiate(_smokePrefab);
+		effect.transform.localPosition = hit.point;
 	}
 }

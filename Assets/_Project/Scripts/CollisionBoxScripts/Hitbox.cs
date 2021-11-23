@@ -8,6 +8,7 @@ public class Hitbox : MonoBehaviour
     public Vector2 _hitboxSize = default;
     public Vector2 _offset = default;
     public Action OnCollision;
+    [SerializeField] private bool _hitGround;
     private Color _hitboxColor = Color.red;
     private UnityEngine.LayerMask _hurtboxLayerMask;
     private IHitboxResponder _hitboxResponder;
@@ -20,7 +21,11 @@ public class Hitbox : MonoBehaviour
         {
             _hitboxResponder = transform.root.GetComponent<IHitboxResponder>();
         }
-        _hurtboxLayerMask = LayerProvider.GetLayerMask(LayerMaskEnum.Hurtbox);
+        _hurtboxLayerMask += LayerProvider.GetLayerMask(LayerMaskEnum.Hurtbox);
+        if (_hitGround)
+        {
+            _hurtboxLayerMask += LayerProvider.GetLayerMask(LayerMaskEnum.Ground);
+        }
     }
 
     public void SetHitboxResponder(Transform hitboxResponder)
@@ -40,6 +45,11 @@ public class Hitbox : MonoBehaviour
                 {
                     if (_hitboxResponder != null && !hit[i].collider.transform.IsChildOf(transform.root) && !_hasHit)
                     {
+                        if (_hitGround && hit[i].normal == Vector2.up)
+                        {
+                            OnCollision?.Invoke();
+                            _hitboxResponder.HitboxCollidedGround(hit[i]);
+                        }
                         if (hit[i].collider.transform.TryGetComponent(out Hurtbox hurtbox))
                         {
                             OnCollision?.Invoke();
