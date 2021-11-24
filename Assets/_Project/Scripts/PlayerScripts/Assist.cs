@@ -25,10 +25,11 @@ public class Assist : MonoBehaviour, IHitboxResponder
     }
 
     public void Projectile()
-    {
+	{
 		GameObject hitEffect;
 		hitEffect = Instantiate(_projectilePrefab, transform);
 		hitEffect.transform.localPosition = Vector2.zero;
+		hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
 		if (_player.transform.localScale.x == 1.0f)
 		{
 			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation);

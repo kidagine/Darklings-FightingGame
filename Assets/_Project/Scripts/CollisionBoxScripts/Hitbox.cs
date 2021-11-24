@@ -12,8 +12,13 @@ public class Hitbox : MonoBehaviour
     private Color _hitboxColor = Color.red;
     private UnityEngine.LayerMask _hurtboxLayerMask;
     private IHitboxResponder _hitboxResponder;
+    private Transform _sourceTransform;
     [HideInInspector] public bool _hasHit;
 
+	void Awake()
+	{
+        _sourceTransform = transform.root;
+    }
 
     void Start()
 	{
@@ -26,6 +31,11 @@ public class Hitbox : MonoBehaviour
         {
             _hurtboxLayerMask += LayerProvider.GetLayerMask(LayerMaskEnum.Ground);
         }
+    }
+
+    public void SetSourceTransform(Transform sourceTransform)
+    {
+        _sourceTransform = sourceTransform;
     }
 
     public void SetHitboxResponder(Transform hitboxResponder)
@@ -43,7 +53,7 @@ public class Hitbox : MonoBehaviour
             {
                 if (hit[i].collider != null)
                 {
-                    if (_hitboxResponder != null && !hit[i].collider.transform.IsChildOf(transform.root) && !_hasHit)
+                    if (_hitboxResponder != null && !hit[i].collider.transform.IsChildOf(_sourceTransform) && !_hasHit)
                     {
                         if (_hitGround && hit[i].normal == Vector2.up)
                         {
