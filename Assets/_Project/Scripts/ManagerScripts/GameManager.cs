@@ -578,4 +578,16 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.25f);
         Time.timeScale = GameSpeed;
     }
+
+    public void HitStop()
+    {
+        StartCoroutine(HitStopCoroutine());
+    }
+
+    IEnumerator HitStopCoroutine()
+    {
+        Time.timeScale = 0.0f;
+        yield return new WaitForSecondsRealtime(0.05f);
+        Time.timeScale = 1.0f;
+    }
 }

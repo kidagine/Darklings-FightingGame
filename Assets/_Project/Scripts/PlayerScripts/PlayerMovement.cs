@@ -152,6 +152,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     private void Jump(float jumpForce)
     {
+        _player.CanFlip = false;
         ResetToWalkSpeed();
         _player.SetPushboxTrigger(true);
         _player.SetAirPushBox(true);
@@ -218,6 +219,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
+            _player.CanFlip = true;
             _playerAnimator.IsJumping(false);
             ResetGravity();
             _hasDashedMiddair = false;
@@ -243,7 +245,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     }
 
     public void OnAir()
-	{
+    {
         IsGrounded = false;
         _playerAnimator.IsJumping(true);
     }
@@ -311,12 +313,17 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             _playerAnimator.IsRunning(true);
             _movementSpeed = _playerStatsSO.runSpeed;
             IsDashing = false;
+            _player.CanFlip = true;
             StartCoroutine(RunCoroutine());
         }
         else
         {
-            yield return new WaitForSeconds(0.05f);
+            if (IsGrounded)
+            {
+                yield return new WaitForSeconds(0.05f);
+            }
             IsDashing = false;
+            _player.CanFlip = true;
         }
     }
 
@@ -338,6 +345,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         if (!IsGrounded)
         {
             _player.SetPushboxTrigger(true);
+            _player.CanFlip = true;
+            Debug.Log(_player.CanFlip);
         }
         IsDashing = false;
     }

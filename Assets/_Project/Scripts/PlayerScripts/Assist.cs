@@ -22,20 +22,23 @@ public class Assist : MonoBehaviour, IHitboxResponder
 		_animator.SetTrigger("Attack");
 		transform.localPosition = AssistStats.assistPosition;
 		transform.SetParent(null);
-    }
+		transform.localScale = _player.localScale;
+	}
 
-    public void Projectile()
-    {
+	public void Projectile()
+	{
 		GameObject hitEffect;
 		hitEffect = Instantiate(_projectilePrefab, transform);
 		hitEffect.transform.localPosition = Vector2.zero;
+		hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
 		if (_player.transform.localScale.x == 1.0f)
 		{
 			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation);
 		}
 		else
 		{
-			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation * 3);
+			hitEffect.transform.localScale = new Vector2(-1.0f, 1.0f);
+			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation * 5);
 		}
 		hitEffect.transform.SetParent(null);
 		hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
