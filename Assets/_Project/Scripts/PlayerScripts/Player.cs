@@ -39,6 +39,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool BlockingLow { get; set; }
 	public bool BlockingHigh { get; set; }
 	public bool BlockingMiddair { get; set; }
+	public bool CanFlip { get; set; } = true;
 
 	void Awake()
 	{
@@ -144,7 +145,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void CheckFlip()
 	{
-		if (!_isDead)
+		if (!_isDead && CanFlip)
 		{
 			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking && transform.localScale.x != 1.0f)
 			{
@@ -283,6 +284,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				Health--;
 			}
+			GameManager.Instance.HitStop();
 			_playerMovement.StopDash();
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
