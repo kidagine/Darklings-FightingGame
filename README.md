@@ -1,4 +1,6 @@
 # DARKLINGS-FightingGame
+[![GitHub](https://img.shields.io/badge/unity--version-2021.1-blue)](https://img.shields.io/badge/unity--version-2021.1-blue)
+
 Play at: https://gamejolt.com/games/darklings/640842  
 Website at: https://kidagine.github.io/Darklings-Website/
 
