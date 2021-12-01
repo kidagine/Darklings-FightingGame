@@ -8,346 +8,346 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-    [SerializeField] private GameObject[] _lostLives = default;
-    [SerializeField] private Slider _healthSlider = default;
-    [SerializeField] private Slider _arcanaSlider = default;
-    [SerializeField] private Slider _assistSlider = default;
-    [SerializeField] private Image _portraitImage = default;
-    [SerializeField] private TextMeshProUGUI _characterName = default;
-    [SerializeField] private TextMeshProUGUI _playerName = default;
-    [SerializeField] private TextMeshProUGUI _notificationText = default;
-    [SerializeField] private TextMeshProUGUI _comboText = default;
-    [SerializeField] private TextMeshProUGUI _winsText = default;
-    [SerializeField] private TextMeshProUGUI _whoPausedText = default;
-    [SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
-    [SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
-    [SerializeField] private Animator _arcanaAnimator = default;
-    [SerializeField] private Transform _healthDividerPivot = default;
-    [SerializeField] private GameObject _healthDividerPrefab = default;
-    [SerializeField] private Transform _arcanaDividerPivot = default;
-    [SerializeField] private GameObject _arcanaDividerPrefab = default;
-    [SerializeField] private Slider _pauseSlider = default;
-    [SerializeField] private BaseMenu _pauseMenu = default;
-    [SerializeField] private BaseMenu _trainingPauseMenu = default;
-    [SerializeField] private TrainingMenu _trainingMenu = default;
-    private GameObject[] _playerIcons;
-    private Coroutine _openPauseHoldCoroutine;
-    private Coroutine _notificiationCoroutine;
-    private Coroutine _resetComboCoroutine;
-    private Coroutine _showPlayerIconCoroutine;
-    private Animator _animator;
-    private Audio _audio;
-    private BrainController _controller;
-    private int _currentLifeIndex;
-    private int _currentComboCount;
-    private int _currentWins;
-    private bool _hasComboEnded;
-    private bool _initializedStats;
+	[SerializeField] private GameObject[] _lostLives = default;
+	[SerializeField] private Slider _healthSlider = default;
+	[SerializeField] private Slider _arcanaSlider = default;
+	[SerializeField] private Slider _assistSlider = default;
+	[SerializeField] private Image _portraitImage = default;
+	[SerializeField] private TextMeshProUGUI _characterName = default;
+	[SerializeField] private TextMeshProUGUI _playerName = default;
+	[SerializeField] private TextMeshProUGUI _notificationText = default;
+	[SerializeField] private TextMeshProUGUI _comboText = default;
+	[SerializeField] private TextMeshProUGUI _winsText = default;
+	[SerializeField] private TextMeshProUGUI _whoPausedText = default;
+	[SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
+	[SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
+	[SerializeField] private Animator _arcanaAnimator = default;
+	[SerializeField] private Transform _healthDividerPivot = default;
+	[SerializeField] private GameObject _healthDividerPrefab = default;
+	[SerializeField] private Transform _arcanaDividerPivot = default;
+	[SerializeField] private GameObject _arcanaDividerPrefab = default;
+	[SerializeField] private Slider _pauseSlider = default;
+	[SerializeField] private BaseMenu _pauseMenu = default;
+	[SerializeField] private BaseMenu _trainingPauseMenu = default;
+	[SerializeField] private TrainingMenu _trainingMenu = default;
+	private GameObject[] _playerIcons;
+	private Coroutine _openPauseHoldCoroutine;
+	private Coroutine _notificiationCoroutine;
+	private Coroutine _resetComboCoroutine;
+	private Coroutine _showPlayerIconCoroutine;
+	private Animator _animator;
+	private Audio _audio;
+	private BrainController _controller;
+	private int _currentLifeIndex;
+	private int _currentComboCount;
+	private int _currentWins;
+	private bool _hasComboEnded;
+	private bool _initializedStats;
 
 	public string PlayerName { get; private set; }
-    public string CharacterName { get; private set; }
+	public string CharacterName { get; private set; }
 
 
 	void Awake()
 	{
-        _animator = GetComponent<Animator>();
-        _audio = GetComponent<Audio>();
-    }
+		_animator = GetComponent<Animator>();
+		_audio = GetComponent<Audio>();
+	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
-    {
-        _playerIcons = playerIcons;
-        _controller = controller;
-        if (!_initializedStats)
-        {
-            if (_controller.IsPlayerOne)
-            {
-                if (SceneSettings.ControllerOne == "Cpu")
-                {
-                    PlayerName = "Cpu 1";
-                    _playerName.text = PlayerName;
-                }
-                else
-                {
-                    PlayerName = "Player 1";
-                    _playerName.text = PlayerName;
-                }
-            }
-            else
-            {
-                if (SceneSettings.ControllerTwo == "Cpu")
-                {
-                    PlayerName = "Cpu 2";
-                    _playerName.text = PlayerName;
-                }
-                else
-                {
-                    PlayerName = "Player 2";
-                    _playerName.text = PlayerName;
-                }
-            }
-            CharacterName = playerStats.characterName;
-            _characterName.text = CharacterName;
-            if (_controller.IsPlayerOne)
-            {
-                SetPortrait(playerStats.portraits[SceneSettings.ColorOne]);
-            }
-            else 
-            {
-                SetPortrait(playerStats.portraits[SceneSettings.ColorTwo]);
-            }
-            SetMaxHealth(playerStats.maxHealth);
-            SetMaxArcana(playerStats.maxArcana);
-            _initializedStats = true;
-        }
-    }
-
-    private void SetPortrait(Sprite portrait)
-    {
-        _portraitImage.sprite = portrait;
-    }
-
-    private void SetMaxHealth(float value)
-    {
-        float healthSliderWidth = _healthSlider.GetComponent<RectTransform>().sizeDelta.x;
-        _healthSlider.maxValue = value;
-        float increaseValue = healthSliderWidth / value;
-        float currentPositionX = 0.0f;
-        for (int i = 0; i < value + 1; i++)
+	{
+		_playerIcons = playerIcons;
+		_controller = controller;
+		if (!_initializedStats)
 		{
-            GameObject healthDivider = Instantiate(_healthDividerPrefab, _healthDividerPivot);
-            healthDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
-            currentPositionX -= increaseValue;
+			if (_controller.IsPlayerOne)
+			{
+				if (SceneSettings.ControllerOne == "Cpu")
+				{
+					PlayerName = "Cpu 1";
+					_playerName.text = PlayerName;
+				}
+				else
+				{
+					PlayerName = "Player 1";
+					_playerName.text = PlayerName;
+				}
+			}
+			else
+			{
+				if (SceneSettings.ControllerTwo == "Cpu")
+				{
+					PlayerName = "Cpu 2";
+					_playerName.text = PlayerName;
+				}
+				else
+				{
+					PlayerName = "Player 2";
+					_playerName.text = PlayerName;
+				}
+			}
+			CharacterName = playerStats.characterName;
+			_characterName.text = CharacterName;
+			if (_controller.IsPlayerOne)
+			{
+				SetPortrait(playerStats.portraits[SceneSettings.ColorOne]);
+			}
+			else 
+			{
+				SetPortrait(playerStats.portraits[SceneSettings.ColorTwo]);
+			}
+			SetMaxHealth(playerStats.maxHealth);
+			SetMaxArcana(playerStats.maxArcana);
+			_initializedStats = true;
 		}
-    }
+	}
 
-    private void SetMaxArcana(float value)
-    {
-        float arcanaSliderWidth = _arcanaSlider.GetComponent<RectTransform>().sizeDelta.x;
-        _arcanaSlider.maxValue = value;
-        float increaseValue = arcanaSliderWidth / value;
-        float currentPositionX = increaseValue;
-        for (int i = 0; i < value - 1; i++)
-        {
-            GameObject arcanaDivider = Instantiate(_arcanaDividerPrefab, _arcanaDividerPivot);
-            arcanaDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
-            currentPositionX += increaseValue;
-        }
-    }
+	private void SetPortrait(Sprite portrait)
+	{
+		_portraitImage.sprite = portrait;
+	}
 
-    public void FadeIn()
-    {
-        _animator.SetTrigger("FadeIn");
-    }
+	private void SetMaxHealth(float value)
+	{
+		float healthSliderWidth = _healthSlider.GetComponent<RectTransform>().sizeDelta.x;
+		_healthSlider.maxValue = value;
+		float increaseValue = healthSliderWidth / value;
+		float currentPositionX = 0.0f;
+		for (int i = 0; i < value + 1; i++)
+		{
+			GameObject healthDivider = Instantiate(_healthDividerPrefab, _healthDividerPivot);
+			healthDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
+			currentPositionX -= increaseValue;
+		}
+	}
 
-    public void FadeOut()
-    {
-        _animator.SetTrigger("FadeOut");
-    }
+	private void SetMaxArcana(float value)
+	{
+		float arcanaSliderWidth = _arcanaSlider.GetComponent<RectTransform>().sizeDelta.x;
+		_arcanaSlider.maxValue = value;
+		float increaseValue = arcanaSliderWidth / value;
+		float currentPositionX = increaseValue;
+		for (int i = 0; i < value - 1; i++)
+		{
+			GameObject arcanaDivider = Instantiate(_arcanaDividerPrefab, _arcanaDividerPivot);
+			arcanaDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
+			currentPositionX += increaseValue;
+		}
+	}
 
-    public void DecreaseArcana()
-    {
-        _arcanaAnimator.SetTrigger("Decrease");
-    }
+	public void FadeIn()
+	{
+		_animator.SetTrigger("FadeIn");
+	}
 
-    public void SetArcana(float value)
-    {
-        _arcanaSlider.value = value;
-        _arcanaAmountText.text = Mathf.Floor(value).ToString();
-    }
+	public void FadeOut()
+	{
+		_animator.SetTrigger("FadeOut");
+	}
 
-    public void SetAssist(float value)
-    {
-        _assistSlider.value = value;
-    }
+	public void DecreaseArcana()
+	{
+		_arcanaAnimator.SetTrigger("Decrease");
+	}
 
-    public void SetHealth(float value)
-    {
-        _healthSlider.value = value;
-    }
+	public void SetArcana(float value)
+	{
+		_arcanaSlider.value = value;
+		_arcanaAmountText.text = Mathf.Floor(value).ToString();
+	}
 
-    public void SetLives()
-    {
-        _lostLives[_currentLifeIndex].SetActive(true);
-        _currentLifeIndex++;
-    }
+	public void SetAssist(float value)
+	{
+		_assistSlider.value = value;
+	}
 
-    public void ResetLives()
-    {
-        _lostLives[0].SetActive(false);
-        _lostLives[1].SetActive(false);
-        _currentLifeIndex = 0;
-    }
+	public void SetHealth(float value)
+	{
+		_healthSlider.value = value;
+	}
 
-    public void IncreaseWins()
-    {
-        _currentWins++;
-        if (_currentWins == 1)
-        {
-            _winsText.text = $"{_currentWins} Win";
-        }
-        else
-        {
-            _winsText.text = $"{_currentWins} Wins";
-        }
-    }
+	public void SetLives()
+	{
+		_lostLives[_currentLifeIndex].SetActive(true);
+		_currentLifeIndex++;
+	}
 
-    public void OpenPauseHold(bool isPlayerOne)
-    {
-        _pauseSlider.gameObject.SetActive(true);
-        _openPauseHoldCoroutine = StartCoroutine(OpenPauseHoldCoroutine(isPlayerOne));
-    }
+	public void ResetLives()
+	{
+		_lostLives[0].SetActive(false);
+		_lostLives[1].SetActive(false);
+		_currentLifeIndex = 0;
+	}
 
-    IEnumerator OpenPauseHoldCoroutine(bool isPlayerOne)
-    {
-        float t = 0.0f;
-        while (_pauseSlider.value < _pauseSlider.maxValue)
-        {
-            _pauseSlider.value = Mathf.Lerp(0.0f, _pauseSlider.maxValue, t);
-            t += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-        _pauseSlider.value = 0.0f;
-        _pauseSlider.gameObject.SetActive(false);
-        OpenPause(isPlayerOne);
-    }
+	public void IncreaseWins()
+	{
+		_currentWins++;
+		if (_currentWins == 1)
+		{
+			_winsText.text = $"{_currentWins} Win";
+		}
+		else
+		{
+			_winsText.text = $"{_currentWins} Wins";
+		}
+	}
 
-    public void ClosePauseHold()
-    {
-        if (_openPauseHoldCoroutine != null)
-        {
-            _pauseSlider.gameObject.SetActive(false);
-            StopCoroutine(_openPauseHoldCoroutine);
-        }
-    }
+	public void OpenPauseHold(bool isPlayerOne)
+	{
+		_pauseSlider.gameObject.SetActive(true);
+		_openPauseHoldCoroutine = StartCoroutine(OpenPauseHoldCoroutine(isPlayerOne));
+	}
 
-    public void ChangeCharacter()
-    {
-        _trainingMenu.ResetTrainingOptions();
-        Time.timeScale = 1.0f;
-        SceneSettings.ChangeCharacter = true;
-        SceneManager.LoadScene(1);
-    }
+	IEnumerator OpenPauseHoldCoroutine(bool isPlayerOne)
+	{
+		float t = 0.0f;
+		while (_pauseSlider.value < _pauseSlider.maxValue)
+		{
+			_pauseSlider.value = Mathf.Lerp(0.0f, _pauseSlider.maxValue, t);
+			t += Time.deltaTime;
+			yield return new WaitForEndOfFrame();
+		}
+		_pauseSlider.value = 0.0f;
+		_pauseSlider.gameObject.SetActive(false);
+		OpenPause(isPlayerOne);
+	}
 
-    public void QuitMatch()
-    {
-        _trainingMenu.ResetTrainingOptions();
-        Time.timeScale = 1.0f;
-        SceneSettings.ChangeCharacter = false;
-        SceneManager.LoadScene(1);
-    }
+	public void ClosePauseHold()
+	{
+		if (_openPauseHoldCoroutine != null)
+		{
+			_pauseSlider.gameObject.SetActive(false);
+			StopCoroutine(_openPauseHoldCoroutine);
+		}
+	}
 
-    public void OpenPause(bool isPlayerOne)
-    {
-        if (isPlayerOne)
-        {
-            _whoPausedText.text = "Player 1 Paused";
-        }
-        else
-        {
-            _whoPausedText.text = "Player 2 Paused";
-        }
-        Time.timeScale = 0.0f;
-        GameManager.Instance.DisableAllInput();
-        GameManager.Instance.PauseMusic();
-        _pauseMenu.Show();
-    }
+	public void ChangeCharacter()
+	{
+		_trainingMenu.ResetTrainingOptions();
+		Time.timeScale = 1.0f;
+		SceneSettings.ChangeCharacter = true;
+		SceneManager.LoadScene(1);
+	}
 
-    public void OpenTrainingPause(bool isPlayerOne)
-    {
-        if (isPlayerOne)
-        {
-            _whoPausedTrainingText.text = "Player 1 Paused";
-        }
-        else
-        {
-            _whoPausedTrainingText.text = "Player 2 Paused";
-        }
-        Time.timeScale = 0.0f;
-        GameManager.Instance.DisableAllInput();
-        GameManager.Instance.PauseMusic();
-        _trainingPauseMenu.Show();
-    }
+	public void QuitMatch()
+	{
+		_trainingMenu.ResetTrainingOptions();
+		Time.timeScale = 1.0f;
+		SceneSettings.ChangeCharacter = false;
+		SceneManager.LoadScene(1);
+	}
 
-    public void ClosePause()
-    {
-        Time.timeScale = GameManager.Instance.GameSpeed;
-        GameManager.Instance.EnableAllInput();
-        GameManager.Instance.PlayMusic();
-        _pauseMenu.Hide();
-        _trainingPauseMenu.Hide();
-    }
+	public void OpenPause(bool isPlayerOne)
+	{
+		if (isPlayerOne)
+		{
+			_whoPausedText.text = "Player 1 Paused";
+		}
+		else
+		{
+			_whoPausedText.text = "Player 2 Paused";
+		}
+		Time.timeScale = 0.0f;
+		GameManager.Instance.DisableAllInput();
+		GameManager.Instance.PauseMusic();
+		_pauseMenu.Show();
+	}
 
-    public void IncreaseCombo()
-    {
-        if (_hasComboEnded)
-        {
-            StopCoroutine(_resetComboCoroutine);
-            _hasComboEnded = false;
-            _comboText.gameObject.SetActive(false);
-            _currentComboCount = 0;
-            _comboText.text = "Hits 0";
-        }
-        _currentComboCount++;
-        _comboText.text = "Hits " + _currentComboCount.ToString();
-        if (_currentComboCount > 1)
-        {
-            _comboText.gameObject.SetActive(false);
-            _comboText.gameObject.SetActive(true);
-        }
-    }
+	public void OpenTrainingPause(bool isPlayerOne)
+	{
+		if (isPlayerOne)
+		{
+			_whoPausedTrainingText.text = "Player 1 Paused";
+		}
+		else
+		{
+			_whoPausedTrainingText.text = "Player 2 Paused";
+		}
+		Time.timeScale = 0.0f;
+		GameManager.Instance.DisableAllInput();
+		GameManager.Instance.PauseMusic();
+		_trainingPauseMenu.Show();
+	}
 
-    public void ResetCombo()
-    {
-        _hasComboEnded = true;
-        _resetComboCoroutine = StartCoroutine(ResetComboCoroutine());
-    }
+	public void ClosePause()
+	{
+		Time.timeScale = GameManager.Instance.GameSpeed;
+		GameManager.Instance.EnableAllInput();
+		GameManager.Instance.PlayMusic();
+		_pauseMenu.Hide();
+		_trainingPauseMenu.Hide();
+	}
 
-    public void DisplayNotification(string text)
-    {
-        _audio.Sound("Punish").Play();
-        _notificationText.gameObject.SetActive(true);
-        _notificationText.text = text;
-        if (_notificiationCoroutine != null)
-        {
-            StopCoroutine(_notificiationCoroutine);
-        }
-        _notificiationCoroutine = StartCoroutine(ResetDisplayNotificationCoroutine());
-    }
+	public void IncreaseCombo()
+	{
+		if (_hasComboEnded)
+		{
+			StopCoroutine(_resetComboCoroutine);
+			_hasComboEnded = false;
+			_comboText.gameObject.SetActive(false);
+			_currentComboCount = 0;
+			_comboText.text = "Hits 0";
+		}
+		_currentComboCount++;
+		_comboText.text = "Hits " + _currentComboCount.ToString();
+		if (_currentComboCount > 1)
+		{
+			_comboText.gameObject.SetActive(false);
+			_comboText.gameObject.SetActive(true);
+		}
+	}
 
-    IEnumerator ResetDisplayNotificationCoroutine()
-    {
-        yield return new WaitForSeconds(1.0f);
-        _notificationText.gameObject.SetActive(false);
-        _notificationText.text = "";
-    }
+	public void ResetCombo()
+	{
+		_hasComboEnded = true;
+		_resetComboCoroutine = StartCoroutine(ResetComboCoroutine());
+	}
 
-    IEnumerator ResetComboCoroutine()
-    {
-        yield return new WaitForSeconds(1.0f);
-        _comboText.gameObject.SetActive(false);
-        _currentComboCount = 0;
-        _comboText.text = "";
-    }
+	public void DisplayNotification(string text)
+	{
+		_audio.Sound("Punish").Play();
+		_notificationText.gameObject.SetActive(true);
+		_notificationText.text = text;
+		if (_notificiationCoroutine != null)
+		{
+			StopCoroutine(_notificiationCoroutine);
+		}
+		_notificiationCoroutine = StartCoroutine(ResetDisplayNotificationCoroutine());
+	}
 
-    public void ShowPlayerIcon()
-    {
-        if (_showPlayerIconCoroutine != null)
-        {
+	IEnumerator ResetDisplayNotificationCoroutine()
+	{
+		yield return new WaitForSeconds(1.0f);
+		_notificationText.gameObject.SetActive(false);
+		_notificationText.text = "";
+	}
+
+	IEnumerator ResetComboCoroutine()
+	{
+		yield return new WaitForSeconds(1.0f);
+		_comboText.gameObject.SetActive(false);
+		_currentComboCount = 0;
+		_comboText.text = "";
+	}
+
+	public void ShowPlayerIcon()
+	{
+		if (_showPlayerIconCoroutine != null)
+		{
 			for (int i = 0; i < _playerIcons.Length; i++)
 			{
-                _playerIcons[i].SetActive(false);
-            }
-            StopCoroutine(_showPlayerIconCoroutine);
-        }
-        _showPlayerIconCoroutine = StartCoroutine(ShowPlayerIconCoroutine());
-    }
+				_playerIcons[i].SetActive(false);
+			}
+			StopCoroutine(_showPlayerIconCoroutine);
+		}
+		_showPlayerIconCoroutine = StartCoroutine(ShowPlayerIconCoroutine());
+	}
 
-    IEnumerator ShowPlayerIconCoroutine()
-    {
-        int index = _controller.IsPlayerOne == true ? 0 : 1;
-        _playerIcons[index].SetActive(true);
-        yield return new WaitForSeconds(1.0f);
-        _playerIcons[index].SetActive(false);
-    }
+	IEnumerator ShowPlayerIconCoroutine()
+	{
+		int index = _controller.IsPlayerOne == true ? 0 : 1;
+		_playerIcons[index].SetActive(true);
+		yield return new WaitForSeconds(1.0f);
+		_playerIcons[index].SetActive(false);
+	}
 }

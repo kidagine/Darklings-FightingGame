@@ -25,7 +25,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private float _arcana;
 	private float _assistGauge = 1.0f;
 	private int _lives = 2;
-	private bool _isDead;
 	private bool _canAttack;
 
 	public PlayerStatsSO PlayerStats { get { return _playerStats; } private set { } }
@@ -39,6 +38,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool BlockingLow { get; set; }
 	public bool BlockingHigh { get; set; }
 	public bool BlockingMiddair { get; set; }
+	public bool IsDead { get; set; }
 	public bool CanFlip { get; set; } = true;
 
 	void Awake()
@@ -71,7 +71,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ResetPlayer()
 	{
-		_isDead = false;
+		IsDead = false;
 		IsAttacking = false;
 		_controller.ActiveController.enabled = true;
 		_controller.ActivateInput();
@@ -145,7 +145,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void CheckFlip()
 	{
-		if (!_isDead && CanFlip)
+		if (!IsDead && CanFlip)
 		{
 			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking && transform.localScale.x != 1.0f)
 			{
@@ -276,7 +276,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			if (IsAttacking)
 			{
-				//GameManager.Instance.SlowdownPunish();
 				_otherPlayerUI.DisplayNotification("Punish");
 			}
 			_audio.Sound(attackSO.impactSound).Play();
@@ -391,7 +390,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_controller.ActiveController.enabled = false;
 		SetGroundPushBox(false);
 		SetHurtbox(false);
-		if (!_isDead)
+		if (!IsDead)
 		{
 			if (GameManager.Instance.HasGameStarted && !GameManager.Instance.IsTrainingMode)
 			{
@@ -406,7 +405,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				GameManager.Instance.RoundOver();
 			}
 		}
-		_isDead = true;
+		IsDead = true;
 	}
 
 	public void Taunt()
