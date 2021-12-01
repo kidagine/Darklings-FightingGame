@@ -15,7 +15,10 @@ public class PlayerGhost : MonoBehaviour
 	async void OnEnable()
 	{
 		await UpdateTimer.WaitFor(_ghostTime);
-		gameObject.SetActive(false);
+		if (gameObject != null)
+		{
+			gameObject.SetActive(false);
+		}
 	}
 
 	public void SetSprite(Sprite sprite, float flipSpriteValue, Color color)
