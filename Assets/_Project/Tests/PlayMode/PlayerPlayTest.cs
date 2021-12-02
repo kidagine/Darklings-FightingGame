@@ -5,12 +5,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
+
+
 public class PlayerPlayTest
 {
 	private readonly string _testScene = "Assets/_Project/Scenes/TestScenes/TestScene.unity";
 
 
-	[SetUp]
+	[OneTimeSetUp]
 	public void Setup()
 	{
 		EditorSceneManager.LoadSceneInPlayMode(_testScene, new LoadSceneParameters(LoadSceneMode.Single, LocalPhysicsMode.None));
