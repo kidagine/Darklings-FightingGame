@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class InputBuffer : MonoBehaviour
 {
+    [SerializeField] private InputHistory _inputHistory = default;
     private List<InputBufferAction> _inputBuffer = new List<InputBufferAction>();
     private bool _actionAllowed = true;
 
@@ -20,6 +21,7 @@ public class InputBuffer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
+            _inputHistory.AddInput();
             _inputBuffer.Add(new InputBufferAction(InputBufferAction.InputAction.Jump, Time.time));
         }
     }
@@ -42,7 +44,6 @@ public class InputBuffer : MonoBehaviour
 
     private void DoAction(InputBufferAction ai)
     {
-        Debug.Log("s");
         //_actionAllowed = false;
     }
 }
