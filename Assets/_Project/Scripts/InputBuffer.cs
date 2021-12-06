@@ -10,20 +10,16 @@ public class InputBuffer : MonoBehaviour
 
     void Update()
     {
-        CheckInput();
         if (_actionAllowed)
         {
             TryBufferedAction();
         }
     }
 
-    private void CheckInput()
+    public void CheckInput()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            _inputHistory.AddInput();
-            _inputBuffer.Add(new InputBufferAction(InputBufferAction.InputAction.Jump, Time.time));
-        }
+        _inputHistory.AddInput();
+        _inputBuffer.Add(new InputBufferAction(InputBufferAction.InputAction.Jump, Time.time));
     }
 
     private void TryBufferedAction()

@@ -32,7 +32,12 @@ public class PlayerController : BaseController
 
 	private void Movement()
 	{
-		_playerMovement.MovementInput = new Vector2(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
+		Vector2 currentInput = new Vector2(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
+		if (currentInput.x != _playerMovement.MovementInput.x)
+		{
+			_inputBuffer.CheckInput();
+			_playerMovement.MovementInput = currentInput;
+		}
 	}
 
 	private void Jump()
