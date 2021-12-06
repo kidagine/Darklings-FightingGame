@@ -10,10 +10,11 @@ public class PlayerMovementPlayTest
 	private readonly string _testScene = "Assets/_Project/Scenes/TestScenes/TestScene.unity";
 
 
-	[SetUp]
-	public void Setup()
+	[UnitySetUp]
+	public IEnumerator Setup()
 	{
 		EditorSceneManager.LoadSceneInPlayMode(_testScene, new LoadSceneParameters(LoadSceneMode.Single, LocalPhysicsMode.None));
+		yield return null;
 	}
 
 	[TearDown]
@@ -27,7 +28,6 @@ public class PlayerMovementPlayTest
 	public IEnumerator JumpAction_GroundJump_MakesIsGroundedFalse()
 	{
 		// Arrange
-		yield return null;
 		PlayerMovement playerMovement = Object.FindObjectOfType<PlayerMovement>();
 
 		// Act
@@ -42,7 +42,6 @@ public class PlayerMovementPlayTest
 	public IEnumerator JumpAction_DoubleJump_MakesCanDoubleJumpFalse()
 	{
 		// Arrange
-		yield return null;
 		PlayerMovement playerMovement = Object.FindObjectOfType<PlayerMovement>();
 		playerMovement.JumpAction();
 		yield return new WaitForSeconds(0.5f);
@@ -59,7 +58,6 @@ public class PlayerMovementPlayTest
 	public IEnumerator JumpAction_NoJump_NoChange()
 	{
 		// Arrange
-		yield return null;
 		PlayerMovement playerMovement = Object.FindObjectOfType<PlayerMovement>();
 		playerMovement.JumpAction();
 		yield return new WaitForSeconds(0.5f);
@@ -80,7 +78,6 @@ public class PlayerMovementPlayTest
 	public IEnumerator CrouchAction_Crouches_MakesIsCrouchingTrue()
 	{
 		// Arrange
-		yield return null;
 		PlayerMovement playerMovement = Object.FindObjectOfType<PlayerMovement>();
 		PlayerController playerController = Object.FindObjectOfType<PlayerController>();
 
@@ -98,7 +95,6 @@ public class PlayerMovementPlayTest
 	public IEnumerator StandAction_StandsUp_MakesIsCrouchingFalse()
 	{
 		// Arrange
-		yield return null;
 		PlayerMovement playerMovement = Object.FindObjectOfType<PlayerMovement>();
 		PlayerController playerController = Object.FindObjectOfType<PlayerController>();
 		playerMovement.CrouchAction();
@@ -117,7 +113,6 @@ public class PlayerMovementPlayTest
 	public IEnumerator DashAction_DashesForward_MakesIsDashingTrue()
 	{
 		// Arrange
-		yield return null;
 		PlayerMovement playerMovement = Object.FindObjectOfType<PlayerMovement>();
 		PlayerController playerController = Object.FindObjectOfType<PlayerController>();
 
