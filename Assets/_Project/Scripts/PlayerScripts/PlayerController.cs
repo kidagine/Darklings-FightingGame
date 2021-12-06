@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerController : BaseController
 {
+	[SerializeField] private InputBuffer _inputBuffer = default;
 	private bool _hasJumped;
 	private bool reset;
 	private bool k;
@@ -33,11 +34,23 @@ public class PlayerController : BaseController
 	private void Movement()
 	{
 		Vector2 currentInput = new Vector2(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
-		if (currentInput.x != _playerMovement.MovementInput.x)
+		if (currentInput.x == 1.0f && _playerMovement.MovementInput.x != currentInput.x)
 		{
-			_inputBuffer.CheckInput();
-			_playerMovement.MovementInput = currentInput;
+			_inputBuffer.CheckInput(InputEnum.Right);
 		}
+		if (currentInput.x == -1.0f && _playerMovement.MovementInput.x != currentInput.x)
+		{
+			_inputBuffer.CheckInput(InputEnum.Left);
+		}
+		if (currentInput.y == 1.0f && _playerMovement.MovementInput.y != currentInput.y)
+		{
+			_inputBuffer.CheckInput(InputEnum.Up);
+		}
+		if (currentInput.y == -1.0f && _playerMovement.MovementInput.y != currentInput.y)
+		{
+			_inputBuffer.CheckInput(InputEnum.Down);
+		}
+		_playerMovement.MovementInput = currentInput;
 	}
 
 	private void Jump()
@@ -70,6 +83,7 @@ public class PlayerController : BaseController
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Light"))
 		{
 			_player.AttackAction();
+			_inputBuffer.CheckInput(InputEnum.Light);
 		}
 	}
 

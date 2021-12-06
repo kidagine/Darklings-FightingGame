@@ -21,14 +21,41 @@ public class InputHistory : MonoBehaviour
 		}	
 	}
 
-	public void AddInput()
+	public void AddInput(InputEnum inputEnum)
 	{
 		Image inputImage = _inputImages[_currentInputImageIndex];
 		inputImage.gameObject.SetActive(true);
 		inputImage.transform.SetAsFirstSibling();
+		SetInputImageSprite(inputImage, inputEnum);
 		if (_currentInputImageIndex < _inputImages.Count - 1)
 		{
 			_currentInputImageIndex++;
+		}
+		else
+		{
+			_currentInputImageIndex = 0;
+		}
+	}
+
+	private void SetInputImageSprite(Image inputImage, InputEnum inputEnum)
+	{
+		switch (inputEnum)
+		{
+			case InputEnum.Up:
+				inputImage.sprite = _up;
+				break;
+			case InputEnum.Down:
+				inputImage.sprite = _down;
+				break;
+			case InputEnum.Left:
+				inputImage.sprite = _left;
+				break;
+			case InputEnum.Right:
+				inputImage.sprite = _right;
+				break;
+			case InputEnum.Light:
+				inputImage.sprite = _light;
+				break;
 		}
 	}
 }

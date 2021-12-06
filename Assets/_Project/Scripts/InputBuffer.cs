@@ -16,9 +16,9 @@ public class InputBuffer : MonoBehaviour
         }
     }
 
-    public void CheckInput()
+    public void CheckInput(InputEnum inputEnum)
     {
-        _inputHistory.AddInput();
+        _inputHistory.AddInput(inputEnum);
         _inputBuffer.Add(new InputBufferAction(InputBufferAction.InputAction.Jump, Time.time));
     }
 
