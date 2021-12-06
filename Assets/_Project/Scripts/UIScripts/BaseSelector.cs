@@ -17,6 +17,7 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
     [SerializeField] private RectTransform _scrollView = default;
     [SerializeField] private float _scrollUpAmount = default;
     [SerializeField] private float _scrollDownAmount = default;
+    [SerializeField] private int _initialValue = default;
     [SerializeField] private bool _ignoreFirstSelectSound = default;
     protected Audio _audio;
     protected Button _button;
@@ -30,6 +31,11 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
         _audio = GetComponent<Audio>();
         _button = GetComponent<Button>();
         _animator = GetComponent<Animator>();
+    }
+
+    void Start()
+    {
+        SetValue(_initialValue);
     }
 
     public void SetValue(int valueIndex)

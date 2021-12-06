@@ -17,14 +17,14 @@ public class InputHistory : MonoBehaviour
 	{
 		foreach (Transform child in transform)
 		{
-			_inputImages.Add(child.GetComponent<Image>());
+			_inputImages.Add(child.GetChild(0).GetComponent<Image>());
 		}	
 	}
 
 	public void AddInput(InputEnum inputEnum)
 	{
 		Image inputImage = _inputImages[_currentInputImageIndex];
-		inputImage.gameObject.SetActive(true);
+		inputImage.transform.parent.gameObject.SetActive(true);
 		inputImage.transform.SetAsFirstSibling();
 		SetInputImageSprite(inputImage, inputEnum);
 		if (_currentInputImageIndex < _inputImages.Count - 1)
