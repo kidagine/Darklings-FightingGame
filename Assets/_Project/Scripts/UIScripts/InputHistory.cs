@@ -43,11 +43,7 @@ public class InputHistory : MonoBehaviour
 				inputImage.transform.parent.SetAsFirstSibling();
 				inputImage = _inputImages[_currentInputImageIndex];
 			}
-			else
-			{
-				inputImage.enabled = true;
-			}
-
+			inputImage.enabled = true;
 			inputImage.transform.parent.gameObject.SetActive(true);
 			inputImage.transform.parent.SetAsFirstSibling();
 			SetInputImageSprite(inputImage, inputEnum);
