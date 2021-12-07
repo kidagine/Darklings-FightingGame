@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +11,9 @@ public class InputHistory : MonoBehaviour
 	[SerializeField] private Sprite _right = default;
 	[SerializeField] private Sprite _light = default;
 	private readonly List<Image> _inputImages = new List<Image>();
+	private Coroutine _inputBreakCoroutine;
 	private int _currentInputImageIndex;
+	private bool _isNextInputBreak;
 
 
 	void Awake()
@@ -23,10 +26,44 @@ public class InputHistory : MonoBehaviour
 
 	public void AddInput(InputEnum inputEnum)
 	{
-		Image inputImage = _inputImages[_currentInputImageIndex];
-		inputImage.transform.parent.gameObject.SetActive(true);
-		inputImage.transform.SetAsFirstSibling();
-		SetInputImageSprite(inputImage, inputEnum);
+		if (_inputImages.Count > 0)
+		{
+			if (_inputBreakCoroutine != null)
+			{
+				StopCoroutine(_inputBreakCoroutine);
+			}
+
+			Image inputImage = _inputImages[_currentInputImageIndex];
+			if (_isNextInputBreak)
+			{
+				_isNextInputBreak = false;
+				inputImage.enabled = false;
+				IncreaseCurrentInputImageIndex();
+				inputImage.transform.parent.gameObject.SetActive(true);
+				inputImage.transform.parent.SetAsFirstSibling();
+				inputImage = _inputImages[_currentInputImageIndex];
+			}
+			else
+			{
+				inputImage.enabled = true;
+			}
+
+			inputImage.transform.parent.gameObject.SetActive(true);
+			inputImage.transform.parent.SetAsFirstSibling();
+			SetInputImageSprite(inputImage, inputEnum);
+			IncreaseCurrentInputImageIndex();
+			_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
+		}
+	}
+
+	private IEnumerator InputBreakCoroutine()
+	{
+		yield return new WaitForSecondsRealtime(1.0f);
+		_isNextInputBreak = true;
+	}
+
+	private void IncreaseCurrentInputImageIndex()
+	{
 		if (_currentInputImageIndex < _inputImages.Count - 1)
 		{
 			_currentInputImageIndex++;
