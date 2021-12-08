@@ -10,6 +10,7 @@ public class InputHistory : MonoBehaviour
 	[SerializeField] private Sprite _left = default;
 	[SerializeField] private Sprite _right = default;
 	[SerializeField] private Sprite _light = default;
+	[SerializeField] private Sprite _special = default;
 	private readonly List<Image> _inputImages = new List<Image>();
 	private Coroutine _inputBreakCoroutine;
 	private int _currentInputImageIndex;
@@ -20,7 +21,7 @@ public class InputHistory : MonoBehaviour
 	{
 		foreach (Transform child in transform)
 		{
-			_inputImages.Add(child.GetChild(0).GetComponent<Image>());
+			_inputImages.Add(child.GetChild(0).GetChild(0).GetComponent<Image>());
 		}	
 	}
 
@@ -39,13 +40,13 @@ public class InputHistory : MonoBehaviour
 				_isNextInputBreak = false;
 				inputImage.enabled = false;
 				IncreaseCurrentInputImageIndex();
-				inputImage.transform.parent.gameObject.SetActive(true);
-				inputImage.transform.parent.SetAsFirstSibling();
+				inputImage.transform.parent.parent.gameObject.SetActive(true);
+				inputImage.transform.parent.parent.SetAsFirstSibling();
 				inputImage = _inputImages[_currentInputImageIndex];
 			}
 			inputImage.enabled = true;
-			inputImage.transform.parent.gameObject.SetActive(true);
-			inputImage.transform.parent.SetAsFirstSibling();
+			inputImage.transform.parent.parent.gameObject.SetActive(true);
+			inputImage.transform.parent.parent.SetAsFirstSibling();
 			SetInputImageSprite(inputImage, inputEnum);
 			IncreaseCurrentInputImageIndex();
 			_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
@@ -54,7 +55,7 @@ public class InputHistory : MonoBehaviour
 
 	private IEnumerator InputBreakCoroutine()
 	{
-		yield return new WaitForSecondsRealtime(1.0f);
+		yield return new WaitForSecondsRealtime(2.0f);
 		_isNextInputBreak = true;
 	}
 
@@ -88,6 +89,9 @@ public class InputHistory : MonoBehaviour
 				break;
 			case InputEnum.Light:
 				inputImage.sprite = _light;
+				break;
+			case InputEnum.Special:
+				inputImage.sprite = _special;
 				break;
 		}
 	}

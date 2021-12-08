@@ -92,6 +92,7 @@ public class PlayerController : BaseController
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Arcane"))
 		{
 			_player.ArcaneAction();
+			_inputBuffer.CheckInput(InputEnum.Special);
 		}
 	}
 

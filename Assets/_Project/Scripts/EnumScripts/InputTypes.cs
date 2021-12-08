@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [Serializable]
-public enum InputEnum { Up, Down, Left, Right, Light };
+public enum InputEnum { Up, Down, Left, Right, Light, Special };
 
 
 public class InputTypes : MonoBehaviour
