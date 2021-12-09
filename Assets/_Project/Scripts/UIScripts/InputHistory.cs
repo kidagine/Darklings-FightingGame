@@ -11,7 +11,7 @@ public class InputHistory : MonoBehaviour
 	[SerializeField] private Sprite _right = default;
 	[SerializeField] private Sprite _light = default;
 	[SerializeField] private Sprite _special = default;
-	private readonly List<Image> _inputImages = new List<Image>();
+	private readonly List<InputHistoryImage> _inputHistoryImages = new List<InputHistoryImage>();
 	private Coroutine _inputBreakCoroutine;
 	private int _currentInputImageIndex;
 	private bool _isNextInputBreak;
@@ -21,33 +21,29 @@ public class InputHistory : MonoBehaviour
 	{
 		foreach (Transform child in transform)
 		{
-			_inputImages.Add(child.GetChild(0).GetChild(0).GetComponent<Image>());
+			_inputHistoryImages.Add(child.GetComponent<InputHistoryImage>());
 		}	
 	}
 
 	public void AddInput(InputEnum inputEnum)
 	{
-		if (_inputImages.Count > 0)
+		if (_inputHistoryImages.Count > 0)
 		{
 			if (_inputBreakCoroutine != null)
 			{
 				StopCoroutine(_inputBreakCoroutine);
 			}
 
-			Image inputImage = _inputImages[_currentInputImageIndex];
+			InputHistoryImage inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
 			if (_isNextInputBreak)
 			{
 				_isNextInputBreak = false;
-				inputImage.enabled = false;
+				inputHistoryImage.ActivateEmptyHistoryImage();
 				IncreaseCurrentInputImageIndex();
-				inputImage.transform.parent.parent.gameObject.SetActive(true);
-				inputImage.transform.parent.parent.SetAsFirstSibling();
-				inputImage = _inputImages[_currentInputImageIndex];
+				inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
 			}
-			inputImage.enabled = true;
-			inputImage.transform.parent.parent.gameObject.SetActive(true);
-			inputImage.transform.parent.parent.SetAsFirstSibling();
-			SetInputImageSprite(inputImage, inputEnum);
+			inputHistoryImage.ActivateHistoryImage();
+			SetInputImageSprite(inputHistoryImage.GetHistoryImage(), inputEnum);
 			IncreaseCurrentInputImageIndex();
 			_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
 		}
@@ -55,13 +51,13 @@ public class InputHistory : MonoBehaviour
 
 	private IEnumerator InputBreakCoroutine()
 	{
-		yield return new WaitForSecondsRealtime(2.0f);
+		yield return new WaitForSecondsRealtime(1.5f);
 		_isNextInputBreak = true;
 	}
 
 	private void IncreaseCurrentInputImageIndex()
 	{
-		if (_currentInputImageIndex < _inputImages.Count - 1)
+		if (_currentInputImageIndex < _inputHistoryImages.Count - 1)
 		{
 			_currentInputImageIndex++;
 		}
