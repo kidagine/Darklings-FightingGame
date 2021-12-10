@@ -13,8 +13,11 @@ public class InputHistory : MonoBehaviour
 	[SerializeField] private Sprite _special = default;
 	private readonly List<InputHistoryImage> _inputHistoryImages = new List<InputHistoryImage>();
 	private Coroutine _inputBreakCoroutine;
+	private Coroutine _inputSubItemCoroutine;
 	private int _currentInputImageIndex;
+	private int _previousInputImageIndex;
 	private bool _isNextInputBreak;
+	private bool _isNextInputSubItem;
 
 
 	void Awake()
@@ -33,17 +36,32 @@ public class InputHistory : MonoBehaviour
 			{
 				StopCoroutine(_inputBreakCoroutine);
 			}
-
-			InputHistoryImage inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
-			if (_isNextInputBreak)
+			if (_inputSubItemCoroutine != null)
 			{
-				_isNextInputBreak = false;
-				inputHistoryImage.ActivateEmptyHistoryImage();
-				IncreaseCurrentInputImageIndex();
-				inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
+				StopCoroutine(_inputSubItemCoroutine);
 			}
-			inputHistoryImage.ActivateHistoryImage();
-			SetInputImageSprite(inputHistoryImage.GetHistoryImage(), inputEnum);
+
+			if (_isNextInputSubItem && inputEnum != InputEnum.Up && inputEnum != InputEnum.Down && inputEnum != InputEnum.Left  && inputEnum != InputEnum.Right)
+			{
+				InputHistoryImage inputHistoryImage = _inputHistoryImages[_previousInputImageIndex];
+				_isNextInputSubItem = false;
+				inputHistoryImage.ActivateHistoryImage(1);
+				SetInputImageSprite(inputHistoryImage.GetHistoryImage(1), inputEnum);
+			}
+			else
+			{
+				InputHistoryImage inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
+				if (_isNextInputBreak)
+				{
+					_isNextInputBreak = false;
+					inputHistoryImage.ActivateEmptyHistoryImage();
+					IncreaseCurrentInputImageIndex();
+					inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
+				}
+				inputHistoryImage.ActivateHistoryImage();
+				SetInputImageSprite(inputHistoryImage.GetHistoryImage(), inputEnum);
+				_inputSubItemCoroutine = StartCoroutine(InputSubItemCoroutine());
+			}
 			IncreaseCurrentInputImageIndex();
 			_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
 		}
@@ -55,14 +73,23 @@ public class InputHistory : MonoBehaviour
 		_isNextInputBreak = true;
 	}
 
+	private IEnumerator InputSubItemCoroutine()
+	{
+		_isNextInputSubItem = true;
+		yield return new WaitForSecondsRealtime(0.15f);
+		_isNextInputSubItem = false;
+	}
+
 	private void IncreaseCurrentInputImageIndex()
 	{
 		if (_currentInputImageIndex < _inputHistoryImages.Count - 1)
 		{
+			_previousInputImageIndex = _currentInputImageIndex;
 			_currentInputImageIndex++;
 		}
 		else
 		{
+			_previousInputImageIndex = _inputHistoryImages.Count - 1;
 			_currentInputImageIndex = 0;
 		}
 	}
