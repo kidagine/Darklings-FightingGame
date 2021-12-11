@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-
+[Flags]
 [Serializable]
-public enum InputEnum { Up, Down, Left, Right, Light, Special };
+public enum InputEnum { Up = 1, Down = 2, Left = 4, Right = 8, Light = 16, Special = 32 };
 
 
 public class InputTypes : MonoBehaviour

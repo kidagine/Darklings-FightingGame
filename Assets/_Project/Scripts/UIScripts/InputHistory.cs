@@ -41,12 +41,12 @@ public class InputHistory : MonoBehaviour
 				StopCoroutine(_inputSubItemCoroutine);
 			}
 
-			if (_isNextInputSubItem && inputEnum != InputEnum.Up && inputEnum != InputEnum.Down && inputEnum != InputEnum.Left  && inputEnum != InputEnum.Right)
+			if (_isNextInputSubItem)
 			{
 				InputHistoryImage inputHistoryImage = _inputHistoryImages[_previousInputImageIndex];
 				_isNextInputSubItem = false;
-				inputHistoryImage.ActivateHistoryImage(1);
-				SetInputImageSprite(inputHistoryImage.GetHistoryImage(1), inputEnum);
+				Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, false);
+				SetInputImageSprite(image, inputEnum);
 			}
 			else
 			{
@@ -58,18 +58,20 @@ public class InputHistory : MonoBehaviour
 					IncreaseCurrentInputImageIndex();
 					inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
 				}
-				inputHistoryImage.ActivateHistoryImage();
-				SetInputImageSprite(inputHistoryImage.GetHistoryImage(), inputEnum);
+				Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, false);
+				SetInputImageSprite(image, inputEnum);
+
+				IncreaseCurrentInputImageIndex();
+				_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
 				_inputSubItemCoroutine = StartCoroutine(InputSubItemCoroutine());
 			}
-			IncreaseCurrentInputImageIndex();
-			_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
+
 		}
 	}
 
 	private IEnumerator InputBreakCoroutine()
 	{
-		yield return new WaitForSecondsRealtime(1.5f);
+		yield return new WaitForSecondsRealtime(1.0f);
 		_isNextInputBreak = true;
 	}
 
