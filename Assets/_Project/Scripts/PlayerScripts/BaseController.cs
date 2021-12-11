@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class BaseController : MonoBehaviour
 {
-    [SerializeField] protected InputBuffer _inputBuffer = default;
     protected bool _trainingController;
     protected bool _isControllerEnabled = true;
     protected BrainController _brainController;
