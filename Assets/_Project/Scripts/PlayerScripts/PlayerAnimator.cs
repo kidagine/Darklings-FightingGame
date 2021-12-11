@@ -3,107 +3,109 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    public PlayerStatsSO playerStatsSO;
-    private Animator animator;
-    private SpriteLibrary _spriteLibrary;
-    private SpriteRenderer _spriteRenderer;
+	[SerializeField] private PlayerStats _playerStats = default;
+	private Animator animator;
+	private SpriteLibrary _spriteLibrary;
+	private SpriteRenderer _spriteRenderer;
 
-    void Awake()
-    {
-        animator = GetComponent<Animator>();
-        _spriteLibrary = GetComponent<SpriteLibrary>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-    }
+	public PlayerStats PlayerStats { get { return _playerStats; } private set { } }
 
-    public void SetMove(bool state)
-    {
-        animator.SetBool("IsMoving", state);
-    }
+	void Awake()
+	{
+		animator = GetComponent<Animator>();
+		_spriteLibrary = GetComponent<SpriteLibrary>();
+		_spriteRenderer = GetComponent<SpriteRenderer>();
+	}
 
-    public void SetMovementX(float value)
-    {
-        animator.SetFloat("MovementInputX", value);
-    }
+	public void SetMove(bool state)
+	{
+		animator.SetBool("IsMoving", state);
+	}
 
-    public void IsCrouching(bool state)
-    {
-        animator.SetBool("IsCrouching", state);
-    }
+	public void SetMovementX(float value)
+	{
+		animator.SetFloat("MovementInputX", value);
+	}
 
-    public void IsJumping(bool state)
-    {
-        animator.SetBool("IsJumping", state);
-    }
+	public void IsCrouching(bool state)
+	{
+		animator.SetBool("IsCrouching", state);
+	}
 
-    public void Attack()
-    {
-        animator.SetTrigger("Attack");
-    }
-    public void Arcana()
-    {
-        animator.SetTrigger("Arcana");
-    }
+	public void IsJumping(bool state)
+	{
+		animator.SetBool("IsJumping", state);
+	}
 
-    public void IsHurt(bool state)
-    {
-        animator.SetBool("IsHurt", state);
-    }
+	public void Attack()
+	{
+		animator.SetTrigger("Attack");
+	}
+	public void Arcana()
+	{
+		animator.SetTrigger("Arcana");
+	}
 
-    public void IsBlocking(bool state)
-    {
-        animator.SetBool("IsBlocking", state);
-    }
+	public void IsHurt(bool state)
+	{
+		animator.SetBool("IsHurt", state);
+	}
 
-    public void IsBlockingLow(bool state)
-    {
-        animator.SetBool("IsBlockingLow", state);
-    }
-    public void IsBlockingAir(bool state)
-    {
-        animator.SetBool("IsBlockingAir", state);
-    }
+	public void IsBlocking(bool state)
+	{
+		animator.SetBool("IsBlocking", state);
+	}
 
-    public void IsDashing(bool state)
-    {
-        animator.SetBool("IsDashing", state);
-    }
+	public void IsBlockingLow(bool state)
+	{
+		animator.SetBool("IsBlockingLow", state);
+	}
+	public void IsBlockingAir(bool state)
+	{
+		animator.SetBool("IsBlockingAir", state);
+	}
 
-    public void IsRunning(bool state)
-    {
-        animator.SetBool("IsRunning", state);
-    }
+	public void IsDashing(bool state)
+	{
+		animator.SetBool("IsDashing", state);
+	}
 
-    public void Taunt()
-    {
-        animator.SetTrigger("Taunt");
-    }
+	public void IsRunning(bool state)
+	{
+		animator.SetBool("IsRunning", state);
+	}
 
-    public void Death()
-    {
-        animator.SetTrigger("Death");
-    }
+	public void Taunt()
+	{
+		animator.SetTrigger("Taunt");
+	}
 
-    public void Rebind()
-    {
-        animator.Rebind();
-    }
+	public void Death()
+	{
+		animator.SetTrigger("Death");
+	}
 
-    public Sprite GetCurrentSprite()
-    {
-        return _spriteRenderer.sprite;
-    }
+	public void Rebind()
+	{
+		animator.Rebind();
+	}
 
-    public int SetSpriteLibraryAsset(int skinNumber)
-    {
-        if (skinNumber > playerStatsSO.spriteLibraryAssets.Length - 1)
-        {
-            skinNumber = 0;
-        }
-        else if (skinNumber < 0)
-        {
-            skinNumber = playerStatsSO.spriteLibraryAssets.Length - 1;
-        }
-        _spriteLibrary.spriteLibraryAsset = playerStatsSO.spriteLibraryAssets[skinNumber];
-        return skinNumber;
-    }
+	public Sprite GetCurrentSprite()
+	{
+		return _spriteRenderer.sprite;
+	}
+
+	public int SetSpriteLibraryAsset(int skinNumber)
+	{
+		if (skinNumber > PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1)
+		{
+			skinNumber = 0;
+		}
+		else if (skinNumber < 0)
+		{
+			skinNumber = PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1;
+		}
+		_spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
+		return skinNumber;
+	}
 }

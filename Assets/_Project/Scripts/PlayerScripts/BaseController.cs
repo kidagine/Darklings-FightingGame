@@ -7,6 +7,7 @@ public class BaseController : MonoBehaviour
     protected BrainController _brainController;
     protected Player _player;
     protected PlayerMovement _playerMovement;
+    protected InputBuffer _inputBuffer;
 
 
     void Awake()
@@ -14,6 +15,7 @@ public class BaseController : MonoBehaviour
         _player = GetComponent<Player>();
         _playerMovement = GetComponent<PlayerMovement>();
         _brainController = GetComponent<BrainController>();
+        _inputBuffer = GetComponent<InputBuffer>();
     }
 
     public virtual void ActivateInput()

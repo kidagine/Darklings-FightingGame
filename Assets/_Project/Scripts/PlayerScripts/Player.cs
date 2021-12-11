@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
-	[SerializeField] private PlayerStatsSO _playerStats = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private Assist _assist = default;
 	[SerializeField] private Pushbox _groundPushbox = default;
@@ -18,6 +17,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private PlayerUI _otherPlayerUI;
 	private PlayerMovement _playerMovement;
 	private PlayerComboSystem _playerComboSystem;
+	private PlayerStats _playerStats;
 	private BrainController _controller;
 	private Audio _audio;
 	private AttackSO _currentAttack;
@@ -27,7 +27,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private int _lives = 2;
 	private bool _canAttack;
 
-	public PlayerStatsSO PlayerStats { get { return _playerStats; } private set { } }
+	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
@@ -45,6 +45,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
 		_playerComboSystem = GetComponent<PlayerComboSystem>();
+		_playerStats = GetComponent<PlayerStats>();
 		_audio = GetComponent<Audio>();
 	}
 
@@ -101,20 +102,20 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void MaxArcanaStats()
 	{
-		_arcana = _playerStats.maxArcana;
+		_arcana = _playerStats.PlayerStatsSO.maxArcana;
 		_playerUI.SetArcana(_arcana);
 	}
 
 	public void MaxHealthStats()
 	{
-		Health = _playerStats.maxHealth;
+		Health = _playerStats.PlayerStatsSO.maxHealth;
 		_playerUI.SetHealth(Health);
 	}
 
 	private void InitializeStats()
 	{
-		_playerUI.InitializeUI(_playerStats, _controller, _playerIcons);
-		Health = _playerStats.maxHealth;
+		_playerUI.InitializeUI(_playerStats.PlayerStatsSO, _controller, _playerIcons);
+		Health = _playerStats.PlayerStatsSO.maxHealth;
 		_playerUI.SetHealth(Health);
 	}
 
@@ -136,9 +137,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void ArcanaCharge()
 	{
-		if (_arcana < _playerStats.maxArcana && GameManager.Instance.HasGameStarted)
+		if (_arcana < _playerStats.PlayerStatsSO.maxArcana && GameManager.Instance.HasGameStarted)
 		{
-			_arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.arcanaRecharge);
+			_arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.PlayerStatsSO.arcanaRecharge);
 			_playerUI.SetArcana(_arcana);
 		}
 	}

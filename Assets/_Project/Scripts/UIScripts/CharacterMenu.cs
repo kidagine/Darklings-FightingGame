@@ -54,7 +54,7 @@ public class CharacterMenu : BaseMenu
 			{
 				_playerOneName.text = playerStats.characterName;
 				_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
-				_playerAnimatorOne.playerStatsSO = playerStats;
+				_playerAnimatorOne.PlayerStats.PlayerStatsSO = playerStats;
 			}
 			else
 			{
@@ -79,7 +79,7 @@ public class CharacterMenu : BaseMenu
 			{
 				_playerTwoName.text = playerStats.characterName;
 				_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
-				_playerAnimatorTwo.playerStatsSO = playerStats;
+				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = playerStats;
 			}
 			else
 			{
@@ -103,7 +103,7 @@ public class CharacterMenu : BaseMenu
 				_playerStats = _playerStatsArray[randomPlayer];
 				_playerOneName.text = _playerStats.characterName;
 				_spriteLibraryOne.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
-				_playerAnimatorOne.playerStatsSO = _playerStats;
+				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
 			_hpTextOne.text = $"HP {_playerStats.maxHealth}";
@@ -121,7 +121,7 @@ public class CharacterMenu : BaseMenu
 				_playerStats = _playerStatsArray[randomPlayer];
 				_playerTwoName.text = _playerStats.characterName;
 				_spriteLibraryTwo.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
-				_playerAnimatorTwo.playerStatsSO = _playerStats;
+				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
 			_hpTextTwo.text = $"HP {_playerStats.maxHealth}";

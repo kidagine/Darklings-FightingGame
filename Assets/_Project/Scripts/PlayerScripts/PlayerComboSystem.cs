@@ -2,52 +2,48 @@ using UnityEngine;
 
 public class PlayerComboSystem : MonoBehaviour
 {
-	[SerializeField] private AttackSO _2L = default;
-	[SerializeField] private AttackSO _4L = default;
-	[SerializeField] private AttackSO _5L = default;
-	[SerializeField] private AttackSO _6L = default;
-	[SerializeField] private AttackSO _jumpL = default;
-	[SerializeField] private ArcanaSO _arcana = default;
+	private PlayerStats _playerStats;
 	private PlayerMovement _playerMovement;
 
 
 	void Awake()
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
+		_playerStats = GetComponent<PlayerStats>();
 	}
 
 	public AttackSO GetComboAttack()
 	{
 		if (_playerMovement.IsCrouching && _playerMovement.IsGrounded)
 		{
-			return _2L;
+			return _playerStats.PlayerStatsSO.m2L;
 		}
 		else
 		{
 			if (!_playerMovement.IsGrounded)
 			{
-				return _jumpL;
+				return _playerStats.PlayerStatsSO.jumpL;
 			}
 			else if (_playerMovement.IsMoving)
 			{
 				if (_playerMovement.MovementInput.x * transform.localScale.x > 0.0f)
 				{
-					return _6L;
+					return _playerStats.PlayerStatsSO.m6L;
 				}
 				else
 				{
-					return _4L;
+					return _playerStats.PlayerStatsSO.m4L;
 				}
 			}
 			else
 			{
-				return _5L;
+				return _playerStats.PlayerStatsSO.m5L;
 			}
 		}
 	}
 
 	public ArcanaSO GetArcana()
 	{
-		return _arcana;
+		return _playerStats.PlayerStatsSO.arcana;
 	}
 }

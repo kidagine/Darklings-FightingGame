@@ -26,10 +26,11 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected GameObject _bottomLine = default;
 	[SerializeField] protected GameObject _leftStopper = default;
 	[SerializeField] protected GameObject _rightStopper = default;
+	[SerializeField] protected GameObject _player = default;
 	[SerializeField] protected GameObject _infiniteTime = default;
 	[SerializeField] private GameObject _trainingPrompts = default;
 	[SerializeField] private GameObject _inputHistory = default;
-	[SerializeField] private Player[] _characters = default;
+	[SerializeField] private PlayerStatsSO[] _playerStats = default;
 	[SerializeField] protected GameObject[] _stages = default;
 	[SerializeField] private BaseMenu _matchOverMenu = default;
 	[SerializeField] private Animator _readyAnimator = default;
@@ -80,8 +81,11 @@ public class GameManager : MonoBehaviour
 		{
 			_isTrainingMode = SceneSettings.IsTrainingMode;
 		}
-		GameObject playerOneObject = Instantiate(_characters[SceneSettings.PlayerOne].gameObject);
-		GameObject playerTwoObject = Instantiate(_characters[SceneSettings.PlayerTwo].gameObject);
+		GameObject playerOneObject = Instantiate(_player.gameObject);
+		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
+		GameObject playerTwoObject = Instantiate(_player.gameObject);
+		playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
+
 		_playerOneController = playerOneObject.GetComponent<BrainController>();
 		_playerTwoController = playerTwoObject.GetComponent<BrainController>();
 		PlayerOne = playerOneObject.GetComponent<Player>();
@@ -128,8 +132,8 @@ public class GameManager : MonoBehaviour
 		PlayerTwo.SetOtherPlayer(PlayerOne.transform);
 		PlayerTwo.IsPlayerOne = false;
 		_playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
-		PlayerOne.name = "PlayerOne";
-		PlayerTwo.name = "PlayerTwo";
+		PlayerOne.name = $"{_playerStats[SceneSettings.PlayerOne].name}({SceneSettings.ControllerOne})_player";
+		PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
 		_cinemachineTargetGroup.AddMember(PlayerOne.transform, 0.5f, 0.5f);
 		_cinemachineTargetGroup.AddMember(PlayerTwo.transform, 0.5f, 0.5f);
 	}
