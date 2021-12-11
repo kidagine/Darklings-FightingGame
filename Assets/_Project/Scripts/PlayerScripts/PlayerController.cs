@@ -101,6 +101,7 @@ public class PlayerController : BaseController
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Assist"))
 		{
 			_player.AssistAction();
+			_inputBuffer.CheckInput(InputEnum.Assist);
 		}
 	}
 

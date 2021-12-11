@@ -11,6 +11,7 @@ public class InputHistory : MonoBehaviour
 	[SerializeField] private Sprite _right = default;
 	[SerializeField] private Sprite _light = default;
 	[SerializeField] private Sprite _special = default;
+	[SerializeField] private Sprite _assist = default;
 	private readonly List<InputHistoryImage> _inputHistoryImages = new List<InputHistoryImage>();
 	private Coroutine _inputBreakCoroutine;
 	private Coroutine _inputSubItemCoroutine;
@@ -36,20 +37,20 @@ public class InputHistory : MonoBehaviour
 			{
 				StopCoroutine(_inputBreakCoroutine);
 			}
-			if (_inputSubItemCoroutine != null)
-			{
-				StopCoroutine(_inputSubItemCoroutine);
-			}
+
 
 			if (_isNextInputSubItem)
 			{
 				InputHistoryImage inputHistoryImage = _inputHistoryImages[_previousInputImageIndex];
-				_isNextInputSubItem = false;
 				Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, false);
 				SetInputImageSprite(image, inputEnum);
 			}
 			else
 			{
+				if (_inputSubItemCoroutine != null)
+				{
+					StopCoroutine(_inputSubItemCoroutine);
+				}
 				InputHistoryImage inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
 				if (_isNextInputBreak)
 				{
@@ -58,7 +59,7 @@ public class InputHistory : MonoBehaviour
 					IncreaseCurrentInputImageIndex();
 					inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
 				}
-				Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, false);
+				Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, true);
 				SetInputImageSprite(image, inputEnum);
 
 				IncreaseCurrentInputImageIndex();
@@ -117,6 +118,9 @@ public class InputHistory : MonoBehaviour
 				break;
 			case InputEnum.Special:
 				inputImage.sprite = _special;
+				break;
+			case InputEnum.Assist:
+				inputImage.sprite = _assist;
 				break;
 		}
 	}

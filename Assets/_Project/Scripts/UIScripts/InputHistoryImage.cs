@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class InputHistoryImage : MonoBehaviour
 {
 	private readonly List<InputTypes> _inputTypes = new List<InputTypes>();
-	public int CurrentInputHistoryIndex { get; private set; }
+	private int _previousIndex;
 
 
 	void Awake()
@@ -30,7 +30,6 @@ public class InputHistoryImage : MonoBehaviour
 				_inputTypes[i].gameObject.SetActive(false);
 			}
 		}
-		CurrentInputHistoryIndex++;
 		_inputTypes[index].gameObject.SetActive(true);
 		transform.SetAsFirstSibling();
 		return _inputTypes[index].transform.GetChild(0).GetComponent<Image>();
@@ -42,7 +41,6 @@ public class InputHistoryImage : MonoBehaviour
 		{
 			transform.GetChild(i).gameObject.SetActive(false);
 		}
-		CurrentInputHistoryIndex = 0;
 		transform.GetChild(0).gameObject.SetActive(false);
 		transform.SetAsFirstSibling();
 	}
