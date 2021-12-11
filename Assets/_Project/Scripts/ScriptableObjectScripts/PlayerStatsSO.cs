@@ -19,4 +19,11 @@ public class PlayerStatsSO : ScriptableObject
 	[Header("Arcana")]
 	public float maxArcana = 2;
 	public float arcanaRecharge = 1;
+	[Header("Moves")]
+	public AttackSO m2L;
+	public AttackSO m4L;
+	public AttackSO m5L;
+	public AttackSO m6L;
+	public AttackSO jumpL;
+	public ArcanaSO arcana;
 }

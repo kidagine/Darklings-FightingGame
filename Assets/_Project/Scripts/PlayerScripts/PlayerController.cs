@@ -1,8 +1,8 @@
 using UnityEngine;
 
+[RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
-	[SerializeField] private InputBuffer _inputBuffer = default;
 	private bool _hasJumped;
 	private bool reset;
 	private bool k;
