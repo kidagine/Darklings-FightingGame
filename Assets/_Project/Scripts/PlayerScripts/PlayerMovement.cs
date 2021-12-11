@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
-	[SerializeField] private PlayerStatsSO _playerStatsSO = default;
 	[SerializeField] private GameObject _dustUpPrefab = default;
 	[SerializeField] private GameObject _dustDownPrefab = default;
 	[SerializeField] private GameObject _dashPrefab = default;
@@ -13,6 +12,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private Player _player;
 	private BrainController _playerController;
 	private Rigidbody2D _rigidbody;
+	private PlayerStats _playerStats;
 	private Audio _audio;
 	private float _movementSpeed;
 	private bool _isMovementLocked;
@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	void Awake()
 	{
 		_player = GetComponent<Player>();
+		_playerStats = GetComponent<PlayerStats>();
 		_rigidbody = GetComponent<Rigidbody2D>();
 		_audio = GetComponent<Audio>();
 	}
@@ -42,7 +43,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	void Start()
 	{
-		_movementSpeed = _playerStatsSO.walkSpeed;
+		_movementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
 	}
 
 	void FixedUpdate()
@@ -139,13 +140,13 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		{
 			if (IsGrounded)
 			{
-				Jump(_playerStatsSO.jumpForce);
+				Jump(_playerStats.PlayerStatsSO.jumpForce);
 			}
 			else if (CanDoubleJump)
 			{
 				CanDoubleJump = false;
 				_playerAnimator.Rebind();
-				Jump(_playerStatsSO.jumpForce - 1.5f);
+				Jump(_playerStats.PlayerStatsSO.jumpForce - 1.5f);
 			}
 		}
 	}
@@ -165,7 +166,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_rigidbody.velocity = Vector2.zero;
 		if (MovementInput.x == 0.0f)
 		{
-			_rigidbody.AddForce(new Vector2(0.0f, _playerStatsSO.jumpForce), ForceMode2D.Impulse);
+			_rigidbody.AddForce(new Vector2(0.0f, _playerStats.PlayerStatsSO.jumpForce), ForceMode2D.Impulse);
 		}
 		else
 		{
@@ -286,7 +287,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			dashEffect.localScale = new Vector2(-1.0f, transform.localScale.y);
 			dashEffect.position = new Vector2(dashEffect.position.x + 1.0f, dashEffect.position.y);
 		}
-		_rigidbody.velocity = new Vector2(directionX, 0.0f) * _playerStatsSO.dashForce;
+		_rigidbody.velocity = new Vector2(directionX, 0.0f) * _playerStats.PlayerStatsSO.dashForce;
 		IsDashing = true;
 		ZeroGravity();
 		StartCoroutine(DashCoroutine());
@@ -311,7 +312,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		{
 			_audio.Sound("Run").Play();
 			_playerAnimator.IsRunning(true);
-			_movementSpeed = _playerStatsSO.runSpeed;
+			_movementSpeed = _playerStats.PlayerStatsSO.runSpeed;
 			IsDashing = false;
 			_player.CanFlip = true;
 			StartCoroutine(RunCoroutine());
@@ -329,7 +330,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	IEnumerator RunCoroutine()
 	{
-		while(_movementSpeed == _playerStatsSO.runSpeed)
+		while(_movementSpeed == _playerStats.PlayerStatsSO.runSpeed)
 		{
 			GameObject playerGhost = Instantiate(_playerGhostPrefab, transform.position, Quaternion.identity);
 			playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.localScale.x, Color.white);
@@ -346,7 +347,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		{
 			_player.SetPushboxTrigger(true);
 			_player.CanFlip = true;
-			Debug.Log(_player.CanFlip);
 		}
 		IsDashing = false;
 	}
@@ -364,10 +364,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	public void ResetToWalkSpeed()
 	{
 		_playerAnimator.IsRunning(false);
-		if (_movementSpeed == _playerStatsSO.runSpeed)
+		if (_movementSpeed == _playerStats.PlayerStatsSO.runSpeed)
 		{
 			_audio.Sound("Run").Stop();
-			_movementSpeed = _playerStatsSO.walkSpeed;
+			_movementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
 		}
 	}
 }
