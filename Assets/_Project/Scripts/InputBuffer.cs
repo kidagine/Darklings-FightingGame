@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class InputBuffer : MonoBehaviour
 {
-    [SerializeField] private InputHistory _inputHistory = default;
     private List<InputBufferAction> _inputBuffer = new List<InputBufferAction>();
-    private bool _actionAllowed = true;
+    private InputHistory _inputHistory;
+    private readonly bool _actionAllowed = true;
 
 
     void Update()
@@ -14,6 +14,11 @@ public class InputBuffer : MonoBehaviour
         {
             TryBufferedAction();
         }
+    }
+
+    public void Initialize(InputHistory inputHistory)
+    {
+        _inputHistory = inputHistory;
     }
 
     public void CheckInput(InputEnum inputEnum)
