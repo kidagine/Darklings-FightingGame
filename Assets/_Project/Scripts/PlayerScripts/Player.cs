@@ -164,7 +164,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public void ArcaneAction()
+	public bool ArcaneAction()
 	{
 		//REPLACE
 		if (_arcana >= 1.0f)
@@ -193,9 +193,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 					{
 						_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
 					}
+					return true;
 				}
 			}
 		}
+		return false;
 		//REPLACE
 	}
 
@@ -220,14 +222,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		return false;
 	}
 
-	public void AssistAction()
+	public bool AssistAction()
 	{
 		if (_assistGauge >= 1.0f)
 		{
 			_assist.Attack();
 			_assistGauge--;
 			_playerUI.SetAssist(_assistGauge);
+			return true;
 		}
+		return false;
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
