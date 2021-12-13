@@ -130,13 +130,15 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		return false;
 	}
 
-	public void StandUpAction()
+	public bool StandUpAction()
 	{
 		if (!_player.IsAttacking)
 		{
 			IsCrouching = false;
 			_playerAnimator.IsCrouching(false);
+			return true;
 		}
+		return false;
 	}
 
 	public void JumpAction()
