@@ -199,7 +199,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		//REPLACE
 	}
 
-	public void AttackAction()
+	public bool AttackAction()
 	{
 		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing)
 		{
@@ -215,7 +215,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
 			}
+			return true;
 		}
+		return false;
 	}
 
 	public void AssistAction()

@@ -3,48 +3,52 @@ using UnityEngine;
 
 public class InputBuffer : MonoBehaviour
 {
-    private List<InputBufferAction> _inputBuffer = new List<InputBufferAction>();
-    private InputHistory _inputHistory;
-    private readonly bool _actionAllowed = true;
+	private readonly Queue<InputBufferItem> _inputBuffer = new Queue<InputBufferItem>();
+	private InputHistory _inputHistory;
+	private Player _player;
 
 
-    void Update()
-    {
-        if (_actionAllowed)
-        {
-            TryBufferedAction();
-        }
-    }
+	void Start()
+	{
+		_player = GetComponent<Player>();
+	}
 
-    public void Initialize(InputHistory inputHistory)
-    {
-        _inputHistory = inputHistory;
-    }
+	void LateUpdate()
+	{
+		if (_inputBuffer.Count > 0)
+		{
+			InputBufferItem inputBufferItem = _inputBuffer.Peek();
+			if (!inputBufferItem.CheckIfValid())
+			{
+				_inputBuffer.Dequeue();
+			}
+		}
+	}
 
-    public void CheckInput(InputEnum inputEnum)
-    {
-        _inputHistory.AddInput(inputEnum);
-        _inputBuffer.Add(new InputBufferAction(InputBufferAction.InputAction.Jump, Time.time));
-    }
+	public void Initialize(InputHistory inputHistory)
+	{
+		_inputHistory = inputHistory;
+	}
 
-    private void TryBufferedAction()
-    {
-        if (_inputBuffer.Count > 0)
-        {
-            foreach (InputBufferAction ai in _inputBuffer.ToArray())
-            {
-                _inputBuffer.Remove(ai);
-                if (ai.CheckIfValid())
-                {
-                    DoAction(ai);
-                    break;
-                }
-            }
-        }
-    }
+	public void AddInputBufferItem(InputEnum inputEnum)
+	{
+		_inputHistory.AddInput(inputEnum);
+		if (inputEnum == InputEnum.Light)
+		{
+			_inputBuffer.Enqueue(new InputBufferItem(Time.time));
+			_inputBuffer.Peek().Execute += _player.AttackAction;
+			CheckForInputBufferItem();
+		}
+	}
 
-    private void DoAction(InputBufferAction ai)
-    {
-        //_actionAllowed = false;
-    }
+	public void CheckForInputBufferItem()
+	{
+		if (_inputBuffer.Count > 0)
+		{
+			if (_inputBuffer.Peek().Execute.Invoke())
+			{
+				_inputBuffer.Dequeue();
+			}
+		}
+	}
 }
