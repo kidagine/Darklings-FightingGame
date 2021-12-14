@@ -3815,7 +3815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterOne: 1
   _characterTwo: 0
-  _controllerOne: 3
+  _controllerOne: 1
   _controllerTwo: 2
   _isTrainingMode: 1
   _gameSpeed: 1
@@ -17550,22 +17550,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 54139524341407033, guid: 6aded20380bf8df4b891048839525825, type: 3}
-      propertyPath: _inputBuffer
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2927459616750962965, guid: 6aded20380bf8df4b891048839525825, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: d07b4c2442277164a847eaaa08ae9e05, type: 2}
-    - target: {fileID: 2927459616750962966, guid: 6aded20380bf8df4b891048839525825, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 7558774608278478110, guid: 93e500ebbc2769a4d848786e7ad37c3a, type: 3}
-    - target: {fileID: 2927459616750962967, guid: 6aded20380bf8df4b891048839525825, type: 3}
-      propertyPath: _playerStats
-      value: 
-      objectReference: {fileID: 3121622970324622412}
     - target: {fileID: 2927459616750962968, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: _trainingMenu
       value: 
@@ -17573,10 +17557,6 @@ PrefabInstance:
     - target: {fileID: 2927459617050941184, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_Name
       value: Main_player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2927459617050941184, guid: 6aded20380bf8df4b891048839525825, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2927459617050941186, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_RootOrder
@@ -17621,14 +17601,6 @@ PrefabInstance:
     - target: {fileID: 2927459617050941186, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5929950706269271766, guid: 6aded20380bf8df4b891048839525825, type: 3}
-      propertyPath: _inputHistory
-      value: 
-      objectReference: {fileID: 1613036431}
-    - target: {fileID: 9007122673975750544, guid: 6aded20380bf8df4b891048839525825, type: 3}
-      propertyPath: m_SpriteKey
-      value: 1.2362407e-29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6aded20380bf8df4b891048839525825, type: 3}
@@ -17902,17 +17874,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2927459617050941184, guid: 6aded20380bf8df4b891048839525825, type: 3}
   m_PrefabInstance: {fileID: 284384900880616264}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3121622970324622412 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1782628146633202438, guid: 6aded20380bf8df4b891048839525825, type: 3}
-  m_PrefabInstance: {fileID: 284384900880616264}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3121622970324622408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61034cc42f4411b4fb34b343e39bcf90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &3915933149034970274 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1727812373613708352, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
