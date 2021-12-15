@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-	public PlayerStatsSO PlayerStatsSO;
+	public PlayerStatsSO PlayerStatsSO { get; set; }
 }

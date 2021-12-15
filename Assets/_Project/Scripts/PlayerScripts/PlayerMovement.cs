@@ -114,7 +114,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_rigidbody.AddForce(new Vector2(travelDistance * 3.0f, 0.0f), ForceMode2D.Impulse);
 	}
 
-	public void CrouchAction()
+	public bool CrouchAction()
 	{
 		if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing)
 		{
@@ -125,13 +125,20 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			}
 			IsCrouching = true;
 			_playerAnimator.IsCrouching(true);
+			return true;
 		}
+		return false;
 	}
 
-	public void StandUpAction()
+	public bool StandUpAction()
 	{
-		IsCrouching = false;
-		_playerAnimator.IsCrouching(false);
+		if (!_player.IsAttacking)
+		{
+			IsCrouching = false;
+			_playerAnimator.IsCrouching(false);
+			return true;
+		}
+		return false;
 	}
 
 	public void JumpAction()

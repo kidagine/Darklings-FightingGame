@@ -3,43 +3,80 @@ using UnityEngine;
 
 public class InputBuffer : MonoBehaviour
 {
-    [SerializeField] private InputHistory _inputHistory = default;
-    private List<InputBufferAction> _inputBuffer = new List<InputBufferAction>();
-    private bool _actionAllowed = true;
+	private readonly Queue<InputBufferItem> _inputBuffer = new Queue<InputBufferItem>();
+	private InputHistory _inputHistory;
+	private Player _player;
+	private PlayerMovement _playerMovement;
 
 
-    void Update()
-    {
-        if (_actionAllowed)
-        {
-            TryBufferedAction();
-        }
-    }
+	void Start()
+	{
+		_player = GetComponent<Player>();
+		_playerMovement = GetComponent<PlayerMovement>();
+	}
 
-    public void CheckInput(InputEnum inputEnum)
-    {
-        _inputHistory.AddInput(inputEnum);
-        _inputBuffer.Add(new InputBufferAction(InputBufferAction.InputAction.Jump, Time.time));
-    }
+	void Update()
+	{
+		if (_inputBuffer.Count > 0)
+		{
+			InputBufferItem inputBufferItem = _inputBuffer.Peek();
+			if (!inputBufferItem.CheckIfValid())
+			{
+				_inputBuffer.Dequeue();
+			}
+		}
+	}
 
-    private void TryBufferedAction()
-    {
-        if (_inputBuffer.Count > 0)
-        {
-            foreach (InputBufferAction ai in _inputBuffer.ToArray())
-            {
-                _inputBuffer.Remove(ai);
-                if (ai.CheckIfValid())
-                {
-                    DoAction(ai);
-                    break;
-                }
-            }
-        }
-    }
+	public void Initialize(InputHistory inputHistory)
+	{
+		_inputHistory = inputHistory;
+	}
 
-    private void DoAction(InputBufferAction ai)
-    {
-        //_actionAllowed = false;
-    }
+	public void AddInputBufferItem(InputEnum inputEnum)
+	{
+		_inputHistory.AddInput(inputEnum);
+		InputBufferItem inputBufferItem = new InputBufferItem(Time.time);
+		_inputBuffer.Enqueue(inputBufferItem);
+
+		if (inputEnum == InputEnum.Down)
+		{
+			inputBufferItem.Execute += _playerMovement.CrouchAction;
+		}
+		if (inputEnum == InputEnum.Up)
+		{
+			inputBufferItem.Execute += _playerMovement.StandUpAction;
+		}
+		if (inputEnum == InputEnum.Left)
+		{
+			inputBufferItem.Execute += _playerMovement.CrouchAction;
+		}
+		if (inputEnum == InputEnum.Right)
+		{
+			inputBufferItem.Execute += _playerMovement.CrouchAction;
+		}
+		if (inputEnum == InputEnum.Light)
+		{
+			inputBufferItem.Execute += _player.AttackAction;
+		}
+		if (inputEnum == InputEnum.Special)
+		{
+			inputBufferItem.Execute += _player.ArcaneAction;
+		}
+		if (inputEnum == InputEnum.Assist)
+		{
+			inputBufferItem.Execute += _player.AssistAction;
+		}
+		CheckForInputBufferItem();
+	}
+
+	public void CheckForInputBufferItem()
+	{
+		if (_inputBuffer.Count > 0)
+		{
+			if (_inputBuffer.Peek().Execute.Invoke())
+			{
+				_inputBuffer.Dequeue();
+			}
+		}
+	}
 }

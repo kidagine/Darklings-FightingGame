@@ -14,6 +14,7 @@ public class PlayerController : BaseController
 	private float _dashInputCooldown2;
 
 
+
 	void Update()
 	{
 		if (!string.IsNullOrEmpty(_brainController.ControllerInputName) && _isControllerEnabled)
@@ -33,24 +34,24 @@ public class PlayerController : BaseController
 
 	private void Movement()
 	{
-		Vector2 currentInput = new Vector2(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
-		if (currentInput.x == 1.0f && _playerMovement.MovementInput.x != currentInput.x)
+		Vector2 inputDirection = new Vector2(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
+		if (inputDirection.x == 1.0f && _playerMovement.MovementInput.x != inputDirection.x)
 		{
-			_inputBuffer.CheckInput(InputEnum.Right);
+			_inputBuffer.AddInputBufferItem(InputEnum.Right);
 		}
-		if (currentInput.x == -1.0f && _playerMovement.MovementInput.x != currentInput.x)
+		if (inputDirection.x == -1.0f && _playerMovement.MovementInput.x != inputDirection.x)
 		{
-			_inputBuffer.CheckInput(InputEnum.Left);
+			_inputBuffer.AddInputBufferItem(InputEnum.Left);
 		}
-		if (currentInput.y == 1.0f && _playerMovement.MovementInput.y != currentInput.y)
+		if (inputDirection.y == 1.0f && _playerMovement.MovementInput.y != inputDirection.y)
 		{
-			_inputBuffer.CheckInput(InputEnum.Up);
+			_inputBuffer.AddInputBufferItem(InputEnum.Up);
 		}
-		if (currentInput.y == -1.0f && _playerMovement.MovementInput.y != currentInput.y)
+		if (inputDirection.y == -1.0f && _playerMovement.MovementInput.y != inputDirection.y)
 		{
-			_inputBuffer.CheckInput(InputEnum.Down);
+			_inputBuffer.AddInputBufferItem(InputEnum.Down);
 		}
-		_playerMovement.MovementInput = currentInput;
+		_playerMovement.MovementInput = inputDirection;
 	}
 
 	private void Jump()
@@ -82,8 +83,7 @@ public class PlayerController : BaseController
 	{
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Light"))
 		{
-			_player.AttackAction();
-			_inputBuffer.CheckInput(InputEnum.Light);
+			_inputBuffer.AddInputBufferItem(InputEnum.Light);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class PlayerController : BaseController
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Arcane"))
 		{
 			_player.ArcaneAction();
-			_inputBuffer.CheckInput(InputEnum.Special);
+			_inputBuffer.AddInputBufferItem(InputEnum.Special);
 		}
 	}
 
@@ -101,7 +101,7 @@ public class PlayerController : BaseController
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Assist"))
 		{
 			_player.AssistAction();
-			_inputBuffer.CheckInput(InputEnum.Assist);
+			_inputBuffer.AddInputBufferItem(InputEnum.Assist);
 		}
 	}
 

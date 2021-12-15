@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected GameObject _player = default;
 	[SerializeField] protected GameObject _infiniteTime = default;
 	[SerializeField] private GameObject _trainingPrompts = default;
-	[SerializeField] private GameObject _inputHistory = default;
+	[SerializeField] private InputHistory[] _inputHistories = default;
 	[SerializeField] private PlayerStatsSO[] _playerStats = default;
 	[SerializeField] protected GameObject[] _stages = default;
 	[SerializeField] private BaseMenu _matchOverMenu = default;
@@ -134,6 +134,8 @@ public class GameManager : MonoBehaviour
 		_playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
 		PlayerOne.name = $"{_playerStats[SceneSettings.PlayerOne].name}({SceneSettings.ControllerOne})_player";
 		PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
+		PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
+		PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
 		_cinemachineTargetGroup.AddMember(PlayerOne.transform, 0.5f, 0.5f);
 		_cinemachineTargetGroup.AddMember(PlayerTwo.transform, 0.5f, 0.5f);
 	}
@@ -205,13 +207,16 @@ public class GameManager : MonoBehaviour
 		{
 			IsCpuOff = true;
 			_countdownText.gameObject.SetActive(false);
-			_inputHistory.gameObject.SetActive(true);
+			_inputHistories[0].gameObject.SetActive(true);
+			_inputHistories[1].gameObject.SetActive(true);
 			_trainingPrompts.gameObject.SetActive(true);
 			HasGameStarted = true;
 			StartTrainingRound();
 		}
 		else
 		{
+			_inputHistories[0].gameObject.SetActive(false);
+			_inputHistories[1].gameObject.SetActive(false);
 			StartRound();
 		}
 	}

@@ -164,7 +164,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public void ArcaneAction()
+	public bool ArcaneAction()
 	{
 		//REPLACE
 		if (_arcana >= 1.0f)
@@ -193,13 +193,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 					{
 						_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
 					}
+					return true;
 				}
 			}
 		}
+		return false;
 		//REPLACE
 	}
 
-	public void AttackAction()
+	public bool AttackAction()
 	{
 		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing)
 		{
@@ -215,17 +217,21 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
 			}
+			return true;
 		}
+		return false;
 	}
 
-	public void AssistAction()
+	public bool AssistAction()
 	{
 		if (_assistGauge >= 1.0f)
 		{
 			_assist.Attack();
 			_assistGauge--;
 			_playerUI.SetAssist(_assistGauge);
+			return true;
 		}
+		return false;
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
@@ -291,11 +297,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerUI.SetHealth(Health);
 			if (HitMiddair)
 			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), 7.0f, attackSO.knockbackDuration);
+				_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, 0.0f), 7.0f, attackSO.knockbackDuration);
 			}
 			else
 			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
+				_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
 			}
 			IsAttacking = false;
 			if (Health <= 0)

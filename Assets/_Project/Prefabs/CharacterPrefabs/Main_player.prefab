@@ -572,6 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 2927459617050941190}
   _playerMovement: {fileID: 2927459617050941185}
+  _inputBuffer: {fileID: 0}
   _audio: {fileID: 3534142120346609210}
   _trainingMenu: {fileID: 0}
 --- !u!212 &2927459616750962966
@@ -615,7 +616,7 @@ SpriteRenderer:
   m_SortingLayerID: -906744669
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3658516147261104181, guid: 93e500ebbc2769a4d848786e7ad37c3a, type: 3}
+  m_Sprite: {fileID: 7558774608278478110, guid: 93e500ebbc2769a4d848786e7ad37c3a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -833,7 +834,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerAnimator: {fileID: 2927459616750962967}
-  _playerStatsSO: {fileID: 11400000, guid: 9fad6f01eb20d174da80212d97759474, type: 2}
   _dustUpPrefab: {fileID: 9041336035022670361, guid: ad15da3df396bae498f8ee45fe235ca4, type: 3}
   _dustDownPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
   _dashPrefab: {fileID: 5833315189278568593, guid: d1a8205ac964ba545b3fc474fd11b27e, type: 3}
@@ -1034,7 +1034,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61034cc42f4411b4fb34b343e39bcf90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerStatsSO: {fileID: 11400000, guid: c9e23a7166185be40a239bb9e6a2d29e, type: 2}
 --- !u!1 &2927459617286883833
 GameObject:
   m_ObjectHideFlags: 0
