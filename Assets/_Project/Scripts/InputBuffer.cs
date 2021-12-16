@@ -47,15 +47,15 @@ public class InputBuffer : MonoBehaviour
 			}
 			else if (inputDirectionEnum == InputDirectionEnum.Down)
 			{
-				inputBufferItem.Execute += _playerMovement.StandUpAction;
+				inputBufferItem.Execute += _playerMovement.CrouchAction;
 			}
 			else if(inputDirectionEnum == InputDirectionEnum.Left)
 			{
-				inputBufferItem.Execute += _playerMovement.CrouchAction;
+				inputBufferItem.Execute += () => { _playerMovement.MovementInput = Vector2.left; return true; };
 			}
 			else if(inputDirectionEnum == InputDirectionEnum.Right)
 			{
-				inputBufferItem.Execute += _playerMovement.CrouchAction;
+				inputBufferItem.Execute += () => { _playerMovement.MovementInput = Vector2.right; return true; };
 			}
 		}
 		else if(inputEnum == InputEnum.Light)
