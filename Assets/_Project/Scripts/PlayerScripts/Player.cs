@@ -280,6 +280,21 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.IsHurt(true);
 		GameObject effect = Instantiate(attackSO.hurtEffect);
 		effect.transform.localPosition = attackSO.hurtEffectPosition;
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways)
+		{
+			if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
+			{
+				BlockingHigh = true;
+			}
+			else if (attackSO.attackTypeEnum == AttackTypeEnum.Middling)
+			{
+				BlockingHigh = true;
+			}
+			else if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
+			{
+				BlockingLow = true;
+			}
+		}
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
 			if (IsAttacking)

@@ -161,6 +161,19 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
+	public void SetBlock(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				TrainingSettings.BlockAlways = false;
+				break;
+			case 1:
+				TrainingSettings.BlockAlways = true;
+				break;
+		}
+	}
+
 	public void ResetTrainingOptions()
 	{
 		TrainingSettings.ShowHitboxes = false;
