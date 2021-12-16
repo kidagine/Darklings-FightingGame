@@ -37,19 +37,19 @@ public class PlayerController : BaseController
 		Vector2 inputDirection = new Vector2(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
 		if (inputDirection.x == 1.0f && _playerMovement.MovementInput.x != inputDirection.x)
 		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Right);
+			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
 		}
 		if (inputDirection.x == -1.0f && _playerMovement.MovementInput.x != inputDirection.x)
 		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Left);
+			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
 		}
 		if (inputDirection.y == 1.0f && _playerMovement.MovementInput.y != inputDirection.y)
 		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Up);
+			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
 		}
 		if (inputDirection.y == -1.0f && _playerMovement.MovementInput.y != inputDirection.y)
 		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Down);
+			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
 		}
 		_playerMovement.MovementInput = inputDirection;
 	}
