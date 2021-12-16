@@ -6,7 +6,8 @@ public class TrainingMenu : BaseMenu
 {
 	[SerializeField] private GameObject _p1 = default;
 	[SerializeField] private GameObject _p2 = default;
-	[SerializeField] private GameObject _inputHistory = default;
+	[SerializeField] private InputHistory _inputHistoryOne = default;
+	[SerializeField] private InputHistory _inputHistoryTwo = default;
 	[SerializeField] private TextMeshProUGUI _framedataOneText = default;
 	[SerializeField] private TextMeshProUGUI _framedataTwoText = default;
 	[SerializeField] private RectTransform _scrollView = default;
@@ -153,10 +154,12 @@ public class TrainingMenu : BaseMenu
 		switch (value)
 		{
 			case 0:
-				_inputHistory.SetActive(false);
+				_inputHistoryOne.gameObject.SetActive(false);
+				_inputHistoryTwo.gameObject.SetActive(false);
 				break;
 			case 1:
-				_inputHistory.SetActive(true);
+				_inputHistoryOne.gameObject.SetActive(true);
+				_inputHistoryTwo.gameObject.SetActive(true);
 				break;
 		}
 	}
