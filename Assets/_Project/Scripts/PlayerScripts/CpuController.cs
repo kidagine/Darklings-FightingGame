@@ -32,7 +32,7 @@ public class CpuController : BaseController
     IEnumerator MovementCoroutine()
     {
         float waitTime;
-        while (_isControllerEnabled && !GameManager.Instance.IsCpuOff)
+        while (IsControllerEnabled && !GameManager.Instance.IsCpuOff)
         {
             int movementRandom;
             if (_distance <= 6.5f)
@@ -92,7 +92,7 @@ public class CpuController : BaseController
 
     IEnumerator AttackCoroutine()
     {
-        while (_isControllerEnabled && !GameManager.Instance.IsCpuOff)
+        while (IsControllerEnabled && !GameManager.Instance.IsCpuOff)
         {
             if (_distance <= 6.5f)
             {

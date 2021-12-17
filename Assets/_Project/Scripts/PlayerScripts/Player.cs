@@ -26,6 +26,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private float _assistGauge = 1.0f;
 	private int _lives = 2;
 	private bool _canAttack;
+	private bool _isStunned;
 
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
@@ -280,7 +281,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.IsHurt(true);
 		GameObject effect = Instantiate(attackSO.hurtEffect);
 		effect.transform.localPosition = attackSO.hurtEffectPosition;
-		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways)
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !_isStunned)
 		{
 			if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
 			{
@@ -473,6 +474,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (_stunCoroutine != null)
 		{
+			_isStunned = false;
 			StopCoroutine(_stunCoroutine);
 		}
 	}
@@ -487,6 +489,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	IEnumerator StunCoroutine(float hitStun)
 	{
+		_isStunned = true;
 		_playerMovement.SetLockMovement(true);
 		_controller.DeactivateInput();
 		yield return new WaitForSeconds(hitStun);
@@ -497,6 +500,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerAnimator.IsHurt(false);
 		}
 		_otherPlayerUI.ResetCombo();
+		_isStunned = false;
 	}
 
 	public void Pause(bool isPlayerOne)
