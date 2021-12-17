@@ -9,6 +9,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Pushbox _groundPushbox = default;
 	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
+	[SerializeField] private GameObject _blockEffectPrefab = default;
 	[SerializeField] private Transform _effectsParent = default;
 	[SerializeField] private Transform _keepFlip = default;
 	[SerializeField] private GameObject[] _playerIcons = default;
@@ -279,8 +280,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			HitMiddair = true;
 		}
 		_playerAnimator.IsHurt(true);
-		GameObject effect = Instantiate(attackSO.hurtEffect);
-		effect.transform.localPosition = attackSO.hurtEffectPosition;
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !_isStunned)
 		{
 			if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
@@ -298,6 +297,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
+			GameObject effect = Instantiate(attackSO.hurtEffect);
+			effect.transform.localPosition = attackSO.hurtEffectPosition;
 			if (IsAttacking)
 			{
 				_otherPlayerUI.DisplayNotification("Punish");
@@ -329,6 +330,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else
 		{
+			GameObject effect = Instantiate(_blockEffectPrefab);
+			effect.transform.localPosition = attackSO.hurtEffectPosition;
 			_audio.Sound("Block").Play();
 			IsBlocking = true;
 			if (!BlockingMiddair)
