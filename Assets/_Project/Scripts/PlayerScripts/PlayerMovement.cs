@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private BrainController _playerController;
 	private Rigidbody2D _rigidbody;
 	private PlayerStats _playerStats;
+	private InputBuffer _inputBuffer;
 	private Audio _audio;
 	private float _movementSpeed;
 	private bool _isMovementLocked;
@@ -32,6 +33,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_player = GetComponent<Player>();
 		_playerStats = GetComponent<PlayerStats>();
 		_rigidbody = GetComponent<Rigidbody2D>();
+		_inputBuffer = GetComponent<InputBuffer>();
 		_audio = GetComponent<Audio>();
 	}
 
@@ -334,6 +336,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			IsDashing = false;
 			_player.CanFlip = true;
 		}
+		yield return null;
+		_inputBuffer.CheckForInputBufferItem();
 	}
 
 	IEnumerator RunCoroutine()
