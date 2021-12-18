@@ -1781,6 +1781,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1604159751985950001, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
   m_PrefabInstance: {fileID: 372267964}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &265733252 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2927459616750962968, guid: 6aded20380bf8df4b891048839525825, type: 3}
+  m_PrefabInstance: {fileID: 284384900880616264}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bc45b9d7a26534592c4041db23c677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &276026590
 GameObject:
   m_ObjectHideFlags: 0
@@ -2894,7 +2905,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: 100}
+  m_AnchoredPosition: {x: -500, y: 80}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &366485811
@@ -3864,7 +3875,7 @@ MonoBehaviour:
   _characterOne: 1
   _characterTwo: 0
   _controllerOne: 1
-  _controllerTwo: 5
+  _controllerTwo: 2
   _isTrainingMode: 1
   _gameSpeed: 1
   _playerOneUI: {fileID: 1311574451}
@@ -9405,7 +9416,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 500, y: 100}
+  m_AnchoredPosition: {x: 500, y: 80}
   m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1117812849
@@ -17958,12 +17969,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2410431835520761990, guid: 6aded20380bf8df4b891048839525825, type: 3}
+      propertyPath: m_Size.y
+      value: 1.1875
+      objectReference: {fileID: 0}
+    - target: {fileID: 2410431835520761990, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2410431835520761990, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2927459616750962965, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_Controller
@@ -18053,6 +18068,10 @@ PrefabInstance:
       propertyPath: m_SpriteLibraryAsset
       value: 
       objectReference: {fileID: 7108339969198208228, guid: c651c2267f228f549939994b207034d8, type: 3}
+    - target: {fileID: 7981741886089882636, guid: 6aded20380bf8df4b891048839525825, type: 3}
+      propertyPath: _playerAnimationEvents
+      value: 
+      objectReference: {fileID: 265733252}
     - target: {fileID: 9007122673975750544, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_SpriteKey
       value: 0

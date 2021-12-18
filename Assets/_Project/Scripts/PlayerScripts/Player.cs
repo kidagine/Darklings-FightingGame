@@ -23,6 +23,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Audio _audio;
 	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
+	private Coroutine _blockCoroutine;
 	private float _arcana;
 	private float _assistGauge = 1.0f;
 	private int _lives = 2;
@@ -126,6 +127,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		ArcanaCharge();
 		AssistCharge();
 		CheckFlip();
+		CheckIsBlocking();
 	}
 
 	private void AssistCharge()
@@ -162,7 +164,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				transform.localScale = new Vector2(-1.0f, transform.localScale.y);
 				_keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
 			}
-			CheckIsBlocking();
 		}
 	}
 
@@ -280,6 +281,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			HitMiddair = true;
 		}
 		_playerAnimator.IsHurt(true);
+
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !_isStunned)
 		{
 			if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
@@ -295,6 +297,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				BlockingLow = true;
 			}
 		}
+
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
 			GameObject effect = Instantiate(attackSO.hurtEffect);
@@ -333,7 +336,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			GameObject effect = Instantiate(_blockEffectPrefab);
 			effect.transform.localPosition = attackSO.hurtEffectPosition;
 			_audio.Sound("Block").Play();
-			IsBlocking = true;
 			if (!BlockingMiddair)
 			{
 				if (BlockingLow)
@@ -349,17 +351,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				_playerAnimator.IsBlockingAir(true);
 			}
-			_playerMovement.SetLockMovement(true);
-			StartCoroutine(ResetBlockingCoroutine());
+
+			IsBlocking = true;
+			if (_blockCoroutine != null)
+			{
+				StopCoroutine(_blockCoroutine);
+			}
+			_blockCoroutine = StartCoroutine(ResetBlockingCoroutine(attackSO.hitStun));
 			return false;
 		}
 	}
 
-	IEnumerator ResetBlockingCoroutine()
+	IEnumerator ResetBlockingCoroutine(float blockStun)
 	{
-		yield return new WaitForSeconds(0.25f);
+		yield return new WaitForSeconds(blockStun);
 		IsBlocking = false;
-		_playerMovement.SetLockMovement(false);
+		_controller.ActivateInput();
 		_playerAnimator.IsHurt(false);
 		_playerAnimator.IsBlocking(false);
 		_playerAnimator.IsBlockingLow(false);
@@ -370,7 +377,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (!IsAttacking && !_playerMovement.IsDashing)
 		{
-			if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
+			if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f 
+				|| transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
 			{
 				if (_playerMovement.IsGrounded)
 				{
