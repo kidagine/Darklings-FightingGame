@@ -90,6 +90,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_arcana = 0.0f;
 		}
+		_otherPlayerUI.ResetCombo();
 		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(_arcana);
 		_playerUI.SetAssist(_assistGauge);
