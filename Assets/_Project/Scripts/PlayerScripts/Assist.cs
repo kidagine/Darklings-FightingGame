@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Assist : MonoBehaviour, IHitboxResponder
 {
-    [SerializeField] private Animator _animator = default;
-    [SerializeField] private AssistStatsSO _assistStatsSO = default;
+	[SerializeField] private Animator _animator = default;
+	[SerializeField] private AssistStatsSO _assistStatsSO = default;
 	[SerializeField] private GameObject _projectilePrefab = default;
 	[SerializeField] private GameObject _smokePrefab = default;
 	private Audio _audio;
@@ -48,6 +48,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
 
 	public void HitboxCollidedGround(RaycastHit2D hit)
 	{
+		_audio.Sound("Destroyed").Play();
 		GameObject effect = Instantiate(_smokePrefab);
 		effect.transform.localPosition = hit.point;
 	}

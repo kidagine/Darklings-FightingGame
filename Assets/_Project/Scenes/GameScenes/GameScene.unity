@@ -3875,7 +3875,7 @@ MonoBehaviour:
   _characterOne: 1
   _characterTwo: 0
   _controllerOne: 1
-  _controllerTwo: 5
+  _controllerTwo: 2
   _isTrainingMode: 1
   _gameSpeed: 1
   _playerOneUI: {fileID: 1311574451}
@@ -15937,9 +15937,17 @@ MonoBehaviour:
   _sounds:
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 9b0e9f32fb0e18241ad1334617591878, type: 3}
-    volume: 1
+    volume: 0.75
     pitch: 1.2
     name: Attack
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: bd4014f34eadb954c8f82fbc98e0bd6b, type: 3}
+    volume: 0.8
+    pitch: 1
+    name: Destroyed
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0
