@@ -227,7 +227,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool AssistAction()
 	{
-		if (_assistGauge >= 1.0f && !_isStunned)
+		if (_assistGauge >= 1.0f && !_isStunned && !IsBlocking)
 		{
 			_assist.Attack();
 			_assistGauge--;
