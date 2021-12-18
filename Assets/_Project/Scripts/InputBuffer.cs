@@ -38,7 +38,7 @@ public class InputBuffer : MonoBehaviour
 		InputBufferItem inputBufferItem = new InputBufferItem(Time.time);
 		_inputBuffer.Enqueue(inputBufferItem);
 
-
+	
 		if (inputEnum == InputEnum.Direction)
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Up)
@@ -49,17 +49,16 @@ public class InputBuffer : MonoBehaviour
 			{
 				inputBufferItem.Execute += _playerMovement.CrouchAction;
 			}
-			else if (inputDirectionEnum == InputDirectionEnum.Left)
+			else if(inputDirectionEnum == InputDirectionEnum.Left)
 			{
-				inputBufferItem.Execute += _playerMovement.StandUpAction;
+				inputBufferItem.Execute += () => { _playerMovement.MovementInput = Vector2.left; return true; };
 			}
-			else if (inputDirectionEnum == InputDirectionEnum.Right)
+			else if(inputDirectionEnum == InputDirectionEnum.Right)
 			{
-				inputBufferItem.Execute += _playerMovement.StandUpAction;
+				inputBufferItem.Execute += () => { _playerMovement.MovementInput = Vector2.right; return true; };
 			}
 		}
-
-		if (inputEnum == InputEnum.Light)
+		else if(inputEnum == InputEnum.Light)
 		{
 			inputBufferItem.Execute += _player.AttackAction;
 		}

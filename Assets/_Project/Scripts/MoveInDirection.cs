@@ -19,7 +19,7 @@ public class MoveInDirection : MonoBehaviour
 	{
 		if (_isFixed)
 		{
-			_rigidbody.velocity = transform.right * _speed;
+			_rigidbody.velocity = (transform.right * transform.root.localScale.x) * _speed;
 		}
 		else
 		{
