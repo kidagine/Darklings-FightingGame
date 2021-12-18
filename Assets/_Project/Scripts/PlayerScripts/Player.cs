@@ -227,7 +227,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool AssistAction()
 	{
-		if (_assistGauge >= 1.0f)
+		if (_assistGauge >= 1.0f && !_isStunned)
 		{
 			_assist.Attack();
 			_assistGauge--;
@@ -282,7 +282,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		_playerAnimator.IsHurt(true);
 
-		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !_isStunned)
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !_isStunned && GameManager.Instance.IsCpuOff)
 		{
 			if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
 			{

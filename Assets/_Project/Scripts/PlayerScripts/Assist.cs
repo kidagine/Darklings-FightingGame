@@ -1,3 +1,4 @@
+using Demonics.Sounds;
 using UnityEngine;
 
 public class Assist : MonoBehaviour, IHitboxResponder
@@ -6,6 +7,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
     [SerializeField] private AssistStatsSO _assistStatsSO = default;
 	[SerializeField] private GameObject _projectilePrefab = default;
 	[SerializeField] private GameObject _smokePrefab = default;
+	private Audio _audio;
 	private Transform _player;
 
 	public AssistStatsSO AssistStats { get { return _assistStatsSO; } private set { } }
@@ -14,10 +16,12 @@ public class Assist : MonoBehaviour, IHitboxResponder
 	private void Awake()
 	{
 		_player = transform.root;
+		_audio = GetComponent<Audio>();
 	}
 
 	public void Attack()
 	{
+		_audio.Sound("Attack").Play();
 		transform.SetParent(_player);
 		_animator.SetTrigger("Attack");
 		transform.localPosition = AssistStats.assistPosition;
