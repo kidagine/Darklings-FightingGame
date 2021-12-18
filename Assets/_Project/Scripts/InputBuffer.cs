@@ -32,37 +32,41 @@ public class InputBuffer : MonoBehaviour
 		_inputHistory = inputHistory;
 	}
 
-	public void AddInputBufferItem(InputEnum inputEnum)
+	public void AddInputBufferItem(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
-		_inputHistory.AddInput(inputEnum);
+		_inputHistory.AddInput(inputEnum, inputDirectionEnum);
 		InputBufferItem inputBufferItem = new InputBufferItem(Time.time);
 		_inputBuffer.Enqueue(inputBufferItem);
 
-		if (inputEnum == InputEnum.Down)
+	
+		if (inputEnum == InputEnum.Direction)
 		{
-			inputBufferItem.Execute += _playerMovement.CrouchAction;
+			if (inputDirectionEnum == InputDirectionEnum.Up)
+			{
+				inputBufferItem.Execute += _playerMovement.StandUpAction;
+			}
+			else if (inputDirectionEnum == InputDirectionEnum.Down)
+			{
+				inputBufferItem.Execute += _playerMovement.CrouchAction;
+			}
+			else if(inputDirectionEnum == InputDirectionEnum.Left)
+			{
+				inputBufferItem.Execute += () => { _playerMovement.MovementInput = Vector2.left; return true; };
+			}
+			else if(inputDirectionEnum == InputDirectionEnum.Right)
+			{
+				inputBufferItem.Execute += () => { _playerMovement.MovementInput = Vector2.right; return true; };
+			}
 		}
-		if (inputEnum == InputEnum.Up)
-		{
-			inputBufferItem.Execute += _playerMovement.StandUpAction;
-		}
-		if (inputEnum == InputEnum.Left)
-		{
-			inputBufferItem.Execute += _playerMovement.CrouchAction;
-		}
-		if (inputEnum == InputEnum.Right)
-		{
-			inputBufferItem.Execute += _playerMovement.CrouchAction;
-		}
-		if (inputEnum == InputEnum.Light)
+		else if(inputEnum == InputEnum.Light)
 		{
 			inputBufferItem.Execute += _player.AttackAction;
 		}
-		if (inputEnum == InputEnum.Special)
+		else if(inputEnum == InputEnum.Special)
 		{
 			inputBufferItem.Execute += _player.ArcaneAction;
 		}
-		if (inputEnum == InputEnum.Assist)
+		else if(inputEnum == InputEnum.Assist)
 		{
 			inputBufferItem.Execute += _player.AssistAction;
 		}

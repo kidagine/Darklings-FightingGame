@@ -4,7 +4,10 @@ using UnityEngine;
 public class MoveInDirection : MonoBehaviour
 {
 	[SerializeField] private float _speed = 4.0f;
-    private Rigidbody2D _rigidbody;
+	[SerializeField] private bool _isFixed = default;
+	private Rigidbody2D _rigidbody;
+
+	public Vector2 Direction { get; set; }
 
 
 	void Awake()
@@ -13,7 +16,14 @@ public class MoveInDirection : MonoBehaviour
 	}
 
 	void Update()
-    {
-		_rigidbody.velocity = transform.right * _speed;
+	{
+		if (_isFixed)
+		{
+			_rigidbody.velocity = (transform.right * transform.root.localScale.x) * _speed;
+		}
+		else
+		{
+			_rigidbody.velocity = Direction * _speed;
+		}
 	}
 }

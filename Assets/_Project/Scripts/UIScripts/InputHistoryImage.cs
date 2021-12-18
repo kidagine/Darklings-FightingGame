@@ -4,40 +4,38 @@ using UnityEngine.UI;
 
 public class InputHistoryImage : MonoBehaviour
 {
-	private readonly List<InputTypes> _inputTypes = new List<InputTypes>();
-	private int _previousIndex;
-
+	public List<InputTypes> InputTypes { get; private set; }  = new List<InputTypes>();
 
 	void Awake()
 	{
 		foreach (Transform child in transform)
 		{
-			_inputTypes.Add(child.GetComponent<InputTypes>());
+			InputTypes.Add(child.GetComponent<InputTypes>());
 		}
 	}
 
 	public Image ActivateHistoryImage(InputEnum inputEnum, bool reset)
 	{
 		int index = 0;
-		for (int i = 0; i < _inputTypes.Count; i++)
+		for (int i = 0; i < InputTypes.Count; i++)
 		{
-			if (_inputTypes[i].InputEnum == inputEnum)
+			if (InputTypes[i].InputEnum == inputEnum)
 			{
 				index = i;
 			}
 			if (reset)
 			{
-				_inputTypes[i].gameObject.SetActive(false);
+				InputTypes[i].gameObject.SetActive(false);
 			}
 		}
-		_inputTypes[index].gameObject.SetActive(true);
+		InputTypes[index].gameObject.SetActive(true);
 		transform.SetAsFirstSibling();
-		return _inputTypes[index].transform.GetChild(0).GetComponent<Image>();
+		return InputTypes[index].transform.GetChild(0).GetComponent<Image>();
 	}
 
 	public void ActivateEmptyHistoryImage()
 	{
-		for (int i = 0; i < _inputTypes.Count; i++)
+		for (int i = 0; i < InputTypes.Count; i++)
 		{
 			transform.GetChild(i).gameObject.SetActive(false);
 		}

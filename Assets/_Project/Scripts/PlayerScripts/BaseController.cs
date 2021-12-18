@@ -3,12 +3,12 @@ using UnityEngine;
 public class BaseController : MonoBehaviour
 {
     protected bool _trainingController;
-    protected bool _isControllerEnabled = true;
     protected BrainController _brainController;
     protected Player _player;
     protected PlayerMovement _playerMovement;
     protected InputBuffer _inputBuffer;
 
+	public bool IsControllerEnabled { get; set; } = true;
 
     void Awake()
     {
@@ -20,11 +20,11 @@ public class BaseController : MonoBehaviour
 
     public virtual void ActivateInput()
     {
-        _isControllerEnabled = true;
+        IsControllerEnabled = true;
     }
 
     public virtual void DeactivateInput()
     {
-        _isControllerEnabled = false;
+        IsControllerEnabled = false;
     }
 }

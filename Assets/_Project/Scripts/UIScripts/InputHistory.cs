@@ -30,9 +30,9 @@ public class InputHistory : MonoBehaviour
 		}	
 	}
 
-	public void AddInput(InputEnum inputEnum)
+	public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
-		if (_inputHistoryImages.Count > 0)
+		if (_inputHistoryImages.Count > 0 && gameObject.activeSelf)
 		{
 			if (_inputBreakCoroutine != null)
 			{
@@ -44,7 +44,7 @@ public class InputHistory : MonoBehaviour
 			{
 				InputHistoryImage inputHistoryImage = _inputHistoryImages[_previousInputImageIndex];
 				Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, false);
-				SetInputImageSprite(image, inputEnum);
+				SetInputImageSprite(image, inputEnum, inputDirectionEnum);
 				_inputEnums.Add(inputEnum);
 			}
 			else
@@ -62,7 +62,7 @@ public class InputHistory : MonoBehaviour
 					inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
 				}
 				Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, true);
-				SetInputImageSprite(image, inputEnum);
+				SetInputImageSprite(image, inputEnum, inputDirectionEnum);
 				_inputEnums.Add(inputEnum);
 
 				IncreaseCurrentInputImageIndex();
@@ -101,21 +101,26 @@ public class InputHistory : MonoBehaviour
 		}
 	}
 
-	private void SetInputImageSprite(Image inputImage, InputEnum inputEnum)
+	private void SetInputImageSprite(Image inputImage, InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
 		switch (inputEnum)
 		{
-			case InputEnum.Up:
-				inputImage.sprite = _up;
-				break;
-			case InputEnum.Down:
-				inputImage.sprite = _down;
-				break;
-			case InputEnum.Left:
-				inputImage.sprite = _left;
-				break;
-			case InputEnum.Right:
-				inputImage.sprite = _right;
+			case InputEnum.Direction:
+				switch (inputDirectionEnum)
+				{
+					case InputDirectionEnum.Up:
+						inputImage.sprite = _up;
+						break;
+					case InputDirectionEnum.Down:
+						inputImage.sprite = _down;
+						break;
+					case InputDirectionEnum.Left:
+						inputImage.sprite = _left;
+						break;
+					case InputDirectionEnum.Right:
+						inputImage.sprite = _right;
+						break;
+				}
 				break;
 			case InputEnum.Light:
 				inputImage.sprite = _light;

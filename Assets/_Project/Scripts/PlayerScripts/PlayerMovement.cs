@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private BrainController _playerController;
 	private Rigidbody2D _rigidbody;
 	private PlayerStats _playerStats;
+	private InputBuffer _inputBuffer;
 	private Audio _audio;
 	private float _movementSpeed;
 	private bool _isMovementLocked;
@@ -32,6 +33,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_player = GetComponent<Player>();
 		_playerStats = GetComponent<PlayerStats>();
 		_rigidbody = GetComponent<Rigidbody2D>();
+		_inputBuffer = GetComponent<InputBuffer>();
 		_audio = GetComponent<Audio>();
 	}
 
@@ -74,37 +76,42 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	private void Movement()
 	{
-		if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_onTopOfPlayer && !IsDashing    )
+		if (_player.IsBlocking)
 		{
-			if (!_isMovementLocked)
+			MovementInput = new Vector2(0.0f, MovementInput.y);
+		}
+		if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
+		{
+			_rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
+			_playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
+			if (_rigidbody.velocity.x != 0.0f)
 			{
-				_rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
-				_playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
-				if (_rigidbody.velocity.x != 0.0f)
+				if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
 				{
-					if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
-					{
-						_player.ArcaneSlowdown = 4.5f;
-					}
-					else if (_rigidbody.velocity.x < 0.0f && transform.localScale.x == -1.0f)
-					{
-						_player.ArcaneSlowdown = 4.5f;
-					}
-					else
-					{
-						ResetToWalkSpeed();
-					}
-					IsMoving = true;
-					_playerAnimator.SetMove(true);
+					_player.ArcaneSlowdown = 4.5f;
+				}
+				else if (_rigidbody.velocity.x < 0.0f && transform.localScale.x == -1.0f)
+				{
+					_player.ArcaneSlowdown = 4.5f;
 				}
 				else
 				{
 					ResetToWalkSpeed();
-					_player.ArcaneSlowdown = 6.0f;
-					IsMoving = false;
-					_playerAnimator.SetMove(false);
 				}
+				IsMoving = true;
+				_playerAnimator.SetMove(true);
 			}
+			else
+			{
+				ResetToWalkSpeed();
+				IsMoving = false;
+				_player.ArcaneSlowdown = 6.0f;
+				_playerAnimator.SetMove(false);
+			}
+		}
+		else
+		{
+			IsMoving = false;
 		}
 	}
 
@@ -333,6 +340,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			IsDashing = false;
 			_player.CanFlip = true;
 		}
+		yield return null;
+		_inputBuffer.CheckForInputBufferItem();
 	}
 
 	IEnumerator RunCoroutine()

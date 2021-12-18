@@ -1,3 +1,4 @@
+using Demonics.Sounds;
 using UnityEngine;
 
 public class Assist : MonoBehaviour, IHitboxResponder
@@ -6,6 +7,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
     [SerializeField] private AssistStatsSO _assistStatsSO = default;
 	[SerializeField] private GameObject _projectilePrefab = default;
 	[SerializeField] private GameObject _smokePrefab = default;
+	private Audio _audio;
 	private Transform _player;
 
 	public AssistStatsSO AssistStats { get { return _assistStatsSO; } private set { } }
@@ -14,10 +16,12 @@ public class Assist : MonoBehaviour, IHitboxResponder
 	private void Awake()
 	{
 		_player = transform.root;
+		_audio = GetComponent<Audio>();
 	}
 
 	public void Attack()
 	{
+		_audio.Sound("Attack").Play();
 		transform.SetParent(_player);
 		_animator.SetTrigger("Attack");
 		transform.localPosition = AssistStats.assistPosition;
@@ -31,17 +35,9 @@ public class Assist : MonoBehaviour, IHitboxResponder
 		hitEffect = Instantiate(_projectilePrefab, transform);
 		hitEffect.transform.localPosition = Vector2.zero;
 		hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
-		if (_player.transform.localScale.x == 1.0f)
-		{
-			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation);
-		}
-		else
-		{
-			hitEffect.transform.localScale = new Vector2(-1.0f, 1.0f);
-			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation * 5);
-		}
-		hitEffect.transform.SetParent(null);
+		hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation);
 		hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
+		hitEffect.transform.SetParent(null);
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)

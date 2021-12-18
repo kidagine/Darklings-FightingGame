@@ -572,7 +572,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 2927459617050941190}
   _playerMovement: {fileID: 2927459617050941185}
-  _inputBuffer: {fileID: 0}
+  _inputBuffer: {fileID: 1734329765868112900}
   _audio: {fileID: 3534142120346609210}
   _trainingMenu: {fileID: 0}
 --- !u!212 &2927459616750962966
@@ -741,6 +741,7 @@ GameObject:
   - component: {fileID: 54139524341407033}
   - component: {fileID: 2449284595427976381}
   - component: {fileID: 1782628146633202438}
+  - component: {fileID: 1734329765868112900}
   m_Layer: 10
   m_Name: Main_player
   m_TagString: Untagged
@@ -804,6 +805,7 @@ MonoBehaviour:
   _groundPushbox: {fileID: 6881877775845666700}
   _airPushbox: {fileID: 8012520164091713267}
   _hurtbox: {fileID: 2927459615406287121}
+  _blockEffectPrefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
   _effectsParent: {fileID: 4852054053056241541}
   _keepFlip: {fileID: 7414821311311990953}
   _playerIcons:
@@ -1032,6 +1034,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61034cc42f4411b4fb34b343e39bcf90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1734329765868112900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2927459617050941184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe9222f0a5cd52640bbfa7d3ba2e658a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2927459617286883833

@@ -19,7 +19,7 @@ public class PerformancePlayTest
     }
 
     [UnityTest, Performance]
-    public IEnumerator Measure_Total_AllocatedAndReservedMemory()
+    public IEnumerator Player_Measure_AttackAction()
     {
         SceneManager.LoadScene("GameScene");
         yield return null;
