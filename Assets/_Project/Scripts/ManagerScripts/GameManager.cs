@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected GameObject _rightStopper = default;
 	[SerializeField] protected GameObject _player = default;
 	[SerializeField] protected GameObject _infiniteTime = default;
+	[SerializeField] private GameObject[] _hearts = default;
 	[SerializeField] private GameObject _trainingPrompts = default;
 	[SerializeField] private InputHistory[] _inputHistories = default;
 	[SerializeField] private PlayerStatsSO[] _playerStats = default;
@@ -209,6 +210,8 @@ public class GameManager : MonoBehaviour
 			_countdownText.gameObject.SetActive(false);
 			_inputHistories[0].gameObject.SetActive(true);
 			_inputHistories[1].gameObject.SetActive(true);
+			_hearts[0].gameObject.SetActive(false);
+			_hearts[1].gameObject.SetActive(false);
 			_trainingPrompts.gameObject.SetActive(true);
 			HasGameStarted = true;
 			StartTrainingRound();
