@@ -259,7 +259,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 				_playerAnimator.IsHurt(false);
 			}
 			yield return null;
-			_player.IsAttacking = false;
+			//TODO Replace this code
+			if (_player.CurrentAttack)
+			{
+				if (_player.CurrentAttack.name != "VoidBeam")
+				{
+					_player.IsAttacking = false;
+				}
+			}
 			//_inputBuffer.CheckForInputBufferItem();
 		}
 	}

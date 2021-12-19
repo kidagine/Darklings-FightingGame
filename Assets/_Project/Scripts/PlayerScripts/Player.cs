@@ -21,7 +21,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private PlayerStats _playerStats;
 	private BrainController _controller;
 	private Audio _audio;
-	private AttackSO _currentAttack;
 	private Coroutine _stunCoroutine;
 	private Coroutine _blockCoroutine;
 	private float _arcana;
@@ -32,6 +31,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
+	public AttackSO CurrentAttack { get; set; }
 	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
 	public bool HitMiddair { get; set; }
@@ -187,15 +187,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 					_audio.Sound("Hit").Play();
 					IsAttacking = true;
 					_playerAnimator.Arcana();
-					_currentAttack = _playerComboSystem.GetArcana();
+					CurrentAttack = _playerComboSystem.GetArcana();
 
-					if (!string.IsNullOrEmpty(_currentAttack.attackSound))
+					if (!string.IsNullOrEmpty(CurrentAttack.attackSound))
 					{
-						_audio.Sound(_currentAttack.attackSound).Play();
+						_audio.Sound(CurrentAttack.attackSound).Play();
 					}
-					if (!_currentAttack.isAirAttack)
+					if (!CurrentAttack.isAirAttack)
 					{
-						_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
+						_playerMovement.TravelDistance(CurrentAttack.travelDistance * transform.localScale.x);
 					}
 					return true;
 				}
@@ -212,14 +212,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;
 			_playerAnimator.Attack();
-			_currentAttack = _playerComboSystem.GetComboAttack();
-			if (!string.IsNullOrEmpty(_currentAttack.attackSound))
+			CurrentAttack = _playerComboSystem.GetComboAttack();
+			if (!string.IsNullOrEmpty(CurrentAttack.attackSound))
 			{
-				_audio.Sound(_currentAttack.attackSound).Play();
+				_audio.Sound(CurrentAttack.attackSound).Play();
 			}
-			if (!_currentAttack.isAirAttack)
+			if (!CurrentAttack.isAirAttack)
 			{
-				_playerMovement.TravelDistance(_currentAttack.travelDistance * transform.localScale.x);
+				_playerMovement.TravelDistance(CurrentAttack.travelDistance * transform.localScale.x);
 			}
 			return true;
 		}
@@ -241,30 +241,30 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
 		_canAttack = true;
-		_currentAttack.hurtEffectPosition = hit.point;
-		bool gotHit = hurtbox.TakeDamage(_currentAttack);
-		if (_currentAttack.selfKnockback > 0.0f)
+		CurrentAttack.hurtEffectPosition = hit.point;
+		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
+		if (CurrentAttack.selfKnockback > 0.0f)
 		{
 			_playerMovement.SetLockMovement(true);
 		}
 		if (!gotHit)
 		{
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 1.5f, _currentAttack.knockbackDuration);
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 1.5f, CurrentAttack.knockbackDuration);
 		}
 		else
 		{
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 2, _currentAttack.knockbackDuration);
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 2, CurrentAttack.knockbackDuration);
 		}
 	}
 
 	public void CreateEffect(bool isProjectile = false)
 	{
-		if (_currentAttack.hitEffect != null)
+		if (CurrentAttack.hitEffect != null)
 		{
 			GameObject hitEffect;
-			hitEffect = Instantiate(_currentAttack.hitEffect, _effectsParent);
-			hitEffect.transform.localPosition = _currentAttack.hitEffectPosition;
-			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, _currentAttack.hitEffectRotation);
+			hitEffect = Instantiate(CurrentAttack.hitEffect, _effectsParent);
+			hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
+			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, CurrentAttack.hitEffectRotation);
 			if (isProjectile)
 			{
 				hitEffect.transform.SetParent(null);
