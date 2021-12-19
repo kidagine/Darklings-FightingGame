@@ -260,6 +260,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			}
 			yield return null;
 			_player.IsAttacking = false;
+			//_inputBuffer.CheckForInputBufferItem();
 		}
 	}
 
