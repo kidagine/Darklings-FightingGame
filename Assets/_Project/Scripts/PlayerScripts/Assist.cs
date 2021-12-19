@@ -11,6 +11,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
 	private Transform _player;
 
 	public AssistStatsSO AssistStats { get { return _assistStatsSO; } private set { } }
+	public bool IsOnScreen { get; set; }
 
 
 	private void Awake()
@@ -21,6 +22,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
 
 	public void Attack()
 	{
+		IsOnScreen = true;
 		_audio.Sound("Attack").Play();
 		transform.SetParent(_player);
 		_animator.SetTrigger("Attack");

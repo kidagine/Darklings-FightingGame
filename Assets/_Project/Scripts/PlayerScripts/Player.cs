@@ -133,7 +133,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void AssistCharge()
 	{
-		if (_assistGauge < 1.0f && GameManager.Instance.HasGameStarted)
+		if (_assistGauge < 1.0f && !_assist.IsOnScreen && GameManager.Instance.HasGameStarted)
 		{
 			_assistGauge += Time.deltaTime / (5.0f - _assist.AssistStats.assistRecharge);
 			_playerUI.SetAssist(_assistGauge);

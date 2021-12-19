@@ -11,4 +11,9 @@ public class AssistAnimationEvents : MonoBehaviour
 		_assist.Projectile();
 		_playerAnimationEvents.StartFrameCount(animationEvent);
 	}
+
+	public void DisappearAnimationEvent()
+	{
+		_assist.IsOnScreen = false;
+	}
 }
