@@ -90,6 +90,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_arcana = 0.0f;
 		}
+		_otherPlayerUI.ResetCombo();
 		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(_arcana);
 		_playerUI.SetAssist(_assistGauge);
@@ -132,7 +133,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void AssistCharge()
 	{
-		if (_assistGauge < 1.0f && GameManager.Instance.HasGameStarted)
+		if (_assistGauge < 1.0f && !_assist.IsOnScreen && GameManager.Instance.HasGameStarted)
 		{
 			_assistGauge += Time.deltaTime / (5.0f - _assist.AssistStats.assistRecharge);
 			_playerUI.SetAssist(_assistGauge);
@@ -248,7 +249,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		if (!gotHit)
 		{
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback, _currentAttack.knockbackDuration);
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), _currentAttack.selfKnockback / 1.5f, _currentAttack.knockbackDuration);
 		}
 		else
 		{

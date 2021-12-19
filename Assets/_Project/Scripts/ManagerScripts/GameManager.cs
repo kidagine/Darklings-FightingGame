@@ -597,8 +597,11 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator HitStopCoroutine()
 	{
-		Time.timeScale = 0.0f;
-		yield return new WaitForSecondsRealtime(0.05f);
-		Time.timeScale = 1.0f;
+		if (!GameManager.Instance.HasGameStarted)
+		{
+			Time.timeScale = 0.0f;
+			yield return new WaitForSecondsRealtime(0.05f);
+			Time.timeScale = 1.0f;
+		}
 	}
 }

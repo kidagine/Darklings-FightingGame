@@ -3,14 +3,15 @@ using UnityEngine;
 
 public class Assist : MonoBehaviour, IHitboxResponder
 {
-    [SerializeField] private Animator _animator = default;
-    [SerializeField] private AssistStatsSO _assistStatsSO = default;
+	[SerializeField] private Animator _animator = default;
+	[SerializeField] private AssistStatsSO _assistStatsSO = default;
 	[SerializeField] private GameObject _projectilePrefab = default;
 	[SerializeField] private GameObject _smokePrefab = default;
 	private Audio _audio;
 	private Transform _player;
 
 	public AssistStatsSO AssistStats { get { return _assistStatsSO; } private set { } }
+	public bool IsOnScreen { get; set; }
 
 
 	private void Awake()
@@ -21,6 +22,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
 
 	public void Attack()
 	{
+		IsOnScreen = true;
 		_audio.Sound("Attack").Play();
 		transform.SetParent(_player);
 		_animator.SetTrigger("Attack");
@@ -48,6 +50,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
 
 	public void HitboxCollidedGround(RaycastHit2D hit)
 	{
+		_audio.Sound("Destroyed").Play();
 		GameObject effect = Instantiate(_smokePrefab);
 		effect.transform.localPosition = hit.point;
 	}
