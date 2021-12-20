@@ -34,6 +34,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public AttackSO CurrentAttack { get; set; }
 	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
+	public bool IsKnockedDown { get; private set; }
 	public bool HitMiddair { get; set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
@@ -307,6 +308,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				_otherPlayerUI.DisplayNotification("Punish");
 			}
+			IsKnockedDown = attackSO.causesKnockdown;
 			_audio.Sound(attackSO.impactSound).Play();
 			if (!GameManager.Instance.InfiniteHealth)
 			{
@@ -422,7 +424,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private void Die()
 	{
 		DestroyEffects();
-		_playerAnimator.Death();
+		_playerAnimator.IsKnockedDown(true);
 		_controller.ActiveController.enabled = false;
 		SetGroundPushBox(false);
 		SetHurtbox(false);
@@ -442,6 +444,25 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 		}
 		IsDead = true;
+	}
+
+	public void Knockdown()
+	{
+		StartCoroutine(KnockdownCoroutine());
+	}
+
+	IEnumerator KnockdownCoroutine()
+	{
+		_controller.DeactivateInput();
+		SetHurtbox(false);
+		_playerMovement.SetLockMovement(true);
+		_playerAnimator.IsKnockedDown(true);
+		yield return new WaitForSeconds(1.0f);
+		_playerAnimator.IsKnockedDown(false);
+		yield return new WaitForSeconds(0.25f);
+		_playerMovement.SetLockMovement(false);
+		SetHurtbox(true);
+		_controller.ActivateInput();
 	}
 
 	public void Taunt()

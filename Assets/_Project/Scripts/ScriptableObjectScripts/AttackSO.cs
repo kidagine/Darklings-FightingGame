@@ -12,6 +12,7 @@ public class AttackSO : ScriptableObject
 	public float knockbackDuration;
 	public AttackTypeEnum attackTypeEnum;
 	public bool isAirAttack;
+	public bool causesKnockdown;
 	[Header("Sounds")]
 	public string attackSound;
 	public string impactSound;

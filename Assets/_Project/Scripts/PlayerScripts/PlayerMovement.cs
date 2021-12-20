@@ -154,7 +154,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void JumpAction()
 	{
-		if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing)
+		if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
 		{
 			if (IsGrounded)
 			{
@@ -249,7 +249,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
 			_audio.Sound("Landed").Play();
 			IsGrounded = true;
-			_isMovementLocked = false;
 			if (_player.HitMiddair)
 			{
 				_player.StopStun();
@@ -257,6 +256,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 				SetLockMovement(false);
 				_playerController.ActivateInput();
 				_playerAnimator.IsHurt(false);
+			}
+			if (_player.IsKnockedDown)
+			{
+				_player.Knockdown();
+			}
+			else
+			{
+				_isMovementLocked = false;
 			}
 			yield return null;
 			//TODO Replace this code

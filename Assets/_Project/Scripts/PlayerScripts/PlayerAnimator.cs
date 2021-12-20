@@ -90,6 +90,11 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.SetTrigger("Death");
 	}
 
+	public void IsKnockedDown(bool state)
+	{
+		_animator.SetBool("IsKnockedDown", state);
+	}
+
 	public void Rebind()
 	{
 		_animator.Rebind();
