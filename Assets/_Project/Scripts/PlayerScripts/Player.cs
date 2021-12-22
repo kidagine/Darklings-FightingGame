@@ -76,6 +76,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ResetPlayer()
 	{
+		CanFlip = true;
 		IsDead = false;
 		IsAttacking = false;
 		_controller.ActiveController.enabled = true;
