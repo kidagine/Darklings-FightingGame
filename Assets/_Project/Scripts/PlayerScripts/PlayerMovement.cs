@@ -254,7 +254,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 				_player.StopStun();
 				_player.HitMiddair = false;
 				SetLockMovement(false);
-				_playerController.ActivateInput();
+				if (!_player.IsKnockedDown)
+				{
+					_playerController.ActivateInput();
+				}
 				_playerAnimator.IsHurt(false);
 			}
 			if (_player.IsKnockedDown)
