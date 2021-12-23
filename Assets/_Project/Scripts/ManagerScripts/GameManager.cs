@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
 
 	void Awake()
 	{
-		HasGameStarted = true;
+		HasGameStarted = false;
 		GameSpeed = _gameSpeed;
 		Application.targetFrameRate = 60;
 		QualitySettings.vSyncCount = 1;
@@ -593,18 +593,18 @@ public class GameManager : MonoBehaviour
 		Time.timeScale = GameSpeed;
 	}
 
-	public void HitStop()
+	public void HitStop(float hitstop)
 	{
-		StartCoroutine(HitStopCoroutine());
+		if (hitstop > 0.0f)
+		{
+			StartCoroutine(HitStopCoroutine(hitstop));
+		}
 	}
 
-	IEnumerator HitStopCoroutine()
+	IEnumerator HitStopCoroutine(float hitstop)
 	{
-		if (!GameManager.Instance.HasGameStarted)
-		{
-			Time.timeScale = 0.0f;
-			yield return new WaitForSecondsRealtime(0.05f);
-			Time.timeScale = 1.0f;
-		}
+		Time.timeScale = 0.0f;
+		yield return new WaitForSecondsRealtime(hitstop);
+		Time.timeScale = GameSpeed;
 	}
 }

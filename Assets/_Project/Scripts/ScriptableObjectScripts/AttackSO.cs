@@ -11,6 +11,8 @@ public class AttackSO : ScriptableObject
 	public float selfKnockback;
 	public float knockbackDuration;
 	public AttackTypeEnum attackTypeEnum;
+	[Range(0.0f, 1.0f)]
+	public float hitstop;
 	public bool isAirAttack;
 	public bool causesKnockdown;
 	[Header("Sounds")]

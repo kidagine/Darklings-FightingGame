@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private Rigidbody2D _rigidbody;
 	private PlayerStats _playerStats;
 	private InputBuffer _inputBuffer;
+	private Coroutine _ghostsCoroutine;
 	private Audio _audio;
 	private float _movementSpeed;
 	private bool _isMovementLocked;
@@ -351,7 +352,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			_movementSpeed = _playerStats.PlayerStatsSO.runSpeed;
 			IsDashing = false;
 			_player.CanFlip = true;
-			StartCoroutine(RunCoroutine());
+			_ghostsCoroutine = StartCoroutine(RunCoroutine());
 		}
 		else
 		{
@@ -366,9 +367,17 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_inputBuffer.CheckForInputBufferItem();
 	}
 
+	public void StopGhosts()
+	{
+		if (_ghostsCoroutine != null)
+		{
+			StopCoroutine(_ghostsCoroutine);
+		}
+	}
+
 	IEnumerator RunCoroutine()
 	{
-		while(_movementSpeed == _playerStats.PlayerStatsSO.runSpeed)
+		while (_movementSpeed == _playerStats.PlayerStatsSO.runSpeed)
 		{
 			GameObject playerGhost = Instantiate(_playerGhostPrefab, transform.position, Quaternion.identity);
 			playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.localScale.x, Color.white);

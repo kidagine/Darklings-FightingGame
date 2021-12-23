@@ -230,7 +230,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool AssistAction()
 	{
-		if (_assistGauge >= 1.0f && !_isStunned && !IsBlocking && IsKnockedDown)
+		if (_assistGauge >= 1.0f && !_isStunned && !IsBlocking && !IsKnockedDown && GameManager.Instance.HasGameStarted)
 		{
 			_assist.Attack();
 			_assistGauge--;
@@ -249,6 +249,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_playerMovement.SetLockMovement(true);
 		}
+
 		if (!gotHit)
 		{
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 1.5f, CurrentAttack.knockbackDuration);
@@ -303,6 +304,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
+			_playerMovement.StopGhosts();
 			GameObject effect = Instantiate(attackSO.hurtEffect);
 			effect.transform.localPosition = attackSO.hurtEffectPosition;
 			if (IsAttacking)
@@ -315,7 +317,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				Health--;
 			}
-			GameManager.Instance.HitStop();
+			GameManager.Instance.HitStop(attackSO.hitstop);
 			_playerMovement.StopDash();
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
