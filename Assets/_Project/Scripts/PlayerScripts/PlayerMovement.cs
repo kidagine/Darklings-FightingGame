@@ -92,11 +92,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			{
 				if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
 				{
-					_player.ArcaneSlowdown = 4.5f;
+					_player.ArcaneSlowdown = 5.5f;
 				}
 				else if (_rigidbody.velocity.x < 0.0f && transform.localScale.x == -1.0f)
 				{
-					_player.ArcaneSlowdown = 4.5f;
+					_player.ArcaneSlowdown = 5.5f;
 				}
 				else
 				{
@@ -109,7 +109,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			{
 				ResetToWalkSpeed();
 				IsMoving = false;
-				_player.ArcaneSlowdown = 6.0f;
+				_player.ArcaneSlowdown = 7.0f;
 				_playerAnimator.SetMove(false);
 			}
 		}
@@ -260,7 +260,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 				}
 				_playerAnimator.IsHurt(false);
 			}
-			if (_player.IsKnockedDown)
+			if (_player.IsKnockedDown && !_player.IsDead)
 			{
 				_player.Knockdown();
 			}

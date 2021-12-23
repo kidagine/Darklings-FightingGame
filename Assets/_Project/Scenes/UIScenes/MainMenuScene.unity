@@ -4709,6 +4709,7 @@ GameObject:
   - component: {fileID: 437183748}
   - component: {fileID: 437183747}
   - component: {fileID: 437183749}
+  - component: {fileID: 437183750}
   m_Layer: 0
   m_Name: SecondPlayerCharacter_spriteRenderer
   m_TagString: Untagged
@@ -4843,7 +4844,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f363ecc522b1c47b74b2c581a99535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerStats: {fileID: 0}
+  _playerStats: {fileID: 437183750}
+--- !u!114 &437183750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437183743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61034cc42f4411b4fb34b343e39bcf90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerStatsSO: {fileID: 11400000, guid: 9fad6f01eb20d174da80212d97759474, type: 2}
 --- !u!1 &450266683
 GameObject:
   m_ObjectHideFlags: 0
@@ -13501,6 +13515,7 @@ GameObject:
   - component: {fileID: 1381785190}
   - component: {fileID: 1381785189}
   - component: {fileID: 1381785191}
+  - component: {fileID: 1381785192}
   m_Layer: 0
   m_Name: FirstPlayerCharacter_spriteRenderer
   m_TagString: Untagged
@@ -13635,7 +13650,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f363ecc522b1c47b74b2c581a99535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerStats: {fileID: 0}
+  _playerStats: {fileID: 1381785192}
+--- !u!114 &1381785192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381785185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61034cc42f4411b4fb34b343e39bcf90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerStatsSO: {fileID: 11400000, guid: 9fad6f01eb20d174da80212d97759474, type: 2}
 --- !u!1 &1395883368
 GameObject:
   m_ObjectHideFlags: 0
