@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected GameObject _rightStopper = default;
 	[SerializeField] protected GameObject _player = default;
 	[SerializeField] protected GameObject _infiniteTime = default;
+	[SerializeField] private GameObject[] _hearts = default;
 	[SerializeField] private GameObject _trainingPrompts = default;
 	[SerializeField] private InputHistory[] _inputHistories = default;
 	[SerializeField] private PlayerStatsSO[] _playerStats = default;
@@ -63,7 +64,7 @@ public class GameManager : MonoBehaviour
 
 	void Awake()
 	{
-		HasGameStarted = true;
+		HasGameStarted = false;
 		GameSpeed = _gameSpeed;
 		Application.targetFrameRate = 60;
 		QualitySettings.vSyncCount = 1;
@@ -209,6 +210,8 @@ public class GameManager : MonoBehaviour
 			_countdownText.gameObject.SetActive(false);
 			_inputHistories[0].gameObject.SetActive(true);
 			_inputHistories[1].gameObject.SetActive(true);
+			_hearts[0].gameObject.SetActive(false);
+			_hearts[1].gameObject.SetActive(false);
 			_trainingPrompts.gameObject.SetActive(true);
 			HasGameStarted = true;
 			StartTrainingRound();
@@ -590,18 +593,18 @@ public class GameManager : MonoBehaviour
 		Time.timeScale = GameSpeed;
 	}
 
-	public void HitStop()
+	public void HitStop(float hitstop)
 	{
-		StartCoroutine(HitStopCoroutine());
+		if (hitstop > 0.0f)
+		{
+			StartCoroutine(HitStopCoroutine(hitstop));
+		}
 	}
 
-	IEnumerator HitStopCoroutine()
+	IEnumerator HitStopCoroutine(float hitstop)
 	{
-		if (!GameManager.Instance.HasGameStarted)
-		{
-			Time.timeScale = 0.0f;
-			yield return new WaitForSecondsRealtime(0.05f);
-			Time.timeScale = 1.0f;
-		}
+		Time.timeScale = 0.0f;
+		yield return new WaitForSecondsRealtime(hitstop);
+		Time.timeScale = GameSpeed;
 	}
 }

@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private Rigidbody2D _rigidbody;
 	private PlayerStats _playerStats;
 	private InputBuffer _inputBuffer;
+	private Coroutine _ghostsCoroutine;
 	private Audio _audio;
 	private float _movementSpeed;
 	private bool _isMovementLocked;
@@ -92,11 +93,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			{
 				if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
 				{
-					_player.ArcaneSlowdown = 4.5f;
+					_player.ArcaneSlowdown = 5.5f;
 				}
 				else if (_rigidbody.velocity.x < 0.0f && transform.localScale.x == -1.0f)
 				{
-					_player.ArcaneSlowdown = 4.5f;
+					_player.ArcaneSlowdown = 5.5f;
 				}
 				else
 				{
@@ -109,7 +110,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			{
 				ResetToWalkSpeed();
 				IsMoving = false;
-				_player.ArcaneSlowdown = 6.0f;
+				_player.ArcaneSlowdown = 7.0f;
 				_playerAnimator.SetMove(false);
 			}
 		}
@@ -154,7 +155,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void JumpAction()
 	{
-		if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing)
+		if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
 		{
 			if (IsGrounded)
 			{
@@ -249,17 +250,34 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
 			_audio.Sound("Landed").Play();
 			IsGrounded = true;
-			_isMovementLocked = false;
 			if (_player.HitMiddair)
 			{
 				_player.StopStun();
 				_player.HitMiddair = false;
 				SetLockMovement(false);
-				_playerController.ActivateInput();
+				if (!_player.IsKnockedDown)
+				{
+					_playerController.ActivateInput();
+				}
 				_playerAnimator.IsHurt(false);
 			}
+			if (_player.IsKnockedDown && !_player.IsDead)
+			{
+				_player.Knockdown();
+			}
+			else
+			{
+				_isMovementLocked = false;
+			}
 			yield return null;
-			_player.IsAttacking = false;
+			//TODO Replace this code
+			if (_player.CurrentAttack)
+			{
+				if (_player.CurrentAttack.name != "VoidBeam")
+				{
+					_player.IsAttacking = false;
+				}
+			}
 			//_inputBuffer.CheckForInputBufferItem();
 		}
 	}
@@ -334,7 +352,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			_movementSpeed = _playerStats.PlayerStatsSO.runSpeed;
 			IsDashing = false;
 			_player.CanFlip = true;
-			StartCoroutine(RunCoroutine());
+			_ghostsCoroutine = StartCoroutine(RunCoroutine());
 		}
 		else
 		{
@@ -349,9 +367,17 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_inputBuffer.CheckForInputBufferItem();
 	}
 
+	public void StopGhosts()
+	{
+		if (_ghostsCoroutine != null)
+		{
+			StopCoroutine(_ghostsCoroutine);
+		}
+	}
+
 	IEnumerator RunCoroutine()
 	{
-		while(_movementSpeed == _playerStats.PlayerStatsSO.runSpeed)
+		while (_movementSpeed == _playerStats.PlayerStatsSO.runSpeed)
 		{
 			GameObject playerGhost = Instantiate(_playerGhostPrefab, transform.position, Quaternion.identity);
 			playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.localScale.x, Color.white);
