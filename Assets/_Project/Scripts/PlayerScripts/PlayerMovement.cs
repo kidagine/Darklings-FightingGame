@@ -252,7 +252,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			IsGrounded = true;
 			if (_player.HitMiddair)
 			{
-				_player.StopStun();
+				_player.StopStun(true);
 				_player.HitMiddair = false;
 				SetLockMovement(false);
 				if (!_player.IsKnockedDown)
