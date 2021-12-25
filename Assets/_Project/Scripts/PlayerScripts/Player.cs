@@ -137,7 +137,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (_assistGauge < 1.0f && !_assist.IsOnScreen && GameManager.Instance.HasGameStarted)
 		{
-			_assistGauge += Time.deltaTime / (5.0f - _assist.AssistStats.assistRecharge);
+			_assistGauge += Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge);
 			_playerUI.SetAssist(_assistGauge);
 		}
 	}
@@ -317,7 +317,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				Health--;
 			}
-			GameManager.Instance.HitStop(attackSO.hitstop);
 			_playerMovement.StopDash();
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
@@ -334,6 +333,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			if (Health <= 0)
 			{
 				Die();
+			}
+			else
+			{
+				GameManager.Instance.HitStop(attackSO.hitstop);
 			}
 			return true;
 		}
