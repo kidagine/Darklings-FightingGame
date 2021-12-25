@@ -503,14 +503,18 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Stun(float hitStun)
 	{
-		StopStun();
+		StopStun(false);
 		_stunCoroutine = StartCoroutine(StunCoroutine(hitStun));
 	}
 
-	public void StopStun()
+	public void StopStun(bool resetCombo)
 	{
 		if (_stunCoroutine != null)
 		{
+			if (resetCombo)
+			{
+				_otherPlayerUI.ResetCombo();
+			}
 			_isStunned = false;
 			StopCoroutine(_stunCoroutine);
 		}
