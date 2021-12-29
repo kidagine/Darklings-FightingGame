@@ -116,7 +116,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 _wasClicked = true;
                 _audio.Sound("Pressed").Play();
                 _randomSpriteRenderer.gameObject.SetActive(false);
-                _characterMenu.SelectCharacterOneImage(_isPlayerOne);
+                _characterMenu.SelectCharacterImage(_isPlayerOne);
             }
         }
     }
@@ -142,7 +142,6 @@ public class PlayerCharacterSelector : MonoBehaviour
             RuntimeAnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
             PlayerStatsSO playerStats = collision.GetComponent<CharacterButton>().PlayerStatsSO;
             bool isRandomizer = collision.GetComponent<CharacterButton>().IsRandomizer;
-            _characterMenu.SetCharacterOneImage(_isPlayerOne, animatorController, playerStats, isRandomizer);
         }
         if (collision.transform.localPosition.x > currentPosition.x)
         {

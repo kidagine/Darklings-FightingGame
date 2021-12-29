@@ -7,6 +7,7 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     [SerializeField] private RuntimeAnimatorController _characterAnimatorController = default;
 	[SerializeField] private PlayerStatsSO _playerStatsSO = default;
     [SerializeField] private CharacterMenu _characterMenu = default;
+    [SerializeField] private GameObject _randomSpriteRenderer = default;
     [SerializeField] private GameObject _firstPlayerSelector = default;
     [SerializeField] private GameObject _secondPlayerSelector = default;
 	[SerializeField] private bool _isRandomizer = default;
@@ -17,12 +18,32 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void OnSelect(BaseEventData eventData)
     {
-        _firstPlayerSelector.SetActive(true);
-        _characterMenu.SetCharacterOneImage(true, CharacterAnimatorController, PlayerStatsSO, IsRandomizer);
+        if (!_characterMenu.FirstCharacterSelected)
+        {
+            _firstPlayerSelector.SetActive(true);
+        }
+        else
+        {
+            _secondPlayerSelector.SetActive(true);
+        }
+        _characterMenu.SetCharacterImage(CharacterAnimatorController, PlayerStatsSO, IsRandomizer);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
-        _firstPlayerSelector.SetActive(false);
+        if (!_characterMenu.FirstCharacterSelected)
+        {
+            _firstPlayerSelector.SetActive(false);
+        }
+        else
+        {
+            _secondPlayerSelector.SetActive(false);
+        }
     }
-}
+
+    public void Click()
+    {
+        _randomSpriteRenderer.gameObject.SetActive(false);
+        _characterMenu.SelectCharacterImage(true);
+    }
+} 

@@ -19,8 +19,6 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private SpriteLibrary _spriteLibraryTwo = default;
 	[SerializeField] private TextMeshProUGUI _playerOneName = default;
 	[SerializeField] private TextMeshProUGUI _playerTwoName = default;
-	[SerializeField] private PlayerCharacterSelector _playerOneSelector = default;
-	[SerializeField] private PlayerCharacterSelector _playerTwoSelector = default;
 	[SerializeField] private TextMeshProUGUI _hpTextOne = default;
 	[SerializeField] private TextMeshProUGUI _arcanaTextOne = default;
 	[SerializeField] private TextMeshProUGUI _speedTextOne = default;
@@ -31,17 +29,18 @@ public class CharacterMenu : BaseMenu
 	private PlayerStatsSO _playerStats;
 	private bool _isPlayerTwoEnabled;
 
+	public bool FirstCharacterSelected { get; private set; }
+
 
 	public void EnablePlayerTwoSelector()
 	{
 		_isPlayerTwoEnabled = true;
-		_playerTwoSelector.gameObject.SetActive(true);
 	}
 
-	public void SetCharacterOneImage(bool isPlayerOne, RuntimeAnimatorController animatorController, PlayerStatsSO playerStats, bool isRandomizer)
+	public void SetCharacterImage(RuntimeAnimatorController animatorController, PlayerStatsSO playerStats, bool isRandomizer)
 	{
 		_playerStats = playerStats;
-		if (isPlayerOne)
+		if (!FirstCharacterSelected)
 		{
 			_playerOneName.enabled = true;
 			if (animatorController.name == "RandomSelectAnimator")
@@ -89,14 +88,13 @@ public class CharacterMenu : BaseMenu
 		}
 	}
 
-	public void SelectCharacterOneImage(bool isPlayerOne)
+	public void SelectCharacterImage(bool isPlayerOne)
 	{
 		_playerOneName.enabled = true;
 		_playerTwoName.enabled = true;
-		if (isPlayerOne)
+		if (!FirstCharacterSelected)
 		{
 			_colorsOne.SetActive(true);
-			_playerOneSelector.HasSelected = true;
 			if (_playerStats == null)
 			{
 				int randomPlayer = Random.Range(0, _playerStatsArray.Length);
@@ -114,7 +112,6 @@ public class CharacterMenu : BaseMenu
 		else
 		{
 			_colorsTwo.SetActive(true);
-			_playerTwoSelector.HasSelected = true;
 			if (_playerStats == null)
 			{
 				int randomPlayer = Random.Range(0, _playerStatsArray.Length);
@@ -147,16 +144,11 @@ public class CharacterMenu : BaseMenu
 	IEnumerator TauntEndCoroutine(bool isPlayerOne)
 	{
 		yield return new WaitForSeconds(1.25f);
-		if (isPlayerOne)
+		if (!FirstCharacterSelected)
 		{
-			_playerOneSelector.HasSelected = true;
-			_playerTwoSelector.gameObject.SetActive(true);
+			FirstCharacterSelected = true;
 		}
 		else
-		{
-			_playerTwoSelector.HasSelected = true;
-		}
-		if (_playerOneSelector.HasSelected && _playerTwoSelector.HasSelected)
 		{
 			_baseMenu.Show();
 			gameObject.SetActive(false);
@@ -168,7 +160,6 @@ public class CharacterMenu : BaseMenu
 		SceneSettings.ControllerOne = "Cpu";
 		SceneSettings.ControllerTwo = "Cpu";
 		_isPlayerTwoEnabled = false;
-		_playerTwoSelector.gameObject.SetActive(false);
 	}
 
 	private void OnDisable()
@@ -185,15 +176,5 @@ public class CharacterMenu : BaseMenu
 		_playerTwoName.text = "";
 		_characterTwoImage.enabled = false;
 		_characterTwoAnimator.runtimeAnimatorController = null;
-		_playerOneSelector.transform.localPosition = new Vector2(-180.0f, -190.0f);
-		_playerTwoSelector.transform.localPosition = new Vector2(-180.0f, -190.0f);
-		_playerOneSelector.HasSelected = false;
-		_playerTwoSelector.HasSelected = false;
-		_playerOneSelector.ResetCanGoPositions();
-		_playerTwoSelector.ResetCanGoPositions();
-		if (!_isPlayerTwoEnabled)
-		{
-			_playerTwoSelector.gameObject.SetActive(false);
-		}
 	}
 }
