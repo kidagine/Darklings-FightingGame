@@ -2,6 +2,7 @@ using Demonics.UI;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.U2D.Animation;
 
 public class CharacterMenu : BaseMenu
@@ -27,10 +28,16 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _speedTextTwo = default;
 	[SerializeField] private PlayerStatsSO[] _playerStatsArray = default;
 	private PlayerStatsSO _playerStats;
+	private EventSystem _currentEventSystem;
 	private bool _isPlayerTwoEnabled;
 
 	public bool FirstCharacterSelected { get; private set; }
 
+
+	void Start()
+	{
+		_currentEventSystem = EventSystem.current;
+	}
 
 	public void EnablePlayerTwoSelector()
 	{
@@ -90,6 +97,7 @@ public class CharacterMenu : BaseMenu
 
 	public void SelectCharacterImage(bool isPlayerOne)
 	{
+		_currentEventSystem.enabled = false;
 		_playerOneName.enabled = true;
 		_playerTwoName.enabled = true;
 		if (!FirstCharacterSelected)
@@ -153,6 +161,7 @@ public class CharacterMenu : BaseMenu
 			_baseMenu.Show();
 			gameObject.SetActive(false);
 		}
+		_currentEventSystem.enabled = true;
 	}
 
 	public void ResetControllerInput()

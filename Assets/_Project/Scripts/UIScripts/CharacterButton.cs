@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.U2D.Animation;
+using UnityEngine.UI;
 
 public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
@@ -45,5 +46,6 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         _randomSpriteRenderer.gameObject.SetActive(false);
         _characterMenu.SelectCharacterImage(true);
+        GetComponent<Button>().Select();
     }
 } 
