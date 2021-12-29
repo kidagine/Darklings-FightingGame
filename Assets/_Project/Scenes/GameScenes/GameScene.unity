@@ -3890,8 +3890,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee34fd0a2311cf1499332a4f01184100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterOne: 0
-  _characterTwo: 1
+  _characterOne: 2
+  _characterTwo: 2
   _controllerOne: 1
   _controllerTwo: 2
   _isTrainingMode: 1
@@ -3917,10 +3917,11 @@ MonoBehaviour:
   _playerStats:
   - {fileID: 11400000, guid: 9fad6f01eb20d174da80212d97759474, type: 2}
   - {fileID: 11400000, guid: c9e23a7166185be40a239bb9e6a2d29e, type: 2}
+  - {fileID: 11400000, guid: 52e598ed7f0b55d4f8b68d93f8df619c, type: 2}
   _stages:
+  - {fileID: 1865977255}
   - {fileID: 2105726863}
   - {fileID: 2105726864}
-  - {fileID: 1865977255}
   _matchOverMenu: {fileID: 1202960004}
   _readyAnimator: {fileID: 9123090234613714750}
   _cinemachineTargetGroup: {fileID: 1821676145}
@@ -18046,11 +18047,11 @@ PrefabInstance:
     - target: {fileID: 2927459616750962965, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: 1c9a0abc7732ddd46a62d7382a86852c, type: 2}
+      objectReference: {fileID: 22100000, guid: c0acca90970e15241b8dd1a134c692a0, type: 2}
     - target: {fileID: 2927459616750962966, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -3618209595556287736, guid: ff4864f5db38d904693bb74888e9246b, type: 3}
+      objectReference: {fileID: -6307811065380986164, guid: 0cbac8b7a203a6e4b8fa13001ec56a06, type: 3}
     - target: {fileID: 2927459616750962968, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: _trainingMenu
       value: 
@@ -18130,14 +18131,14 @@ PrefabInstance:
     - target: {fileID: 7425425371355602900, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_SpriteLibraryAsset
       value: 
-      objectReference: {fileID: 7108339969198208228, guid: c651c2267f228f549939994b207034d8, type: 3}
+      objectReference: {fileID: 7108339969198208228, guid: 2234ea8eb9ae61344b2a57018ec8dc56, type: 3}
     - target: {fileID: 7981741886089882636, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: _playerAnimationEvents
       value: 
       objectReference: {fileID: 265733252}
     - target: {fileID: 9007122673975750544, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_SpriteKey
-      value: 0
+      value: -7.038988e-28
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6aded20380bf8df4b891048839525825, type: 3}

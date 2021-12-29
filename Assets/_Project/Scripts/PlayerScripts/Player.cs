@@ -197,7 +197,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 					}
 					if (!CurrentAttack.isAirAttack)
 					{
-						_playerMovement.TravelDistance(CurrentAttack.travelDistance * transform.localScale.x);
+						_playerMovement.TravelDistance(new Vector2(CurrentAttack.travelDistance * transform.localScale.x, CurrentAttack.travelDirection.y));
 					}
 					return true;
 				}
@@ -221,7 +221,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 			if (!CurrentAttack.isAirAttack)
 			{
-				_playerMovement.TravelDistance(CurrentAttack.travelDistance * transform.localScale.x);
+				_playerMovement.TravelDistance(new Vector2(CurrentAttack.travelDistance * transform.localScale.x, CurrentAttack.travelDirection.y));
 			}
 			return true;
 		}

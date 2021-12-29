@@ -120,10 +120,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 	}
 
-	public void TravelDistance(float travelDistance)
+	public void TravelDistance(Vector2 travelDistance)
 	{
 		_rigidbody.velocity = Vector2.zero;
-		_rigidbody.AddForce(new Vector2(travelDistance * 3.0f, 0.0f), ForceMode2D.Impulse);
+		_rigidbody.AddForce(new Vector2(travelDistance.x * 3.0f, travelDistance.y * 3.0f), ForceMode2D.Impulse);
 	}
 
 	public bool CrouchAction()

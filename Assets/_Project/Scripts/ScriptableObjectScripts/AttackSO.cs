@@ -5,6 +5,7 @@ public class AttackSO : ScriptableObject
 {
 	[Header("Main")]
 	public float travelDistance;
+	public Vector2 travelDirection;
 	public float hitStun;
 	public float knockback;
 	public Vector2 knockbackDirection;
