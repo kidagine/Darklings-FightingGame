@@ -103,6 +103,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 }
                 if (_directionInput.y == -1.0f)
                 {
+                    Debug.Log(_canGoDown);
                     if (_canGoDown)
                     {
                         _rectTransform.anchoredPosition += new Vector2(0.0f, -_moveDistance);
@@ -134,7 +135,7 @@ public class PlayerCharacterSelector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
 	{
-        Vector2 currentPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + 190.0f);
+        Vector2 currentPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + 180.0f);
         if (Mathf.Approximately(currentPosition.x,collision.transform.localPosition.x))
         {
             _audio.Sound("Selected").Play();
@@ -155,8 +156,15 @@ public class PlayerCharacterSelector : MonoBehaviour
         {
             _canGoUp = true;
         }
+        Debug.Log(collision.transform.name);
+        if (collision.transform.name == "Enma_characterButton")
+        {
+            Debug.Log("a:" + collision.transform.localPosition.y);
+            Debug.Log("b:" + currentPosition.y);
+        }
         if (collision.transform.localPosition.y > currentPosition.y)
         {
+            Debug.Log("sucs");
             _canGoDown = true;
         }
     }
