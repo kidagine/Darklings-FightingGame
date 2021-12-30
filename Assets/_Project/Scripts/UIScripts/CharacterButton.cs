@@ -1,7 +1,6 @@
+using Demonics.Sounds;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.U2D.Animation;
-using UnityEngine.UI;
 
 public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
@@ -12,13 +11,20 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     [SerializeField] private GameObject _firstPlayerSelector = default;
     [SerializeField] private GameObject _secondPlayerSelector = default;
 	[SerializeField] private bool _isRandomizer = default;
+    private Audio _audio;
 
 	public RuntimeAnimatorController CharacterAnimatorController { get { return _characterAnimatorController; }  set { } }
 	public PlayerStatsSO PlayerStatsSO { get { return _playerStatsSO; } set { } }
 	public bool IsRandomizer { get { return _isRandomizer; } private set { } }
 
+    void Start()
+    {
+        _audio = GetComponent<Audio>();
+    }
+
     public void OnSelect(BaseEventData eventData)
     {
+        _audio.Sound("Selected").Play();
         if (!_characterMenu.FirstCharacterSelected)
         {
             _firstPlayerSelector.SetActive(true);
@@ -44,6 +50,7 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void Click()
     {
+        _audio.Sound("Pressed").Play();
         _randomSpriteRenderer.gameObject.SetActive(false);
         _characterMenu.SelectCharacterImage(true);
     }

@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 4797689787146866180}
   - component: {fileID: 4797689787146866179}
   - component: {fileID: 5292133793367007441}
+  - component: {fileID: 1071850407856800994}
   m_Layer: 5
   m_Name: Character_button
   m_TagString: Untagged
@@ -489,6 +490,39 @@ MonoBehaviour:
   _firstPlayerSelector: {fileID: 8263986908285458562}
   _secondPlayerSelector: {fileID: 8842898653811615722}
   _isRandomizer: 0
+--- !u!114 &1071850407856800994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4797689787146866182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
+    volume: 1
+    pitch: 1
+    name: Pressed
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
+    volume: 1
+    pitch: 1
+    name: Selected
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!1 &4797689787510420164
 GameObject:
   m_ObjectHideFlags: 0
