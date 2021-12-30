@@ -209,7 +209,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool AttackAction()
 	{
-		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing)
+		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !IsKnockedDown)
 		{
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;

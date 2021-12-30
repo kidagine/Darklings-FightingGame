@@ -128,7 +128,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public bool CrouchAction()
 	{
-		if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing)
+		if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
 		{
 			ResetToWalkSpeed();
 			if (IsGrounded)
@@ -295,7 +295,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void DashAction(float directionX)
 	{
-		if (!IsCrouching && !_player.IsAttacking)
+		if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_player.IsKnockedDown)
 		{
 			if (IsGrounded)
 			{
