@@ -99,7 +99,7 @@ public class CharacterMenu : BaseMenu
 
 	public void SelectCharacterImage(bool isPlayerOne)
 	{
-		_currentEventSystem.enabled = false;
+		_currentEventSystem.sendNavigationEvents = false;
 		_playerOneName.enabled = true;
 		_playerTwoName.enabled = true;
 		if (!FirstCharacterSelected)
@@ -154,11 +154,11 @@ public class CharacterMenu : BaseMenu
 	IEnumerator TauntEndCoroutine()
 	{
 		yield return new WaitForSeconds(1.25f);
-		_currentEventSystem.enabled = true;
+		_currentEventSystem.sendNavigationEvents = true;
 		if (!FirstCharacterSelected)
 		{
-			Debug.Log("here");
 			FirstCharacterSelected = true;
+			_currentEventSystem.SetSelectedGameObject(null);
 			_firstCharacterButton.Select();
 		}
 		else
@@ -177,6 +177,8 @@ public class CharacterMenu : BaseMenu
 
 	private void OnDisable()
 	{
+		_currentEventSystem.sendNavigationEvents = true;
+		FirstCharacterSelected = false;
 		_hpTextOne.text = "";
 		_arcanaTextOne.text = "";
 		_speedTextOne.text = "";

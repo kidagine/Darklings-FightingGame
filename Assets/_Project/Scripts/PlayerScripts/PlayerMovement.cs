@@ -161,7 +161,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			{
 				Jump(_playerStats.PlayerStatsSO.jumpForce);
 			}
-			else if (CanDoubleJump)
+			else if (CanDoubleJump && _playerStats.PlayerStatsSO.canDoubleJump)
 			{
 				CanDoubleJump = false;
 				_playerAnimator.Rebind();

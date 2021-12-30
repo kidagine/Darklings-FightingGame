@@ -16,6 +16,7 @@ public class PlayerStatsSO : ScriptableObject
 	public float runSpeed = 5;
 	public float jumpForce = 2;
 	public float dashForce = 5;
+	public bool canDoubleJump = true;
 	[Header("Arcana")]
 	public float maxArcana = 2;
 	public float arcanaRecharge = 1;

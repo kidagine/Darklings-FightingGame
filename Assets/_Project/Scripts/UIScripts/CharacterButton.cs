@@ -47,4 +47,10 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
         _randomSpriteRenderer.gameObject.SetActive(false);
         _characterMenu.SelectCharacterImage(true);
     }
+
+	private void OnDisable()
+    {
+        _firstPlayerSelector.SetActive(false);
+        _secondPlayerSelector.SetActive(false);
+    }
 } 
