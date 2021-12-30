@@ -46,6 +46,5 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         _randomSpriteRenderer.gameObject.SetActive(false);
         _characterMenu.SelectCharacterImage(true);
-        GetComponent<Button>().Select();
     }
 } 
