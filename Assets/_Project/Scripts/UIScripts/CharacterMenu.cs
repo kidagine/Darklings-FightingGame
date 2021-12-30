@@ -146,10 +146,10 @@ public class CharacterMenu : BaseMenu
 		{
 			_characterTwoAnimator.SetTrigger("Taunt");
 		}
-		StartCoroutine(TauntEndCoroutine(isPlayerOne));
+		StartCoroutine(TauntEndCoroutine());
 	}
 
-	IEnumerator TauntEndCoroutine(bool isPlayerOne)
+	IEnumerator TauntEndCoroutine()
 	{
 		yield return new WaitForSeconds(1.25f);
 		if (!FirstCharacterSelected)
