@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.U2D.Animation;
+using UnityEngine.UI;
 
 public class CharacterMenu : BaseMenu
 {
@@ -14,6 +15,7 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private GameObject _colorsTwo = default;
 	[SerializeField] private Animator _characterOneAnimator = default;
 	[SerializeField] private Animator _characterTwoAnimator = default;
+	[SerializeField] private Button _firstCharacterButton = default;
 	[SerializeField] private PlayerAnimator _playerAnimatorOne = default;
 	[SerializeField] private PlayerAnimator _playerAnimatorTwo = default;
 	[SerializeField] private SpriteLibrary _spriteLibraryOne = default;
@@ -152,16 +154,18 @@ public class CharacterMenu : BaseMenu
 	IEnumerator TauntEndCoroutine()
 	{
 		yield return new WaitForSeconds(1.25f);
+		_currentEventSystem.enabled = true;
 		if (!FirstCharacterSelected)
 		{
+			Debug.Log("here");
 			FirstCharacterSelected = true;
+			_firstCharacterButton.Select();
 		}
 		else
 		{
 			_baseMenu.Show();
 			gameObject.SetActive(false);
 		}
-		_currentEventSystem.enabled = true;
 	}
 
 	public void ResetControllerInput()
