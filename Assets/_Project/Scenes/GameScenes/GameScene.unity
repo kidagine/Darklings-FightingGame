@@ -1701,6 +1701,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 231861769}
   m_CullTransparentMesh: 1
+--- !u!1 &231949809
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 231949811}
+  - component: {fileID: 231949810}
+  m_Layer: 0
+  m_Name: Main_playerPreferences
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!114 &231949810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231949809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b89a8608b5a61f14498eb20db0f23a14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthSelector: {fileID: 880574297}
+  _healthSelectorInitial: 0
+  _arcanaSelector: {fileID: 1826308866}
+  _arcanaSelectorInitial: 0
+  _assistSelector: {fileID: 1726274889}
+  _assistSelectorInitial: 0
+  _hitboxesSelector: {fileID: 1352831218}
+  _hitboxesSelectorInitial: 0
+  _framedataSelector: {fileID: 577405472}
+  _framedataSelectorInitial: 0
+  _cpuSelector: {fileID: 1375115550}
+  _cpuSelectorInitial: 0
+  _blockSelector: {fileID: 725050365}
+  _blockSelectorInitial: 0
+  _slowdownSelector: {fileID: 561027435}
+  _slowdownSelectorInitial: 0
+  _inputSelector: {fileID: 2001229759}
+  _inputSelectorInitial: 1
+--- !u!4 &231949811
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231949809}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &233075609
 GameObject:
   m_ObjectHideFlags: 0
@@ -3876,7 +3937,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &392163759
 MonoBehaviour:
@@ -5371,6 +5432,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557172031}
   m_CullTransparentMesh: 1
+--- !u!114 &561027435 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+  m_PrefabInstance: {fileID: 1082612561}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 917e8d25cf722ec478b9301722ff0687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &577405472 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+  m_PrefabInstance: {fileID: 1593239197}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 917e8d25cf722ec478b9301722ff0687, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &594732346
 GameObject:
   m_ObjectHideFlags: 0
@@ -6410,6 +6493,10 @@ PrefabInstance:
       propertyPath: _scrollDownAmount
       value: 195
       objectReference: {fileID: 0}
+    - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+      propertyPath: _playerPreferences
+      value: 
+      objectReference: {fileID: 231949810}
     - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
       propertyPath: _eventInt.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -7695,6 +7782,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1882022765}
     - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+      propertyPath: _initialValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
       propertyPath: _scrollAmount
       value: 210
       objectReference: {fileID: 0}
@@ -7706,6 +7797,10 @@ PrefabInstance:
       propertyPath: _scrollDownAmount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+      propertyPath: _playerPreferences
+      value: 
+      objectReference: {fileID: 231949810}
     - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
       propertyPath: _eventInt.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -9196,6 +9291,10 @@ PrefabInstance:
       value: 295
       objectReference: {fileID: 0}
     - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+      propertyPath: _playerPreferences
+      value: 
+      objectReference: {fileID: 231949810}
+    - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
       propertyPath: _eventInt.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -9400,7 +9499,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1117812847
 GameObject:
@@ -11710,6 +11809,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+      propertyPath: _playerPreferences
+      value: 
+      objectReference: {fileID: 231949810}
+    - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
       propertyPath: _eventInt.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -11888,7 +11991,7 @@ Transform:
   - {fileID: 1256044254}
   - {fileID: 655107891}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1503688286
 PrefabInstance:
@@ -13079,6 +13182,10 @@ PrefabInstance:
       propertyPath: _scrollDownAmount
       value: 420
       objectReference: {fileID: 0}
+    - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+      propertyPath: _playerPreferences
+      value: 
+      objectReference: {fileID: 231949810}
     - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
       propertyPath: _eventInt.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -15164,6 +15271,7 @@ MonoBehaviour:
   _framedataTwoText: {fileID: 1228247591}
   _scrollView: {fileID: 1882022765}
   _trainingPauseMenu: {fileID: 750415171}
+  _healthSelector: {fileID: 880574297}
 --- !u!224 &1782348767
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15647,6 +15755,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+      propertyPath: _playerPreferences
+      value: 
+      objectReference: {fileID: 231949810}
+    - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
       propertyPath: _eventInt.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -16100,7 +16212,7 @@ Transform:
   - {fileID: 1821676146}
   - {fileID: 365773109}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1882022764
 GameObject:
@@ -16558,6 +16670,10 @@ PrefabInstance:
       propertyPath: _scrollDownAmount
       value: 145
       objectReference: {fileID: 0}
+    - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+      propertyPath: _playerPreferences
+      value: 
+      objectReference: {fileID: 231949810}
     - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
       propertyPath: _eventInt.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -17197,6 +17313,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+      propertyPath: _playerPreferences
+      value: 
+      objectReference: {fileID: 231949810}
+    - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
       propertyPath: _eventInt.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -17580,7 +17700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8031722347820620212, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8031722347820620212, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18356,7 +18476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2927459617050941186, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2927459617050941186, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18545,7 +18665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1237382185827577930, guid: 5cb4525bb82f77e44b1b490d72fe02fa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18858,6 +18978,10 @@ PrefabInstance:
       propertyPath: _scrollDownAmount
       value: 210
       objectReference: {fileID: 0}
+    - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
+      propertyPath: _playerPreferences
+      value: 
+      objectReference: {fileID: 231949810}
     - target: {fileID: 8873799994538453267, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
       propertyPath: _eventInt.m_PersistentCalls.m_Calls.Array.size
       value: 1

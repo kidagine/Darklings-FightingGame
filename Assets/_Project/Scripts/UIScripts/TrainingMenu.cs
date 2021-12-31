@@ -12,6 +12,8 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _framedataTwoText = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
+	[Header("Selectors")]
+	[SerializeField] private BaseSelector _healthSelector = default;
 	private TrainingMenu _trainingMenu;
 
 
