@@ -464,8 +464,9 @@ GameObject:
   - component: {fileID: 6238647328156754236}
   - component: {fileID: 7102428248133060608}
   - component: {fileID: 8308553648427075089}
+  - component: {fileID: 8631281197934860811}
   m_Layer: 5
-  m_Name: Live_image
+  m_Name: Life_image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -529,6 +530,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &8631281197934860811
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698991663668950499}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 87bf315195d15af429db91bd7f2b5ced, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1066403493200634883
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,10 +974,12 @@ MonoBehaviour:
   - {fileID: 1144142804773356193}
   _healthSlider: {fileID: 1604159752376004839}
   _arcanaSlider: {fileID: 0}
+  _assistSlider: {fileID: 0}
   _portraitImage: {fileID: 3707602403031938593}
   _characterName: {fileID: 1604159752663817567}
   _playerName: {fileID: 6044207841894367826}
   _notificationText: {fileID: 0}
+  _comboText: {fileID: 0}
   _winsText: {fileID: 0}
   _whoPausedText: {fileID: 0}
   _whoPausedTrainingText: {fileID: 0}
@@ -970,6 +992,7 @@ MonoBehaviour:
   _pauseSlider: {fileID: 0}
   _pauseMenu: {fileID: 0}
   _trainingPauseMenu: {fileID: 0}
+  _trainingMenu: {fileID: 0}
 --- !u!225 &7796490837188691190
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -2281,8 +2304,9 @@ GameObject:
   - component: {fileID: 2099200366334951476}
   - component: {fileID: 1512096367541226624}
   - component: {fileID: 1628854501407812110}
+  - component: {fileID: 3997173470159436933}
   m_Layer: 5
-  m_Name: Live_image (1)
+  m_Name: Life_image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2346,6 +2370,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &3997173470159436933
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6626912658941019185}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 87bf315195d15af429db91bd7f2b5ced, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6757425501034223834
 GameObject:
   m_ObjectHideFlags: 0
