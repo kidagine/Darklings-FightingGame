@@ -103,6 +103,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 }
                 if (_directionInput.y == -1.0f)
                 {
+                    Debug.Log(_canGoDown);
                     if (_canGoDown)
                     {
                         _rectTransform.anchoredPosition += new Vector2(0.0f, -_moveDistance);
@@ -115,7 +116,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 _wasClicked = true;
                 _audio.Sound("Pressed").Play();
                 _randomSpriteRenderer.gameObject.SetActive(false);
-                _characterMenu.SelectCharacterOneImage(_isPlayerOne);
+                _characterMenu.SelectCharacterImage(_isPlayerOne);
             }
         }
     }
@@ -134,14 +135,13 @@ public class PlayerCharacterSelector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
 	{
-        Vector2 currentPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + 190.0f);
+        Vector2 currentPosition = new Vector2(transform.localPosition.x, transform.localPosition.y + 180.0f);
         if (Mathf.Approximately(currentPosition.x,collision.transform.localPosition.x))
         {
             _audio.Sound("Selected").Play();
             RuntimeAnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
             PlayerStatsSO playerStats = collision.GetComponent<CharacterButton>().PlayerStatsSO;
             bool isRandomizer = collision.GetComponent<CharacterButton>().IsRandomizer;
-            _characterMenu.SetCharacterOneImage(_isPlayerOne, animatorController, playerStats, isRandomizer);
         }
         if (collision.transform.localPosition.x > currentPosition.x)
         {
@@ -155,8 +155,15 @@ public class PlayerCharacterSelector : MonoBehaviour
         {
             _canGoUp = true;
         }
+        Debug.Log(collision.transform.name);
+        if (collision.transform.name == "Enma_characterButton")
+        {
+            Debug.Log("a:" + collision.transform.localPosition.y);
+            Debug.Log("b:" + currentPosition.y);
+        }
         if (collision.transform.localPosition.y > currentPosition.y)
         {
+            Debug.Log("sucs");
             _canGoDown = true;
         }
     }

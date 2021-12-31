@@ -12,6 +12,8 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _framedataTwoText = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
+	[Header("Selectors")]
+	[SerializeField] private BaseSelector _healthSelector = default;
 	private TrainingMenu _trainingMenu;
 
 
@@ -89,6 +91,19 @@ public class TrainingMenu : BaseMenu
 			case 1:
 				GameManager.Instance.MaxArcana();
 				GameManager.Instance.InfiniteArcana = true;
+				break;
+		}
+	}
+
+	public void SetAssist(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				GameManager.Instance.InfiniteAssist = false;
+				break;
+			case 1:
+				GameManager.Instance.InfiniteAssist = true;
 				break;
 		}
 	}
@@ -175,6 +190,11 @@ public class TrainingMenu : BaseMenu
 				TrainingSettings.BlockAlways = true;
 				break;
 		}
+	}
+
+	public void RestoreToDefault()
+	{
+
 	}
 
 	public void ResetTrainingOptions()

@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public bool InfiniteHealth { get; set; }
 	public bool InfiniteArcana { get; set; }
+	public bool InfiniteAssist { get; set; }
 	public Player PlayerOne { get; private set; }
 	public Player PlayerTwo { get; private set; }
 	public static GameManager Instance { get; private set; }
@@ -206,10 +207,7 @@ public class GameManager : MonoBehaviour
 		_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
 		if (_isTrainingMode)
 		{
-			IsCpuOff = true;
 			_countdownText.gameObject.SetActive(false);
-			_inputHistories[0].gameObject.SetActive(true);
-			_inputHistories[1].gameObject.SetActive(true);
 			_hearts[0].gameObject.SetActive(false);
 			_hearts[1].gameObject.SetActive(false);
 			_trainingPrompts.gameObject.SetActive(true);
