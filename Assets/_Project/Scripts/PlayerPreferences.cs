@@ -27,6 +27,11 @@ public class PlayerPreferences : MonoBehaviour
 
 	void Start()
 	{
+		LoadPreferences();
+	}
+
+	private void LoadPreferences()
+	{
 		_healthSelector.SetValue(PlayerPrefs.GetInt("health", _healthSelectorInitial));
 		_arcanaSelector.SetValue(PlayerPrefs.GetInt("arcana", _arcanaSelectorInitial));
 		_assistSelector.SetValue(PlayerPrefs.GetInt("assist", _assistSelectorInitial));
@@ -40,8 +45,13 @@ public class PlayerPreferences : MonoBehaviour
 
 	public void SavePreference(string key, int value)
 	{
-		Debug.Log(key);
 		PlayerPrefs.SetInt(key.ToLower(), value);
 		PlayerPrefs.Save();
+	}
+
+	public void RestoreToDefault()
+	{
+		PlayerPrefs.DeleteAll();
+		LoadPreferences();
 	}
 }

@@ -192,6 +192,11 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
+	public void RestoreToDefault()
+	{
+
+	}
+
 	public void ResetTrainingOptions()
 	{
 		TrainingSettings.ShowHitboxes = false;
