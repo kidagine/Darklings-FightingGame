@@ -93,6 +93,19 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
+	public void SetAssist(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				GameManager.Instance.InfiniteAssist = false;
+				break;
+			case 1:
+				GameManager.Instance.InfiniteAssist = true;
+				break;
+		}
+	}
+
 	public void SetHealth(int value)
 	{
 		switch (value)

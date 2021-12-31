@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public bool InfiniteHealth { get; set; }
 	public bool InfiniteArcana { get; set; }
+	public bool InfiniteAssist { get; set; }
 	public Player PlayerOne { get; private set; }
 	public Player PlayerTwo { get; private set; }
 	public static GameManager Instance { get; private set; }
