@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	public bool IsMoving { get; private set; }
 	public bool IsDashing { get; private set; }
 	public bool CanDoubleJump { get; set; } = true;
+	public bool IsInCorner { get; set; }
 
 
 	void Awake()
@@ -207,13 +208,13 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		{
 			float pushForceX = 8.0f;
 			float pushForceY = -4.0f;
-			if (other.position.x > 9.0f)
+			if (IsInCorner && transform.localScale.x > 1.0f)
 			{
 				_onTopOfPlayer = true;
 				_rigidbody.velocity = Vector2.zero;
 				_rigidbody.AddForce(new Vector2(-pushForceX, pushForceY), ForceMode2D.Impulse);
 			}
-			else if (other.position.x < -9.0f)
+			else if (IsInCorner && transform.localScale.x < 1.0f)
 			{
 				_onTopOfPlayer = true;
 				_rigidbody.velocity = Vector2.zero;
@@ -221,6 +222,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			}
 		}
 	}
+
+
 
 	public void GroundedPointExit()
 	{

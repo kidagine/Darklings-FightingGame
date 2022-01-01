@@ -254,14 +254,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerMovement.SetLockMovement(true);
 		}
 
-		if (!gotHit)
-		{
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 1.5f, CurrentAttack.knockbackDuration);
-		}
-		else
-		{
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 2, CurrentAttack.knockbackDuration);
-		}
+		//if (!gotHit)
+		//{
+		//	_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 1.5f, CurrentAttack.knockbackDuration);
+		//}
+		//else
+		//{
+		//	_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 2, CurrentAttack.knockbackDuration);
+		//}
 	}
 
 	public void CreateEffect(bool isProjectile = false)
