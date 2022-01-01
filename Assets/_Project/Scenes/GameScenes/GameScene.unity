@@ -2798,10 +2798,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 355764825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78b0b020ae396047ab9fef4d0e4d60e, type: 3}
+  m_Script: {fileID: 11500000, guid: 59b5f2745dd522246975c8f824af250e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1702887907}
+  _playerUI: {fileID: 1311574451}
 --- !u!1 &360034937
 GameObject:
   m_ObjectHideFlags: 0
@@ -7074,8 +7075,9 @@ GameObject:
   - component: {fileID: 750415174}
   - component: {fileID: 750415173}
   - component: {fileID: 750415171}
+  - component: {fileID: 750415175}
   m_Layer: 5
-  m_Name: PauseMenu_image
+  m_Name: TrainingPause_image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7153,6 +7155,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 750415170}
   m_CullTransparentMesh: 1
+--- !u!114 &750415175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750415170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59b5f2745dd522246975c8f824af250e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingOption: {fileID: 1636014904}
+  _playerUI: {fileID: 1311574451}
 --- !u!114 &786863605 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6480608197694385824, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}

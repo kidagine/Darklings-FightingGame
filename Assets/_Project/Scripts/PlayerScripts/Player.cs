@@ -227,6 +227,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				_playerMovement.TravelDistance(new Vector2(CurrentAttack.travelDistance * transform.localScale.x, CurrentAttack.travelDirection.y));
 			}
+			if (CurrentAttack.travelDirection.y > 0.0f)
+			{
+				SetPushboxTrigger(true);
+				SetAirPushBox(true);
+			}
 			return true;
 		}
 		return false;
@@ -253,7 +258,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_playerMovement.SetLockMovement(true);
 		}
-
 		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
 			if (!gotHit)
