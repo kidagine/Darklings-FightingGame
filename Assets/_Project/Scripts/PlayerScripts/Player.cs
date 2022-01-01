@@ -254,15 +254,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerMovement.SetLockMovement(true);
 		}
 
-		if (_otherPlayer.IsInCorner)
+		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
 			if (!gotHit)
 			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 1.5f, CurrentAttack.knockbackDuration);
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback * 1.5f, CurrentAttack.knockbackDuration);
 			}
 			else
 			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 2, CurrentAttack.knockbackDuration);
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback * 2.0f, CurrentAttack.knockbackDuration);
 			}
 		}
 	}

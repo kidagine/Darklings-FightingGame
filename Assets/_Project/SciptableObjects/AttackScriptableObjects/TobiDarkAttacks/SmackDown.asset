@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SmackDown
   m_EditorClassIdentifier: 
   travelDistance: 0
+  travelDirection: {x: 0, y: 0}
   hitStun: 0.6
   knockback: 11
   knockbackDirection: {x: 0, y: 1}
@@ -21,6 +22,7 @@ MonoBehaviour:
   attackTypeEnum: 1
   hitstop: 0.075
   isAirAttack: 0
+  isProjectile: 1
   causesKnockdown: 1
   attackSound: Hit
   impactSound: Impact5
@@ -28,6 +30,6 @@ MonoBehaviour:
   hitEffectPosition: {x: 4, y: 0.1}
   hitEffectRotation: 0
   hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
-  hurtEffectPosition: {x: -0.03249955, y: -4.05}
+  hurtEffectPosition: {x: -9.615002, y: -3.9950004}
   hurtEffectRotation: 0
   airOk: 0

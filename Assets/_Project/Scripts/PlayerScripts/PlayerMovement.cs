@@ -293,6 +293,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
 	{
+		Debug.Log(knockbackForce);
 		_rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
 	}
 
