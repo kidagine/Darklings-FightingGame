@@ -13,7 +13,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Transform _effectsParent = default;
 	[SerializeField] private Transform _keepFlip = default;
 	[SerializeField] private GameObject[] _playerIcons = default;
-	private Transform _otherPlayer;
+	private PlayerMovement _otherPlayer;
 	private PlayerUI _playerUI;
 	private PlayerUI _otherPlayerUI;
 	private PlayerMovement _playerMovement;
@@ -23,6 +23,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Audio _audio;
 	private Coroutine _stunCoroutine;
 	private Coroutine _blockCoroutine;
+	private Coroutine _knockdownCoroutine;
 	private float _arcana;
 	private float _assistGauge = 1.0f;
 	private int _lives = 2;
@@ -68,7 +69,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerUI = playerUI;
 	}
 
-	public void SetOtherPlayer(Transform otherPlayer)
+	public void SetOtherPlayer(PlayerMovement otherPlayer)
 	{
 		_otherPlayer = otherPlayer;
 		_otherPlayerUI = otherPlayer.GetComponent<Player>().PlayerUI;
@@ -92,6 +93,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_arcana = 0.0f;
 		}
+		IsKnockedDown = false;
+		StopAllCoroutines();
 		_otherPlayerUI.ResetCombo();
 		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(_arcana);
@@ -104,12 +107,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_lives = 2;
 		_playerUI.ResetLives();
-	}
-
-	public void MaxArcanaStats()
-	{
-		_arcana = _playerStats.PlayerStatsSO.maxArcana;
-		_playerUI.SetArcana(_arcana);
 	}
 
 	public void MaxHealthStats()
@@ -151,6 +148,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		if (_arcana < _playerStats.PlayerStatsSO.maxArcana && GameManager.Instance.HasGameStarted)
 		{
 			_arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.PlayerStatsSO.arcanaRecharge);
+			if (GameManager.Instance.InfiniteArcana)
+			{
+				_arcana = _playerStats.PlayerStatsSO.maxArcana;
+			}
 			_playerUI.SetArcana(_arcana);
 		}
 	}
@@ -159,13 +160,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (!IsDead && CanFlip)
 		{
-			if (_otherPlayer.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking && transform.localScale.x != 1.0f)
+			if (_otherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking && transform.localScale.x != 1.0f)
 			{
 				_playerAnimator.IsRunning(false);
 				transform.localScale = new Vector2(1.0f, transform.localScale.y);
 				_keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
 			}
-			else if (_otherPlayer.position.x < transform.position.x && transform.position.x > -9.2f && !IsAttacking && transform.localScale.x != -1.0f)
+			else if (_otherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && !IsAttacking && transform.localScale.x != -1.0f)
 			{
 				_playerAnimator.IsRunning(false);
 				transform.localScale = new Vector2(-1.0f, transform.localScale.y);
@@ -227,6 +228,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				_playerMovement.TravelDistance(new Vector2(CurrentAttack.travelDistance * transform.localScale.x, CurrentAttack.travelDirection.y));
 			}
+			if (CurrentAttack.travelDirection.y > 0.0f)
+			{
+				SetPushboxTrigger(true);
+				SetAirPushBox(true);
+			}
 			return true;
 		}
 		return false;
@@ -249,18 +255,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_canAttack = true;
 		CurrentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
-		if (CurrentAttack.selfKnockback > 0.0f)
+		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
 			_playerMovement.SetLockMovement(true);
-		}
-
-		if (!gotHit)
-		{
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 1.5f, CurrentAttack.knockbackDuration);
-		}
-		else
-		{
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.selfKnockback / 2, CurrentAttack.knockbackDuration);
+			if (!gotHit)
+			{
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
+			}
+			else
+			{
+				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
+			}
 		}
 	}
 
@@ -325,14 +330,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
 			_playerUI.SetHealth(Health);
-			if (HitMiddair)
-			{
-				_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, 0.0f), 7.0f, attackSO.knockbackDuration);
-			}
-			else
-			{
-				_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
-			}
+			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
 			IsAttacking = false;
 			if (Health <= 0)
 			{
@@ -458,7 +456,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Knockdown()
 	{
-		StartCoroutine(KnockdownCoroutine());
+		_playerAnimator.IsHurt(false);
+		_knockdownCoroutine = StartCoroutine(KnockdownCoroutine());
 	}
 
 	IEnumerator KnockdownCoroutine()

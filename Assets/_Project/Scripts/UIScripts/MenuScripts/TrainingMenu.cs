@@ -89,7 +89,6 @@ public class TrainingMenu : BaseMenu
 				GameManager.Instance.InfiniteArcana = false;
 				break;
 			case 1:
-				GameManager.Instance.MaxArcana();
 				GameManager.Instance.InfiniteArcana = true;
 				break;
 		}

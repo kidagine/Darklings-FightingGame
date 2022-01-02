@@ -7,14 +7,16 @@ public class AttackSO : ScriptableObject
 	public float travelDistance;
 	public Vector2 travelDirection;
 	public float hitStun;
+	[Range(0.0f, 16.0f)]
 	public float knockback;
 	public Vector2 knockbackDirection;
-	public float selfKnockback;
+	[Range(0.0f, 1.0f)]
 	public float knockbackDuration;
 	public AttackTypeEnum attackTypeEnum;
 	[Range(0.0f, 1.0f)]
 	public float hitstop;
 	public bool isAirAttack;
+	public bool isProjectile;
 	public bool causesKnockdown;
 	[Header("Sounds")]
 	public string attackSound;

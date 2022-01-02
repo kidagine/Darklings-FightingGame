@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: 2L
   m_EditorClassIdentifier: 
   travelDistance: 1.7
+  travelDirection: {x: 0, y: 0}
   hitStun: 0.2
-  knockback: 7
+  knockback: 2.3
   knockbackDirection: {x: 0, y: 0}
-  selfKnockback: 12
-  knockbackDuration: 0
+  knockbackDuration: 0.22
   attackTypeEnum: 2
   hitstop: 0.05
   isAirAttack: 0
+  isProjectile: 0
   causesKnockdown: 0
   attackSound: Hit
   impactSound: Impact1
@@ -28,5 +29,5 @@ MonoBehaviour:
   hitEffectPosition: {x: 1.5, y: 0.4}
   hitEffectRotation: 0
   hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
-  hurtEffectPosition: {x: -4.966511, y: -4.0850005}
+  hurtEffectPosition: {x: -9.267906, y: -4.0850005}
   hurtEffectRotation: 0

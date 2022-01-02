@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-	[SerializeField] private GameObject[] _lostLives = default;
+	[SerializeField] private Animator[] _lostLivesAnimator = default;
 	[SerializeField] private Slider _healthSlider = default;
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
@@ -168,14 +168,14 @@ public class PlayerUI : MonoBehaviour
 
 	public void SetLives()
 	{
-		_lostLives[_currentLifeIndex].SetActive(true);
+		_lostLivesAnimator[_currentLifeIndex].Play("LifeLost");
 		_currentLifeIndex++;
 	}
 
 	public void ResetLives()
 	{
-		_lostLives[0].SetActive(false);
-		_lostLives[1].SetActive(false);
+		_lostLivesAnimator[0].Rebind();
+		_lostLivesAnimator[1].Rebind();
 		_currentLifeIndex = 0;
 	}
 

@@ -128,10 +128,10 @@ public class GameManager : MonoBehaviour
 		_playerOneController.IsPlayerOne = true;
 		PlayerOne.SetPlayerUI(_playerOneUI);
 		PlayerTwo.SetPlayerUI(_playerTwoUI);
-		PlayerOne.SetOtherPlayer(PlayerTwo.transform);
+		PlayerOne.SetOtherPlayer(_playerMovementTwo);
 		PlayerOne.IsPlayerOne = true;
 		_playerOneController.ControllerInputName = SceneSettings.ControllerOne;
-		PlayerTwo.SetOtherPlayer(PlayerOne.transform);
+		PlayerTwo.SetOtherPlayer(_playerMovementOne);
 		PlayerTwo.IsPlayerOne = false;
 		_playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
 		PlayerOne.name = $"{_playerStats[SceneSettings.PlayerOne].name}({SceneSettings.ControllerOne})_player";
@@ -190,15 +190,6 @@ public class GameManager : MonoBehaviour
 		{
 			PlayerOne.MaxHealthStats();
 			PlayerTwo.MaxHealthStats();
-		}
-	}
-
-	public void MaxArcana()
-	{
-		if (IsTrainingMode)
-		{
-			PlayerOne.MaxArcanaStats();
-			PlayerTwo.MaxArcanaStats();
 		}
 	}
 
