@@ -293,7 +293,22 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
 	{
-		_rigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+		_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce, transform.position.y));
+		StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
+	}
+
+	IEnumerator KnockbackCoroutine(Vector2 knockback, float knockbackDuration)
+	{
+		Vector2 startingPosition = transform.position;
+		Vector2 finalPosition = new Vector2(transform.position.x + knockback.x, transform.position.y + knockback.y);
+		float elapsedTime = 0;
+		while (elapsedTime < knockbackDuration)
+		{
+			_rigidbody.MovePosition(Vector3.Lerp(startingPosition, finalPosition, elapsedTime / knockbackDuration));
+			elapsedTime += Time.deltaTime;
+			yield return null;
+		}
+		_rigidbody.MovePosition(finalPosition);
 	}
 
 	public void DashAction(float directionX)

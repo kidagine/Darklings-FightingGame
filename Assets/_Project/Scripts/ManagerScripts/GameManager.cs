@@ -193,15 +193,6 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void MaxArcana()
-	{
-		if (IsTrainingMode)
-		{
-			PlayerOne.MaxArcanaStats();
-			PlayerTwo.MaxArcanaStats();
-		}
-	}
-
 	void Start()
 	{
 		_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
