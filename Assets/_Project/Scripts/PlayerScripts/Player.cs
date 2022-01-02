@@ -23,6 +23,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Audio _audio;
 	private Coroutine _stunCoroutine;
 	private Coroutine _blockCoroutine;
+	private Coroutine _knockdownCoroutine;
 	private float _arcana;
 	private float _assistGauge = 1.0f;
 	private int _lives = 2;
@@ -92,6 +93,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_arcana = 0.0f;
 		}
+		IsKnockedDown = false;
+		StopAllCoroutines();
 		_otherPlayerUI.ResetCombo();
 		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(_arcana);
@@ -453,7 +456,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Knockdown()
 	{
-		StartCoroutine(KnockdownCoroutine());
+		_knockdownCoroutine = StartCoroutine(KnockdownCoroutine());
 	}
 
 	IEnumerator KnockdownCoroutine()
