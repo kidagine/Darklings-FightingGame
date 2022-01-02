@@ -456,6 +456,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Knockdown()
 	{
+		_playerAnimator.IsHurt(false);
 		_knockdownCoroutine = StartCoroutine(KnockdownCoroutine());
 	}
 
