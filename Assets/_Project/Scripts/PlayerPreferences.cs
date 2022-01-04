@@ -27,7 +27,10 @@ public class PlayerPreferences : MonoBehaviour
 
 	void Start()
 	{
-		LoadPreferences();
+		if (GameManager.Instance.IsTrainingMode)
+		{
+			LoadPreferences();
+		}
 	}
 
 	private void LoadPreferences()
