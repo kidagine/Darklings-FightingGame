@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 		if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
 		{
-			if (!_player.IsBlocking)
+			if (!_player.IsBlocking && !_player.IsKnockedDown)
 			{
 				_rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
 			}

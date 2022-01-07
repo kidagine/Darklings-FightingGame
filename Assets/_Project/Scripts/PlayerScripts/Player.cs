@@ -158,7 +158,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void CheckFlip()
 	{
-		if (!IsDead && CanFlip)
+		if (!IsDead && CanFlip && !IsKnockedDown)
 		{
 			if (_otherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking && transform.localScale.x != 1.0f)
 			{
@@ -464,7 +464,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_controller.DeactivateInput();
 		SetHurtbox(false);
-		_playerMovement.SetLockMovement(true);
 		_playerAnimator.IsKnockedDown(true);
 		yield return new WaitForSeconds(0.75f);
 		_playerAnimator.IsKnockedDown(false);
