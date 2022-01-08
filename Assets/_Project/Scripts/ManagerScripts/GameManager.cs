@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 	[Header("Debug")]
+	[SerializeField] private StageTypeEnum _stage = default;
 	[SerializeField] private CharacterTypeEnum _characterOne = default;
 	[SerializeField] private CharacterTypeEnum _characterTwo = default;
 	[SerializeField] private ControllerTypeEnum _controllerOne = default;
@@ -164,7 +165,14 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			_currentStage = _stages[SceneSettings.StageIndex];
+			if (!SceneSettings.SceneSettingsDecide)
+			{
+				_currentStage = _stages[(int)_stage];
+			}
+			else
+			{
+				_currentStage = _stages[SceneSettings.StageIndex];
+			}
 			_currentStage.SetActive(true);
 		}   
 	}
