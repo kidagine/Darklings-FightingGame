@@ -32,7 +32,7 @@ public class StageMenu : BaseMenu
 	public void SetStageIndexRandom()
 	{
 		SceneSettings.RandomStage = true;
-		SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length);
+		SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
 	}
 
 	public void SetTrainingMode(bool state)

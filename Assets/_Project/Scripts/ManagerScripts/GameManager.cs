@@ -157,15 +157,16 @@ public class GameManager : MonoBehaviour
 
 	public void CheckSceneSettings()
 	{
-		if (!SceneSettings.SceneSettingsDecide)
+		if (SceneSettings.RandomStage)
 		{
-			_currentStage = _stages[(int)_stage];
+			int randomStageIndex = Random.Range(0, _stages.Length);
+			_currentStage = _stages[randomStageIndex];
+			_currentStage.SetActive(true);
 		}
 		else
 		{
-			_currentStage = _stages[SceneSettings.StageIndex];
-		}
-		_currentStage.SetActive(true);
+
+		}   
 	}
 
 	public void ActivateCpus()
