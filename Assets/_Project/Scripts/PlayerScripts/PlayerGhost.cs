@@ -1,4 +1,5 @@
 using Demonics.Utility;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerGhost : MonoBehaviour
@@ -14,7 +15,12 @@ public class PlayerGhost : MonoBehaviour
 
 	async void OnEnable()
 	{
-		await UpdateTimer.WaitFor(_ghostTime);
+		StartCoroutine(GhostCoroutine());
+	}
+
+	IEnumerator GhostCoroutine()
+	{
+		yield return new WaitForSecondsRealtime(_ghostTime);
 		if (gameObject != null)
 		{
 			gameObject.SetActive(false);
