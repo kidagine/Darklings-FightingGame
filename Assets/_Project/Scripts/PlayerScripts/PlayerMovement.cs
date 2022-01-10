@@ -313,7 +313,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void DashAction(float directionX)
 	{
-		if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_player.IsKnockedDown)
+		if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_player.IsKnockedDown && !IsDashing)
 		{
 			if (IsGrounded)
 			{
