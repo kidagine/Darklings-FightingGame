@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 	[Header("Debug")]
+	[SerializeField] private StageTypeEnum _stage = default;
 	[SerializeField] private CharacterTypeEnum _characterOne = default;
 	[SerializeField] private CharacterTypeEnum _characterTwo = default;
 	[SerializeField] private ControllerTypeEnum _controllerOne = default;
@@ -164,7 +165,14 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			_currentStage = _stages[SceneSettings.StageIndex];
+			if (!SceneSettings.SceneSettingsDecide)
+			{
+				_currentStage = _stages[(int)_stage];
+			}
+			else
+			{
+				_currentStage = _stages[SceneSettings.StageIndex];
+			}
 			_currentStage.SetActive(true);
 		}   
 	}
@@ -426,7 +434,14 @@ public class GameManager : MonoBehaviour
 		_bottomLine.SetActive(true);
 		_uiAudio.Sound("TextSound").Play();
 		_readyAnimator.SetTrigger("Show");
-		_readyText.text = "KO";
+		if (PlayerOne.PlayerStats.maxHealth == PlayerOne.Health || PlayerTwo.PlayerStats.maxHealth == PlayerTwo.Health)
+		{
+			_readyText.text = "PERFECT";
+		}
+		else
+		{
+			_readyText.text = "KO";
+		}
 		Time.timeScale = 0.25f;
 		yield return new WaitForSecondsRealtime(1.0f);
 		_uiAudio.Sound("TextSound").Play();
@@ -481,7 +496,14 @@ public class GameManager : MonoBehaviour
 		_bottomLine.SetActive(true);
 		_uiAudio.Sound("TextSound").Play();
 		_readyAnimator.SetTrigger("Show");
-		_readyText.text = "KO";
+		if (PlayerOne.PlayerStats.maxHealth == PlayerOne.Health || PlayerTwo.PlayerStats.maxHealth == PlayerTwo.Health)
+		{
+			_readyText.text = "PERFECT";
+		}
+		else
+		{
+			_readyText.text = "KO";
+		}
 		Time.timeScale = 0.25f;
 		yield return new WaitForSecondsRealtime(1.0f);
 		_uiAudio.Sound("TextSound").Play();
