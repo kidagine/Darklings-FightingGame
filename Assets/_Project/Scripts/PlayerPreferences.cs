@@ -2,6 +2,20 @@ using UnityEngine;
 
 public class PlayerPreferences : MonoBehaviour
 {
+	[SerializeField] private bool _checkOptions = default;
+	[SerializeField] private bool _checkTraining = default;
+	[Header("OPTIONS")]
+	[Header("Audio")]
+	[SerializeField] private BaseSelector _vfxSelector = default;
+	[Range(0, 10)]
+	[SerializeField] private int _vfxSelectorInitial = default;
+	[SerializeField] private BaseSelector _uiSelector = default;
+	[Range(0, 10)]
+	[SerializeField] private int _uiSelectorInitial = default;
+	[SerializeField] private BaseSelector _musicSelector = default;
+	[Range(0, 10)]
+	[SerializeField] private int _musicSelectorInitial = default;
+	[Header("TRAINING")]
 	[Header("General")]
 	[SerializeField] private BaseSelector _healthSelector = default;
 	[SerializeField] private int _healthSelectorInitial = default;
@@ -27,13 +41,27 @@ public class PlayerPreferences : MonoBehaviour
 
 	void Start()
 	{
-		if (GameManager.Instance.IsTrainingMode)
+		if (_checkOptions)
 		{
-			LoadPreferences();
+			LoadOptionPreferences();
+		}
+		if (_checkTraining)
+		{
+			if (GameManager.Instance.IsTrainingMode)
+			{
+				LoadTrainingPreferences();
+			}
 		}
 	}
 
-	private void LoadPreferences()
+	private void LoadOptionPreferences()
+	{
+		_vfxSelector.SetValue(PlayerPrefs.GetInt("vfx", _vfxSelectorInitial));
+		_uiSelector.SetValue(PlayerPrefs.GetInt("ui", _uiSelectorInitial));
+		_musicSelector.SetValue(PlayerPrefs.GetInt("music", _musicSelectorInitial));
+	}
+
+	private void LoadTrainingPreferences()
 	{
 		_healthSelector.SetValue(PlayerPrefs.GetInt("health", _healthSelectorInitial));
 		_arcanaSelector.SetValue(PlayerPrefs.GetInt("arcana", _arcanaSelectorInitial));
@@ -55,6 +83,6 @@ public class PlayerPreferences : MonoBehaviour
 	public void RestoreToDefault()
 	{
 		PlayerPrefs.DeleteAll();
-		LoadPreferences();
+		LoadTrainingPreferences();
 	}
 }

@@ -1730,6 +1730,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89a8608b5a61f14498eb20db0f23a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _checkOptions: 0
+  _checkTraining: 1
+  _vfxSelector: {fileID: 0}
+  _vfxSelectorInitial: 0
+  _uiSelector: {fileID: 0}
+  _uiSelectorInitial: 0
+  _musicSelector: {fileID: 0}
+  _musicSelectorInitial: 0
   _healthSelector: {fileID: 880574297}
   _healthSelectorInitial: 0
   _arcanaSelector: {fileID: 1826308866}
@@ -6981,7 +6989,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2
 --- !u!222 &727448191
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7449,7 +7457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1800
+      value: -1920
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -15899,7 +15907,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2
 --- !u!222 &1820266875
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19026,7 +19034,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2927459617050941184, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2927459617050941186, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_RootOrder
