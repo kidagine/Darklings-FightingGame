@@ -518,12 +518,14 @@ public class GameManager : MonoBehaviour
 			if (!hasPlayerOneDied)
 			{
 				_playerOneUI.IncreaseWins();
+				_playerTwoUI.ResetWinsRow();
 				_winnerNameText.text = $"{_playerOneUI.PlayerName}\n{_playerOneUI.CharacterName}";
 				_currentRound++;
 			}
 			else
 			{
 				_playerTwoUI.IncreaseWins();
+				_playerOneUI.ResetWinsRow();
 				_winnerNameText.text = $"{_playerTwoUI.PlayerName}\n{_playerTwoUI.CharacterName}";
 				_currentRound++;
 			}

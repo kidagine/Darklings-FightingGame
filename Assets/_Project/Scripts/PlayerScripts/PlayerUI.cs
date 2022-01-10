@@ -41,6 +41,7 @@ public class PlayerUI : MonoBehaviour
 	private int _currentLifeIndex;
 	private int _currentComboCount;
 	private int _currentWins;
+	private int _currentWinsRow;
 	private bool _hasComboEnded;
 	private bool _initializedStats;
 
@@ -182,13 +183,27 @@ public class PlayerUI : MonoBehaviour
 	public void IncreaseWins()
 	{
 		_currentWins++;
+		_currentWinsRow++;
 		if (_currentWins == 1)
 		{
-			_winsText.text = $"{_currentWins} Win";
+			_winsText.text = $"{_currentWins}({_currentWinsRow}) Win";
 		}
 		else
 		{
-			_winsText.text = $"{_currentWins} Wins";
+			_winsText.text = $"{_currentWins}({_currentWinsRow}) Wins";
+		}
+	}
+
+	public void ResetWinsRow()
+	{
+		_currentWinsRow = 0;
+		if (_currentWins == 1)
+		{
+			_winsText.text = $"{_currentWins}({_currentWinsRow}) Win";
+		}
+		else
+		{
+			_winsText.text = $"{_currentWins}({_currentWinsRow}) Wins";
 		}
 	}
 
