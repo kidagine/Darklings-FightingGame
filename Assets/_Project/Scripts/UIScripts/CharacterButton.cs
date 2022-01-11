@@ -52,7 +52,7 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
         _audio.Sound("Pressed").Play();
         _randomSpriteRenderer.gameObject.SetActive(false);
-        _characterMenu.SelectCharacterImage(true);
+        _characterMenu.SelectCharacterImage();
     }
 
 	private void OnDisable()

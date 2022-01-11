@@ -1730,6 +1730,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89a8608b5a61f14498eb20db0f23a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _checkOptions: 0
+  _checkTraining: 1
+  _vfxSelector: {fileID: 0}
+  _vfxSelectorInitial: 0
+  _uiSelector: {fileID: 0}
+  _uiSelectorInitial: 0
+  _musicSelector: {fileID: 0}
+  _musicSelectorInitial: 0
   _healthSelector: {fileID: 880574297}
   _healthSelectorInitial: 0
   _arcanaSelector: {fileID: 1826308866}
@@ -4009,9 +4017,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee34fd0a2311cf1499332a4f01184100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stage: 3
+  _stage: 4
   _characterOne: 2
-  _characterTwo: 1
+  _characterTwo: 2
   _controllerOne: 1
   _controllerTwo: 2
   _isTrainingMode: 1
@@ -6981,7 +6989,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2
 --- !u!222 &727448191
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7449,7 +7457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1800
+      value: -1920
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -15899,7 +15907,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2
 --- !u!222 &1820266875
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18154,9 +18162,17 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3618212036435311025, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
+      propertyPath: m_Name
+      value: Bridge_spriteRenderer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3618212036435311025, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3907985589554093489, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5736878315571984953, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_Sprite
@@ -18912,6 +18928,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 1.15
       objectReference: {fileID: 0}
+    - target: {fileID: 1782628146633202438, guid: 6aded20380bf8df4b891048839525825, type: 3}
+      propertyPath: PlayerStatsSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 52e598ed7f0b55d4f8b68d93f8df619c, type: 2}
     - target: {fileID: 1953973263400613737, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_Size.x
       value: 1.75

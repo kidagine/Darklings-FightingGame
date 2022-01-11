@@ -9,6 +9,8 @@ public class SceneSettings
 	public static int PlayerTwo = 0;
 	public static int ColorOne = 0;
 	public static int ColorTwo = 0;
+	public static int AssistOne = 0;
+	public static int AssistTwo = 0;
 	public static bool RandomStage = false;
 	public static bool SceneSettingsDecide = false;
 	//Local Fight

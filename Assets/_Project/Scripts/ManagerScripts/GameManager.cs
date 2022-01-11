@@ -157,24 +157,17 @@ public class GameManager : MonoBehaviour
 
 	public void CheckSceneSettings()
 	{
-		if (SceneSettings.RandomStage)
+		if (!SceneSettings.SceneSettingsDecide)
 		{
-			int randomStageIndex = Random.Range(0, _stages.Length);
-			_currentStage = _stages[randomStageIndex];
+			_currentStage = _stages[(int)_stage];
 			_currentStage.SetActive(true);
 		}
 		else
 		{
-			if (!SceneSettings.SceneSettingsDecide)
-			{
-				_currentStage = _stages[(int)_stage];
-			}
-			else
-			{
-				_currentStage = _stages[SceneSettings.StageIndex];
-			}
+			_currentStage = _stages[SceneSettings.StageIndex];
 			_currentStage.SetActive(true);
-		}   
+		}
+
 	}
 
 	public void ActivateCpus()
@@ -518,12 +511,14 @@ public class GameManager : MonoBehaviour
 			if (!hasPlayerOneDied)
 			{
 				_playerOneUI.IncreaseWins();
+				_playerTwoUI.ResetWinsRow();
 				_winnerNameText.text = $"{_playerOneUI.PlayerName}\n{_playerOneUI.CharacterName}";
 				_currentRound++;
 			}
 			else
 			{
 				_playerTwoUI.IncreaseWins();
+				_playerOneUI.ResetWinsRow();
 				_winnerNameText.text = $"{_playerTwoUI.PlayerName}\n{_playerTwoUI.CharacterName}";
 				_currentRound++;
 			}

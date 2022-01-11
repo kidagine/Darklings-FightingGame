@@ -116,7 +116,7 @@ public class PlayerCharacterSelector : MonoBehaviour
                 _wasClicked = true;
                 _audio.Sound("Pressed").Play();
                 _randomSpriteRenderer.gameObject.SetActive(false);
-                _characterMenu.SelectCharacterImage(_isPlayerOne);
+                _characterMenu.SelectCharacterImage();
             }
         }
     }

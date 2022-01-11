@@ -11,8 +11,10 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private BaseMenu _baseMenu = default;
 	[SerializeField] private SpriteRenderer _characterOneImage = default;
 	[SerializeField] private SpriteRenderer _characterTwoImage = default;
-	[SerializeField] private GameObject _colorsOne = default;
-	[SerializeField] private GameObject _colorsTwo = default;
+	[SerializeField] private GameObject _assistOne = default;
+	[SerializeField] private GameObject _assistTwo = default;
+	[SerializeField] private SpriteRenderer _assistOneSpriteRenderer = default;
+	[SerializeField] private SpriteRenderer _assistTwoSpriteRenderer = default;
 	[SerializeField] private Animator _characterOneAnimator = default;
 	[SerializeField] private Animator _characterTwoAnimator = default;
 	[SerializeField] private Button _firstCharacterButton = default;
@@ -31,7 +33,6 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private PlayerStatsSO[] _playerStatsArray = default;
 	private PlayerStatsSO _playerStats;
 	private EventSystem _currentEventSystem;
-	private bool _isPlayerTwoEnabled;
 
 	public bool FirstCharacterSelected { get; private set; }
 
@@ -43,7 +44,6 @@ public class CharacterMenu : BaseMenu
 
 	public void EnablePlayerTwoSelector()
 	{
-		_isPlayerTwoEnabled = true;
 	}
 
 	public void SetCharacterImage(RuntimeAnimatorController animatorController, PlayerStatsSO playerStats, bool isRandomizer)
@@ -97,14 +97,15 @@ public class CharacterMenu : BaseMenu
 		}
 	}
 
-	public void SelectCharacterImage(bool isPlayerOne)
+	public void SelectCharacterImage()
 	{
 		_currentEventSystem.sendNavigationEvents = false;
 		_playerOneName.enabled = true;
 		_playerTwoName.enabled = true;
 		if (!FirstCharacterSelected)
 		{
-			_colorsOne.SetActive(true);
+			_assistOneSpriteRenderer.enabled = true;
+			_assistOne.SetActive(true);
 			if (_playerStats == null)
 			{
 				int randomPlayer = Random.Range(0, _playerStatsArray.Length);
@@ -121,7 +122,8 @@ public class CharacterMenu : BaseMenu
 		}
 		else
 		{
-			_colorsTwo.SetActive(true);
+			_assistTwoSpriteRenderer.enabled = true;
+			_assistTwo.SetActive(true);
 			if (_playerStats == null)
 			{
 				int randomPlayer = Random.Range(0, _playerStatsArray.Length);
@@ -172,7 +174,6 @@ public class CharacterMenu : BaseMenu
 	{
 		SceneSettings.ControllerOne = "Cpu";
 		SceneSettings.ControllerTwo = "Cpu";
-		_isPlayerTwoEnabled = false;
 	}
 
 	private void OnDisable()
@@ -191,5 +192,7 @@ public class CharacterMenu : BaseMenu
 		_playerTwoName.text = "";
 		_characterTwoImage.enabled = false;
 		_characterTwoAnimator.runtimeAnimatorController = null;
+		_assistOneSpriteRenderer.enabled = false;
+		_assistTwoSpriteRenderer.enabled = false;
 	}
 }
