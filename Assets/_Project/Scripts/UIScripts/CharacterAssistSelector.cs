@@ -8,6 +8,7 @@ public class CharacterAssistSelector : MonoBehaviour
     [SerializeField] private GameObject _colors = default;
     [SerializeField] private TextMeshProUGUI _playerOneColorNumber = default;
     [SerializeField] private TextMeshProUGUI _assistIndicatorText = default;
+    [SerializeField] private Animator _assistAnimator = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private GameObject _arrows = default;
     [SerializeField] private bool _isPlayerOne = default;
@@ -99,6 +100,7 @@ public class CharacterAssistSelector : MonoBehaviour
                     SceneSettings.AssistTwo = _assistCount;
                 }
                 _audio.Sound("Selected").Play();
+                _assistAnimator.Play("AssistSelectorTaunt");
                 _colors.SetActive(true);
                 _assistIndicatorText.text = AssistLetter.ToString();
                 _inputDeactivated = true;
@@ -126,5 +128,6 @@ public class CharacterAssistSelector : MonoBehaviour
         _assistCount = 0;
         transform.GetChild(0).gameObject.SetActive(true);
         gameObject.SetActive(false);
+        _assistAnimator.Rebind();
     }
 }
