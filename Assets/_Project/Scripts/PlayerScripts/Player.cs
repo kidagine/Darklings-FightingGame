@@ -344,7 +344,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else
 		{
-			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
+			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, 0.0f), attackSO.knockback, attackSO.knockbackDuration);
 			GameObject effect = Instantiate(_blockEffectPrefab);
 			effect.transform.localPosition = attackSO.hurtEffectPosition;
 			_audio.Sound("Block").Play();
