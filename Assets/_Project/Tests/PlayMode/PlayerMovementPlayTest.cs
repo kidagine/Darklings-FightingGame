@@ -55,7 +55,7 @@ public class PlayerMovementPlayTest
 	}
 
 	[UnityTest]
-	public IEnumerator JumpAction_NoJump_NoChange()
+	public IEnumerator JumpAction_AlreadyJumped_NoChange()
 	{
 		// Arrange
 		PlayerMovement playerMovement = Object.FindObjectOfType<PlayerMovement>();
@@ -69,8 +69,21 @@ public class PlayerMovementPlayTest
 
 		// Assert
 		yield return null;
-		Assert.IsFalse(playerMovement.IsGrounded);
-		Assert.IsFalse(playerMovement.CanDoubleJump);
+		Assert.IsFalse(playerMovement.IsGrounded && playerMovement.CanDoubleJump);
+	}
+
+	[UnityTest]
+	public IEnumerator JumpAction_NoJump_NoChange()
+	{
+		// Arrange
+		PlayerMovement playerMovement = Object.FindObjectOfType<PlayerMovement>();
+		playerMovement.DashAction(1.0f);
+		// Act
+		playerMovement.JumpAction();
+
+		// Assert
+		yield return null;
+		Assert.IsTrue(playerMovement.IsGrounded);
 	}
 
 	// PlayerMovement - Crouch
