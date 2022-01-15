@@ -98,8 +98,6 @@ public class GameManager : MonoBehaviour
 		_playerTwoController = playerTwoObject.GetComponent<BrainController>();
 		PlayerOne = playerOneObject.GetComponent<Player>();
 		PlayerTwo = playerTwoObject.GetComponent<Player>();
-		PlayerOne.SetAssist(_assists[SceneSettings.AssistOne]);
-		PlayerTwo.SetAssist(_assists[SceneSettings.AssistTwo]);
 		_playerMovementOne = playerOneObject.GetComponent<PlayerMovement>();
 		_playerMovementTwo = playerTwoObject.GetComponent<PlayerMovement>();
 		playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
@@ -136,6 +134,8 @@ public class GameManager : MonoBehaviour
 		_playerOneController.IsPlayerOne = true;
 		PlayerOne.SetPlayerUI(_playerOneUI);
 		PlayerTwo.SetPlayerUI(_playerTwoUI);
+		PlayerOne.SetAssist(_assists[SceneSettings.AssistOne]);
+		PlayerTwo.SetAssist(_assists[SceneSettings.AssistTwo]);
 		PlayerOne.SetOtherPlayer(_playerMovementTwo);
 		PlayerOne.IsPlayerOne = true;
 		_playerOneController.ControllerInputName = SceneSettings.ControllerOne;
