@@ -59,6 +59,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_controller = GetComponent<BrainController>();
 	}
 
+	public void SetAssist(AssistStatsSO assistStats)
+	{
+		_assist.SetAssist(assistStats);
+		_playerUI.SetAssistName(assistStats.name[0].ToString());
+	}
+
 	void Start()
 	{
 		InitializeStats();

@@ -11,6 +11,7 @@ public class CharacterAssistSelector : MonoBehaviour
     [SerializeField] private Animator _assistAnimator = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private GameObject _arrows = default;
+    [SerializeField] private AssistStatsSO[] assistStatsSO = default;
     [SerializeField] private bool _isPlayerOne = default;
     private Audio _audio;
     private Vector2 _directionInput;
@@ -66,6 +67,12 @@ public class CharacterAssistSelector : MonoBehaviour
                 _controllerInputName = SceneSettings.ControllerTwo;
             }
         }
+
+        //Refactor
+        if (_controllerInputName == "KeyboardTwo")
+        {
+            _controllerInputName = "KeyboardOne";
+        }
     }
 
     private void Update()
@@ -73,11 +80,18 @@ public class CharacterAssistSelector : MonoBehaviour
         if (!_inputDeactivated)
         {
             _directionInput = new Vector2(Input.GetAxisRaw(_controllerInputName + "Horizontal"), 0.0f);
-            if (_directionInput.x == 1.0f && _assistCount < 0)
+            if (_directionInput.x == 1.0f && _assistCount < assistStatsSO.Length - 1)
             {
                 _audio.Sound("Pressed").Play();
                 AssistLetter++;
                 _assistCount++;
+                StartCoroutine(ResetInput());
+            }
+            else if (_directionInput.x == 1.0f && _assistCount >= assistStatsSO.Length - 1)
+            {
+                _audio.Sound("Pressed").Play();
+                AssistLetter = 'A';
+                _assistCount = 0;
                 StartCoroutine(ResetInput());
             }
             if (_directionInput.x == -1.0f && _assistCount > 0)
@@ -85,6 +99,13 @@ public class CharacterAssistSelector : MonoBehaviour
                 _audio.Sound("Pressed").Play();
                 AssistLetter--;
                 _assistCount--;
+                StartCoroutine(ResetInput());
+            }
+            else if (_directionInput.x == -1.0f && _assistCount <=  0)
+            {
+                _audio.Sound("Pressed").Play();
+                AssistLetter = 'B';
+                _assistCount = assistStatsSO.Length - 1;
                 StartCoroutine(ResetInput());
             }
             _playerOneColorNumber.text = $"Assist {AssistLetter}";

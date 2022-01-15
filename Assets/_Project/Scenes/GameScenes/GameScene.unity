@@ -2063,6 +2063,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 355764829}
     - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: _assistName
+      value: 
+      objectReference: {fileID: 654230312}
+    - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: _pauseSlider
       value: 
       objectReference: {fileID: 1700402952}
@@ -2304,15 +2308,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1604159753329577818, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1604159753329577818, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1604159753329577818, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1604159753525314932, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_SizeDelta.x
@@ -2492,7 +2496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7079244237797341978, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7085780738660390040, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_Sprite
@@ -3290,6 +3294,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 355764829}
     - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
+      propertyPath: _assistName
+      value: 
+      objectReference: {fileID: 1057304754}
+    - target: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: _pauseSlider
       value: 
       objectReference: {fileID: 1700402952}
@@ -3535,7 +3543,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1604159753329577818, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1604159753525314932, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3751,7 +3759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7079244237797341978, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7085780738660390040, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
       propertyPath: m_Sprite
@@ -4019,7 +4027,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stage: 4
   _characterOne: 2
-  _characterTwo: 2
+  _characterTwo: 1
+  _assistOne: 1
+  _assistTwo: 0
   _controllerOne: 1
   _controllerTwo: 2
   _isTrainingMode: 1
@@ -4052,6 +4062,9 @@ MonoBehaviour:
   - {fileID: 1865977255}
   - {fileID: 754671300}
   - {fileID: 1068901491}
+  _assists:
+  - {fileID: 11400000, guid: 2f7ef4e4812540b42bf60476b4910e16, type: 2}
+  - {fileID: 11400000, guid: 75d5a494b32c577439e9a3ad7b3a7027, type: 2}
   _matchOverMenu: {fileID: 1202960004}
   _readyAnimator: {fileID: 9123090234613714750}
   _cinemachineTargetGroup: {fileID: 1821676145}
@@ -18948,6 +18961,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.36
       objectReference: {fileID: 0}
+    - target: {fileID: 2410431835236494980, guid: 6aded20380bf8df4b891048839525825, type: 3}
+      propertyPath: _assistStatsSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 2f7ef4e4812540b42bf60476b4910e16, type: 2}
     - target: {fileID: 2410431835236494982, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_IsActive
       value: 1

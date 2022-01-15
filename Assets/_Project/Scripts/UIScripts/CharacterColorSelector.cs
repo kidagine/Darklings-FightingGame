@@ -64,6 +64,12 @@ public class CharacterColorSelector : MonoBehaviour
 				_controllerInputName = SceneSettings.ControllerTwo;
 			}
 		}
+
+		//Refactor
+		if (_controllerInputName == "KeyboardTwo")
+		{
+			_controllerInputName = "KeyboardOne";
+		}
 	}
 
 	private void Update()

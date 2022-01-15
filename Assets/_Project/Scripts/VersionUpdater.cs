@@ -8,8 +8,8 @@ public class VersionUpdater : MonoBehaviour
 	[SerializeField] private TextAsset _versionTextAsset = default;
 	[Header("Texts")]
 	[SerializeField] private TextMeshProUGUI _menuVersionText = default;
-	[SerializeField] private TextMeshProUGUI _patchNotesVersionText = default;
 	[SerializeField] private Transform _patchNotesGroup = default;
+	[SerializeField] private GameObject _patchNotePrefab = default;
 	private readonly List<TextMeshProUGUI> _patchNotes = new List<TextMeshProUGUI>();
 	private readonly string _versionSplit = "Version:";
 	private readonly string _patchNotesSplit = "Patch Notes:";
@@ -28,10 +28,6 @@ public class VersionUpdater : MonoBehaviour
 			return;
 		}
 
-		foreach (Transform patchNote in _patchNotesGroup)
-		{
-			_patchNotes.Add(patchNote.GetChild(1).GetComponent<TextMeshProUGUI>());
-		}
 		string versionText = _versionTextAsset.text;
 		int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
 		string versionNumber = " " + versionText.Substring(versionTextPosition, versionText.LastIndexOf(_patchNotesSplit) - versionTextPosition).Trim();
@@ -39,17 +35,10 @@ public class VersionUpdater : MonoBehaviour
 		string[] patchNotes = patchNotesWhole.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
 		_menuVersionText.text += versionNumber;
-		_patchNotesVersionText.text += versionNumber;
-		for (int i = 0; i < _patchNotes.Count; i++)
+		for (int i = 0; i < patchNotes.Length; i++)
 		{
-			if (i < patchNotes.Length)
-			{
-				_patchNotes[i].text = patchNotes[i].Trim();
-			}
-			else
-			{
-				_patchNotes[i].transform.parent.gameObject.SetActive(false);
-			}
+			TextMeshProUGUI patchNote = Instantiate(_patchNotePrefab, _patchNotesGroup).transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+			patchNote.text = patchNotes[i].Trim();
 		}
 	}
 }

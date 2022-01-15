@@ -15,6 +15,7 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Image _portraitImage = default;
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
+	[SerializeField] private TextMeshProUGUI _assistName = default;
 	[SerializeField] private TextMeshProUGUI _notificationText = default;
 	[SerializeField] private TextMeshProUGUI _comboText = default;
 	[SerializeField] private TextMeshProUGUI _winsText = default;
@@ -101,6 +102,11 @@ public class PlayerUI : MonoBehaviour
 			SetMaxArcana(playerStats.maxArcana);
 			_initializedStats = true;
 		}
+	}
+
+	public void SetAssistName(string name)
+	{
+		_assistName.text = name;
 	}
 
 	private void SetPortrait(Sprite portrait)
