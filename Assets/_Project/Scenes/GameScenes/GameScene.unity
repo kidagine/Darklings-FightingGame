@@ -4020,7 +4020,7 @@ MonoBehaviour:
   _stage: 4
   _characterOne: 2
   _characterTwo: 2
-  _assistOne: 0
+  _assistOne: 1
   _assistTwo: 0
   _controllerOne: 1
   _controllerTwo: 2
@@ -4055,8 +4055,8 @@ MonoBehaviour:
   - {fileID: 754671300}
   - {fileID: 1068901491}
   _assists:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 2f7ef4e4812540b42bf60476b4910e16, type: 2}
+  - {fileID: 11400000, guid: 75d5a494b32c577439e9a3ad7b3a7027, type: 2}
   _matchOverMenu: {fileID: 1202960004}
   _readyAnimator: {fileID: 9123090234613714750}
   _cinemachineTargetGroup: {fileID: 1821676145}
@@ -18953,6 +18953,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.36
       objectReference: {fileID: 0}
+    - target: {fileID: 2410431835236494980, guid: 6aded20380bf8df4b891048839525825, type: 3}
+      propertyPath: _assistStatsSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 2f7ef4e4812540b42bf60476b4910e16, type: 2}
     - target: {fileID: 2410431835236494982, guid: 6aded20380bf8df4b891048839525825, type: 3}
       propertyPath: m_IsActive
       value: 1

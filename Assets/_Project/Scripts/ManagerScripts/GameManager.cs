@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private InputHistory[] _inputHistories = default;
 	[SerializeField] private PlayerStatsSO[] _playerStats = default;
 	[SerializeField] private GameObject[] _stages = default;
-	[SerializeField] private GameObject[] _assists = default;
+	[SerializeField] private AssistStatsSO[] _assists = default;
 	[SerializeField] private BaseMenu _matchOverMenu = default;
 	[SerializeField] private Animator _readyAnimator = default;
 	[SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
@@ -81,6 +81,8 @@ public class GameManager : MonoBehaviour
 			SceneSettings.ControllerTwo = _controllerTwo.ToString();
 			SceneSettings.PlayerOne = (int)_characterOne;
 			SceneSettings.PlayerTwo = (int)_characterTwo;
+			SceneSettings.AssistOne = (int)_assistOne;
+			SceneSettings.AssistTwo = (int)_assistTwo;
 			SceneSettings.IsTrainingMode = _isTrainingMode;
 		}
 		else
@@ -96,6 +98,8 @@ public class GameManager : MonoBehaviour
 		_playerTwoController = playerTwoObject.GetComponent<BrainController>();
 		PlayerOne = playerOneObject.GetComponent<Player>();
 		PlayerTwo = playerTwoObject.GetComponent<Player>();
+		PlayerOne.SetAssist(_assists[SceneSettings.AssistOne]);
+		PlayerTwo.SetAssist(_assists[SceneSettings.AssistTwo]);
 		_playerMovementOne = playerOneObject.GetComponent<PlayerMovement>();
 		_playerMovementTwo = playerTwoObject.GetComponent<PlayerMovement>();
 		playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);

@@ -21,7 +21,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
 
 	public void SetAssist(AssistStatsSO assistStats)
 	{
-		AssistStats = assistStats;
+		_assistStatsSO = assistStats;
 	}
 
 	public void Attack()
