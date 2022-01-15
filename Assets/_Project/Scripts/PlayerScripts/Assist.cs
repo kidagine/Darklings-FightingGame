@@ -5,7 +5,6 @@ public class Assist : MonoBehaviour, IHitboxResponder
 {
 	[SerializeField] private Animator _animator = default;
 	[SerializeField] private AssistStatsSO _assistStatsSO = default;
-	[SerializeField] private GameObject _projectilePrefab = default;
 	[SerializeField] private GameObject _smokePrefab = default;
 	private Audio _audio;
 	private Transform _player;
@@ -18,6 +17,11 @@ public class Assist : MonoBehaviour, IHitboxResponder
 	{
 		_player = transform.root;
 		_audio = GetComponent<Audio>();
+	}
+
+	public void SetAssist(AssistStatsSO assistStats)
+	{
+		AssistStats = assistStats;
 	}
 
 	public void Attack()
@@ -34,7 +38,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
 	public void Projectile()
 	{
 		GameObject hitEffect;
-		hitEffect = Instantiate(_projectilePrefab, transform);
+		hitEffect = Instantiate(_assistStatsSO.assistPrefab, transform);
 		hitEffect.transform.localPosition = Vector2.zero;
 		hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
 		hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation);

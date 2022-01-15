@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private StageTypeEnum _stage = default;
 	[SerializeField] private CharacterTypeEnum _characterOne = default;
 	[SerializeField] private CharacterTypeEnum _characterTwo = default;
+	[SerializeField] private AssistTypeEnum _assistOne = default;
+	[SerializeField] private AssistTypeEnum _assistTwo = default;
 	[SerializeField] private ControllerTypeEnum _controllerOne = default;
 	[SerializeField] private ControllerTypeEnum _controllerTwo = default;
 	[SerializeField] private bool _isTrainingMode = default;
@@ -33,7 +35,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private GameObject _trainingPrompts = default;
 	[SerializeField] private InputHistory[] _inputHistories = default;
 	[SerializeField] private PlayerStatsSO[] _playerStats = default;
-	[SerializeField] protected GameObject[] _stages = default;
+	[SerializeField] private GameObject[] _stages = default;
+	[SerializeField] private GameObject[] _assists = default;
 	[SerializeField] private BaseMenu _matchOverMenu = default;
 	[SerializeField] private Animator _readyAnimator = default;
 	[SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
