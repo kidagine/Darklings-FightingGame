@@ -1,4 +1,5 @@
 using Demonics.UI;
+using System.Text;
 using System.Text.RegularExpressions;
 using TMPro;
 using Unity.Netcode;
@@ -22,7 +23,15 @@ public class OnlineStartMenu : BaseMenu
 
 	private void Host()
 	{
-		
+		NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
+		NetworkManager.Singleton.StartHost();
+	}
+
+	private void ApprovalCheck(byte[] connnectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
+	{
+		string roomId = Encoding.ASCII.GetString(connnectionData);
+		bool approveConnection = roomId == _roomID.text;
+		callback(true, null, approveConnection, null, null);
 	}
 
 	public string GenerateRoomID()
