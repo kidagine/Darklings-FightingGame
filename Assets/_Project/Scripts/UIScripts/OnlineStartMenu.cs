@@ -24,10 +24,10 @@ public class OnlineStartMenu : BaseMenu
 		NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
 	}
 
-
 	void OnDisable()
 	{
 		NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnect;
+		NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnect;
 	}
 
 	private void HandleClientConnect(ulong clientId)
@@ -83,5 +83,10 @@ public class OnlineStartMenu : BaseMenu
 		_cancelButton.gameObject.SetActive(false);
 		_readyButton.gameObject.SetActive(true);
 		EventSystem.current.SetSelectedGameObject(_readyButton.gameObject);
+	}
+
+	public void CopyRoomId()
+	{
+		GUIUtility.systemCopyBuffer = _roomID.text.Substring(9);
 	}
 }
