@@ -85,6 +85,21 @@ public class OnlineStartMenu : BaseMenu
 		EventSystem.current.SetSelectedGameObject(_readyButton.gameObject);
 	}
 
+	public void Leave()
+	{
+		NetworkManager.Singleton.Shutdown();
+		if (NetworkManager.Singleton.IsHost)
+		{
+
+		}
+		else if (NetworkManager.Singleton.IsClient)
+		{
+			Host();
+			NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
+			NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
+		}
+	}
+
 	public void CopyRoomId()
 	{
 		GUIUtility.systemCopyBuffer = _roomID.text.Substring(9);
