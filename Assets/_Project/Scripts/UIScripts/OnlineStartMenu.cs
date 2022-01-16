@@ -1,6 +1,7 @@
 using Demonics.UI;
 using System.Text.RegularExpressions;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -15,8 +16,13 @@ public class OnlineStartMenu : BaseMenu
 
 	private void OnEnable()
 	{
-		
+		Host();
 		_roomID.text = $"Room ID: {GenerateRoomID()}";
+	}
+
+	private void Host()
+	{
+		
 	}
 
 	public string GenerateRoomID()
