@@ -12,14 +12,38 @@ public class OnlineStartMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _playerReadyText = default;
 	[SerializeField] private BaseButton _readyButton = default;
 	[SerializeField] private BaseButton _cancelButton = default;
+	[SerializeField] private GameObject _test = default;
 	private readonly string _glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
 
 
-	private void OnEnable()
+	void OnEnable()
 	{
 		Host();
 		_roomID.text = $"Room ID: {GenerateRoomID()}";
+		NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
+		NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
 	}
+
+
+	void OnDisable()
+	{
+		NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnect;
+	}
+
+	private void HandleClientConnect(ulong clientId)
+	{
+		_test.gameObject.SetActive(true);
+		if (clientId == NetworkManager.Singleton.LocalClientId)
+		{
+			_roomID.text = $"Room ID: {Encoding.ASCII.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData)}";
+		}
+	}
+
+	public void HandleClientDisconnect(ulong clientId)
+	{
+		_test.gameObject.SetActive(false);
+	}
+
 
 	private void Host()
 	{
