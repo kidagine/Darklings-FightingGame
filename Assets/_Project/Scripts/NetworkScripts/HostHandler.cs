@@ -47,7 +47,7 @@ public class HostHandler : NetworkBehaviour
 			_playerNameplates[0].gameObject.SetActive(true);
 			foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
 			{
-				AddClient(client.ClientId);
+				AddClient(client.ClientId, new OnlinePlayerInfo(client.ClientId, "Demon1", _waiting, 2));
 			}
 		}
 		NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
@@ -75,7 +75,7 @@ public class HostHandler : NetworkBehaviour
 
 	private void HandleClientConnect(ulong clientId)
 	{
-		AddClient(clientId);
+		AddClient(clientId, new OnlinePlayerInfo(clientId, "Demon2", _waiting, 2));
 		_playerNameplates[1].gameObject.SetActive(true);
 		if (clientId == NetworkManager.Singleton.LocalClientId)
 		{
@@ -83,14 +83,9 @@ public class HostHandler : NetworkBehaviour
 		}
 	}
 
-	private void AddClient(ulong clientId)
+	private void AddClient(ulong clientId, OnlinePlayerInfo onlinePlayerInfo)
 	{
-		_onlinePlayersInfo.Add(new OnlinePlayerInfo(
-		clientId,
-		"name",
-		"name",
-		1
-	));
+		_onlinePlayersInfo.Add(onlinePlayerInfo);
 	}
 
 	public void HandleClientDisconnect(ulong clientId)
@@ -136,12 +131,18 @@ public class HostHandler : NetworkBehaviour
 	[ServerRpc(RequireOwnership = false)]
 	private void ToggleReadyServerRpc(ServerRpcParams serverRpcParams = default)
 	{
-		_onlinePlayersInfo[0] = new OnlinePlayerInfo(
-			_onlinePlayersInfo[0].ClientId,
-			_onlinePlayersInfo[0].PlayerName,
-			_ready,
-			2
-		);
+		for (int i = 0; i < _onlinePlayersInfo.Count; i++)
+		{
+			if (_onlinePlayersInfo[i].ClientId == serverRpcParams.Receive.SenderClientId)
+			{
+				_onlinePlayersInfo[i] = new OnlinePlayerInfo(
+				_onlinePlayersInfo[i].ClientId,
+				_onlinePlayersInfo[i].PlayerName,
+				_ready,
+				_onlinePlayersInfo[i].Portrait
+				);
+			}
+		}
 	}
 
 	public void Cancel()
