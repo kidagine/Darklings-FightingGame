@@ -122,14 +122,14 @@ public class HostHandler : NetworkBehaviour
 	public void Ready()
 	{
 
-		ToggleReadyServerRpc();
+		ReadyServerRpc();
 		_readyButton.gameObject.SetActive(false);
 		_cancelButton.gameObject.SetActive(true);
 		EventSystem.current.SetSelectedGameObject(_cancelButton.gameObject);
 	}
 
 	[ServerRpc(RequireOwnership = false)]
-	private void ToggleReadyServerRpc(ServerRpcParams serverRpcParams = default)
+	private void ReadyServerRpc(ServerRpcParams serverRpcParams = default)
 	{
 		for (int i = 0; i < _onlinePlayersInfo.Count; i++)
 		{
@@ -147,9 +147,27 @@ public class HostHandler : NetworkBehaviour
 
 	public void Cancel()
 	{
+		CancelServerRpc();
 		_cancelButton.gameObject.SetActive(false);
 		_readyButton.gameObject.SetActive(true);
 		EventSystem.current.SetSelectedGameObject(_readyButton.gameObject);
+	}
+
+	[ServerRpc(RequireOwnership = false)]
+	private void CancelServerRpc(ServerRpcParams serverRpcParams = default)
+	{
+		for (int i = 0; i < _onlinePlayersInfo.Count; i++)
+		{
+			if (_onlinePlayersInfo[i].ClientId == serverRpcParams.Receive.SenderClientId)
+			{
+				_onlinePlayersInfo[i] = new OnlinePlayerInfo(
+				_onlinePlayersInfo[i].ClientId,
+				_onlinePlayersInfo[i].PlayerName,
+				_waiting,
+				_onlinePlayersInfo[i].Portrait
+				);
+			}
+		}
 	}
 
 	public void Leave()
