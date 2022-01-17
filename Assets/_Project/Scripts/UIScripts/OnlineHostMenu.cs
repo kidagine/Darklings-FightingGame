@@ -6,7 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class OnlineStartMenu : BaseMenu
+public class OnlineHostMenu : BaseMenu
 {
 	[SerializeField] private TextMeshProUGUI _roomID = default;
 	[SerializeField] private TextMeshProUGUI _playerReadyText = default;
@@ -54,6 +54,8 @@ public class OnlineStartMenu : BaseMenu
 	private void ApprovalCheck(byte[] connnectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
 	{
 		string roomId = Encoding.ASCII.GetString(connnectionData);
+		Debug.Log(roomId);
+		Debug.Log(_roomID.text);
 		bool approveConnection = roomId == _roomID.text;
 		callback(true, null, approveConnection, null, null);
 	}
