@@ -5364,36 +5364,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 251929291}
   m_CullTransparentMesh: 1
---- !u!1 &258130458
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 258130461}
-  m_Layer: 0
-  m_Name: Networks
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &258130461
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 258130458}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &258251918
 GameObject:
   m_ObjectHideFlags: 0
@@ -8794,7 +8764,7 @@ Transform:
   - {fileID: 132711572}
   - {fileID: 1398170530}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &437183747
 MonoBehaviour:
@@ -9488,7 +9458,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &475075633
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15561,6 +15531,7 @@ GameObject:
   - component: {fileID: 922976187}
   - component: {fileID: 922976186}
   - component: {fileID: 922976185}
+  - component: {fileID: 922976190}
   - component: {fileID: 922976189}
   m_Layer: 5
   m_Name: OnlineHostMenu_canvas
@@ -15607,14 +15578,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1097312450}
-  _roomID: {fileID: 326892375}
-  _playerNameplates:
-  - {fileID: 475075636}
-  - {fileID: 304117519}
-  _readyButton: {fileID: 1097312453}
-  _cancelButton: {fileID: 812338593}
-  _playerOneNamePlate: {fileID: 475075632}
-  _playerTwoNamePlate: {fileID: 304117515}
 --- !u!114 &922976186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15692,6 +15655,24 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &922976190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922976183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de5e0ec3332b27e4b9603edf40305453, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _roomID: {fileID: 326892375}
+  _playerNameplates:
+  - {fileID: 475075636}
+  - {fileID: 304117519}
+  _readyButton: {fileID: 1097312453}
+  _cancelButton: {fileID: 812338593}
 --- !u!1 &929103955
 GameObject:
   m_ObjectHideFlags: 0
@@ -18722,7 +18703,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1112624244
 GameObject:
@@ -23567,7 +23548,7 @@ Transform:
   - {fileID: 2021865578}
   - {fileID: 1504232919}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1381785189
 MonoBehaviour:
@@ -33184,7 +33165,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2060841939
 GameObject:
@@ -34996,7 +34977,7 @@ Transform:
   - {fileID: 922976184}
   - {fileID: 789811724}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2124469698
 PrefabInstance:
