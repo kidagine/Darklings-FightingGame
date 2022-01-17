@@ -15,7 +15,8 @@ public class OnlineHostMenu : BaseMenu
 	[SerializeField] private BaseButton _cancelButton = default;
 	[SerializeField] private GameObject _test = default;
 	private readonly string _glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
-
+	private readonly string _ready = "Ready";
+	private readonly string _waiting = "Waiting";
 
 	void OnEnable()
 	{
@@ -27,6 +28,8 @@ public class OnlineHostMenu : BaseMenu
 
 	void OnDisable()
 	{
+		_playerOneReadyText.text = _waiting;
+		_playerTwoReadyText.text = _waiting;
 		_cancelButton.gameObject.SetActive(false);
 		_readyButton.gameObject.SetActive(true);
 		NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnect;
@@ -78,11 +81,11 @@ public class OnlineHostMenu : BaseMenu
 	{
 		if (NetworkManager.Singleton.IsHost)
 		{
-			_playerOneReadyText.text = "Ready";
+			_playerOneReadyText.text = _ready;
 		}
 		else
 		{
-			_playerTwoReadyText.text = "Ready";
+			_playerTwoReadyText.text = _ready;
 		}
 		_readyButton.gameObject.SetActive(false);
 		_cancelButton.gameObject.SetActive(true);
@@ -95,11 +98,11 @@ public class OnlineHostMenu : BaseMenu
 	{
 		if (NetworkManager.Singleton.IsHost)
 		{
-			_playerOneReadyText.text = "Ready";
+			_playerOneReadyText.text = _ready;
 		}
 		else
 		{
-			_playerTwoReadyText.text = "Ready";
+			_playerTwoReadyText.text = _ready;
 		}
 		ReadyClientRpc();
 	}
@@ -109,11 +112,11 @@ public class OnlineHostMenu : BaseMenu
 	{
 		if (NetworkManager.Singleton.IsHost)
 		{
-			_playerOneReadyText.text = "Ready";
+			_playerOneReadyText.text = _ready;
 		}
 		else
 		{
-			_playerTwoReadyText.text = "Ready";
+			_playerTwoReadyText.text = _ready;
 		}
 	}
 
@@ -121,11 +124,11 @@ public class OnlineHostMenu : BaseMenu
 	{
 		if (NetworkManager.Singleton.IsHost)
 		{
-			_playerOneReadyText.text = "Waiting";
+			_playerOneReadyText.text = _waiting;
 		}
 		else
 		{
-			_playerTwoReadyText.text = "Waiting";
+			_playerTwoReadyText.text = _waiting;
 		}
 		_cancelButton.gameObject.SetActive(false);
 		_readyButton.gameObject.SetActive(true);
