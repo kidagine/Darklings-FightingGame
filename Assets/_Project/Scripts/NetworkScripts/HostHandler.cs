@@ -74,7 +74,7 @@ public class HostHandler : NetworkBehaviour
 
 	private void HandleClientConnect(ulong clientId)
 	{
-		AddClient(new OnlinePlayerInfo(clientId, "demon2", _waiting, 0));
+		AddClient(new OnlinePlayerInfo(clientId, "Demon2", _waiting, 0));
 		_playerNameplates[1].gameObject.SetActive(true);
 		if (clientId == NetworkManager.Singleton.LocalClientId && NetworkManager.Singleton.IsClient)
 		{
@@ -91,10 +91,8 @@ public class HostHandler : NetworkBehaviour
 
 	public void HandleClientDisconnect(ulong clientId)
 	{
-		_playerNameplates[0].gameObject.SetActive(false);
 		_playerNameplates[1].gameObject.SetActive(false);
 	}
-
 
 	private void Host()
 	{
@@ -174,17 +172,14 @@ public class HostHandler : NetworkBehaviour
 
 	public void Leave()
 	{
-		NetworkManager.Singleton.Shutdown();
 		if (NetworkManager.Singleton.IsHost)
 		{
-
+			NetworkManager.Singleton.Shutdown();
 		}
 		else if (NetworkManager.Singleton.IsClient)
 		{
-			Host();
-			NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
-			NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
 		}
+		_playerNameplates[1].gameObject.SetActive(false);
 	}
 
 	public void CopyRoomId()
