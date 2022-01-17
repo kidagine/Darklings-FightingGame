@@ -30,7 +30,13 @@ public class OnlineClientMenu : BaseMenu
 
 	public void Client()
 	{
-		NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.ASCII.GetBytes("abc");
+		string connectionPayload = JsonUtility.ToJson(new ConnectionPayload()
+		{
+			RoomId = "abc",
+			PlayerName = "Test2"
+		});
+		byte[] payloadBytes = Encoding.UTF8.GetBytes(connectionPayload);
+		NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
 		NetworkManager.Singleton.StartClient();
 		OpenMenuHideCurrent(_onlineHostMenu);
 	}

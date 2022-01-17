@@ -12,6 +12,7 @@ public class HostHandler : NetworkBehaviour
 	[SerializeField] private PlayerNameplate[] _playerNameplates = default;
 	[SerializeField] private BaseButton _readyButton = default;
 	[SerializeField] private BaseButton _cancelButton = default;
+	[SerializeField] private OnlineSetupDemonMenu _onLineSetupDemonMenu = default;
 	private readonly string _glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
 	private readonly string _ready = "Ready";
 	private readonly string _waiting = "Waiting";
@@ -22,15 +23,14 @@ public class HostHandler : NetworkBehaviour
 	private void Awake()
 	{
 		_onlinePlayersInfo = new NetworkList<OnlinePlayerInfo>();
+		_roomID.text = $"Room ID: {GenerateRoomID()}";
 		Host();
 	}
-
 	private void HandlePlayersStateChanged(NetworkListEvent<OnlinePlayerInfo> onlinePlayerState)
 	{
-		_playerNameplates[0].SetData(_onlinePlayersInfo[0]);
-		if (_onlinePlayersInfo.Count > 1)
+		for (int i = 0; i < _onlinePlayersInfo.Count; i++)
 		{
-			_playerNameplates[1].SetData(_onlinePlayersInfo[1]);
+			_playerNameplates[i].SetData(_onlinePlayersInfo[i]);
 		}
 	}
 
@@ -43,11 +43,10 @@ public class HostHandler : NetworkBehaviour
 
 		if (IsServer)
 		{
-			_roomID.text = $"Room ID: {GenerateRoomID()}";
 			_playerNameplates[0].gameObject.SetActive(true);
 			foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
 			{
-				AddClient(client.ClientId, new OnlinePlayerInfo(client.ClientId, "Demon1", _waiting, 2));
+				AddClient(new OnlinePlayerInfo(client.ClientId, "Demon1", _waiting, 0));
 			}
 		}
 		NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
@@ -75,15 +74,17 @@ public class HostHandler : NetworkBehaviour
 
 	private void HandleClientConnect(ulong clientId)
 	{
-		AddClient(clientId, new OnlinePlayerInfo(clientId, "Demon2", _waiting, 2));
+		AddClient(new OnlinePlayerInfo(clientId, "demon2", _waiting, 0));
 		_playerNameplates[1].gameObject.SetActive(true);
-		if (clientId == NetworkManager.Singleton.LocalClientId)
+		if (clientId == NetworkManager.Singleton.LocalClientId && NetworkManager.Singleton.IsClient)
 		{
-			_roomID.text = $"Room ID: {Encoding.ASCII.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData)}";
+			string payload = Encoding.ASCII.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData);
+			ConnectionPayload connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload);
+			_roomID.text = $"Room ID:{connectionPayload.RoomId}";
 		}
 	}
 
-	private void AddClient(ulong clientId, OnlinePlayerInfo onlinePlayerInfo)
+	private void AddClient(OnlinePlayerInfo onlinePlayerInfo)
 	{
 		_onlinePlayersInfo.Add(onlinePlayerInfo);
 	}
@@ -103,8 +104,10 @@ public class HostHandler : NetworkBehaviour
 
 	private void ApprovalCheck(byte[] connnectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
 	{
-		string roomId = Encoding.ASCII.GetString(connnectionData);
-		bool approveConnection = roomId == "abc";
+		string payload = Encoding.ASCII.GetString(connnectionData);
+		ConnectionPayload connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload);
+
+		bool approveConnection = connectionPayload.RoomId == "abc";
 		callback(true, null, approveConnection, null, null);
 	}
 
@@ -121,7 +124,6 @@ public class HostHandler : NetworkBehaviour
 
 	public void Ready()
 	{
-
 		ReadyServerRpc();
 		_readyButton.gameObject.SetActive(false);
 		_cancelButton.gameObject.SetActive(true);
@@ -173,16 +175,16 @@ public class HostHandler : NetworkBehaviour
 	public void Leave()
 	{
 		NetworkManager.Singleton.Shutdown();
-		//if (NetworkManager.Singleton.IsHost)
-		//{
+		if (NetworkManager.Singleton.IsHost)
+		{
 
-		//}
-		//else if (NetworkManager.Singleton.IsClient)
-		//{
-		//	Host();
-		//	NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
-		//	NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
-		//}
+		}
+		else if (NetworkManager.Singleton.IsClient)
+		{
+			Host();
+			NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
+			NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
+		}
 	}
 
 	public void CopyRoomId()
