@@ -21,6 +21,7 @@ public class OnlineHostMenu : BaseMenu
 
 	private NetworkList<OnlinePlayerInfo> _onlinePlayersInfo;
 
+
 	private void Awake()
 	{
 		_onlinePlayersInfo = new NetworkList<OnlinePlayerInfo>();
@@ -28,7 +29,6 @@ public class OnlineHostMenu : BaseMenu
 
 	private void HandlePlayersStateChanged(NetworkListEvent<OnlinePlayerInfo> onlinePlayerState)
 	{
-		Debug.Log(_onlinePlayersInfo.Count);
 		_playerNameplates[0].SetData(_onlinePlayersInfo[0]);
 		if (_onlinePlayersInfo.Count > 1)
 		{
@@ -47,21 +47,22 @@ public class OnlineHostMenu : BaseMenu
 		if (NetworkManager.Singleton.IsServer)
 		{
 			_playerOneNamePlate.SetActive(true);
+			NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
+			NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
+
 			foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
 			{
-				_onlinePlayersInfo.Add(new OnlinePlayerInfo(
-					client.ClientId,
-					"Damon1",
-					_waiting,
-					1
-				));
+				HandleClientConnect(client.ClientId);
+			}
+			if (NetworkManager.Singleton.ConnectedClientsList.Count > 1)
+			{
+				_playerTwoNamePlate.gameObject.SetActive(true);
+
 			}
 		}
-		NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
-		NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
 	}
 
-	void OnDisable()
+		void OnDisable()
 	{
 		for (int i = 0; i < _playerNameplates.Length; i++)
 		{
@@ -73,19 +74,22 @@ public class OnlineHostMenu : BaseMenu
 		_cancelButton.gameObject.SetActive(false);
 		_readyButton.gameObject.SetActive(true);
 		_playerTwoNamePlate.SetActive(false);
-		NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnect;
-		NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnect;
+		if (NetworkManager.Singleton)
+		{
+			NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnect;
+			NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnect;
+		}
 	}
 
 	private void HandleClientConnect(ulong clientId)
 	{
 		_onlinePlayersInfo.Add(new OnlinePlayerInfo(
-		   clientId,
-		   "Damon2",
-		   _waiting,
-		   2
-		));
-		_playerTwoNamePlate.gameObject.SetActive(true);
+				clientId,
+				"name",
+				"name",
+				1
+			));
+
 		if (clientId == NetworkManager.Singleton.LocalClientId)
 		{
 			_roomID.text = $"Room ID: {Encoding.ASCII.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData)}";
