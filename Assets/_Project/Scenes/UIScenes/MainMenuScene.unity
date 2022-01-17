@@ -6307,8 +6307,9 @@ GameObject:
   - component: {fileID: 304117516}
   - component: {fileID: 304117518}
   - component: {fileID: 304117517}
+  - component: {fileID: 304117519}
   m_Layer: 5
-  m_Name: PlayerNameplate_image
+  m_Name: PlayerTwoNameplate_image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6372,6 +6373,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 304117515}
   m_CullTransparentMesh: 1
+--- !u!114 &304117519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304117515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4708f1eceb3f4d24c88481c32058b337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerNameText: {fileID: 1175781486}
+  _playerReadyText: {fileID: 166889584}
+  _playerPortrait: {fileID: 1467175328}
+  _portraits:
+  - {fileID: 21300000, guid: 7abbb30675d5eb24db393e4558b9f350, type: 3}
+  - {fileID: 21300000, guid: e62c67997889eac4dbda9e6a7e007cbf, type: 3}
+  - {fileID: 21300000, guid: ed8cff468477bb743a61a4cd06464729, type: 3}
 --- !u!1 &308483512
 GameObject:
   m_ObjectHideFlags: 0
@@ -8515,7 +8535,7 @@ GameObject:
   - component: {fileID: 435036982}
   - component: {fileID: 435036981}
   m_Layer: 5
-  m_Name: PlayerNumber_text
+  m_Name: PlayerOneName_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9431,8 +9451,9 @@ GameObject:
   - component: {fileID: 475075633}
   - component: {fileID: 475075635}
   - component: {fileID: 475075634}
+  - component: {fileID: 475075636}
   m_Layer: 5
-  m_Name: PlayerNameplate_image
+  m_Name: PlayerOneNameplate_image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9496,6 +9517,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 475075632}
   m_CullTransparentMesh: 1
+--- !u!114 &475075636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475075632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4708f1eceb3f4d24c88481c32058b337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerNameText: {fileID: 435036981}
+  _playerReadyText: {fileID: 1451831564}
+  _playerPortrait: {fileID: 748822363}
+  _portraits:
+  - {fileID: 21300000, guid: 7abbb30675d5eb24db393e4558b9f350, type: 3}
+  - {fileID: 21300000, guid: e62c67997889eac4dbda9e6a7e007cbf, type: 3}
+  - {fileID: 21300000, guid: ed8cff468477bb743a61a4cd06464729, type: 3}
 --- !u!1 &479098824
 GameObject:
   m_ObjectHideFlags: 0
@@ -15491,6 +15531,7 @@ GameObject:
   - component: {fileID: 922976187}
   - component: {fileID: 922976186}
   - component: {fileID: 922976185}
+  - component: {fileID: 922976189}
   m_Layer: 5
   m_Name: OnlineHostMenu_canvas
   m_TagString: Untagged
@@ -15537,11 +15578,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1097312450}
   _roomID: {fileID: 326892375}
-  _playerOneReadyText: {fileID: 1451831564}
-  _playerTwoReadyText: {fileID: 166889584}
+  _playerNameplates:
+  - {fileID: 475075636}
+  - {fileID: 304117519}
   _readyButton: {fileID: 1097312453}
   _cancelButton: {fileID: 812338593}
-  _test: {fileID: 304117515}
+  _playerOneNamePlate: {fileID: 475075632}
+  _playerTwoNamePlate: {fileID: 304117515}
 --- !u!114 &922976186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15603,6 +15646,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &922976189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922976183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 4153211806
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &929103955
 GameObject:
   m_ObjectHideFlags: 0
@@ -19397,7 +19456,7 @@ GameObject:
   - component: {fileID: 1175781487}
   - component: {fileID: 1175781486}
   m_Layer: 5
-  m_Name: PlayerNumber_text
+  m_Name: PlayerTwoName_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
