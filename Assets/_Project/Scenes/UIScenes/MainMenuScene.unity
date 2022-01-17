@@ -15537,7 +15537,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1097312450}
   _roomID: {fileID: 326892375}
-  _playerReadyText: {fileID: 1451831564}
+  _playerOneReadyText: {fileID: 1451831564}
+  _playerTwoReadyText: {fileID: 166889584}
   _readyButton: {fileID: 1097312453}
   _cancelButton: {fileID: 812338593}
   _test: {fileID: 304117515}
@@ -24413,6 +24414,7 @@ GameObject:
   - component: {fileID: 1451831563}
   - component: {fileID: 1451831565}
   - component: {fileID: 1451831564}
+  - component: {fileID: 1451831566}
   m_Layer: 5
   m_Name: PlayerReady_text
   m_TagString: Untagged
@@ -24536,6 +24538,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1451831562}
   m_CullTransparentMesh: 1
+--- !u!114 &1451831566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451831562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3150761960
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1455962289
 GameObject:
   m_ObjectHideFlags: 0

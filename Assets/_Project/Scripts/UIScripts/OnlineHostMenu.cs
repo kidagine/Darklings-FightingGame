@@ -9,7 +9,8 @@ using UnityEngine.EventSystems;
 public class OnlineHostMenu : BaseMenu
 {
 	[SerializeField] private TextMeshProUGUI _roomID = default;
-	[SerializeField] private TextMeshProUGUI _playerReadyText = default;
+	[SerializeField] private TextMeshProUGUI _playerOneReadyText = default;
+	[SerializeField] private TextMeshProUGUI _playerTwoReadyText = default;
 	[SerializeField] private BaseButton _readyButton = default;
 	[SerializeField] private BaseButton _cancelButton = default;
 	[SerializeField] private GameObject _test = default;
@@ -26,6 +27,8 @@ public class OnlineHostMenu : BaseMenu
 
 	void OnDisable()
 	{
+		_cancelButton.gameObject.SetActive(false);
+		_readyButton.gameObject.SetActive(true);
 		NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnect;
 		NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnect;
 	}
@@ -56,7 +59,7 @@ public class OnlineHostMenu : BaseMenu
 		string roomId = Encoding.ASCII.GetString(connnectionData);
 		Debug.Log(roomId);
 		Debug.Log(_roomID.text);
-		bool approveConnection = roomId == _roomID.text;
+		bool approveConnection = roomId == "abc";
 		callback(true, null, approveConnection, null, null);
 	}
 
@@ -73,15 +76,57 @@ public class OnlineHostMenu : BaseMenu
 
 	public void Ready()
 	{
-		_playerReadyText.text = "Ready";
+		if (NetworkManager.Singleton.IsHost)
+		{
+			_playerOneReadyText.text = "Ready";
+		}
+		else
+		{
+			_playerTwoReadyText.text = "Ready";
+		}
 		_readyButton.gameObject.SetActive(false);
 		_cancelButton.gameObject.SetActive(true);
 		EventSystem.current.SetSelectedGameObject(_cancelButton.gameObject);
+		ReadyServerRpc();
+	}
+
+	[ServerRpc]
+	private void ReadyServerRpc()
+	{
+		if (NetworkManager.Singleton.IsHost)
+		{
+			_playerOneReadyText.text = "Ready";
+		}
+		else
+		{
+			_playerTwoReadyText.text = "Ready";
+		}
+		ReadyClientRpc();
+	}
+
+	[ClientRpc]
+	private void ReadyClientRpc()
+	{
+		if (NetworkManager.Singleton.IsHost)
+		{
+			_playerOneReadyText.text = "Ready";
+		}
+		else
+		{
+			_playerTwoReadyText.text = "Ready";
+		}
 	}
 
 	public void Cancel()
 	{
-		_playerReadyText.text = "Waiting";
+		if (NetworkManager.Singleton.IsHost)
+		{
+			_playerOneReadyText.text = "Waiting";
+		}
+		else
+		{
+			_playerTwoReadyText.text = "Waiting";
+		}
 		_cancelButton.gameObject.SetActive(false);
 		_readyButton.gameObject.SetActive(true);
 		EventSystem.current.SetSelectedGameObject(_readyButton.gameObject);
@@ -89,17 +134,17 @@ public class OnlineHostMenu : BaseMenu
 
 	public void Leave()
 	{
-		NetworkManager.Singleton.Shutdown();
-		if (NetworkManager.Singleton.IsHost)
-		{
+		//NetworkManager.Singleton.Shutdown();
+		//if (NetworkManager.Singleton.IsHost)
+		//{
 
-		}
-		else if (NetworkManager.Singleton.IsClient)
-		{
-			Host();
-			NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
-			NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
-		}
+		//}
+		//else if (NetworkManager.Singleton.IsClient)
+		//{
+		//	Host();
+		//	NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
+		//	NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
+		//}
 	}
 
 	public void CopyRoomId()

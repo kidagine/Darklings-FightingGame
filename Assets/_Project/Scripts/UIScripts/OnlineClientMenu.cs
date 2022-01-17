@@ -14,7 +14,7 @@ public class OnlineClientMenu : BaseMenu
 
 	void OnEnable()
 	{
-		NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
+		//NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
 	}
 
 	void OnDisable()
@@ -30,8 +30,9 @@ public class OnlineClientMenu : BaseMenu
 
 	public void Client()
 	{
-		NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.ASCII.GetBytes(_roomIdInputField.text);
+		NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.ASCII.GetBytes("abc");
 		NetworkManager.Singleton.StartClient();
+		OpenMenuHideCurrent(_onlineHostMenu);
 	}
 
 	public void CheckRoomIdInputField(string field)
