@@ -148,8 +148,24 @@ public class HostHandler : NetworkBehaviour
 		}
 		if (_onlinePlayersInfo[0].IsReady == _ready && _onlinePlayersInfo[1].IsReady == _ready)
 		{
+			StartGameClientRpc();
 			StartGame();
 		}
+	}
+
+	[ClientRpc]
+	private void StartGameClientRpc()
+	{
+		SceneSettings.StageIndex = 0;
+		SceneSettings.PlayerOne = 0;
+		SceneSettings.PlayerTwo = 0;
+		SceneSettings.ColorOne = 0;
+		SceneSettings.ColorTwo = 0;
+		SceneSettings.AssistOne = 0;
+		SceneSettings.AssistTwo = 0;
+		SceneSettings.ControllerOne = "Keyboard";
+		SceneSettings.ControllerTwo = "Keyboard";
+		SceneSettings.SceneSettingsDecide = true;
 	}
 
 	private void StartGame()
