@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class HostHandler : NetworkBehaviour
 {
@@ -28,9 +29,10 @@ public class HostHandler : NetworkBehaviour
 	}
 	private void HandlePlayersStateChanged(NetworkListEvent<OnlinePlayerInfo> onlinePlayerState)
 	{
-		for (int i = 0; i < _onlinePlayersInfo.Count; i++)
+		_playerNameplates[0].SetData(_onlinePlayersInfo[0]);
+		if (_onlinePlayersInfo.Count > 1)
 		{
-			_playerNameplates[i].SetData(_onlinePlayersInfo[i]);
+			_playerNameplates[1].SetData(_onlinePlayersInfo[1]);
 		}
 	}
 
@@ -142,6 +144,10 @@ public class HostHandler : NetworkBehaviour
 				_onlinePlayersInfo[i].Portrait
 				);
 			}
+		}
+		if (_onlinePlayersInfo[0].IsReady == _ready && _onlinePlayersInfo[1].IsReady == _ready)
+		{
+			NetworkManager.Singleton.SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
 		}
 	}
 
