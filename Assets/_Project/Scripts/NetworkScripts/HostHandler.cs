@@ -163,7 +163,7 @@ public class HostHandler : NetworkBehaviour
 		SceneSettings.ColorTwo = 0;
 		SceneSettings.AssistOne = 0;
 		SceneSettings.AssistTwo = 0;
-		SceneSettings.ControllerOne = "Keyboard";
+		SceneSettings.ControllerOne = "ControllerOne";
 		SceneSettings.ControllerTwo = "Keyboard";
 		SceneSettings.SceneSettingsDecide = true;
 	}
@@ -178,7 +178,7 @@ public class HostHandler : NetworkBehaviour
 		SceneSettings.AssistOne = 0;
 		SceneSettings.AssistTwo = 0;
 		SceneSettings.ControllerOne = "Keyboard";
-		SceneSettings.ControllerTwo = "Keyboard";
+		SceneSettings.ControllerTwo = "ControllerOne";
 		SceneSettings.SceneSettingsDecide = true;
 		NetworkManager.Singleton.SceneManager.LoadScene("LoadingVersusScene", LoadSceneMode.Single);
 	}
