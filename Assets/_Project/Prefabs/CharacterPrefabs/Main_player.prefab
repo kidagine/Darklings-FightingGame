@@ -221,7 +221,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 2410431835520761985}
   _assistStatsSO: {fileID: 11400000, guid: 2f7ef4e4812540b42bf60476b4910e16, type: 2}
-  _projectilePrefab: {fileID: 3294536446187043669, guid: 4c16d4107eb216e41bf4dadd675e93b0, type: 3}
   _smokePrefab: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
 --- !u!1 &2410431835520761987
 GameObject:
@@ -340,6 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _assist: {fileID: 2410431835236494980}
+  _playerAnimationEvents: {fileID: 0}
 --- !u!1 &2811059651719424129
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,6 +742,7 @@ GameObject:
   - component: {fileID: 2449284595427976381}
   - component: {fileID: 1782628146633202438}
   - component: {fileID: 1734329765868112900}
+  - component: {fileID: 8956399559331213454}
   m_Layer: 10
   m_Name: Main_player
   m_TagString: Untagged
@@ -1036,6 +1037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61034cc42f4411b4fb34b343e39bcf90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerStatsSO: {fileID: 0}
 --- !u!114 &1734329765868112900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1048,6 +1050,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9222f0a5cd52640bbfa7d3ba2e658a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8956399559331213454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2927459617050941184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &2927459617286883833
 GameObject:
   m_ObjectHideFlags: 0
