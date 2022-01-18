@@ -1,10 +1,12 @@
 using Demonics.UI;
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class HostHandler : NetworkBehaviour
 {
@@ -12,6 +14,7 @@ public class HostHandler : NetworkBehaviour
 	[SerializeField] private PlayerNameplate[] _playerNameplates = default;
 	[SerializeField] private BaseButton _readyButton = default;
 	[SerializeField] private BaseButton _cancelButton = default;
+	[SerializeField] private OnlineSetupDemonMenu _onLineSetupDemonMenu = default;
 	private readonly string _glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
 	private readonly string _ready = "Ready";
 	private readonly string _waiting = "Waiting";
@@ -22,9 +25,9 @@ public class HostHandler : NetworkBehaviour
 	private void Awake()
 	{
 		_onlinePlayersInfo = new NetworkList<OnlinePlayerInfo>();
+		_roomID.text = $"Room ID: {GenerateRoomID()}";
 		Host();
 	}
-
 	private void HandlePlayersStateChanged(NetworkListEvent<OnlinePlayerInfo> onlinePlayerState)
 	{
 		_playerNameplates[0].SetData(_onlinePlayersInfo[0]);
@@ -43,11 +46,10 @@ public class HostHandler : NetworkBehaviour
 
 		if (IsServer)
 		{
-			_roomID.text = $"Room ID: {GenerateRoomID()}";
 			_playerNameplates[0].gameObject.SetActive(true);
 			foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
 			{
-				AddClient(client.ClientId, new OnlinePlayerInfo(client.ClientId, "Demon1", _waiting, 2));
+				AddClient(new OnlinePlayerInfo(client.ClientId, "Demon1", _waiting, 0));
 			}
 		}
 		NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
@@ -75,25 +77,25 @@ public class HostHandler : NetworkBehaviour
 
 	private void HandleClientConnect(ulong clientId)
 	{
-		AddClient(clientId, new OnlinePlayerInfo(clientId, "Demon2", _waiting, 2));
+		AddClient(new OnlinePlayerInfo(clientId, "Demon2", _waiting, 0));
 		_playerNameplates[1].gameObject.SetActive(true);
-		if (clientId == NetworkManager.Singleton.LocalClientId)
+		if (clientId == NetworkManager.Singleton.LocalClientId && NetworkManager.Singleton.IsClient)
 		{
-			_roomID.text = $"Room ID: {Encoding.ASCII.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData)}";
+			string payload = Encoding.ASCII.GetString(NetworkManager.Singleton.NetworkConfig.ConnectionData);
+			ConnectionPayload connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload);
+			_roomID.text = $"Room ID:{connectionPayload.RoomId}";
 		}
 	}
 
-	private void AddClient(ulong clientId, OnlinePlayerInfo onlinePlayerInfo)
+	private void AddClient(OnlinePlayerInfo onlinePlayerInfo)
 	{
 		_onlinePlayersInfo.Add(onlinePlayerInfo);
 	}
 
 	public void HandleClientDisconnect(ulong clientId)
 	{
-		_playerNameplates[0].gameObject.SetActive(false);
 		_playerNameplates[1].gameObject.SetActive(false);
 	}
-
 
 	private void Host()
 	{
@@ -103,8 +105,10 @@ public class HostHandler : NetworkBehaviour
 
 	private void ApprovalCheck(byte[] connnectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
 	{
-		string roomId = Encoding.ASCII.GetString(connnectionData);
-		bool approveConnection = roomId == "abc";
+		string payload = Encoding.ASCII.GetString(connnectionData);
+		ConnectionPayload connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload);
+
+		bool approveConnection = connectionPayload.RoomId == "abc";
 		callback(true, null, approveConnection, null, null);
 	}
 
@@ -113,7 +117,7 @@ public class HostHandler : NetworkBehaviour
 		string roomID = "";
 		for (int i = 0; i < 12; i++)
 		{
-			roomID += _glyphs[Random.Range(0, _glyphs.Length)];
+			roomID += _glyphs[UnityEngine.Random.Range(0, _glyphs.Length)];
 		}
 		roomID = Regex.Replace(roomID.ToUpper(), ".{4}", "$0-");
 		return roomID.Remove(roomID.Length - 1);
@@ -121,7 +125,6 @@ public class HostHandler : NetworkBehaviour
 
 	public void Ready()
 	{
-
 		ReadyServerRpc();
 		_readyButton.gameObject.SetActive(false);
 		_cancelButton.gameObject.SetActive(true);
@@ -143,6 +146,41 @@ public class HostHandler : NetworkBehaviour
 				);
 			}
 		}
+		if (_onlinePlayersInfo[0].IsReady == _ready && _onlinePlayersInfo[1].IsReady == _ready)
+		{
+			StartGameClientRpc();
+			StartGame();
+		}
+	}
+
+	[ClientRpc]
+	private void StartGameClientRpc()
+	{
+		SceneSettings.StageIndex = 0;
+		SceneSettings.PlayerOne = 0;
+		SceneSettings.PlayerTwo = 0;
+		SceneSettings.ColorOne = 0;
+		SceneSettings.ColorTwo = 0;
+		SceneSettings.AssistOne = 0;
+		SceneSettings.AssistTwo = 0;
+		SceneSettings.ControllerOne = "ControllerOne";
+		SceneSettings.ControllerTwo = "Keyboard";
+		SceneSettings.SceneSettingsDecide = true;
+	}
+
+	private void StartGame()
+	{
+		SceneSettings.StageIndex = 0;
+		SceneSettings.PlayerOne = 0;
+		SceneSettings.PlayerTwo = 0;
+		SceneSettings.ColorOne = 0;
+		SceneSettings.ColorTwo = 0;
+		SceneSettings.AssistOne = 0;
+		SceneSettings.AssistTwo = 0;
+		SceneSettings.ControllerOne = "Keyboard";
+		SceneSettings.ControllerTwo = "ControllerOne";
+		SceneSettings.SceneSettingsDecide = true;
+		NetworkManager.Singleton.SceneManager.LoadScene("LoadingVersusScene", LoadSceneMode.Single);
 	}
 
 	public void Cancel()
@@ -172,17 +210,14 @@ public class HostHandler : NetworkBehaviour
 
 	public void Leave()
 	{
-		NetworkManager.Singleton.Shutdown();
-		//if (NetworkManager.Singleton.IsHost)
-		//{
-
-		//}
-		//else if (NetworkManager.Singleton.IsClient)
-		//{
-		//	Host();
-		//	NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
-		//	NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnect;
-		//}
+		if (NetworkManager.Singleton.IsHost)
+		{
+			NetworkManager.Singleton.Shutdown();
+		}
+		else if (NetworkManager.Singleton.IsClient)
+		{
+		}
+		_playerNameplates[1].gameObject.SetActive(false);
 	}
 
 	public void CopyRoomId()

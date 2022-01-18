@@ -453,6 +453,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!1001 &27153229
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -667,8 +668,8 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922976185}
-        m_TargetAssemblyTypeName: OnlineStartMenu, Scripts
+      - m_Target: {fileID: 922976190}
+        m_TargetAssemblyTypeName: HostHandler, Scripts
         m_MethodName: CopyRoomId
         m_Mode: 1
         m_Arguments:
@@ -686,6 +687,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 1
 --- !u!1 &37536690
 GameObject:
   m_ObjectHideFlags: 0
@@ -2415,6 +2417,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!1 &97194074
 GameObject:
   m_ObjectHideFlags: 0
@@ -4894,6 +4897,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!114 &209515366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7566,6 +7570,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!114 &367525713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10362,6 +10367,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!114 &495459334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13783,7 +13789,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -14600,6 +14606,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!114 &765981396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15947,6 +15954,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!1 &827694878
 GameObject:
   m_ObjectHideFlags: 0
@@ -16323,6 +16331,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!95 &860767418
 Animator:
   serializedVersion: 3
@@ -16804,6 +16813,7 @@ MonoBehaviour:
   - {fileID: 304117519}
   _readyButton: {fileID: 1097312453}
   _cancelButton: {fileID: 812338593}
+  _onLineSetupDemonMenu: {fileID: 1844477012}
 --- !u!1 &929103955
 GameObject:
   m_ObjectHideFlags: 0
@@ -17844,6 +17854,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!1 &993442528
 GameObject:
   m_ObjectHideFlags: 0
@@ -19775,6 +19786,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!1 &1108963652
 GameObject:
   m_ObjectHideFlags: 0
@@ -20672,6 +20684,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!114 &1162407426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21338,6 +21351,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!114 &1193077569 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -21833,6 +21847,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!1 &1257296879
 GameObject:
   m_ObjectHideFlags: 0
@@ -25251,7 +25266,7 @@ MonoBehaviour:
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgument: {fileID: 1844477012}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -25265,6 +25280,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!1 &1381785185
 GameObject:
   m_ObjectHideFlags: 0
@@ -28896,6 +28912,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!114 &1577402207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29503,6 +29520,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!114 &1632717467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31871,6 +31889,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!1 &1776703712
 GameObject:
   m_ObjectHideFlags: 0
@@ -32507,10 +32526,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1844477010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78b0b020ae396047ab9fef4d0e4d60e, type: 3}
+  m_Script: {fileID: 11500000, guid: bf05e67b3c5ee294fa13684a1d6ab3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startingOption: {fileID: 0}
+  _startingOption: {fileID: 2052373590}
+  _nameInputField: {fileID: 2052373590}
 --- !u!114 &1844477013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35341,6 +35361,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!114 &1982272295 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -35802,6 +35823,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!114 &2031919394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38363,8 +38385,8 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922976185}
-        m_TargetAssemblyTypeName: OnlineStartMenu, Scripts
+      - m_Target: {fileID: 922976190}
+        m_TargetAssemblyTypeName: HostHandler, Scripts
         m_MethodName: Leave
         m_Mode: 1
         m_Arguments:
@@ -38394,6 +38416,7 @@ MonoBehaviour:
   _scrollUpAmount: 0
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
+  _allowMultiplePresses: 0
 --- !u!1 &2136329238
 GameObject:
   m_ObjectHideFlags: 0
