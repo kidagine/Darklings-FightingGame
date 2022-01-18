@@ -1,4 +1,5 @@
 using Demonics.UI;
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using TMPro;
@@ -116,7 +117,7 @@ public class HostHandler : NetworkBehaviour
 		string roomID = "";
 		for (int i = 0; i < 12; i++)
 		{
-			roomID += _glyphs[Random.Range(0, _glyphs.Length)];
+			roomID += _glyphs[UnityEngine.Random.Range(0, _glyphs.Length)];
 		}
 		roomID = Regex.Replace(roomID.ToUpper(), ".{4}", "$0-");
 		return roomID.Remove(roomID.Length - 1);
@@ -147,8 +148,23 @@ public class HostHandler : NetworkBehaviour
 		}
 		if (_onlinePlayersInfo[0].IsReady == _ready && _onlinePlayersInfo[1].IsReady == _ready)
 		{
-			NetworkManager.Singleton.SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
+			StartGame();
 		}
+	}
+
+	private void StartGame()
+	{
+		SceneSettings.StageIndex = 0;
+		SceneSettings.PlayerOne = 0;
+		SceneSettings.PlayerTwo = 0;
+		SceneSettings.ColorOne = 0;
+		SceneSettings.ColorTwo = 0;
+		SceneSettings.AssistOne = 0;
+		SceneSettings.AssistTwo = 0;
+		SceneSettings.ControllerOne = "Keyboard";
+		SceneSettings.ControllerTwo = "Keyboard";
+		SceneSettings.SceneSettingsDecide = true;
+		NetworkManager.Singleton.SceneManager.LoadScene("LoadingVersusScene", LoadSceneMode.Single);
 	}
 
 	public void Cancel()
