@@ -64,27 +64,45 @@ public class PlayerUI : MonoBehaviour
 		{
 			if (_controller.IsPlayerOne)
 			{
-				if (SceneSettings.ControllerOne == "Cpu")
+				if (SceneSettings.NameOne == "")
 				{
-					PlayerName = "Cpu 1";
-					_playerName.text = PlayerName;
+
+					if (SceneSettings.ControllerOne == "Cpu")
+					{
+						PlayerName = "Cpu 1";
+						_playerName.text = PlayerName;
+					}
+					else
+					{
+						PlayerName = "Player 1";
+						_playerName.text = PlayerName;
+					}
 				}
 				else
 				{
-					PlayerName = "Player 1";
+					PlayerName = SceneSettings.NameOne;
 					_playerName.text = PlayerName;
 				}
+
 			}
 			else
 			{
-				if (SceneSettings.ControllerTwo == "Cpu")
+				if (SceneSettings.NameTwo == "")
 				{
-					PlayerName = "Cpu 2";
-					_playerName.text = PlayerName;
+					if (SceneSettings.ControllerTwo == "Cpu")
+					{
+						PlayerName = "Cpu 2";
+						_playerName.text = PlayerName;
+					}
+					else
+					{
+						PlayerName = "Player 2";
+						_playerName.text = PlayerName;
+					}
 				}
 				else
 				{
-					PlayerName = "Player 2";
+					PlayerName = SceneSettings.NameTwo;
 					_playerName.text = PlayerName;
 				}
 			}

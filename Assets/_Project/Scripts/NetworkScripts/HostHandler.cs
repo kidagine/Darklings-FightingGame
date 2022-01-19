@@ -163,6 +163,8 @@ public class HostHandler : NetworkBehaviour
 		SceneSettings.ColorTwo = 0;
 		SceneSettings.AssistOne = 0;
 		SceneSettings.AssistTwo = 0;
+		SceneSettings.NameOne = _onlinePlayersInfo[0].PlayerName.ToString();
+		SceneSettings.NameTwo = _onlinePlayersInfo[1].PlayerName.ToString();
 		SceneSettings.ControllerOne = "ControllerOne";
 		SceneSettings.ControllerTwo = "Keyboard";
 		SceneSettings.SceneSettingsDecide = true;
@@ -177,6 +179,8 @@ public class HostHandler : NetworkBehaviour
 		SceneSettings.ColorTwo = 0;
 		SceneSettings.AssistOne = 0;
 		SceneSettings.AssistTwo = 0;
+		SceneSettings.NameOne = _onlinePlayersInfo[0].PlayerName.ToString();
+		SceneSettings.NameTwo = _onlinePlayersInfo[1].PlayerName.ToString();
 		SceneSettings.ControllerOne = "Keyboard";
 		SceneSettings.ControllerTwo = "ControllerOne";
 		SceneSettings.SceneSettingsDecide = true;
