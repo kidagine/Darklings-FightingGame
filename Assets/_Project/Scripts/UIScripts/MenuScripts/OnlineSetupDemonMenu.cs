@@ -16,6 +16,6 @@ public class OnlineSetupDemonMenu : BaseMenu
 
 	public void SetPlayerName(string text)
 	{
-		PlayerPrefs.SetString("PlayerName", text);
+		PlayerPrefs.SetString("playerName", text);
 	}
 }

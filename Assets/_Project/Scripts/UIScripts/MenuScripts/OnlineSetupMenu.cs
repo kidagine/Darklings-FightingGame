@@ -25,7 +25,6 @@ public class OnlineSetupMenu : BaseMenu
 			bool approveConnection = connectionPayload.RoomId == "abc";
 			NetPortalManager.Instance.AddPlayerData(clientId, connectionPayload.PlayerName);
 			callback(true, null, approveConnection, null, null);
-
 		}
 		else
 		{
