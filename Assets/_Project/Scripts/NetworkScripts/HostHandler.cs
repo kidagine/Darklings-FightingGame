@@ -26,7 +26,6 @@ public class HostHandler : NetworkBehaviour
 	{
 		_onlinePlayersInfo = new NetworkList<OnlinePlayerInfo>();
 		_roomID.text = $"Room ID: {GenerateRoomID()}";
-		Host();
 	}
 	private void HandlePlayersStateChanged(NetworkListEvent<OnlinePlayerInfo> onlinePlayerState)
 	{
@@ -39,6 +38,7 @@ public class HostHandler : NetworkBehaviour
 
 	public override void OnNetworkSpawn()
 	{
+		Debug.Log("a");
 		if (IsClient)
 		{
 			_onlinePlayersInfo.OnListChanged += HandlePlayersStateChanged;
@@ -97,13 +97,7 @@ public class HostHandler : NetworkBehaviour
 		_playerNameplates[1].gameObject.SetActive(false);
 	}
 
-	private void Host()
-	{
-		NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
-		NetworkManager.Singleton.StartHost();
-	}
-
-	private void ApprovalCheck(byte[] connnectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
+	public void ApprovalCheck(byte[] connnectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
 	{
 		string payload = Encoding.ASCII.GetString(connnectionData);
 		ConnectionPayload connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload);
