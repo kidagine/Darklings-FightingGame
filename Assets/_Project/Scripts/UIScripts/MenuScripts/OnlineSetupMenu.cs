@@ -1,16 +1,17 @@
 using Demonics.UI;
 using System.Text;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
 public class OnlineSetupMenu : BaseMenu
 {
 	[SerializeField] private HostHandler _hostHandler = default;
-
+	[SerializeField] private TMP_InputField _playerNameInputField = default;
 
 	public void Host()
 	{
-		NetPortalManager.Instance.AddPlayerData("Lol");
+		NetPortalManager.Instance.AddPlayerData(_playerNameInputField.text);
 		NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
 		NetworkManager.Singleton.StartHost();
 	}
@@ -19,11 +20,8 @@ public class OnlineSetupMenu : BaseMenu
 	{
 		string payload = Encoding.ASCII.GetString(connectionData);
 		var connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload);
-		Debug.Log("ADSA");
 		if (connectionPayload != null)
 		{
-			Debug.Log("1");
-			Debug.Log("A" + connectionPayload.PlayerName);
 			bool approveConnection = connectionPayload.RoomId == "abc";
 			NetPortalManager.Instance.AddPlayerData(clientId, connectionPayload.PlayerName);
 			callback(true, null, approveConnection, null, null);
@@ -31,7 +29,6 @@ public class OnlineSetupMenu : BaseMenu
 		}
 		else
 		{
-			Debug.Log("2");
 			callback(true, null, true, null, null);
 		}
 	}

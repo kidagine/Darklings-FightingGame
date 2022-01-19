@@ -15188,6 +15188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1535894904}
   _roomIdInputField: {fileID: 1535894904}
+  _playerNameInputField: {fileID: 2052373590}
   _onlineHostMenu: {fileID: 922976185}
 --- !u!114 &789811726
 MonoBehaviour:
@@ -20257,6 +20258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1632717463}
   _hostHandler: {fileID: 922976190}
+  _playerNameInputField: {fileID: 2052373590}
 --- !u!114 &1124095644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20638,11 +20640,6 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
   m_PrefabInstance: {fileID: 1155269674}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1160005470 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8873799994068591495, guid: 4a0adeff303c08240abe597c81090d9f, type: 3}
-  m_PrefabInstance: {fileID: 67027216}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1162407421 stripped
 GameObject:
@@ -28409,7 +28406,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1540635121}
-    PlayerPrefab: {fileID: 1160005470}
+    PlayerPrefab: {fileID: 3861345124813672835, guid: 376603772161b1341bdf746c61538696, type: 3}
     NetworkPrefabs: []
     TickRate: 30
     ClientConnectionBufferTimeout: 10
@@ -34105,8 +34102,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89a8608b5a61f14498eb20db0f23a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _checkOnline: 1
   _checkOptions: 1
   _checkTraining: 0
+  _playerNameInputFieldInitial: Demon
+  _playerNameInputField: {fileID: 2052373590}
+  _character: 0
   _vfxSelector: {fileID: 67027217}
   _vfxSelectorInitial: 10
   _uiSelector: {fileID: 454301043}
@@ -36169,7 +36170,7 @@ GameObject:
   - component: {fileID: 2052373591}
   - component: {fileID: 2052373590}
   m_Layer: 5
-  m_Name: RoomId_inputField
+  m_Name: PlayerName_inputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36256,7 +36257,19 @@ MonoBehaviour:
   m_CharacterLimit: 14
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1844477012}
+        m_TargetAssemblyTypeName: OnlineSetupDemonMenu, Scripts
+        m_MethodName: SetPlayerName
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []

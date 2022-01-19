@@ -7,6 +7,7 @@ using UnityEngine;
 public class OnlineClientMenu : BaseMenu
 {
 	[SerializeField] private TMP_InputField _roomIdInputField = default;
+	[SerializeField] private TMP_InputField _playerNameInputField = default;
 	[SerializeField] private BaseMenu _onlineHostMenu = default;
 	private string _cachedRoomIdText = "";
 
@@ -33,7 +34,7 @@ public class OnlineClientMenu : BaseMenu
 		string connectionPayload = JsonUtility.ToJson(new ConnectionPayload()
 		{
 			RoomId = "abc",
-			PlayerName = "Test2"
+			PlayerName = _playerNameInputField.text
 		});
 		byte[] payloadBytes = Encoding.UTF8.GetBytes(connectionPayload);
 		NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;

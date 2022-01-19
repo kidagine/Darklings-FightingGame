@@ -1,9 +1,15 @@
+using TMPro;
 using UnityEngine;
 
 public class PlayerPreferences : MonoBehaviour
 {
+	[SerializeField] private bool _checkOnline = default;
 	[SerializeField] private bool _checkOptions = default;
 	[SerializeField] private bool _checkTraining = default;
+	[Header("ONLINE")]
+	[SerializeField] private string _playerNameInputFieldInitial = "Demon";
+	[SerializeField] private TMP_InputField _playerNameInputField = default;
+	[SerializeField] private int _character = default;
 	[Header("OPTIONS")]
 	[Header("Audio")]
 	[SerializeField] private BaseSelector _vfxSelector = default;
@@ -41,6 +47,10 @@ public class PlayerPreferences : MonoBehaviour
 
 	void Start()
 	{
+		if (_checkOnline)
+		{
+			LoadOnlinePreferences();
+		}
 		if (_checkOptions)
 		{
 			LoadOptionPreferences();
@@ -52,6 +62,11 @@ public class PlayerPreferences : MonoBehaviour
 				LoadTrainingPreferences();
 			}
 		}
+	}
+
+	private void LoadOnlinePreferences()
+	{
+		_playerNameInputField.text = PlayerPrefs.GetString("playerName", _playerNameInputFieldInitial);
 	}
 
 	private void LoadOptionPreferences()
