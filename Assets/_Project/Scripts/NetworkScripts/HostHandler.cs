@@ -139,7 +139,7 @@ public class HostHandler : NetworkBehaviour
 				_ready,
 				_onlinePlayersInfo[i].Assist,
 				_onlinePlayersInfo[i].Color,
-				_onlinePlayersInfo[i].Portrait
+				_onlinePlayersInfo[i].Character
 				);
 			}
 		}
@@ -154,12 +154,12 @@ public class HostHandler : NetworkBehaviour
 	private void StartGameClientRpc()
 	{
 		SceneSettings.StageIndex = 0;
-		SceneSettings.PlayerOne = 0;
-		SceneSettings.PlayerTwo = 0;
-		SceneSettings.ColorOne = 0;
-		SceneSettings.ColorTwo = 0;
-		SceneSettings.AssistOne = 0;
-		SceneSettings.AssistTwo = 0;
+		SceneSettings.PlayerOne = _onlinePlayersInfo[0].Character;
+		SceneSettings.PlayerTwo = _onlinePlayersInfo[1].Character;
+		SceneSettings.ColorOne = _onlinePlayersInfo[0].Color;
+		SceneSettings.ColorTwo = _onlinePlayersInfo[1].Color;
+		SceneSettings.AssistOne = _onlinePlayersInfo[0].Assist; ;
+		SceneSettings.AssistTwo = _onlinePlayersInfo[1].Assist; ;
 		SceneSettings.NameOne = _onlinePlayersInfo[0].PlayerName.ToString();
 		SceneSettings.NameTwo = _onlinePlayersInfo[1].PlayerName.ToString();
 		SceneSettings.ControllerOne = "ControllerOne";
@@ -170,12 +170,12 @@ public class HostHandler : NetworkBehaviour
 	private void StartGame()
 	{
 		SceneSettings.StageIndex = 0;
-		SceneSettings.PlayerOne = 0;
-		SceneSettings.PlayerTwo = 0;
-		SceneSettings.ColorOne = 0;
-		SceneSettings.ColorTwo = 0;
-		SceneSettings.AssistOne = 0;
-		SceneSettings.AssistTwo = 0;
+		SceneSettings.PlayerOne = _onlinePlayersInfo[0].Character;
+		SceneSettings.PlayerTwo = _onlinePlayersInfo[1].Character;
+		SceneSettings.ColorOne = _onlinePlayersInfo[0].Color;
+		SceneSettings.ColorTwo = _onlinePlayersInfo[1].Color;
+		SceneSettings.AssistOne = _onlinePlayersInfo[0].Assist; ;
+		SceneSettings.AssistTwo = _onlinePlayersInfo[1].Assist; ;
 		SceneSettings.NameOne = _onlinePlayersInfo[0].PlayerName.ToString();
 		SceneSettings.NameTwo = _onlinePlayersInfo[1].PlayerName.ToString();
 		SceneSettings.ControllerOne = "Keyboard";
@@ -205,7 +205,7 @@ public class HostHandler : NetworkBehaviour
 				_waiting,
 				_onlinePlayersInfo[i].Assist,
 				_onlinePlayersInfo[i].Color,
-				_onlinePlayersInfo[i].Portrait
+				_onlinePlayersInfo[i].Character
 				);
 			}
 		}

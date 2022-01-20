@@ -19,7 +19,7 @@ public class PlayerNameplate : NetworkBehaviour
 		_playerNameText.text = onlinePlayerInfo.PlayerName.ToString();
 		_playerReadyText.text = onlinePlayerInfo.IsReady.ToString();
 		_playerAssistText.text = ((char)(65 + onlinePlayerInfo.Assist)).ToString();
-		_playerPortrait.sprite = _portraits[onlinePlayerInfo.Portrait].intArray[onlinePlayerInfo.Color];
+		_playerPortrait.sprite = _portraits[onlinePlayerInfo.Character].intArray[onlinePlayerInfo.Color];
 	}
 
 	void OnDisable()
