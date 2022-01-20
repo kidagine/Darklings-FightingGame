@@ -6823,13 +6823,14 @@ GameObject:
   - component: {fileID: 326892374}
   - component: {fileID: 326892376}
   - component: {fileID: 326892375}
+  - component: {fileID: 326892377}
   m_Layer: 5
   m_Name: RoomId_text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &326892374
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6946,6 +6947,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326892373}
   m_CullTransparentMesh: 1
+--- !u!114 &326892377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326892373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 549730389
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &327265854
 GameObject:
   m_ObjectHideFlags: 0
@@ -17139,13 +17156,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de5e0ec3332b27e4b9603edf40305453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _roomID: {fileID: 326892375}
+  _roomIdText: {fileID: 326892375}
   _playerNameplates:
   - {fileID: 475075636}
   - {fileID: 304117519}
   _readyButton: {fileID: 1097312453}
   _cancelButton: {fileID: 812338593}
-  _onLineSetupDemonMenu: {fileID: 1844477012}
+  _onlineSetupDemonMenu: {fileID: 1844477012}
+  _onlineSetupMenu: {fileID: 1124095643}
 --- !u!1 &929103955
 GameObject:
   m_ObjectHideFlags: 0

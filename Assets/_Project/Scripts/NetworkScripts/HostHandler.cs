@@ -1,6 +1,7 @@
 using Demonics.UI;
 using System.Text.RegularExpressions;
 using TMPro;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class HostHandler : NetworkBehaviour
 {
-	[SerializeField] private TextMeshProUGUI _roomID = default;
+	[SerializeField] private TextMeshProUGUI _roomIdText = default;
 	[SerializeField] private PlayerNameplate[] _playerNameplates = default;
 	[SerializeField] private BaseButton _readyButton = default;
 	[SerializeField] private BaseButton _cancelButton = default;
@@ -19,12 +20,14 @@ public class HostHandler : NetworkBehaviour
 	private readonly string _waiting = "Waiting";
 
 	private NetworkList<OnlinePlayerInfo> _onlinePlayersInfo;
-
+	private NetworkVariable<FixedString32Bytes> _roomId;
 
 	private void Awake()
 	{
 		_onlinePlayersInfo = new NetworkList<OnlinePlayerInfo>();
-		_roomID.text = $"Room ID: {GenerateRoomID()}";
+		_roomId = new NetworkVariable<FixedString32Bytes>();
+		_roomId.Value = GenerateRoomID();
+		_roomIdText.text = $"Room ID: {_roomId.Value}";
 	}
 	private void HandlePlayersStateChanged(NetworkListEvent<OnlinePlayerInfo> onlinePlayerState)
 	{
@@ -37,11 +40,18 @@ public class HostHandler : NetworkBehaviour
 		}
 	}
 
+	private void HandleRoomIdChanged(FixedString32Bytes oldDisplayName, FixedString32Bytes newDisplayName)
+	{
+		_roomIdText.gameObject.SetActive(true);
+		_roomIdText.text = newDisplayName.ToString();
+	}
+
 	public override void OnNetworkSpawn()
 	{
 		if (IsClient)
 		{
 			_onlinePlayersInfo.OnListChanged += HandlePlayersStateChanged;
+			_roomId.OnValueChanged += HandleRoomIdChanged;
 		}
 
 		if (IsServer)
@@ -57,6 +67,7 @@ public class HostHandler : NetworkBehaviour
 
 	void OnDisable()
 	{
+		_roomIdText.gameObject.SetActive(false);
 		_cancelButton.gameObject.SetActive(false);
 		_readyButton.gameObject.SetActive(true);
 		if (NetworkManager.Singleton)
@@ -71,6 +82,7 @@ public class HostHandler : NetworkBehaviour
 		base.OnDestroy();
 
 		_onlinePlayersInfo.OnListChanged -= HandlePlayersStateChanged;
+		_roomId.OnValueChanged -= HandleRoomIdChanged;
 
 		if (NetworkManager.Singleton)
 		{
@@ -84,6 +96,7 @@ public class HostHandler : NetworkBehaviour
 		PlayerData playerData = NetPortalManager.Instance.GetPlayerData(clientId);
 		if (playerData != null)
 		{
+			_roomId.Value = _roomIdText.text;
 			_onlinePlayersInfo.Add(new OnlinePlayerInfo(
 				clientId,
 				playerData.PlayerName,
@@ -112,7 +125,7 @@ public class HostHandler : NetworkBehaviour
 		string roomID = "";
 		for (int i = 0; i < 12; i++)
 		{
-			roomID += _glyphs[UnityEngine.Random.Range(0, _glyphs.Length)];
+			roomID += _glyphs[Random.Range(0, _glyphs.Length)];
 		}
 		roomID = Regex.Replace(roomID.ToUpper(), ".{4}", "$0-");
 		return roomID.Remove(roomID.Length - 1);
@@ -221,6 +234,6 @@ public class HostHandler : NetworkBehaviour
 
 	public void CopyRoomId()
 	{
-		GUIUtility.systemCopyBuffer = _roomID.text.Substring(9);
+		GUIUtility.systemCopyBuffer = _roomIdText.text.Substring(9);
 	}
 }
