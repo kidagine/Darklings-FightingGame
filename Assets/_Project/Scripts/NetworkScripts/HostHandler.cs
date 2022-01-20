@@ -83,6 +83,7 @@ public class HostHandler : NetworkBehaviour
 				clientId,
 				playerData.PlayerName,
 				"waiting",
+				playerData.Assist,
 				playerData.Character
 			));
 		}
@@ -143,6 +144,7 @@ public class HostHandler : NetworkBehaviour
 				_onlinePlayersInfo[i].ClientId,
 				_onlinePlayersInfo[i].PlayerName,
 				_ready,
+				_onlinePlayersInfo[i].Assist,
 				_onlinePlayersInfo[i].Portrait
 				);
 			}
@@ -207,6 +209,7 @@ public class HostHandler : NetworkBehaviour
 				_onlinePlayersInfo[i].ClientId,
 				_onlinePlayersInfo[i].PlayerName,
 				_waiting,
+				_onlinePlayersInfo[i].Assist,
 				_onlinePlayersInfo[i].Portrait
 				);
 			}
