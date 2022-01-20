@@ -19,7 +19,7 @@ public class OnlineSetupMenu : BaseMenu
 		NetworkManager.Singleton.StartHost();
 	}
 
-	private void ApprovalCheck(byte[] connectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
+	public void ApprovalCheck(byte[] connectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
 	{
 		string payload = Encoding.ASCII.GetString(connectionData);
 		var connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload);

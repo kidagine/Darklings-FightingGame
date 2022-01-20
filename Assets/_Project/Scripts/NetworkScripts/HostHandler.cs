@@ -1,6 +1,4 @@
 using Demonics.UI;
-using System;
-using System.Text;
 using System.Text.RegularExpressions;
 using TMPro;
 using Unity.Netcode;
@@ -14,7 +12,8 @@ public class HostHandler : NetworkBehaviour
 	[SerializeField] private PlayerNameplate[] _playerNameplates = default;
 	[SerializeField] private BaseButton _readyButton = default;
 	[SerializeField] private BaseButton _cancelButton = default;
-	[SerializeField] private OnlineSetupDemonMenu _onLineSetupDemonMenu = default;
+	[SerializeField] private OnlineSetupDemonMenu _onlineSetupDemonMenu = default;
+	[SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
 	private readonly string _glyphs = "abcdefghijklmnopqrstuvwxyz0123456789";
 	private readonly string _ready = "Ready";
 	private readonly string _waiting = "Waiting";
@@ -67,6 +66,19 @@ public class HostHandler : NetworkBehaviour
 		}
 	}
 
+	public override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		_onlinePlayersInfo.OnListChanged -= HandlePlayersStateChanged;
+
+		if (NetworkManager.Singleton)
+		{
+			NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnect;
+			NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnect;
+		}
+	}
+
 	private void HandleClientConnect(ulong clientId)
 	{
 		PlayerData playerData = NetPortalManager.Instance.GetPlayerData(clientId);
@@ -75,7 +87,7 @@ public class HostHandler : NetworkBehaviour
 			_onlinePlayersInfo.Add(new OnlinePlayerInfo(
 				clientId,
 				playerData.PlayerName,
-				"waiting",
+				_waiting,
 				playerData.Assist,
 				playerData.Color,
 				playerData.Character
@@ -85,7 +97,14 @@ public class HostHandler : NetworkBehaviour
 
 	public void HandleClientDisconnect(ulong clientId)
 	{
-		_playerNameplates[1].gameObject.SetActive(false);
+		for (int i = 0; i < _onlinePlayersInfo.Count; i++)
+		{
+			if (_onlinePlayersInfo[i].ClientId == clientId)
+			{
+				_onlinePlayersInfo.RemoveAt(i);
+				break;
+			}
+		}
 	}
 
 	public string GenerateRoomID()
@@ -194,14 +213,10 @@ public class HostHandler : NetworkBehaviour
 
 	public void Leave()
 	{
-		if (NetworkManager.Singleton.IsHost)
-		{
-			NetworkManager.Singleton.Shutdown();
-		}
-		else if (NetworkManager.Singleton.IsClient)
-		{
-		}
-		_playerNameplates[1].gameObject.SetActive(false);
+		_onlinePlayersInfo.Clear();
+		NetworkManager.Singleton.ConnectionApprovalCallback -= _onlineSetupMenu.ApprovalCheck;
+		NetPortalManager.Instance.ClearPlayerData();
+		NetworkManager.Singleton.Shutdown();
 	}
 
 	public void CopyRoomId()
