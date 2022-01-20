@@ -8,10 +8,14 @@ public class OnlineSetupMenu : BaseMenu
 {
 	[SerializeField] private HostHandler _hostHandler = default;
 	[SerializeField] private TMP_InputField _playerNameInputField = default;
+	[SerializeField] private BaseSelector _characterSelector = default;
+	[SerializeField] private BaseSelector _assistSelector = default;
+	[SerializeField] private BaseSelector _colorSelector = default;
 
 	public void Host()
 	{
-		NetPortalManager.Instance.AddPlayerData(_playerNameInputField.text);
+		PlayerData playerData = new PlayerData(_playerNameInputField.text, _characterSelector.Value, _assistSelector.Value, _colorSelector.Value);
+		NetPortalManager.Instance.AddPlayerData(playerData);
 		NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
 		NetworkManager.Singleton.StartHost();
 	}

@@ -76,18 +76,16 @@ public class HostHandler : NetworkBehaviour
 
 	private void HandleClientConnect(ulong clientId)
 	{
-		var playerData = NetPortalManager.Instance.GetPlayerData(clientId);
-		if (playerData == "")
+		PlayerData playerData = NetPortalManager.Instance.GetPlayerData(clientId);
+		if (playerData != null)
 		{
-			playerData = "fuk";
+			_onlinePlayersInfo.Add(new OnlinePlayerInfo(
+				clientId,
+				playerData.PlayerName,
+				"waiting",
+				playerData.Character
+			));
 		}
-
-		_onlinePlayersInfo.Add(new OnlinePlayerInfo(
-			clientId,
-			playerData,
-			"waiting",
-			0
-		));
 	}
 
 	public void HandleClientDisconnect(ulong clientId)

@@ -9,7 +9,7 @@ public class NetPortalManager : MonoBehaviour
     public static NetPortalManager Instance => instance;
     private static NetPortalManager instance;
 
-    private Dictionary<string, string> clientData;
+    private Dictionary<string, PlayerData> clientData;
     private Dictionary<ulong, string> clientIdToGuid;
 
 
@@ -26,15 +26,15 @@ public class NetPortalManager : MonoBehaviour
     }
     private void Start()
     {
-        clientData = new Dictionary<string, string>();
+        clientData = new Dictionary<string, PlayerData>();
         clientIdToGuid = new Dictionary<ulong, string>();
     }
 
-    public string GetPlayerData(ulong clientId)
+    public PlayerData GetPlayerData(ulong clientId)
     {
         if (clientIdToGuid.TryGetValue(clientId, out string clientGuid))
         {
-            if (clientData.TryGetValue(clientGuid, out string playerData))
+            if (clientData.TryGetValue(clientGuid, out PlayerData playerData))
             {
                 return playerData;
             }
@@ -47,21 +47,20 @@ public class NetPortalManager : MonoBehaviour
         {
             Debug.LogWarning($"No client guid found for client id: {clientId}");
         }
-
-        return "";
+        return null;
     }
 
-    public void AddPlayerData(string name)
+    public void AddPlayerData(PlayerData playerData)
     {
         string clientGuid = Guid.NewGuid().ToString();
-        clientData.Add(clientGuid, name);
+        clientData.Add(clientGuid, playerData);
         clientIdToGuid.Add(NetworkManager.Singleton.LocalClientId, clientGuid);
     }
 
     public void AddPlayerData(ulong clientId, string name)
     {
-        string clientGuid = Guid.NewGuid().ToString();
-        clientData.Add(clientGuid, name);
-        clientIdToGuid.Add(clientId, clientGuid);
+        //string clientGuid = Guid.NewGuid().ToString();
+        //clientData.Add(clientGuid, name);
+        //clientIdToGuid.Add(clientId, clientGuid);
     }
 }
