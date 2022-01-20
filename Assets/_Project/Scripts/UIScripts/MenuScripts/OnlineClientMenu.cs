@@ -25,7 +25,8 @@ public class OnlineClientMenu : BaseMenu
 	{
 		string connectionPayload = JsonUtility.ToJson(new ConnectionPayload()
 		{
-			RoomId = "abc",
+			RoomId = _roomIdInputField.text,
+			//RoomId = "abc",
 			PlayerName = _playerNameInputField.text,
 			Character = _characterSelector.Value,
 			Assist = _assistSelector.Value,

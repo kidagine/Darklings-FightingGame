@@ -20,14 +20,14 @@ public class HostHandler : NetworkBehaviour
 	private readonly string _waiting = "Waiting";
 
 	private NetworkList<OnlinePlayerInfo> _onlinePlayersInfo;
-	private NetworkVariable<FixedString32Bytes> _roomId;
+	public NetworkVariable<FixedString32Bytes> RoomId { get; private set; }
 
 	private void Awake()
 	{
 		_onlinePlayersInfo = new NetworkList<OnlinePlayerInfo>();
-		_roomId = new NetworkVariable<FixedString32Bytes>();
-		_roomId.Value = GenerateRoomID();
-		_roomIdText.text = $"Room ID: {_roomId.Value}";
+		RoomId = new NetworkVariable<FixedString32Bytes>();
+		RoomId.Value = GenerateRoomID();
+		_roomIdText.text = $"Room ID: {RoomId.Value}";
 	}
 	private void HandlePlayersStateChanged(NetworkListEvent<OnlinePlayerInfo> onlinePlayerState)
 	{
@@ -43,7 +43,7 @@ public class HostHandler : NetworkBehaviour
 	private void HandleRoomIdChanged(FixedString32Bytes oldDisplayName, FixedString32Bytes newDisplayName)
 	{
 		_roomIdText.gameObject.SetActive(true);
-		_roomIdText.text = newDisplayName.ToString();
+		_roomIdText.text = $"Room ID: {newDisplayName}";
 	}
 
 	public override void OnNetworkSpawn()
@@ -51,7 +51,7 @@ public class HostHandler : NetworkBehaviour
 		if (IsClient)
 		{
 			_onlinePlayersInfo.OnListChanged += HandlePlayersStateChanged;
-			_roomId.OnValueChanged += HandleRoomIdChanged;
+			RoomId.OnValueChanged += HandleRoomIdChanged;
 		}
 
 		if (IsServer)
@@ -82,7 +82,7 @@ public class HostHandler : NetworkBehaviour
 		base.OnDestroy();
 
 		_onlinePlayersInfo.OnListChanged -= HandlePlayersStateChanged;
-		_roomId.OnValueChanged -= HandleRoomIdChanged;
+		RoomId.OnValueChanged -= HandleRoomIdChanged;
 
 		if (NetworkManager.Singleton)
 		{
@@ -96,7 +96,7 @@ public class HostHandler : NetworkBehaviour
 		PlayerData playerData = NetPortalManager.Instance.GetPlayerData(clientId);
 		if (playerData != null)
 		{
-			_roomId.Value = _roomIdText.text;
+			RoomId.Value = _roomIdText.text.Substring(9);
 			_onlinePlayersInfo.Add(new OnlinePlayerInfo(
 				clientId,
 				playerData.PlayerName,

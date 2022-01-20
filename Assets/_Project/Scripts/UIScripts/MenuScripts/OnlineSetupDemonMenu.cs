@@ -1,5 +1,4 @@
 using Demonics.UI;
-using TMPro;
 using UnityEngine;
 
 public class OnlineSetupDemonMenu : BaseMenu
