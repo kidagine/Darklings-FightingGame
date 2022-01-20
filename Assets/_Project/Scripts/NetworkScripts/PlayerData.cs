@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PlayerData : MonoBehaviour
+public class PlayerData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string PlayerName;
+    public int Character;
+    public int Assist;
+    public int Color;
 
-    // Update is called once per frame
-    void Update()
+    public PlayerData(string playerName, int character, int assist, int color)
     {
-        
+        PlayerName = playerName;
+        Character = character;
+        Assist = assist;
+        Color = color;
     }
 }

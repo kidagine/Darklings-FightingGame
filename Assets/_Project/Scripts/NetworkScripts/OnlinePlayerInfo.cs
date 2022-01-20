@@ -6,14 +6,18 @@ public struct OnlinePlayerInfo: INetworkSerializable, IEquatable<OnlinePlayerInf
     public ulong ClientId;
     public FixedString32Bytes PlayerName;
     public FixedString32Bytes IsReady;
-    public int Portrait;
+    public int Assist;
+    public int Color;
+    public int Character;
 
-    public OnlinePlayerInfo(ulong clientId, FixedString32Bytes name, FixedString32Bytes isReady, int portrait)
+    public OnlinePlayerInfo(ulong clientId, FixedString32Bytes name, FixedString32Bytes isReady, int assist, int color, int character)
     {
         ClientId = clientId;
         PlayerName = name;
         IsReady = isReady;
-        Portrait = portrait;
+        Assist = assist;
+        Color = color;
+        Character = character;
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -21,13 +25,15 @@ public struct OnlinePlayerInfo: INetworkSerializable, IEquatable<OnlinePlayerInf
         serializer.SerializeValue(ref ClientId);
         serializer.SerializeValue(ref PlayerName);
         serializer.SerializeValue(ref IsReady);
-        serializer.SerializeValue(ref Portrait);
+        serializer.SerializeValue(ref Assist);
+        serializer.SerializeValue(ref Color);
+        serializer.SerializeValue(ref Character);
     }
 
     public bool Equals(OnlinePlayerInfo other)
     {
         return ClientId == other.ClientId &&
             PlayerName == other.PlayerName &&
-            IsReady == other.IsReady && Portrait == other.Portrait;
+            IsReady == other.IsReady && Character == other.Character && Assist == other.Assist && Color == other.Color;
     }
 }

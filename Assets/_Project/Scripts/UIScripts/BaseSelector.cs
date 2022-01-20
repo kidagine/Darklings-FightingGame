@@ -22,8 +22,9 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
 	protected Audio _audio;
 	protected Button _button;
 	protected Animator _animator;
-	private int _currentSelectedIndex;
 	private bool _isIgnoringFirstSelectSound;
+
+	public int Value { get; private set; }
 
 
 	void Awake()
@@ -41,8 +42,8 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
 			{
 				_values.GetChild(i).gameObject.SetActive(false);
 			}
-			_currentSelectedIndex = value;
-			_values.GetChild(_currentSelectedIndex).gameObject.SetActive(true);
+			Value = value;
+			_values.GetChild(Value).gameObject.SetActive(true);
 
 			_rightArrowBackgroundImage.color = Color.white;
 			_leftArrowBackgroundImage.color = Color.white;
@@ -50,20 +51,20 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
 			_leftArrowImage.color = Color.black;
 			_rightArrowBackgroundImage.raycastTarget = true;
 			_leftArrowBackgroundImage.raycastTarget = true;
-			if (_currentSelectedIndex == _values.childCount - 1)
+			if (Value == _values.childCount - 1)
 			{
 				_rightArrowBackgroundImage.color = Color.black;
 				_rightArrowImage.color = Color.white;
 				_rightArrowBackgroundImage.raycastTarget = false;
 			}
-			if (_currentSelectedIndex == 0)
+			if (Value == 0)
 			{
 				_leftArrowBackgroundImage.color = Color.black;
 				_leftArrowImage.color = Color.white;
 				_leftArrowBackgroundImage.raycastTarget = false;
 			}
 			_playerPreferences.SavePreference(gameObject.name.Substring(0, gameObject.name.IndexOf("_")), value);
-			_eventInt.Invoke(_currentSelectedIndex); 
+			_eventInt.Invoke(Value); 
 		}
 	}
 
@@ -121,13 +122,13 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
 	public void NextValue()
 	{
 		_audio.Sound("Selected").Play();
-		SetValue(_currentSelectedIndex + 1);
+		SetValue(Value + 1);
 	}
 
 	public void PreviousValue()
 	{
 		_audio.Sound("Selected").Play();
-		SetValue(_currentSelectedIndex - 1);
+		SetValue(Value - 1);
 	}
 
 	void OnEnable()
