@@ -13,4 +13,9 @@ public class OnlineSetupDemonMenu : BaseMenu
 		_onlinePlayerInfo = new OnlinePlayerInfo(clientId, _nameInputField.text, "waiting", 0);
 		return _onlinePlayerInfo;
 	}
+
+	public void SetPlayerName(string text)
+	{
+		PlayerPrefs.SetString("playerName", text);
+	}
 }
