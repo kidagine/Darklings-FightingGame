@@ -6535,9 +6535,15 @@ MonoBehaviour:
   _playerAssistText: {fileID: 1866748034}
   _playerPortrait: {fileID: 1467175328}
   _portraits:
-  - {fileID: 21300000, guid: 7abbb30675d5eb24db393e4558b9f350, type: 3}
-  - {fileID: 21300000, guid: e62c67997889eac4dbda9e6a7e007cbf, type: 3}
-  - {fileID: 21300000, guid: ed8cff468477bb743a61a4cd06464729, type: 3}
+  - intArray:
+    - {fileID: 21300000, guid: 7abbb30675d5eb24db393e4558b9f350, type: 3}
+    - {fileID: 21300000, guid: fd809674357a4254582bd2f639b1c7a9, type: 3}
+  - intArray:
+    - {fileID: 21300000, guid: e62c67997889eac4dbda9e6a7e007cbf, type: 3}
+    - {fileID: 21300000, guid: b00d19cc90489424b9a6ab8534cd61b7, type: 3}
+  - intArray:
+    - {fileID: 21300000, guid: ed8cff468477bb743a61a4cd06464729, type: 3}
+    - {fileID: 21300000, guid: 1115d567f5660d440b28ff66b612079f, type: 3}
 --- !u!1 &308483512
 GameObject:
   m_ObjectHideFlags: 0
@@ -9960,9 +9966,15 @@ MonoBehaviour:
   _playerAssistText: {fileID: 1064806871}
   _playerPortrait: {fileID: 748822363}
   _portraits:
-  - {fileID: 21300000, guid: 7abbb30675d5eb24db393e4558b9f350, type: 3}
-  - {fileID: 21300000, guid: e62c67997889eac4dbda9e6a7e007cbf, type: 3}
-  - {fileID: 21300000, guid: ed8cff468477bb743a61a4cd06464729, type: 3}
+  - intArray:
+    - {fileID: 21300000, guid: 7abbb30675d5eb24db393e4558b9f350, type: 3}
+    - {fileID: 21300000, guid: fd809674357a4254582bd2f639b1c7a9, type: 3}
+  - intArray:
+    - {fileID: 21300000, guid: e62c67997889eac4dbda9e6a7e007cbf, type: 3}
+    - {fileID: 21300000, guid: b00d19cc90489424b9a6ab8534cd61b7, type: 3}
+  - intArray:
+    - {fileID: 21300000, guid: ed8cff468477bb743a61a4cd06464729, type: 3}
+    - {fileID: 21300000, guid: 1115d567f5660d440b28ff66b612079f, type: 3}
 --- !u!1 &479098824
 GameObject:
   m_ObjectHideFlags: 0
@@ -15454,6 +15466,9 @@ MonoBehaviour:
   _startingOption: {fileID: 1535894904}
   _roomIdInputField: {fileID: 1535894904}
   _playerNameInputField: {fileID: 2052373590}
+  _characterSelector: {fileID: 465378533}
+  _assistSelector: {fileID: 787826276}
+  _colorSelector: {fileID: 862987997}
   _onlineHostMenu: {fileID: 922976185}
 --- !u!114 &789811726
 MonoBehaviour:
@@ -20579,7 +20594,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1632717463}
-  _hostHandler: {fileID: 922976190}
   _playerNameInputField: {fileID: 2052373590}
   _characterSelector: {fileID: 465378533}
   _assistSelector: {fileID: 787826276}
@@ -32098,7 +32112,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 465378534}
-  _nameInputField: {fileID: 2052373590}
 --- !u!114 &1844477013
 MonoBehaviour:
   m_ObjectHideFlags: 0

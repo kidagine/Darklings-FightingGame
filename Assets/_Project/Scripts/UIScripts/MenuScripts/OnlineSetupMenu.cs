@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class OnlineSetupMenu : BaseMenu
 {
-	[SerializeField] private HostHandler _hostHandler = default;
 	[SerializeField] private TMP_InputField _playerNameInputField = default;
 	[SerializeField] private BaseSelector _characterSelector = default;
 	[SerializeField] private BaseSelector _assistSelector = default;
@@ -27,7 +26,8 @@ public class OnlineSetupMenu : BaseMenu
 		if (connectionPayload != null)
 		{
 			bool approveConnection = connectionPayload.RoomId == "abc";
-			NetPortalManager.Instance.AddPlayerData(clientId, connectionPayload.PlayerName);
+			PlayerData playerData = new PlayerData(connectionPayload.PlayerName, connectionPayload.Character, connectionPayload.Assist, connectionPayload.Color);
+			NetPortalManager.Instance.AddPlayerData(clientId, playerData);
 			callback(true, null, approveConnection, null, null);
 		}
 		else

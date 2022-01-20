@@ -7,14 +7,16 @@ public struct OnlinePlayerInfo: INetworkSerializable, IEquatable<OnlinePlayerInf
     public FixedString32Bytes PlayerName;
     public FixedString32Bytes IsReady;
     public int Assist;
+    public int Color;
     public int Portrait;
 
-    public OnlinePlayerInfo(ulong clientId, FixedString32Bytes name, FixedString32Bytes isReady, int assist, int portrait)
+    public OnlinePlayerInfo(ulong clientId, FixedString32Bytes name, FixedString32Bytes isReady, int assist, int color, int portrait)
     {
         ClientId = clientId;
         PlayerName = name;
         IsReady = isReady;
         Assist = assist;
+        Color = color;
         Portrait = portrait;
     }
 
@@ -24,6 +26,7 @@ public struct OnlinePlayerInfo: INetworkSerializable, IEquatable<OnlinePlayerInf
         serializer.SerializeValue(ref PlayerName);
         serializer.SerializeValue(ref IsReady);
         serializer.SerializeValue(ref Assist);
+        serializer.SerializeValue(ref Color);
         serializer.SerializeValue(ref Portrait);
     }
 
@@ -31,6 +34,6 @@ public struct OnlinePlayerInfo: INetworkSerializable, IEquatable<OnlinePlayerInf
     {
         return ClientId == other.ClientId &&
             PlayerName == other.PlayerName &&
-            IsReady == other.IsReady && Portrait == other.Portrait && Assist == other.Assist;
+            IsReady == other.IsReady && Portrait == other.Portrait && Assist == other.Assist && Color == other.Color;
     }
 }

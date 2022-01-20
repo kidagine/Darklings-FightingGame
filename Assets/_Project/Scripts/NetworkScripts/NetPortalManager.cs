@@ -57,10 +57,10 @@ public class NetPortalManager : MonoBehaviour
         clientIdToGuid.Add(NetworkManager.Singleton.LocalClientId, clientGuid);
     }
 
-    public void AddPlayerData(ulong clientId, string name)
+    public void AddPlayerData(ulong clientId, PlayerData playerData)
     {
-        //string clientGuid = Guid.NewGuid().ToString();
-        //clientData.Add(clientGuid, name);
-        //clientIdToGuid.Add(clientId, clientGuid);
+        string clientGuid = Guid.NewGuid().ToString();
+        clientData.Add(clientGuid, playerData);
+        clientIdToGuid.Add(clientId, clientGuid);
     }
 }

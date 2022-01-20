@@ -8,15 +8,12 @@ public class OnlineClientMenu : BaseMenu
 {
 	[SerializeField] private TMP_InputField _roomIdInputField = default;
 	[SerializeField] private TMP_InputField _playerNameInputField = default;
+	[SerializeField] private BaseSelector _characterSelector = default;
+	[SerializeField] private BaseSelector _assistSelector = default;
+	[SerializeField] private BaseSelector _colorSelector = default;
 	[SerializeField] private BaseMenu _onlineHostMenu = default;
 	private string _cachedRoomIdText = "";
 
-
-
-	void OnEnable()
-	{
-		//NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
-	}
 
 	void OnDisable()
 	{
@@ -24,17 +21,16 @@ public class OnlineClientMenu : BaseMenu
 		_roomIdInputField.text = "";
 	}
 
-	private void HandleClientConnect(ulong clientId)
-	{
-		OpenMenuHideCurrent(_onlineHostMenu);
-	}
-
 	public void Client()
 	{
 		string connectionPayload = JsonUtility.ToJson(new ConnectionPayload()
 		{
 			RoomId = "abc",
-			PlayerName = _playerNameInputField.text
+			PlayerName = _playerNameInputField.text,
+			Character = _characterSelector.Value,
+			Assist = _assistSelector.Value,
+			Color = _colorSelector.Value,
+
 		});
 		byte[] payloadBytes = Encoding.UTF8.GetBytes(connectionPayload);
 		NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;

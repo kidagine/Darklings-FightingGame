@@ -58,13 +58,6 @@ public class HostHandler : NetworkBehaviour
 
 	void OnDisable()
 	{
-		for (int i = 0; i < _playerNameplates.Length; i++)
-		{
-			if (_onlinePlayersInfo.Count > i)
-			{
-				_playerNameplates[i].ResetToDefault();
-			}
-		}
 		_cancelButton.gameObject.SetActive(false);
 		_readyButton.gameObject.SetActive(true);
 		if (NetworkManager.Singleton)
@@ -84,6 +77,7 @@ public class HostHandler : NetworkBehaviour
 				playerData.PlayerName,
 				"waiting",
 				playerData.Assist,
+				playerData.Color,
 				playerData.Character
 			));
 		}
@@ -92,26 +86,6 @@ public class HostHandler : NetworkBehaviour
 	public void HandleClientDisconnect(ulong clientId)
 	{
 		_playerNameplates[1].gameObject.SetActive(false);
-	}
-
-	public void ApprovalCheck(byte[] connectionData, ulong clientId, NetworkManager.ConnectionApprovedDelegate callback)
-	{
-		{
-			string payload = Encoding.ASCII.GetString(connectionData);
-			ConnectionPayload connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload);
-			Debug.Log("A");
-			if (connectionPayload != null)
-			{
-				Debug.Log(connectionPayload.RoomId + connectionPayload.PlayerName);
-				bool approveConnection = connectionPayload.RoomId == "abc";
-				NetPortalManager.Instance.AddPlayerData(clientId, connectionPayload.PlayerName);
-				callback(true, null, approveConnection, null, null);
-			}
-			else
-			{
-				callback(true, null, true, null, null);
-			}
-		}
 	}
 
 	public string GenerateRoomID()
@@ -145,6 +119,7 @@ public class HostHandler : NetworkBehaviour
 				_onlinePlayersInfo[i].PlayerName,
 				_ready,
 				_onlinePlayersInfo[i].Assist,
+				_onlinePlayersInfo[i].Color,
 				_onlinePlayersInfo[i].Portrait
 				);
 			}
@@ -210,6 +185,7 @@ public class HostHandler : NetworkBehaviour
 				_onlinePlayersInfo[i].PlayerName,
 				_waiting,
 				_onlinePlayersInfo[i].Assist,
+				_onlinePlayersInfo[i].Color,
 				_onlinePlayersInfo[i].Portrait
 				);
 			}
