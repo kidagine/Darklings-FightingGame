@@ -115,6 +115,7 @@ public class HostHandler : NetworkBehaviour
 			if (_onlinePlayersInfo[i].ClientId == clientId)
 			{
 				_onlinePlayersInfo.RemoveAt(i);
+				_playerNameplates[i].gameObject.SetActive(false);
 				break;
 			}
 		}
@@ -142,24 +143,31 @@ public class HostHandler : NetworkBehaviour
 	[ServerRpc(RequireOwnership = false)]
 	private void ReadyServerRpc(ServerRpcParams serverRpcParams = default)
 	{
-		for (int i = 0; i < _onlinePlayersInfo.Count; i++)
+		Debug.Log("a");
+		Debug.Log(_onlinePlayersInfo.Count);
+		if (_onlinePlayersInfo.Count > 0)
 		{
-			if (_onlinePlayersInfo[i].ClientId == serverRpcParams.Receive.SenderClientId)
+			Debug.Log("c");
+			for (int i = 0; i < _onlinePlayersInfo.Count; i++)
 			{
-				_onlinePlayersInfo[i] = new OnlinePlayerInfo(
-				_onlinePlayersInfo[i].ClientId,
-				_onlinePlayersInfo[i].PlayerName,
-				_ready,
-				_onlinePlayersInfo[i].Assist,
-				_onlinePlayersInfo[i].Color,
-				_onlinePlayersInfo[i].Character
-				);
+				if (_onlinePlayersInfo[i].ClientId == serverRpcParams.Receive.SenderClientId)
+				{
+					_onlinePlayersInfo[i] = new OnlinePlayerInfo(
+					_onlinePlayersInfo[i].ClientId,
+					_onlinePlayersInfo[i].PlayerName,
+					_ready,
+					_onlinePlayersInfo[i].Assist,
+					_onlinePlayersInfo[i].Color,
+					_onlinePlayersInfo[i].Character
+					);
+				}
 			}
-		}
-		if (_onlinePlayersInfo[0].IsReady == _ready && _onlinePlayersInfo[1].IsReady == _ready)
-		{
-			StartGameClientRpc();
-			StartGame();
+			Debug.Log("b");
+			if (_onlinePlayersInfo[0].IsReady == _ready && _onlinePlayersInfo[1].IsReady == _ready)
+			{
+				StartGameClientRpc();
+				StartGame();
+			}
 		}
 	}
 
