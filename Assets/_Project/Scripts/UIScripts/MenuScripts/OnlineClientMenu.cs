@@ -16,6 +16,16 @@ public class OnlineClientMenu : BaseMenu
 	private string _cachedRoomIdText = "";
 
 
+	void OnEnable()
+	{
+		NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
+	}
+
+	private void HandleClientConnect(ulong clientId)
+	{
+		OpenMenuHideCurrent(_onlineHostMenu);
+	}
+
 	void OnDisable()
 	{
 		_cachedRoomIdText = "";
@@ -26,8 +36,8 @@ public class OnlineClientMenu : BaseMenu
 	{
 		string connectionPayload = JsonUtility.ToJson(new ConnectionPayload()
 		{
-			//RoomId = _roomIdInputField.text,
-			RoomId = "abc",
+			RoomId = _roomIdInputField.text,
+			//RoomId = "abc",
 			PlayerName = _playerNameInputField.text,
 			Character = _characterSelector.Value,
 			Assist = _assistSelector.Value,
@@ -37,7 +47,6 @@ public class OnlineClientMenu : BaseMenu
 		byte[] payloadBytes = Encoding.UTF8.GetBytes(connectionPayload);
 		NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
 		NetworkManager.Singleton.StartClient();
-		OpenMenuHideCurrent(_onlineHostMenu);
 	}
 
 	public void CheckRoomIdInputField(string field)
