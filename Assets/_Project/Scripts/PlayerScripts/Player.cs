@@ -1,8 +1,9 @@
 using Demonics.Sounds;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
+public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 {
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private Assist _assist = default;

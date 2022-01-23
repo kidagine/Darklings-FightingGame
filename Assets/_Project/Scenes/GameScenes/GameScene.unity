@@ -1731,8 +1731,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b89a8608b5a61f14498eb20db0f23a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _checkOnline: 0
   _checkOptions: 0
   _checkTraining: 1
+  _playerNameInputFieldInitial: Demon
+  _playerNameInputField: {fileID: 0}
+  _characterSelector: {fileID: 0}
+  _characterSelectorInitial: 0
+  _charactersAssistSelector: {fileID: 0}
+  _characterAssistSelectorInitial: 0
+  _characterColorSelector: {fileID: 0}
+  _characterColorSelectorInitial: 0
   _vfxSelector: {fileID: 0}
   _vfxSelectorInitial: 0
   _uiSelector: {fileID: 0}
@@ -1861,7 +1870,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2927459616750962968, guid: 6aded20380bf8df4b891048839525825, type: 3}
   m_PrefabInstance: {fileID: 284384900880616264}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 284384900880616265}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71bc45b9d7a26534592c4041db23c677, type: 3}
@@ -19135,6 +19144,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6aded20380bf8df4b891048839525825, type: 3}
+--- !u!1 &284384900880616265 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2927459616750962963, guid: 6aded20380bf8df4b891048839525825, type: 3}
+  m_PrefabInstance: {fileID: 284384900880616264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &284384900880616266 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2927459616750962965, guid: 6aded20380bf8df4b891048839525825, type: 3}
+  m_PrefabInstance: {fileID: 284384900880616264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &284384900880616267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284384900880616265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 284384900880616266}
+  m_ParameterSendBits: 0
+  m_SendRate: 0.1
 --- !u!1001 &1237382185659542729
 PrefabInstance:
   m_ObjectHideFlags: 0
