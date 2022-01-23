@@ -31,7 +31,6 @@ public class HostHandler : NetworkBehaviour
 	}
 	private void HandlePlayersStateChanged(NetworkListEvent<OnlinePlayerInfo> onlinePlayerState)
 	{
-		Debug.Log("A");
 		for (int i = 0; i < _playerNameplates.Length; i++)
 		{
 			if (_onlinePlayersInfo.Count > i)
@@ -49,10 +48,8 @@ public class HostHandler : NetworkBehaviour
 
 	public override void OnNetworkSpawn()
 	{
-		Debug.Log("C");
 		if (IsClient)
 		{
-			Debug.Log("b");
 			_onlinePlayersInfo.OnListChanged += HandlePlayersStateChanged;
 			RoomId.OnValueChanged += HandleRoomIdChanged;
 		}
@@ -234,12 +231,12 @@ public class HostHandler : NetworkBehaviour
 
 	public void Leave()
 	{
-		_onlinePlayersInfo.OnListChanged -= HandlePlayersStateChanged;
-		RoomId.OnValueChanged -= HandleRoomIdChanged;
+		Debug.Log("1");
 		_onlinePlayersInfo.Clear();
 		NetPortalManager.Instance.ClearPlayerData();
 		NetworkManager.Singleton.ConnectionApprovalCallback -= _onlineSetupMenu.ApprovalCheck;
-		NetworkManager.Singleton.Shutdown();
+		//NetworkManager.Singleton.Shutdown();
+		Debug.Log("2");
 	}
 
 	public void CopyRoomId()
