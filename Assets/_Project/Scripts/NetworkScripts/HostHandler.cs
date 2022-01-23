@@ -31,6 +31,7 @@ public class HostHandler : NetworkBehaviour
 	}
 	private void HandlePlayersStateChanged(NetworkListEvent<OnlinePlayerInfo> onlinePlayerState)
 	{
+		Debug.Log("A");
 		for (int i = 0; i < _playerNameplates.Length; i++)
 		{
 			if (_onlinePlayersInfo.Count > i)
@@ -48,8 +49,10 @@ public class HostHandler : NetworkBehaviour
 
 	public override void OnNetworkSpawn()
 	{
+		Debug.Log("C");
 		if (IsClient)
 		{
+			Debug.Log("b");
 			_onlinePlayersInfo.OnListChanged += HandlePlayersStateChanged;
 			RoomId.OnValueChanged += HandleRoomIdChanged;
 		}
@@ -143,11 +146,9 @@ public class HostHandler : NetworkBehaviour
 	[ServerRpc(RequireOwnership = false)]
 	private void ReadyServerRpc(ServerRpcParams serverRpcParams = default)
 	{
-		Debug.Log("a");
 		Debug.Log(_onlinePlayersInfo.Count);
 		if (_onlinePlayersInfo.Count > 0)
 		{
-			Debug.Log("c");
 			for (int i = 0; i < _onlinePlayersInfo.Count; i++)
 			{
 				if (_onlinePlayersInfo[i].ClientId == serverRpcParams.Receive.SenderClientId)
@@ -162,7 +163,6 @@ public class HostHandler : NetworkBehaviour
 					);
 				}
 			}
-			Debug.Log("b");
 			if (_onlinePlayersInfo[0].IsReady == _ready && _onlinePlayersInfo[1].IsReady == _ready)
 			{
 				StartGameClientRpc();
@@ -234,9 +234,11 @@ public class HostHandler : NetworkBehaviour
 
 	public void Leave()
 	{
+		_onlinePlayersInfo.OnListChanged -= HandlePlayersStateChanged;
+		RoomId.OnValueChanged -= HandleRoomIdChanged;
 		_onlinePlayersInfo.Clear();
-		NetworkManager.Singleton.ConnectionApprovalCallback -= _onlineSetupMenu.ApprovalCheck;
 		NetPortalManager.Instance.ClearPlayerData();
+		NetworkManager.Singleton.ConnectionApprovalCallback -= _onlineSetupMenu.ApprovalCheck;
 		NetworkManager.Singleton.Shutdown();
 	}
 
