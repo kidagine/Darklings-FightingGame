@@ -115,6 +115,7 @@ public class HostHandler : NetworkBehaviour
 			if (_onlinePlayersInfo[i].ClientId == clientId)
 			{
 				_onlinePlayersInfo.RemoveAt(i);
+				_playerNameplates[i].gameObject.SetActive(false);
 				break;
 			}
 		}
@@ -142,24 +143,28 @@ public class HostHandler : NetworkBehaviour
 	[ServerRpc(RequireOwnership = false)]
 	private void ReadyServerRpc(ServerRpcParams serverRpcParams = default)
 	{
-		for (int i = 0; i < _onlinePlayersInfo.Count; i++)
+		Debug.Log(_onlinePlayersInfo.Count);
+		if (_onlinePlayersInfo.Count > 0)
 		{
-			if (_onlinePlayersInfo[i].ClientId == serverRpcParams.Receive.SenderClientId)
+			for (int i = 0; i < _onlinePlayersInfo.Count; i++)
 			{
-				_onlinePlayersInfo[i] = new OnlinePlayerInfo(
-				_onlinePlayersInfo[i].ClientId,
-				_onlinePlayersInfo[i].PlayerName,
-				_ready,
-				_onlinePlayersInfo[i].Assist,
-				_onlinePlayersInfo[i].Color,
-				_onlinePlayersInfo[i].Character
-				);
+				if (_onlinePlayersInfo[i].ClientId == serverRpcParams.Receive.SenderClientId)
+				{
+					_onlinePlayersInfo[i] = new OnlinePlayerInfo(
+					_onlinePlayersInfo[i].ClientId,
+					_onlinePlayersInfo[i].PlayerName,
+					_ready,
+					_onlinePlayersInfo[i].Assist,
+					_onlinePlayersInfo[i].Color,
+					_onlinePlayersInfo[i].Character
+					);
+				}
 			}
-		}
-		if (_onlinePlayersInfo[0].IsReady == _ready && _onlinePlayersInfo[1].IsReady == _ready)
-		{
-			StartGameClientRpc();
-			StartGame();
+			if (_onlinePlayersInfo[0].IsReady == _ready && _onlinePlayersInfo[1].IsReady == _ready)
+			{
+				StartGameClientRpc();
+				StartGame();
+			}
 		}
 	}
 
@@ -226,10 +231,12 @@ public class HostHandler : NetworkBehaviour
 
 	public void Leave()
 	{
+		Debug.Log("1");
 		_onlinePlayersInfo.Clear();
-		NetworkManager.Singleton.ConnectionApprovalCallback -= _onlineSetupMenu.ApprovalCheck;
 		NetPortalManager.Instance.ClearPlayerData();
-		NetworkManager.Singleton.Shutdown();
+		NetworkManager.Singleton.ConnectionApprovalCallback -= _onlineSetupMenu.ApprovalCheck;
+		//NetworkManager.Singleton.Shutdown();
+		Debug.Log("2");
 	}
 
 	public void CopyRoomId()

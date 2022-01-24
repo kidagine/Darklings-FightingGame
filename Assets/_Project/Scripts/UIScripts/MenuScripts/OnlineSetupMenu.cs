@@ -26,8 +26,8 @@ public class OnlineSetupMenu : BaseMenu
 		var connectionPayload = JsonUtility.FromJson<ConnectionPayload>(payload);
 		if (connectionPayload != null)
 		{
-			//bool approveConnection = connectionPayload.RoomId == _hostHandler.RoomId.Value;
-			bool approveConnection = connectionPayload.RoomId == "abc";
+			bool approveConnection = connectionPayload.RoomId == _hostHandler.RoomId.Value;
+			//bool approveConnection = connectionPayload.RoomId == "abc";
 			Debug.Log(connectionPayload.RoomId);
 			Debug.Log(_hostHandler.RoomId.Value);
 			Debug.Log(approveConnection);
