@@ -2,7 +2,9 @@ using Cinemachine;
 using Demonics.Sounds;
 using Demonics.UI;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,9 +19,11 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private ControllerTypeEnum _controllerOne = default;
 	[SerializeField] private ControllerTypeEnum _controllerTwo = default;
 	[SerializeField] private bool _isTrainingMode = default;
+	[SerializeField] private bool _isOnlineMode = default;
 	[Range(1, 10)]
 	[SerializeField] private int _gameSpeed = 1;
 	[Header("Data")]
+	[SerializeField] private Transform[] _spawnPositions = default;
 	[SerializeField] protected PlayerUI _playerOneUI = default;
 	[SerializeField] protected PlayerUI _playerTwoUI = default;
 	[SerializeField] private Animator _timerAnimator = default;
@@ -31,10 +35,12 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected GameObject _rightStopper = default;
 	[SerializeField] protected GameObject _player = default;
 	[SerializeField] protected GameObject _infiniteTime = default;
+	[SerializeField] private GameObject _networkCanvas = default;
 	[SerializeField] private GameObject[] _hearts = default;
 	[SerializeField] private GameObject _trainingPrompts = default;
 	[SerializeField] private InputHistory[] _inputHistories = default;
 	[SerializeField] private PlayerStatsSO[] _playerStats = default;
+	[SerializeField] private TrainingMenu _trainingMenu = default;
 	[SerializeField] private GameObject[] _stages = default;
 	[SerializeField] private AssistStatsSO[] _assists = default;
 	[SerializeField] private BaseMenu _matchOverMenu = default;
@@ -84,16 +90,42 @@ public class GameManager : MonoBehaviour
 			SceneSettings.AssistOne = (int)_assistOne;
 			SceneSettings.AssistTwo = (int)_assistTwo;
 			SceneSettings.IsTrainingMode = _isTrainingMode;
+			if (_isOnlineMode)
+			{
+				_networkCanvas.SetActive(true);
+			}
 		}
 		else
 		{
+			_networkCanvas.SetActive(false);
 			_isTrainingMode = SceneSettings.IsTrainingMode;
 		}
-		GameObject playerOneObject = Instantiate(_player.gameObject);
-		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
-		GameObject playerTwoObject = Instantiate(_player.gameObject);
-		playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
 
+		if (_isOnlineMode)
+		{
+			//List<GameObject> players = NetworkExtenderManager.Instance.SpawnConnectedClients(_player);
+			//if (players != null)
+			//{
+			//	GameObject playerOneObject = players[0];
+			//	GameObject playerTwoObject = players[1];
+			//	playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
+			//	playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
+			//	InitializePlayers(playerOneObject, playerTwoObject);
+			//}
+		}
+		else
+		{
+			GameObject playerOneObject = Instantiate(_player);
+			playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
+			GameObject playerTwoObject = Instantiate(_player);
+			playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
+			InitializePlayers(playerOneObject, playerTwoObject);
+		}
+	}
+
+
+	private void InitializePlayers(GameObject playerOneObject, GameObject playerTwoObject)
+	{
 		_playerOneController = playerOneObject.GetComponent<BrainController>();
 		_playerTwoController = playerTwoObject.GetComponent<BrainController>();
 		PlayerOne = playerOneObject.GetComponent<Player>();
@@ -125,6 +157,8 @@ public class GameManager : MonoBehaviour
 		PlayerTwo.SetController();
 		_playerMovementOne.SetController();
 		_playerMovementTwo.SetController();
+		PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
+		PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
 		PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorOne);
 		if (SceneSettings.ColorTwo == SceneSettings.ColorOne && PlayerOne.PlayerStats.characterName == PlayerTwo.PlayerStats.characterName)
 		{
@@ -223,6 +257,18 @@ public class GameManager : MonoBehaviour
 
 	void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.F))
+		{
+			List<GameObject> players = NetworkExtenderManager.Instance.SpawnConnectedClients(_player);
+			if (players != null)
+			{
+				GameObject playerOneObject = players[0];
+				GameObject playerTwoObject = players[1];
+				playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
+				playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo]; 
+				InitializePlayers(playerOneObject, playerTwoObject);
+			}
+		}
 		if (HasGameStarted && !_isTrainingMode)
 		{
 			_countdown -= Time.deltaTime;
@@ -256,8 +302,8 @@ public class GameManager : MonoBehaviour
 		PlayerTwo.ResetPlayer();
 		_leftStopper.SetActive(true);
 		_rightStopper.SetActive(true);
-		PlayerOne.transform.position = new Vector2(-3.5f, -4.5f);
-		PlayerTwo.transform.position = new Vector2(3.5f, -4.5f);
+		PlayerOne.transform.position = _spawnPositions[0].position;
+		PlayerTwo.transform.position = _spawnPositions[1].position;
 		_playerOneUI.ResetCombo();
 		_playerTwoUI.ResetCombo();
 		StartCoroutine(ReadyCoroutine());
@@ -275,8 +321,8 @@ public class GameManager : MonoBehaviour
 		_infiniteTime.SetActive(true);
 		_leftStopper.SetActive(false);
 		_rightStopper.SetActive(false);
-		PlayerOne.transform.position = new Vector2(-3.5f, -4.75f);
-		PlayerTwo.transform.position = new Vector2(3.5f, -4.75f);
+		PlayerOne.transform.position = _spawnPositions[0].position;
+		PlayerTwo.transform.position = _spawnPositions[1].position;
 		HasGameStarted = true;
 	}
 
@@ -406,13 +452,13 @@ public class GameManager : MonoBehaviour
 			}
 			if (_reverseReset)
 			{
-				PlayerOne.transform.position = new Vector2(3.5f, -4.485f);
-				PlayerTwo.transform.position = new Vector2(-3.5f, -4.485f);
+				PlayerOne.transform.position = _spawnPositions[0].position;
+				PlayerTwo.transform.position = _spawnPositions[1].position;
 			}
 			else
 			{
-				PlayerOne.transform.position = new Vector2(-3.5f, -4.485f);
-				PlayerTwo.transform.position = new Vector2(3.5f, -4.485f);
+				PlayerOne.transform.position = _spawnPositions[1].position;
+				PlayerTwo.transform.position = _spawnPositions[0].position;
 			}
 		}
 	}
