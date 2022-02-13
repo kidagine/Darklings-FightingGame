@@ -136,7 +136,8 @@ public class GameManager : MonoBehaviour
 		playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
 		playerOneObject.SetActive(true);
 		playerTwoObject.SetActive(true);
-
+		PlayerOne.transform.position = _spawnPositions[0].position;
+		PlayerTwo.transform.position = _spawnPositions[1].position;
 		if (SceneSettings.ControllerOne != ControllerTypeEnum.Cpu.ToString())
 		{
 			_playerOneController.SetControllerToPlayer();
@@ -259,14 +260,11 @@ public class GameManager : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.F))
 		{
-			List<GameObject> players = NetworkExtenderManager.Instance.SpawnConnectedClients(_player);
+			List<GameObject> players = NetworkExtenderManager.Instance.SpawnConnectedClients(_player, _spawnPositions);
 			if (players != null)
 			{
-				GameObject playerOneObject = players[0];
-				GameObject playerTwoObject = players[1];
-				playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
-				playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo]; 
-				InitializePlayers(playerOneObject, playerTwoObject);
+				TestServerRpc(players);
+				TestClientRpc(players);
 			}
 		}
 		if (HasGameStarted && !_isTrainingMode)
@@ -278,6 +276,29 @@ public class GameManager : MonoBehaviour
 				StartCoroutine(RoundTieCoroutine());
 			}
 		}
+	}
+
+	[ServerRpc]
+	private void TestServerRpc(List<GameObject> players)
+	{
+		Debug.Log("s");
+		GameObject playerOneObject = players[0];
+		GameObject playerTwoObject = players[1];
+		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
+		playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
+		InitializePlayers(playerOneObject, playerTwoObject);
+	}
+
+
+	[ClientRpc]
+	private void TestClientRpc(List<GameObject> players)
+	{
+		Debug.Log("c");
+		GameObject playerOneObject = players[0];
+		GameObject playerTwoObject = players[1];
+		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
+		playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
+		InitializePlayers(playerOneObject, playerTwoObject);
 	}
 
 	IEnumerator RoundTieCoroutine()

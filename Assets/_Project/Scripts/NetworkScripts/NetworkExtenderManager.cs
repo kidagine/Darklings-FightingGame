@@ -7,14 +7,16 @@ public class NetworkExtenderManager : SingletonNetwork<NetworkExtenderManager>
 	private readonly List<GameObject> _connectedClients = new();
 
 
-	public List<GameObject> SpawnConnectedClients(GameObject clientPrefab)
+	public List<GameObject> SpawnConnectedClients(GameObject clientPrefab, Transform[] spawnPositions = default)
 	{
 		if (IsServer)
 		{
+			int i = 0;
 			foreach (NetworkClient networkClient in NetworkManager.Singleton.ConnectedClientsList)
 			{
-				_connectedClients.Add(Instantiate(clientPrefab));
+				_connectedClients.Add(Instantiate(clientPrefab, spawnPositions[i].position, Quaternion.identity));
 				_connectedClients[_connectedClients.Count - 1].GetComponent<NetworkObject>().SpawnAsPlayerObject(networkClient.ClientId);
+				i++;
 			}
 			return _connectedClients;
 		}

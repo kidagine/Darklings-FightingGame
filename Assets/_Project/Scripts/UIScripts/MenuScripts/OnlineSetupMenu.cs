@@ -14,8 +14,9 @@ public class OnlineSetupMenu : BaseMenu
 
 	public void Host()
 	{
-		PlayerData playerData = new PlayerData(_playerNameInputField.text, _characterSelector.Value, _assistSelector.Value, _colorSelector.Value);
+		PlayerData playerData = new(_playerNameInputField.text, _characterSelector.Value, _assistSelector.Value, _colorSelector.Value);
 		NetPortalManager.Instance.AddPlayerData(playerData);
+		Debug.Log("a");
 		NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
 		NetworkManager.Singleton.StartHost();
 	}
@@ -28,9 +29,6 @@ public class OnlineSetupMenu : BaseMenu
 		{
 			bool approveConnection = connectionPayload.RoomId == _hostHandler.RoomId.Value;
 			//bool approveConnection = connectionPayload.RoomId == "abc";
-			Debug.Log(connectionPayload.RoomId);
-			Debug.Log(_hostHandler.RoomId.Value);
-			Debug.Log(approveConnection);
 			if (approveConnection)
 			{
 				PlayerData playerData = new PlayerData(connectionPayload.PlayerName, connectionPayload.Character, connectionPayload.Assist, connectionPayload.Color);

@@ -21,7 +21,7 @@ public class OnlineClientMenu : BaseMenu
 		NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnect;
 	}
 
-	private void HandleClientConnect(ulong clientId)
+	private void HandleClientConnect(ulong clientId = default)
 	{
 		OpenMenuHideCurrent(_onlineHostMenu);
 	}
