@@ -32,7 +32,7 @@ public class PlayerController : BaseController
 		}
 	}
 
-	private void Movement()
+	protected virtual void Movement()
 	{
 		Vector2 inputDirection = new Vector2(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
 		if (inputDirection.x == 1.0f && _playerMovement.MovementInput.x != inputDirection.x)

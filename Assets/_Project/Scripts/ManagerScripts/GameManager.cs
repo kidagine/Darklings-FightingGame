@@ -284,7 +284,6 @@ public class GameManager : NetworkBehaviour
 		Player[] players = FindObjectsOfType<Player>();
 		GameObject playerOneObject = players[0].gameObject;
 		GameObject playerTwoObject = players[1].gameObject;
-		Debug.Log(players);
 		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
 		playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
 		_playerOneController = playerOneObject.GetComponent<BrainController>();
@@ -335,17 +334,16 @@ public class GameManager : NetworkBehaviour
 		PlayerTwo.SetAssist(_assists[SceneSettings.AssistTwo]);
 		PlayerOne.SetOtherPlayer(_playerMovementTwo);
 		PlayerOne.IsPlayerOne = true;
-		_playerOneController.ControllerInputName = SceneSettings.ControllerOne;
+		_playerOneController.ControllerInputName = ControllerTypeEnum.Keyboard.ToString();
 		PlayerTwo.SetOtherPlayer(_playerMovementOne);
 		PlayerTwo.IsPlayerOne = false;
-		_playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
+		_playerTwoController.ControllerInputName = ControllerTypeEnum.Keyboard.ToString();
 		PlayerOne.name = $"{_playerStats[SceneSettings.PlayerOne].name}({SceneSettings.ControllerOne})_player";
 		PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
 		PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
 		PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
 		_cinemachineTargetGroup.AddMember(PlayerOne.transform, 0.5f, 0.5f);
 		_cinemachineTargetGroup.AddMember(PlayerTwo.transform, 0.5f, 0.5f);
-		Debug.Log("clientZ");
 	}
 
 	IEnumerator RoundTieCoroutine()

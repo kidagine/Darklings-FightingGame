@@ -1099,7 +1099,6 @@ GameObject:
   - component: {fileID: 8073473789928578679}
   - component: {fileID: 4586557407155603638}
   - component: {fileID: 2618116373784590578}
-  - component: {fileID: 6389148415021848417}
   m_Layer: 0
   m_Name: Character_emulated
   m_TagString: Untagged
@@ -1152,7 +1151,6 @@ MonoBehaviour:
   _playerMovement: {fileID: 8073473790702501987}
   _inputBuffer: {fileID: 4664395619888274278}
   _audio: {fileID: 7611394710214668632}
-  _trainingMenu: {fileID: 0}
 --- !u!212 &8073473789928578676
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1254,21 +1252,6 @@ MonoBehaviour:
   m_CategoryHash: 0
   m_labelHash: 0
   m_SpriteKey: -1.3542944e+19
---- !u!114 &6389148415021848417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8073473789928578673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Animator: {fileID: 8073473789928578679}
-  m_ParameterSendBits: 0
-  m_SendRate: 0.1
 --- !u!1 &8073473790341886576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1429,9 +1412,8 @@ GameObject:
   - component: {fileID: 8743540751678485471}
   - component: {fileID: 4618435349483342948}
   - component: {fileID: 4664395619888274278}
-  - component: {fileID: 2657499073967712236}
   m_Layer: 10
-  m_Name: Main_player
+  m_Name: Player_local
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1738,22 +1720,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9222f0a5cd52640bbfa7d3ba2e658a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2657499073967712236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8073473790702501986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &8073473791272386163
 GameObject:
   m_ObjectHideFlags: 0

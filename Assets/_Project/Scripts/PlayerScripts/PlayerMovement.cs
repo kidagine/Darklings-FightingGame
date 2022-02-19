@@ -1,8 +1,9 @@
 using Demonics.Sounds;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour, IPushboxResponder
+public class PlayerMovement : NetworkBehaviour, IPushboxResponder
 {
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _dustUpPrefab = default;
@@ -78,46 +79,48 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	private void Movement()
 	{
-
-		if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
+		if (IsClient)
 		{
-			if (!_player.IsBlocking && !_player.IsKnockedDown)
+			if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
 			{
-				_rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
-			}
-			else
-			{
-				_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
-			}
-			_playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
-			if (_rigidbody.velocity.x != 0.0f)
-			{
-				if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
+				if (!_player.IsBlocking && !_player.IsKnockedDown)
 				{
-					_player.ArcaneSlowdown = 6.5f;
+					_rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
 				}
-				else if (_rigidbody.velocity.x < 0.0f && transform.localScale.x == -1.0f)
+				else
 				{
-					_player.ArcaneSlowdown = 6.5f;
+					_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
+				}
+				_playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
+				if (_rigidbody.velocity.x != 0.0f)
+				{
+					if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
+					{
+						_player.ArcaneSlowdown = 6.5f;
+					}
+					else if (_rigidbody.velocity.x < 0.0f && transform.localScale.x == -1.0f)
+					{
+						_player.ArcaneSlowdown = 6.5f;
+					}
+					else
+					{
+						ResetToWalkSpeed();
+					}
+					IsMoving = true;
+					_playerAnimator.SetMove(true);
 				}
 				else
 				{
 					ResetToWalkSpeed();
+					IsMoving = false;
+					_player.ArcaneSlowdown = 8.0f;
+					_playerAnimator.SetMove(false);
 				}
-				IsMoving = true;
-				_playerAnimator.SetMove(true);
 			}
 			else
 			{
-				ResetToWalkSpeed();
 				IsMoving = false;
-				_player.ArcaneSlowdown = 8.0f;
-				_playerAnimator.SetMove(false);
 			}
-		}
-		else
-		{
-			IsMoving = false;
 		}
 	}
 
