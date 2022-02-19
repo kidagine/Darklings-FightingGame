@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
 public class NetworkExtenderManager : SingletonNetwork<NetworkExtenderManager>
 {
+	[SerializeField] private TextMeshProUGUI _networkTypeText = default;
 	private readonly List<GameObject> _connectedClients = new();
 
 
@@ -15,14 +17,13 @@ public class NetworkExtenderManager : SingletonNetwork<NetworkExtenderManager>
 			foreach (NetworkClient networkClient in NetworkManager.Singleton.ConnectedClientsList)
 			{
 				_connectedClients.Add(Instantiate(clientPrefab, spawnPositions[i].position, Quaternion.identity));
-				_connectedClients[_connectedClients.Count - 1].GetComponent<NetworkObject>().SpawnAsPlayerObject(networkClient.ClientId);
+				_connectedClients[^1].GetComponent<NetworkObject>().SpawnAsPlayerObject(networkClient.ClientId);
 				i++;
 			}
 			return _connectedClients;
 		}
 		return null;
 	}
-
 
 	private void Update()
 	{
@@ -35,10 +36,12 @@ public class NetworkExtenderManager : SingletonNetwork<NetworkExtenderManager>
 			Client();
 		}
 	}
+
 	public void Host()
 	{
 		if (NetworkManager.Singleton.StartHost())
 		{
+			_networkTypeText.text = "Host";
 			Debug.Log("Host started");
 		}
 		else
@@ -51,6 +54,7 @@ public class NetworkExtenderManager : SingletonNetwork<NetworkExtenderManager>
 	{
 		if (NetworkManager.Singleton.StartClient())
 		{
+			_networkTypeText.text = "Client";
 			Debug.Log("Client started");
 		}
 		else

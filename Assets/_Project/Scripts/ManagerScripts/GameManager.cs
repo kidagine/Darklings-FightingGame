@@ -246,7 +246,10 @@ public class GameManager : NetworkBehaviour
 			_hearts[1].gameObject.SetActive(false);
 			_trainingPrompts.gameObject.SetActive(true);
 			HasGameStarted = true;
-			StartTrainingRound();
+			if (!_isOnlineMode)
+			{
+				StartTrainingRound();
+			}
 		}
 		else
 		{

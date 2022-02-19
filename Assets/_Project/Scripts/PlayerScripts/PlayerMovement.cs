@@ -79,48 +79,45 @@ public class PlayerMovement : NetworkBehaviour, IPushboxResponder
 
 	private void Movement()
 	{
-		if (IsClient)
+		if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
 		{
-			if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
+			if (!_player.IsBlocking && !_player.IsKnockedDown)
 			{
-				if (!_player.IsBlocking && !_player.IsKnockedDown)
+				_rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
+			}
+			else
+			{
+				_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
+			}
+			_playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
+			if (_rigidbody.velocity.x != 0.0f)
+			{
+				if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
 				{
-					_rigidbody.velocity = new Vector2(MovementInput.x * _movementSpeed, _rigidbody.velocity.y);
+					_player.ArcaneSlowdown = 6.5f;
 				}
-				else
+				else if (_rigidbody.velocity.x < 0.0f && transform.localScale.x == -1.0f)
 				{
-					_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
-				}
-				_playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
-				if (_rigidbody.velocity.x != 0.0f)
-				{
-					if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
-					{
-						_player.ArcaneSlowdown = 6.5f;
-					}
-					else if (_rigidbody.velocity.x < 0.0f && transform.localScale.x == -1.0f)
-					{
-						_player.ArcaneSlowdown = 6.5f;
-					}
-					else
-					{
-						ResetToWalkSpeed();
-					}
-					IsMoving = true;
-					_playerAnimator.SetMove(true);
+					_player.ArcaneSlowdown = 6.5f;
 				}
 				else
 				{
 					ResetToWalkSpeed();
-					IsMoving = false;
-					_player.ArcaneSlowdown = 8.0f;
-					_playerAnimator.SetMove(false);
 				}
+				IsMoving = true;
+				_playerAnimator.SetMove(true);
 			}
 			else
 			{
+				ResetToWalkSpeed();
 				IsMoving = false;
+				_player.ArcaneSlowdown = 8.0f;
+				_playerAnimator.SetMove(false);
 			}
+		}
+		else
+		{
+			IsMoving = false;
 		}
 	}
 

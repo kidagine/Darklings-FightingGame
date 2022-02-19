@@ -34,7 +34,7 @@ public class PlayerController : BaseController
 
 	protected virtual void Movement()
 	{
-		Vector2 inputDirection = new Vector2(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
+		Vector2 inputDirection = new(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
 		if (inputDirection.x == 1.0f && _playerMovement.MovementInput.x != inputDirection.x)
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
@@ -54,7 +54,7 @@ public class PlayerController : BaseController
 		_playerMovement.MovementInput = inputDirection;
 	}
 
-	private void Jump()
+	protected virtual void Jump()
 	{
 		if (Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical") > 0.0f && !_hasJumped)
 		{
@@ -67,7 +67,7 @@ public class PlayerController : BaseController
 		}
 	}
 
-	private void Crouch()
+	protected virtual void Crouch()
 	{
 		if (Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical") < 0.0f)
 		{
@@ -79,7 +79,7 @@ public class PlayerController : BaseController
 		}
 	}
 
-	private void Attack()
+	protected virtual void Attack()
 	{
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Light"))
 		{
@@ -87,7 +87,7 @@ public class PlayerController : BaseController
 		}
 	}
 
-	private void Arcane()
+	protected virtual void Arcane()
 	{
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Arcane"))
 		{
@@ -96,7 +96,7 @@ public class PlayerController : BaseController
 		}
 	}
 
-	private void Assist()
+	protected virtual void Assist()
 	{
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Assist"))
 		{
@@ -133,7 +133,7 @@ public class PlayerController : BaseController
 		}
 	}
 
-	private void Dash()
+	protected virtual void Dash()
 	{
 		DoubleTapAxis(1);
 		DoubleTapAxis2(-1);
