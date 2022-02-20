@@ -255,7 +255,10 @@ public class GameManager : NetworkBehaviour
 		{
 			_inputHistories[0].gameObject.SetActive(false);
 			_inputHistories[1].gameObject.SetActive(false);
-			StartRound();
+			if (!_isOnlineMode)
+			{
+				StartRound();
+			}
 		}
 	}
 
@@ -347,6 +350,7 @@ public class GameManager : NetworkBehaviour
 		PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
 		_cinemachineTargetGroup.AddMember(PlayerOne.transform, 0.5f, 0.5f);
 		_cinemachineTargetGroup.AddMember(PlayerTwo.transform, 0.5f, 0.5f);
+		StartRound();
 	}
 
 	IEnumerator RoundTieCoroutine()

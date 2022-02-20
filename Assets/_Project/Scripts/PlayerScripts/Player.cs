@@ -11,7 +11,7 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] private GameObject _blockEffectPrefab = default;
-	[SerializeField] private Transform _effectsParent = default;
+	[SerializeField] protected Transform _effectsParent = default;
 	[SerializeField] private Transform _keepFlip = default;
 	[SerializeField] private GameObject[] _playerIcons = default;
 	private PlayerMovement _otherPlayer;
@@ -276,7 +276,7 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public void CreateEffect(bool isProjectile = false)
+	public virtual void CreateEffect(bool isProjectile = false)
 	{
 		if (CurrentAttack.hitEffect != null)
 		{

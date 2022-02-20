@@ -5,27 +5,27 @@ using UnityEngine;
 
 public class PlayerMovement : NetworkBehaviour, IPushboxResponder
 {
-	[SerializeField] private PlayerAnimator _playerAnimator = default;
+	[SerializeField] protected PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _dustUpPrefab = default;
 	[SerializeField] private GameObject _dustDownPrefab = default;
 	[SerializeField] private GameObject _dashPrefab = default;
 	[SerializeField] private GameObject _playerGhostPrefab = default;
-	private Player _player;
+	protected Player _player;
 	private BrainController _playerController;
-	private Rigidbody2D _rigidbody;
+	protected Rigidbody2D _rigidbody;
 	private PlayerStats _playerStats;
 	private InputBuffer _inputBuffer;
 	private Coroutine _ghostsCoroutine;
 	private Audio _audio;
-	private float _movementSpeed;
-	private bool _isMovementLocked;
-	private bool _onTopOfPlayer;
+	protected float _movementSpeed;
+	protected bool _isMovementLocked;
+	protected bool _onTopOfPlayer;
 	private bool _hasDashedMiddair;
-
+	
 	public Vector2 MovementInput { get; set; }
 	public bool IsGrounded { get; set; } = true;
 	public bool IsCrouching { get; private set; }
-	public bool IsMoving { get; private set; }
+	public bool IsMoving { get; protected set; }
 	public bool IsDashing { get; private set; }
 	public bool CanDoubleJump { get; set; } = true;
 	public bool IsInCorner { get; set; }
@@ -69,15 +69,15 @@ public class PlayerMovement : NetworkBehaviour, IPushboxResponder
 	{
 		if (_rigidbody.velocity.y < 0)
 		{
-			_rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (4 - 1) * Time.deltaTime;
+			_rigidbody.velocity += (4 - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
 		}
 		else if (_rigidbody.velocity.y > 0)
 		{
-			_rigidbody.velocity += Vector2.up * Physics2D.gravity.y * (3 - 1) * Time.deltaTime;
+			_rigidbody.velocity += (3 - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
 		}
 	}
 
-	private void Movement()
+	protected virtual void Movement()
 	{
 		if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
 		{
