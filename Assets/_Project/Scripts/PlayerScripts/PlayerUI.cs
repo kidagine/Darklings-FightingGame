@@ -188,6 +188,7 @@ public class PlayerUI : MonoBehaviour
 
 	public void SetHealth(float value)
 	{
+		Debug.Log("B");
 		_healthSlider.value = value;
 	}
 

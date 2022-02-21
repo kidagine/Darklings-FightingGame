@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerNetwork : Player
+public class PlayerNetwork : Player, IHurtboxResponder, IHitboxResponder
 {
 	public override void CreateEffect(bool isProjectile = false)
 	{

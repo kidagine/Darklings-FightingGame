@@ -43,7 +43,6 @@ public class PlayerMovementNetwork : PlayerMovement
 				{
 					ResetToWalkSpeed();
 				}
-				Debug.Log("bbb");
 				IsMoving = true;
 				_playerAnimator.SetMove(true);
 			}

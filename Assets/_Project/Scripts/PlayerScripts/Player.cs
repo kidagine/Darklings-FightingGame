@@ -211,12 +211,22 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 					{
 						_playerMovement.TravelDistance(new Vector2(CurrentAttack.travelDistance * transform.localScale.x, CurrentAttack.travelDirection.y));
 					}
+					ArcanaClientRpc();
 					return true;
 				}
 			}
 		}
 		return false;
 		//REPLACE
+	}
+
+	[ClientRpc]
+	public void ArcanaClientRpc()
+	{
+		_arcana--;
+		_playerUI.DecreaseArcana();
+		_playerUI.SetArcana(_arcana);
+		CurrentAttack = _playerComboSystem.GetArcana();
 	}
 
 	public bool AttackAction()
@@ -227,6 +237,7 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 			IsAttacking = true;
 			_playerAnimator.Attack();
 			CurrentAttack = _playerComboSystem.GetComboAttack();
+			AttackClientRpc();
 			if (!string.IsNullOrEmpty(CurrentAttack.attackSound))
 			{
 				_audio.Sound(CurrentAttack.attackSound).Play();
@@ -245,6 +256,12 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 		return false;
 	}
 
+	[ClientRpc]
+	public void AttackClientRpc()
+	{
+		CurrentAttack = _playerComboSystem.GetComboAttack();
+	}
+
 	public bool AssistAction()
 	{
 		if (_assistGauge >= 1.0f && !_isStunned && !IsBlocking && !IsKnockedDown && GameManager.Instance.HasGameStarted)
@@ -259,9 +276,11 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
+		Debug.Log("1");
 		_canAttack = true;
 		CurrentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
+		Debug.Log("2");
 		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
 			_playerMovement.SetLockMovement(true);
@@ -336,6 +355,7 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerMovement.StopDash();
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
+			Debug.Log("A");
 			_playerUI.SetHealth(Health);
 			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
 			IsAttacking = false;
