@@ -33,7 +33,8 @@ public class GameManager : NetworkBehaviour
 	[SerializeField] protected GameObject _bottomLine = default;
 	[SerializeField] protected GameObject _leftStopper = default;
 	[SerializeField] protected GameObject _rightStopper = default;
-	[SerializeField] protected GameObject _player = default;
+	[SerializeField] protected GameObject _playerLocal = default;
+	[SerializeField] protected GameObject _playerNetcode = default;
 	[SerializeField] protected GameObject _infiniteTime = default;
 	[SerializeField] private GameObject _networkCanvas = default;
 	[SerializeField] private GameObject[] _hearts = default;
@@ -115,9 +116,9 @@ public class GameManager : NetworkBehaviour
 		}
 		else
 		{
-			GameObject playerOneObject = Instantiate(_player);
+			GameObject playerOneObject = Instantiate(_playerLocal);
 			playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
-			GameObject playerTwoObject = Instantiate(_player);
+			GameObject playerTwoObject = Instantiate(_playerLocal);
 			playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
 			InitializePlayers(playerOneObject, playerTwoObject);
 		}
@@ -266,7 +267,7 @@ public class GameManager : NetworkBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.F))
 		{
-			List<GameObject> players = NetworkExtenderManager.Instance.SpawnConnectedClients(_player, _spawnPositions);
+			List<GameObject> players = NetworkExtenderManager.Instance.SpawnConnectedClients(_playerNetcode, _spawnPositions);
 			if (players != null)
 			{
 				TestClientRpc();

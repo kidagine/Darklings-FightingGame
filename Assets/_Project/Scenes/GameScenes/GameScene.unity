@@ -295,71 +295,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &23266216
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2657499073967712236, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 4039800640
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -5.52
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501984, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501986, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_Name
-      value: Player_network
-      objectReference: {fileID: 0}
-    - target: {fileID: 8073473790702501986, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
 --- !u!1 &37404687
 GameObject:
   m_ObjectHideFlags: 0
@@ -4295,8 +4230,8 @@ MonoBehaviour:
   _assistTwo: 0
   _controllerOne: 1
   _controllerTwo: 2
-  _isTrainingMode: 0
-  _isOnlineMode: 1
+  _isTrainingMode: 1
+  _isOnlineMode: 0
   _gameSpeed: 1
   _spawnPositions:
   - {fileID: 1725751517}
@@ -4310,7 +4245,8 @@ MonoBehaviour:
   _bottomLine: {fileID: 738055907}
   _leftStopper: {fileID: 2105726866}
   _rightStopper: {fileID: 2105726865}
-  _player: {fileID: 8073473790702501986, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
+  _playerLocal: {fileID: 8073473790702501986, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+  _playerNetcode: {fileID: 8073473790702501986, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
   _infiniteTime: {fileID: 2133406262}
   _networkCanvas: {fileID: 600984273}
   _hearts:
@@ -5093,7 +5029,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &461073271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5125,7 +5061,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DontDestroy: 1
   RunInBackground: 1
   LogLevel: 1
   NetworkConfig:
@@ -19751,7 +19686,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2111642409
 MonoBehaviour:
   m_ObjectHideFlags: 0

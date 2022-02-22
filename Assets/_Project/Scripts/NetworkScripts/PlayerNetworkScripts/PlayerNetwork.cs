@@ -20,4 +20,19 @@ public class PlayerNetwork : Player, IHurtboxResponder, IHitboxResponder
 			}
 		}
 	}
+
+	[ClientRpc]
+	public void ArcanaClientRpc()
+	{
+		_arcana--;
+		_playerUI.DecreaseArcana();
+		_playerUI.SetArcana(_arcana);
+		CurrentAttack = _playerComboSystem.GetArcana();
+	}
+
+	[ClientRpc]
+	public void AttackClientRpc()
+	{
+		CurrentAttack = _playerComboSystem.GetComboAttack();
+	}
 }

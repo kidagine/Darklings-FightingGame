@@ -15,17 +15,17 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Transform _keepFlip = default;
 	[SerializeField] private GameObject[] _playerIcons = default;
 	private PlayerMovement _otherPlayer;
-	private PlayerUI _playerUI;
+	protected PlayerUI _playerUI;
 	private PlayerUI _otherPlayerUI;
 	private PlayerMovement _playerMovement;
-	private PlayerComboSystem _playerComboSystem;
+	protected PlayerComboSystem _playerComboSystem;
 	private PlayerStats _playerStats;
 	private BrainController _controller;
 	private Audio _audio;
 	private Coroutine _stunCoroutine;
 	private Coroutine _blockCoroutine;
 	private Coroutine _knockdownCoroutine;
-	private float _arcana;
+	protected float _arcana;
 	private float _assistGauge = 1.0f;
 	private int _lives = 2;
 	private bool _canAttack;
@@ -182,7 +182,7 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public bool ArcaneAction()
+	public virtual bool ArcaneAction()
 	{
 		//REPLACE
 		if (_arcana >= 1.0f)
@@ -211,7 +211,6 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 					{
 						_playerMovement.TravelDistance(new Vector2(CurrentAttack.travelDistance * transform.localScale.x, CurrentAttack.travelDirection.y));
 					}
-					ArcanaClientRpc();
 					return true;
 				}
 			}
@@ -220,16 +219,7 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 		//REPLACE
 	}
 
-	[ClientRpc]
-	public void ArcanaClientRpc()
-	{
-		_arcana--;
-		_playerUI.DecreaseArcana();
-		_playerUI.SetArcana(_arcana);
-		CurrentAttack = _playerComboSystem.GetArcana();
-	}
-
-	public bool AttackAction()
+	public virtual bool AttackAction()
 	{
 		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !IsKnockedDown)
 		{
@@ -237,7 +227,6 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 			IsAttacking = true;
 			_playerAnimator.Attack();
 			CurrentAttack = _playerComboSystem.GetComboAttack();
-			AttackClientRpc();
 			if (!string.IsNullOrEmpty(CurrentAttack.attackSound))
 			{
 				_audio.Sound(CurrentAttack.attackSound).Play();
@@ -256,11 +245,7 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 		return false;
 	}
 
-	[ClientRpc]
-	public void AttackClientRpc()
-	{
-		CurrentAttack = _playerComboSystem.GetComboAttack();
-	}
+
 
 	public bool AssistAction()
 	{
@@ -276,11 +261,9 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
-		Debug.Log("1");
 		_canAttack = true;
 		CurrentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
-		Debug.Log("2");
 		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
 			_playerMovement.SetLockMovement(true);
