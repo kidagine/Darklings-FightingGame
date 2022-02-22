@@ -33,6 +33,6 @@ public class PlayerNetwork : Player, IHurtboxResponder, IHitboxResponder
 	[ClientRpc]
 	public void AttackClientRpc()
 	{
-		CurrentAttack = _playerComboSystem.GetComboAttack();
+		//CurrentAttack = _playerComboSystem.GetComboAttack();
 	}
 }

@@ -221,12 +221,27 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public virtual bool LightAction()
 	{
+		return Attack(InputEnum.Light);
+	}
+
+	public virtual bool MediumAction()
+	{
+		return Attack(InputEnum.Medium);
+	}
+
+	public virtual bool HeavyAction()
+	{
+		return Attack(InputEnum.Heavy);
+	}
+
+	protected virtual bool Attack(InputEnum inputEnum)
+	{
 		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !IsKnockedDown)
 		{
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;
 			_playerAnimator.Attack();
-			CurrentAttack = _playerComboSystem.GetComboAttack();
+			CurrentAttack = _playerComboSystem.GetComboAttack(inputEnum);
 			if (!string.IsNullOrEmpty(CurrentAttack.attackSound))
 			{
 				_audio.Sound(CurrentAttack.attackSound).Play();

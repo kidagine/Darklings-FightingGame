@@ -64,11 +64,11 @@ public class InputBuffer : MonoBehaviour
 		}
 		else if (inputEnum == InputEnum.Medium)
 		{
-			inputBufferItem.Execute += _player.LightAction;
+			inputBufferItem.Execute += _player.MediumAction;
 		}
 		else if (inputEnum == InputEnum.Heavy)
 		{
-			inputBufferItem.Execute += _player.LightAction;
+			inputBufferItem.Execute += _player.HeavyAction;
 		}
 		else if(inputEnum == InputEnum.Special)
 		{

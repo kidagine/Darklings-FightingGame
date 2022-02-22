@@ -11,11 +11,11 @@ public class PlayerComboSystem : MonoBehaviour
 		_playerStats = GetComponent<PlayerStats>();
 	}
 
-	public AttackSO GetComboAttack()
+	public AttackSO GetComboAttack(InputEnum inputEnum)
 	{
 		if (_playerMovement.IsCrouching && _playerMovement.IsGrounded)
 		{
-			return _playerStats.PlayerStatsSO.m2L;
+			return GetCrouchingAttackType(inputEnum);
 		}
 		else
 		{
@@ -23,21 +23,42 @@ public class PlayerComboSystem : MonoBehaviour
 			{
 				return _playerStats.PlayerStatsSO.jumpL;
 			}
-			else if (_playerMovement.IsMoving)
-			{
-				if (_playerMovement.MovementInput.x * transform.localScale.x > 0.0f)
-				{
-					return _playerStats.PlayerStatsSO.m6L;
-				}
-				else
-				{
-					return _playerStats.PlayerStatsSO.m4L;
-				}
-			}
 			else
 			{
-				return _playerStats.PlayerStatsSO.m5L;
+				return GetStandingAttackType(inputEnum);
 			}
+		}
+	}
+
+	private AttackSO GetCrouchingAttackType(InputEnum inputEnum)
+	{
+		if (inputEnum == InputEnum.Light)
+		{
+			return _playerStats.PlayerStatsSO.m2L;
+		}
+		else if (inputEnum == InputEnum.Medium)
+		{
+			return _playerStats.PlayerStatsSO.m2M;
+		}
+		else
+		{
+			return _playerStats.PlayerStatsSO.m2H;
+		}
+	}
+
+	private AttackSO GetStandingAttackType(InputEnum inputEnum)
+	{
+		if (inputEnum == InputEnum.Light)
+		{
+			return _playerStats.PlayerStatsSO.m5L;
+		}
+		else if (inputEnum == InputEnum.Medium)
+		{
+			return _playerStats.PlayerStatsSO.m5M;
+		}
+		else
+		{
+			return _playerStats.PlayerStatsSO.m5H;
 		}
 	}
 

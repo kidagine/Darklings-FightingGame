@@ -22,9 +22,14 @@ public class PlayerStatsSO : ScriptableObject
 	public float arcanaRecharge = 1;
 	[Header("Moves")]
 	public AttackSO m2L;
-	public AttackSO m4L;
 	public AttackSO m5L;
-	public AttackSO m6L;
+	public AttackSO m2M;
+	public AttackSO m5M;
+	public AttackSO m2H;
+	public AttackSO m5H;
 	public AttackSO jumpL;
 	public ArcanaSO arcana;
+
+	public AttackSO m4L;
+	public AttackSO m6L;
 }
