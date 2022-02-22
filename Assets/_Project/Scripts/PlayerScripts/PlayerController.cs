@@ -22,7 +22,9 @@ public class PlayerController : BaseController
 			Movement();
 			Jump();
 			Crouch();
-			Attack();
+			Light();
+			Medium();
+			Heavy();
 			Arcane();
 			Assist();
 			Pause();
@@ -79,11 +81,27 @@ public class PlayerController : BaseController
 		}
 	}
 
-	protected virtual void Attack()
+	protected virtual void Light()
 	{
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Light"))
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Light);
+		}
+	}
+
+	protected virtual void Medium()
+	{
+		if (Input.GetButtonDown(_brainController.ControllerInputName + "Medium"))
+		{
+			_inputBuffer.AddInputBufferItem(InputEnum.Medium);
+		}
+	}
+
+	protected virtual void Heavy()
+	{
+		if (Input.GetButtonDown(_brainController.ControllerInputName + "Heavy"))
+		{
+			_inputBuffer.AddInputBufferItem(InputEnum.Heavy);
 		}
 	}
 

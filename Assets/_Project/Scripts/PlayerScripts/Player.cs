@@ -219,7 +219,7 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 		//REPLACE
 	}
 
-	public virtual bool AttackAction()
+	public virtual bool LightAction()
 	{
 		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !IsKnockedDown)
 		{
@@ -338,7 +338,6 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerMovement.StopDash();
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
-			Debug.Log("A");
 			_playerUI.SetHealth(Health);
 			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
 			IsAttacking = false;

@@ -26,11 +26,11 @@ public class PlayerControllerNetwork : PlayerController
 		}
 	}
 
-	protected override void Attack()
+	protected override void Light()
 	{
 		if (IsClient && IsOwner)
 		{
-			base.Attack();
+			base.Light();
 		}
 	}
 

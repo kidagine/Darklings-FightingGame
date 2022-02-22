@@ -60,7 +60,15 @@ public class InputBuffer : MonoBehaviour
 		}
 		else if(inputEnum == InputEnum.Light)
 		{
-			inputBufferItem.Execute += _player.AttackAction;
+			inputBufferItem.Execute += _player.LightAction;
+		}
+		else if (inputEnum == InputEnum.Medium)
+		{
+			inputBufferItem.Execute += _player.LightAction;
+		}
+		else if (inputEnum == InputEnum.Heavy)
+		{
+			inputBufferItem.Execute += _player.LightAction;
 		}
 		else if(inputEnum == InputEnum.Special)
 		{

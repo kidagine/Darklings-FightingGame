@@ -114,7 +114,7 @@ public class CpuController : BaseController
 						}
 						else
 						{
-							_player.AttackAction();
+							_player.LightAction();
 						}
 						yield return new WaitForSeconds(attackWaitRandom);
 					}
