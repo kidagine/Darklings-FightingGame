@@ -42,10 +42,12 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.SetBool("IsJumping", state);
 	}
 
-	public void Attack()
+	public void Attack(string attackType)
 	{
 		_animator.SetTrigger("Attack");
+		_animator.SetTrigger(attackType);
 	}
+
 	public void Arcana()
 	{
 		_animator.SetTrigger("Arcana");

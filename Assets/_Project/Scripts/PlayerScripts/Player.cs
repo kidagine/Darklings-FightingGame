@@ -240,7 +240,7 @@ public class Player : NetworkBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;
-			_playerAnimator.Attack();
+			_playerAnimator.Attack(inputEnum.ToString());
 			CurrentAttack = _playerComboSystem.GetComboAttack(inputEnum);
 			if (!string.IsNullOrEmpty(CurrentAttack.attackSound))
 			{
