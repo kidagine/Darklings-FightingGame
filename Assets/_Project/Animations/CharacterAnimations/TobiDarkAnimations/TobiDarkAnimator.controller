@@ -721,8 +721,8 @@ AnimatorStateMachine:
     - {fileID: -2550776442589567041}
   - first: {fileID: -5967326966113751599}
     second:
-    - {fileID: -2134473974837007101}
     - {fileID: 5329837578366256147}
+    - {fileID: -2134473974837007101}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -150, y: -40, z: 0}
   m_EntryPosition: {x: 80, y: 130, z: 0}
@@ -962,7 +962,10 @@ AnimatorTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 2
+    m_ConditionEvent: IsCrouching
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5811360764745827862}
   m_Solo: 0
@@ -2295,7 +2298,10 @@ AnimatorTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: IsCrouching
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -132712418074846093}
   m_Solo: 0

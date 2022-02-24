@@ -35,10 +35,9 @@ public class InputBuffer : MonoBehaviour
 	public void AddInputBufferItem(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
 		_inputHistory.AddInput(inputEnum, inputDirectionEnum);
-		InputBufferItem inputBufferItem = new InputBufferItem(Time.time);
+		InputBufferItem inputBufferItem = new(Time.time);
 		_inputBuffer.Enqueue(inputBufferItem);
 
-	
 		if (inputEnum == InputEnum.Direction)
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Up)

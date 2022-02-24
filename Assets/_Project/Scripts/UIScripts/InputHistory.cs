@@ -10,6 +10,8 @@ public class InputHistory : MonoBehaviour
 	[SerializeField] private Sprite _left = default;
 	[SerializeField] private Sprite _right = default;
 	[SerializeField] private Sprite _light = default;
+	[SerializeField] private Sprite _medium = default;
+	[SerializeField] private Sprite _heavy = default;
 	[SerializeField] private Sprite _special = default;
 	[SerializeField] private Sprite _assist = default;
 	private readonly List<InputHistoryImage> _inputHistoryImages = new List<InputHistoryImage>();
@@ -124,6 +126,12 @@ public class InputHistory : MonoBehaviour
 				break;
 			case InputEnum.Light:
 				inputImage.sprite = _light;
+				break;
+			case InputEnum.Medium:
+				inputImage.sprite = _medium;
+				break;
+			case InputEnum.Heavy:
+				inputImage.sprite = _heavy;
 				break;
 			case InputEnum.Special:
 				inputImage.sprite = _special;
