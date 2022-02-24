@@ -44,7 +44,6 @@ public class PlayerAnimator : MonoBehaviour
 
 	public void Attack(string attackType)
 	{
-		_animator.SetTrigger("Attack");
 		_animator.SetTrigger(attackType);
 	}
 
