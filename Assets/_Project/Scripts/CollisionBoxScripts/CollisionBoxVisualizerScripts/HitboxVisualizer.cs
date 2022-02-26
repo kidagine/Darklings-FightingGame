@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class HitboxVisualizer : MonoBehaviour
 {
-    private Hitbox _hitbox;
-    private SpriteRenderer _spriteRenderer;
+	private Hitbox _hitbox;
+	private SpriteRenderer _spriteRenderer;
 
 
 	void Awake()
@@ -13,7 +13,7 @@ public class HitboxVisualizer : MonoBehaviour
 	}
 
 	void LateUpdate()
-    {
+	{
 		if (TrainingSettings.ShowHitboxes)
 		{
 			transform.localPosition = _hitbox._offset;
