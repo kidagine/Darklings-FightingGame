@@ -524,7 +524,7 @@ public class GameManager : NetworkBehaviour
 			{
 				_reverseReset = !_reverseReset;
 			}
-			if (_reverseReset)
+			if (!_reverseReset)
 			{
 				PlayerOne.transform.position = _spawnPositions[0].position;
 				PlayerTwo.transform.position = _spawnPositions[1].position;
