@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class InputBufferItem : MonoBehaviour
+public class InputBufferItem
 {
     private readonly float _timeBeforeActionsExpire = 0.27f;
     private readonly float _timestamp;
