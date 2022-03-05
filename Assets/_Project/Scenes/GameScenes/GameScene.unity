@@ -4201,7 +4201,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
   m_PrefabInstance: {fileID: 372267964}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 833549418}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2a0a95dbd899e74f83d8942b055431a, type: 3}
@@ -4268,7 +4268,6 @@ GameObject:
   - component: {fileID: 392163759}
   - component: {fileID: 392163760}
   - component: {fileID: 392163761}
-  - component: {fileID: 392163762}
   m_Layer: 0
   m_Name: Game_manager
   m_TagString: Untagged
@@ -4456,22 +4455,6 @@ MonoBehaviour:
       playOnAwake: 0
       playOneInstanceAtATime: 0
   _soundGroups3D: []
---- !u!114 &392163762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 392163757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 398021731
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &394163168
 GameObject:
   m_ObjectHideFlags: 0
@@ -4614,12 +4597,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2618116373784590578, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_SpriteKey
-      value: 0
+      value: 2.1195281e-36
       objectReference: {fileID: 0}
     - target: {fileID: 4586557407155603638, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_SpriteLibraryAsset
       value: 
-      objectReference: {fileID: 7108339969198208228, guid: 3d2fa5aff19da48428f43e3b463f4b5a, type: 3}
+      objectReference: {fileID: 7108339969198208228, guid: c651c2267f228f549939994b207034d8, type: 3}
     - target: {fileID: 4879431347392356363, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Size.x
       value: 1.75
@@ -4675,7 +4658,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 989342935226193601, guid: 93e500ebbc2769a4d848786e7ad37c3a, type: 3}
+      objectReference: {fileID: -2973354032363527275, guid: ff4864f5db38d904693bb74888e9246b, type: 3}
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -4683,7 +4666,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578679, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: d07b4c2442277164a847eaaa08ae9e05, type: 2}
+      objectReference: {fileID: 22100000, guid: 1c9a0abc7732ddd46a62d7382a86852c, type: 2}
     - target: {fileID: 8073473790702501984, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -8358,27 +8341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &833549418 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1604159751985950005, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
-  m_PrefabInstance: {fileID: 372267964}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &833549425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 833549418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2855642398
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &834661871
 GameObject:
   m_ObjectHideFlags: 0
@@ -11638,11 +11600,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2802532862615950163, guid: 61061ba07e47eae4a8ae5167b0c7959c, type: 3}
   m_PrefabInstance: {fileID: 1210087668}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1214639320 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1604159751985950005, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
-  m_PrefabInstance: {fileID: 342293973}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1228247589
 GameObject:
   m_ObjectHideFlags: 0
@@ -12860,28 +12817,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1260952192020572879, guid: aa53a4c0cb0792844bb6d0504b155eb5, type: 3}
   m_PrefabInstance: {fileID: 342293973}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1214639320}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2a0a95dbd899e74f83d8942b055431a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1311574458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1214639320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 675267579
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &1316908849
 GameObject:
   m_ObjectHideFlags: 0
