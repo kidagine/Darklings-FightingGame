@@ -669,7 +669,7 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1543570308}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HostHandler, Scripts
         m_MethodName: CopyRoomId
         m_Mode: 1
@@ -865,12 +865,12 @@ MonoBehaviour:
   _backUnityEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1844477012}
+      - m_Target: {fileID: 1844477016}
         m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1124095643}
+          m_ObjectArgument: {fileID: 1124095647}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -6584,20 +6584,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4708f1eceb3f4d24c88481c32058b337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerNameText: {fileID: 1175781486}
-  _playerReadyText: {fileID: 166889584}
-  _playerAssistText: {fileID: 1866748034}
-  _playerPortrait: {fileID: 1467175328}
-  _portraits:
-  - intArray:
-    - {fileID: 21300000, guid: 7abbb30675d5eb24db393e4558b9f350, type: 3}
-    - {fileID: 21300000, guid: fd809674357a4254582bd2f639b1c7a9, type: 3}
-  - intArray:
-    - {fileID: 21300000, guid: e62c67997889eac4dbda9e6a7e007cbf, type: 3}
-    - {fileID: 21300000, guid: b00d19cc90489424b9a6ab8534cd61b7, type: 3}
-  - intArray:
-    - {fileID: 21300000, guid: ed8cff468477bb743a61a4cd06464729, type: 3}
-    - {fileID: 21300000, guid: 1115d567f5660d440b28ff66b612079f, type: 3}
 --- !u!1 &308483512
 GameObject:
   m_ObjectHideFlags: 0
@@ -7016,10 +7002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 549730389
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &327265854
 GameObject:
   m_ObjectHideFlags: 0
@@ -9007,7 +8989,7 @@ Transform:
   - {fileID: 132711572}
   - {fileID: 1398170530}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &437183747
 MonoBehaviour:
@@ -10058,20 +10040,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4708f1eceb3f4d24c88481c32058b337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerNameText: {fileID: 435036981}
-  _playerReadyText: {fileID: 1451831564}
-  _playerAssistText: {fileID: 1064806871}
-  _playerPortrait: {fileID: 748822363}
-  _portraits:
-  - intArray:
-    - {fileID: 21300000, guid: 7abbb30675d5eb24db393e4558b9f350, type: 3}
-    - {fileID: 21300000, guid: fd809674357a4254582bd2f639b1c7a9, type: 3}
-  - intArray:
-    - {fileID: 21300000, guid: e62c67997889eac4dbda9e6a7e007cbf, type: 3}
-    - {fileID: 21300000, guid: b00d19cc90489424b9a6ab8534cd61b7, type: 3}
-  - intArray:
-    - {fileID: 21300000, guid: ed8cff468477bb743a61a4cd06464729, type: 3}
-    - {fileID: 21300000, guid: 1115d567f5660d440b28ff66b612079f, type: 3}
 --- !u!1 &479098824
 GameObject:
   m_ObjectHideFlags: 0
@@ -10763,7 +10731,7 @@ MonoBehaviour:
   _backUnityEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1124095643}
+      - m_Target: {fileID: 1124095647}
         m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
@@ -11274,7 +11242,7 @@ GameObject:
   - component: {fileID: 547657957}
   - component: {fileID: 547657958}
   m_Layer: 5
-  m_Name: Name_verticalLayout
+  m_Name: OnlineSetupPlayer_verticalLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12115,50 +12083,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619626989}
   m_CullTransparentMesh: 1
---- !u!1 &624861931
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 624861933}
-  - component: {fileID: 624861932}
-  m_Layer: 0
-  m_Name: NetPortal_manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &624861932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 624861931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4363a9185b1566044a8d8877409093b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &624861933
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 624861931}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &627525700
 GameObject:
   m_ObjectHideFlags: 0
@@ -15566,7 +15490,7 @@ GameObject:
   - component: {fileID: 789811728}
   - component: {fileID: 789811727}
   - component: {fileID: 789811726}
-  - component: {fileID: 789811725}
+  - component: {fileID: 789811729}
   m_Layer: 5
   m_Name: OnlineClientMenu_canvas
   m_TagString: Untagged
@@ -15596,25 +15520,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &789811725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 789811723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 938b91059eeb1884a8ec29f8c0eb57f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startingOption: {fileID: 1535894904}
-  _roomIdInputField: {fileID: 1535894904}
-  _playerNameInputField: {fileID: 2052373590}
-  _characterSelector: {fileID: 465378533}
-  _assistSelector: {fileID: 787826276}
-  _colorSelector: {fileID: 862987997}
-  _onlineHostMenu: {fileID: 922976185}
 --- !u!114 &789811726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15676,6 +15581,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &789811729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789811723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f78b0b020ae396047ab9fef4d0e4d60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingOption: {fileID: 1535894904}
 --- !u!1 &792908742
 GameObject:
   m_ObjectHideFlags: 0
@@ -16154,7 +16072,7 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1543570308}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HostHandler, Scripts
         m_MethodName: Cancel
         m_Mode: 1
@@ -17163,7 +17081,7 @@ GameObject:
   - component: {fileID: 922976188}
   - component: {fileID: 922976187}
   - component: {fileID: 922976186}
-  - component: {fileID: 922976185}
+  - component: {fileID: 922976189}
   m_Layer: 5
   m_Name: OnlineHostMenu_canvas
   m_TagString: Untagged
@@ -17197,19 +17115,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &922976185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922976183}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de4dc95ba578ba54f97f4dc5e42fe8a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startingOption: {fileID: 1097312450}
 --- !u!114 &922976186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17271,6 +17176,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &922976189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922976183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f78b0b020ae396047ab9fef4d0e4d60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingOption: {fileID: 1097312450}
 --- !u!1 &929103955
 GameObject:
   m_ObjectHideFlags: 0
@@ -17870,12 +17788,12 @@ MonoBehaviour:
   _backUnityEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922976185}
+      - m_Target: {fileID: 1844477016}
         m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1124095643}
+          m_ObjectArgument: {fileID: 1124095647}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -20280,7 +20198,7 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1543570308}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HostHandler, Scripts
         m_MethodName: Ready
         m_Mode: 1
@@ -20710,9 +20628,9 @@ GameObject:
   - component: {fileID: 1124095646}
   - component: {fileID: 1124095645}
   - component: {fileID: 1124095644}
-  - component: {fileID: 1124095643}
+  - component: {fileID: 1124095647}
   m_Layer: 5
-  m_Name: OnlineSetupMenu_canvas
+  m_Name: OnlineMainMenu_canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20740,24 +20658,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1124095643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1124095641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66210ef4adcf2aa449537f6bab015d68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startingOption: {fileID: 1632717463}
-  _hostHandler: {fileID: 1543570308}
-  _playerNameInputField: {fileID: 2052373590}
-  _characterSelector: {fileID: 465378533}
-  _assistSelector: {fileID: 787826276}
-  _colorSelector: {fileID: 862987997}
 --- !u!114 &1124095644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20819,6 +20719,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1124095647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1124095641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f78b0b020ae396047ab9fef4d0e4d60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingOption: {fileID: 1632717463}
 --- !u!1 &1135132846
 GameObject:
   m_ObjectHideFlags: 0
@@ -21784,12 +21697,12 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1124095643}
+      - m_Target: {fileID: 1124095647}
         m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 789811725}
+          m_ObjectArgument: {fileID: 789811729}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -21938,7 +21851,7 @@ GameObject:
   - component: {fileID: 1248121704}
   - component: {fileID: 1248121705}
   m_Layer: 5
-  m_Name: MainMenu_verticalLayout
+  m_Name: OnlineHostMenu_verticalLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22207,7 +22120,7 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 789811725}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: OnlineClientMenu, Scripts
         m_MethodName: Paste
         m_Mode: 1
@@ -23925,7 +23838,7 @@ GameObject:
   - component: {fileID: 1329405612}
   - component: {fileID: 1329405613}
   m_Layer: 5
-  m_Name: MainMenu_verticalLayout
+  m_Name: OnlineMainMenu_verticalLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25324,12 +25237,12 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1124095643}
+      - m_Target: {fileID: 1124095647}
         m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1844477012}
+          m_ObjectArgument: {fileID: 1844477016}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -25453,7 +25366,7 @@ Transform:
   - {fileID: 2021865578}
   - {fileID: 1504232919}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1381785189
 MonoBehaviour:
@@ -26534,10 +26447,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3150761960
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &1455962289
 GameObject:
   m_ObjectHideFlags: 0
@@ -28213,7 +28122,7 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 789811725}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: OnlineClientMenu, Scripts
         m_MethodName: Client
         m_Mode: 1
@@ -28243,7 +28152,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 789811725}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: OnlineClientMenu, Scripts
         m_MethodName: CheckRoomIdInputField
         m_Mode: 0
@@ -28311,167 +28220,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1535894902}
   m_CullTransparentMesh: 1
---- !u!1 &1540635118
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1540635120}
-  - component: {fileID: 1540635119}
-  - component: {fileID: 1540635121}
-  m_Layer: 0
-  m_Name: Network_manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1540635119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1540635118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DontDestroy: 1
-  RunInBackground: 1
-  LogLevel: 1
-  NetworkConfig:
-    ProtocolVersion: 0
-    NetworkTransport: {fileID: 1540635121}
-    PlayerPrefab: {fileID: 4321242364047594122, guid: 59f9040c41530924587b2845e9e29162, type: 3}
-    NetworkPrefabs:
-    - Override: 0
-      Prefab: {fileID: 8073473790702501986, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    TickRate: 30
-    ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 1
-    ConnectionData: 
-    EnableTimeResync: 0
-    TimeResyncInterval: 30
-    EnsureNetworkVariableLengthSafety: 0
-    EnableSceneManagement: 1
-    ForceSamePrefabs: 1
-    RecycleNetworkIds: 1
-    NetworkIdRecycleDelay: 120
-    RpcHashSize: 0
-    LoadSceneTimeOut: 120
-    MessageBufferTimeout: 20
-    EnableNetworkLogs: 1
---- !u!4 &1540635120
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1540635118}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1540635121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1540635118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b84c2d8dfe509a34fb59e2b81f8e1319, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MessageBufferSize: 5120
-  MaxConnections: 100
-  MaxSentMessageQueueSize: 128
-  ConnectAddress: 127.0.0.1
-  ConnectPort: 7777
-  ServerListenPort: 7777
-  MessageSendMode: 0
---- !u!1 &1543570305
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1543570306}
-  - component: {fileID: 1543570308}
-  - component: {fileID: 1543570309}
-  m_Layer: 5
-  m_Name: Main_hostHandler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1543570306
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543570305}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 960, y: 540, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1543570308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543570305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de5e0ec3332b27e4b9603edf40305453, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _roomIdText: {fileID: 326892375}
-  _playerNameplates:
-  - {fileID: 475075636}
-  - {fileID: 304117519}
-  _readyButton: {fileID: 1097312453}
-  _cancelButton: {fileID: 812338593}
-  _onlineSetupDemonMenu: {fileID: 1844477012}
-  _onlineSetupMenu: {fileID: 1124095643}
---- !u!114 &1543570309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543570305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4146368925
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &1550054301
 GameObject:
   m_ObjectHideFlags: 0
@@ -29541,24 +29289,24 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1124095643}
-        m_TargetAssemblyTypeName: OnlineSetupMenu, Scripts
-        m_MethodName: Host
-        m_Mode: 1
+      - m_Target: {fileID: 1124095647}
+        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+        m_MethodName: OpenMenuHideCurrent
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 922976189}
+          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1124095643}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 922976185}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -32422,9 +32170,9 @@ GameObject:
   - component: {fileID: 1844477015}
   - component: {fileID: 1844477014}
   - component: {fileID: 1844477013}
-  - component: {fileID: 1844477012}
+  - component: {fileID: 1844477016}
   m_Layer: 5
-  m_Name: OnlineSetupDemon_canvas
+  m_Name: OnlineSetupPlayer_canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32452,19 +32200,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1844477012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844477010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf05e67b3c5ee294fa13684a1d6ab3b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startingOption: {fileID: 465378534}
 --- !u!114 &1844477013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32526,6 +32261,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1844477016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1844477010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f78b0b020ae396047ab9fef4d0e4d60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingOption: {fileID: 465378534}
 --- !u!1 &1856510696
 GameObject:
   m_ObjectHideFlags: 0
@@ -33227,12 +32975,12 @@ MonoBehaviour:
   _backUnityEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 789811725}
+      - m_Target: {fileID: 789811729}
         m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1124095643}
+          m_ObjectArgument: {fileID: 1124095647}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -35221,7 +34969,7 @@ MonoBehaviour:
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1124095643}
+          m_ObjectArgument: {fileID: 1124095647}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -36128,7 +35876,7 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1844477012}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: OnlineSetupDemonMenu, Scripts
         m_MethodName: SetPlayerName
         m_Mode: 0
@@ -36258,7 +36006,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2060841939
 GameObject:
@@ -38086,7 +37834,7 @@ Transform:
   - {fileID: 1844477011}
   - {fileID: 1111427298}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2124469698
 PrefabInstance:
@@ -38305,25 +38053,13 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922976185}
+      - m_Target: {fileID: 922976189}
         m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1124095643}
+          m_ObjectArgument: {fileID: 1124095647}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1543570308}
-        m_TargetAssemblyTypeName: HostHandler, Scripts
-        m_MethodName: Leave
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

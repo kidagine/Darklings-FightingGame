@@ -1,9 +1,8 @@
 using Demonics.Sounds;
 using System.Collections;
-using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerMovement : NetworkBehaviour, IPushboxResponder
+public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
 	[SerializeField] protected PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _dustUpPrefab = default;

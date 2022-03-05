@@ -1,4 +1,3 @@
-using Demonics.Utility;
 using System.Collections;
 using UnityEngine;
 
@@ -13,7 +12,7 @@ public class PlayerGhost : MonoBehaviour
 		_spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
-	async void OnEnable()
+	void OnEnable()
 	{
 		StartCoroutine(GhostCoroutine());
 	}

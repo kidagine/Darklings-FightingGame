@@ -1,6 +1,6 @@
-using Unity.Netcode;
+using UnityEngine;
 
-public class BaseController : NetworkBehaviour
+public class BaseController : MonoBehaviour
 {
 	protected bool _trainingController;
 	protected BrainController _brainController;

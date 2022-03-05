@@ -2,13 +2,11 @@ using Cinemachine;
 using Demonics.Sounds;
 using Demonics.UI;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : NetworkBehaviour
+public class GameManager : MonoBehaviour
 {
 	[Header("Debug")]
 	[SerializeField] private StageTypeEnum _stage = default;
@@ -265,14 +263,6 @@ public class GameManager : NetworkBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.F))
-		{
-			List<GameObject> players = NetworkExtenderManager.Instance.SpawnConnectedClients(_playerNetcode, _spawnPositions);
-			if (players != null)
-			{
-				TestClientRpc();
-			}
-		}
 		if (HasGameStarted && !_isTrainingMode)
 		{
 			_countdown -= Time.deltaTime;
@@ -282,76 +272,6 @@ public class GameManager : NetworkBehaviour
 				StartCoroutine(RoundTieCoroutine());
 			}
 		}
-	}
-
-
-	[ClientRpc]
-	private void TestClientRpc()
-	{
-		Player[] players = FindObjectsOfType<Player>();
-		GameObject playerOneObject = players[0].gameObject;
-		GameObject playerTwoObject = players[1].gameObject;
-		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
-		playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
-		_playerOneController = playerOneObject.GetComponent<BrainController>();
-		_playerTwoController = playerTwoObject.GetComponent<BrainController>();
-		PlayerOne = playerOneObject.GetComponent<Player>();
-		PlayerTwo = playerTwoObject.GetComponent<Player>();
-		_playerMovementOne = playerOneObject.GetComponent<PlayerMovement>();
-		_playerMovementTwo = playerTwoObject.GetComponent<PlayerMovement>();
-		playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
-		playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
-		playerOneObject.SetActive(true);
-		playerTwoObject.SetActive(true);
-
-		PlayerOne.transform.position = _spawnPositions[0].position;
-		PlayerTwo.transform.position = _spawnPositions[1].position;
-		if (SceneSettings.ControllerOne != ControllerTypeEnum.Cpu.ToString())
-		{
-			_playerOneController.SetControllerToPlayer();
-		}
-		else
-		{
-			_playerOneController.SetControllerToCpu();
-		}
-		if (SceneSettings.ControllerTwo != ControllerTypeEnum.Cpu.ToString())
-		{
-			_playerTwoController.SetControllerToPlayer();
-		}
-		else
-		{
-			_playerTwoController.SetControllerToCpu();
-		}
-		PlayerOne.SetController();
-		PlayerTwo.SetController();
-		_playerMovementOne.SetController();
-		_playerMovementTwo.SetController();
-		PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
-		PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
-		PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorOne);
-		if (SceneSettings.ColorTwo == SceneSettings.ColorOne && PlayerOne.PlayerStats.characterName == PlayerTwo.PlayerStats.characterName)
-		{
-			SceneSettings.ColorTwo++;
-		}
-		PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorTwo);
-		_playerOneController.IsPlayerOne = true;
-		PlayerOne.SetPlayerUI(_playerOneUI);
-		PlayerTwo.SetPlayerUI(_playerTwoUI);
-		PlayerOne.SetAssist(_assists[SceneSettings.AssistOne]);
-		PlayerTwo.SetAssist(_assists[SceneSettings.AssistTwo]);
-		PlayerOne.SetOtherPlayer(_playerMovementTwo);
-		PlayerOne.IsPlayerOne = true;
-		_playerOneController.ControllerInputName = ControllerTypeEnum.Keyboard.ToString();
-		PlayerTwo.SetOtherPlayer(_playerMovementOne);
-		PlayerTwo.IsPlayerOne = false;
-		_playerTwoController.ControllerInputName = ControllerTypeEnum.Keyboard.ToString();
-		PlayerOne.name = $"{_playerStats[SceneSettings.PlayerOne].name}({SceneSettings.ControllerOne})_player";
-		PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
-		PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
-		PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
-		_cinemachineTargetGroup.AddMember(PlayerOne.transform, 0.5f, 0.5f);
-		_cinemachineTargetGroup.AddMember(PlayerTwo.transform, 0.5f, 0.5f);
-		StartRound();
 	}
 
 	IEnumerator RoundTieCoroutine()

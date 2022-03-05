@@ -13,7 +13,6 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
 	[Header("Selectors")]
-	[SerializeField] private BaseSelector _healthSelector = default;
 	private TrainingMenu _trainingMenu;
 
 
