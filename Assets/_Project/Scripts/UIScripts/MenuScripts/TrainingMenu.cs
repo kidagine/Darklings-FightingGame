@@ -144,20 +144,21 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
-	public void FramedataValue(bool isPlayerOne, int value, int recovery)
+	public void FramedataValue(bool isPlayerOne, int startupFrames, int activeFrames, int recoveryFrames)
 	{
+		string framedata = $"{startupFrames}/{activeFrames}/{recoveryFrames}";
 		if (isPlayerOne)
 		{
 			if (_framedataOneText.gameObject.activeSelf)
 			{
-				_framedataOneText.text = $"{value}/{recovery}";
+				_framedataOneText.text = framedata;
 			}
 		}
 		else
 		{
 			if (_framedataTwoText.gameObject.activeSelf)
 			{
-				_framedataTwoText.text = $"{value}/{recovery}";
+				_framedataTwoText.text = framedata;
 			}
 		}
 	}

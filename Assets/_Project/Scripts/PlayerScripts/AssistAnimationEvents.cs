@@ -9,7 +9,7 @@ public class AssistAnimationEvents : MonoBehaviour
 	public void ProjectileAnimationEvent(AnimationEvent animationEvent)
 	{
 		_assist.Projectile();
-		_playerAnimationEvents.StartFrameCount(animationEvent);
+		//	_playerAnimationEvents.StartFrameCount(animationEvent);
 	}
 
 	public void DisappearAnimationEvent()

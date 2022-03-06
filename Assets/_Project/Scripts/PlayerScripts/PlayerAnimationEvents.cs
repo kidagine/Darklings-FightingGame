@@ -10,6 +10,9 @@ public class PlayerAnimationEvents : MonoBehaviour
 	[SerializeField] private Audio _audio = default;
 	private TrainingMenu _trainingMenu;
 	private Animator _animator;
+	private int _startupFrames;
+	private int _activeFrames;
+	private int _recoveryFrames;
 
 
 	private void Awake()
@@ -27,6 +30,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 		_player.IsAttacking = false;
 		_playerMovement.SetLockMovement(false);
 		_inputBuffer.CheckForInputBufferItem();
+		_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.CurrentAttack.startUpFrames, _player.CurrentAttack.activeFrames, _player.CurrentAttack.recoveryFrames);
 	}
 
 	public void CreateEffectAnimationEvent(int isProjectile)
@@ -57,15 +61,5 @@ public class PlayerAnimationEvents : MonoBehaviour
 	public void PlayerSoundAnimationEvent(string soundName)
 	{
 		_audio.Sound(soundName).Play();
-	}
-
-	public void StartFrameCount(AnimationEvent animationEvent)
-	{
-		int recovery = (int)(_animator.GetCurrentAnimatorStateInfo(0).length * -60);
-		if (animationEvent.intParameter > 0)
-		{
-			recovery = -animationEvent.intParameter;
-		}
-		_trainingMenu.FramedataValue(_player.IsPlayerOne, (int)animationEvent.floatParameter, recovery);
 	}
 }

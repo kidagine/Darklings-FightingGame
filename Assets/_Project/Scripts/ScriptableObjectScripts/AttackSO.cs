@@ -28,4 +28,8 @@ public class AttackSO : ScriptableObject
 	public GameObject hurtEffect;
 	public Vector2 hurtEffectPosition;
 	public float hurtEffectRotation;
+	[Header("Framedata")]
+	public int startUpFrames;
+	public int activeFrames;
+	public int recoveryFrames;
 }
