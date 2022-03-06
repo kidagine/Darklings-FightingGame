@@ -30,7 +30,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 		_player.IsAttacking = false;
 		_playerMovement.SetLockMovement(false);
 		_inputBuffer.CheckForInputBufferItem();
-		_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.CurrentAttack.startUpFrames, _player.CurrentAttack.activeFrames, _player.CurrentAttack.recoveryFrames);
+		SetFramedata();
 	}
 
 	public void CreateEffectAnimationEvent(int isProjectile)
@@ -61,5 +61,10 @@ public class PlayerAnimationEvents : MonoBehaviour
 	public void PlayerSoundAnimationEvent(string soundName)
 	{
 		_audio.Sound(soundName).Play();
+	}
+
+	public void SetFramedata()
+	{
+		_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.CurrentAttack.startUpFrames, _player.CurrentAttack.activeFrames, _player.CurrentAttack.recoveryFrames);
 	}
 }
