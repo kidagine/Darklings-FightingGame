@@ -8,8 +8,12 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private GameObject _p2 = default;
 	[SerializeField] private InputHistory _inputHistoryOne = default;
 	[SerializeField] private InputHistory _inputHistoryTwo = default;
-	[SerializeField] private TextMeshProUGUI _framedataOneText = default;
-	[SerializeField] private TextMeshProUGUI _framedataTwoText = default;
+	[SerializeField] private TextMeshProUGUI _startupOneText = default;
+	[SerializeField] private TextMeshProUGUI _activeOneText = default;
+	[SerializeField] private TextMeshProUGUI _recoveryOneText = default;
+	[SerializeField] private TextMeshProUGUI _startupTwoText = default;
+	[SerializeField] private TextMeshProUGUI _activeTwoText = default;
+	[SerializeField] private TextMeshProUGUI _recoveryTwoText = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
 	[Header("Selectors")]
@@ -146,19 +150,34 @@ public class TrainingMenu : BaseMenu
 
 	public void FramedataValue(bool isPlayerOne, int startupFrames, int activeFrames, int recoveryFrames)
 	{
-		string framedata = $"{startupFrames}/{activeFrames}/{recoveryFrames}";
 		if (isPlayerOne)
 		{
-			if (_framedataOneText.gameObject.activeSelf)
+			if (_startupOneText.gameObject.activeSelf)
 			{
-				_framedataOneText.text = framedata;
+				_startupOneText.text = startupFrames.ToString();
+			}
+			if (_activeOneText.gameObject.activeSelf)
+			{
+				_activeOneText.text = activeFrames.ToString();
+			}
+			if (_recoveryOneText.gameObject.activeSelf)
+			{
+				_recoveryOneText.text = recoveryFrames.ToString();
 			}
 		}
 		else
 		{
-			if (_framedataTwoText.gameObject.activeSelf)
+			if (_startupTwoText.gameObject.activeSelf)
 			{
-				_framedataTwoText.text = framedata;
+				_startupTwoText.text = startupFrames.ToString();
+			}
+			if (_activeTwoText.gameObject.activeSelf)
+			{
+				_activeTwoText.text = activeFrames.ToString();
+			}
+			if (_recoveryTwoText.gameObject.activeSelf)
+			{
+				_recoveryTwoText.text = recoveryFrames.ToString();
 			}
 		}
 	}

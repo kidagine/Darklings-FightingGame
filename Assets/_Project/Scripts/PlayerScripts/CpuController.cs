@@ -114,7 +114,19 @@ public class CpuController : BaseController
 						}
 						else
 						{
-							_player.LightAction();
+							int attackRandom = Random.Range(0, 6);
+							if (attackRandom <= 2)
+							{
+								_player.LightAction();
+							}
+							else if (attackRandom <= 4)
+							{
+								_player.MediumAction();
+							}
+							else
+							{
+								_player.HeavyAction();
+							}
 						}
 						yield return new WaitForSeconds(attackWaitRandom);
 					}
