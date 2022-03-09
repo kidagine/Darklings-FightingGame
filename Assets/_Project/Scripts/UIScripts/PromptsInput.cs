@@ -10,11 +10,11 @@ public class PromptsInput : MonoBehaviour
 
 	private void Update()
     {
-        if (Input.GetButtonDown("Keyboard" + "Confirm") || Input.GetButtonDown("ControllerOne" + "Confirm") || Input.GetButtonDown("ControllerTwo" + "Confirm"))
+        if (Input.GetButtonDown("KeyboardOne" + "Confirm") || Input.GetButtonDown("ControllerOne" + "Confirm") || Input.GetButtonDown("ControllerTwo" + "Confirm"))
         {
             _confirmUnityEvent?.Invoke();
         }
-        if (Input.GetButtonDown("Keyboard" + "Back") || Input.GetButtonDown("ControllerOne" + "Back"))
+        if (Input.GetButtonDown("KeyboardOne" + "Back") || Input.GetButtonDown("ControllerOne" + "Back"))
         {
             _backUnityEvent?.Invoke();
         }

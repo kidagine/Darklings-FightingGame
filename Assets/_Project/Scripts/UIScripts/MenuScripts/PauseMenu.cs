@@ -8,7 +8,7 @@ public class PauseMenu : BaseMenu
 
 	void Update()
 	{
-		if (Input.GetButtonDown("ControllerOne" + "Pause") || Input.GetButtonDown("ControllerTwo" + "Pause") || Input.GetButtonDown("Keyboard" + "Pause"))
+		if (Input.GetButtonDown("ControllerOne" + "Pause") || Input.GetButtonDown("ControllerTwo" + "Pause") || Input.GetButtonDown("KeyboardOne" + "Pause"))
 		{
 			_playerUI.ClosePause();
 		}

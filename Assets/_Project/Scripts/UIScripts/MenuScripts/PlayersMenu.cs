@@ -55,7 +55,7 @@ public class PlayersMenu : BaseMenu
 
 	void Update()
 	{
-		Movement("Keyboard", 0);
+		Movement("KeyboardOne", 0);
 		Movement("ControllerOne", 1);
 		Movement("ControllerTwo", 2);
 	}
@@ -137,7 +137,7 @@ public class PlayersMenu : BaseMenu
 			_audio.Sound("Pressed").Play();
 			if (_playerIcons[0].anchoredPosition.x == 375.0f)
 			{
-				SceneSettings.ControllerTwo = "Keyboard";
+				SceneSettings.ControllerTwo = "KeyboardOne";
 			}
 			else if (_playerIcons[1].anchoredPosition.x == 375.0f)
 			{
@@ -153,7 +153,7 @@ public class PlayersMenu : BaseMenu
 			}
 			if (_playerIcons[0].anchoredPosition.x == -375.0f)
 			{
-				SceneSettings.ControllerOne = "Keyboard";
+				SceneSettings.ControllerOne = "KeyboardOne";
 			}
 			else if (_playerIcons[1].anchoredPosition.x == -375.0f)
 			{
