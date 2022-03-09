@@ -3119,7 +3119,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1821676146}
   m_Lens:
     FieldOfView: 40
-    OrthographicSize: 6
+    OrthographicSize: 5
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -4202,13 +4202,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee34fd0a2311cf1499332a4f01184100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stage: 0
-  _characterOne: 0
+  _stage: 1
+  _characterOne: 2
   _characterTwo: 1
   _assistOne: 1
   _assistTwo: 0
   _controllerOne: 0
-  _controllerTwo: 5
+  _controllerTwo: 2
   _isTrainingMode: 1
   _isOnlineMode: 0
   _gameSpeed: 1
@@ -4562,7 +4562,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -290234520100094163, guid: 93e500ebbc2769a4d848786e7ad37c3a, type: 3}
+      objectReference: {fileID: 4615509854267872986, guid: 93e500ebbc2769a4d848786e7ad37c3a, type: 3}
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -5465,7 +5465,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -5489,7 +5489,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.33983994, z: -10}
+  m_LocalPosition: {x: 0, y: -0.625, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
