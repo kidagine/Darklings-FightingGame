@@ -13,6 +13,7 @@ public class PlayerController : BaseController
 	private bool j2;
 	private float _dashInputCooldown2;
 
+	public Vector2 InputDirection { get; private set; }
 
 
 	void Update()
@@ -36,24 +37,24 @@ public class PlayerController : BaseController
 
 	protected virtual void Movement()
 	{
-		Vector2 inputDirection = new(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
-		if (inputDirection.x == 1.0f && _playerMovement.MovementInput.x != inputDirection.x)
+		InputDirection = new(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
+		if (InputDirection.x == 1.0f && _playerMovement.MovementInput.x != InputDirection.x)
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
 		}
-		if (inputDirection.x == -1.0f && _playerMovement.MovementInput.x != inputDirection.x)
+		if (InputDirection.x == -1.0f && _playerMovement.MovementInput.x != InputDirection.x)
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
 		}
-		if (inputDirection.y == 1.0f && _playerMovement.MovementInput.y != inputDirection.y)
+		if (InputDirection.y == 1.0f && _playerMovement.MovementInput.y != InputDirection.y)
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
 		}
-		if (inputDirection.y == -1.0f && _playerMovement.MovementInput.y != inputDirection.y)
+		if (InputDirection.y == -1.0f && _playerMovement.MovementInput.y != InputDirection.y)
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
 		}
-		_playerMovement.MovementInput = inputDirection;
+		_playerMovement.MovementInput = InputDirection;
 	}
 
 	protected virtual void Jump()
