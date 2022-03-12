@@ -65,6 +65,6 @@ public class PlayerAnimationEvents : MonoBehaviour
 
 	public void SetFramedata()
 	{
-		_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.CurrentAttack.startUpFrames, _player.CurrentAttack.activeFrames, _player.CurrentAttack.recoveryFrames);
+		_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.CurrentAttack);
 	}
 }

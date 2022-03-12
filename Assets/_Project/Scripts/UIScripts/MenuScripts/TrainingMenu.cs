@@ -11,9 +11,11 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _startupOneText = default;
 	[SerializeField] private TextMeshProUGUI _activeOneText = default;
 	[SerializeField] private TextMeshProUGUI _recoveryOneText = default;
+	[SerializeField] private TextMeshProUGUI _hitTypeOneText = default;
 	[SerializeField] private TextMeshProUGUI _startupTwoText = default;
 	[SerializeField] private TextMeshProUGUI _activeTwoText = default;
 	[SerializeField] private TextMeshProUGUI _recoveryTwoText = default;
+	[SerializeField] private TextMeshProUGUI _hitTypeTwoText = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
 	[Header("Selectors")]
@@ -148,36 +150,44 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
-	public void FramedataValue(bool isPlayerOne, int startupFrames, int activeFrames, int recoveryFrames)
+	public void FramedataValue(bool isPlayerOne, AttackSO attack)
 	{
 		if (isPlayerOne)
 		{
 			if (_startupOneText.gameObject.activeSelf)
 			{
-				_startupOneText.text = startupFrames.ToString();
+				_startupOneText.text = attack.startUpFrames.ToString();
 			}
 			if (_activeOneText.gameObject.activeSelf)
 			{
-				_activeOneText.text = activeFrames.ToString();
+				_activeOneText.text = attack.activeFrames.ToString();
 			}
 			if (_recoveryOneText.gameObject.activeSelf)
 			{
-				_recoveryOneText.text = recoveryFrames.ToString();
+				_recoveryOneText.text = attack.recoveryFrames.ToString();
+			}
+			if (_hitTypeOneText.gameObject.activeSelf)
+			{
+				_hitTypeOneText.text = attack.attackTypeEnum.ToString();
 			}
 		}
 		else
 		{
 			if (_startupTwoText.gameObject.activeSelf)
 			{
-				_startupTwoText.text = startupFrames.ToString();
+				_startupTwoText.text = attack.startUpFrames.ToString();
 			}
 			if (_activeTwoText.gameObject.activeSelf)
 			{
-				_activeTwoText.text = activeFrames.ToString();
+				_activeTwoText.text = attack.activeFrames.ToString();
 			}
 			if (_recoveryTwoText.gameObject.activeSelf)
 			{
-				_recoveryTwoText.text = recoveryFrames.ToString();
+				_recoveryTwoText.text = attack.recoveryFrames.ToString();
+			}
+			if (_hitTypeTwoText.gameObject.activeSelf)
+			{
+				_hitTypeTwoText.text = attack.attackTypeEnum.ToString();
 			}
 		}
 	}
