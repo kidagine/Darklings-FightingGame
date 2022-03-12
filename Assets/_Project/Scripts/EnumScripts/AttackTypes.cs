@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public enum AttackTypeEnum { Overhead, Mid, Low, Throw };
+public enum AttackTypeEnum { Overhead, Mid, Low, Break };
 
 public class AttackType : MonoBehaviour
 {

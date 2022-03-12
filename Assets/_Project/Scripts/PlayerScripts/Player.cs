@@ -334,7 +334,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 		}
 
-		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Throw)
+		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Break)
 		{
 			_playerMovement.StopGhosts();
 			GameObject effect = Instantiate(attackSO.hurtEffect);
