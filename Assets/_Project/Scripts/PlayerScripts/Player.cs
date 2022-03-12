@@ -324,7 +324,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				BlockingHigh = true;
 			}
-			else if (attackSO.attackTypeEnum == AttackTypeEnum.Middling)
+			else if (attackSO.attackTypeEnum == AttackTypeEnum.Mid)
 			{
 				BlockingHigh = true;
 			}
