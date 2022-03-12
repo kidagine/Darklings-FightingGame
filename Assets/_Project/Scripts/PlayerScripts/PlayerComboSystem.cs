@@ -4,16 +4,18 @@ public class PlayerComboSystem : MonoBehaviour
 {
 	private PlayerStats _playerStats;
 	private PlayerMovement _playerMovement;
+	private PlayerController _playerController;
 
 	void Awake()
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
 		_playerStats = GetComponent<PlayerStats>();
+		_playerController = GetComponent<PlayerController>();
 	}
 
 	public AttackSO GetComboAttack(InputEnum inputEnum)
 	{
-		if (_playerMovement.IsCrouching && _playerMovement.IsGrounded)
+		if (_playerController.InputDirection.y < 0 && _playerMovement.IsGrounded)
 		{
 			return GetCrouchingAttackType(inputEnum);
 		}
