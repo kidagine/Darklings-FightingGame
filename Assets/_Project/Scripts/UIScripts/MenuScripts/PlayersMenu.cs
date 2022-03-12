@@ -10,6 +10,8 @@ public class PlayersMenu : BaseMenu
 	[SerializeField] private RectTransform[] _playerIcons = default;
 	[SerializeField] private GameObject _cpuTextRight = default;
 	[SerializeField] private GameObject _cpuTextLeft = default;
+	[SerializeField] private BaseMenu _versusMenu = default;
+	[SerializeField] private BaseMenu _practiceMenu = default;
 	private Audio _audio;
 	private bool _isMovenentInUse;
 
@@ -194,6 +196,18 @@ public class PlayersMenu : BaseMenu
 		for (int i = 0; i < _playerIcons.Length; i++)
 		{
 			_playerIcons[i].anchoredPosition = new Vector2(25.0f, _playerIcons[i].anchoredPosition.y);
+		}
+	}
+
+	public void Back()
+	{
+		if (SceneSettings.IsTrainingMode)
+		{
+			OpenMenuHideCurrent(_practiceMenu);
+		}
+		else
+		{
+			OpenMenuHideCurrent(_versusMenu);
 		}
 	}
 }

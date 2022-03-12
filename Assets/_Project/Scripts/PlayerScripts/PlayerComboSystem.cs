@@ -15,7 +15,7 @@ public class PlayerComboSystem : MonoBehaviour
 
 	public AttackSO GetComboAttack(InputEnum inputEnum)
 	{
-		if (_playerController.InputDirection.y < 0 && _playerMovement.IsGrounded)
+		if (_playerMovement.IsCrouching && _playerMovement.IsGrounded)
 		{
 			return GetCrouchingAttackType(inputEnum);
 		}

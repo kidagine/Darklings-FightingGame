@@ -22,6 +22,7 @@ public class VersionUpdater : MonoBehaviour
 
 	void SetVersionInformation()
 	{
+		_menuVersionText.text = "Ver";
 		if (_versionTextAsset == null)
 		{
 			Debug.LogError("No version text asset found");
