@@ -27,9 +27,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	protected float _arcana;
 	private float _assistGauge = 1.0f;
 	private int _lives = 2;
-	private bool _canAttack;
-	private bool _isStunned;
-
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
@@ -40,6 +37,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
 	public float ArcaneSlowdown { get; set; } = 4.5f;
+	public bool IsStunned { get; private set; }
 	public bool BlockingLow { get; set; }
 	public bool BlockingHigh { get; set; }
 	public bool BlockingMiddair { get; set; }
@@ -259,11 +257,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		return false;
 	}
 
-
-
 	public bool AssistAction()
 	{
-		if (_assistGauge >= 1.0f && !_isStunned && !IsBlocking && !IsKnockedDown && GameManager.Instance.HasGameStarted)
+		if (_assistGauge >= 1.0f && !IsStunned && !IsBlocking && !IsKnockedDown && GameManager.Instance.HasGameStarted)
 		{
 			_assist.Attack();
 			_assistGauge--;
@@ -275,7 +271,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
-		_canAttack = true;
 		CurrentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
 		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
@@ -318,7 +313,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		_playerAnimator.IsHurt(true);
 
-		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !_isStunned && GameManager.Instance.IsCpuOff)
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
 		{
 			if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
 			{
@@ -544,7 +539,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				_otherPlayerUI.ResetCombo();
 			}
-			_isStunned = false;
+			IsStunned = false;
 			StopCoroutine(_stunCoroutine);
 		}
 	}
@@ -559,7 +554,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	IEnumerator StunCoroutine(float hitStun)
 	{
-		_isStunned = true;
+		IsStunned = true;
 		_playerMovement.SetLockMovement(true);
 		_controller.DeactivateInput();
 		yield return new WaitForSeconds(hitStun);
@@ -570,7 +565,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerAnimator.IsHurt(false);
 		}
 		_otherPlayerUI.ResetCombo();
-		_isStunned = false;
+		IsStunned = false;
 	}
 
 	public void Pause(bool isPlayerOne)

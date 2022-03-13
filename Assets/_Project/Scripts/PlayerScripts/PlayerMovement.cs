@@ -116,6 +116,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 		else
 		{
+			if (_player.IsStunned)
+			{
+				_rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+			}
 			IsMoving = false;
 		}
 	}
