@@ -36,7 +36,7 @@ public class VersionUpdater : MonoBehaviour
 		string[] patchNotes = patchNotesWhole.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
 		_menuVersionText.text += versionNumber;
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			TextMeshProUGUI patchNote = Instantiate(_patchNotePrefab, _patchNotesGroup).transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 			patchNote.text = patchNotes[i].Trim();

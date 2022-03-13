@@ -58,6 +58,7 @@ public class PlayersMenu : BaseMenu
 	void Update()
 	{
 		Movement("KeyboardOne", 0);
+		Movement("KeyboardTwo", 0);
 		Movement("ControllerOne", 1);
 		Movement("ControllerTwo", 2);
 	}
