@@ -81,6 +81,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ResetPlayer()
 	{
+		_playerMovement.SetLockMovement(true);
+		IsStunned = false;
 		CanFlip = true;
 		IsDead = false;
 		IsAttacking = false;
@@ -99,6 +101,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		IsKnockedDown = false;
 		StopAllCoroutines();
+		_playerMovement.StopAllCoroutines();
 		_otherPlayerUI.ResetCombo();
 		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(_arcana);
