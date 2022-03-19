@@ -141,7 +141,7 @@ public class PlayerUI : MonoBehaviour
 		for (int i = 0; i < value + 1; i++)
 		{
 			GameObject healthDivider = Instantiate(_healthDividerPrefab, _healthDividerPivot);
-			healthDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
+			healthDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 24.0f);
 			currentPositionX -= increaseValue;
 		}
 	}
