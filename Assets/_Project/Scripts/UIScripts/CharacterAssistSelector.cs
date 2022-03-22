@@ -41,12 +41,26 @@ public class CharacterAssistSelector : MonoBehaviour
                 }
                 else
                 {
-                    _controllerInputName = SceneSettings.ControllerTwo;
+                    if (SceneSettings.ControllerTwo == "KeyboardOne" || SceneSettings.ControllerTwo == "KeyboardTwo")
+                    {
+                        _controllerInputName = "Keyboard";
+                    }
+                    else
+                    {
+                        _controllerInputName = SceneSettings.ControllerTwo;
+                    }
                 }
             }
             else
             {
-                _controllerInputName = SceneSettings.ControllerOne;
+                if (SceneSettings.ControllerOne == "KeyboardOne" || SceneSettings.ControllerOne == "KeyboardTwo")
+                {
+                    _controllerInputName = "Keyboard";
+                }
+                else
+                {
+                    _controllerInputName = SceneSettings.ControllerOne;
+                }
             }
         }
         else
@@ -59,19 +73,33 @@ public class CharacterAssistSelector : MonoBehaviour
                 }
                 else
                 {
-                    _controllerInputName = SceneSettings.ControllerOne;
+                    if (SceneSettings.ControllerOne == "KeyboardOne" || SceneSettings.ControllerOne == "KeyboardTwo")
+                    {
+                        _controllerInputName = "Keyboard";
+                    }
+                    else
+                    {
+                        _controllerInputName = SceneSettings.ControllerTwo;
+                    }
                 }
             }
             else
             {
-                _controllerInputName = SceneSettings.ControllerTwo;
+                if (SceneSettings.ControllerTwo == "KeyboardOne" || SceneSettings.ControllerTwo == "KeyboardTwo")
+                {
+                    _controllerInputName = "Keyboard";
+                }
+                else
+                {
+                    _controllerInputName = SceneSettings.ControllerTwo;
+                }
             }
         }
 
         //Refactor
         if (_controllerInputName == "KeyboardTwo")
         {
-            _controllerInputName = "KeyboardOne";
+            _controllerInputName = "Keyboard";
         }
     }
 
