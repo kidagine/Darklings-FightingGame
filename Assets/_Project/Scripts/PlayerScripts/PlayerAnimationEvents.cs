@@ -9,16 +9,8 @@ public class PlayerAnimationEvents : MonoBehaviour
 	[SerializeField] private InputBuffer _inputBuffer = default;
 	[SerializeField] private Audio _audio = default;
 	private TrainingMenu _trainingMenu;
-	private Animator _animator;
-	private int _startupFrames;
-	private int _activeFrames;
-	private int _recoveryFrames;
 
 
-	private void Awake()
-	{
-		_animator = GetComponent<Animator>();
-	}
 
 	public void SetTrainingMenu(TrainingMenu trainingMenu)
 	{
