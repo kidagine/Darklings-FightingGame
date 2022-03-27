@@ -16,8 +16,13 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private AssistTypeEnum _assistTwo = default;
 	[SerializeField] private ControllerTypeEnum _controllerOne = default;
 	[SerializeField] private ControllerTypeEnum _controllerTwo = default;
+	[Range(0, 10)]
+	[SerializeField] private int _playerOneSkin = default;
+	[Range(0, 10)]
+	[SerializeField] private int _playerTwoSkin = default;
 	[SerializeField] private bool _isTrainingMode = default;
 	[SerializeField] private bool _isOnlineMode = default;
+	[SerializeField] private bool _1BitOn = default;
 	[Range(1, 10)]
 	[SerializeField] private int _gameSpeed = 1;
 	[Header("Data")]
@@ -88,6 +93,8 @@ public class GameManager : MonoBehaviour
 			SceneSettings.PlayerTwo = (int)_characterTwo;
 			SceneSettings.AssistOne = (int)_assistOne;
 			SceneSettings.AssistTwo = (int)_assistTwo;
+			SceneSettings.ColorOne = _playerOneSkin;
+			SceneSettings.ColorTwo = _playerTwoSkin;
 			SceneSettings.IsTrainingMode = _isTrainingMode;
 			if (_isOnlineMode)
 			{
@@ -200,8 +207,18 @@ public class GameManager : MonoBehaviour
 	{
 		if (!SceneSettings.SceneSettingsDecide)
 		{
+			for (int i = 0; i < _stages.Length; i++)
+			{
+				_stages[i].SetActive(false);
+			}
 			_currentStage = _stages[(int)_stage];
+			foreach (Transform stageColor in _currentStage.transform)
+			{
+				stageColor.gameObject.SetActive(false);
+			}
 			_currentStage.SetActive(true);
+			int stageColorIndex = _1BitOn ? 1 : 0;
+			_currentStage.transform.GetChild(stageColorIndex).gameObject.SetActive(true);
 		}
 		else
 		{

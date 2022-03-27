@@ -18809,7 +18809,6 @@ GameObject:
   m_Component:
   - component: {fileID: 929103956}
   - component: {fileID: 929103960}
-  - component: {fileID: 929103959}
   - component: {fileID: 929103958}
   - component: {fileID: 929103957}
   m_Layer: 5
@@ -19033,18 +19032,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &929103959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 929103955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &929103960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32919,7 +32906,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1679731508}
   - component: {fileID: 1679731512}
-  - component: {fileID: 1679731511}
   - component: {fileID: 1679731510}
   - component: {fileID: 1679731509}
   m_Layer: 5
@@ -33143,18 +33129,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1679731511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679731507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1679731512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37007,7 +36981,8 @@ PrefabInstance:
       propertyPath: m_text
       value: local keyboard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6376915312322072297, guid: d613dcdbd6e537f4286b94ce146fb270, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d613dcdbd6e537f4286b94ce146fb270, type: 3}
 --- !u!224 &1899967538 stripped
 RectTransform:
@@ -43550,7 +43525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4703080450183459385, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4294967295
+      value: 4278190080
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
