@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 public class StageMenu : BaseMenu
 {
+	[SerializeField] private Selectable _1bitSelectable = default;
+	[SerializeField] private GameObject _optionsGroup = default;
+	[SerializeField] private GameObject _stagesGroup = default;
+	[SerializeField] private BaseMenu _charactersSelectMenu = default;
 	[SerializeField] private Image _stageImage = default;
 	[SerializeField] private TextMeshProUGUI _stageName = default;
 
@@ -14,7 +18,9 @@ public class StageMenu : BaseMenu
 	public void SelectStageImage()
 	{
 		SceneSettings.SceneSettingsDecide = true;
-		SceneManager.LoadScene(2);
+		_optionsGroup.SetActive(true);
+		_stagesGroup.SetActive(false);
+		_1bitSelectable.Select();
 	}
 
 	public void SetStageImage(Sprite sprite)
@@ -38,5 +44,44 @@ public class StageMenu : BaseMenu
 	public void SetTrainingMode(bool state)
 	{
 		SceneSettings.IsTrainingMode = state;
+	}
+
+	public void Set1Bit(int index)
+	{
+		if (index == 0)
+		{
+			SceneSettings.Bit1 = false;
+		}
+		else if (index == 1)
+		{
+			SceneSettings.Bit1 = true;
+		}
+	}
+
+	public void SetMusic(int index)
+	{
+		SceneSettings.MusicIndex = index;
+	}
+
+	public void ConfirmStageMenu()
+	{
+		if (_optionsGroup.activeSelf)
+		{
+			SceneManager.LoadScene(2);
+		}
+	}
+
+	public void BackStageMenu()
+	{
+		if (_optionsGroup.activeSelf)
+		{
+			_optionsGroup.SetActive(false);
+			_stagesGroup.SetActive(true);
+			
+		}
+		else
+		{
+			OpenMenuHideCurrent(_charactersSelectMenu);
+		}
 	}
 }

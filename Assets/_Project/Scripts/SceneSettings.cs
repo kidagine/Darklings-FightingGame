@@ -2,6 +2,7 @@ public class SceneSettings
 {
 	//Fight
 	public static int StageIndex = 0;
+	public static int MusicIndex = 0;
 	public static string ControllerOne = "";
 	public static string ControllerTwo = "";
 	public static int PlayerOne = 0;
@@ -12,6 +13,7 @@ public class SceneSettings
 	public static int AssistTwo = 0;
 	public static string NameOne = "";
 	public static string NameTwo = "";
+	public static bool Bit1 = false;
 	public static bool RandomStage = false;
 	public static bool SceneSettingsDecide = false;
 	//Local Fight

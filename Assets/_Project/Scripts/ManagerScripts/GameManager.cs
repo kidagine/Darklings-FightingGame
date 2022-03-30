@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
 			SceneSettings.ColorOne = _playerOneSkin;
 			SceneSettings.ColorTwo = _playerTwoSkin;
 			SceneSettings.IsTrainingMode = _isTrainingMode;
+			SceneSettings.Bit1 = _1BitOn;
 			if (_isOnlineMode)
 			{
 				_networkCanvas.SetActive(true);
@@ -217,7 +218,7 @@ public class GameManager : MonoBehaviour
 				stageColor.gameObject.SetActive(false);
 			}
 			_currentStage.SetActive(true);
-			int stageColorIndex = _1BitOn ? 1 : 0;
+			int stageColorIndex = SceneSettings.Bit1 ? 1 : 0;
 			_currentStage.transform.GetChild(stageColorIndex).gameObject.SetActive(true);
 		}
 		else
