@@ -2,11 +2,13 @@ using Demonics.UI;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StageMenu : BaseMenu
 {
+	[SerializeField] private Selectable _startingSelectable;
 	[SerializeField] private Selectable _1bitSelectable = default;
 	[SerializeField] private GameObject _optionsGroup = default;
 	[SerializeField] private GameObject _stagesGroup = default;
@@ -18,6 +20,7 @@ public class StageMenu : BaseMenu
 	public void SelectStageImage()
 	{
 		SceneSettings.SceneSettingsDecide = true;
+		EventSystem.current.sendNavigationEvents = true;
 		_optionsGroup.SetActive(true);
 		_stagesGroup.SetActive(false);
 		_1bitSelectable.Select();
@@ -77,7 +80,7 @@ public class StageMenu : BaseMenu
 		{
 			_optionsGroup.SetActive(false);
 			_stagesGroup.SetActive(true);
-			
+			_startingSelectable.Select();
 		}
 		else
 		{
