@@ -255,7 +255,16 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
-		_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+		if (SceneSettings.MusicName == "Random")
+		{
+			_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+		}
+		else
+		{
+			Debug.Log("a" + SceneSettings.MusicName);
+			_currentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
+			_currentMusic.Play();
+		}
 		if (_isTrainingMode)
 		{
 			_countdownText.gameObject.SetActive(false);
