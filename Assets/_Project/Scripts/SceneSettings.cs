@@ -2,7 +2,7 @@ public class SceneSettings
 {
 	//Fight
 	public static int StageIndex = 0;
-	public static int MusicIndex = 0;
+	public static string MusicName = "Random";
 	public static string ControllerOne = "";
 	public static string ControllerTwo = "";
 	public static int PlayerOne = 0;

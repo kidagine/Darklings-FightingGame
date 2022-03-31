@@ -89,7 +89,7 @@ public class StageMenu : BaseMenu
 
 	public void SetMusic(int index)
 	{
-		SceneSettings.MusicIndex = index;
+		SceneSettings.MusicName = _musicSO.songs[index];
 	}
 
 	public void ConfirmStageMenu()
