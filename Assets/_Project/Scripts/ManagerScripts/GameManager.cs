@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected TextMeshProUGUI _countdownText = default;
 	[SerializeField] protected TextMeshProUGUI _readyText = default;
 	[SerializeField] protected TextMeshProUGUI _winnerNameText = default;
+	[SerializeField] protected GameObject _keyboardPrompts = default;
+	[SerializeField] protected GameObject _controllerPrompts = default;
 	[SerializeField] protected GameObject _bottomLine = default;
 	[SerializeField] protected GameObject _leftStopper = default;
 	[SerializeField] protected GameObject _rightStopper = default;
@@ -108,6 +110,20 @@ public class GameManager : MonoBehaviour
 		{
 			_networkCanvas.SetActive(false);
 			_isTrainingMode = SceneSettings.IsTrainingMode;
+		}
+
+		if (_isTrainingMode)
+		{
+			if (SceneSettings.ControllerOne == ControllerTypeEnum.ControllerOne.ToString() || SceneSettings.ControllerOne == ControllerTypeEnum.ControllerOne.ToString())
+			{
+				_controllerPrompts.SetActive(true);
+				_keyboardPrompts.SetActive(false);
+			}
+			else
+			{
+				_controllerPrompts.SetActive(false);
+				_keyboardPrompts.SetActive(true);
+			}
 		}
 
 		if (_isOnlineMode)
