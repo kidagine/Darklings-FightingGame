@@ -12,10 +12,33 @@ public class StageMenu : BaseMenu
 	[SerializeField] private Selectable _1bitSelectable = default;
 	[SerializeField] private GameObject _optionsGroup = default;
 	[SerializeField] private GameObject _stagesGroup = default;
+	[SerializeField] private GameObject _selectorTextPrefab = default;
+	[SerializeField] private Transform _selectorValues = default;
+	[SerializeField] private MusicSO _musicSO = default;
 	[SerializeField] private BaseMenu _charactersSelectMenu = default;
 	[SerializeField] private Image _stageImage = default;
 	[SerializeField] private TextMeshProUGUI _stageName = default;
+	private StageSO _stageSO;
 
+
+	void Awake()
+	{
+		SetMusicSelectorValues();
+	}
+
+	private void SetMusicSelectorValues()
+	{
+		for (int i = 0; i < _musicSO.songs.Length; i++)
+		{
+			GameObject selector = Instantiate(_selectorTextPrefab, _selectorValues);
+			TextMeshProUGUI selectorText = selector.GetComponent<TextMeshProUGUI>();
+			selectorText.text = _musicSO.songs[i];
+			if (i == 0)
+			{
+				selector.SetActive(true);
+			}
+		}
+	}
 
 	public void SelectStageImage()
 	{
@@ -32,10 +55,11 @@ public class StageMenu : BaseMenu
 		_stageName.text = sprite.name;
 	}
 
-	public void SetStageIndex(int index)
+	public void SetStageImage(StageSO stageSO)
 	{
-		SceneSettings.RandomStage = false;
-		SceneSettings.StageIndex = index;
+		_stageSO = stageSO;
+		_stageImage.sprite = stageSO.bit1Stage;
+		_stageName.text = stageSO.stageName;
 	}
 
 	public void SetStageIndexRandom()
@@ -53,10 +77,12 @@ public class StageMenu : BaseMenu
 	{
 		if (index == 0)
 		{
+			_stageImage.sprite = _stageSO.bit1Stage;
 			SceneSettings.Bit1 = false;
 		}
 		else if (index == 1)
 		{
+			_stageImage.sprite = _stageSO.colorStage;
 			SceneSettings.Bit1 = true;
 		}
 	}

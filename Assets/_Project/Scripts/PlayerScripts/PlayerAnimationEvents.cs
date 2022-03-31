@@ -11,7 +11,6 @@ public class PlayerAnimationEvents : MonoBehaviour
 	private TrainingMenu _trainingMenu;
 
 
-
 	public void SetTrainingMenu(TrainingMenu trainingMenu)
 	{
 		_trainingMenu = trainingMenu;
