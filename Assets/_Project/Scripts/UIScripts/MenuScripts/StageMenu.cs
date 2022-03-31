@@ -23,6 +23,8 @@ public class StageMenu : BaseMenu
 
 	void Awake()
 	{
+		SceneSettings.Bit1 = false;
+		SceneSettings.MusicName = "Random";
 		SetMusicSelectorValues();
 	}
 

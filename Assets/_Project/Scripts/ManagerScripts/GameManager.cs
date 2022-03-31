@@ -112,15 +112,7 @@ public class GameManager : MonoBehaviour
 
 		if (_isOnlineMode)
 		{
-			//List<GameObject> players = NetworkExtenderManager.Instance.SpawnConnectedClients(_player);
-			//if (players != null)
-			//{
-			//	GameObject playerOneObject = players[0];
-			//	GameObject playerTwoObject = players[1];
-			//	playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
-			//	playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
-			//	InitializePlayers(playerOneObject, playerTwoObject);
-			//}
+
 		}
 		else
 		{
@@ -220,15 +212,18 @@ public class GameManager : MonoBehaviour
 				stageColor.gameObject.SetActive(false);
 			}
 			_currentStage.SetActive(true);
-			int stageColorIndex = SceneSettings.Bit1 ? 1 : 0;
-			_currentStage.transform.GetChild(stageColorIndex).gameObject.SetActive(true);
 		}
 		else
 		{
 			_currentStage = _stages[SceneSettings.StageIndex];
+			foreach (Transform stageColor in _currentStage.transform)
+			{
+				stageColor.gameObject.SetActive(false);
+			}
 			_currentStage.SetActive(true);
 		}
-
+		int stageColorIndex = SceneSettings.Bit1 ? 1 : 0;
+		_currentStage.transform.GetChild(stageColorIndex).gameObject.SetActive(true);
 	}
 
 	public void ActivateCpus()
@@ -263,7 +258,6 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("a" + SceneSettings.MusicName);
 			_currentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
 			_currentMusic.Play();
 		}
