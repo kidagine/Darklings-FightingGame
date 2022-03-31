@@ -32,7 +32,7 @@ public class StageMenu : BaseMenu
 		{
 			GameObject selector = Instantiate(_selectorTextPrefab, _selectorValues);
 			TextMeshProUGUI selectorText = selector.GetComponent<TextMeshProUGUI>();
-			selectorText.text = _musicSO.songs[i];
+			selectorText.text = _musicSO.songs[i].ToString();
 			if (i == 0)
 			{
 				selector.SetActive(true);
@@ -89,7 +89,7 @@ public class StageMenu : BaseMenu
 
 	public void SetMusic(int index)
 	{
-		SceneSettings.MusicName = _musicSO.songs[index];
+		SceneSettings.MusicName = _musicSO.songs[index].ToString();
 	}
 
 	public void ConfirmStageMenu()

@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private AssistTypeEnum _assistTwo = default;
 	[SerializeField] private ControllerTypeEnum _controllerOne = default;
 	[SerializeField] private ControllerTypeEnum _controllerTwo = default;
+	[SerializeField] private MusicTypeEnum _music = default;
 	[Range(0, 10)]
 	[SerializeField] private int _playerOneSkin = default;
 	[Range(0, 10)]
@@ -97,6 +98,7 @@ public class GameManager : MonoBehaviour
 			SceneSettings.ColorTwo = _playerTwoSkin;
 			SceneSettings.IsTrainingMode = _isTrainingMode;
 			SceneSettings.Bit1 = _1BitOn;
+			SceneSettings.MusicName = _music.ToString();
 			if (_isOnlineMode)
 			{
 				_networkCanvas.SetActive(true);
