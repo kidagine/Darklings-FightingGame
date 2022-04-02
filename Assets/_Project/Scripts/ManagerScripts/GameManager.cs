@@ -216,28 +216,16 @@ public class GameManager : MonoBehaviour
 
 	public void CheckSceneSettings()
 	{
-		if (!SceneSettings.SceneSettingsDecide)
+		for (int i = 0; i < _stages.Length; i++)
 		{
-			for (int i = 0; i < _stages.Length; i++)
-			{
-				_stages[i].SetActive(false);
-			}
-			_currentStage = _stages[(int)_stage];
-			foreach (Transform stageColor in _currentStage.transform)
-			{
-				stageColor.gameObject.SetActive(false);
-			}
-			_currentStage.SetActive(true);
+			_stages[i].SetActive(false);
 		}
-		else
+		_currentStage = _stages[SceneSettings.StageIndex];
+		foreach (Transform stageColor in _currentStage.transform)
 		{
-			_currentStage = _stages[SceneSettings.StageIndex];
-			foreach (Transform stageColor in _currentStage.transform)
-			{
-				stageColor.gameObject.SetActive(false);
-			}
-			_currentStage.SetActive(true);
+			stageColor.gameObject.SetActive(false);
 		}
+		_currentStage.SetActive(true);
 		int stageColorIndex = SceneSettings.Bit1 ? 1 : 0;
 		_currentStage.transform.GetChild(stageColorIndex).gameObject.SetActive(true);
 	}
@@ -641,7 +629,15 @@ public class GameManager : MonoBehaviour
 		PlayerOne.ResetLives();
 		PlayerTwo.ResetLives();
 		_currentMusic.Stop();
-		_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+		if (SceneSettings.MusicName == "Random")
+		{
+			_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+		}
+		else
+		{
+			_currentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
+			_currentMusic.Play();
+		}
 		StartRound();
 	}
 

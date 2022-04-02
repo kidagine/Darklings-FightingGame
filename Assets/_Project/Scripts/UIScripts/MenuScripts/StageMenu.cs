@@ -60,8 +60,13 @@ public class StageMenu : BaseMenu
 	public void SetStageImage(StageSO stageSO)
 	{
 		_stageSO = stageSO;
-		_stageImage.sprite = stageSO.bit1Stage;
+		_stageImage.sprite = stageSO.colorStage;
 		_stageName.text = stageSO.stageName;
+	}
+
+	public void SetStageIndex(int index)
+	{
+		SceneSettings.StageIndex = index;
 	}
 
 	public void SetStageIndexRandom()
@@ -79,12 +84,12 @@ public class StageMenu : BaseMenu
 	{
 		if (index == 0)
 		{
-			_stageImage.sprite = _stageSO.bit1Stage;
+			_stageImage.sprite = _stageSO.colorStage;
 			SceneSettings.Bit1 = false;
 		}
 		else if (index == 1)
 		{
-			_stageImage.sprite = _stageSO.colorStage;
+			_stageImage.sprite = _stageSO.bit1Stage;
 			SceneSettings.Bit1 = true;
 		}
 	}
