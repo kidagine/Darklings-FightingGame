@@ -87,7 +87,6 @@ public class GameManager : MonoBehaviour
 		Application.targetFrameRate = 60;
 		QualitySettings.vSyncCount = 1;
 		CheckInstance();
-		CheckSceneSettings();
 		if (!SceneSettings.SceneSettingsDecide)
 		{
 			SceneSettings.ControllerOne = _controllerOne.ToString();
@@ -96,6 +95,7 @@ public class GameManager : MonoBehaviour
 			SceneSettings.PlayerTwo = (int)_characterTwo;
 			SceneSettings.AssistOne = (int)_assistOne;
 			SceneSettings.AssistTwo = (int)_assistTwo;
+			SceneSettings.StageIndex = (int)_stage;
 			SceneSettings.ColorOne = _playerOneSkin;
 			SceneSettings.ColorTwo = _playerTwoSkin;
 			SceneSettings.IsTrainingMode = _isTrainingMode;
@@ -111,6 +111,7 @@ public class GameManager : MonoBehaviour
 			_networkCanvas.SetActive(false);
 			_isTrainingMode = SceneSettings.IsTrainingMode;
 		}
+		CheckSceneSettings();
 
 		if (_isTrainingMode)
 		{

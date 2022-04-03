@@ -4614,7 +4614,7 @@ MonoBehaviour:
   _assistTwo: 0
   _controllerOne: 0
   _controllerTwo: 4
-  _music: 0
+  _music: 7
   _playerOneSkin: 0
   _playerTwoSkin: 1
   _isTrainingMode: 1
@@ -4762,6 +4762,14 @@ MonoBehaviour:
       volume: 1
       pitch: 1
       name: Yee
+      loop: 1
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 84ee44aa7214715488c3c4af4925ccbd, type: 3}
+      volume: 1
+      pitch: 1
+      name: Upbeat
       loop: 1
       playOnAwake: 0
       playOneInstanceAtATime: 0
@@ -21072,6 +21080,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8031722346743422817, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.6
+      objectReference: {fileID: 0}
     - target: {fileID: 8031722346743422822, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
@@ -21175,6 +21187,10 @@ PrefabInstance:
     - target: {fileID: 8031722348010821695, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031722348150631678, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.6
       objectReference: {fileID: 0}
     - target: {fileID: 8031722348150631679, guid: 01f87c8cd8701e34c8907c190a14df97, type: 3}
       propertyPath: m_StaticEditorFlags

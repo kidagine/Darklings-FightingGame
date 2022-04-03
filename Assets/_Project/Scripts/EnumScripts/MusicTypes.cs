@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public enum MusicTypeEnum { Random, Beat28, Lit, Lounge, Soap, Tussle, Yee };
+public enum MusicTypeEnum { Random, Beat28, Lit, Lounge, Soap, Tussle, Yee, Upbeat };
 
 public class MusicTypes : MonoBehaviour
 {
