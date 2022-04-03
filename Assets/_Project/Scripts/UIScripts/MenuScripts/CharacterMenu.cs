@@ -155,7 +155,7 @@ public class CharacterMenu : BaseMenu
 
 	IEnumerator TauntEndCoroutine()
 	{
-		yield return new WaitForSeconds(1.25f);
+		yield return new WaitForSeconds(1.0f);
 		_currentEventSystem.sendNavigationEvents = true;
 		if (!FirstCharacterSelected)
 		{

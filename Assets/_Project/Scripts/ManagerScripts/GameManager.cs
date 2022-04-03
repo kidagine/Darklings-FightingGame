@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private AssistTypeEnum _assistTwo = default;
 	[SerializeField] private ControllerTypeEnum _controllerOne = default;
 	[SerializeField] private ControllerTypeEnum _controllerTwo = default;
+	[SerializeField] private MusicTypeEnum _music = default;
 	[Range(0, 10)]
 	[SerializeField] private int _playerOneSkin = default;
 	[Range(0, 10)]
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected TextMeshProUGUI _countdownText = default;
 	[SerializeField] protected TextMeshProUGUI _readyText = default;
 	[SerializeField] protected TextMeshProUGUI _winnerNameText = default;
+	[SerializeField] protected GameObject _keyboardPrompts = default;
+	[SerializeField] protected GameObject _controllerPrompts = default;
 	[SerializeField] protected GameObject _bottomLine = default;
 	[SerializeField] protected GameObject _leftStopper = default;
 	[SerializeField] protected GameObject _rightStopper = default;
@@ -84,7 +87,6 @@ public class GameManager : MonoBehaviour
 		Application.targetFrameRate = 60;
 		QualitySettings.vSyncCount = 1;
 		CheckInstance();
-		CheckSceneSettings();
 		if (!SceneSettings.SceneSettingsDecide)
 		{
 			SceneSettings.ControllerOne = _controllerOne.ToString();
@@ -93,9 +95,12 @@ public class GameManager : MonoBehaviour
 			SceneSettings.PlayerTwo = (int)_characterTwo;
 			SceneSettings.AssistOne = (int)_assistOne;
 			SceneSettings.AssistTwo = (int)_assistTwo;
+			SceneSettings.StageIndex = (int)_stage;
 			SceneSettings.ColorOne = _playerOneSkin;
 			SceneSettings.ColorTwo = _playerTwoSkin;
 			SceneSettings.IsTrainingMode = _isTrainingMode;
+			SceneSettings.Bit1 = _1BitOn;
+			SceneSettings.MusicName = _music.ToString();
 			if (_isOnlineMode)
 			{
 				_networkCanvas.SetActive(true);
@@ -106,18 +111,25 @@ public class GameManager : MonoBehaviour
 			_networkCanvas.SetActive(false);
 			_isTrainingMode = SceneSettings.IsTrainingMode;
 		}
+		CheckSceneSettings();
+
+		if (_isTrainingMode)
+		{
+			if (SceneSettings.ControllerOne == ControllerTypeEnum.ControllerOne.ToString() || SceneSettings.ControllerOne == ControllerTypeEnum.ControllerOne.ToString())
+			{
+				_controllerPrompts.SetActive(true);
+				_keyboardPrompts.SetActive(false);
+			}
+			else
+			{
+				_controllerPrompts.SetActive(false);
+				_keyboardPrompts.SetActive(true);
+			}
+		}
 
 		if (_isOnlineMode)
 		{
-			//List<GameObject> players = NetworkExtenderManager.Instance.SpawnConnectedClients(_player);
-			//if (players != null)
-			//{
-			//	GameObject playerOneObject = players[0];
-			//	GameObject playerTwoObject = players[1];
-			//	playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
-			//	playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
-			//	InitializePlayers(playerOneObject, playerTwoObject);
-			//}
+
 		}
 		else
 		{
@@ -205,27 +217,18 @@ public class GameManager : MonoBehaviour
 
 	public void CheckSceneSettings()
 	{
-		if (!SceneSettings.SceneSettingsDecide)
+		for (int i = 0; i < _stages.Length; i++)
 		{
-			for (int i = 0; i < _stages.Length; i++)
-			{
-				_stages[i].SetActive(false);
-			}
-			_currentStage = _stages[(int)_stage];
-			foreach (Transform stageColor in _currentStage.transform)
-			{
-				stageColor.gameObject.SetActive(false);
-			}
-			_currentStage.SetActive(true);
-			int stageColorIndex = _1BitOn ? 1 : 0;
-			_currentStage.transform.GetChild(stageColorIndex).gameObject.SetActive(true);
+			_stages[i].SetActive(false);
 		}
-		else
+		_currentStage = _stages[SceneSettings.StageIndex];
+		foreach (Transform stageColor in _currentStage.transform)
 		{
-			_currentStage = _stages[SceneSettings.StageIndex];
-			_currentStage.SetActive(true);
+			stageColor.gameObject.SetActive(false);
 		}
-
+		_currentStage.SetActive(true);
+		int stageColorIndex = SceneSettings.Bit1 ? 1 : 0;
+		_currentStage.transform.GetChild(stageColorIndex).gameObject.SetActive(true);
 	}
 
 	public void ActivateCpus()
@@ -254,7 +257,15 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
-		_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+		if (SceneSettings.MusicName == "Random")
+		{
+			_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+		}
+		else
+		{
+			_currentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
+			_currentMusic.Play();
+		}
 		if (_isTrainingMode)
 		{
 			_countdownText.gameObject.SetActive(false);
@@ -619,7 +630,15 @@ public class GameManager : MonoBehaviour
 		PlayerOne.ResetLives();
 		PlayerTwo.ResetLives();
 		_currentMusic.Stop();
-		_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+		if (SceneSettings.MusicName == "Random")
+		{
+			_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+		}
+		else
+		{
+			_currentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
+			_currentMusic.Play();
+		}
 		StartRound();
 	}
 

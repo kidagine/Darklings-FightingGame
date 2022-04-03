@@ -38,6 +38,10 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
 	{
 		if (value >= 0 && value < _values.childCount)
 		{
+			if (_audio != null)
+			{
+				_audio.Sound("Selected").Play();
+			}
 			for (int i = 0; i < _values.childCount; i++)
 			{
 				_values.GetChild(i).gameObject.SetActive(false);
@@ -121,13 +125,11 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
 
 	public void NextValue()
 	{
-		_audio.Sound("Selected").Play();
 		SetValue(Value + 1);
 	}
 
 	public void PreviousValue()
 	{
-		_audio.Sound("Selected").Play();
 		SetValue(Value - 1);
 	}
 
