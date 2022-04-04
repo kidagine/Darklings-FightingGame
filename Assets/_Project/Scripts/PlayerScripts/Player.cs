@@ -288,12 +288,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
-		IsAttacking = false;
-		CanCancelAttack = true;
-		_inputBuffer.CheckForInputBufferItem();
+		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break)
+		{
+			IsAttacking = false;
+			CanCancelAttack = true;
+			_inputBuffer.CheckForInputBufferItem();
+		}
+		_playerMovement.SetLockMovement(true);
 		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
-			_playerMovement.SetLockMovement(true);
 			if (!gotHit)
 			{
 				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
@@ -585,6 +588,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_controller.ActivateInput();
 			_playerMovement.SetLockMovement(false);
+			Debug.Log("A");
 			_playerAnimator.CancelHurt();
 		}
 		_otherPlayerUI.ResetCombo();
