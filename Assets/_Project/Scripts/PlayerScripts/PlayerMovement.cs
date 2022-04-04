@@ -265,7 +265,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 				{
 					_playerController.ActivateInput();
 				}
-				_playerAnimator.IsHurt(false);
+				_playerAnimator.CancelHurt();
 			}
 			if (_player.IsKnockedDown && !_player.IsDead)
 			{
