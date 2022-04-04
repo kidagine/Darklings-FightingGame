@@ -50,7 +50,6 @@ public class PlayerAnimator : MonoBehaviour
 
 	public void CancelHurt()
 	{
-		Debug.Log("O");
 		_animator.SetTrigger("CancelHurt");
 	}
 

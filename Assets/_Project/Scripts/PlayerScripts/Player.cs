@@ -501,7 +501,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Knockdown()
 	{
-		_playerAnimator.CancelHurt();
 		_knockdownCoroutine = StartCoroutine(KnockdownCoroutine());
 	}
 
@@ -588,7 +587,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_controller.ActivateInput();
 			_playerMovement.SetLockMovement(false);
-			Debug.Log("A");
 			_playerAnimator.CancelHurt();
 		}
 		_otherPlayerUI.ResetCombo();
