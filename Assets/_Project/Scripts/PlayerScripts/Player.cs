@@ -427,7 +427,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.IsBlocking(false);
 		_playerAnimator.IsBlockingLow(false);
 		_playerAnimator.IsBlockingAir(false);
-		LightAction();
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+		{
+			LightAction();
+		}
 	}
 
 	private void CheckIsBlocking()
@@ -517,6 +520,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		SetHurtbox(true);
 		IsKnockedDown = false;
 		_controller.ActivateInput();
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+		{
+			LightAction();
+		}
 	}
 
 	public void Taunt()
@@ -592,6 +599,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		_otherPlayerUI.ResetCombo();
 		IsStunned = false;
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+		{
+			LightAction();
+		}
 	}
 
 	public void Pause(bool isPlayerOne)

@@ -257,10 +257,10 @@ public class TrainingMenu : BaseMenu
 		switch (value)
 		{
 			case 0:
-				//TrainingSettings.BlockAlways = false;
+				TrainingSettings.OnHit = false;
 				break;
 			case 1:
-				//TrainingSettings.BlockAlways = true;
+				TrainingSettings.OnHit = true;
 				break;
 		}
 	}
