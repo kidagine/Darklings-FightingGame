@@ -427,6 +427,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.IsBlocking(false);
 		_playerAnimator.IsBlockingLow(false);
 		_playerAnimator.IsBlockingAir(false);
+		LightAction();
 	}
 
 	private void CheckIsBlocking()
