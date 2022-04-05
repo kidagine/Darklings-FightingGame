@@ -20,7 +20,10 @@ public class TrainingSubOption : MonoBehaviour
 
 	public void Disable()
 	{
+		if (gameObject.activeSelf)
+		{
+			_currentInitialSelectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>();
+		}
 		gameObject.SetActive(false);
-		_currentInitialSelectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>();
 	}
 }
