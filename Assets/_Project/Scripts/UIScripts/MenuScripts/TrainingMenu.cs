@@ -18,22 +18,15 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _hitTypeTwoText = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
-	[SerializeField] private GameObject[] _trainingSubOptions = default;
+	[SerializeField] private TrainingSubOption[] _trainingSubOptions = default;
 	[Header("Selectors")]
-	private TrainingMenu _trainingMenu;
 	private int _currentTrainingSubOptionIndex;
 
-
-	void Start()
-	{
-		_trainingMenu = GetComponent<TrainingMenu>();
-	}
 
 	void Update()
 	{
 		if (Input.GetKey(KeyCode.Q))
 		{
-			DisableAllTrainingSubOptions();
 			if (_currentTrainingSubOptionIndex == 0)
 			{
 				_currentTrainingSubOptionIndex = _trainingSubOptions.Length - 1;
@@ -42,11 +35,17 @@ public class TrainingMenu : BaseMenu
 			{
 				_currentTrainingSubOptionIndex--;
 			}
-			_trainingSubOptions[_currentTrainingSubOptionIndex].SetActive(true);
+			for (int i = 0; i < _trainingSubOptions.Length; i++)
+			{
+				if (i != _currentTrainingSubOptionIndex)
+				{
+					_trainingSubOptions[i].Disable();
+				}
+			}
+			_trainingSubOptions[_currentTrainingSubOptionIndex].Activate();
 		}
 		if (Input.GetKeyDown(KeyCode.E))
 		{
-			DisableAllTrainingSubOptions();
 			if (_currentTrainingSubOptionIndex == _trainingSubOptions.Length - 1)
 			{
 				_currentTrainingSubOptionIndex = 0;
@@ -55,7 +54,14 @@ public class TrainingMenu : BaseMenu
 			{
 				_currentTrainingSubOptionIndex++;
 			}
-			_trainingSubOptions[_currentTrainingSubOptionIndex].SetActive(true);
+			for (int i = 0; i < _trainingSubOptions.Length; i++)
+			{
+				if (i != _currentTrainingSubOptionIndex)
+				{
+					_trainingSubOptions[i].Disable();
+				}
+			}
+			_trainingSubOptions[_currentTrainingSubOptionIndex].Activate();
 		}
 	}
 
@@ -63,7 +69,7 @@ public class TrainingMenu : BaseMenu
 	{
 		for (int i = 0; i < _trainingSubOptions.Length; i++)
 		{
-			_trainingSubOptions[i].SetActive(false);
+			_trainingSubOptions[i].Disable();
 		}
 	}
 
@@ -159,7 +165,7 @@ public class TrainingMenu : BaseMenu
 	}
 
 
-	public void SetDisplay(int value)
+	public void SetFramedata(int value)
 	{
 		switch (value)
 		{
@@ -252,9 +258,17 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
-	public void RestoreToDefault()
+	public void SetOnHit(int value)
 	{
-
+		switch (value)
+		{
+			case 0:
+				//TrainingSettings.BlockAlways = false;
+				break;
+			case 1:
+				//TrainingSettings.BlockAlways = true;
+				break;
+		}
 	}
 
 	public void ResetTrainingOptions()

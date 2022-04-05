@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TrainingSubOption : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	[SerializeField] private Selectable _initialSelectable = default;
+	private Selectable _currentInitialSelectable;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+	public void Activate()
+	{
+		gameObject.SetActive(true);
+		if (_currentInitialSelectable == null)
+		{
+			_currentInitialSelectable = _initialSelectable;
+		}
+		_currentInitialSelectable.Select();
+	}
+
+	public void Disable()
+	{
+		gameObject.SetActive(false);
+		_currentInitialSelectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>();
+	}
 }
