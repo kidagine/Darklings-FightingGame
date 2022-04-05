@@ -1,6 +1,8 @@
 using Demonics.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TrainingMenu : BaseMenu
 {
@@ -18,20 +20,50 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _hitTypeTwoText = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
+	[SerializeField] private TrainingSubOption[] _trainingSubOptions = default;
 	[Header("Selectors")]
-	private TrainingMenu _trainingMenu;
+	private int _currentTrainingSubOptionIndex;
 
-
-	void Start()
-	{
-		_trainingMenu = GetComponent<TrainingMenu>();
-	}
 
 	void Update()
 	{
-		if (Input.GetButtonDown("ControllerOne" + "Pause") || Input.GetButtonDown("ControllerTwo" + "Pause") || Input.GetButtonDown("KeyboardOne" + "Pause"))
+		if (Input.GetKey(KeyCode.Q))
 		{
-			_trainingMenu.OpenMenuHideCurrent(_trainingPauseMenu);
+			if (_currentTrainingSubOptionIndex == 0)
+			{
+				_currentTrainingSubOptionIndex = _trainingSubOptions.Length - 1;
+			}
+			else
+			{
+				_currentTrainingSubOptionIndex--;
+			}
+			for (int i = 0; i < _trainingSubOptions.Length; i++)
+			{
+				if (i != _currentTrainingSubOptionIndex)
+				{
+					_trainingSubOptions[i].Disable();
+				}
+			}
+			_trainingSubOptions[_currentTrainingSubOptionIndex].Activate();
+		}
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			if (_currentTrainingSubOptionIndex == _trainingSubOptions.Length - 1)
+			{
+				_currentTrainingSubOptionIndex = 0;
+			}
+			else
+			{
+				_currentTrainingSubOptionIndex++;
+			}
+			for (int i = 0; i < _trainingSubOptions.Length; i++)
+			{
+				if (i != _currentTrainingSubOptionIndex)
+				{
+					_trainingSubOptions[i].Disable();
+				}
+			}
+			_trainingSubOptions[_currentTrainingSubOptionIndex].Activate();
 		}
 	}
 
@@ -127,7 +159,7 @@ public class TrainingMenu : BaseMenu
 	}
 
 
-	public void SetDisplay(int value)
+	public void SetFramedata(int value)
 	{
 		switch (value)
 		{
@@ -220,9 +252,17 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
-	public void RestoreToDefault()
+	public void SetOnHit(int value)
 	{
-
+		switch (value)
+		{
+			case 0:
+				TrainingSettings.OnHit = false;
+				break;
+			case 1:
+				TrainingSettings.OnHit = true;
+				break;
+		}
 	}
 
 	public void ResetTrainingOptions()
@@ -234,8 +274,9 @@ public class TrainingMenu : BaseMenu
 		GameManager.Instance.ActivateCpus();
 	}
 
-	private void OnEnable()
+	public void HideMenu()
 	{
-		_scrollView.anchoredPosition = Vector2.zero;
+		_startingOption = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>();
+		OpenMenuHideCurrent(_trainingPauseMenu);
 	}
 }

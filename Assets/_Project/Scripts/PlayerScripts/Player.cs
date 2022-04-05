@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private GameObject _blockEffectPrefab = default;
 	[SerializeField] protected Transform _effectsParent = default;
 	[SerializeField] private Transform _keepFlip = default;
+	[SerializeField] private InputBuffer _inputBuffer = default;
 	[SerializeField] private GameObject[] _playerIcons = default;
 	private PlayerMovement _otherPlayer;
 	protected PlayerUI _playerUI;
@@ -36,13 +37,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool HitMiddair { get; set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
-	public float ArcaneSlowdown { get; set; } = 4.5f;
+	public float ArcaneSlowdown { get; set; } = 6.5f;
 	public bool IsStunned { get; private set; }
 	public bool BlockingLow { get; set; }
 	public bool BlockingHigh { get; set; }
 	public bool BlockingMiddair { get; set; }
 	public bool IsDead { get; set; }
 	public bool CanFlip { get; set; } = true;
+	public bool CanCancelAttack { get; set; }
 
 	void Awake()
 	{
@@ -236,19 +238,21 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	protected virtual bool Attack(InputEnum inputEnum)
 	{
+		if (CanCancelAttack)
+		{
+			_playerAnimator.CancelAttack();
+			CanCancelAttack = false;
+		}
 		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !IsKnockedDown)
 		{
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;
 			_playerAnimator.Attack(inputEnum.ToString());
 			CurrentAttack = _playerComboSystem.GetComboAttack(inputEnum);
+			AttackTravel();
 			if (!string.IsNullOrEmpty(CurrentAttack.attackSound))
 			{
 				_audio.Sound(CurrentAttack.attackSound).Play();
-			}
-			if (!CurrentAttack.isAirAttack)
-			{
-				_playerMovement.TravelDistance(new Vector2(CurrentAttack.travelDistance * transform.localScale.x, CurrentAttack.travelDirection.y));
 			}
 			if (CurrentAttack.travelDirection.y > 0.0f)
 			{
@@ -258,6 +262,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			return true;
 		}
 		return false;
+	}
+
+	public void AttackTravel()
+	{
+		if (!CurrentAttack.isAirAttack)
+		{
+			_playerMovement.TravelDistance(new Vector2(CurrentAttack.travelDistance * transform.localScale.x, CurrentAttack.travelDirection.y));
+		}
 	}
 
 	public bool AssistAction()
@@ -276,9 +288,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
+		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break)
+		{
+			IsAttacking = false;
+			CanCancelAttack = true;
+			_inputBuffer.CheckForInputBufferItem();
+		}
+		_playerMovement.SetLockMovement(true);
 		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
-			_playerMovement.SetLockMovement(true);
 			if (!gotHit)
 			{
 				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
@@ -314,7 +332,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			HitMiddair = true;
 		}
-		_playerAnimator.IsHurt(true);
+		//if (IsStunned)
+		//{
+		//	Debug.Log("a");
+		//	_playerAnimator.ResetAnimation("TobiDarkHurt");
+		//}
+		_playerAnimator.Hurt();
 
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
 		{
@@ -400,10 +423,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		yield return new WaitForSeconds(blockStun);
 		IsBlocking = false;
 		_controller.ActivateInput();
-		_playerAnimator.IsHurt(false);
+		_playerAnimator.CancelHurt();
 		_playerAnimator.IsBlocking(false);
 		_playerAnimator.IsBlockingLow(false);
 		_playerAnimator.IsBlockingAir(false);
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+		{
+			LightAction();
+		}
 	}
 
 	private void CheckIsBlocking()
@@ -478,7 +505,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Knockdown()
 	{
-		_playerAnimator.IsHurt(false);
 		_knockdownCoroutine = StartCoroutine(KnockdownCoroutine());
 	}
 
@@ -494,6 +520,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		SetHurtbox(true);
 		IsKnockedDown = false;
 		_controller.ActivateInput();
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+		{
+			LightAction();
+		}
 	}
 
 	public void Taunt()
@@ -565,10 +595,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_controller.ActivateInput();
 			_playerMovement.SetLockMovement(false);
-			_playerAnimator.IsHurt(false);
+			_playerAnimator.CancelHurt();
 		}
 		_otherPlayerUI.ResetCombo();
 		IsStunned = false;
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+		{
+			LightAction();
+		}
 	}
 
 	public void Pause(bool isPlayerOne)

@@ -4,6 +4,7 @@ using UnityEngine.U2D.Animation;
 public class PlayerAnimator : MonoBehaviour
 {
 	[SerializeField] private PlayerStats _playerStats = default;
+	[SerializeField] private InputBuffer _inputBuffer = default;
 	private Animator _animator;
 	private SpriteLibrary _spriteLibrary;
 	private SpriteRenderer _spriteRenderer;
@@ -42,6 +43,21 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.SetBool("IsJumping", state);
 	}
 
+	public void CancelAttack()
+	{
+		_animator.SetTrigger("Cancel");
+	}
+
+	public void CancelHurt()
+	{
+		_animator.SetTrigger("CancelHurt");
+	}
+
+	public void ResetAnimation(string name)
+	{
+		_animator.Play(name, -1, 0f);
+	}
+
 	public void Attack(string attackType)
 	{
 		_animator.SetTrigger(attackType);
@@ -52,9 +68,9 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.SetTrigger("Arcana");
 	}
 
-	public void IsHurt(bool state)
+	public void Hurt()
 	{
-		_animator.SetBool("IsHurt", state);
+		_animator.SetTrigger("Hurt");
 	}
 
 	public void IsBlocking(bool state)

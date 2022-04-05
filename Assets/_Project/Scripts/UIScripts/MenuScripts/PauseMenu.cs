@@ -6,11 +6,8 @@ public class PauseMenu : BaseMenu
 	[SerializeField] private PlayerUI _playerUI = default;
 
 
-	void Update()
+	public void ClosePause()
 	{
-		if (Input.GetButtonDown("ControllerOne" + "Pause") || Input.GetButtonDown("ControllerTwo" + "Pause") || Input.GetButtonDown("KeyboardOne" + "Pause"))
-		{
-			_playerUI.ClosePause();
-		}
+		_playerUI.ClosePause();
 	}
 }

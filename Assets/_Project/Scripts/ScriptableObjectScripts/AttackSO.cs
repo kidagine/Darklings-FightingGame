@@ -7,6 +7,7 @@ public class AttackSO : ScriptableObject
 	public float travelDistance;
 	public Vector2 travelDirection;
 	public float hitStun;
+	public float blockStun;
 	[Range(0.0f, 16.0f)]
 	public float knockback;
 	public Vector2 knockbackDirection;
