@@ -18,8 +18,10 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _hitTypeTwoText = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
+	[SerializeField] private GameObject[] _trainingSubOptions = default;
 	[Header("Selectors")]
 	private TrainingMenu _trainingMenu;
+	private int _currentTrainingSubOptionIndex;
 
 
 	void Start()
@@ -29,9 +31,39 @@ public class TrainingMenu : BaseMenu
 
 	void Update()
 	{
-		if (Input.GetButtonDown("ControllerOne" + "Pause") || Input.GetButtonDown("ControllerTwo" + "Pause") || Input.GetButtonDown("KeyboardOne" + "Pause"))
+		if (Input.GetKey(KeyCode.Q))
 		{
-			_trainingMenu.OpenMenuHideCurrent(_trainingPauseMenu);
+			DisableAllTrainingSubOptions();
+			if (_currentTrainingSubOptionIndex == 0)
+			{
+				_currentTrainingSubOptionIndex = _trainingSubOptions.Length - 1;
+			}
+			else
+			{
+				_currentTrainingSubOptionIndex--;
+			}
+			_trainingSubOptions[_currentTrainingSubOptionIndex].SetActive(true);
+		}
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			DisableAllTrainingSubOptions();
+			if (_currentTrainingSubOptionIndex == _trainingSubOptions.Length - 1)
+			{
+				_currentTrainingSubOptionIndex = 0;
+			}
+			else
+			{
+				_currentTrainingSubOptionIndex++;
+			}
+			_trainingSubOptions[_currentTrainingSubOptionIndex].SetActive(true);
+		}
+	}
+
+	private void DisableAllTrainingSubOptions()
+	{
+		for (int i = 0; i < _trainingSubOptions.Length; i++)
+		{
+			_trainingSubOptions[i].SetActive(false);
 		}
 	}
 
