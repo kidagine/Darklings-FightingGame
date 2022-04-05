@@ -1,6 +1,8 @@
 using Demonics.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TrainingMenu : BaseMenu
 {
@@ -62,14 +64,6 @@ public class TrainingMenu : BaseMenu
 				}
 			}
 			_trainingSubOptions[_currentTrainingSubOptionIndex].Activate();
-		}
-	}
-
-	private void DisableAllTrainingSubOptions()
-	{
-		for (int i = 0; i < _trainingSubOptions.Length; i++)
-		{
-			_trainingSubOptions[i].Disable();
 		}
 	}
 
@@ -280,8 +274,9 @@ public class TrainingMenu : BaseMenu
 		GameManager.Instance.ActivateCpus();
 	}
 
-	private void OnEnable()
+	public void HideMenu()
 	{
-		_scrollView.anchoredPosition = Vector2.zero;
+		_startingOption = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>();
+		OpenMenuHideCurrent(_trainingPauseMenu);
 	}
 }

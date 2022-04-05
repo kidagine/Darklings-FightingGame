@@ -4209,7 +4209,6 @@ GameObject:
   m_Component:
   - component: {fileID: 368060452}
   - component: {fileID: 368060454}
-  - component: {fileID: 368060453}
   m_Layer: 5
   m_Name: Main_prompt
   m_TagString: Untagged
@@ -4239,18 +4238,6 @@ RectTransform:
   m_AnchoredPosition: {x: 1721.7462, y: -50}
   m_SizeDelta: {x: 262.01, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &368060453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 368060451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3f151a615993c9409fce9dfe770b1ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &368060454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6912,12 +6899,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 729468312}
-        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
-        m_MethodName: OpenMenuHideCurrent
-        m_Mode: 2
+        m_TargetAssemblyTypeName: TrainingMenu, Scripts
+        m_MethodName: HideMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 534647985}
-          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -8870,12 +8857,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 729468312}
-        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
-        m_MethodName: OpenMenuHideCurrent
-        m_Mode: 2
+        m_TargetAssemblyTypeName: TrainingMenu, Scripts
+        m_MethodName: HideMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 534647985}
-          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -13361,12 +13348,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 729468312}
-        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
-        m_MethodName: OpenMenuHideCurrent
-        m_Mode: 2
+        m_TargetAssemblyTypeName: TrainingMenu, Scripts
+        m_MethodName: HideMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 534647985}
-          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -15470,7 +15457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9481f198c13148b4d8a23ce9dbc6abc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialSelectable: {fileID: 1576015563}
+  _initialSelectable: {fileID: 863060510}
 --- !u!114 &1327153928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24162,12 +24149,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 729468312}
-        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
-        m_MethodName: OpenMenuHideCurrent
-        m_Mode: 2
+        m_TargetAssemblyTypeName: TrainingMenu, Scripts
+        m_MethodName: HideMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 534647985}
-          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
