@@ -159,7 +159,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void JumpAction()
 	{
-		if (!_player.IsAttacking && !_isMovementLocked && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
+		if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
 		{
 			if (IsGrounded)
 			{

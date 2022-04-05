@@ -31,6 +31,11 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private BaseMenu _pauseMenu = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
+	[Header("1BitVisuals")]
+	[SerializeField] private Image _healthImage = default;
+	[SerializeField] private Image _arcanaImage = default;
+	[SerializeField] private Image _assistImage = default;
+	[SerializeField] private Image[] _heartImages = default;
 	private GameObject[] _playerIcons;
 	private Coroutine _openPauseHoldCoroutine;
 	private Coroutine _notificiationCoroutine;
@@ -388,5 +393,16 @@ public class PlayerUI : MonoBehaviour
 		_playerIcons[index].SetActive(true);
 		yield return new WaitForSeconds(1.0f);
 		_playerIcons[index].SetActive(false);
+	}
+
+	public void Turn1BitVisuals()
+	{
+		_healthImage.color = Color.white;
+		_arcanaImage.color = Color.white;
+		_assistImage.color = Color.white;
+		for (int i = 0; i < _heartImages.Length; i++)
+		{
+			_heartImages[i].color = Color.white;
+		}
 	}
 }
