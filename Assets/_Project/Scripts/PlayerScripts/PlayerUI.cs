@@ -28,8 +28,8 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Transform _arcanaDividerPivot = default;
 	[SerializeField] private GameObject _arcanaDividerPrefab = default;
 	[SerializeField] private Slider _pauseSlider = default;
-	[SerializeField] private BaseMenu _pauseMenu = default;
-	[SerializeField] private BaseMenu _trainingPauseMenu = default;
+	[SerializeField] private PauseMenu _pauseMenu = default;
+	[SerializeField] private PauseMenu _trainingPauseMenu = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
 	[Header("1BitVisuals")]
 	[SerializeField] private Image _healthImage = default;
@@ -294,6 +294,7 @@ public class PlayerUI : MonoBehaviour
 		Time.timeScale = 0.0f;
 		GameManager.Instance.DisableAllInput();
 		GameManager.Instance.PauseMusic();
+		_trainingPauseMenu.PauseControllerType = _controller.ControllerInputName;
 		_pauseMenu.Show();
 	}
 
@@ -310,6 +311,7 @@ public class PlayerUI : MonoBehaviour
 		Time.timeScale = 0.0f;
 		GameManager.Instance.DisableAllInput();
 		GameManager.Instance.PauseMusic();
+		_trainingPauseMenu.PauseControllerType = _controller.ControllerInputName;
 		_trainingPauseMenu.Show();
 	}
 
