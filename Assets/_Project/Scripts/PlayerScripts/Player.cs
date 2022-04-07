@@ -37,7 +37,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool HitMiddair { get; set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
-	public float ArcaneSlowdown { get; set; } = 6.5f;
+	public float ArcaneSlowdown { get; set; } = 7.5f;
 	public bool IsStunned { get; private set; }
 	public bool BlockingLow { get; set; }
 	public bool BlockingHigh { get; set; }
@@ -143,7 +143,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (_assistGauge < 1.0f && !_assist.IsOnScreen && GameManager.Instance.HasGameStarted)
 		{
-			_assistGauge += Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge);
+			_assistGauge += Time.deltaTime / (15.0f - _assist.AssistStats.assistRecharge);
 			if (GameManager.Instance.InfiniteAssist)
 			{
 				_assistGauge = 1.0f;

@@ -28,9 +28,14 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Transform _arcanaDividerPivot = default;
 	[SerializeField] private GameObject _arcanaDividerPrefab = default;
 	[SerializeField] private Slider _pauseSlider = default;
-	[SerializeField] private BaseMenu _pauseMenu = default;
-	[SerializeField] private BaseMenu _trainingPauseMenu = default;
+	[SerializeField] private PauseMenu _pauseMenu = default;
+	[SerializeField] private PauseMenu _trainingPauseMenu = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
+	[Header("1BitVisuals")]
+	[SerializeField] private Image _healthImage = default;
+	[SerializeField] private Image _arcanaImage = default;
+	[SerializeField] private Image _assistImage = default;
+	[SerializeField] private Image[] _heartImages = default;
 	private GameObject[] _playerIcons;
 	private Coroutine _openPauseHoldCoroutine;
 	private Coroutine _notificiationCoroutine;
@@ -289,6 +294,7 @@ public class PlayerUI : MonoBehaviour
 		Time.timeScale = 0.0f;
 		GameManager.Instance.DisableAllInput();
 		GameManager.Instance.PauseMusic();
+		_trainingPauseMenu.PauseControllerType = _controller.ControllerInputName;
 		_pauseMenu.Show();
 	}
 
@@ -305,6 +311,7 @@ public class PlayerUI : MonoBehaviour
 		Time.timeScale = 0.0f;
 		GameManager.Instance.DisableAllInput();
 		GameManager.Instance.PauseMusic();
+		_trainingPauseMenu.PauseControllerType = _controller.ControllerInputName;
 		_trainingPauseMenu.Show();
 	}
 
@@ -388,5 +395,16 @@ public class PlayerUI : MonoBehaviour
 		_playerIcons[index].SetActive(true);
 		yield return new WaitForSeconds(1.0f);
 		_playerIcons[index].SetActive(false);
+	}
+
+	public void Turn1BitVisuals()
+	{
+		_healthImage.color = Color.white;
+		_arcanaImage.color = Color.white;
+		_assistImage.color = Color.white;
+		for (int i = 0; i < _heartImages.Length; i++)
+		{
+			_heartImages[i].color = Color.white;
+		}
 	}
 }

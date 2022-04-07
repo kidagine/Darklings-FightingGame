@@ -20,6 +20,7 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _hitTypeTwoText = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
+	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private TrainingSubOption[] _trainingSubOptions = default;
 	[Header("Selectors")]
 	private int _currentTrainingSubOptionIndex;
@@ -27,8 +28,9 @@ public class TrainingMenu : BaseMenu
 
 	void Update()
 	{
-		if (Input.GetKey(KeyCode.Q))
+		if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UILeft"))
 		{
+			Debug.Log("A");
 			if (_currentTrainingSubOptionIndex == 0)
 			{
 				_currentTrainingSubOptionIndex = _trainingSubOptions.Length - 1;
@@ -46,8 +48,9 @@ public class TrainingMenu : BaseMenu
 			}
 			_trainingSubOptions[_currentTrainingSubOptionIndex].Activate();
 		}
-		if (Input.GetKeyDown(KeyCode.E))
+		if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UIRight"))
 		{
+			Debug.Log("B");
 			if (_currentTrainingSubOptionIndex == _trainingSubOptions.Length - 1)
 			{
 				_currentTrainingSubOptionIndex = 0;
