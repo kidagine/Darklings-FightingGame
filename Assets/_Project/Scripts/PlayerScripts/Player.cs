@@ -238,8 +238,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	protected virtual bool Attack(InputEnum inputEnum)
 	{
+		Debug.Log("cancel" + CanCancelAttack);
 		if (CanCancelAttack)
 		{
+			IsAttacking = false;
 			_playerAnimator.CancelAttack();
 			CanCancelAttack = false;
 		}
@@ -292,7 +294,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			IsAttacking = false;
 			CanCancelAttack = true;
-			_inputBuffer.CheckForInputBufferItem();
 		}
 		_playerMovement.SetLockMovement(true);
 		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
@@ -332,11 +333,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			HitMiddair = true;
 		}
-		//if (IsStunned)
-		//{
-		//	Debug.Log("a");
-		//	_playerAnimator.ResetAnimation("TobiDarkHurt");
-		//}
 		_playerAnimator.Hurt();
 
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
