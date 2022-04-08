@@ -13,6 +13,7 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
 	[SerializeField] private Image _portraitImage = default;
+	[SerializeField] private RectTransform _arcanaFillRectTransform = default;
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
 	[SerializeField] private TextMeshProUGUI _assistName = default;
@@ -153,7 +154,7 @@ public class PlayerUI : MonoBehaviour
 
 	private void SetMaxArcana(float value)
 	{
-		float arcanaSliderWidth = _arcanaSlider.GetComponent<RectTransform>().sizeDelta.x;
+		float arcanaSliderWidth = _arcanaFillRectTransform.sizeDelta.x;
 		_arcanaSlider.maxValue = value;
 		float increaseValue = arcanaSliderWidth / value;
 		float currentPositionX = increaseValue;

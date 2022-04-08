@@ -133,7 +133,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public bool CrouchAction()
 	{
-		if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
+		if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
 		{
 			ResetToWalkSpeed();
 			if (IsGrounded)
@@ -149,7 +149,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public bool StandUpAction()
 	{
-		if (IsCrouching)
+		if (!_player.IsAttacking)
 		{
 			IsCrouching = false;
 			_playerAnimator.IsCrouching(false);
