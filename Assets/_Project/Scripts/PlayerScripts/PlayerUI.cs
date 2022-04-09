@@ -19,7 +19,6 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _assistName = default;
 	[SerializeField] private TextMeshProUGUI _notificationText = default;
 	[SerializeField] private TextMeshProUGUI _comboText = default;
-	[SerializeField] private TextMeshProUGUI _winsText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
 	[SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
@@ -156,7 +155,7 @@ public class PlayerUI : MonoBehaviour
 
 	private void SetMaxArcana(float value)
 	{
-		float arcanaSliderWidth = _arcanaFillRectTransform.sizeDelta.x;
+		float arcanaSliderWidth = _arcanaSlider.GetComponent<RectTransform>().sizeDelta.x;
 		_arcanaSlider.maxValue = value;
 		float increaseValue = arcanaSliderWidth / value;
 		float currentPositionX = increaseValue;
@@ -210,33 +209,6 @@ public class PlayerUI : MonoBehaviour
 		_lostLivesAnimator[0].Rebind();
 		_lostLivesAnimator[1].Rebind();
 		_currentLifeIndex = 0;
-	}
-
-	public void IncreaseWins()
-	{
-		_currentWins++;
-		_currentWinsRow++;
-		if (_currentWins == 1)
-		{
-			_winsText.text = $"{_currentWins}({_currentWinsRow}) Win";
-		}
-		else
-		{
-			_winsText.text = $"{_currentWins}({_currentWinsRow}) Wins";
-		}
-	}
-
-	public void ResetWinsRow()
-	{
-		_currentWinsRow = 0;
-		if (_currentWins == 1)
-		{
-			_winsText.text = $"{_currentWins}({_currentWinsRow}) Win";
-		}
-		else
-		{
-			_winsText.text = $"{_currentWins}({_currentWinsRow}) Wins";
-		}
 	}
 
 	public void OpenPauseHold(bool isPlayerOne)
