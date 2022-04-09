@@ -60,6 +60,8 @@ public class PlayerUI : MonoBehaviour
 	{
 		_animator = GetComponent<Animator>();
 		_audio = GetComponent<Audio>();
+		_comboText.gameObject.SetActive(false);
+		_notificationText.gameObject.SetActive(false);
 	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
