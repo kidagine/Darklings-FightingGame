@@ -46,8 +46,6 @@ public class PlayerUI : MonoBehaviour
 	private BrainController _controller;
 	private int _currentLifeIndex;
 	private int _currentComboCount;
-	private int _currentWins;
-	private int _currentWinsRow;
 	private bool _hasComboEnded;
 	private bool _initializedStats;
 
