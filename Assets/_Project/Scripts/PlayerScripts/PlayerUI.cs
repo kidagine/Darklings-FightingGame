@@ -1,5 +1,4 @@
 using Demonics.Sounds;
-using Demonics.UI;
 using System.Collections;
 using TMPro;
 using UnityEngine;

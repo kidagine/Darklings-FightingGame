@@ -2946,7 +2946,7 @@ MonoBehaviour:
   _music: 7
   _playerOneSkin: 0
   _playerTwoSkin: 1
-  _isTrainingMode: 0
+  _isTrainingMode: 1
   _isOnlineMode: 0
   _1BitOn: 0
   _gameSpeed: 1
@@ -4298,7 +4298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1636014904}
-  _playerUI: {fileID: 0}
+  _playerUI: {fileID: 569255785}
 --- !u!114 &540559210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7671,7 +7671,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1702887907}
-  _playerUI: {fileID: 0}
+  _playerUI: {fileID: 569255785}
 --- !u!1001 &863060509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16580,8 +16580,8 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
+      - m_Target: {fileID: 534647985}
+        m_TargetAssemblyTypeName: PauseMenu, Scripts
         m_MethodName: ClosePause
         m_Mode: 1
         m_Arguments:
@@ -16811,8 +16811,8 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
+      - m_Target: {fileID: 860885408}
+        m_TargetAssemblyTypeName: PauseMenu, Scripts
         m_MethodName: ClosePause
         m_Mode: 1
         m_Arguments:
