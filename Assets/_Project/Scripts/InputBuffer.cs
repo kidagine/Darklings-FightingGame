@@ -7,6 +7,7 @@ public class InputBuffer : MonoBehaviour
 	private InputHistory _inputHistory;
 	private Player _player;
 	private PlayerMovement _playerMovement;
+	private bool _isExecuting;
 
 
 	void Start()
@@ -82,12 +83,14 @@ public class InputBuffer : MonoBehaviour
 
 	public void CheckForInputBufferItem()
 	{
-		if (_inputBuffer.Count > 0)
+		if (_inputBuffer.Count > 0 && !_isExecuting)
 		{
+			_isExecuting = true;
 			if (_inputBuffer.Peek().Execute.Invoke())
 			{
 				_inputBuffer.Dequeue();
 			}
+			_isExecuting = false;
 		}
 	}
 }

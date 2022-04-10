@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	protected virtual void Movement()
 	{
+
 		if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
 		{
 			if (!_player.IsBlocking && !_player.IsKnockedDown)
@@ -284,7 +285,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 					_player.IsAttacking = false;
 				}
 			}
-			//_inputBuffer.CheckForInputBufferItem();
+			_inputBuffer.CheckForInputBufferItem();
 		}
 	}
 

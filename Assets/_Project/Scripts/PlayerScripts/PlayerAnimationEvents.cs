@@ -18,10 +18,10 @@ public class PlayerAnimationEvents : MonoBehaviour
 
 	public void UnlockMovement()
 	{
+		_inputBuffer.CheckForInputBufferItem();
 		_player.IsAttacking = false;
 		_player.CanCancelAttack = false;
 		_playerMovement.SetLockMovement(false);
-		_inputBuffer.CheckForInputBufferItem();
 		SetFramedata();
 	}
 

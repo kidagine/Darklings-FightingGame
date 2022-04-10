@@ -13,12 +13,12 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
 	[SerializeField] private Image _portraitImage = default;
+	[SerializeField] private RectTransform _arcanaFillRectTransform = default;
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
 	[SerializeField] private TextMeshProUGUI _assistName = default;
 	[SerializeField] private TextMeshProUGUI _notificationText = default;
 	[SerializeField] private TextMeshProUGUI _comboText = default;
-	[SerializeField] private TextMeshProUGUI _winsText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
 	[SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
@@ -46,8 +46,6 @@ public class PlayerUI : MonoBehaviour
 	private BrainController _controller;
 	private int _currentLifeIndex;
 	private int _currentComboCount;
-	private int _currentWins;
-	private int _currentWinsRow;
 	private bool _hasComboEnded;
 	private bool _initializedStats;
 
@@ -59,6 +57,8 @@ public class PlayerUI : MonoBehaviour
 	{
 		_animator = GetComponent<Animator>();
 		_audio = GetComponent<Audio>();
+		_comboText.gameObject.SetActive(false);
+		_notificationText.gameObject.SetActive(false);
 	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
@@ -207,33 +207,6 @@ public class PlayerUI : MonoBehaviour
 		_lostLivesAnimator[0].Rebind();
 		_lostLivesAnimator[1].Rebind();
 		_currentLifeIndex = 0;
-	}
-
-	public void IncreaseWins()
-	{
-		_currentWins++;
-		_currentWinsRow++;
-		if (_currentWins == 1)
-		{
-			_winsText.text = $"{_currentWins}({_currentWinsRow}) Win";
-		}
-		else
-		{
-			_winsText.text = $"{_currentWins}({_currentWinsRow}) Wins";
-		}
-	}
-
-	public void ResetWinsRow()
-	{
-		_currentWinsRow = 0;
-		if (_currentWins == 1)
-		{
-			_winsText.text = $"{_currentWins}({_currentWinsRow}) Win";
-		}
-		else
-		{
-			_winsText.text = $"{_currentWins}({_currentWinsRow}) Wins";
-		}
 	}
 
 	public void OpenPauseHold(bool isPlayerOne)

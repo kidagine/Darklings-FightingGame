@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected TextMeshProUGUI _countdownText = default;
 	[SerializeField] protected TextMeshProUGUI _readyText = default;
 	[SerializeField] protected TextMeshProUGUI _winnerNameText = default;
+	[SerializeField] protected TextMeshProUGUI _winsText = default;
 	[SerializeField] protected GameObject _keyboardPrompts = default;
 	[SerializeField] protected GameObject _controllerPrompts = default;
 	[SerializeField] protected GameObject _bottomLine = default;
@@ -67,6 +68,8 @@ public class GameManager : MonoBehaviour
 	private bool _reverseReset;
 	private bool _hasSwitchedCharacters;
 	private bool _canCallSwitchCharacter = true;
+	private int _playerOneWins;
+	private int _playerTwoWins;
 
 	public bool IsCpuOff { get; set; }
 	public bool HasGameStarted { get; set; }
@@ -287,6 +290,7 @@ public class GameManager : MonoBehaviour
 		{
 			_inputHistories[0].gameObject.SetActive(false);
 			_inputHistories[1].gameObject.SetActive(false);
+			_trainingPrompts.gameObject.SetActive(false);
 			if (!_isOnlineMode)
 			{
 				StartRound();
@@ -590,15 +594,15 @@ public class GameManager : MonoBehaviour
 			_readyText.text = "WINNER";
 			if (!hasPlayerOneDied)
 			{
-				_playerOneUI.IncreaseWins();
-				_playerTwoUI.ResetWinsRow();
+				_playerOneWins++;
+				_winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
 				_winnerNameText.text = $"{_playerOneUI.PlayerName}\n{_playerOneUI.CharacterName}";
 				_currentRound++;
 			}
 			else
 			{
-				_playerTwoUI.IncreaseWins();
-				_playerOneUI.ResetWinsRow();
+				_playerTwoWins++;
+				_winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
 				_winnerNameText.text = $"{_playerTwoUI.PlayerName}\n{_playerTwoUI.CharacterName}";
 				_currentRound++;
 			}
