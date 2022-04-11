@@ -292,7 +292,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
 		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break)
 		{
-			IsAttacking = false;
 			CanCancelAttack = true;
 		}
 		_playerMovement.SetLockMovement(true);
