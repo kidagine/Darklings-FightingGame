@@ -512,6 +512,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		yield return new WaitForSeconds(0.75f);
 		_playerAnimator.IsKnockedDown(false);
 		yield return new WaitForSeconds(0.25f);
+		_playerAnimator.Rebind();
 		_playerMovement.SetLockMovement(false);
 		SetHurtbox(true);
 		IsKnockedDown = false;
