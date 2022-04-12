@@ -295,7 +295,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
-		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break)
+		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
 		{
 			CanCancelAttack = true;
 		}
@@ -357,6 +357,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Break)
 		{
+			CanCancelAttack = false;
 			_playerMovement.StopGhosts();
 			GameObject effect = Instantiate(attackSO.hurtEffect);
 			effect.transform.localPosition = attackSO.hurtEffectPosition;
@@ -388,6 +389,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else
 		{
+			IsAttacking = false;
 			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, 0.0f), attackSO.knockback, attackSO.knockbackDuration);
 			GameObject effect = Instantiate(_blockEffectPrefab);
 			effect.transform.localPosition = attackSO.hurtEffectPosition;
@@ -595,9 +597,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		if (!HitMiddair)
 		{
 			_controller.ActivateInput();
-			_playerMovement.SetLockMovement(false);
 			_playerAnimator.CancelHurt();
 		}
+		_playerMovement.SetLockMovement(false);
 		_otherPlayerUI.ResetCombo();
 		IsStunned = false;
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)

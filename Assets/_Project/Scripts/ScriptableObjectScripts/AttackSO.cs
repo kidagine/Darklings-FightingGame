@@ -18,6 +18,7 @@ public class AttackSO : ScriptableObject
 	public float hitstop;
 	public bool isAirAttack;
 	public bool isProjectile;
+	public bool isArcana;
 	public bool causesKnockdown;
 	[Header("Sounds")]
 	public string attackSound;
