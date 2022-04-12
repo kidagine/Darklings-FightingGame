@@ -429,6 +429,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.IsBlocking(false);
 		_playerAnimator.IsBlockingLow(false);
 		_playerAnimator.IsBlockingAir(false);
+		_playerAnimator.ResetTrigger("CancelHurt");
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
 		{
 			LightAction();
