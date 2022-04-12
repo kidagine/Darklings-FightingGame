@@ -78,7 +78,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	protected virtual void Movement()
 	{
-
 		if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
 		{
 			if (!_player.IsBlocking && !_player.IsKnockedDown)
@@ -117,7 +116,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 		else
 		{
-			if (_player.IsStunned)
+			if (_player.IsStunned || IsCrouching && !_player.IsAttacking)
 			{
 				_rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
 			}

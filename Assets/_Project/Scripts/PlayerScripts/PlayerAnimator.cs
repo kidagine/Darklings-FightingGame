@@ -58,6 +58,11 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.Play(name, -1, 0f);
 	}
 
+	public void ResetTrigger(string name)
+	{
+		_animator.ResetTrigger(name);
+	}
+
 	public void Attack(string attackType)
 	{
 		_animator.SetTrigger(attackType);
