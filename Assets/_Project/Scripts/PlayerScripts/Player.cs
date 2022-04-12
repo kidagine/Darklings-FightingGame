@@ -189,6 +189,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		//REPLACE
 		if (_arcana >= 1.0f)
 		{
+			if (CanCancelAttack)
+			{
+				IsAttacking = false;
+				_playerAnimator.CancelAttack();
+				CanCancelAttack = false;
+			}
 			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing)
 			{
 				if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded)
