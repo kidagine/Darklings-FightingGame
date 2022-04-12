@@ -25,6 +25,18 @@ public class CpuController : BaseController
 		}
 		else
 		{
+			//if (TrainingSettings.Stance == 0)
+			//{
+			//	_playerMovement.StandUpAction();
+			//}
+			//if (TrainingSettings.Stance == 1)
+			//{
+			//	_playerMovement.CrouchAction();
+			//}
+			//if (TrainingSettings.Stance == 2)
+			//{
+			//	_playerMovement.JumpAction();
+			//}
 			_playerMovement.MovementInput = Vector2.zero;
 		}
 	}

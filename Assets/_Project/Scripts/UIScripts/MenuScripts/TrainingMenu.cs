@@ -145,6 +145,23 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
+	public void SetStance(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				TrainingSettings.Stance = 0;
+				break;
+			case 1:
+				TrainingSettings.Stance = 1;
+				break;
+			case 2:
+				TrainingSettings.Stance = 2;
+				break;
+		}
+	}
+
+
 	public void SetHealth(int value)
 	{
 		switch (value)
