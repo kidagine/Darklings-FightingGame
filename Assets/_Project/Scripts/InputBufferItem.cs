@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InputBufferItem
 {
-    private readonly float _timeBeforeActionsExpire = 0.28f;
+    private readonly float _timeBeforeActionsExpire = 0.5f;
     private readonly float _timestamp;
 
     public Func<bool> Execute;

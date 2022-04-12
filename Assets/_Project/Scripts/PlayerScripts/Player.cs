@@ -238,15 +238,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	protected virtual bool Attack(InputEnum inputEnum)
 	{
-		Debug.Log("cancel" + CanCancelAttack);
 		if (CanCancelAttack)
 		{
-			IsAttacking = false;
-			_playerAnimator.CancelAttack();
-			CanCancelAttack = false;
+			//IsAttacking = false;
+			//_playerAnimator.CancelAttack();
+			//CanCancelAttack = false;
 		}
+		Debug.Log("try");
 		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !IsKnockedDown)
 		{
+			Debug.Log("attack");
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;
 			_playerAnimator.Attack(inputEnum.ToString());

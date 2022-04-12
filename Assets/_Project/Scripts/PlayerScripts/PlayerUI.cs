@@ -12,7 +12,6 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
 	[SerializeField] private Image _portraitImage = default;
-	[SerializeField] private RectTransform _arcanaFillRectTransform = default;
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
 	[SerializeField] private TextMeshProUGUI _assistName = default;
