@@ -30,7 +30,6 @@ public class TrainingMenu : BaseMenu
 	{
 		if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UILeft"))
 		{
-			Debug.Log("A");
 			if (_currentTrainingSubOptionIndex == 0)
 			{
 				_currentTrainingSubOptionIndex = _trainingSubOptions.Length - 1;
@@ -50,7 +49,6 @@ public class TrainingMenu : BaseMenu
 		}
 		if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UIRight"))
 		{
-			Debug.Log("B");
 			if (_currentTrainingSubOptionIndex == _trainingSubOptions.Length - 1)
 			{
 				_currentTrainingSubOptionIndex = 0;
