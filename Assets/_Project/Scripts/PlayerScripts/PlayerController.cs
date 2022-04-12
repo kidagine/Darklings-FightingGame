@@ -38,22 +38,22 @@ public class PlayerController : BaseController
 	protected virtual void Movement()
 	{
 		InputDirection = new(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
-		if (InputDirection.x == 1.0f && _playerMovement.MovementInput.x != InputDirection.x)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
-		}
-		if (InputDirection.x == -1.0f && _playerMovement.MovementInput.x != InputDirection.x)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
-		}
-		if (InputDirection.y == 1.0f && _playerMovement.MovementInput.y != InputDirection.y)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
-		}
-		if (InputDirection.y == -1.0f && _playerMovement.MovementInput.y != InputDirection.y)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-		}
+		//if (InputDirection.x == 1.0f && _playerMovement.MovementInput.x != InputDirection.x)
+		//{
+		//	_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+		//}
+		//if (InputDirection.x == -1.0f && _playerMovement.MovementInput.x != InputDirection.x)
+		//{
+		//	_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+		//}
+		//if (InputDirection.y == 1.0f && _playerMovement.MovementInput.y != InputDirection.y)
+		//{
+		//	_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+		//}
+		//if (InputDirection.y == -1.0f && _playerMovement.MovementInput.y != InputDirection.y)
+		//{
+		//	_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+		//}
 		_playerMovement.MovementInput = InputDirection;
 	}
 
