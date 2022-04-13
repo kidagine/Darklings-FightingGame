@@ -46,14 +46,14 @@ public class PlayerController : BaseController
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
 		}
-		if (InputDirection.y == 1.0f && _playerMovement.MovementInput.y != InputDirection.y)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
-		}
-		if (InputDirection.y == -1.0f && _playerMovement.MovementInput.y != InputDirection.y)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-		}
+		//if (InputDirection.y == 1.0f && _playerMovement.MovementInput.y != InputDirection.y)
+		//{
+		//	_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+		//}
+		//if (InputDirection.y == -1.0f && _playerMovement.MovementInput.y != InputDirection.y)
+		//{
+		//	_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+		//}
 		_playerMovement.MovementInput = InputDirection;
 	}
 

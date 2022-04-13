@@ -30,7 +30,6 @@ public class TrainingMenu : BaseMenu
 	{
 		if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UILeft"))
 		{
-			Debug.Log("A");
 			if (_currentTrainingSubOptionIndex == 0)
 			{
 				_currentTrainingSubOptionIndex = _trainingSubOptions.Length - 1;
@@ -50,7 +49,6 @@ public class TrainingMenu : BaseMenu
 		}
 		if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UIRight"))
 		{
-			Debug.Log("B");
 			if (_currentTrainingSubOptionIndex == _trainingSubOptions.Length - 1)
 			{
 				_currentTrainingSubOptionIndex = 0;
@@ -146,6 +144,23 @@ public class TrainingMenu : BaseMenu
 				break;
 		}
 	}
+
+	public void SetStance(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				TrainingSettings.Stance = 0;
+				break;
+			case 1:
+				TrainingSettings.Stance = 1;
+				break;
+			case 2:
+				TrainingSettings.Stance = 2;
+				break;
+		}
+	}
+
 
 	public void SetHealth(int value)
 	{

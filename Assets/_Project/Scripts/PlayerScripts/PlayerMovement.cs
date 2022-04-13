@@ -78,7 +78,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	protected virtual void Movement()
 	{
-
 		if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
 		{
 			if (!_player.IsBlocking && !_player.IsKnockedDown)
@@ -117,7 +116,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 		else
 		{
-			if (_player.IsStunned)
+			if (_player.IsStunned || IsCrouching && !_player.IsAttacking)
 			{
 				_rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
 			}
@@ -133,7 +132,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public bool CrouchAction()
 	{
-		if (!_player.IsAttacking && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
+		if (!IsCrouching && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
 		{
 			ResetToWalkSpeed();
 			if (IsGrounded)
@@ -149,7 +148,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public bool StandUpAction()
 	{
-		if (!_player.IsAttacking)
+		if (IsCrouching)
 		{
 			IsCrouching = false;
 			_playerAnimator.IsCrouching(false);
@@ -266,7 +265,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 				{
 					_playerController.ActivateInput();
 				}
-				_playerAnimator.CancelHurt();
 			}
 			if (_player.IsKnockedDown && !_player.IsDead)
 			{

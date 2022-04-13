@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -1533014003892204424}
   - component: {fileID: 2632546348691414582}
   - component: {fileID: 4166426924825667975}
+  - component: {fileID: 3455856057477373301}
   m_Layer: 0
   m_Name: VoidBeam_effect
   m_TagString: Untagged
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ba94867ecb1b44c4d8556cb3759330cc, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.23529412, g: 0.21568628, b: 0.8235294, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -170,6 +171,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitbox: {fileID: 6453347680146085869}
+--- !u!114 &3455856057477373301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3294536446187043669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baaf2fda5785ef3419c32f6c8e9db2e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4244931488107859237
 GameObject:
   m_ObjectHideFlags: 0

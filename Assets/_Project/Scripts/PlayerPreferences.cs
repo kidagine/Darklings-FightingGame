@@ -44,6 +44,10 @@ public class PlayerPreferences : MonoBehaviour
 	[SerializeField] private int _cpuSelectorInitial = default;
 	[SerializeField] private BaseSelector _blockSelector = default;
 	[SerializeField] private int _blockSelectorInitial = default;
+	[SerializeField] private BaseSelector _onHitSelector = default;
+	[SerializeField] private int _onHitSelectorInitial = default;
+	[SerializeField] private BaseSelector _stanceSelector = default;
+	[SerializeField] private int _stanceSelectorInitial = default;
 	[Header("Misc")]
 	[SerializeField] private BaseSelector _slowdownSelector = default;
 	[SerializeField] private int _slowdownSelectorInitial = default;
@@ -87,13 +91,20 @@ public class PlayerPreferences : MonoBehaviour
 
 	private void LoadTrainingPreferences()
 	{
+		//General
 		_healthSelector.SetValue(PlayerPrefs.GetInt("health", _healthSelectorInitial));
 		_arcanaSelector.SetValue(PlayerPrefs.GetInt("arcana", _arcanaSelectorInitial));
 		_assistSelector.SetValue(PlayerPrefs.GetInt("assist", _assistSelectorInitial));
-		_hitboxesSelector.SetValue(PlayerPrefs.GetInt("hitboxes", _hitboxesSelectorInitial));
-		_framedataSelector.SetValue(PlayerPrefs.GetInt("framedata", _framedataSelectorInitial));
+
+		//Cpu
 		_cpuSelector.SetValue(PlayerPrefs.GetInt("cpu", _cpuSelectorInitial));
 		_blockSelector.SetValue(PlayerPrefs.GetInt("block", _blockSelectorInitial));
+		_onHitSelector.SetValue(PlayerPrefs.GetInt("onHit", _onHitSelectorInitial));
+		_stanceSelector.SetValue(PlayerPrefs.GetInt("stance", _stanceSelectorInitial));
+
+		//Misc
+		_hitboxesSelector.SetValue(PlayerPrefs.GetInt("hitboxes", _hitboxesSelectorInitial));
+		_framedataSelector.SetValue(PlayerPrefs.GetInt("framedata", _framedataSelectorInitial));
 		_slowdownSelector.SetValue(PlayerPrefs.GetInt("slowdown", _slowdownSelectorInitial));
 		_inputSelector.SetValue(PlayerPrefs.GetInt("input", _inputSelectorInitial));
 	}

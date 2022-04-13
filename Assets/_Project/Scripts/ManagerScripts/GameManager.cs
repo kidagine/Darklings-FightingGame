@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected GameObject _playerLocal = default;
 	[SerializeField] protected GameObject _playerNetcode = default;
 	[SerializeField] protected GameObject _infiniteTime = default;
+	[SerializeField] protected GameObject _winsImage = default;
 	[SerializeField] private GameObject _networkCanvas = default;
 	[SerializeField] private GameObject[] _hearts = default;
 	[SerializeField] private GameObject _trainingPrompts = default;
@@ -279,6 +280,7 @@ public class GameManager : MonoBehaviour
 			_countdownText.gameObject.SetActive(false);
 			_hearts[0].gameObject.SetActive(false);
 			_hearts[1].gameObject.SetActive(false);
+			_winsImage.SetActive(false);
 			_trainingPrompts.gameObject.SetActive(true);
 			HasGameStarted = true;
 			if (!_isOnlineMode)

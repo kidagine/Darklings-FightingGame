@@ -189,6 +189,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		//REPLACE
 		if (_arcana >= 1.0f)
 		{
+			if (CanCancelAttack)
+			{
+				IsAttacking = false;
+				_playerAnimator.CancelAttack();
+				CanCancelAttack = false;
+			}
 			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing)
 			{
 				if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded)
@@ -238,7 +244,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	protected virtual bool Attack(InputEnum inputEnum)
 	{
-		Debug.Log("cancel" + CanCancelAttack);
 		if (CanCancelAttack)
 		{
 			IsAttacking = false;
@@ -290,9 +295,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
-		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break)
+		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
 		{
-			IsAttacking = false;
 			CanCancelAttack = true;
 		}
 		_playerMovement.SetLockMovement(true);
@@ -353,6 +357,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Break)
 		{
+			CanCancelAttack = false;
 			_playerMovement.StopGhosts();
 			GameObject effect = Instantiate(attackSO.hurtEffect);
 			effect.transform.localPosition = attackSO.hurtEffectPosition;
@@ -384,6 +389,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else
 		{
+			IsAttacking = false;
 			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, 0.0f), attackSO.knockback, attackSO.knockbackDuration);
 			GameObject effect = Instantiate(_blockEffectPrefab);
 			effect.transform.localPosition = attackSO.hurtEffectPosition;
@@ -423,6 +429,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.IsBlocking(false);
 		_playerAnimator.IsBlockingLow(false);
 		_playerAnimator.IsBlockingAir(false);
+		_playerAnimator.ResetTrigger("CancelHurt");
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
 		{
 			LightAction();
@@ -511,6 +518,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.IsKnockedDown(true);
 		yield return new WaitForSeconds(0.75f);
 		_playerAnimator.IsKnockedDown(false);
+		_playerAnimator.ResetTrigger("CancelHurt");
 		yield return new WaitForSeconds(0.25f);
 		_playerMovement.SetLockMovement(false);
 		SetHurtbox(true);
@@ -590,9 +598,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		if (!HitMiddair)
 		{
 			_controller.ActivateInput();
-			_playerMovement.SetLockMovement(false);
 			_playerAnimator.CancelHurt();
 		}
+		_playerMovement.SetLockMovement(false);
 		_otherPlayerUI.ResetCombo();
 		IsStunned = false;
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
