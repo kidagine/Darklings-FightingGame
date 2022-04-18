@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public enum CharacterTypeEnum { TobiDark, PitchBlack, Enma};
+public enum CharacterTypeEnum { TobiDark, PitchBlack, Enma, Abaddon };
 
 public class CharacterTypes : MonoBehaviour
 {

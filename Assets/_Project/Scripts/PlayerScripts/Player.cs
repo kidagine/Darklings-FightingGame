@@ -341,17 +341,24 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
 		{
-			if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
+			if (!_playerMovement.IsGrounded)
 			{
-				BlockingHigh = true;
+				BlockingMiddair = true;
 			}
-			else if (attackSO.attackTypeEnum == AttackTypeEnum.Mid)
+			else
 			{
-				BlockingHigh = true;
-			}
-			else if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
-			{
-				BlockingLow = true;
+				if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
+				{
+					BlockingHigh = true;
+				}
+				else if (attackSO.attackTypeEnum == AttackTypeEnum.Mid)
+				{
+					BlockingHigh = true;
+				}
+				else if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
+				{
+					BlockingLow = true;
+				}
 			}
 		}
 
@@ -389,8 +396,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else
 		{
-			IsAttacking = false;
 			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, 0.0f), attackSO.knockback, attackSO.knockbackDuration);
+			IsAttacking = false;
 			GameObject effect = Instantiate(_blockEffectPrefab);
 			effect.transform.localPosition = attackSO.hurtEffectPosition;
 			_audio.Sound("Block").Play();
@@ -441,7 +448,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		if (!IsAttacking && !_playerMovement.IsDashing)
 		{
 			if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f 
-				|| transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
+				|| transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f )
 			{
 				if (_playerMovement.IsGrounded)
 				{
