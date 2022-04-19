@@ -590,6 +590,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		SetHurtbox(true);
 		IsKnockedDown = false;
 		_controller.ActivateInput();
+		_otherPlayerUI.ResetCombo();
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
 		{
 			LightAction();
