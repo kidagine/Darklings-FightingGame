@@ -6,7 +6,7 @@ public class PatchNotesMenu : BaseMenu
 	[SerializeField] private BaseMenu[] _menues = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	private int _previousMenuIndex = 0;
-	private int _scrollAmount = 5;
+	private readonly int _scrollMultiplier = 250;
 
 
 	public void Back()
@@ -29,10 +29,15 @@ public class PatchNotesMenu : BaseMenu
 
 	private void Scroll(string inputName)
 	{
-		float movement = Input.GetAxisRaw(inputName + "Vertical") * -1;
+		float movement = (Input.GetAxisRaw(inputName + "Vertical") * Time.deltaTime * _scrollMultiplier) * -1;
 		if (movement < 0 && _scrollView.anchoredPosition.y >= 0 || movement > 0 && _scrollView.anchoredPosition.y <= 700	)
 		{
 			_scrollView.anchoredPosition += new Vector2(0.0f, movement);
 		}
+	}
+
+	private void OnEnable()
+	{
+		_scrollView.anchoredPosition = Vector2.zero;
 	}
 }
