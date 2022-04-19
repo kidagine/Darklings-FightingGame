@@ -300,6 +300,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			CanCancelAttack = true;
 		}
 		_playerMovement.SetLockMovement(true);
+		if (gotHit && CurrentAttack.attackTypeEnum == AttackTypeEnum.Throw)
+		{
+			_playerAnimator.ArcanaEnd();
+		}
 		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
 			if (!gotHit)
@@ -338,6 +342,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			HitMiddair = true;
 		}
 		_playerAnimator.Hurt();
+
+		if (attackSO.attackTypeEnum == AttackTypeEnum.Throw)
+		{
+			GetThrown();
+			return true; 
+		}
 
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
 		{
@@ -441,6 +451,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			LightAction();
 		}
+	}
+
+	private void GetThrown()
+	{
+		Debug.Log("GetThrown");
 	}
 
 	private void CheckIsBlocking()

@@ -73,6 +73,11 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.SetTrigger("Arcana");
 	}
 
+	public void ArcanaEnd()
+	{
+		_animator.SetTrigger("ArcanaEnd");
+	}
+
 	public void Hurt()
 	{
 		_animator.SetTrigger("Hurt");
