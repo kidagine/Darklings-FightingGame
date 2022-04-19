@@ -379,7 +379,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			return true; 
 		}
 
-		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
+		if (!IsAttacking && !_playerMovement.IsDashing && _controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
 		{
 			if (!_playerMovement.IsGrounded)
 			{
