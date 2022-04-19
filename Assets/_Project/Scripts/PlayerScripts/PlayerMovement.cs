@@ -423,6 +423,12 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_rigidbody.gravityScale = 2.0f;
 	}
 
+	public void SetRigidbodyToKinematic(bool state)
+	{
+		_rigidbody.isKinematic = state;
+		_player.SetGroundPushBox(!state);
+	}
+
 	public void ZeroGravity()
 	{
 		_rigidbody.gravityScale = 0.0f;

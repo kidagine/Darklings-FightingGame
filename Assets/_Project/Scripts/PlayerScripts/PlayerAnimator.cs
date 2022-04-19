@@ -145,4 +145,10 @@ public class PlayerAnimator : MonoBehaviour
 		_spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
 		return skinNumber;
 	}
+
+	public void SetSpriteOrder(int index)
+	{
+		_spriteRenderer.sortingOrder = index;
+	}
 }
+	

@@ -11,6 +11,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] private GameObject _blockEffectPrefab = default;
 	[SerializeField] protected Transform _effectsParent = default;
+	[SerializeField] private Transform _grabPoint = default;
 	[SerializeField] private Transform _keepFlip = default;
 	[SerializeField] private InputBuffer _inputBuffer = default;
 	[SerializeField] private GameObject[] _playerIcons = default;
@@ -24,7 +25,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Audio _audio;
 	private Coroutine _stunCoroutine;
 	private Coroutine _blockCoroutine;
-	private Coroutine _knockdownCoroutine;
 	protected float _arcana;
 	private float _assistGauge = 1.0f;
 	private int _lives = 2;
@@ -97,6 +97,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		SetPushboxTrigger(false);
 		SetHurtbox(true);
 		_assistGauge = 1.0f;
+		transform.SetParent(null);
+		_playerMovement.SetRigidbodyToKinematic(false);
 		if (!GameManager.Instance.InfiniteArcana)
 		{
 			_arcana = 0.0f;
@@ -302,7 +304,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerMovement.SetLockMovement(true);
 		if (gotHit && CurrentAttack.attackTypeEnum == AttackTypeEnum.Throw)
 		{
-			_playerAnimator.ArcanaEnd();
+			Throw();
 		}
 		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
@@ -315,6 +317,35 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
 			}
 		}
+	}
+
+	private void Throw()
+	{
+		_otherPlayer.SetRigidbodyToKinematic(true);
+		_otherPlayer.transform.SetParent(_grabPoint);
+		_otherPlayer.transform.localPosition = Vector2.zero;
+		_otherPlayer.GetComponent<Player>().GetThrown();
+		_playerAnimator.ArcanaEnd();
+	}
+
+	public void ThrowEnd()
+	{
+		_otherPlayer.GetComponent<Player>().GetThrownEnd();
+		_playerAnimator.ResetTrigger("ArcanaEnd");
+	}
+	private void GetThrown()
+	{
+		_playerAnimator.SetSpriteOrder(-1);
+	}
+
+	private void GetThrownEnd()
+	{
+		transform.SetParent(null);
+		_playerMovement.SetRigidbodyToKinematic(false);
+		_playerAnimator.SetSpriteOrder(0);
+		IsKnockedDown = true;
+		LoseHealth();
+		_playerAnimator.CancelHurt();
 	}
 
 	public virtual void CreateEffect(bool isProjectile = false)
@@ -345,7 +376,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
-			GetThrown();
 			return true; 
 		}
 
@@ -384,16 +414,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 			IsKnockedDown = attackSO.causesKnockdown;
 			_audio.Sound(attackSO.impactSound).Play();
-			if (!GameManager.Instance.InfiniteHealth)
-			{
-				Health--;
-			}
+
 			_playerMovement.StopDash();
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
-			_playerUI.SetHealth(Health);
 			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
 			IsAttacking = false;
+			if (!GameManager.Instance.InfiniteHealth)
+			{
+				Health--;
+				_playerUI.SetHealth(Health);
+			}
 			if (Health <= 0)
 			{
 				Die();
@@ -437,6 +468,24 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
+	private void LoseHealth()
+	{
+		if (!GameManager.Instance.InfiniteHealth)
+		{
+			Health--;
+			_playerUI.SetHealth(Health);
+		}
+		if (Health <= 0)
+		{
+			Die();
+		}
+		else
+		{
+			StartCoroutine(KnockdownCoroutine());
+			GameManager.Instance.HitStop(0.05f);
+		}
+	}
+
 	IEnumerator ResetBlockingCoroutine(float blockStun)
 	{
 		yield return new WaitForSeconds(blockStun);
@@ -451,11 +500,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			LightAction();
 		}
-	}
-
-	private void GetThrown()
-	{
-		Debug.Log("GetThrown");
 	}
 
 	private void CheckIsBlocking()
@@ -530,7 +574,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Knockdown()
 	{
-		_knockdownCoroutine = StartCoroutine(KnockdownCoroutine());
+		StartCoroutine(KnockdownCoroutine());
 	}
 
 	IEnumerator KnockdownCoroutine()
