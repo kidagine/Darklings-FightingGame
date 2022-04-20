@@ -76,4 +76,9 @@ public class PlayerAnimationEvents : MonoBehaviour
 	{
 		_playerMovement.AddForce(moveHorizontally);
 	}
+
+	public void ShakeCamera(CameraShakerSO cameraShaker)
+	{
+		CameraShake.Instance.Shake(cameraShaker.intensity, cameraShaker.timer);
+	}
 }

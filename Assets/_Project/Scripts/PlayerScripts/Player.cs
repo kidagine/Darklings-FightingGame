@@ -31,6 +31,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
+	public AttackSO CurrentHurtAttack { get; set; }
 	public float Health { get; private set; }
 	public bool IsBlocking { get; private set; }
 	public bool IsKnockedDown { get; private set; }
@@ -367,6 +368,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool TakeDamage(AttackSO attackSO)
 	{
+		CurrentHurtAttack = attackSO;
 		DestroyEffects();
 		if (!_playerMovement.IsGrounded)
 		{
@@ -470,6 +472,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void LoseHealth()
 	{
+		GameObject effect = Instantiate(CurrentHurtAttack.hurtEffect);
+		effect.transform.localPosition = CurrentHurtAttack.hurtEffectPosition;
 		if (!GameManager.Instance.InfiniteHealth)
 		{
 			Health--;
@@ -482,7 +486,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		else
 		{
 			StartCoroutine(KnockdownCoroutine());
-			GameManager.Instance.HitStop(0.05f);
+			GameManager.Instance.HitStop(CurrentHurtAttack.hitstop);
 		}
 	}
 

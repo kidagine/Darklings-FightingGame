@@ -3363,6 +3363,7 @@ GameObject:
   - component: {fileID: 360034939}
   - component: {fileID: 360034938}
   - component: {fileID: 360034941}
+  - component: {fileID: 360034942}
   m_Layer: 0
   m_Name: Camera_cinemachineVirtualCamera
   m_TagString: Untagged
@@ -3451,6 +3452,18 @@ MonoBehaviour:
   m_BoundingShape2D: {fileID: 365773108}
   m_Damping: 4.49
   m_MaxWindowSize: 0
+--- !u!114 &360034942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 360034937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54d3458e6f20368449a1042a0380e2d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &365773107
 GameObject:
   m_ObjectHideFlags: 0
@@ -16785,6 +16798,7 @@ GameObject:
   - component: {fileID: 1524101023}
   - component: {fileID: 1524101025}
   - component: {fileID: 1524101024}
+  - component: {fileID: 1524101026}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -16873,6 +16887,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1524101026
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524101022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 5
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1544325958
 GameObject:
   m_ObjectHideFlags: 0

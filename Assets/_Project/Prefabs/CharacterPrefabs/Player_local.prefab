@@ -1182,7 +1182,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 8073473790702501988}
   _playerMovement: {fileID: 8073473790702501987}
-  _playerAnimator: {fileID: 8073473789928578677}
   _inputBuffer: {fileID: 4664395619888274278}
   _audio: {fileID: 7611394710214668632}
 --- !u!212 &8073473789928578676
@@ -1662,6 +1661,14 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     name: Slam
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: f24d8ef3923a78e44b989571a79f684d, type: 3}
+    volume: 1
+    pitch: 0.75
+    name: Impact6
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0
