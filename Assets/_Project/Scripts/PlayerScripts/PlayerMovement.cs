@@ -198,9 +198,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 	}
 
-	public void AddForce(int direction)
+	public void AddForce(int moveHorizontally)
 	{
 		float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 2.5f;
+		int direction = 0;
+		if (moveHorizontally == 1)
+		{
+			direction = (int)transform.localScale.x * -1;
+		}
 		_rigidbody.AddForce(new Vector2(Mathf.Round(direction) * (jumpForce / 2.5f), jumpForce + 1.0f), ForceMode2D.Impulse);
 	}
 

@@ -72,8 +72,8 @@ public class PlayerAnimationEvents : MonoBehaviour
 		_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.CurrentAttack);
 	}
 
-	public void AddForce(int direction)
+	public void AddForce(int moveHorizontally)
 	{
-		_playerMovement.AddForce(direction);
+		_playerMovement.AddForce(moveHorizontally);
 	}
 }
