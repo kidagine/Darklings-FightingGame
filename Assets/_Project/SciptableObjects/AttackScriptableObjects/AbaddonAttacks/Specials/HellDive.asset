@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
+  m_Name: HellDive
+  m_EditorClassIdentifier: 
+  travelDistance: 2.75
+  travelDirection: {x: 0, y: 0}
+  hitStun: 0.5
+  blockStun: 0
+  knockback: 2.68
+  knockbackDirection: {x: 0, y: 0.5}
+  knockbackDuration: 0.172
+  attackTypeEnum: 4
+  hitstop: 0.075
+  isAirAttack: 0
+  isProjectile: 1
+  isArcana: 1
+  causesKnockdown: 1
+  attackSound: Hit
+  impactSound: Impact5
+  hitEffect: {fileID: 186600171355987556, guid: 547867d1b46bb89428c594bb21fd73a8, type: 3}
+  hitEffectPosition: {x: 4, y: 0.1}
+  hitEffectRotation: 0
+  hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
+  hurtEffectPosition: {x: 2.8922544, y: -3.15}
+  hurtEffectRotation: 0
+  startUpFrames: 10
+  activeFrames: 20
+  recoveryFrames: 25
+  airOk: 0

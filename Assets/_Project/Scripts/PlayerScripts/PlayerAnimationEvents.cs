@@ -25,6 +25,11 @@ public class PlayerAnimationEvents : MonoBehaviour
 		SetFramedata();
 	}
 
+	public void ThrowEnd()
+	{
+		_player.ThrowEnd();
+	}
+
 	public void CreateEffectAnimationEvent(int isProjectile)
 	{
 		//_player.AttackTravel();

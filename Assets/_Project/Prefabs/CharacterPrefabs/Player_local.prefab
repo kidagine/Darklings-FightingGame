@@ -388,6 +388,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3ca0c8f499e5541a322a78413b193c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2423683899322484342
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7600070780512524519}
+  m_Layer: 0
+  m_Name: GrabPoint_emptyObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7600070780512524519
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2423683899322484342}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 1.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8073473789928578678}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2584547645042236360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1119,6 +1150,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8073473790464433816}
+  - {fileID: 7600070780512524519}
   m_Father: {fileID: 8073473790702501984}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1150,6 +1182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 8073473790702501988}
   _playerMovement: {fileID: 8073473790702501987}
+  _playerAnimator: {fileID: 8073473789928578677}
   _inputBuffer: {fileID: 4664395619888274278}
   _audio: {fileID: 7611394710214668632}
 --- !u!212 &8073473789928578676
@@ -1479,6 +1512,7 @@ MonoBehaviour:
   _hurtbox: {fileID: 8073473791272386163}
   _blockEffectPrefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
   _effectsParent: {fileID: 2017372758765848807}
+  _grabPoint: {fileID: 7600070780512524519}
   _keepFlip: {fileID: 4489081760178489291}
   _inputBuffer: {fileID: 4664395619888274278}
   _playerIcons:
@@ -1685,7 +1719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0086d4419d1d449b979602e6ea7745, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 8073473790702501988}
 --- !u!114 &8743540751678485471
 MonoBehaviour:
   m_ObjectHideFlags: 0
