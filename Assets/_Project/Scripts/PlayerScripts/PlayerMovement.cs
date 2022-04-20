@@ -20,7 +20,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	protected bool _isMovementLocked;
 	protected bool _onTopOfPlayer;
 	private bool _hasDashedMiddair;
-	
+
+	public bool FullyLockMovement { get; set; }
 	public Vector2 MovementInput { get; set; }
 	public bool IsGrounded { get; set; } = true;
 	public bool IsCrouching { get; private set; }
@@ -174,7 +175,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 	}
 
-	private void Jump(float jumpForce)
+	public void Jump(float jumpForce)
 	{
 		_player.CanFlip = false;
 		ResetToWalkSpeed();
@@ -195,6 +196,12 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		{
 			_rigidbody.AddForce(new Vector2(Mathf.Round(MovementInput.x) * (jumpForce / 2.5f), jumpForce + 1.0f), ForceMode2D.Impulse);
 		}
+	}
+
+	public void AddForce(int direction)
+	{
+		float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 2.5f;
+		_rigidbody.AddForce(new Vector2(Mathf.Round(direction) * (jumpForce / 2.5f), jumpForce + 1.0f), ForceMode2D.Impulse);
 	}
 
 	public void SetLockMovement(bool state)
@@ -243,7 +250,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	IEnumerator OnGroundedCoroutine()
 	{
-		if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
+		if (!IsGrounded && _rigidbody.velocity.y <= 0.0f && !FullyLockMovement)
 		{
 			_player.CanFlip = true;
 			_playerAnimator.IsJumping(false);

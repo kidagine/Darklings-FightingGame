@@ -22,7 +22,13 @@ public class PlayerAnimationEvents : MonoBehaviour
 		_playerMovement.SetLockMovement(false);
 		_player.CanCancelAttack = false;
 		_inputBuffer.CheckForInputBufferItem();
+		_playerMovement.FullyLockMovement = false;
 		SetFramedata();
+	}
+
+	public void FullyLockMovement()
+	{
+		_playerMovement.FullyLockMovement = true;
 	}
 
 	public void ThrowEnd()
@@ -64,5 +70,10 @@ public class PlayerAnimationEvents : MonoBehaviour
 	public void SetFramedata()
 	{
 		_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.CurrentAttack);
+	}
+
+	public void AddForce(int direction)
+	{
+		_playerMovement.AddForce(direction);
 	}
 }
