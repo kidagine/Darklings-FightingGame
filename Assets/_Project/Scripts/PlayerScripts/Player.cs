@@ -407,6 +407,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Break)
 		{
+			if (attackSO.attackTypeEnum == AttackTypeEnum.Break)
+			{
+				CameraShake.Instance.Shake(2.0f, 0.05f);
+			}
+			if (attackSO.isArcana)
+			{
+				CameraShake.Instance.Shake(5.0f, 0.1f);
+			}
 			CanCancelAttack = false;
 			_playerMovement.StopGhosts();
 			GameObject effect = Instantiate(attackSO.hurtEffect);

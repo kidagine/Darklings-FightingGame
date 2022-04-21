@@ -38,7 +38,7 @@ public class CameraShake : MonoBehaviour
 	{
 		if (_shakeTimer > 0)
 		{
-			_shakeTimer -= Time.deltaTime;
+			_shakeTimer -= Time.unscaledDeltaTime;
 			if (_shakeTimer <= 0)
 			{
 				_cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
