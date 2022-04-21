@@ -9,6 +9,7 @@ public class PlayerUI : MonoBehaviour
 {
 	[SerializeField] private Animator[] _lostLivesAnimator = default;
 	[SerializeField] private Slider _healthSlider = default;
+	[SerializeField] private Slider _healthDamagedSlider = default;
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
 	[SerializeField] private Image _portraitImage = default;
@@ -39,14 +40,15 @@ public class PlayerUI : MonoBehaviour
 	private Coroutine _notificiationCoroutine;
 	private Coroutine _resetComboCoroutine;
 	private Coroutine _showPlayerIconCoroutine;
+	private Coroutine _damagedHealthCoroutine;
 	private Animator _animator;
 	private Audio _audio;
 	private BrainController _controller;
+	private float _currentEndDamageValue;
 	private int _currentLifeIndex;
 	private int _currentComboCount;
 	private bool _hasComboEnded;
 	private bool _initializedStats;
-
 	public string PlayerName { get; private set; }
 	public string CharacterName { get; private set; }
 
@@ -139,6 +141,8 @@ public class PlayerUI : MonoBehaviour
 	{
 		float healthSliderWidth = _healthSlider.GetComponent<RectTransform>().sizeDelta.x;
 		_healthSlider.maxValue = value;
+		_healthDamagedSlider.maxValue = value;
+		_healthDamagedSlider.value = value;
 		float increaseValue = healthSliderWidth / value;
 		float currentPositionX = 0.0f;
 		for (int i = 0; i < value + 1; i++)
@@ -192,6 +196,36 @@ public class PlayerUI : MonoBehaviour
 	public void SetHealth(float value)
 	{
 		_healthSlider.value = value;
+	}
+
+	public void ResetHealthDamaged()
+	{
+		_healthDamagedSlider.value = _healthSlider.maxValue;
+	}
+
+	public void UpdateHealthDamaged()
+	{
+		if (_damagedHealthCoroutine != null)
+		{
+			StopCoroutine(_damagedHealthCoroutine);
+		}
+		_damagedHealthCoroutine = StartCoroutine(SetHealthDamagedCoroutine(_healthSlider.value));
+	}
+
+	IEnumerator SetHealthDamagedCoroutine(float value)
+	{
+		yield return new WaitForSeconds(1.0f);
+		float startValue = _healthDamagedSlider.value;
+		_currentEndDamageValue = value;
+		float elapsedTime = 0.0f;
+		float duration = 0.2f;
+		while (elapsedTime < duration)
+		{
+			_healthDamagedSlider.value = Mathf.Lerp(startValue, _currentEndDamageValue, elapsedTime / duration);
+			elapsedTime += Time.deltaTime;
+			yield return null;
+		}
+		_healthDamagedSlider.value = _currentEndDamageValue;
 	}
 
 	public void SetLives()

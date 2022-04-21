@@ -112,6 +112,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(_arcana);
 		_playerUI.SetAssist(_assistGauge);
+		_playerUI.ResetHealthDamaged();
 		InitializeStats();
 		_playerUI.ShowPlayerIcon();
 	}
@@ -497,6 +498,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			StartCoroutine(KnockdownCoroutine());
 			GameManager.Instance.HitStop(CurrentHurtAttack.hitstop);
 		}
+		_playerUI.UpdateHealthDamaged();
 	}
 
 	IEnumerator ResetBlockingCoroutine(float blockStun)
@@ -654,6 +656,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			if (resetCombo)
 			{
+				_playerUI.UpdateHealthDamaged();
 				_otherPlayerUI.ResetCombo();
 			}
 			IsStunned = false;
@@ -681,6 +684,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerAnimator.CancelHurt();
 		}
 		_playerMovement.SetLockMovement(false);
+		_playerUI.UpdateHealthDamaged();
 		_otherPlayerUI.ResetCombo();
 		IsStunned = false;
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
