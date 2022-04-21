@@ -585,6 +585,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 		}
 		IsDead = true;
+		GameManager.Instance.HitStop(0.35f);
 	}
 
 	public void Knockdown()
