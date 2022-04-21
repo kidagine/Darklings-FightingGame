@@ -43,11 +43,11 @@ public class InputBuffer : MonoBehaviour
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Up)
 			{
-				inputBufferItem.Execute += _playerMovement.StandUpAction;
+				inputBufferItem.Execute += () => { return true; };
 			}
 			else if (inputDirectionEnum == InputDirectionEnum.Down)
 			{
-				inputBufferItem.Execute += _playerMovement.CrouchAction;
+				inputBufferItem.Execute += () => { return true; };
 			}
 			else if(inputDirectionEnum == InputDirectionEnum.Left)
 			{
