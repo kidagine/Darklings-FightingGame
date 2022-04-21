@@ -28,6 +28,7 @@ public class PlayerController : BaseController
 			Heavy();
 			Arcane();
 			Assist();
+			Throw();
 			Pause();
 			Dash();
 			ResetRound();
@@ -121,6 +122,15 @@ public class PlayerController : BaseController
 		{
 			_player.AssistAction();
 			_inputBuffer.AddInputBufferItem(InputEnum.Assist);
+		}
+	}
+
+	protected virtual void Throw()
+	{
+		if (Input.GetButtonDown(_brainController.ControllerInputName + "Throw"))
+		{
+			_player.ThrowAction(InputEnum.Throw);
+			//_inputBuffer.AddInputBufferItem(InputEnum.Assist);
 		}
 	}
 

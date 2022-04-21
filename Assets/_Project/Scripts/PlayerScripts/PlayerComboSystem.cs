@@ -4,17 +4,19 @@ public class PlayerComboSystem : MonoBehaviour
 {
 	private PlayerStats _playerStats;
 	private PlayerMovement _playerMovement;
-	private PlayerController _playerController;
 
 	void Awake()
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
 		_playerStats = GetComponent<PlayerStats>();
-		_playerController = GetComponent<PlayerController>();
 	}
 
 	public AttackSO GetComboAttack(InputEnum inputEnum)
 	{
+		if (inputEnum == InputEnum.Throw)
+		{
+			return _playerStats.PlayerStatsSO.mThrow;
+		}
 		if (_playerMovement.IsCrouching && _playerMovement.IsGrounded)
 		{
 			return GetCrouchingAttackType(inputEnum);
@@ -63,6 +65,7 @@ public class PlayerComboSystem : MonoBehaviour
 			return _playerStats.PlayerStatsSO.m5H;
 		}
 	}
+
 
 	public ArcanaSO GetArcana()
 	{

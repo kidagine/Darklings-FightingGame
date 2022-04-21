@@ -314,7 +314,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	IEnumerator KnockbackCoroutine(Vector2 knockback, float knockbackDuration)
 	{
 		Vector2 startingPosition = transform.position;
-		Vector2 finalPosition = new Vector2(transform.position.x + knockback.x, transform.position.y + knockback.y);
+		Vector2 finalPosition = new(transform.position.x + knockback.x, transform.position.y + knockback.y);
 		float elapsedTime = 0;
 		while (elapsedTime < knockbackDuration)
 		{

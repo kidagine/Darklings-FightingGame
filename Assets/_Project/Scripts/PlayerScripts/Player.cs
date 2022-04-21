@@ -189,6 +189,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
+	public virtual bool ThrowAction(InputEnum inputEnum)
+	{
+		if (!IsAttacking && _playerMovement.IsGrounded)
+		{
+			_audio.Sound("Hit").Play();
+			IsAttacking = true;
+			_playerAnimator.Throw();
+			CurrentAttack = _playerComboSystem.GetComboAttack(inputEnum);
+			return true;
+		}
+		return false;
+	}
+
 	public virtual bool ArcaneAction()
 	{
 		//REPLACE
@@ -329,12 +342,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_otherPlayer.transform.localPosition = Vector2.zero;
 		_otherPlayer.GetComponent<Player>().GetThrown();
 		_playerAnimator.ArcanaEnd();
+		_playerAnimator.ThrowEnd();
 	}
 
 	public void ThrowEnd()
 	{
 		_otherPlayer.GetComponent<Player>().GetThrownEnd();
 		_playerAnimator.ResetTrigger("ArcanaEnd");
+		_playerAnimator.ResetTrigger("ThrowEnd");
 	}
 	private void GetThrown()
 	{
