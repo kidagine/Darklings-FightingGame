@@ -55,8 +55,8 @@ public class PlayerUI : MonoBehaviour
 	{
 		_animator = GetComponent<Animator>();
 		_audio = GetComponent<Audio>();
-		_comboText.gameObject.SetActive(false);
-		_notificationText.gameObject.SetActive(false);
+		_comboText.transform.parent.gameObject.SetActive(false);
+		_notificationText.transform.parent.gameObject.SetActive(false);
 	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
@@ -301,7 +301,7 @@ public class PlayerUI : MonoBehaviour
 		{
 			StopCoroutine(_resetComboCoroutine);
 			_hasComboEnded = false;
-			_comboText.gameObject.SetActive(false);
+			_comboText.transform.parent.gameObject.SetActive(false);
 			_currentComboCount = 0;
 			_comboText.text = "Hits 0";
 		}
@@ -309,8 +309,8 @@ public class PlayerUI : MonoBehaviour
 		_comboText.text = "Hits " + _currentComboCount.ToString();
 		if (_currentComboCount > 1)
 		{
-			_comboText.gameObject.SetActive(false);
-			_comboText.gameObject.SetActive(true);
+			_comboText.transform.parent.gameObject.SetActive(false);
+			_comboText.transform.parent.gameObject.SetActive(true);
 		}
 	}
 
@@ -323,7 +323,7 @@ public class PlayerUI : MonoBehaviour
 	public void DisplayNotification(string text)
 	{
 		_audio.Sound("Punish").Play();
-		_notificationText.gameObject.SetActive(true);
+		_notificationText.transform.parent.gameObject.SetActive(true);
 		_notificationText.text = text;
 		if (_notificiationCoroutine != null)
 		{
@@ -335,14 +335,14 @@ public class PlayerUI : MonoBehaviour
 	IEnumerator ResetDisplayNotificationCoroutine()
 	{
 		yield return new WaitForSeconds(1.0f);
-		_notificationText.gameObject.SetActive(false);
+		_notificationText.transform.parent.gameObject.SetActive(false);
 		_notificationText.text = "";
 	}
 
 	IEnumerator ResetComboCoroutine()
 	{
 		yield return new WaitForSeconds(1.0f);
-		_comboText.gameObject.SetActive(false);
+		_comboText.transform.parent.gameObject.SetActive(false);
 		_currentComboCount = 0;
 		_comboText.text = "";
 	}
