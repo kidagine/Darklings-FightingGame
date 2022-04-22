@@ -197,6 +197,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			IsAttacking = true;
 			_playerAnimator.Throw();
 			CurrentAttack = _playerComboSystem.GetComboAttack(inputEnum);
+			_playerMovement.TravelDistance(Vector2.zero);
 			return true;
 		}
 		return false;

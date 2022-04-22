@@ -5,5 +5,4 @@ public class ArcanaSO : AttackSO
 {
 	[Header("Arcana")]
 	public bool airOk;
-	public CameraShakerSO cameraShaker;
 }
