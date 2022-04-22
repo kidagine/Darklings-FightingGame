@@ -392,12 +392,20 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			HitMiddair = true;
 		}
-		_playerAnimator.Hurt();
 
 		if (attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
-			return true; 
+			if (_playerMovement.IsGrounded)
+			{
+				_playerAnimator.Hurt();
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
+		_playerAnimator.Hurt();
 
 		if (!IsAttacking && !_playerMovement.IsDashing && _controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
 		{
