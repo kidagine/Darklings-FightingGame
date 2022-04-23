@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private PlayerStats _playerStats;
 	private InputBuffer _inputBuffer;
 	private Coroutine _ghostsCoroutine;
+	private Coroutine _knockbackCoroutine;
 	private Audio _audio;
 	protected float _movementSpeed;
 	protected bool _isMovementLocked;
@@ -308,7 +309,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
 	{
 		_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce, transform.position.y));
-		StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
+		_knockbackCoroutine = StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
 	}
 
 	IEnumerator KnockbackCoroutine(Vector2 knockback, float knockbackDuration)
@@ -437,6 +438,18 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void SetRigidbodyToKinematic(bool state)
 	{
+		if (state)
+		{
+			if (_knockbackCoroutine != null)
+			{
+				StopCoroutine(_knockbackCoroutine);
+			}
+			_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+		}
+		else
+		{
+			_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+		}
 		_rigidbody.isKinematic = state;
 		_player.SetGroundPushBox(!state);
 	}

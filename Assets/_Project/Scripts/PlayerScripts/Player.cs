@@ -325,23 +325,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
-			if (!gotHit)
-			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
-			}
-			else
-			{
-				_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
-			}
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
 		}
 	}
 
 	private void Throw()
 	{
-		_otherPlayer.SetRigidbodyToKinematic(true);
-		_otherPlayer.transform.SetParent(_grabPoint);
-		_otherPlayer.transform.localPosition = Vector2.zero;
-		_otherPlayer.GetComponent<Player>().GetThrown();
+		_otherPlayer.GetComponent<Player>().GetThrown(_grabPoint);
 		_playerAnimator.ArcanaEnd();
 		_playerAnimator.ThrowEnd();
 	}
@@ -352,8 +342,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.ResetTrigger("ArcanaEnd");
 		_playerAnimator.ResetTrigger("ThrowEnd");
 	}
-	private void GetThrown()
+	private void GetThrown(Transform grabPoint)
 	{
+		_playerMovement.SetRigidbodyToKinematic(true);
+		_playerMovement.transform.SetParent(grabPoint);
+		_playerMovement.transform.localPosition = Vector2.zero;
 		_playerAnimator.SetSpriteOrder(-1);
 	}
 
@@ -507,7 +500,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private void LoseHealth()
 	{
 		GameObject effect = Instantiate(CurrentHurtAttack.hurtEffect);
-		effect.transform.localPosition = CurrentHurtAttack.hurtEffectPosition;
+		effect.transform.localPosition = new Vector2(transform.position.x, transform.position.y + 0.5f);
 		if (!GameManager.Instance.InfiniteHealth)
 		{
 			Health--;
