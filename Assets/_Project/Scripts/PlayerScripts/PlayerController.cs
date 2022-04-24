@@ -18,19 +18,22 @@ public class PlayerController : BaseController
 
 	void Update()
 	{
-		if (!string.IsNullOrEmpty(_brainController.ControllerInputName) && IsControllerEnabled)
+		if (!string.IsNullOrEmpty(_brainController.ControllerInputName))
 		{
-			Movement();
-			Jump();
-			Crouch();
-			Light();
-			Medium();
-			Heavy();
-			Arcane();
-			Assist();
-			Throw();
+			if (IsControllerEnabled)
+			{
+				Movement();
+				Jump();
+				Crouch();
+				Light();
+				Medium();
+				Heavy();
+				Arcane();
+				Assist();
+				Throw();
+				Dash();
+			}
 			Pause();
-			Dash();
 			ResetRound();
 			SwitchCharacter();
 		}
