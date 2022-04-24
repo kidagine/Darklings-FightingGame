@@ -67,6 +67,14 @@ public class PlayerAnimator : MonoBehaviour
 	{
 		_animator.SetTrigger(attackType);
 	}
+	public void Throw()
+	{
+		_animator.SetTrigger("Throw");
+	}
+	public void ThrowEnd()
+	{
+		_animator.SetTrigger("ThrowEnd");
+	}
 
 	public void Arcana()
 	{

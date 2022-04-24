@@ -15,12 +15,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private PlayerStats _playerStats;
 	private InputBuffer _inputBuffer;
 	private Coroutine _ghostsCoroutine;
+	private Coroutine _knockbackCoroutine;
 	private Audio _audio;
 	protected float _movementSpeed;
 	protected bool _isMovementLocked;
 	protected bool _onTopOfPlayer;
 	private bool _hasDashedMiddair;
-	
+
+	public bool FullyLockMovement { get; set; }
 	public Vector2 MovementInput { get; set; }
 	public bool IsGrounded { get; set; } = true;
 	public bool IsCrouching { get; private set; }
@@ -174,7 +176,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 	}
 
-	private void Jump(float jumpForce)
+	public void Jump(float jumpForce)
 	{
 		_player.CanFlip = false;
 		ResetToWalkSpeed();
@@ -195,6 +197,17 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		{
 			_rigidbody.AddForce(new Vector2(Mathf.Round(MovementInput.x) * (jumpForce / 2.5f), jumpForce + 1.0f), ForceMode2D.Impulse);
 		}
+	}
+
+	public void AddForce(int moveHorizontally)
+	{
+		float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 2.5f;
+		int direction = 0;
+		if (moveHorizontally == 1)
+		{
+			direction = (int)transform.localScale.x * -1;
+		}
+		_rigidbody.AddForce(new Vector2(Mathf.Round(direction) * (jumpForce / 2.5f), jumpForce + 1.0f), ForceMode2D.Impulse);
 	}
 
 	public void SetLockMovement(bool state)
@@ -243,7 +256,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	IEnumerator OnGroundedCoroutine()
 	{
-		if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
+		if (!IsGrounded && _rigidbody.velocity.y <= 0.0f && !FullyLockMovement)
 		{
 			_player.CanFlip = true;
 			_playerAnimator.IsJumping(false);
@@ -296,13 +309,13 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
 	{
 		_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce, transform.position.y));
-		StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
+		_knockbackCoroutine = StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
 	}
 
 	IEnumerator KnockbackCoroutine(Vector2 knockback, float knockbackDuration)
 	{
 		Vector2 startingPosition = transform.position;
-		Vector2 finalPosition = new Vector2(transform.position.x + knockback.x, transform.position.y + knockback.y);
+		Vector2 finalPosition = new(transform.position.x + knockback.x, transform.position.y + knockback.y);
 		float elapsedTime = 0;
 		while (elapsedTime < knockbackDuration)
 		{
@@ -425,6 +438,18 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void SetRigidbodyToKinematic(bool state)
 	{
+		if (state)
+		{
+			if (_knockbackCoroutine != null)
+			{
+				StopCoroutine(_knockbackCoroutine);
+			}
+			_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+		}
+		else
+		{
+			_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+		}
 		_rigidbody.isKinematic = state;
 		_player.SetGroundPushBox(!state);
 	}

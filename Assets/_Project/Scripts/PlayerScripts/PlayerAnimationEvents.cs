@@ -22,7 +22,13 @@ public class PlayerAnimationEvents : MonoBehaviour
 		_playerMovement.SetLockMovement(false);
 		_player.CanCancelAttack = false;
 		_inputBuffer.CheckForInputBufferItem();
+		_playerMovement.FullyLockMovement = false;
 		SetFramedata();
+	}
+
+	public void FullyLockMovement()
+	{
+		_playerMovement.FullyLockMovement = true;
 	}
 
 	public void ThrowEnd()
@@ -56,6 +62,11 @@ public class PlayerAnimationEvents : MonoBehaviour
 		_audio.SoundGroup("Footsteps").PlayInRandom();
 	}
 
+	public void PlayerFootstepHeavyAnimationEvent()
+	{
+		_audio.SoundGroup("FootstepsHeavy").PlayInRandom();
+	}
+
 	public void PlayerSoundAnimationEvent(string soundName)
 	{
 		_audio.Sound(soundName).Play();
@@ -64,5 +75,15 @@ public class PlayerAnimationEvents : MonoBehaviour
 	public void SetFramedata()
 	{
 		_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.CurrentAttack);
+	}
+
+	public void AddForce(int moveHorizontally)
+	{
+		_playerMovement.AddForce(moveHorizontally);
+	}
+
+	public void ShakeCamera(CameraShakerSO cameraShaker)
+	{
+		CameraShake.Instance.Shake(cameraShaker.intensity, cameraShaker.timer);
 	}
 }

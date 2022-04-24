@@ -1182,7 +1182,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 8073473790702501988}
   _playerMovement: {fileID: 8073473790702501987}
-  _playerAnimator: {fileID: 8073473789928578677}
   _inputBuffer: {fileID: 4664395619888274278}
   _audio: {fileID: 7611394710214668632}
 --- !u!212 &8073473789928578676
@@ -1665,6 +1664,14 @@ MonoBehaviour:
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: f24d8ef3923a78e44b989571a79f684d, type: 3}
+    volume: 1
+    pitch: 0.75
+    name: Impact6
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
   _sounds3D: []
   _soundGroups:
   - name: Footsteps
@@ -1690,6 +1697,33 @@ MonoBehaviour:
       clip: {fileID: 8300000, guid: a42cdc908d72063488fed46cbddbdeec, type: 3}
       volume: 1
       pitch: 1
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+  - name: FootstepsHeavy
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 05ba9e619e5ebfe47a9e9a277c2d1e7d, type: 3}
+      volume: 1
+      pitch: 0.75
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 525e569123cf7294e85320d4b0c51444, type: 3}
+      volume: 1
+      pitch: 0.75
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: a42cdc908d72063488fed46cbddbdeec, type: 3}
+      volume: 1
+      pitch: 0.75
       name: 
       loop: 0
       playOnAwake: 0

@@ -624,7 +624,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.083333336
-        value: 2
+        value: 1.4
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1400,7 +1400,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.083333336
-        value: 2
+        value: 1.4
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1571,22 +1571,29 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: PlayerFootstepAnimationEvent
+    functionName: PlayerFootstepHeavyAnimationEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.16666667
-    functionName: PlayerFootstepAnimationEvent
+    functionName: PlayerFootstepHeavyAnimationEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.33333334
-    functionName: PlayerFootstepAnimationEvent
+    functionName: PlayerFootstepHeavyAnimationEvent
     data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5
+    functionName: PlayerSoundAnimationEvent
+    data: Hit
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
