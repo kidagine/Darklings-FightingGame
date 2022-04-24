@@ -218,6 +218,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded)
 				{
+					_playerMovement.StopKnockback();
 					_playerMovement.ResetToWalkSpeed();
 					if (!GameManager.Instance.InfiniteArcana)
 					{
