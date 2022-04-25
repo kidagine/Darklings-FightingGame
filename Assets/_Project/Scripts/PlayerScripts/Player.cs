@@ -361,6 +361,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.SetSpriteOrder(0);
 		IsKnockedDown = true;
 		_playerAnimator.CancelHurt();
+		LoseHealth();
 	}
 
 	public virtual void CreateEffect(bool isProjectile = false)
