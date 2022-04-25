@@ -335,6 +335,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_otherPlayer.GetComponent<Player>().GetThrown(_grabPoint);
 		_playerAnimator.ArcanaEnd();
 		_playerAnimator.ThrowEnd();
+		SetHurtbox(false);
 	}
 
 	public void ThrowEnd()
@@ -342,6 +343,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_otherPlayer.GetComponent<Player>().GetThrownEnd();
 		_playerAnimator.ResetTrigger("ArcanaEnd");
 		_playerAnimator.ResetTrigger("ThrowEnd");
+		SetHurtbox(true);
 	}
 	private void GetThrown(Transform grabPoint)
 	{
