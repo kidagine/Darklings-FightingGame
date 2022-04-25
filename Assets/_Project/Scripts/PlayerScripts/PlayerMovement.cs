@@ -455,6 +455,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		{
 			_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
 		}
+		FullyLockMovement = state;
 		_rigidbody.isKinematic = state;
 		_player.SetGroundPushBox(!state);
 	}

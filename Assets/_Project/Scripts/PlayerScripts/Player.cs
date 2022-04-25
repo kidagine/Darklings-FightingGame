@@ -172,7 +172,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void CheckFlip()
 	{
-		if (!IsDead && CanFlip && !IsKnockedDown)
+		if (!IsDead && CanFlip && !IsKnockedDown && !_playerMovement.FullyLockMovement)
 		{
 			if (_otherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking && transform.localScale.x != 1.0f)
 			{
@@ -346,8 +346,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private void GetThrown(Transform grabPoint)
 	{
 		_playerMovement.SetRigidbodyToKinematic(true);
-		_playerMovement.transform.SetParent(grabPoint);
-		_playerMovement.transform.localPosition = Vector2.zero;
+		transform.SetParent(grabPoint);
+		transform.localPosition = Vector2.zero;
+		transform.localScale = new Vector2(-1.0f, 1.0f);
 		_playerAnimator.SetSpriteOrder(-1);
 	}
 
