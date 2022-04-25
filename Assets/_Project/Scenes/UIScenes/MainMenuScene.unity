@@ -3097,6 +3097,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1086801800}
+  - {fileID: 248727416}
   - {fileID: 247374455}
   m_Father: {fileID: 1799494783}
   m_RootOrder: 1
@@ -4241,7 +4242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 134.41
+      value: 106.81
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -4253,8 +4254,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_text
-      value: Added 1 bit mode - You can switch this after stage select, this determines
-        whether the stage and UI will be colored or in 1bit art style like prior
+      value: New Character Abaddon - Abaddon is a slow character who tries to intimidate
+        his opponents to get throws.
       objectReference: {fileID: 0}
     - target: {fileID: 8684339993823435281, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_Name
@@ -5734,7 +5735,7 @@ RectTransform:
   m_Children:
   - {fileID: 815660507}
   m_Father: {fileID: 148313527}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -5778,6 +5779,82 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 247374454}
+  m_CullTransparentMesh: 1
+--- !u!1 &248727415
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 248727416}
+  - component: {fileID: 248727418}
+  - component: {fileID: 248727417}
+  m_Layer: 5
+  m_Name: Showcase_image (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &248727416
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248727415}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 148313527}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.26757812, y: 67.47995}
+  m_SizeDelta: {x: 500, y: 500}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &248727417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248727415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -1210890361, guid: 214dbd9af3f0f624c9bdbf8c5fb80fd7, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 2
+--- !u!222 &248727418
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248727415}
   m_CullTransparentMesh: 1
 --- !u!1 &251929291
 GameObject:
@@ -11672,7 +11749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 162.01
+      value: 24.01
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -11684,9 +11761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_text
-      value: Training prompts change when using controller - PS4 prompts will appear
-        instead of keyboard prompts, in the future the prompts will be based on the
-        controller type
+      value: Minor bug fixes.
       objectReference: {fileID: 0}
     - target: {fileID: 8684339993823435281, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_Name
@@ -18259,7 +18334,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Colored stages
+  m_text: Grab mechanic
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
@@ -20292,153 +20367,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
---- !u!1001 &988781305
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1380893995}
-    m_Modifications:
-    - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 51.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 476.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -25.805
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_text
-      value: Minor bug fixes - mostly minor bug fixes in gameplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435281, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_Name
-      value: MoreInfoNote_group (8)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435281, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 900
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 51.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 450
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -1338.675
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993879517473, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993879517473, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993879517473, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 26.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 8684339993879517473, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -25.805
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7202049279752715224, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-  m_SourcePrefab: {fileID: 100100000, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
---- !u!224 &988781306 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8684339993823435294, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
-  m_PrefabInstance: {fileID: 988781305}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &993442528
 GameObject:
   m_ObjectHideFlags: 0
@@ -21661,7 +21589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 79.21
+      value: 51.61
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -21673,7 +21601,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_text
-      value: Ability to choose music - you can choose music after selecting a stage
+      value: Added Stance CPU training option - this is found in the CPU tab.
       objectReference: {fileID: 0}
     - target: {fileID: 8684339993823435281, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_Name
@@ -22300,7 +22228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 51.61
+      value: 79.21
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -22312,7 +22240,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_text
-      value: Added color stages - visible when 1bit mode is set to off
+      value: Added camera shake on big hits - this is to improve the overall game
+        feel.
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_VerticalAlignment
@@ -22820,18 +22749,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086801799}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.31250075, w: 0.9499175}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.45, y: 0.45, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 148313527}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -36.42}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.2676, y: 2.8098}
-  m_SizeDelta: {x: 955.6716, y: 501.3728}
+  m_AnchoredPosition: {x: 71, y: 84}
+  m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1086801801
 MonoBehaviour:
@@ -22853,7 +22782,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e7b7d35203818c4498ec2d7799e7f90b, type: 3}
+  m_Sprite: {fileID: -871653408, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -28452,7 +28381,6 @@ RectTransform:
   - {fileID: 1054666997}
   - {fileID: 2055452335}
   - {fileID: 536878564}
-  - {fileID: 988781306}
   m_Father: {fileID: 497096839}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -29421,7 +29349,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -51678613091217292, guid: 214dbd9af3f0f624c9bdbf8c5fb80fd7, type: 3}
+  m_Sprite: {fileID: -2104246729, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -30413,7 +30341,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Colored skins
+  m_text: Abaddon
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
@@ -30718,7 +30646,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 134.41
+      value: 79.21
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -30730,8 +30658,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_text
-      value: Added 2 new colored skins for all characters - these are 2 additional
-        skins making for a total of 4 skins for each character
+      value: Added health bar decreaser visual - to better show the amount of damage
+        dealt.
       objectReference: {fileID: 0}
     - target: {fileID: 8684339993823435281, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_Name
@@ -33944,7 +33872,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Patch Notes 0.2.0
+  m_text: Patch Notes 0.2.1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
@@ -34677,7 +34605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 134.41
+      value: 79.21
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -34689,8 +34617,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_text
-      value: Can now cancel an attack to another one on hit/block - This allows for
-        easier and faster combos and an increase on whiff attacks
+      value: Added new throw mechanic - press O on keyboard or Right Bumper on controller
+        to use.
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_VerticalAlignment
@@ -39852,10 +39780,6 @@ MonoBehaviour:
   _arcanaSelectorInitial: 0
   _assistSelector: {fileID: 0}
   _assistSelectorInitial: 0
-  _hitboxesSelector: {fileID: 0}
-  _hitboxesSelectorInitial: 0
-  _framedataSelector: {fileID: 0}
-  _framedataSelectorInitial: 0
   _cpuSelector: {fileID: 0}
   _cpuSelectorInitial: 0
   _blockSelector: {fileID: 0}
@@ -39864,10 +39788,16 @@ MonoBehaviour:
   _onHitSelectorInitial: 0
   _stanceSelector: {fileID: 0}
   _stanceSelectorInitial: 0
+  _hitboxesSelector: {fileID: 0}
+  _hitboxesSelectorInitial: 0
+  _framedataSelector: {fileID: 0}
+  _framedataSelectorInitial: 0
   _slowdownSelector: {fileID: 0}
   _slowdownSelectorInitial: 0
   _inputSelector: {fileID: 0}
   _inputSelectorInitial: 1
+  _uiCanvasSelector: {fileID: 0}
+  _uiCanvasSelectorInitial: 0
 --- !u!4 &1912507502
 Transform:
   m_ObjectHideFlags: 0
@@ -42495,7 +42425,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 106.81
+      value: 51.61
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871644, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -42507,8 +42437,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_text
-      value: Changed all attacks framedata - you can view the framedata in training,
-        these changes are to allow more whiff punishment
+      value: Added Hide UI training option - this is found in the Misc tab.
       objectReference: {fileID: 0}
     - target: {fileID: 8684339993823435281, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_Name
@@ -43551,7 +43480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8684339992983871645, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_text
-      value: Added new song Upbeat
+      value: Minor UI visual updates.
       objectReference: {fileID: 0}
     - target: {fileID: 8684339993823435281, guid: ff8efce8373c43e408dd89dfe5961245, type: 3}
       propertyPath: m_Name

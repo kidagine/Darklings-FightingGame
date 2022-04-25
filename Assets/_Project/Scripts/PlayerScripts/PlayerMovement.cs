@@ -436,20 +436,26 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_rigidbody.gravityScale = 2.0f;
 	}
 
+	public void StopKnockback()
+	{
+		if (_knockbackCoroutine != null)
+		{
+			StopCoroutine(_knockbackCoroutine);
+		}
+	}
+
 	public void SetRigidbodyToKinematic(bool state)
 	{
 		if (state)
 		{
-			if (_knockbackCoroutine != null)
-			{
-				StopCoroutine(_knockbackCoroutine);
-			}
+			StopKnockback();
 			_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
 		}
 		else
 		{
 			_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
 		}
+		FullyLockMovement = state;
 		_rigidbody.isKinematic = state;
 		_player.SetGroundPushBox(!state);
 	}

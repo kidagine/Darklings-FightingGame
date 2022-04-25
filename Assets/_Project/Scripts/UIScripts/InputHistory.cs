@@ -14,6 +14,7 @@ public class InputHistory : MonoBehaviour
 	[SerializeField] private Sprite _heavy = default;
 	[SerializeField] private Sprite _special = default;
 	[SerializeField] private Sprite _assist = default;
+	[SerializeField] private Sprite _throw = default;
 	private readonly List<InputHistoryImage> _inputHistoryImages = new List<InputHistoryImage>();
 	private readonly List<InputEnum> _inputEnums = new List<InputEnum>();
 	private Coroutine _inputBreakCoroutine;
@@ -138,6 +139,9 @@ public class InputHistory : MonoBehaviour
 				break;
 			case InputEnum.Assist:
 				inputImage.sprite = _assist;
+				break;
+			case InputEnum.Throw:
+				inputImage.sprite = _throw;
 				break;
 		}
 	}

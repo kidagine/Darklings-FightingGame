@@ -18,6 +18,7 @@ public class TrainingMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _activeTwoText = default;
 	[SerializeField] private TextMeshProUGUI _recoveryTwoText = default;
 	[SerializeField] private TextMeshProUGUI _hitTypeTwoText = default;
+	[SerializeField] private Canvas[] _uiCanvases = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private BaseMenu _trainingPauseMenu = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
@@ -176,6 +177,24 @@ public class TrainingMenu : BaseMenu
 		}
 	}
 
+	public void SetUI(int value)
+	{
+		switch (value)
+		{
+			case 0:
+				for (int i = 0; i < _uiCanvases.Length; i++)
+				{
+					_uiCanvases[i].enabled = true;
+				}
+				break;
+			case 1:
+				for (int i = 0; i < _uiCanvases.Length; i++)
+				{
+					_uiCanvases[i].enabled = false;
+				}
+				break;
+		}
+	}
 
 	public void SetFramedata(int value)
 	{

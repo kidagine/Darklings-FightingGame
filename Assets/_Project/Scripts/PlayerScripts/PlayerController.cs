@@ -18,19 +18,22 @@ public class PlayerController : BaseController
 
 	void Update()
 	{
-		if (!string.IsNullOrEmpty(_brainController.ControllerInputName) && IsControllerEnabled)
+		if (!string.IsNullOrEmpty(_brainController.ControllerInputName))
 		{
-			Movement();
-			Jump();
-			Crouch();
-			Light();
-			Medium();
-			Heavy();
-			Arcane();
-			Assist();
-			Throw();
+			if (IsControllerEnabled)
+			{
+				Movement();
+				Jump();
+				Crouch();
+				Light();
+				Medium();
+				Heavy();
+				Arcane();
+				Assist();
+				Throw();
+				Dash();
+			}
 			Pause();
-			Dash();
 			ResetRound();
 			SwitchCharacter();
 		}
@@ -130,7 +133,7 @@ public class PlayerController : BaseController
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Throw"))
 		{
 			_player.ThrowAction(InputEnum.Throw);
-			//_inputBuffer.AddInputBufferItem(InputEnum.Assist);
+			_inputBuffer.AddInputBufferItem(InputEnum.Throw);
 		}
 	}
 

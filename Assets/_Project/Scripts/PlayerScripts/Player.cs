@@ -172,24 +172,27 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void CheckFlip()
 	{
-		if (!IsDead && CanFlip && !IsKnockedDown)
+		if (!IsDead && CanFlip && !IsKnockedDown && !_playerMovement.FullyLockMovement)
 		{
-			if (_otherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && !IsAttacking && transform.localScale.x != 1.0f)
+			if (_playerMovement.IsGrounded || !IsAttacking && !_playerMovement)
 			{
-				_playerAnimator.IsRunning(false);
-				transform.localScale = new Vector2(1.0f, transform.localScale.y);
-				_keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
-			}
-			else if (_otherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && !IsAttacking && transform.localScale.x != -1.0f)
-			{
-				_playerAnimator.IsRunning(false);
-				transform.localScale = new Vector2(-1.0f, transform.localScale.y);
-				_keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
+				if (_otherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && transform.localScale.x != 1.0f)
+				{
+					_playerAnimator.IsRunning(false);
+					transform.localScale = new Vector2(1.0f, transform.localScale.y);
+					_keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
+				}
+				else if (_otherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && transform.localScale.x != -1.0f)
+				{
+					_playerAnimator.IsRunning(false);
+					transform.localScale = new Vector2(-1.0f, transform.localScale.y);
+					_keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
+				}
 			}
 		}
 	}
 
-	public virtual bool ThrowAction(InputEnum inputEnum)
+	public bool ThrowAction(InputEnum inputEnum)
 	{
 		if (!IsAttacking && _playerMovement.IsGrounded)
 		{
@@ -218,6 +221,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			{
 				if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded)
 				{
+					_playerMovement.StopKnockback();
 					_playerMovement.ResetToWalkSpeed();
 					if (!GameManager.Instance.InfiniteArcana)
 					{
@@ -300,7 +304,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool AssistAction()
 	{
-		if (_assistGauge >= 1.0f && !IsStunned && !IsBlocking && !IsKnockedDown && GameManager.Instance.HasGameStarted)
+		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsBlocking && !IsKnockedDown && GameManager.Instance.HasGameStarted)
 		{
 			_assist.Attack();
 			_assistGauge--;
@@ -334,6 +338,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_otherPlayer.GetComponent<Player>().GetThrown(_grabPoint);
 		_playerAnimator.ArcanaEnd();
 		_playerAnimator.ThrowEnd();
+		SetHurtbox(false);
 	}
 
 	public void ThrowEnd()
@@ -341,12 +346,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_otherPlayer.GetComponent<Player>().GetThrownEnd();
 		_playerAnimator.ResetTrigger("ArcanaEnd");
 		_playerAnimator.ResetTrigger("ThrowEnd");
+		SetHurtbox(true);
 	}
 	private void GetThrown(Transform grabPoint)
 	{
 		_playerMovement.SetRigidbodyToKinematic(true);
-		_playerMovement.transform.SetParent(grabPoint);
-		_playerMovement.transform.localPosition = Vector2.zero;
+		transform.SetParent(grabPoint);
+		transform.localPosition = Vector2.zero;
+		transform.localScale = new Vector2(-1.0f, 1.0f);
 		_playerAnimator.SetSpriteOrder(-1);
 	}
 
@@ -356,8 +363,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerMovement.SetRigidbodyToKinematic(false);
 		_playerAnimator.SetSpriteOrder(0);
 		IsKnockedDown = true;
-		LoseHealth();
 		_playerAnimator.CancelHurt();
+		LoseHealth();
 	}
 
 	public virtual void CreateEffect(bool isProjectile = false)
