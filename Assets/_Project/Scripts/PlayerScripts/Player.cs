@@ -189,7 +189,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public virtual bool ThrowAction(InputEnum inputEnum)
+	public bool ThrowAction(InputEnum inputEnum)
 	{
 		if (!IsAttacking && _playerMovement.IsGrounded)
 		{

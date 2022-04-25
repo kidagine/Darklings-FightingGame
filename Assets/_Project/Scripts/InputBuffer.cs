@@ -78,6 +78,10 @@ public class InputBuffer : MonoBehaviour
 		{
 			inputBufferItem.Execute += _player.AssistAction;
 		}
+		else if (inputEnum == InputEnum.Throw)
+		{
+			inputBufferItem.Execute += () => { return true; };
+		}
 		CheckForInputBufferItem();
 	}
 

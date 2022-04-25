@@ -133,7 +133,7 @@ public class PlayerController : BaseController
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Throw"))
 		{
 			_player.ThrowAction(InputEnum.Throw);
-			//_inputBuffer.AddInputBufferItem(InputEnum.Assist);
+			_inputBuffer.AddInputBufferItem(InputEnum.Throw);
 		}
 	}
 
