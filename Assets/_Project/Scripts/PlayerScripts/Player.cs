@@ -301,7 +301,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool AssistAction()
 	{
-		if (_assistGauge >= 1.0f && !IsStunned && !IsBlocking && !IsKnockedDown && GameManager.Instance.HasGameStarted)
+		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsBlocking && !IsKnockedDown && GameManager.Instance.HasGameStarted)
 		{
 			_assist.Attack();
 			_assistGauge--;
@@ -358,7 +358,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerMovement.SetRigidbodyToKinematic(false);
 		_playerAnimator.SetSpriteOrder(0);
 		IsKnockedDown = true;
-		LoseHealth();
 		_playerAnimator.CancelHurt();
 	}
 
