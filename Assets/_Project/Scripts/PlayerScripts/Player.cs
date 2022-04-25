@@ -335,6 +335,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void Throw()
 	{
+		_playerMovement.FullyLockMovement = true;
 		_otherPlayer.GetComponent<Player>().GetThrown(_grabPoint);
 		_playerAnimator.ArcanaEnd();
 		_playerAnimator.ThrowEnd();
@@ -343,6 +344,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ThrowEnd()
 	{
+		_playerMovement.FullyLockMovement = false;
 		_otherPlayer.GetComponent<Player>().GetThrownEnd();
 		_playerAnimator.ResetTrigger("ArcanaEnd");
 		_playerAnimator.ResetTrigger("ThrowEnd");
