@@ -64,6 +64,8 @@ public class GameManager : MonoBehaviour
 	private Coroutine _roundOverTrainingCoroutine;
 	private Sound _currentMusic;
 	private GameObject _currentStage;
+	private Vector2 _cachedOneResetPosition;
+	private Vector2 _cachedTwoResetPosition;
 	private float _countdown;
 	private int _currentRound = 1;
 	private bool _reverseReset;
@@ -277,6 +279,8 @@ public class GameManager : MonoBehaviour
 		}
 		if (_isTrainingMode)
 		{
+			_cachedOneResetPosition = PlayerOne.transform.position;
+			_cachedTwoResetPosition = PlayerTwo.transform.position;
 			_countdownText.gameObject.SetActive(false);
 			_hearts[0].gameObject.SetActive(false);
 			_hearts[1].gameObject.SetActive(false);
@@ -479,19 +483,79 @@ public class GameManager : MonoBehaviour
 			PlayerTwo.ResetLives();
 			_leftStopper.SetActive(false);
 			_rightStopper.SetActive(false);
-			if (movementInput.y > 0.0f)
+
+			if (movementInput.y == 1.0f)
 			{
 				_reverseReset = !_reverseReset;
+				if (!_reverseReset)
+				{
+					PlayerOne.transform.position = _cachedOneResetPosition;
+					PlayerTwo.transform.position = _cachedTwoResetPosition;
+				}
+				else
+				{
+					PlayerTwo.transform.position = _cachedOneResetPosition;
+					PlayerOne.transform.position = _cachedTwoResetPosition;
+				}
 			}
-			if (!_reverseReset)
+
+			if (movementInput == Vector2.zero)
 			{
-				PlayerOne.transform.position = _spawnPositions[0].position;
-				PlayerTwo.transform.position = _spawnPositions[1].position;
+				if (!_reverseReset)
+				{
+					PlayerOne.transform.position = _cachedOneResetPosition;
+					PlayerTwo.transform.position = _cachedTwoResetPosition;
+				}
+				else
+				{
+					PlayerOne.transform.position = _cachedTwoResetPosition;
+					PlayerTwo.transform.position = _cachedOneResetPosition;
+				}
 			}
-			else
+			else if (movementInput.y == -1.0f)
 			{
-				PlayerOne.transform.position = _spawnPositions[1].position;
-				PlayerTwo.transform.position = _spawnPositions[0].position;
+				if (!_reverseReset)
+				{
+					PlayerOne.transform.position = _spawnPositions[0].position;
+					PlayerTwo.transform.position = _spawnPositions[1].position;
+				}
+				else
+				{
+					PlayerTwo.transform.position = _spawnPositions[0].position;
+					PlayerOne.transform.position = _spawnPositions[1].position;
+				}
+				_cachedOneResetPosition = PlayerOne.transform.position;
+				_cachedTwoResetPosition = PlayerTwo.transform.position;
+			}
+			else if(movementInput.x == 1.0f)
+			{
+				if (!_reverseReset)
+				{
+					PlayerOne.transform.position = new Vector2(_spawnPositions[0].position.x + 9, _spawnPositions[0].position.y);
+					PlayerTwo.transform.position = new Vector2(_spawnPositions[1].position.x + 6, _spawnPositions[1].position.y);
+				}
+				else
+				{
+					PlayerTwo.transform.position = new Vector2(_spawnPositions[0].position.x + 9, _spawnPositions[0].position.y);
+					PlayerOne.transform.position = new Vector2(_spawnPositions[1].position.x + 6, _spawnPositions[1].position.y);
+				}
+				_cachedOneResetPosition = PlayerOne.transform.position;
+				_cachedTwoResetPosition = PlayerTwo.transform.position;
+			}
+			else if (movementInput.x == -1.0f)
+			{
+				if (!_reverseReset)
+				{
+					PlayerOne.transform.position = new Vector2(_spawnPositions[0].position.x - 6, _spawnPositions[0].position.y);
+					PlayerTwo.transform.position = new Vector2(_spawnPositions[1].position.x - 9, _spawnPositions[1].position.y);
+				}
+				else
+				{
+					PlayerTwo.transform.position = new Vector2(_spawnPositions[0].position.x - 6, _spawnPositions[0].position.y);
+					PlayerOne.transform.position = new Vector2(_spawnPositions[1].position.x - 9, _spawnPositions[1].position.y);
+				}
+				_cachedOneResetPosition = PlayerOne.transform.position;
+				_cachedTwoResetPosition = PlayerTwo.transform.position;
 			}
 		}
 	}
