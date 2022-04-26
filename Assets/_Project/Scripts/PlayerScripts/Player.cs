@@ -353,6 +353,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	}
 	private void GetThrown(Transform grabPoint)
 	{
+		if (_stunCoroutine != null)
+		{
+			StopCoroutine(_stunCoroutine);
+		}
 		_playerMovement.SetRigidbodyToKinematic(true);
 		transform.SetParent(grabPoint);
 		transform.localPosition = Vector2.zero;
