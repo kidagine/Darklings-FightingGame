@@ -100,6 +100,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_assistGauge = 1.0f;
 		_playerMovement.FullyLockMovement = false;
 		transform.SetParent(null);
+		_playerMovement.IsInCorner = false;
 		_playerMovement.SetRigidbodyToKinematic(false);
 		if (!GameManager.Instance.InfiniteArcana)
 		{
