@@ -100,6 +100,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_assistGauge = 1.0f;
 		_playerMovement.FullyLockMovement = false;
 		transform.SetParent(null);
+		_playerMovement.IsInCorner = false;
 		_playerMovement.SetRigidbodyToKinematic(false);
 		if (!GameManager.Instance.InfiniteArcana)
 		{
@@ -335,6 +336,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void Throw()
 	{
+		_playerMovement.FullyLockMovement = true;
 		_otherPlayer.GetComponent<Player>().GetThrown(_grabPoint);
 		_playerAnimator.ArcanaEnd();
 		_playerAnimator.ThrowEnd();
@@ -343,6 +345,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ThrowEnd()
 	{
+		_playerMovement.FullyLockMovement = false;
 		_otherPlayer.GetComponent<Player>().GetThrownEnd();
 		_playerAnimator.ResetTrigger("ArcanaEnd");
 		_playerAnimator.ResetTrigger("ThrowEnd");
@@ -350,6 +353,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	}
 	private void GetThrown(Transform grabPoint)
 	{
+		if (_stunCoroutine != null)
+		{
+			StopCoroutine(_stunCoroutine);
+		}
 		_playerMovement.SetRigidbodyToKinematic(true);
 		transform.SetParent(grabPoint);
 		transform.localPosition = Vector2.zero;
