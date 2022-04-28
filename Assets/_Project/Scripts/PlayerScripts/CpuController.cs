@@ -123,8 +123,7 @@ public class CpuController : BaseController
 				{
 					_player.ThrowAction();
 				}
-				_attackTimer = Random.Range(0.2f, 0.65f);
-				_arcanaTimer = Random.Range(0.5f, 1.0f);
+				_attackTimer = Random.Range(0.15f, 0.35f);
 			}
 		}
 	}
@@ -145,8 +144,8 @@ public class CpuController : BaseController
 				{
 					_player.ArcaneAction();
 				}
-				_attackTimer = Random.Range(0.2f, 0.65f);
-				_arcanaTimer = Random.Range(0.5f, 1.0f);
+				_attackTimer = Random.Range(0.15f, 0.35f);
+				_arcanaTimer = Random.Range(0.4f, 0.85f);
 			}
 		}
 	}
