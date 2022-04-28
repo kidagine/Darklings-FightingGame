@@ -269,6 +269,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
 			_audio.Sound("Landed").Play();
 			IsGrounded = true;
+			_player.Flip();
 			if (_player.HitMiddair)
 			{
 				_player.StopStun(true);
