@@ -175,21 +175,26 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (!IsDead && CanFlip && !IsKnockedDown && !_playerMovement.FullyLockMovement)
 		{
-			if (_playerMovement.IsGrounded || !IsAttacking && !_playerMovement)
+			if (_playerMovement.IsGrounded && !IsAttacking )
 			{
-				if (_otherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && transform.localScale.x != 1.0f)
-				{
-					_playerAnimator.IsRunning(false);
-					transform.localScale = new Vector2(1.0f, transform.localScale.y);
-					_keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
-				}
-				else if (_otherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && transform.localScale.x != -1.0f)
-				{
-					_playerAnimator.IsRunning(false);
-					transform.localScale = new Vector2(-1.0f, transform.localScale.y);
-					_keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
-				}
+				Flip();
 			}
+		}
+	}
+
+	public void Flip()
+	{
+		if (_otherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && transform.localScale.x != 1.0f)
+		{
+			_playerAnimator.IsRunning(false);
+			transform.localScale = new Vector2(1.0f, transform.localScale.y);
+			_keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
+		}
+		else if (_otherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && transform.localScale.x != -1.0f)
+		{
+			_playerAnimator.IsRunning(false);
+			transform.localScale = new Vector2(-1.0f, transform.localScale.y);
+			_keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
 		}
 	}
 
