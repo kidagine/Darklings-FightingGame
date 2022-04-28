@@ -11,7 +11,6 @@ public class CpuController : BaseController
 	private float _arcanaTimer;
 	private float _attackTimer;
 	private float _movementTimer;
-	private bool _didAction;
 
 	public void SetOtherPlayer(Transform otherPlayer)
 	{
@@ -20,7 +19,7 @@ public class CpuController : BaseController
 
 	void Update()
 	{
-		if (!GameManager.Instance.IsCpuOff)
+		if (!GameManager.Instance.IsCpuOff && !_playerMovement.FullyLockMovement && !_player.IsStunned && !_player.IsAttacking)
 		{
 			_distance = Mathf.Abs(_otherPlayer.transform.position.x - transform.position.x);
 			_playerMovement.MovementInput = new Vector2(_movementInputX, 0.0f);
@@ -68,15 +67,12 @@ public class CpuController : BaseController
 				switch (movementRandom)
 				{
 					case 1:
-						_didAction = true;
 						_movementInputX = 0.0f;
 						break;
 					case 2:
-						_didAction = true;
 						_movementInputX = transform.localScale.x * -1.0f;
 						break;
 					default:
-						_didAction = true;
 						_movementInputX = transform.localScale.x * 1.0f;
 						break;
 				}
@@ -84,20 +80,17 @@ public class CpuController : BaseController
 				{
 					if (GameManager.Instance.HasGameStarted)
 					{
-						_didAction = true;
 						_playerMovement.JumpAction();
 					}
 				}
 				if (crouchRandom == 2)
 				{
-					_didAction = true;
 					_playerMovement.CrouchAction();
 				}
 				if (_playerMovement.IsCrouching)
 				{
 					if (standingRandom == 2)
 					{
-						_didAction = true;
 						_playerMovement.StandUpAction();
 					}
 				}
@@ -127,6 +120,7 @@ public class CpuController : BaseController
 					_player.HeavyAction();
 				}
 				_attackTimer = Random.Range(0.25f, 0.8f);
+				_arcanaTimer = Random.Range(0.5f, 1.0f);
 			}
 		}
 	}
@@ -147,6 +141,7 @@ public class CpuController : BaseController
 				{
 					_player.ArcaneAction();
 				}
+				_attackTimer = Random.Range(0.25f, 0.8f);
 				_arcanaTimer = Random.Range(0.5f, 1.0f);
 			}
 		}
