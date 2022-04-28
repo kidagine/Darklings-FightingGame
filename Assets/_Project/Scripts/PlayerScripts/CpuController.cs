@@ -106,7 +106,7 @@ public class CpuController : BaseController
 			_attackTimer -= Time.deltaTime;
 			if (_attackTimer < 0)
 			{
-				int attackRandom = Random.Range(0, 6);
+				int attackRandom = Random.Range(0, 8);
 				if (attackRandom <= 2)
 				{
 					_player.LightAction();
@@ -115,11 +115,15 @@ public class CpuController : BaseController
 				{
 					_player.MediumAction();
 				}
-				else
+				else if (attackRandom <= 6)
 				{
 					_player.HeavyAction();
 				}
-				_attackTimer = Random.Range(0.25f, 0.8f);
+				else
+				{
+					_player.ThrowAction();
+				}
+				_attackTimer = Random.Range(0.2f, 0.65f);
 				_arcanaTimer = Random.Range(0.5f, 1.0f);
 			}
 		}
@@ -141,7 +145,7 @@ public class CpuController : BaseController
 				{
 					_player.ArcaneAction();
 				}
-				_attackTimer = Random.Range(0.25f, 0.8f);
+				_attackTimer = Random.Range(0.2f, 0.65f);
 				_arcanaTimer = Random.Range(0.5f, 1.0f);
 			}
 		}

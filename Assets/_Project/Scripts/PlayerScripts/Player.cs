@@ -198,14 +198,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public bool ThrowAction(InputEnum inputEnum)
+	public bool ThrowAction()
 	{
 		if (!IsAttacking && _playerMovement.IsGrounded)
 		{
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;
 			_playerAnimator.Throw();
-			CurrentAttack = _playerComboSystem.GetComboAttack(inputEnum);
+			CurrentAttack = _playerComboSystem.GetComboAttack(InputEnum.Throw);
 			_playerMovement.TravelDistance(Vector2.zero);
 			return true;
 		}
