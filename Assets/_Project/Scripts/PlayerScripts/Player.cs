@@ -369,6 +369,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		transform.localPosition = Vector2.zero;
 		transform.localScale = new Vector2(-1.0f, 1.0f);
 		_playerAnimator.SetSpriteOrder(-1);
+		if (_otherPlayer.GetComponent<Player>().IsStunned)
+		{
+			_otherPlayer.GetComponent<Player>().ThrowEnd();
+		}
 	}
 
 	private void GetThrownEnd()
