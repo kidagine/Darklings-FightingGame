@@ -284,7 +284,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;
-			Debug.Log(inputEnum.ToString());
 			_playerAnimator.Attack(inputEnum.ToString());
 			CurrentAttack = _playerComboSystem.GetComboAttack(inputEnum);
 			AttackTravel();
@@ -368,6 +367,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		transform.SetParent(grabPoint);
 		transform.localPosition = Vector2.zero;
 		transform.localScale = new Vector2(-1.0f, 1.0f);
+		_controller.DeactivateInput();
+		_playerAnimator.Hurt();
 		_playerAnimator.SetSpriteOrder(-1);
 		if (_otherPlayer.GetComponent<Player>().IsStunned)
 		{
@@ -382,6 +383,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerAnimator.SetSpriteOrder(0);
 		IsKnockedDown = true;
 		_playerAnimator.CancelHurt();
+		_controller.ActivateInput();
 		LoseHealth();
 	}
 
