@@ -84,6 +84,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ResetPlayer()
 	{
+		transform.rotation = Quaternion.identity;
 		_playerMovement.SetLockMovement(true);
 		IsStunned = false;
 		CanFlip = true;
@@ -149,7 +150,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (_assistGauge < 1.0f && !_assist.IsOnScreen && GameManager.Instance.HasGameStarted)
 		{
-			_assistGauge += Time.deltaTime / (15.0f - _assist.AssistStats.assistRecharge);
+			_assistGauge += Time.deltaTime / (12.0f - _assist.AssistStats.assistRecharge);
 			if (GameManager.Instance.InfiniteAssist)
 			{
 				_assistGauge = 1.0f;
@@ -283,6 +284,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_audio.Sound("Hit").Play();
 			IsAttacking = true;
+			Debug.Log(inputEnum.ToString());
 			_playerAnimator.Attack(inputEnum.ToString());
 			CurrentAttack = _playerComboSystem.GetComboAttack(inputEnum);
 			AttackTravel();
@@ -462,7 +464,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 			IsKnockedDown = attackSO.causesKnockdown;
 			_audio.Sound(attackSO.impactSound).Play();
-
 			_playerMovement.StopDash();
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);

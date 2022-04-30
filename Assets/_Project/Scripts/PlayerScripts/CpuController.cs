@@ -19,7 +19,7 @@ public class CpuController : BaseController
 
 	void Update()
 	{
-		if (!GameManager.Instance.IsCpuOff && !_playerMovement.FullyLockMovement && !_player.IsStunned && !_player.IsAttacking)
+		if (!GameManager.Instance.IsCpuOff && !_playerMovement.FullyLockMovement && !_player.IsAttacking)
 		{
 			_distance = Mathf.Abs(_otherPlayer.transform.position.x - transform.position.x);
 			_playerMovement.MovementInput = new Vector2(_movementInputX, 0.0f);
@@ -64,18 +64,12 @@ public class CpuController : BaseController
 				int jumpRandom = Random.Range(0, 8);
 				int crouchRandom = Random.Range(0, 12);
 				int standingRandom = Random.Range(0, 4);
-				switch (movementRandom)
+				_movementInputX = movementRandom switch
 				{
-					case 1:
-						_movementInputX = 0.0f;
-						break;
-					case 2:
-						_movementInputX = transform.localScale.x * -1.0f;
-						break;
-					default:
-						_movementInputX = transform.localScale.x * 1.0f;
-						break;
-				}
+					1 => 0.0f,
+					2 => transform.localScale.x * -1.0f,
+					_ => transform.localScale.x * 1.0f,
+				};
 				if (jumpRandom == 2)
 				{
 					if (GameManager.Instance.HasGameStarted)
