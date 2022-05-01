@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected TextMeshProUGUI _winsText = default;
 	[SerializeField] protected GameObject _keyboardPrompts = default;
 	[SerializeField] protected GameObject _controllerPrompts = default;
-	[SerializeField] protected GameObject _bottomLine = default;
+	[SerializeField] protected GameObject[] _readyObjects = default;
 	[SerializeField] protected GameObject _leftStopper = default;
 	[SerializeField] protected GameObject _rightStopper = default;
 	[SerializeField] protected GameObject _playerLocal = default;
@@ -369,7 +369,10 @@ public class GameManager : MonoBehaviour
 		yield return new WaitForSeconds(0.5f);
 		_uiAudio.Sound("TextSound").Play();
 		_readyAnimator.SetTrigger("Show");
-		_bottomLine.SetActive(true);
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(true);
+		}
 		if (_currentRound == 3)
 		{
 			_readyText.text = $"Final Round";
@@ -387,7 +390,10 @@ public class GameManager : MonoBehaviour
 		_playerTwoUI.FadeIn();
 		_timerAnimator.SetTrigger("FadeIn");
 		yield return new WaitForSeconds(1.0f);
-		_bottomLine.SetActive(false);
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(false);
+		}
 		_readyText.text = "";
 		_leftStopper.SetActive(false);
 		_rightStopper.SetActive(false);
@@ -574,7 +580,10 @@ public class GameManager : MonoBehaviour
 			PlayerOne.LoseLife();
 		}
 		HasGameStarted = false;
-		_bottomLine.SetActive(true);
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(true);
+		}
 		_uiAudio.Sound("TextSound").Play();
 		_readyAnimator.SetTrigger("Show");
 		if (PlayerOne.PlayerStats.maxHealth == PlayerOne.Health || PlayerTwo.PlayerStats.maxHealth == PlayerTwo.Health)
@@ -608,7 +617,10 @@ public class GameManager : MonoBehaviour
 			}
 		}
 		yield return new WaitForSecondsRealtime(2.0f);
-		_bottomLine.SetActive(false);
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(false);
+		}
 		_winnerNameText.text = "";
 		_readyText.text = "";
 		StartRound();
@@ -636,7 +648,10 @@ public class GameManager : MonoBehaviour
 		{
 			PlayerOne.LoseLife();
 		}
-		_bottomLine.SetActive(true);
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(true);
+		}
 		_uiAudio.Sound("TextSound").Play();
 		_readyAnimator.SetTrigger("Show");
 		if (PlayerOne.PlayerStats.maxHealth == PlayerOne.Health || PlayerTwo.PlayerStats.maxHealth == PlayerTwo.Health)
@@ -683,7 +698,10 @@ public class GameManager : MonoBehaviour
 			PlayerTwo.Taunt();
 		}
 		yield return new WaitForSecondsRealtime(2.0f);
-		_bottomLine.SetActive(false);
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(false);
+		}
 		_winnerNameText.text = "";
 		_readyText.text = "";
 		_currentRound = 1;

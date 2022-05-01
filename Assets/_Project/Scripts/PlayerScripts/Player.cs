@@ -224,7 +224,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				_playerAnimator.CancelAttack();
 				CanCancelAttack = false;
 			}
-			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing)
+			if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !IsKnockedDown)
 			{
 				if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded)
 				{
@@ -452,13 +452,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Break)
 		{
-			if (attackSO.attackTypeEnum == AttackTypeEnum.Break)
+			if (attackSO.cameraShaker != null)
 			{
-				CameraShake.Instance.Shake(2.0f, 0.05f);
-			}
-			if (attackSO.isArcana)
-			{
-				CameraShake.Instance.Shake(5.0f, 0.1f);
+				CameraShake.Instance.Shake(attackSO.cameraShaker.intensity, attackSO.cameraShaker.timer);
 			}
 			CanCancelAttack = false;
 			_playerMovement.StopGhosts();
@@ -473,6 +469,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			_playerMovement.StopDash();
 			_otherPlayerUI.IncreaseCombo();
 			Stun(attackSO.hitStun);
+			_inputBuffer.ClearInputBuffer();
 			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
 			IsAttacking = false;
 			if (!GameManager.Instance.InfiniteHealth)
@@ -525,6 +522,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void LoseHealth()
 	{
+		_inputBuffer.ClearInputBuffer();
 		GameObject effect = Instantiate(CurrentHurtAttack.hurtEffect);
 		effect.transform.localPosition = new Vector2(transform.position.x, transform.position.y + 0.5f);
 		if (!GameManager.Instance.InfiniteHealth)
