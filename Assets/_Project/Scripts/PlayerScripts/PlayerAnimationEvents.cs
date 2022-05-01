@@ -38,7 +38,6 @@ public class PlayerAnimationEvents : MonoBehaviour
 
 	public void CreateEffectAnimationEvent(int isProjectile)
 	{
-		//_player.AttackTravel();
 		_player.CreateEffect(Convert.ToBoolean(isProjectile));
 	}
 

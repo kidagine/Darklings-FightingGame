@@ -155,13 +155,16 @@ public class PlayerController : BaseController
 
 	private void Pause()
 	{
-		if (Input.GetButtonDown(_brainController.ControllerInputName + "Pause"))
+		if (GameManager.Instance.HasGameStarted)
 		{
-			_player.Pause(_brainController.IsPlayerOne);
-		}
-		if (Input.GetButtonUp(_brainController.ControllerInputName + "Pause"))
-		{
-			_player.UnPause();
+			if (Input.GetButtonDown(_brainController.ControllerInputName + "Pause"))
+			{
+				_player.Pause(_brainController.IsPlayerOne);
+			}
+			if (Input.GetButtonUp(_brainController.ControllerInputName + "Pause"))
+			{
+				_player.UnPause();
+			}
 		}
 	}
 
