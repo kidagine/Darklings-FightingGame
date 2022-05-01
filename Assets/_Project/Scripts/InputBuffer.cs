@@ -97,4 +97,9 @@ public class InputBuffer : MonoBehaviour
 			_isExecuting = false;
 		}
 	}
+
+	public void ClearInputBuffer()
+	{
+		_inputBuffer.Clear();
+	}
 }

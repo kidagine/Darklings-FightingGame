@@ -1,5 +1,6 @@
 using Demonics.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : BaseMenu
 {
@@ -10,5 +11,10 @@ public class PauseMenu : BaseMenu
 	public void ClosePause()
 	{
 		_playerUI.ClosePause();
+	}
+
+	public void Restart()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 }
