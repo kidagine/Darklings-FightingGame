@@ -43,11 +43,11 @@ public class InputBuffer : MonoBehaviour
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Up)
 			{
-				inputBufferItem.Execute += _playerMovement.StandUpAction;
+				inputBufferItem.Execute += () => { return true; };
 			}
 			else if (inputDirectionEnum == InputDirectionEnum.Down)
 			{
-				inputBufferItem.Execute += _playerMovement.CrouchAction;
+				inputBufferItem.Execute += () => { return true; };
 			}
 			else if(inputDirectionEnum == InputDirectionEnum.Left)
 			{
@@ -78,6 +78,10 @@ public class InputBuffer : MonoBehaviour
 		{
 			inputBufferItem.Execute += _player.AssistAction;
 		}
+		else if (inputEnum == InputEnum.Throw)
+		{
+			inputBufferItem.Execute += () => { return true; };
+		}
 		CheckForInputBufferItem();
 	}
 
@@ -92,5 +96,10 @@ public class InputBuffer : MonoBehaviour
 			}
 			_isExecuting = false;
 		}
+	}
+
+	public void ClearInputBuffer()
+	{
+		_inputBuffer.Clear();
 	}
 }

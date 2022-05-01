@@ -52,11 +52,13 @@ public class BrainController : MonoBehaviour
 
 	public void ActivateInput()
 	{
+		ActivateCpu();	
 		ActiveController.ActivateInput();
 	}
 
 	public void DeactivateInput()
 	{
+		DeactivateCpu();
 		ActiveController.DeactivateInput();
 	}
 }

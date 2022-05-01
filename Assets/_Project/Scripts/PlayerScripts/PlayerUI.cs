@@ -9,6 +9,7 @@ public class PlayerUI : MonoBehaviour
 {
 	[SerializeField] private Animator[] _lostLivesAnimator = default;
 	[SerializeField] private Slider _healthSlider = default;
+	[SerializeField] private Slider _healthDamagedSlider = default;
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
 	[SerializeField] private Image _portraitImage = default;
@@ -39,14 +40,15 @@ public class PlayerUI : MonoBehaviour
 	private Coroutine _notificiationCoroutine;
 	private Coroutine _resetComboCoroutine;
 	private Coroutine _showPlayerIconCoroutine;
+	private Coroutine _damagedHealthCoroutine;
 	private Animator _animator;
 	private Audio _audio;
 	private BrainController _controller;
+	private float _currentEndDamageValue;
 	private int _currentLifeIndex;
 	private int _currentComboCount;
 	private bool _hasComboEnded;
 	private bool _initializedStats;
-
 	public string PlayerName { get; private set; }
 	public string CharacterName { get; private set; }
 
@@ -55,8 +57,8 @@ public class PlayerUI : MonoBehaviour
 	{
 		_animator = GetComponent<Animator>();
 		_audio = GetComponent<Audio>();
-		_comboText.gameObject.SetActive(false);
-		_notificationText.gameObject.SetActive(false);
+		_comboText.transform.parent.gameObject.SetActive(false);
+		_notificationText.transform.parent.gameObject.SetActive(false);
 	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
@@ -139,6 +141,8 @@ public class PlayerUI : MonoBehaviour
 	{
 		float healthSliderWidth = _healthSlider.GetComponent<RectTransform>().sizeDelta.x;
 		_healthSlider.maxValue = value;
+		_healthDamagedSlider.maxValue = value;
+		_healthDamagedSlider.value = value;
 		float increaseValue = healthSliderWidth / value;
 		float currentPositionX = 0.0f;
 		for (int i = 0; i < value + 1; i++)
@@ -192,6 +196,40 @@ public class PlayerUI : MonoBehaviour
 	public void SetHealth(float value)
 	{
 		_healthSlider.value = value;
+	}
+
+	public void ResetHealthDamaged()
+	{
+		if (_damagedHealthCoroutine != null)
+		{
+			StopCoroutine(_damagedHealthCoroutine);
+		}
+		_healthDamagedSlider.value = _healthSlider.maxValue;
+	}
+
+	public void UpdateHealthDamaged()
+	{
+		if (_damagedHealthCoroutine != null)
+		{
+			StopCoroutine(_damagedHealthCoroutine);
+		}
+		_damagedHealthCoroutine = StartCoroutine(SetHealthDamagedCoroutine(_healthSlider.value));
+	}
+
+	IEnumerator SetHealthDamagedCoroutine(float value)
+	{
+		yield return new WaitForSeconds(1.0f);
+		float startValue = _healthDamagedSlider.value;
+		_currentEndDamageValue = value;
+		float elapsedTime = 0.0f;
+		float duration = 0.2f;
+		while (elapsedTime < duration)
+		{
+			_healthDamagedSlider.value = Mathf.Lerp(startValue, _currentEndDamageValue, elapsedTime / duration);
+			elapsedTime += Time.deltaTime;
+			yield return null;
+		}
+		_healthDamagedSlider.value = _currentEndDamageValue;
 	}
 
 	public void SetLives()
@@ -301,7 +339,7 @@ public class PlayerUI : MonoBehaviour
 		{
 			StopCoroutine(_resetComboCoroutine);
 			_hasComboEnded = false;
-			_comboText.gameObject.SetActive(false);
+			_comboText.transform.parent.gameObject.SetActive(false);
 			_currentComboCount = 0;
 			_comboText.text = "Hits 0";
 		}
@@ -309,8 +347,8 @@ public class PlayerUI : MonoBehaviour
 		_comboText.text = "Hits " + _currentComboCount.ToString();
 		if (_currentComboCount > 1)
 		{
-			_comboText.gameObject.SetActive(false);
-			_comboText.gameObject.SetActive(true);
+			_comboText.transform.parent.gameObject.SetActive(false);
+			_comboText.transform.parent.gameObject.SetActive(true);
 		}
 	}
 
@@ -323,7 +361,7 @@ public class PlayerUI : MonoBehaviour
 	public void DisplayNotification(string text)
 	{
 		_audio.Sound("Punish").Play();
-		_notificationText.gameObject.SetActive(true);
+		_notificationText.transform.parent.gameObject.SetActive(true);
 		_notificationText.text = text;
 		if (_notificiationCoroutine != null)
 		{
@@ -335,14 +373,14 @@ public class PlayerUI : MonoBehaviour
 	IEnumerator ResetDisplayNotificationCoroutine()
 	{
 		yield return new WaitForSeconds(1.0f);
-		_notificationText.gameObject.SetActive(false);
+		_notificationText.transform.parent.gameObject.SetActive(false);
 		_notificationText.text = "";
 	}
 
 	IEnumerator ResetComboCoroutine()
 	{
 		yield return new WaitForSeconds(1.0f);
-		_comboText.gameObject.SetActive(false);
+		_comboText.transform.parent.gameObject.SetActive(false);
 		_currentComboCount = 0;
 		_comboText.text = "";
 	}

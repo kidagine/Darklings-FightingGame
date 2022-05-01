@@ -67,10 +67,23 @@ public class PlayerAnimator : MonoBehaviour
 	{
 		_animator.SetTrigger(attackType);
 	}
+	public void Throw()
+	{
+		_animator.SetTrigger("Throw");
+	}
+	public void ThrowEnd()
+	{
+		_animator.SetTrigger("ThrowEnd");
+	}
 
 	public void Arcana()
 	{
 		_animator.SetTrigger("Arcana");
+	}
+
+	public void ArcanaEnd()
+	{
+		_animator.SetTrigger("ArcanaEnd");
 	}
 
 	public void Hurt()
@@ -140,4 +153,10 @@ public class PlayerAnimator : MonoBehaviour
 		_spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
 		return skinNumber;
 	}
+
+	public void SetSpriteOrder(int index)
+	{
+		_spriteRenderer.sortingOrder = index;
+	}
 }
+	

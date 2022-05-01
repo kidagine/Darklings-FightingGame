@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   travelDistance: 0
   travelDirection: {x: 0, y: 0}
-  hitStun: 0.6
+  hitStun: 0.75
   blockStun: 0
   knockback: 0.21
   knockbackDirection: {x: 0, y: 0}
@@ -23,6 +23,7 @@ MonoBehaviour:
   hitstop: 0.175
   isAirAttack: 0
   isProjectile: 0
+  isArcana: 0
   causesKnockdown: 0
   attackSound: Hit
   impactSound: Impact2
@@ -32,6 +33,7 @@ MonoBehaviour:
   hurtEffect: {fileID: 6697712921357175186, guid: 92f68937417bb0e40a74f3489b97fded, type: 3}
   hurtEffectPosition: {x: 2.0730023, y: -3.4550002}
   hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: 1c671891c21f7fd4fb764bc8f3fc6f5f, type: 2}
   startUpFrames: 20
   activeFrames: 6
   recoveryFrames: 9

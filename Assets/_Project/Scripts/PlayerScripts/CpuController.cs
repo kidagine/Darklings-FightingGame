@@ -8,8 +8,9 @@ public class CpuController : BaseController
 	private Coroutine _attackCoroutine;
 	private float _movementInputX;
 	private float _distance;
-	private bool _didAction;
-
+	private float _arcanaTimer;
+	private float _attackTimer;
+	private float _movementTimer;
 
 	public void SetOtherPlayer(Transform otherPlayer)
 	{
@@ -18,134 +19,128 @@ public class CpuController : BaseController
 
 	void Update()
 	{
-		if (!GameManager.Instance.IsCpuOff)
+		if (!GameManager.Instance.IsCpuOff && !_playerMovement.FullyLockMovement && !_player.IsAttacking)
 		{
 			_distance = Mathf.Abs(_otherPlayer.transform.position.x - transform.position.x);
 			_playerMovement.MovementInput = new Vector2(_movementInputX, 0.0f);
+			Arcana();
+			Movement();
+			Attack();
 		}
 		else
 		{
-			//if (TrainingSettings.Stance == 0)
-			//{
-			//	_playerMovement.StandUpAction();
-			//}
-			//if (TrainingSettings.Stance == 1)
-			//{
-			//	_playerMovement.CrouchAction();
-			//}
-			//if (TrainingSettings.Stance == 2)
-			//{
-			//	_playerMovement.JumpAction();
-			//}
+			if (TrainingSettings.Stance == 0)
+			{
+				_playerMovement.StandUpAction();
+			}
+			if (TrainingSettings.Stance == 1)
+			{
+				_playerMovement.CrouchAction();
+			}
+			if (TrainingSettings.Stance == 2)
+			{
+				_playerMovement.JumpAction();
+			}
 			_playerMovement.MovementInput = Vector2.zero;
 		}
 	}
 
-	IEnumerator MovementCoroutine()
+	private void Movement()
 	{
-		float waitTime;
-		while (IsControllerEnabled && !GameManager.Instance.IsCpuOff)
+		if (IsControllerEnabled)
 		{
-			int movementRandom;
-			if (_distance <= 6.5f)
+			_movementTimer -= Time.deltaTime;
+			if (_movementTimer < 0)
 			{
-				movementRandom = Random.Range(0, 3);
-			}
-			else
-			{
-				movementRandom = Random.Range(0, 6);
-			}
-			int jumpRandom = Random.Range(0, 8);
-			int crouchRandom = Random.Range(0, 12);
-			int standingRandom = Random.Range(0, 4);
-			switch (movementRandom)
-			{
-				case 1:
-					_didAction = true;
-					_movementInputX = 0.0f;
-					waitTime = Random.Range(0.2f, 0.35f);
-					break;
-				case 2:
-					_didAction = true;
-					_movementInputX = transform.localScale.x * -1.0f;
-					waitTime = Random.Range(0.5f, 1.2f);
-					break;
-				default:
-					_didAction = true;
-					_movementInputX = transform.localScale.x * 1.0f;
-					waitTime = Random.Range(0.5f, 1.2f);
-					break;
-			}
-			if (jumpRandom == 2)
-			{
-				if (GameManager.Instance.HasGameStarted)
+				int movementRandom;
+				if (_distance <= 6.5f)
 				{
-					_didAction = true;
-					_playerMovement.JumpAction();
+					movementRandom = Random.Range(0, 6);
 				}
-			}
-			if (crouchRandom == 2)
-			{
-				_didAction = true;
-				_playerMovement.CrouchAction();
-			}
-			if (_playerMovement.IsCrouching)
-			{
-				if (standingRandom == 2)
+				else
 				{
-					_didAction = true;
-					_playerMovement.StandUpAction();
+					movementRandom = Random.Range(0, 9);
 				}
+				int jumpRandom = Random.Range(0, 8);
+				int crouchRandom = Random.Range(0, 12);
+				int standingRandom = Random.Range(0, 4);
+				_movementInputX = movementRandom switch
+				{
+					1 => 0.0f,
+					2 => transform.localScale.x * -1.0f,
+					_ => transform.localScale.x * 1.0f,
+				};
+				if (jumpRandom == 2)
+				{
+					if (GameManager.Instance.HasGameStarted)
+					{
+						_playerMovement.JumpAction();
+					}
+				}
+				if (crouchRandom == 2)
+				{
+					_playerMovement.CrouchAction();
+				}
+				if (_playerMovement.IsCrouching)
+				{
+					if (standingRandom == 2)
+					{
+						_playerMovement.StandUpAction();
+					}
+				}
+				_movementTimer = Random.Range(0.2f, 0.35f);
 			}
-			_didAction = false;
-			yield return new WaitForSeconds(waitTime);
 		}
 	}
 
-	IEnumerator AttackCoroutine()
+	private void Attack()
 	{
-		while (IsControllerEnabled && !GameManager.Instance.IsCpuOff)
+		if (IsControllerEnabled)
 		{
-			if (_distance <= 6.5f)
+			_attackTimer -= Time.deltaTime;
+			if (_attackTimer < 0)
 			{
-				if (GameManager.Instance.HasGameStarted)
+				int attackRandom = Random.Range(0, 8);
+				if (attackRandom <= 2)
 				{
-					int arcanaRandom = Random.Range(0, 4);
-					float attackWaitRandom = Random.Range(0.25f, 0.8f);
-					if (!_didAction)
-					{
-						if (arcanaRandom == 2)
-						{
-							_player.AssistAction();
-							attackWaitRandom = 0.0f;
-						}
-						else if (arcanaRandom == 3)
-						{
-							_player.ArcaneAction();
-							attackWaitRandom = 0.0f;
-						}
-						else
-						{
-							int attackRandom = Random.Range(0, 6);
-							if (attackRandom <= 2)
-							{
-								_player.LightAction();
-							}
-							else if (attackRandom <= 4)
-							{
-								_player.MediumAction();
-							}
-							else
-							{
-								_player.HeavyAction();
-							}
-						}
-						yield return new WaitForSeconds(attackWaitRandom);
-					}
-					yield return new WaitForSeconds(0.25f);
+					_player.LightAction();
 				}
+				else if (attackRandom <= 4)
+				{
+					_player.MediumAction();
+				}
+				else if (attackRandom <= 6)
+				{
+					_player.HeavyAction();
+				}
+				else
+				{
+					_player.ThrowAction();
+				}
+				_attackTimer = Random.Range(0.15f, 0.35f);
 			}
-			yield return null;
+		}
+	}
+
+	private void Arcana()
+	{
+		if (IsControllerEnabled)
+		{
+			_arcanaTimer -= Time.deltaTime;
+			if (_arcanaTimer < 0)
+			{
+				int arcanaRandom = Random.Range(0, 2);
+				if (arcanaRandom == 0)
+				{
+					_player.AssistAction();
+				}
+				else if (arcanaRandom == 1)
+				{
+					_player.ArcaneAction();
+				}
+				_attackTimer = Random.Range(0.15f, 0.35f);
+				_arcanaTimer = Random.Range(0.4f, 0.85f);
+			}
 		}
 	}
 
@@ -154,14 +149,6 @@ public class CpuController : BaseController
 		if (!GameManager.Instance.IsCpuOff)
 		{
 			base.ActivateInput();
-			if (_movementCoroutine == null)
-			{
-				_movementCoroutine = StartCoroutine(MovementCoroutine());
-			}
-			if (_attackCoroutine == null)
-			{
-				_attackCoroutine = StartCoroutine(AttackCoroutine());
-			}
 		}
 	}
 

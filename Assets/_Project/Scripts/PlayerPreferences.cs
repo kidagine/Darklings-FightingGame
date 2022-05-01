@@ -35,10 +35,6 @@ public class PlayerPreferences : MonoBehaviour
 	[SerializeField] private int _arcanaSelectorInitial = default;
 	[SerializeField] private BaseSelector _assistSelector = default;
 	[SerializeField] private int _assistSelectorInitial = default;
-	[SerializeField] private BaseSelector _hitboxesSelector = default;
-	[SerializeField] private int _hitboxesSelectorInitial = default;
-	[SerializeField] private BaseSelector _framedataSelector = default;
-	[SerializeField] private int _framedataSelectorInitial = default;
 	[Header("CPU")]
 	[SerializeField] private BaseSelector _cpuSelector = default;
 	[SerializeField] private int _cpuSelectorInitial = default;
@@ -49,10 +45,16 @@ public class PlayerPreferences : MonoBehaviour
 	[SerializeField] private BaseSelector _stanceSelector = default;
 	[SerializeField] private int _stanceSelectorInitial = default;
 	[Header("Misc")]
+	[SerializeField] private BaseSelector _hitboxesSelector = default;
+	[SerializeField] private int _hitboxesSelectorInitial = default;
+	[SerializeField] private BaseSelector _framedataSelector = default;
+	[SerializeField] private int _framedataSelectorInitial = default;
 	[SerializeField] private BaseSelector _slowdownSelector = default;
 	[SerializeField] private int _slowdownSelectorInitial = default;
 	[SerializeField] private BaseSelector _inputSelector = default;
 	[SerializeField] private int _inputSelectorInitial = default;
+	[SerializeField] private BaseSelector _uiCanvasSelector = default;
+	[SerializeField] private int _uiCanvasSelectorInitial = default;
 
 
 	void Start()
@@ -107,6 +109,7 @@ public class PlayerPreferences : MonoBehaviour
 		_framedataSelector.SetValue(PlayerPrefs.GetInt("framedata", _framedataSelectorInitial));
 		_slowdownSelector.SetValue(PlayerPrefs.GetInt("slowdown", _slowdownSelectorInitial));
 		_inputSelector.SetValue(PlayerPrefs.GetInt("input", _inputSelectorInitial));
+		_uiCanvasSelector.SetValue(PlayerPrefs.GetInt("uiCanvas", _uiCanvasSelectorInitial));
 	}
 
 	public void SavePreference(string key, int value)

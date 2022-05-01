@@ -18,18 +18,22 @@ public class PlayerController : BaseController
 
 	void Update()
 	{
-		if (!string.IsNullOrEmpty(_brainController.ControllerInputName) && IsControllerEnabled)
+		if (!string.IsNullOrEmpty(_brainController.ControllerInputName))
 		{
-			Movement();
-			Jump();
-			Crouch();
-			Light();
-			Medium();
-			Heavy();
-			Arcane();
-			Assist();
+			if (IsControllerEnabled)
+			{
+				Movement();
+				Jump();
+				Crouch();
+				Light();
+				Medium();
+				Heavy();
+				Arcane();
+				Assist();
+				Throw();
+				Dash();
+			}
 			Pause();
-			Dash();
 			ResetRound();
 			SwitchCharacter();
 		}
@@ -46,14 +50,14 @@ public class PlayerController : BaseController
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
 		}
-		//if (InputDirection.y == 1.0f && _playerMovement.MovementInput.y != InputDirection.y)
-		//{
-		//	_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
-		//}
-		//if (InputDirection.y == -1.0f && _playerMovement.MovementInput.y != InputDirection.y)
-		//{
-		//	_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-		//}
+		if (InputDirection.y == 1.0f && _playerMovement.MovementInput.y != InputDirection.y)
+		{
+			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+		}
+		if (InputDirection.y == -1.0f && _playerMovement.MovementInput.y != InputDirection.y)
+		{
+			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+		}
 		_playerMovement.MovementInput = InputDirection;
 	}
 
@@ -124,6 +128,15 @@ public class PlayerController : BaseController
 		}
 	}
 
+	protected virtual void Throw()
+	{
+		if (Input.GetButtonDown(_brainController.ControllerInputName + "Throw"))
+		{
+			_player.ThrowAction();
+			_inputBuffer.AddInputBufferItem(InputEnum.Throw);
+		}
+	}
+
 	private void ResetRound()
 	{
 		if (Input.GetButtonDown(_brainController.ControllerInputName + "Reset"))
@@ -142,13 +155,16 @@ public class PlayerController : BaseController
 
 	private void Pause()
 	{
-		if (Input.GetButtonDown(_brainController.ControllerInputName + "Pause"))
+		if (GameManager.Instance.HasGameStarted)
 		{
-			_player.Pause(_brainController.IsPlayerOne);
-		}
-		if (Input.GetButtonUp(_brainController.ControllerInputName + "Pause"))
-		{
-			_player.UnPause();
+			if (Input.GetButtonDown(_brainController.ControllerInputName + "Pause"))
+			{
+				_player.Pause(_brainController.IsPlayerOne);
+			}
+			if (Input.GetButtonUp(_brainController.ControllerInputName + "Pause"))
+			{
+				_player.UnPause();
+			}
 		}
 	}
 
