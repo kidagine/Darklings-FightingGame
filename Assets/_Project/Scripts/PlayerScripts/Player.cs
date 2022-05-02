@@ -321,7 +321,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			else
 			{
 				CameraShake.Instance.Shake(0.5f, 0.1f);
-				_audio.Sound("Hit").Play();
+				_audio.Sound("Shadowbreak").Play();
 				Instantiate(_shadowbreakPrefab, new Vector2(transform.position.x, transform.position.y + 1.0f), Quaternion.identity);
 				_otherPlayer.ShadowbreakKnockback();
 			}
