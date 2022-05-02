@@ -311,9 +311,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool AssistAction()
 	{
-		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsBlocking && !IsKnockedDown && GameManager.Instance.HasGameStarted)
+		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsKnockedDown && GameManager.Instance.HasGameStarted)
 		{
-			_assist.Attack();
+			if (!IsBlocking)
+			{
+				_assist.Attack();
+			}
+			else
+			{
+				_otherPlayer.BurstKnockback();
+			}
 			_assistGauge--;
 			_playerUI.SetAssist(_assistGauge);
 			return true;
