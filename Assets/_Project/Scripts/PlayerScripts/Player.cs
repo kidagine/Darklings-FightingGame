@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] private GameObject _blockEffectPrefab = default;
+	[SerializeField] private GameObject _shadowbreakPrefab = default;
 	[SerializeField] protected Transform _effectsParent = default;
 	[SerializeField] private Transform _grabPoint = default;
 	[SerializeField] private Transform _keepFlip = default;
@@ -313,13 +314,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsKnockedDown && GameManager.Instance.HasGameStarted)
 		{
-			if (!IsBlocking)
+			if (IsBlocking)
 			{
 				_assist.Attack();
 			}
 			else
 			{
-				_otherPlayer.BurstKnockback();
+				CameraShake.Instance.Shake(0.5f, 0.1f);
+				_audio.Sound("Hit").Play();
+				Instantiate(_shadowbreakPrefab, new Vector2(transform.position.x, transform.position.y + 1.0f), Quaternion.identity);
+				_otherPlayer.ShadowbreakKnockback();
 			}
 			_assistGauge--;
 			_playerUI.SetAssist(_assistGauge);
