@@ -315,7 +315,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
 		_playerController.DeactivateInput();
 		_knockdownAction += _playerController.ActivateInput;
-		Knockback(new Vector2(-transform.localScale.x, 0.0f), 4f, 0.25f);
+		Knockback(new Vector2(-transform.localScale.x, 0.0f), 4.5f, 0.2f);
 	}
 
 	public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
