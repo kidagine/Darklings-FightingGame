@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected GameObject _keyboardPrompts = default;
 	[SerializeField] protected GameObject _controllerPrompts = default;
 	[SerializeField] protected GameObject[] _readyObjects = default;
+	[SerializeField] protected GameObject[] _arcanaObjects = default;
 	[SerializeField] protected GameObject _leftStopper = default;
 	[SerializeField] protected GameObject _rightStopper = default;
 	[SerializeField] protected GameObject _playerLocal = default;
@@ -299,7 +300,7 @@ public class GameManager : MonoBehaviour
 			_trainingPrompts.gameObject.SetActive(false);
 			if (!_isOnlineMode)
 			{
-				StartRound();
+				StartIntro();
 			}
 		}
 	}
@@ -315,6 +316,17 @@ public class GameManager : MonoBehaviour
 				StartCoroutine(RoundTieCoroutine());
 			}
 		}
+	}
+
+	void StartIntro()
+	{
+		for (int i = 0; i < _arcanaObjects.Length; i++)
+		{
+			_arcanaObjects[i].SetActive(false);
+		}
+		_playerOneController.DeactivateInput();
+		_playerTwoController.DeactivateInput();
+		//StartRound();
 	}
 
 	IEnumerator RoundTieCoroutine()
@@ -333,6 +345,12 @@ public class GameManager : MonoBehaviour
 
 	public virtual void StartRound()
 	{
+		_playerOneController.ActivateInput();
+		_playerTwoController.ActivateInput();
+		for (int i = 0; i < _arcanaObjects.Length; i++)
+		{
+			_arcanaObjects[i].SetActive(true);
+		}
 		_countdown = 99.0f;
 		_countdownText.text = Mathf.Round(_countdown).ToString();
 		PlayerOne.ResetPlayer();
