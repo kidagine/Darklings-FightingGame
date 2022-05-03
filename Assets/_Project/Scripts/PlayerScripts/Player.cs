@@ -321,9 +321,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			else
 			{
 				_audio.Sound("Shadowbreak").Play();
+				_playerAnimator.Shadowbreak();
+				_playerMovement.SetLockMovement(true);
 				CameraShake.Instance.Shake(0.5f, 0.1f);
-				Transform shadowbreak = Instantiate(_shadowbreakPrefab, transform).transform;
-				shadowbreak.position = new Vector2(transform.position.x, transform.position.y + 1.0f);
+				Transform shadowbreak = Instantiate(_shadowbreakPrefab, _playerAnimator.transform).transform;
+				shadowbreak.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
 			}
 			_assistGauge--;
 			_playerUI.SetAssist(_assistGauge);
