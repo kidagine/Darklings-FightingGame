@@ -67,6 +67,10 @@ public class PlayerAnimator : MonoBehaviour
 	{
 		_animator.SetTrigger(attackType);
 	}
+	public void Shadowbreak()
+	{
+		_animator.SetTrigger("Shadowbreak");
+	}
 	public void Throw()
 	{
 		_animator.SetTrigger("Throw");

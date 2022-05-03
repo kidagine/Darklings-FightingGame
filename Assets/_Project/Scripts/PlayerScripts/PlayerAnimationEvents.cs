@@ -26,6 +26,16 @@ public class PlayerAnimationEvents : MonoBehaviour
 		SetFramedata();
 	}
 
+	public void UnlockMovementNoFramedata()
+	{
+		_player.IsAttacking = false;
+		_playerMovement.SetLockMovement(false);
+		_player.CanCancelAttack = false;
+		_inputBuffer.CheckForInputBufferItem();
+		_player.CanShadowbreak = true;
+		_playerMovement.FullyLockMovement = false;
+	}
+
 	public void FullyLockMovement()
 	{
 		_playerMovement.FullyLockMovement = true;

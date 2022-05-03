@@ -1,6 +1,8 @@
 using Demonics.Sounds;
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
@@ -21,6 +23,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	protected bool _isMovementLocked;
 	protected bool _onTopOfPlayer;
 	private bool _hasDashedMiddair;
+
+	private UnityAction _knockbackAction;
 
 	public bool FullyLockMovement { get; set; }
 	public Vector2 MovementInput { get; set; }
@@ -307,6 +311,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_playerAnimator.IsJumping(true);
 	}
 
+	public void ShadowbreakKnockback()
+	{
+		_playerController.DeactivateInput();
+		_knockbackAction += _playerController.ActivateInput;
+		_player.Knockdown();
+		Knockback(new Vector2(-transform.localScale.x, 0.3f), 4.5f, 0.3f);
+	}
+
 	public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
 	{
 		_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce, transform.position.y));
@@ -325,6 +337,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			yield return null;
 		}
 		_rigidbody.MovePosition(finalPosition);
+		_knockbackAction?.Invoke();
+		_knockbackAction = null;
 	}
 
 	public void DashAction(float directionX)

@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] private GameObject _blockEffectPrefab = default;
+	[SerializeField] private GameObject _shadowbreakPrefab = default;
 	[SerializeField] protected Transform _effectsParent = default;
 	[SerializeField] private Transform _grabPoint = default;
 	[SerializeField] private Transform _keepFlip = default;
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool BlockingMiddair { get; set; }
 	public bool IsDead { get; set; }
 	public bool CanFlip { get; set; } = true;
+	public bool CanShadowbreak { get; set; } = true;
 	public bool CanCancelAttack { get; set; }
 
 	void Awake()
@@ -148,9 +150,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void AssistCharge()
 	{
-		if (_assistGauge < 1.0f && !_assist.IsOnScreen && GameManager.Instance.HasGameStarted)
+		if (_assistGauge < 1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
 		{
-			_assistGauge += Time.deltaTime / (12.0f - _assist.AssistStats.assistRecharge);
+			_assistGauge += Time.deltaTime / (11.0f - _assist.AssistStats.assistRecharge);
 			if (GameManager.Instance.InfiniteAssist)
 			{
 				_assistGauge = 1.0f;
@@ -311,14 +313,35 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool AssistAction()
 	{
-		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsBlocking && !IsKnockedDown && GameManager.Instance.HasGameStarted)
+		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsKnockedDown && GameManager.Instance.HasGameStarted)
 		{
-			_assist.Attack();
+			if (IsBlocking)
+			{
+				_assist.Attack();
+			}
+			else
+			{
+				if (CanShadowbreak)
+				{
+					Shadowbreak();
+				}
+			}
 			_assistGauge--;
 			_playerUI.SetAssist(_assistGauge);
 			return true;
 		}
 		return false;
+	}
+
+	private void Shadowbreak()
+	{
+		CanShadowbreak = false;
+		_audio.Sound("Shadowbreak").Play();
+		_playerAnimator.Shadowbreak();
+		_playerMovement.SetLockMovement(true);
+		CameraShake.Instance.Shake(0.5f, 0.1f);
+		Transform shadowbreak = Instantiate(_shadowbreakPrefab, _playerAnimator.transform).transform;
+		shadowbreak.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
