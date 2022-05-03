@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	protected bool _onTopOfPlayer;
 	private bool _hasDashedMiddair;
 
-	private UnityAction _knockdownAction;
+	private UnityAction _knockbackAction;
 
 	public bool FullyLockMovement { get; set; }
 	public Vector2 MovementInput { get; set; }
@@ -314,8 +314,9 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	public void ShadowbreakKnockback()
 	{
 		_playerController.DeactivateInput();
-		_knockdownAction += _playerController.ActivateInput;
-		Knockback(new Vector2(-transform.localScale.x, 0.0f), 4.5f, 0.2f);
+		_knockbackAction += _playerController.ActivateInput;
+		_player.Knockdown();
+		Knockback(new Vector2(-transform.localScale.x, 0.3f), 4.5f, 0.3f);
 	}
 
 	public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
@@ -336,8 +337,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			yield return null;
 		}
 		_rigidbody.MovePosition(finalPosition);
-		_knockdownAction?.Invoke();
-		_knockdownAction = null;
+		_knockbackAction?.Invoke();
+		_knockbackAction = null;
 	}
 
 	public void DashAction(float directionX)

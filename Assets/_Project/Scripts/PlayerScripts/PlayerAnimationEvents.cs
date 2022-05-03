@@ -32,6 +32,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 		_playerMovement.SetLockMovement(false);
 		_player.CanCancelAttack = false;
 		_inputBuffer.CheckForInputBufferItem();
+		_player.CanShadowbreak = true;
 		_playerMovement.FullyLockMovement = false;
 	}
 

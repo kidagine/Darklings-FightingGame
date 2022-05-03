@@ -46,6 +46,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool BlockingMiddair { get; set; }
 	public bool IsDead { get; set; }
 	public bool CanFlip { get; set; } = true;
+	public bool CanShadowbreak { get; set; } = true;
 	public bool CanCancelAttack { get; set; }
 
 	void Awake()
@@ -149,9 +150,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void AssistCharge()
 	{
-		if (_assistGauge < 1.0f && !_assist.IsOnScreen && GameManager.Instance.HasGameStarted)
+		if (_assistGauge < 1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
 		{
-			_assistGauge += Time.deltaTime / (12.0f - _assist.AssistStats.assistRecharge);
+			_assistGauge += Time.deltaTime / (11.0f - _assist.AssistStats.assistRecharge);
 			if (GameManager.Instance.InfiniteAssist)
 			{
 				_assistGauge = 1.0f;
@@ -320,18 +321,27 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 			else
 			{
-				_audio.Sound("Shadowbreak").Play();
-				_playerAnimator.Shadowbreak();
-				_playerMovement.SetLockMovement(true);
-				CameraShake.Instance.Shake(0.5f, 0.1f);
-				Transform shadowbreak = Instantiate(_shadowbreakPrefab, _playerAnimator.transform).transform;
-				shadowbreak.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
+				if (CanShadowbreak)
+				{
+					Shadowbreak();
+				}
 			}
 			_assistGauge--;
 			_playerUI.SetAssist(_assistGauge);
 			return true;
 		}
 		return false;
+	}
+
+	private void Shadowbreak()
+	{
+		CanShadowbreak = false;
+		_audio.Sound("Shadowbreak").Play();
+		_playerAnimator.Shadowbreak();
+		_playerMovement.SetLockMovement(true);
+		CameraShake.Instance.Shake(0.5f, 0.1f);
+		Transform shadowbreak = Instantiate(_shadowbreakPrefab, _playerAnimator.transform).transform;
+		shadowbreak.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
