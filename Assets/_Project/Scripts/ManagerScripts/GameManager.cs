@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private PlayerDialogue _playerOneDialogue = default;
 	[SerializeField] private PlayerDialogue _playerTwoDialogue = default;
 	[SerializeField] private Animator _timerAnimator = default;
+	[SerializeField] private Animator _introAnimator = default;
 	[SerializeField] protected TextMeshProUGUI _countdownText = default;
 	[SerializeField] protected TextMeshProUGUI _readyText = default;
 	[SerializeField] protected TextMeshProUGUI _winnerNameText = default;
@@ -330,7 +331,7 @@ public class GameManager : MonoBehaviour
 		_playerTwoController.DeactivateInput();
 		_playerOneDialogue.Initialize(_playerStats[SceneSettings.PlayerOne]._dialogue, _characterTwo);
 		_playerTwoDialogue.Initialize(_playerStats[SceneSettings.PlayerTwo]._dialogue, _characterOne);
-		_playerOneDialogue.PlayDialogue();
+		_introAnimator.SetTrigger("Intro");
 	}
 
 	IEnumerator RoundTieCoroutine()
