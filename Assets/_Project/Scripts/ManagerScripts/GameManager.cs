@@ -306,10 +306,7 @@ public class GameManager : MonoBehaviour
 			_inputHistories[0].gameObject.SetActive(false);
 			_inputHistories[1].gameObject.SetActive(false);
 			_trainingPrompts.gameObject.SetActive(false);
-			if (!_isOnlineMode)
-			{
-				StartIntro();
-			}
+			StartIntro();
 		}
 	}
 

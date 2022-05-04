@@ -26,12 +26,12 @@ public class PlayerDialogue : MonoBehaviour
 	{
 		for (int i = 0; i < sentence.Length; i++)
 		{
-			yield return new WaitForSeconds(0.05f);
+			yield return new WaitForSecondsRealtime(0.05f);
 			_dialogueText.text += sentence[i];
 		}
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSecondsRealtime(1.5f);
 		transform.GetChild(0).gameObject.SetActive(false);
-		yield return new WaitForSeconds(0.35f);
+		yield return new WaitForSecondsRealtime(0.35f);
 		FinishedDialogue = true;
 		if (FinishedDialogue && _otherPlayerDialogue.FinishedDialogue)
 		{
