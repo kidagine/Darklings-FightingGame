@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private int _gameSpeed = 1;
 	[Header("Data")]
 	[SerializeField] private Transform[] _spawnPositions = default;
+	[SerializeField] private IntroUI _introUI = default;
 	[SerializeField] protected PlayerUI _playerOneUI = default;
 	[SerializeField] protected PlayerUI _playerTwoUI = default;
 	[SerializeField] private PlayerDialogue _playerOneDialogue = default;
@@ -65,6 +66,8 @@ public class GameManager : MonoBehaviour
 	private PlayerMovement _playerMovementTwo;
 	protected BrainController _playerOneController;
 	protected BrainController _playerTwoController;
+	private PlayerAnimator _playerOneAnimator;
+	private PlayerAnimator _playerTwoAnimator;
 	private Coroutine _roundOverTrainingCoroutine;
 	private Sound _currentMusic;
 	private GameObject _currentStage;
@@ -186,14 +189,16 @@ public class GameManager : MonoBehaviour
 		PlayerTwo.SetController();
 		_playerMovementOne.SetController();
 		_playerMovementTwo.SetController();
+		_playerOneAnimator = PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimator>();
+		_playerTwoAnimator = PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>();
 		PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
 		PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
-		PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorOne);
+		_playerOneAnimator.SetSpriteLibraryAsset(SceneSettings.ColorOne);
 		if (SceneSettings.ColorTwo == SceneSettings.ColorOne && PlayerOne.PlayerStats.characterName == PlayerTwo.PlayerStats.characterName)
 		{
 			SceneSettings.ColorTwo++;
 		}
-		PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorTwo);
+		_playerTwoAnimator.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
 		_playerOneController.IsPlayerOne = true;
 		PlayerOne.SetPlayerUI(_playerOneUI);
 		PlayerTwo.SetPlayerUI(_playerTwoUI);
@@ -327,6 +332,7 @@ public class GameManager : MonoBehaviour
 		{
 			_arcanaObjects[i].SetActive(false);
 		}
+		_introUI.SetPlayerNames(_characterOne.ToString(), _characterTwo.ToString());
 		_playerOneController.DeactivateInput();
 		_playerTwoController.DeactivateInput();
 		_playerOneDialogue.Initialize(_playerStats[SceneSettings.PlayerOne]._dialogue, _characterTwo);
@@ -350,8 +356,6 @@ public class GameManager : MonoBehaviour
 
 	public virtual void StartRound()
 	{
-		_playerOneController.ActivateInput();
-		_playerTwoController.ActivateInput();
 		for (int i = 0; i < _arcanaObjects.Length; i++)
 		{
 			_arcanaObjects[i].SetActive(true);
@@ -360,12 +364,16 @@ public class GameManager : MonoBehaviour
 		_countdownText.text = Mathf.Round(_countdown).ToString();
 		PlayerOne.ResetPlayer();
 		PlayerTwo.ResetPlayer();
+		_playerOneController.DeactivateInput();
+		_playerTwoController.DeactivateInput();
 		_leftStopper.SetActive(true);
 		_rightStopper.SetActive(true);
 		PlayerOne.transform.position = _spawnPositions[0].position;
 		PlayerTwo.transform.position = _spawnPositions[1].position;
 		_playerOneUI.ResetCombo();
 		_playerTwoUI.ResetCombo();
+		_playerOneAnimator.Intro();
+		_playerTwoAnimator.Intro();
 		StartCoroutine(ReadyCoroutine());
 	}
 
@@ -420,6 +428,8 @@ public class GameManager : MonoBehaviour
 		_readyText.text = "";
 		_leftStopper.SetActive(false);
 		_rightStopper.SetActive(false);
+		_playerOneController.ActivateInput();
+		_playerTwoController.ActivateInput();
 		HasGameStarted = true;
 	}
 

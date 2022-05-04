@@ -4793,6 +4793,7 @@ MonoBehaviour:
   _spawnPositions:
   - {fileID: 1725751517}
   - {fileID: 963923573}
+  _introUI: {fileID: 633093284}
   _playerOneUI: {fileID: 548047948519602076}
   _playerTwoUI: {fileID: 1260952191717519731}
   _playerOneDialogue: {fileID: 289302308}
@@ -5360,7 +5361,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 808685495, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
+      objectReference: {fileID: 856671612, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -5392,7 +5393,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578679, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: 7c05a2f8ad7d54d468c47b3141a06f56, type: 2}
+      objectReference: {fileID: 22100000, guid: c0acca90970e15241b8dd1a134c692a0, type: 2}
     - target: {fileID: 8073473790702501984, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -7280,6 +7281,7 @@ GameObject:
   - component: {fileID: 633093281}
   - component: {fileID: 633093280}
   - component: {fileID: 633093284}
+  - component: {fileID: 633093285}
   m_Layer: 5
   m_Name: Intro_canvas
   m_TagString: Untagged
@@ -7403,7 +7405,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aada369647a562e4793f5c3bb7d2a00f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerDialogue: {fileID: 289302308}
+  _playerOneDialogue: {fileID: 289302308}
+  _playerTwoDialogue: {fileID: 1698465833}
+  _playerOneName: {fileID: 499220871}
+  _playerTwoName: {fileID: 1830482470}
+--- !u!114 &633093285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633093278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 35679d7e204f8524d9265b94aca274dc, type: 3}
+    volume: 1
+    pitch: 1
+    name: TextAppear
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!1 &633711852
 GameObject:
   m_ObjectHideFlags: 0
@@ -9862,8 +9892,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 350, y: 0}
-  m_SizeDelta: {x: 550, y: 200}
+  m_AnchoredPosition: {x: 350, y: -50}
+  m_SizeDelta: {x: 550, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &819606435
 MonoBehaviour:
@@ -14172,7 +14202,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -22568,7 +22598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd6b65861c73796439bba8c0473775df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _otherPlayerDialogue: {fileID: 0}
+  _otherPlayerDialogue: {fileID: 289302308}
   _dialogueText: {fileID: 1127813393}
 --- !u!1001 &1702887902
 PrefabInstance:
@@ -24209,7 +24239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5eb80d8e62d9d145bb50fb783c0f731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PositionMode: 0
+  m_PositionMode: 1
   m_RotationMode: 0
   m_UpdateMethod: 0
   m_Targets: []
@@ -24786,8 +24816,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -350, y: 0}
-  m_SizeDelta: {x: 550, y: 200}
+  m_AnchoredPosition: {x: -350, y: -50}
+  m_SizeDelta: {x: 550, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1889011096
 MonoBehaviour:
@@ -26643,7 +26673,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

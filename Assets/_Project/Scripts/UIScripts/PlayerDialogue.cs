@@ -8,7 +8,7 @@ public class PlayerDialogue : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _dialogueText = default;
 	private DialogueSO _dialogue;
 	private CharacterTypeEnum _opponentCharacter;
-
+	public bool FinishedDialogue { get; private set; }
 
 	public void Initialize(DialogueSO dialogue, CharacterTypeEnum opponentCharacter)
 	{
@@ -32,11 +32,8 @@ public class PlayerDialogue : MonoBehaviour
 		yield return new WaitForSeconds(1.5f);
 		transform.GetChild(0).gameObject.SetActive(false);
 		yield return new WaitForSeconds(0.35f);
-		if (_otherPlayerDialogue != null)
-		{
-			_otherPlayerDialogue.PlayDialogue();
-		}
-		else
+		FinishedDialogue = true;
+		if (FinishedDialogue && _otherPlayerDialogue.FinishedDialogue)
 		{
 			GameManager.Instance.StartRound();
 		}
