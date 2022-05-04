@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private Transform[] _spawnPositions = default;
 	[SerializeField] protected PlayerUI _playerOneUI = default;
 	[SerializeField] protected PlayerUI _playerTwoUI = default;
+	[SerializeField] private PlayerDialogue _playerOneDialogue = default;
+	[SerializeField] private PlayerDialogue _playerTwoDialogue = default;
 	[SerializeField] private Animator _timerAnimator = default;
 	[SerializeField] protected TextMeshProUGUI _countdownText = default;
 	[SerializeField] protected TextMeshProUGUI _readyText = default;
@@ -326,7 +328,9 @@ public class GameManager : MonoBehaviour
 		}
 		_playerOneController.DeactivateInput();
 		_playerTwoController.DeactivateInput();
-		//StartRound();
+		_playerOneDialogue.Initialize(_playerStats[SceneSettings.PlayerOne]._dialogue, _characterTwo);
+		_playerTwoDialogue.Initialize(_playerStats[SceneSettings.PlayerTwo]._dialogue, _characterOne);
+		_playerOneDialogue.PlayDialogue();
 	}
 
 	IEnumerator RoundTieCoroutine()
