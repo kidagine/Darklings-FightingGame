@@ -75,6 +75,12 @@ public class PlayerAnimator : MonoBehaviour
 	{
 		_animator.SetTrigger("Throw");
 	}
+
+	public void Intro()
+	{
+		_animator.SetTrigger("Intro");
+	}
+
 	public void ThrowEnd()
 	{
 		_animator.SetTrigger("ThrowEnd");
