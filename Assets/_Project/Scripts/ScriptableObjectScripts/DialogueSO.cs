@@ -4,7 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Player Dialogue", menuName = "Scriptable Objects/Player Dialogue", order = 1)]
 public class DialogueSO : ScriptableObject
 {
-	public DialogueData[] dialogues;
+	public DialogueData[] playerOneDialogues;
+	public DialogueData[] playerTwoDialogues;
 }
 
 [Serializable]

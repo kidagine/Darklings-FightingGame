@@ -8,10 +8,12 @@ public class PlayerDialogue : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _dialogueText = default;
 	private DialogueSO _dialogue;
 	private CharacterTypeEnum _opponentCharacter;
+	private bool _isPlayerOne;
 	public bool FinishedDialogue { get; private set; }
 
-	public void Initialize(DialogueSO dialogue, CharacterTypeEnum opponentCharacter)
+	public void Initialize(bool isPlayerOne, DialogueSO dialogue, CharacterTypeEnum opponentCharacter)
 	{
+		_isPlayerOne = isPlayerOne;
 		_dialogue = dialogue;
 		_opponentCharacter = opponentCharacter;
 	}
@@ -41,13 +43,27 @@ public class PlayerDialogue : MonoBehaviour
 
 	private string GetSentence(DialogueSO dialogue, CharacterTypeEnum opponentCharacter)
 	{
-		for (int i = 0; i < dialogue.dialogues.Length; i++)
+		if (_isPlayerOne)
 		{
-			if (dialogue.dialogues[i].character == opponentCharacter)
+			for (int i = 0; i < dialogue.playerOneDialogues.Length; i++)
 			{
-				return dialogue.dialogues[i].sentence;
+				if (dialogue.playerOneDialogues[i].character == opponentCharacter)
+				{
+					return dialogue.playerOneDialogues[i].sentence;
+				}
 			}
+			return "Let's fight.";
 		}
-		return "Let's fight.";
+		else
+		{
+			for (int i = 0; i < dialogue.playerTwoDialogues.Length; i++)
+			{
+				if (dialogue.playerTwoDialogues[i].character == opponentCharacter)
+				{
+					return dialogue.playerTwoDialogues[i].sentence;
+				}
+			}
+			return "Let's fight.";
+		}
 	}
 }
