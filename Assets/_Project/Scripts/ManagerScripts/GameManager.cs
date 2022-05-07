@@ -332,8 +332,8 @@ public class GameManager : MonoBehaviour
 		_introUI.SetPlayerNames(_characterOne.ToString(), _characterTwo.ToString());
 		_playerOneController.DeactivateInput();
 		_playerTwoController.DeactivateInput();
-		_playerOneDialogue.Initialize(_playerStats[SceneSettings.PlayerOne]._dialogue, _characterTwo);
-		_playerTwoDialogue.Initialize(_playerStats[SceneSettings.PlayerTwo]._dialogue, _characterOne);
+		_playerOneDialogue.Initialize(true, _playerStats[SceneSettings.PlayerOne]._dialogue, _characterTwo);
+		_playerTwoDialogue.Initialize(false, _playerStats[SceneSettings.PlayerTwo]._dialogue, _characterOne);
 		_introAnimator.SetTrigger("Intro");
 	}
 
