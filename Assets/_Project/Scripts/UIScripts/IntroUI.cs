@@ -19,7 +19,6 @@ public class IntroUI : MonoBehaviour
 	public void PlayDialogueAnimationEvent()
     {
         _playerOneDialogue.PlayDialogue();
-        _playerTwoDialogue.PlayDialogue();
     }
 
     public void SetPlayerNames(string playerOne, string playerTwo)

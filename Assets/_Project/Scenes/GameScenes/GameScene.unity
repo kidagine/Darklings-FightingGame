@@ -3338,6 +3338,7 @@ GameObject:
   - component: {fileID: 289302306}
   - component: {fileID: 289302305}
   - component: {fileID: 289302308}
+  - component: {fileID: 289302309}
   m_Layer: 5
   m_Name: PlayerUIDialogue_canvas
   m_TagString: Untagged
@@ -3441,6 +3442,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _otherPlayerDialogue: {fileID: 1698465833}
   _dialogueText: {fileID: 2065875606}
+--- !u!114 &289302309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289302303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 7c31710ebad470a468979ec8e0bf3c71, type: 3}
+    volume: 0.04
+    pitch: 1
+    name: Typing
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!1 &295959329
 GameObject:
   m_ObjectHideFlags: 0
@@ -4777,8 +4803,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 0
-  _characterOne: 2
-  _characterTwo: 1
+  _characterOne: 1
+  _characterTwo: 3
   _assistOne: 0
   _assistTwo: 1
   _controllerOne: 0
@@ -22495,6 +22521,7 @@ GameObject:
   - component: {fileID: 1698465831}
   - component: {fileID: 1698465830}
   - component: {fileID: 1698465833}
+  - component: {fileID: 1698465834}
   m_Layer: 5
   m_Name: PlayerUIDialogue_canvas
   m_TagString: Untagged
@@ -22598,6 +22625,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _otherPlayerDialogue: {fileID: 289302308}
   _dialogueText: {fileID: 1127813393}
+--- !u!114 &1698465834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698465828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 7c31710ebad470a468979ec8e0bf3c71, type: 3}
+    volume: 0.04
+    pitch: 1
+    name: Typing
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []
 --- !u!1001 &1702887902
 PrefabInstance:
   m_ObjectHideFlags: 0
