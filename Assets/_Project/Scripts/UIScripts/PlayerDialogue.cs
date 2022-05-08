@@ -31,7 +31,7 @@ public class PlayerDialogue : MonoBehaviour
 			yield return new WaitForSecondsRealtime(0.05f);
 			_dialogueText.text += sentence[i];
 		}
-		yield return new WaitForSecondsRealtime(1.5f);
+		yield return new WaitForSecondsRealtime(2.5f);
 		transform.GetChild(0).gameObject.SetActive(false);
 		yield return new WaitForSecondsRealtime(0.35f);
 		FinishedDialogue = true;
