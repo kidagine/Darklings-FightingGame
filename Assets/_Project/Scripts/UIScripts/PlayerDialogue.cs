@@ -32,11 +32,12 @@ public class PlayerDialogue : MonoBehaviour
 			_dialogueText.text += sentence[i];
 		}
 		yield return new WaitForSecondsRealtime(2.5f);
-		transform.GetChild(0).gameObject.SetActive(false);
 		yield return new WaitForSecondsRealtime(0.35f);
 		FinishedDialogue = true;
 		if (FinishedDialogue && _otherPlayerDialogue.FinishedDialogue)
 		{
+			transform.GetChild(0).gameObject.SetActive(false);
+			_otherPlayerDialogue.transform.GetChild(0).gameObject.SetActive(false);
 			GameManager.Instance.StartRound();
 		}
 	}

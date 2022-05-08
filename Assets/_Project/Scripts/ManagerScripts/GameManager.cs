@@ -43,8 +43,6 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected GameObject _controllerPrompts = default;
 	[SerializeField] protected GameObject[] _readyObjects = default;
 	[SerializeField] protected GameObject[] _arcanaObjects = default;
-	[SerializeField] protected GameObject _leftStopper = default;
-	[SerializeField] protected GameObject _rightStopper = default;
 	[SerializeField] protected GameObject _playerLocal = default;
 	[SerializeField] protected GameObject _playerNetcode = default;
 	[SerializeField] protected GameObject _infiniteTime = default;
@@ -363,8 +361,6 @@ public class GameManager : MonoBehaviour
 		PlayerTwo.ResetPlayer();
 		_playerOneController.DeactivateInput();
 		_playerTwoController.DeactivateInput();
-		_leftStopper.SetActive(true);
-		_rightStopper.SetActive(true);
 		PlayerOne.transform.position = _spawnPositions[0].position;
 		PlayerTwo.transform.position = _spawnPositions[1].position;
 		_playerOneUI.ResetCombo();
@@ -384,8 +380,6 @@ public class GameManager : MonoBehaviour
 		_playerTwoUI.FadeIn();
 		_timerAnimator.SetTrigger("FadeIn");
 		_infiniteTime.SetActive(true);
-		_leftStopper.SetActive(false);
-		_rightStopper.SetActive(false);
 		PlayerOne.transform.position = _spawnPositions[0].position;
 		PlayerTwo.transform.position = _spawnPositions[1].position;
 		HasGameStarted = true;
@@ -423,8 +417,6 @@ public class GameManager : MonoBehaviour
 			_readyObjects[i].SetActive(false);
 		}
 		_readyText.text = "";
-		_leftStopper.SetActive(false);
-		_rightStopper.SetActive(false);
 		_playerOneController.ActivateInput();
 		_playerTwoController.ActivateInput();
 		HasGameStarted = true;
@@ -517,8 +509,6 @@ public class GameManager : MonoBehaviour
 			PlayerTwo.ResetPlayer();
 			PlayerOne.ResetLives();
 			PlayerTwo.ResetLives();
-			_leftStopper.SetActive(false);
-			_rightStopper.SetActive(false);
 
 			if (movementInput.y == 1.0f)
 			{
