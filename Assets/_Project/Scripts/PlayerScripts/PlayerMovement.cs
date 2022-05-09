@@ -243,8 +243,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 	}
 
-
-
 	public void GroundedPointExit()
 	{
 		if (_onTopOfPlayer)
