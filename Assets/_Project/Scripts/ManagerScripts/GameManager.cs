@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
 	private bool _reverseReset;
 	private bool _hasSwitchedCharacters;
 	private bool _canCallSwitchCharacter = true;
+	private bool _isDialogueRunning;
 	private int _playerOneWins;
 	private int _playerTwoWins;
 
@@ -319,6 +320,17 @@ public class GameManager : MonoBehaviour
 				StartCoroutine(RoundTieCoroutine());
 			}
 		}
+		if (_isDialogueRunning)
+		{
+			if (Input.anyKeyDown)
+			{
+				_playerOneDialogue.StopDialogue();
+				_playerTwoDialogue.StopDialogue();
+				StartRound();
+				_introAnimator.SetBool("IsIntroRunning", false);
+				_isDialogueRunning = false;
+			}
+		}
 	}
 
 	void StartIntro()
@@ -327,12 +339,13 @@ public class GameManager : MonoBehaviour
 		{
 			_arcanaObjects[i].SetActive(false);
 		}
+		_isDialogueRunning = true;
 		_introUI.SetPlayerNames(_characterOne.ToString(), _characterTwo.ToString());
 		_playerOneController.DeactivateInput();
 		_playerTwoController.DeactivateInput();
 		_playerOneDialogue.Initialize(true, _playerStats[SceneSettings.PlayerOne]._dialogue, _characterTwo);
 		_playerTwoDialogue.Initialize(false, _playerStats[SceneSettings.PlayerTwo]._dialogue, _characterOne);
-		_introAnimator.SetTrigger("Intro");
+		_introAnimator.SetBool("IsIntroRunning", true);
 	}
 
 	IEnumerator RoundTieCoroutine()

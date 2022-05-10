@@ -25,6 +25,9 @@ public class Shadow : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		Destroy(_shadow.root.gameObject);
+		if (_shadowSpriteRenderer != null)
+		{
+			Destroy(_shadow.root.gameObject);
+		}
 	}
 }
