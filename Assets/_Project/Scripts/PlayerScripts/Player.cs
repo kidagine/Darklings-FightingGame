@@ -316,7 +316,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsKnockedDown && GameManager.Instance.HasGameStarted)
 		{
-			if (IsBlocking)
+			if (!IsBlocking)
 			{
 				_assist.Attack();
 			}
