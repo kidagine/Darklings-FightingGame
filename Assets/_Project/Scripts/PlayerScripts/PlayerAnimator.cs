@@ -5,6 +5,7 @@ public class PlayerAnimator : MonoBehaviour
 {
 	[SerializeField] private PlayerStats _playerStats = default;
 	[SerializeField] private InputBuffer _inputBuffer = default;
+	[SerializeField] private GameObject _playerShadowPrefab = default;
 	private Animator _animator;
 	private SpriteLibrary _spriteLibrary;
 	private SpriteRenderer _spriteRenderer;
@@ -16,6 +17,8 @@ public class PlayerAnimator : MonoBehaviour
 		_animator = GetComponent<Animator>();
 		_spriteLibrary = GetComponent<SpriteLibrary>();
 		_spriteRenderer = GetComponent<SpriteRenderer>();
+		PlayerShadow playerShadow = Instantiate(_playerShadowPrefab).transform.GetChild(0).GetComponent<PlayerShadow>();
+		playerShadow.Initialize(transform.root, _spriteRenderer);
 	}
 
 	void Start()
