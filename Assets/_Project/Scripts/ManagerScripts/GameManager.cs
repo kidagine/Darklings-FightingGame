@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private bool _1BitOn = default;
 	[Range(1, 10)]
 	[SerializeField] private int _gameSpeed = 1;
+	[Range(10, 300)]
+	[SerializeField] private float _countdownTime = 99.0f;
 	[Header("Data")]
 	[SerializeField] private Transform[] _spawnPositions = default;
 	[SerializeField] private IntroUI _introUI = default;
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private PlayerDialogue _playerOneDialogue = default;
 	[SerializeField] private PlayerDialogue _playerTwoDialogue = default;
 	[SerializeField] private Animator _timerAnimator = default;
+	[SerializeField] private Animator _timerMainAnimator = default;
 	[SerializeField] private Animator _introAnimator = default;
 	[SerializeField] protected TextMeshProUGUI _countdownText = default;
 	[SerializeField] protected TextMeshProUGUI _readyText = default;
@@ -315,10 +318,17 @@ public class GameManager : MonoBehaviour
 		{
 			_countdown -= Time.deltaTime;
 			_countdownText.text = Mathf.Round(_countdown).ToString();
+
 			if (_countdown <= 0.0f)
 			{
+				_timerMainAnimator.Rebind();
 				StartCoroutine(RoundTieCoroutine());
 			}
+			else if (_countdown <= 10.5f)
+			{
+				_timerMainAnimator.SetTrigger("TimerLow");
+			}
+
 		}
 		if (_isDialogueRunning)
 		{
@@ -350,14 +360,24 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator RoundTieCoroutine()
 	{
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(true);
+		}
 		HasGameStarted = false;
+		_readyAnimator.SetTrigger("Show");
 		_uiAudio.Sound("TextSound").Play();
 		_readyText.text = "ROUND OVER";
 		Time.timeScale = 0.25f;
 		yield return new WaitForSeconds(0.5f);
+		_readyAnimator.SetTrigger("Show");
 		_uiAudio.Sound("TextSound").Play();
 		_readyText.text = "TIME'S OUT";
 		yield return new WaitForSeconds(0.5f);
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(false);
+		}
 		_readyText.text = "";
 		StartRound();
 	}
@@ -369,7 +389,7 @@ public class GameManager : MonoBehaviour
 		{
 			_arcanaObjects[i].SetActive(true);
 		}
-		_countdown = 99.0f;
+		_countdown = _countdownTime;
 		_countdownText.text = Mathf.Round(_countdown).ToString();
 		PlayerOne.ResetPlayer();
 		PlayerTwo.ResetPlayer();
