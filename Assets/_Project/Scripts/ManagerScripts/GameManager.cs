@@ -367,17 +367,36 @@ public class GameManager : MonoBehaviour
 		HasGameStarted = false;
 		_readyAnimator.SetTrigger("Show");
 		_uiAudio.Sound("TextSound").Play();
-		_readyText.text = "ROUND OVER";
+		_readyText.text = "TIME'S OUT";
 		Time.timeScale = 0.25f;
 		yield return new WaitForSeconds(0.5f);
 		_readyAnimator.SetTrigger("Show");
 		_uiAudio.Sound("TextSound").Play();
-		_readyText.text = "TIME'S OUT";
+		if (PlayerOne.Health == PlayerTwo.Health)
+		{
+			_readyText.text = "TIE";
+		}
+		else
+		{
+			_readyText.text = "WINNER";
+			if (PlayerOne.Health > PlayerTwo.Health)
+			{
+				_winnerNameText.text = $"{_playerOneUI.PlayerName}\n{_playerOneUI.CharacterName}";
+				_currentRound++;
+			}
+			else
+			{
+				_winnerNameText.text = $"{_playerTwoUI.PlayerName}\n{_playerTwoUI.CharacterName}";
+				_currentRound++;
+			}
+		}
+
 		yield return new WaitForSeconds(0.5f);
 		for (int i = 0; i < _readyObjects.Length; i++)
 		{
 			_readyObjects[i].SetActive(false);
 		}
+		_winnerNameText.text = "";
 		_readyText.text = "";
 		StartRound();
 	}
