@@ -364,6 +364,7 @@ public class GameManager : MonoBehaviour
 
 	public virtual void StartRound()
 	{
+		_isDialogueRunning = false;
 		for (int i = 0; i < _arcanaObjects.Length; i++)
 		{
 			_arcanaObjects[i].SetActive(true);
