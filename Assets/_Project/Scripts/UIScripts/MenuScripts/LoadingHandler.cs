@@ -29,8 +29,8 @@ public class LoadingHandler : MonoBehaviour
 		_characterTwo.PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
 		_characterOne.GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorOne);
 		_characterTwo.GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorTwo);
-		_characterOneName.text = _playerStats[SceneSettings.PlayerOne].characterName;
-		_characterTwoName.text = _playerStats[SceneSettings.PlayerTwo].characterName;
+		_characterOneName.text = _playerStats[SceneSettings.PlayerOne].characterName.ToString();
+		_characterTwoName.text = _playerStats[SceneSettings.PlayerTwo].characterName.ToString();
 		_stageName.text = _stages[SceneSettings.StageIndex].name.Substring(0, _stages[SceneSettings.StageIndex].name.IndexOf("_"));
 	}
 

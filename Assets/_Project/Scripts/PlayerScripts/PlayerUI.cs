@@ -111,7 +111,7 @@ public class PlayerUI : MonoBehaviour
 					_playerName.text = PlayerName;
 				}
 			}
-			CharacterName = playerStats.characterName;
+			CharacterName = playerStats.characterName.ToString();
 			_characterName.text = CharacterName;
 			if (_controller.IsPlayerOne)
 			{

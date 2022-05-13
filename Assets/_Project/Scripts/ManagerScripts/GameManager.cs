@@ -142,18 +142,11 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-		if (_isOnlineMode)
-		{
-
-		}
-		else
-		{
-			GameObject playerOneObject = Instantiate(_playerLocal);
-			playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
-			GameObject playerTwoObject = Instantiate(_playerLocal);
-			playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
-			InitializePlayers(playerOneObject, playerTwoObject);
-		}
+		GameObject playerOneObject = Instantiate(_playerLocal);
+		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
+		GameObject playerTwoObject = Instantiate(_playerLocal);
+		playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
+		InitializePlayers(playerOneObject, playerTwoObject);
 	}
 
 
@@ -350,11 +343,11 @@ public class GameManager : MonoBehaviour
 			_arcanaObjects[i].SetActive(false);
 		}
 		_isDialogueRunning = true;
-		_introUI.SetPlayerNames(_characterOne.ToString(), _characterTwo.ToString());
+		_introUI.SetPlayerNames(_playerStats[SceneSettings.PlayerOne].characterName.ToString(), _playerStats[SceneSettings.PlayerTwo].characterName.ToString());
 		_playerOneController.DeactivateInput();
 		_playerTwoController.DeactivateInput();
-		_playerOneDialogue.Initialize(true, _playerStats[SceneSettings.PlayerOne]._dialogue, _characterTwo);
-		_playerTwoDialogue.Initialize(false, _playerStats[SceneSettings.PlayerTwo]._dialogue, _characterOne);
+		_playerOneDialogue.Initialize(true, _playerStats[SceneSettings.PlayerOne]._dialogue, _playerStats[SceneSettings.PlayerTwo].characterName);
+		_playerTwoDialogue.Initialize(false, _playerStats[SceneSettings.PlayerTwo]._dialogue, _playerStats[SceneSettings.PlayerOne].characterName);
 		_introAnimator.SetBool("IsIntroRunning", true);
 	}
 
