@@ -364,16 +364,17 @@ public class GameManager : MonoBehaviour
 		Time.timeScale = 0.25f;
 		if (PlayerOne.Health > PlayerTwo.Health)
 		{
-			_playerMovementTwo.SetLockMovement(true);
 			PlayerOne.Taunt();
 			PlayerTwo.LoseLife();
 		}
-		else
+		else if (PlayerOne.Health < PlayerTwo.Health)
 		{
-			_playerMovementOne.SetLockMovement(true);
 			PlayerTwo.Taunt();
 			PlayerOne.LoseLife();
 		}
+		_playerMovementTwo.SetLockMovement(true);
+		_playerMovementOne.SetLockMovement(true);
+
 		yield return new WaitForSeconds(0.5f);
 		_readyAnimator.SetTrigger("Show");
 		_uiAudio.Sound("TextSound").Play();
