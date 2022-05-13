@@ -28,13 +28,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Coroutine _blockCoroutine;
 	protected float _arcana;
 	private float _assistGauge = 1.0f;
-	private int _lives = 2;
 	private bool _throwBreakInvulnerable;
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
 	public AttackSO CurrentHurtAttack { get; set; }
 	public float Health { get; private set; }
+	public int Lives { get; set; } = 2;
 	public bool IsBlocking { get; private set; }
 	public bool IsKnockedDown { get; private set; }
 	public bool HitMiddair { get; set; }
@@ -124,7 +124,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ResetLives()
 	{
-		_lives = 2;
+		Lives = 2;
 		_playerUI.ResetLives();
 	}
 
@@ -643,9 +643,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			if (GameManager.Instance.HasGameStarted && !GameManager.Instance.IsTrainingMode)
 			{
-				_lives--;
+				Lives--;
 			}
-			if (_lives <= 0)
+			if (Lives <= 0)
 			{
 				GameManager.Instance.MatchOver();
 			}
@@ -695,6 +695,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void LoseLife()
 	{
+		Lives--;
 		_playerUI.SetLives();
 	}
 
