@@ -4480,7 +4480,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 360034937}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: -10}
+  m_LocalPosition: {x: 0, y: -4.25, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4557,8 +4557,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -10.6, y: 6}
-      - {x: 10.6, y: 6}
+    - - {x: -10.6, y: 5.25}
+      - {x: 10.6, y: 5.25}
       - {x: 10.6, y: -6}
       - {x: -10.6, y: -6}
 --- !u!4 &365773109
@@ -4939,19 +4939,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stage: 4
   _characterOne: 0
-  _characterTwo: 2
+  _characterTwo: 0
   _assistOne: 0
   _assistTwo: 1
   _controllerOne: 0
   _controllerTwo: 1
   _music: 7
   _playerOneSkin: 0
-  _playerTwoSkin: 0
-  _isTrainingMode: 0
+  _playerTwoSkin: 1
+  _isTrainingMode: 1
   _isOnlineMode: 0
   _1BitOn: 0
   _gameSpeed: 1
-  _countdownTime: 99
+  _countdownTime: 64
   _spawnPositions:
   - {fileID: 1725751517}
   - {fileID: 963923573}
@@ -6498,7 +6498,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.33983994, z: -10}
+  m_LocalPosition: {x: 0, y: -0.032959938, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20057,10 +20057,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -10}
+  m_FollowOffset: {x: 0, y: 0.75, z: -10}
   m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_YDamping: 0
+  m_ZDamping: 0
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
