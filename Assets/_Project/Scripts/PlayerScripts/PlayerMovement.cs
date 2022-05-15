@@ -478,6 +478,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_rigidbody.gravityScale = 0.0f;
 	}
 
+	public void LowGravity()
+	{
+		_rigidbody.gravityScale = 0.1f;
+	}
+
 	public void ResetToWalkSpeed()
 	{
 		_playerAnimator.IsRunning(false);

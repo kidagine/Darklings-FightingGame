@@ -349,7 +349,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
-		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
+		if (CurrentAttack.attackTypeEnum != AttackTypeEnum.Break && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
 		{
 			CanCancelAttack = true;
 		}
@@ -752,6 +752,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		IsStunned = true;
 		_playerMovement.SetLockMovement(true);
 		_controller.DeactivateInput();
+		if (!_playerMovement.IsGrounded)
+		{
+			_playerMovement.LowGravity();
+		}
 		yield return new WaitForSeconds(hitStun);
 		if (!HitMiddair)
 		{
