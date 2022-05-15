@@ -349,7 +349,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
 		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
-		if (CurrentAttack.attackTypeEnum != AttackTypeEnum.Break && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
+		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
 		{
 			CanCancelAttack = true;
 		}
