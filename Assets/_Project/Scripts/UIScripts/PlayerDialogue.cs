@@ -9,6 +9,7 @@ public class PlayerDialogue : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _dialogueText = default;
 	private Audio _audio;
 	private DialogueSO _dialogue;
+	private Coroutine _dialogueCoroutine;
 	private CharacterTypeEnum _opponentCharacter;
 	private bool _isPlayerOne;
 	public bool FinishedDialogue { get; private set; }
@@ -29,7 +30,7 @@ public class PlayerDialogue : MonoBehaviour
 	public void PlayDialogue()
 	{
 		transform.GetChild(0).gameObject.SetActive(true);
-		StartCoroutine(PlayDialogueCoroutine(GetSentence(_dialogue, _opponentCharacter)));
+		_dialogueCoroutine = StartCoroutine(PlayDialogueCoroutine(GetSentence(_dialogue, _opponentCharacter)));
 	}
 
 	IEnumerator PlayDialogueCoroutine(string sentence)
@@ -77,6 +78,16 @@ public class PlayerDialogue : MonoBehaviour
 				}
 			}
 			return "Let's fight.";
+		}
+	}
+
+	public void StopDialogue()
+	{
+		if (_dialogueCoroutine != null)
+		{
+			StopCoroutine(_dialogueCoroutine);
+			transform.GetChild(0).gameObject.SetActive(false);
+			FinishedDialogue = true;
 		}
 	}
 }

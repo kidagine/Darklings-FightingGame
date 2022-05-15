@@ -28,12 +28,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Coroutine _blockCoroutine;
 	protected float _arcana;
 	private float _assistGauge = 1.0f;
-	private int _lives = 2;
+	private bool _throwBreakInvulnerable;
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
 	public AttackSO CurrentHurtAttack { get; set; }
 	public float Health { get; private set; }
+	public int Lives { get; set; } = 2;
 	public bool IsBlocking { get; private set; }
 	public bool IsKnockedDown { get; private set; }
 	public bool HitMiddair { get; set; }
@@ -123,7 +124,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ResetLives()
 	{
-		_lives = 2;
+		Lives = 2;
 		_playerUI.ResetLives();
 	}
 
@@ -315,7 +316,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsKnockedDown && GameManager.Instance.HasGameStarted)
 		{
-			if (IsBlocking)
+			if (!IsBlocking)
 			{
 				_assist.Attack();
 			}
@@ -438,7 +439,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (attackSO.attackTypeEnum == AttackTypeEnum.Throw)
 		{
-			if (_playerMovement.IsGrounded)
+			if (_playerMovement.IsGrounded && !_throwBreakInvulnerable)
 			{
 				_playerAnimator.Hurt();
 				return true;
@@ -448,7 +449,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 				return false;
 			}
 		}
-		_playerAnimator.Hurt();
 
 		if (!IsAttacking && !_playerMovement.IsDashing && _controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
 		{
@@ -475,6 +475,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 		if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Break)
 		{
+			if (attackSO.attackTypeEnum == AttackTypeEnum.Break && _throwBreakInvulnerable)
+			{
+				return false;
+			}
+			_playerAnimator.Hurt();
 			if (attackSO.cameraShaker != null)
 			{
 				CameraShake.Instance.Shake(attackSO.cameraShaker.intensity, attackSO.cameraShaker.timer);
@@ -512,6 +517,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else
 		{
+			_playerAnimator.Hurt();
 			_playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, 0.0f), attackSO.knockback, attackSO.knockbackDuration);
 			IsAttacking = false;
 			GameObject effect = Instantiate(_blockEffectPrefab);
@@ -637,9 +643,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			if (GameManager.Instance.HasGameStarted && !GameManager.Instance.IsTrainingMode)
 			{
-				_lives--;
+				Lives--;
 			}
-			if (_lives <= 0)
+			if (Lives <= 0)
 			{
 				GameManager.Instance.MatchOver();
 			}
@@ -659,14 +665,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	IEnumerator KnockdownCoroutine()
 	{
+		_throwBreakInvulnerable = true;
 		_controller.DeactivateInput();
 		SetHurtbox(false);
 		_playerAnimator.IsKnockedDown(true);
 		yield return new WaitForSeconds(0.75f);
 		_playerAnimator.IsKnockedDown(false);
 		_playerAnimator.ResetTrigger("CancelHurt");
-		yield return new WaitForSeconds(0.25f);
 		_playerMovement.SetLockMovement(false);
+		yield return new WaitForSeconds(0.25f);
 		SetHurtbox(true);
 		IsKnockedDown = false;
 		_controller.ActivateInput();
@@ -675,6 +682,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			LightAction();
 		}
+		yield return new WaitForSeconds(0.05f);
+		_throwBreakInvulnerable = false;
 	}
 
 	public void Taunt()
@@ -686,6 +695,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void LoseLife()
 	{
+		Lives--;
 		_playerUI.SetLives();
 	}
 
@@ -742,6 +752,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		IsStunned = true;
 		_playerMovement.SetLockMovement(true);
 		_controller.DeactivateInput();
+		if (!_playerMovement.IsGrounded)
+		{
+			_playerMovement.LowGravity();
+		}
 		yield return new WaitForSeconds(hitStun);
 		if (!HitMiddair)
 		{

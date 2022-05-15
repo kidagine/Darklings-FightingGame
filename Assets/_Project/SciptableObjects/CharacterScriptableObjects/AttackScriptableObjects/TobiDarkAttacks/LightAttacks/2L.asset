@@ -20,9 +20,10 @@ MonoBehaviour:
   knockbackDirection: {x: 0, y: 0}
   knockbackDuration: 0.05
   attackTypeEnum: 2
-  hitstop: 0.05
+  hitstop: 0.075
   isAirAttack: 0
   isProjectile: 0
+  isArcana: 0
   causesKnockdown: 0
   attackSound: Hit
   impactSound: Impact1
@@ -30,8 +31,9 @@ MonoBehaviour:
   hitEffectPosition: {x: 0.9, y: 0.9}
   hitEffectRotation: 0
   hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
-  hurtEffectPosition: {x: -3.7902195, y: -3.2875004}
+  hurtEffectPosition: {x: 4.119317, y: -3.4475002}
   hurtEffectRotation: 0
+  cameraShaker: {fileID: 0}
   startUpFrames: 7
   activeFrames: 3
   recoveryFrames: 13

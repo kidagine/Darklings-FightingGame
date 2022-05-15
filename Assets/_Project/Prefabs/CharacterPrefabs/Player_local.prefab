@@ -1130,6 +1130,7 @@ GameObject:
   - component: {fileID: 8073473789928578679}
   - component: {fileID: 4586557407155603638}
   - component: {fileID: 2618116373784590578}
+  - component: {fileID: 1790606702567451895}
   m_Layer: 0
   m_Name: Character_emulated
   m_TagString: Untagged
@@ -1285,6 +1286,19 @@ MonoBehaviour:
   m_CategoryHash: 0
   m_labelHash: 0
   m_SpriteKey: -1.3542944e+19
+--- !u!114 &1790606702567451895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073473789928578673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad9c4c2ddf21184ab5ec5aed8ef5b75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerShadowPrefab: {fileID: 8266339266402425017, guid: b5638136e48e55046817e86cb7734bf8, type: 3}
 --- !u!1 &8073473790341886576
 GameObject:
   m_ObjectHideFlags: 0
@@ -2026,6 +2040,7 @@ GameObject:
   - component: {fileID: 8780121904479639524}
   - component: {fileID: 8780121904479639523}
   - component: {fileID: 3922080387401972590}
+  - component: {fileID: 4931428911186388808}
   m_Layer: 10
   m_Name: Assist_emulated
   m_TagString: Untagged
@@ -2134,6 +2149,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _assist: {fileID: 8780121904732240358}
   _playerAnimationEvents: {fileID: 8073473789928578682}
+--- !u!114 &4931428911186388808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8780121904479639521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad9c4c2ddf21184ab5ec5aed8ef5b75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerShadowPrefab: {fileID: 8266339266402425017, guid: b5638136e48e55046817e86cb7734bf8, type: 3}
 --- !u!1 &8780121904732240356
 GameObject:
   m_ObjectHideFlags: 0

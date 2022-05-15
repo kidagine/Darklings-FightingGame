@@ -243,8 +243,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 	}
 
-
-
 	public void GroundedPointExit()
 	{
 		if (_onTopOfPlayer)
@@ -478,6 +476,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	public void ZeroGravity()
 	{
 		_rigidbody.gravityScale = 0.0f;
+	}
+
+	public void LowGravity()
+	{
+		_rigidbody.gravityScale = 0.1f;
 	}
 
 	public void ResetToWalkSpeed()

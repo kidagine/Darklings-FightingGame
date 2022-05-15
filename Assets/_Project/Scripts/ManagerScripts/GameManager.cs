@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private bool _1BitOn = default;
 	[Range(1, 10)]
 	[SerializeField] private int _gameSpeed = 1;
+	[Range(10, 300)]
+	[SerializeField] private float _countdownTime = 99.0f;
 	[Header("Data")]
 	[SerializeField] private Transform[] _spawnPositions = default;
 	[SerializeField] private IntroUI _introUI = default;
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private PlayerDialogue _playerOneDialogue = default;
 	[SerializeField] private PlayerDialogue _playerTwoDialogue = default;
 	[SerializeField] private Animator _timerAnimator = default;
+	[SerializeField] private Animator _timerMainAnimator = default;
 	[SerializeField] private Animator _introAnimator = default;
 	[SerializeField] protected TextMeshProUGUI _countdownText = default;
 	[SerializeField] protected TextMeshProUGUI _readyText = default;
@@ -76,6 +79,7 @@ public class GameManager : MonoBehaviour
 	private bool _reverseReset;
 	private bool _hasSwitchedCharacters;
 	private bool _canCallSwitchCharacter = true;
+	private bool _isDialogueRunning;
 	private int _playerOneWins;
 	private int _playerTwoWins;
 
@@ -138,18 +142,11 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-		if (_isOnlineMode)
-		{
-
-		}
-		else
-		{
-			GameObject playerOneObject = Instantiate(_playerLocal);
-			playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
-			GameObject playerTwoObject = Instantiate(_playerLocal);
-			playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
-			InitializePlayers(playerOneObject, playerTwoObject);
-		}
+		GameObject playerOneObject = Instantiate(_playerLocal);
+		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
+		GameObject playerTwoObject = Instantiate(_playerLocal);
+		playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
+		InitializePlayers(playerOneObject, playerTwoObject);
 	}
 
 
@@ -314,9 +311,27 @@ public class GameManager : MonoBehaviour
 		{
 			_countdown -= Time.deltaTime;
 			_countdownText.text = Mathf.Round(_countdown).ToString();
+
 			if (_countdown <= 0.0f)
 			{
+				_timerMainAnimator.Rebind();
 				StartCoroutine(RoundTieCoroutine());
+			}
+			else if (_countdown <= 10.5f)
+			{
+				_timerMainAnimator.SetTrigger("TimerLow");
+			}
+
+		}
+		if (_isDialogueRunning)
+		{
+			if (Input.anyKeyDown)
+			{
+				_playerOneDialogue.StopDialogue();
+				_playerTwoDialogue.StopDialogue();
+				StartRound();
+				_introAnimator.SetBool("IsIntroRunning", false);
+				_isDialogueRunning = false;
 			}
 		}
 	}
@@ -327,35 +342,86 @@ public class GameManager : MonoBehaviour
 		{
 			_arcanaObjects[i].SetActive(false);
 		}
-		_introUI.SetPlayerNames(_characterOne.ToString(), _characterTwo.ToString());
+		_isDialogueRunning = true;
+		_introUI.SetPlayerNames(_playerStats[SceneSettings.PlayerOne].characterName.ToString(), _playerStats[SceneSettings.PlayerTwo].characterName.ToString());
 		_playerOneController.DeactivateInput();
 		_playerTwoController.DeactivateInput();
-		_playerOneDialogue.Initialize(true, _playerStats[SceneSettings.PlayerOne]._dialogue, _characterTwo);
-		_playerTwoDialogue.Initialize(false, _playerStats[SceneSettings.PlayerTwo]._dialogue, _characterOne);
-		_introAnimator.SetTrigger("Intro");
+		_playerOneDialogue.Initialize(true, _playerStats[SceneSettings.PlayerOne]._dialogue, _playerStats[SceneSettings.PlayerTwo].characterName);
+		_playerTwoDialogue.Initialize(false, _playerStats[SceneSettings.PlayerTwo]._dialogue, _playerStats[SceneSettings.PlayerOne].characterName);
+		_introAnimator.SetBool("IsIntroRunning", true);
 	}
 
 	IEnumerator RoundTieCoroutine()
 	{
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(true);
+		}
 		HasGameStarted = false;
-		_uiAudio.Sound("TextSound").Play();
-		_readyText.text = "ROUND OVER";
-		Time.timeScale = 0.25f;
-		yield return new WaitForSeconds(0.5f);
+		_readyAnimator.SetTrigger("Show");
 		_uiAudio.Sound("TextSound").Play();
 		_readyText.text = "TIME'S OUT";
+		Time.timeScale = 0.25f;
+		if (PlayerOne.Health > PlayerTwo.Health)
+		{
+			PlayerOne.Taunt();
+			PlayerTwo.LoseLife();
+		}
+		else if (PlayerOne.Health < PlayerTwo.Health)
+		{
+			PlayerTwo.Taunt();
+			PlayerOne.LoseLife();
+		}
+		_playerMovementTwo.SetLockMovement(true);
+		_playerMovementOne.SetLockMovement(true);
+
 		yield return new WaitForSeconds(0.5f);
+		_readyAnimator.SetTrigger("Show");
+		_uiAudio.Sound("TextSound").Play();
+		if (PlayerOne.Health == PlayerTwo.Health)
+		{
+			_readyText.text = "TIE";
+		}
+		else
+		{
+			_readyText.text = "WINNER";
+			if (PlayerOne.Health > PlayerTwo.Health)
+			{
+				_winnerNameText.text = $"{_playerOneUI.PlayerName}\n{_playerOneUI.CharacterName}";
+				_currentRound++;
+			}
+			else
+			{
+				_winnerNameText.text = $"{_playerTwoUI.PlayerName}\n{_playerTwoUI.CharacterName}";
+				_currentRound++;
+			}
+		}
+
+		yield return new WaitForSeconds(0.5f);
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(false);
+		}
+		_winnerNameText.text = "";
 		_readyText.text = "";
-		StartRound();
+		if (PlayerOne.Lives == 0 || PlayerTwo.Lives == 0)
+		{
+			_matchOverMenu.Show();
+		}
+		else
+		{
+			StartRound();
+		}
 	}
 
 	public virtual void StartRound()
 	{
+		_isDialogueRunning = false;
 		for (int i = 0; i < _arcanaObjects.Length; i++)
 		{
 			_arcanaObjects[i].SetActive(true);
 		}
-		_countdown = 99.0f;
+		_countdown = _countdownTime;
 		_countdownText.text = Mathf.Round(_countdown).ToString();
 		PlayerOne.ResetPlayer();
 		PlayerTwo.ResetPlayer();
