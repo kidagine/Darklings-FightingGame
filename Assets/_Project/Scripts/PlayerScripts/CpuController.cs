@@ -39,7 +39,7 @@ public class CpuController : BaseController
             }
             if (TrainingSettings.Stance == 2)
             {
-                _playerMovement.JumpAction();
+                //_playerMovement.GroundJump();
             }
             _playerMovement.MovementInput = Vector2.zero;
         }
@@ -74,7 +74,7 @@ public class CpuController : BaseController
                 {
                     if (GameManager.Instance.HasGameStarted)
                     {
-                        _playerMovement.JumpAction();
+                        //_playerMovement.GroundJump();
                     }
                 }
                 if (crouchRandom == 2)

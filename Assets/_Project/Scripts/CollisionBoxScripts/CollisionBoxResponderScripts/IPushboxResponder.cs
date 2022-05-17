@@ -2,8 +2,8 @@
 
 public interface IPushboxResponder
 {
-	void OnGrounded();
-	void OnAir();
-	void GroundedPoint(Transform other, float point);
-	void GroundedPointExit();
+    void OnGrounded();
+    void OnAir();
+    void GroundedPoint(Transform other, float point);
+    void GroundedPointExit();
 }

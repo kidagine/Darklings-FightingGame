@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
+    [SerializeField] private PlayerStateManager _playerStateManager = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Assist _assist = default;
     [SerializeField] private Pushbox _groundPushbox = default;
@@ -37,7 +38,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
     public int Lives { get; set; } = 2;
     public bool IsBlocking { get; private set; }
     public bool IsKnockedDown { get; private set; }
-public bool HitMiddair { get; set; }
+    public bool HitMiddair { get; set; }
     public bool IsAttacking { get; set; }
     public bool IsPlayerOne { get; set; }
     public float ArcaneSlowdown { get; set; } = 7.5f;
@@ -87,6 +88,7 @@ public bool HitMiddair { get; set; }
 
     public void ResetPlayer()
     {
+        _playerStateManager.ResetToInitialState();
         transform.rotation = Quaternion.identity;
         _playerMovement.SetLockMovement(true);
         IsStunned = false;
@@ -190,13 +192,13 @@ public bool HitMiddair { get; set; }
     {
         if (_otherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && transform.localScale.x != 1.0f)
         {
-            _playerAnimator.IsRunning(false);
+            // _playerAnimator.Run(false);
             transform.localScale = new Vector2(1.0f, transform.localScale.y);
             _keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
         }
         else if (_otherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && transform.localScale.x != -1.0f)
         {
-            _playerAnimator.IsRunning(false);
+            // _playerAnimator.Run(false);
             transform.localScale = new Vector2(-1.0f, transform.localScale.y);
             _keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
         }
@@ -430,123 +432,126 @@ public bool HitMiddair { get; set; }
 
     public bool TakeDamage(AttackSO attackSO)
     {
-        CurrentHurtAttack = attackSO;
-        DestroyEffects();
-        if (!_playerMovement.IsGrounded)
-        {
-            HitMiddair = true;
-        }
+        _playerStateManager.HurtState.HurtAttack = attackSO;
+        _playerStateManager.ChangeState(_playerStateManager.HurtState);
+        return true;
+        // CurrentHurtAttack = attackSO;
+        // DestroyEffects();
+        // if (!_playerMovement.IsGrounded)
+        // {
+        //     HitMiddair = true;
+        // }
 
-        if (attackSO.attackTypeEnum == AttackTypeEnum.Throw)
-        {
-            if (_playerMovement.IsGrounded && !_throwBreakInvulnerable)
-            {
-                _playerAnimator.Hurt();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        // if (attackSO.attackTypeEnum == AttackTypeEnum.Throw)
+        // {
+        //     if (_playerMovement.IsGrounded && !_throwBreakInvulnerable)
+        //     {
+        //         _playerAnimator.Hurt();
+        //         return true;
+        //     }
+        //     else
+        //     {
+        //         return false;
+        //     }
+        // }
 
-        if (!IsAttacking && !_playerMovement.IsDashing && _controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
-        {
-            if (!_playerMovement.IsGrounded)
-            {
-                BlockingMiddair = true;
-            }
-            else
-            {
-                if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
-                {
-                    BlockingHigh = true;
-                }
-                else if (attackSO.attackTypeEnum == AttackTypeEnum.Mid)
-                {
-                    BlockingHigh = true;
-                }
-                else if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
-                {
-                    BlockingLow = true;
-                }
-            }
-        }
+        // if (!IsAttacking && !_playerMovement.IsDashing && _controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
+        // {
+        //     if (!_playerMovement.IsGrounded)
+        //     {
+        //         BlockingMiddair = true;
+        //     }
+        //     else
+        //     {
+        //         if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
+        //         {
+        //             BlockingHigh = true;
+        //         }
+        //         else if (attackSO.attackTypeEnum == AttackTypeEnum.Mid)
+        //         {
+        //             BlockingHigh = true;
+        //         }
+        //         else if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
+        //         {
+        //             BlockingLow = true;
+        //         }
+        //     }
+        // }
 
-        if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Break)
-        {
-            if (attackSO.attackTypeEnum == AttackTypeEnum.Break && _throwBreakInvulnerable)
-            {
-                return false;
-            }
-            _playerAnimator.Hurt();
-            if (attackSO.cameraShaker != null)
-            {
-                CameraShake.Instance.Shake(attackSO.cameraShaker.intensity, attackSO.cameraShaker.timer);
-            }
-            CanCancelAttack = false;
-            _playerMovement.StopGhosts();
-            GameObject effect = Instantiate(attackSO.hurtEffect);
-            effect.transform.localPosition = attackSO.hurtEffectPosition;
-            if (IsAttacking)
-            {
-                _otherPlayerUI.DisplayNotification("Punish");
-            }
-            IsKnockedDown = attackSO.causesKnockdown;
-            _audio.Sound(attackSO.impactSound).Play();
-            _playerMovement.StopDash();
-            _otherPlayerUI.IncreaseCombo();
-            Stun(attackSO.hitStun);
-            _inputBuffer.ClearInputBuffer();
-            _playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
-            IsAttacking = false;
-            if (!GameManager.Instance.InfiniteHealth)
-            {
-                Health--;
-                _playerUI.SetHealth(Health);
-            }
-            if (Health <= 0)
-            {
-                Die();
-            }
-            else
-            {
-                GameManager.Instance.HitStop(attackSO.hitstop);
-            }
-            return true;
-        }
-        else
-        {
-            _playerAnimator.Hurt();
-            _playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, 0.0f), attackSO.knockback, attackSO.knockbackDuration);
-            IsAttacking = false;
-            GameObject effect = Instantiate(_blockEffectPrefab);
-            effect.transform.localPosition = attackSO.hurtEffectPosition;
-            _audio.Sound("Block").Play();
-            if (!BlockingMiddair)
-            {
-                if (BlockingLow)
-                {
-                    _playerAnimator.IsBlockingLow(true);
-                }
-                else
-                {
-                    _playerAnimator.IsBlocking(true);
-                }
-            }
-            else
-            {
-                _playerAnimator.IsBlockingAir(true);
-            }
+        // if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Break)
+        // {
+        //     if (attackSO.attackTypeEnum == AttackTypeEnum.Break && _throwBreakInvulnerable)
+        //     {
+        //         return false;
+        //     }
+        //     _playerAnimator.Hurt();
+        //     if (attackSO.cameraShaker != null)
+        //     {
+        //         CameraShake.Instance.Shake(attackSO.cameraShaker.intensity, attackSO.cameraShaker.timer);
+        //     }
+        //     CanCancelAttack = false;
+        //     _playerMovement.StopGhosts();
+        //     GameObject effect = Instantiate(attackSO.hurtEffect);
+        //     effect.transform.localPosition = attackSO.hurtEffectPosition;
+        //     if (IsAttacking)
+        //     {
+        //         _otherPlayerUI.DisplayNotification("Punish");
+        //     }
+        //     IsKnockedDown = attackSO.causesKnockdown;
+        //     _audio.Sound(attackSO.impactSound).Play();
+        //     _playerMovement.StopDash();
+        //     _otherPlayerUI.IncreaseCombo();
+        //     Stun(attackSO.hitStun);
+        //     _inputBuffer.ClearInputBuffer();
+        //     _playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
+        //     IsAttacking = false;
+        //     if (!GameManager.Instance.InfiniteHealth)
+        //     {
+        //         Health--;
+        //         _playerUI.SetHealth(Health);
+        //     }
+        //     if (Health <= 0)
+        //     {
+        //         Die();
+        //     }
+        //     else
+        //     {
+        //         GameManager.Instance.HitStop(attackSO.hitstop);
+        //     }
+        //     return true;
+        // }
+        // else
+        // {
+        //     _playerAnimator.Hurt();
+        //     _playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, 0.0f), attackSO.knockback, attackSO.knockbackDuration);
+        //     IsAttacking = false;
+        //     GameObject effect = Instantiate(_blockEffectPrefab);
+        //     effect.transform.localPosition = attackSO.hurtEffectPosition;
+        //     _audio.Sound("Block").Play();
+        //     if (!BlockingMiddair)
+        //     {
+        //         if (BlockingLow)
+        //         {
+        //             _playerAnimator.IsBlockingLow(true);
+        //         }
+        //         else
+        //         {
+        //             _playerAnimator.IsBlocking(true);
+        //         }
+        //     }
+        //     else
+        //     {
+        //         _playerAnimator.IsBlockingAir(true);
+        //     }
 
-            IsBlocking = true;
-            if (_blockCoroutine != null)
-            {
-                StopCoroutine(_blockCoroutine);
-            }
-            _blockCoroutine = StartCoroutine(ResetBlockingCoroutine(attackSO.hitStun));
-            return false;
-        }
+        //     IsBlocking = true;
+        //     if (_blockCoroutine != null)
+        //     {
+        //         StopCoroutine(_blockCoroutine);
+        //     }
+        //     _blockCoroutine = StartCoroutine(ResetBlockingCoroutine(attackSO.hitStun));
+        //     return false;
+        // }
     }
 
     private void LoseHealth()
@@ -725,6 +730,18 @@ public bool HitMiddair { get; set; }
         _stunCoroutine = StartCoroutine(StunCoroutine(hitStun));
     }
 
+    IEnumerator StunCoroutine(float hitStun)
+    {
+        yield return new WaitForSeconds(hitStun);
+
+        _playerUI.UpdateHealthDamaged();
+        _otherPlayerUI.ResetCombo();
+        if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+        {
+            LightAction();
+        }
+    }
+
     public void StopStun(bool resetCombo)
     {
         if (_stunCoroutine != null)
@@ -734,7 +751,7 @@ public bool HitMiddair { get; set; }
                 _playerUI.UpdateHealthDamaged();
                 _otherPlayerUI.ResetCombo();
             }
-            IsStunned = false;
+            _playerStateManager.ChangeState(_playerStateManager.IdleState);
             StopCoroutine(_stunCoroutine);
         }
     }
@@ -747,30 +764,7 @@ public bool HitMiddair { get; set; }
         }
     }
 
-    IEnumerator StunCoroutine(float hitStun)
-    {
-        IsStunned = true;
-        _playerMovement.SetLockMovement(true);
-        _controller.DeactivateInput();
-        if (!_playerMovement.IsGrounded)
-        {
-            _playerMovement.LowGravity();
-        }
-        yield return new WaitForSeconds(hitStun);
-        if (!HitMiddair)
-        {
-            _controller.ActivateInput();
-            _playerAnimator.CancelHurt();
-        }
-        _playerMovement.SetLockMovement(false);
-        _playerUI.UpdateHealthDamaged();
-        _otherPlayerUI.ResetCombo();
-        IsStunned = false;
-        if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
-        {
-            LightAction();
-        }
-    }
+
 
     public void Pause(bool isPlayerOne)
     {
