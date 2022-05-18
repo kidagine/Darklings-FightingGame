@@ -19,7 +19,7 @@ public class AttackState : State
 		_audio.Sound("Hit").Play();
 		_player.CurrentAttack = _playerComboSystem.GetComboAttack(InputEnum, Crouch);
 		_playerAnimator.Attack(_player.CurrentAttack.name, true);
-		_playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance * transform.localScale.x, _player.CurrentAttack.travelDirection.y));
+		_playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDirection.y));
 	}
 
 	public override void UpdateLogic()
