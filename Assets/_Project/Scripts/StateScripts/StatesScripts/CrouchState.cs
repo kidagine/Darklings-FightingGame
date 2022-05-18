@@ -38,7 +38,7 @@ public class CrouchState : State
     public override bool ToAttackState(InputEnum inputEnum)
     {
         _attackState.InputEnum = inputEnum;
-        _attackState.Crouch = true;
+        _attackState.Initialize(true, false);
         _stateMachine.ChangeState(_attackState);
         return true;
     }

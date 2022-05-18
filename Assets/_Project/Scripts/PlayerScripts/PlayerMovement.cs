@@ -61,7 +61,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     void FixedUpdate()
     {
-        //Movement();
         JumpControl();
     }
 
@@ -82,73 +81,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         else if (_rigidbody.velocity.y > 0)
         {
             _rigidbody.velocity += (3 - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
-        }
-    }
-
-    protected virtual void Movement()
-    {
-        if (!IsCrouching && !_player.IsAttacking && !_onTopOfPlayer && !IsDashing && !_isMovementLocked)
-        {
-            if (!_player.IsBlocking && !_player.IsKnockedDown)
-            {
-                _rigidbody.velocity = new Vector2(MovementInput.x * MovementSpeed, _rigidbody.velocity.y);
-            }
-            else
-            {
-                _rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
-            }
-            // _playerAnimator.SetMovementX(MovementInput.x * transform.localScale.x);
-            if (_rigidbody.velocity.x != 0.0f)
-            {
-                if (_rigidbody.velocity.x > 0.0f && transform.localScale.x == 1.0f)
-                {
-                    _player.ArcaneSlowdown = 6.5f;
-                }
-                else if (_rigidbody.velocity.x < 0.0f && transform.localScale.x == -1.0f)
-                {
-                    _player.ArcaneSlowdown = 6.5f;
-                }
-                else
-                {
-                    ResetToWalkSpeed();
-                }
-                IsMoving = true;
-                //_playerAnimator.Walk(true);
-            }
-            else
-            {
-                ResetToWalkSpeed();
-                IsMoving = false;
-                _player.ArcaneSlowdown = 8.0f;
-                //_playerAnimator.Walk(false);
-            }
-        }
-        else
-        {
-            if (_player.IsStunned || IsCrouching && !_player.IsAttacking)
-            {
-                _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-            }
-            IsMoving = false;
-        }
-    }
-
-    public void Moving()
-    {
-        _rigidbody.velocity = new Vector2(MovementInput.x * MovementSpeed, _rigidbody.velocity.y);
-
-    }
-
-    public void Idle()
-    {
-        _rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
-    }
-
-    public void Crouch()
-    {
-        if (IsGrounded)
-        {
-            _rigidbody.velocity = Vector2.zero;
         }
     }
 
@@ -232,49 +164,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _isGrounded = false;
     }
 
-    IEnumerator OnGroundedCoroutine()
-    {
-        if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
-        {
-            ResetGravity();
-            _hasDashedMiddair = false;
-            CanDoubleJump = true;
-            _onTopOfPlayer = false;
-            _player.SetPushboxTrigger(false);
-            _player.SetAirPushBox(false);
-            Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
-            _audio.Sound("Landed").Play();
-            IsGrounded = true;
-            if (_player.HitMiddair)
-            {
-                _player.StopStun(true);
-                _player.HitMiddair = false;
-                SetLockMovement(false);
-                if (!_player.IsKnockedDown)
-                {
-                    _playerController.ActivateInput();
-                }
-            }
-            if (_player.IsKnockedDown && !_player.IsDead)
-            {
-                _player.Knockdown();
-            }
-            else
-            {
-                _isMovementLocked = false;
-            }
-            yield return null;
-            //TODO Replace this code
-            if (_player.CurrentAttack)
-            {
-                if (_player.CurrentAttack.name != "VoidBeam")
-                {
-                    _player.IsAttacking = false;
-                }
-            }
-            _inputBuffer.CheckForInputBufferItem();
-        }
-    }
 
     public void ShadowbreakKnockback()
     {
@@ -304,105 +193,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _rigidbody.MovePosition(finalPosition);
         _knockbackAction?.Invoke();
         _knockbackAction = null;
-    }
-
-    public void DashAction(int directionX)
-    {
-        // if (!IsCrouching && !_player.IsAttacking && !_player.IsBlocking && !_player.IsKnockedDown && !IsDashing)
-        // {
-        //     if (IsGrounded)
-        //     {
-        //         GroundDash(directionX);
-        //     }
-        //     else if (!_hasDashedMiddair)
-        //     {
-        //         _hasDashedMiddair = true;
-        //         _player.SetPushboxTrigger(false);
-        //         GroundDash(directionX);
-        //     }
-        // }
-    }
-
-    public void GroundDash(int directionX)
-    {
-        _audio.Sound("Dash").Play();
-        Transform dashEffect = Instantiate(_dashPrefab, transform.position, Quaternion.identity).transform;
-        if (MovementInput.x > 0.0f)
-        {
-            dashEffect.position = new Vector2(dashEffect.position.x - 1.0f, dashEffect.position.y);
-        }
-        else
-        {
-            dashEffect.localScale = new Vector2(-1.0f, transform.localScale.y);
-            dashEffect.position = new Vector2(dashEffect.position.x + 1.0f, dashEffect.position.y);
-        }
-        _rigidbody.velocity = new Vector2(directionX, 0.0f) * _playerStats.PlayerStatsSO.dashForce;
-        ZeroGravity();
-        StartCoroutine(DashCoroutine());
-    }
-
-    IEnumerator DashCoroutine()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            GameObject playerGhost = Instantiate(_playerGhostPrefab, transform.position, Quaternion.identity);
-            playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.localScale.x, Color.white);
-            yield return new WaitForSeconds(0.07f);
-        }
-        _rigidbody.velocity = Vector2.zero;
-        ResetGravity();
-        if (!IsGrounded)
-        {
-            _player.SetPushboxTrigger(true);
-        }
-        if (MovementInput.x * transform.localScale.x > 0.0f && IsGrounded)
-        {
-            _audio.Sound("Run").Play();
-            // _playerAnimator.Run(true);
-            MovementSpeed = _playerStats.PlayerStatsSO.runSpeed;
-            IsDashing = false;
-            _ghostsCoroutine = StartCoroutine(RunCoroutine());
-        }
-        else
-        {
-            if (IsGrounded)
-            {
-                yield return new WaitForSeconds(0.05f);
-            }
-            IsDashing = false;
-        }
-        yield return null;
-        _inputBuffer.CheckForInputBufferItem();
-    }
-
-    public void StopGhosts()
-    {
-        if (_ghostsCoroutine != null)
-        {
-            StopCoroutine(_ghostsCoroutine);
-        }
-    }
-
-    IEnumerator RunCoroutine()
-    {
-        while (MovementSpeed == _playerStats.PlayerStatsSO.runSpeed)
-        {
-            GameObject playerGhost = Instantiate(_playerGhostPrefab, transform.position, Quaternion.identity);
-            playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.localScale.x, Color.white);
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
-    public void StopDash()
-    {
-        //_playerAnimator.Dash(false);
-        _rigidbody.velocity = Vector2.zero;
-        ResetGravity();
-        if (!IsGrounded)
-        {
-            _player.SetPushboxTrigger(true);
-        }
-        IsDashing = false;
     }
 
     public void ResetGravity()
@@ -437,11 +227,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     public void ZeroGravity()
     {
         _rigidbody.gravityScale = 0.0f;
-    }
-
-    public void LowGravity()
-    {
-        _rigidbody.gravityScale = 0.1f;
     }
 
     public void ResetToWalkSpeed()

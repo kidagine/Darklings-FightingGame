@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dc38aa9bd105964ea227944394dc39b, type: 3}
-  m_Name: JumpL
+  m_Name: JL
   m_EditorClassIdentifier: 
-  travelDistance: 0.5
+  travelDistance: 0
   travelDirection: {x: 0, y: 0}
-  hitStun: 0.21
+  hitStun: 0.35
   blockStun: 0
-  knockback: 0.6
+  knockback: 0.46
   knockbackDirection: {x: 0, y: 0}
-  knockbackDuration: 0.036
+  knockbackDuration: 0.035
   attackTypeEnum: 0
   hitstop: 0.05
   isAirAttack: 1
@@ -28,11 +28,12 @@ MonoBehaviour:
   attackSound: Hit
   impactSound: Impact5
   hitEffect: {fileID: 3782010356200484119, guid: 47b4915fae0034c45b98dedc650be9af, type: 3}
-  hitEffectPosition: {x: 1, y: 1.5}
-  hitEffectRotation: -45
+  hitEffectPosition: {x: 0.4, y: 0.1}
+  hitEffectRotation: -15
   hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
-  hurtEffectPosition: {x: 4.6499996, y: -3.1025872}
+  hurtEffectPosition: {x: 2.7457528, y: -2.1256351}
   hurtEffectRotation: 0
-  startUpFrames: 8
+  cameraShaker: {fileID: 0}
+  startUpFrames: 10
   activeFrames: 5
-  recoveryFrames: 5
+  recoveryFrames: 7

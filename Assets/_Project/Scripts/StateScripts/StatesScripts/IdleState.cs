@@ -83,7 +83,7 @@ public class IdleState : State
     public override bool ToAttackState(InputEnum inputEnum)
     {
         _attackState.InputEnum = inputEnum;
-        _attackState.Crouch = false;
+        _attackState.Initialize(false, false);
         _stateMachine.ChangeState(_attackState);
         return true;
     }

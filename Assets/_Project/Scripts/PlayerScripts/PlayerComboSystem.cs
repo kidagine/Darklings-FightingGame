@@ -11,7 +11,7 @@ public class PlayerComboSystem : MonoBehaviour
 		_playerStats = GetComponent<PlayerStats>();
 	}
 
-	public AttackSO GetComboAttack(InputEnum inputEnum, bool isCrouching)
+	public AttackSO GetComboAttack(InputEnum inputEnum, bool isCrouching, bool isAir)
 	{
 		if (inputEnum == InputEnum.Throw)
 		{
@@ -23,7 +23,7 @@ public class PlayerComboSystem : MonoBehaviour
 		}
 		else
 		{
-			if (!_playerMovement.IsGrounded)
+			if (isAir)
 			{
 				return _playerStats.PlayerStatsSO.jumpL;
 			}

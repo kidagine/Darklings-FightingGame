@@ -17,9 +17,14 @@ public class HurtState : State
         base.Enter();
         _audio.Sound(HurtAttack.impactSound).Play();
         _playerAnimator.Hurt(true);
-        _playerMovement.StopGhosts();
         GameObject effect = Instantiate(HurtAttack.hurtEffect);
         effect.transform.localPosition = HurtAttack.hurtEffectPosition;
+        _playerMovement.Knockback(new Vector2(1.0f, 0.0f), HurtAttack.knockback, HurtAttack.knockbackDuration);
+        if (HurtAttack.cameraShaker != null)
+        {
+            CameraShake.Instance.Shake(HurtAttack.cameraShaker.intensity, HurtAttack.cameraShaker.timer);
+        }
+        GameManager.Instance.HitStop(HurtAttack.hitstop);
         StartCoroutine(StunCoroutine(HurtAttack.hitStun));
     }
 
