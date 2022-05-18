@@ -17,7 +17,7 @@ public class PlayerStateManager : StateMachine
     [SerializeField] private Rigidbody2D _rigidbody = default;
     private TrainingMenu _trainingMenu = default;
     public AttackState AttackState { get; private set; }
-    public FallState IdleState { get; private set; }
+    public IdleState IdleState { get; private set; }
     public HurtState HurtState { get; private set; }
     public ArcanaState ArcanaState { get; private set; }
 
@@ -35,7 +35,7 @@ public class PlayerStateManager : StateMachine
             );
         }
         AttackState = GetComponent<AttackState>();
-        IdleState = GetComponent<FallState>();
+        IdleState = GetComponent<IdleState>();
         HurtState = GetComponent<HurtState>();
         ArcanaState = GetComponent<ArcanaState>();
     }
@@ -43,6 +43,11 @@ public class PlayerStateManager : StateMachine
     public void ResetToInitialState()
     {
         ChangeState(_initialState);
+    }
+
+    public bool TryToAttackState(InputEnum inputEnum)
+    {
+        return CurrentState.ToAttackState(inputEnum);
     }
 
     protected override State GetInitialState()

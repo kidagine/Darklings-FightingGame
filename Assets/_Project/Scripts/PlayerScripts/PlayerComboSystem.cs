@@ -11,13 +11,13 @@ public class PlayerComboSystem : MonoBehaviour
 		_playerStats = GetComponent<PlayerStats>();
 	}
 
-	public AttackSO GetComboAttack(InputEnum inputEnum)
+	public AttackSO GetComboAttack(InputEnum inputEnum, bool isCrouching)
 	{
 		if (inputEnum == InputEnum.Throw)
 		{
 			return _playerStats.PlayerStatsSO.mThrow;
 		}
-		if (_playerMovement.IsCrouching && _playerMovement.IsGrounded)
+		if (isCrouching)
 		{
 			return GetCrouchingAttackType(inputEnum);
 		}

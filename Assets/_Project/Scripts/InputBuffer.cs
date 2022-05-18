@@ -61,19 +61,19 @@ public class InputBuffer : MonoBehaviour
         }
         else if (inputEnum == InputEnum.Light)
         {
-            inputBufferItem.Execute += () => _playerStateManager.ChangeState(_playerStateManager.AttackState);
+            inputBufferItem.Execute += () => _playerStateManager.TryToAttackState(inputEnum);
         }
         else if (inputEnum == InputEnum.Medium)
         {
-            inputBufferItem.Execute += _player.MediumAction;
+            inputBufferItem.Execute += () => _playerStateManager.TryToAttackState(inputEnum);
         }
         else if (inputEnum == InputEnum.Heavy)
         {
-            inputBufferItem.Execute += _player.HeavyAction;
+            inputBufferItem.Execute += () => _playerStateManager.TryToAttackState(inputEnum);
         }
         else if (inputEnum == InputEnum.Special)
         {
-            inputBufferItem.Execute += () => _playerStateManager.ChangeState(_playerStateManager.ArcanaState);
+            inputBufferItem.Execute += () => _playerStateManager.TryToAttackState(inputEnum);
         }
         else if (inputEnum == InputEnum.Assist)
         {

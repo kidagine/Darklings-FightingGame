@@ -82,14 +82,16 @@ public class PlayerAnimator : MonoBehaviour
         _animator.ResetTrigger(name);
     }
 
-    public void Attack(string attackType)
+    public void Attack(string attackType, bool reset = false)
     {
-        _animator.SetTrigger(attackType);
-    }
-
-    public void Attack5L()
-    {
-        _animator.Play("5L");
+        if (reset)
+        {
+            _animator.Play(attackType, -1, 0f);
+        }
+        else
+        {
+            _animator.Play(attackType);
+        }
     }
 
     public void Shadowbreak()
@@ -122,9 +124,16 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetTrigger("ArcanaEnd");
     }
 
-    public void Hurt()
+    public void Hurt(bool reset = false)
     {
-        _animator.Play("Hurt");
+        if (reset)
+        {
+            _animator.Play("Hurt", -1, 0f);
+        }
+        else
+        {
+            _animator.Play("Hurt");
+        }
     }
 
     public void IsBlocking(bool state)

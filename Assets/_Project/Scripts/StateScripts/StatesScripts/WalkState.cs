@@ -7,12 +7,14 @@ public class WalkState : State
     private IdleState _idleState;
     private CrouchState _crouchState;
     private JumpForwardState _jumpForwardState;
+    private AttackState _attackState;
 
     void Awake()
     {
         _idleState = GetComponent<IdleState>();
         _crouchState = GetComponent<CrouchState>();
         _jumpForwardState = GetComponent<JumpForwardState>();
+        _attackState = GetComponent<AttackState>();
     }
 
     public override void Enter()
@@ -27,7 +29,7 @@ public class WalkState : State
         base.UpdateLogic();
         ToIdleState();
         ToCrouchState();
-        ToJumpState();
+        ToJumpForwardState();
         _player.Flip();
     }
 
@@ -47,7 +49,7 @@ public class WalkState : State
         }
     }
 
-    private void ToJumpState()
+    private void ToJumpForwardState()
     {
         if (_playerController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
         {
@@ -58,6 +60,13 @@ public class WalkState : State
         {
             _playerMovement.HasJumped = false;
         }
+    }
+    public override bool ToAttackState(InputEnum inputEnum)
+    {
+        _attackState.InputEnum = inputEnum;
+        _attackState.Crouch = false;
+        _stateMachine.ChangeState(_attackState);
+        return true;
     }
 
     public override void UpdatePhysics()

@@ -15,7 +15,8 @@ public class HurtState : State
     public override void Enter()
     {
         base.Enter();
-        _playerAnimator.Hurt();
+        _audio.Sound(HurtAttack.impactSound).Play();
+        _playerAnimator.Hurt(true);
         _playerMovement.StopGhosts();
         GameObject effect = Instantiate(HurtAttack.hurtEffect);
         effect.transform.localPosition = HurtAttack.hurtEffectPosition;

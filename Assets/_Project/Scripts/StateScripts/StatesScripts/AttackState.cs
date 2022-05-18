@@ -4,37 +4,58 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    private IdleState _idleState;
+	private IdleState _idleState;
+	public InputEnum InputEnum { get; set; }
+	public bool Crouch { get; set; }
+	public static bool CanSkipAttack;
+	void Awake()
+	{
+		_idleState = GetComponent<IdleState>();
+	}
 
+	public override void Enter()
+	{
+		base.Enter();
+		_audio.Sound("Hit").Play();
+		_player.CurrentAttack = _playerComboSystem.GetComboAttack(InputEnum, Crouch);
+		_playerAnimator.Attack(_player.CurrentAttack.name, true);
+		_playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance * transform.localScale.x, _player.CurrentAttack.travelDirection.y));
+	}
 
-    void Awake()
-    {
-        _idleState = GetComponent<IdleState>();
-    }
+	public override void UpdateLogic()
+	{
+		base.UpdateLogic();
+	}
 
-    public override void Enter()
-    {
-        base.Enter();
-        _playerAnimator.Attack5L();
-        _player.CurrentAttack = _playerComboSystem.GetComboAttack(InputEnum.Light);
-    }
+	public void ToIdleState()
+	{
+		if (_playerMovement._isGrounded)
+		{
+			_stateMachine.ChangeState(_idleState);
+		}
+	}
 
-    public override void UpdateLogic()
-    {
-        base.UpdateLogic();
-    }
+	public override void UpdatePhysics()
+	{
+		base.UpdatePhysics();
+	}
 
-    public void ToIdleState()
-    {
-        if (_playerMovement._isGrounded)
-        {
-            _stateMachine.ChangeState(_idleState);
-        }
-    }
+	public override bool ToAttackState(InputEnum inputEnum)
+	{
+		if (CanSkipAttack)
+		{
+			_stateMachine.ChangeState(this);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
-    public override void UpdatePhysics()
-    {
-        base.UpdatePhysics();
-        _rigidbody.velocity = Vector2.zero;
-    }
+	public override void Exit()
+	{
+		base.Exit();
+		CanSkipAttack = false;
+	}
 }

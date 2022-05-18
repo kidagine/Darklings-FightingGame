@@ -195,7 +195,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
             _audio.Sound("Hit").Play();
             IsAttacking = true;
             _playerAnimator.Throw();
-            CurrentAttack = _playerComboSystem.GetComboAttack(InputEnum.Throw);
             _playerMovement.TravelDistance(Vector2.zero);
             return true;
         }
@@ -274,7 +273,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
             _audio.Sound("Hit").Play();
             IsAttacking = true;
             _playerAnimator.Attack(inputEnum.ToString());
-            CurrentAttack = _playerComboSystem.GetComboAttack(inputEnum);
             AttackTravel();
             if (!string.IsNullOrEmpty(CurrentAttack.attackSound))
             {
@@ -337,17 +335,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
         bool gotHit = hurtbox.TakeDamage(CurrentAttack);
         if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
         {
-            CanCancelAttack = true;
+            AttackState.CanSkipAttack = true;
         }
-        _playerMovement.SetLockMovement(true);
-        if (gotHit && CurrentAttack.attackTypeEnum == AttackTypeEnum.Throw)
-        {
-            Throw();
-        }
-        if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
-        {
-            _playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
-        }
+        //if (gotHit && CurrentAttack.attackTypeEnum == AttackTypeEnum.Throw)
+        //{
+        //    Throw();
+        //}
+        //if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
+        //{
+        //    _playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
+        //}
     }
 
     private void Throw()

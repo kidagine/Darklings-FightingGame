@@ -31,7 +31,7 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    public virtual bool ChangeState(State newState)
+    public virtual void ChangeState(State newState)
     {
         if (CurrentState != null)
         {
@@ -40,7 +40,6 @@ public class StateMachine : MonoBehaviour
         CurrentState = newState;
         OnStateChange();
         CurrentState.Enter();
-        return true;
     }
 
     protected virtual void OnStateChange() { }

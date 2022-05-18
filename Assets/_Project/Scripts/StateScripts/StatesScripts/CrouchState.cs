@@ -5,11 +5,13 @@ using UnityEngine;
 public class CrouchState : State
 {
     private IdleState _idleState;
+    private AttackState _attackState;
 
 
     void Awake()
     {
         _idleState = GetComponent<IdleState>();
+        _attackState = GetComponent<AttackState>();
     }
 
     public override void Enter()
@@ -31,6 +33,14 @@ public class CrouchState : State
         {
             _stateMachine.ChangeState(_idleState);
         }
+    }
+
+    public override bool ToAttackState(InputEnum inputEnum)
+    {
+        _attackState.InputEnum = inputEnum;
+        _attackState.Crouch = true;
+        _stateMachine.ChangeState(_attackState);
+        return true;
     }
 
     public override void UpdatePhysics()

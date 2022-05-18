@@ -34,7 +34,6 @@ public class IdleState : State
         ToCrouchState();
         ToJumpState();
         ToDashState();
-        ToAttackState();
         _player.Flip();
     }
 
@@ -81,12 +80,12 @@ public class IdleState : State
         }
     }
 
-    private void ToAttackState()
+    public override bool ToAttackState(InputEnum inputEnum)
     {
-        // if (_playerController)
-        // {
-        //     _stateMachine.ChangeState(_attackState);
-        // }
+        _attackState.InputEnum = inputEnum;
+        _attackState.Crouch = false;
+        _stateMachine.ChangeState(_attackState);
+        return true;
     }
 
     public override void UpdatePhysics()
