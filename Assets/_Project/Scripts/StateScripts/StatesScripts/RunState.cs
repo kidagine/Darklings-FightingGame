@@ -1,3 +1,4 @@
+using Demonics.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,8 +29,8 @@ public class RunState : State
     {
         while (_playerController.InputDirection.x != 0.0f)
         {
-            GameObject playerGhost = Instantiate(_playerGhostPrefab, transform.position, Quaternion.identity);
-            playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.localScale.x, Color.white);
+            GameObject playerGhost = ObjectPoolingManager.Instance.Spawn(_playerGhostPrefab, transform.position);
+            playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.root.localScale.x, Color.white);
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -54,7 +55,7 @@ public class RunState : State
         if (_playerController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
         {
             _playerMovement.HasJumped = true;
-            _stateMachine.ChangeState(this);
+            _stateMachine.ChangeState(_jumpForwardState);
         }
         else if (_playerController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
         {

@@ -47,7 +47,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
     public bool BlockingHigh { get; set; }
     public bool BlockingMiddair { get; set; }
     public bool IsDead { get; set; }
-    public bool CanFlip { get; set; } = true;
     public bool CanShadowbreak { get; set; } = true;
     public bool CanCancelAttack { get; set; }
 
@@ -92,7 +91,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
         transform.rotation = Quaternion.identity;
         _playerMovement.SetLockMovement(true);
         IsStunned = false;
-        CanFlip = true;
         IsDead = false;
         IsAttacking = false;
         _controller.ActiveController.enabled = true;
@@ -147,7 +145,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
     {
         ArcanaCharge();
         AssistCharge();
-        CheckFlip();
         CheckIsBlocking();
     }
 
@@ -177,28 +174,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
         }
     }
 
-    private void CheckFlip()
-    {
-        if (!IsDead && CanFlip && !IsKnockedDown && !_playerMovement.FullyLockMovement)
-        {
-            if (_playerMovement.IsGrounded && !IsAttacking)
-            {
-                Flip();
-            }
-        }
-    }
-
     public void Flip()
     {
         if (_otherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && transform.localScale.x != 1.0f)
         {
-            // _playerAnimator.Run(false);
             transform.localScale = new Vector2(1.0f, transform.localScale.y);
             _keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
         }
         else if (_otherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && transform.localScale.x != -1.0f)
         {
-            // _playerAnimator.Run(false);
             transform.localScale = new Vector2(-1.0f, transform.localScale.y);
             _keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
         }

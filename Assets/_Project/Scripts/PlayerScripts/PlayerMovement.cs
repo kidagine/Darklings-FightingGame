@@ -234,10 +234,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     IEnumerator OnGroundedCoroutine()
     {
-        if (!IsGrounded && _rigidbody.velocity.y <= 0.0f && !FullyLockMovement)
+        if (!IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
-            _player.CanFlip = true;
-            //_playerAnimator.IsJumping(false);
             ResetGravity();
             _hasDashedMiddair = false;
             CanDoubleJump = true;
@@ -247,7 +245,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             Instantiate(_dustDownPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
             IsGrounded = true;
-            _player.Flip();
             if (_player.HitMiddair)
             {
                 _player.StopStun(true);
@@ -364,7 +361,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             // _playerAnimator.Run(true);
             MovementSpeed = _playerStats.PlayerStatsSO.runSpeed;
             IsDashing = false;
-            _player.CanFlip = true;
             _ghostsCoroutine = StartCoroutine(RunCoroutine());
         }
         else
@@ -374,7 +370,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
                 yield return new WaitForSeconds(0.05f);
             }
             IsDashing = false;
-            _player.CanFlip = true;
         }
         yield return null;
         _inputBuffer.CheckForInputBufferItem();
@@ -406,7 +401,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         if (!IsGrounded)
         {
             _player.SetPushboxTrigger(true);
-            _player.CanFlip = true;
         }
         IsDashing = false;
     }

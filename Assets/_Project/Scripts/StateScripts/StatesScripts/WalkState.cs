@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class WalkState : State
 {
-    private FallState _idleState;
+    private IdleState _idleState;
     private CrouchState _crouchState;
     private JumpForwardState _jumpForwardState;
 
     void Awake()
     {
-        _idleState = GetComponent<FallState>();
+        _idleState = GetComponent<IdleState>();
         _crouchState = GetComponent<CrouchState>();
         _jumpForwardState = GetComponent<JumpForwardState>();
     }
@@ -28,6 +28,7 @@ public class WalkState : State
         ToIdleState();
         ToCrouchState();
         ToJumpState();
+        _player.Flip();
     }
 
     private void ToIdleState()

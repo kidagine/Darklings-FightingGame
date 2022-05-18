@@ -36,6 +36,7 @@ public class FallState : State
         {
             Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
+            _player.SetPushboxTrigger(false);
             _stateMachine.ChangeState(_idleState);
         }
     }
@@ -100,12 +101,6 @@ public class FallState : State
     public override void UpdatePhysics()
     {
         base.UpdatePhysics();
-    }
-
-    public override void OnTriggerEnter2D(Collider2D collision)
-    {
-        base.OnTriggerEnter2D(collision);
-        Debug.Log(collision.name);
     }
 
     public override void Exit()

@@ -37,4 +37,9 @@ public class ArcanaState : State
         base.UpdatePhysics();
         _rigidbody.velocity = Vector2.zero;
     }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
 }

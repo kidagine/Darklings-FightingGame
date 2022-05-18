@@ -22,6 +22,7 @@ public class CrouchState : State
     {
         base.UpdateLogic();
         ToIdleState();
+        _player.Flip();
     }
 
     private void ToIdleState()

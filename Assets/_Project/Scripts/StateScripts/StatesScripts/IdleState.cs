@@ -23,7 +23,6 @@ public class IdleState : State
     {
         base.Enter();
         _playerAnimator.Idle();
-        _player.CanFlip = true;
         _playerMovement.HasAirDashed = false;
         _playerMovement.HasDoubleJumped = false;
     }
@@ -36,6 +35,7 @@ public class IdleState : State
         ToJumpState();
         ToDashState();
         ToAttackState();
+        _player.Flip();
     }
 
     private void ToWalkState()
@@ -87,12 +87,6 @@ public class IdleState : State
         // {
         //     _stateMachine.ChangeState(_attackState);
         // }
-    }
-
-    public override void OnTriggerEnter2D(Collider2D collision)
-    {
-        base.OnTriggerEnter2D(collision);
-        Debug.Log(collision.name);
     }
 
     public override void UpdatePhysics()

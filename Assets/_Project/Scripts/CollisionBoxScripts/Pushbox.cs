@@ -39,8 +39,6 @@ public class Pushbox : MonoBehaviour
             float point = -1;
             if (point == -1.0f)
             {
-                Debug.Log("a");
-
                 pushboxResponder.GroundedPoint(transform, point);
             }
         }

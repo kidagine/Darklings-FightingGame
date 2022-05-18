@@ -22,7 +22,7 @@ public class JumpForwardState : State
         base.Enter();
         Instantiate(_jumpPrefab, transform.position, Quaternion.identity);
         _audio.Sound("Jump").Play();
-        _player.CanFlip = false;
+        _player.SetPushboxTrigger(true);
         _playerAnimator.JumpForward(true);
         _playerMovement.ResetToWalkSpeed();
         _rigidbody.velocity = Vector2.zero;

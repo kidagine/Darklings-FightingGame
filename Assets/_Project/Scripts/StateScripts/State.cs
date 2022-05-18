@@ -32,6 +32,4 @@ public class State : MonoBehaviour
     public virtual void UpdateLogic() { }
     public virtual void UpdatePhysics() { }
     public virtual void Exit() { }
-
-    public virtual void OnTriggerEnter2D(Collider2D collision) { }
 }
