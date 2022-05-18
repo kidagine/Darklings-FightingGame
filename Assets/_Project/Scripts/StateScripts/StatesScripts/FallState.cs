@@ -8,12 +8,14 @@ public class FallState : State
     private IdleState _idleState;
     private JumpForwardState _jumpForwardState;
     private AirDashState _airDashState;
+    private AttackState _attackState;
 
     void Awake()
     {
         _idleState = GetComponent<IdleState>();
         _jumpForwardState = GetComponent<JumpForwardState>();
         _airDashState = GetComponent<AirDashState>();
+        _attackState = GetComponent<AttackState>();
     }
 
     public override void Enter()
@@ -96,6 +98,14 @@ public class FallState : State
                 _stateMachine.ChangeState(_airDashState);
             }
         }
+    }
+
+    public override bool ToAttackState(InputEnum inputEnum)
+    {
+        _attackState.InputEnum = inputEnum;
+        _attackState.Initialize(false, true);
+        _stateMachine.ChangeState(_attackState);
+        return true;
     }
 
     public override void UpdatePhysics()

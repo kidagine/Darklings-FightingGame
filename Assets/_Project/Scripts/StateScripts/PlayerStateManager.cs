@@ -20,6 +20,7 @@ public class PlayerStateManager : StateMachine
     public IdleState IdleState { get; private set; }
     public HurtState HurtState { get; private set; }
     public ArcanaState ArcanaState { get; private set; }
+    public FallState FallState { get; private set; }
 
     public void SetTrainingMenu(TrainingMenu trainingMenu)
     {
@@ -38,6 +39,7 @@ public class PlayerStateManager : StateMachine
         IdleState = GetComponent<IdleState>();
         HurtState = GetComponent<HurtState>();
         ArcanaState = GetComponent<ArcanaState>();
+        FallState = GetComponent<FallState>();
     }
 
     public void ResetToInitialState()

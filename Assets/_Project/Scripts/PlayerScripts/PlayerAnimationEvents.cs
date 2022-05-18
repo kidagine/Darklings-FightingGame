@@ -21,6 +21,12 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         SetFramedata();
         _playerStateManager.ChangeState(_playerStateManager.IdleState);
+        _inputBuffer.CheckForInputBufferItem();
+    }
+
+    public void ToFallStateAnimationEvent()
+    {
+        _playerStateManager.ChangeState(_playerStateManager.FallState);
     }
 
     public void UnlockMovementNoFramedata()

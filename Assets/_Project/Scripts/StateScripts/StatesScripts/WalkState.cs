@@ -61,6 +61,7 @@ public class WalkState : State
             _playerMovement.HasJumped = false;
         }
     }
+
     public override bool ToAttackState(InputEnum inputEnum)
     {
         _attackState.InputEnum = inputEnum;
