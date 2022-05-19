@@ -52,6 +52,11 @@ public class PlayerStateManager : StateMachine
         return CurrentState.ToAttackState(inputEnum);
     }
 
+    public bool TryToArcanaState()
+    {
+        return CurrentState.ToArcanaState();
+    }
+
     protected override State GetInitialState()
     {
         return _initialState;

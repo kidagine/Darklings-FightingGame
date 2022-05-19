@@ -27,7 +27,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
     private Audio _audio;
     private Coroutine _stunCoroutine;
     private Coroutine _blockCoroutine;
-    protected float _arcana;
     private float _assistGauge = 1.0f;
     private bool _throwBreakInvulnerable;
     public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
@@ -41,6 +40,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
     public bool HitMiddair { get; set; }
     public bool IsAttacking { get; set; }
     public bool IsPlayerOne { get; set; }
+    public float Arcana { get; set; } = 7.5f;
     public float ArcaneSlowdown { get; set; } = 7.5f;
     public bool IsStunned { get; private set; }
     public bool BlockingLow { get; set; }
@@ -107,14 +107,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
         _playerMovement.IsInCorner = false;
         if (!GameManager.Instance.InfiniteArcana)
         {
-            _arcana = 0.0f;
+            Arcana = 0.0f;
         }
         IsKnockedDown = false;
         StopAllCoroutines();
         _playerMovement.StopAllCoroutines();
         _otherPlayerUI.ResetCombo();
         _playerMovement.ResetPlayerMovement();
-        _playerUI.SetArcana(_arcana);
+        _playerUI.SetArcana(Arcana);
         _playerUI.SetAssist(_assistGauge);
         _playerUI.ResetHealthDamaged();
         InitializeStats();
@@ -162,14 +162,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
     private void ArcanaCharge()
     {
-        if (_arcana < _playerStats.PlayerStatsSO.maxArcana && GameManager.Instance.HasGameStarted)
+        if (Arcana < _playerStats.PlayerStatsSO.maxArcana && GameManager.Instance.HasGameStarted)
         {
-            _arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.PlayerStatsSO.arcanaRecharge);
+            Arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.PlayerStatsSO.arcanaRecharge);
             if (GameManager.Instance.InfiniteArcana)
             {
-                _arcana = _playerStats.PlayerStatsSO.maxArcana;
+                Arcana = _playerStats.PlayerStatsSO.maxArcana;
             }
-            _playerUI.SetArcana(_arcana);
+            _playerUI.SetArcana(Arcana);
         }
     }
 
@@ -203,7 +203,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
     public virtual bool ArcaneAction()
     {
         //REPLACE
-        if (_arcana >= 1.0f)
+        if (Arcana >= 1.0f)
         {
             if (CanCancelAttack)
             {
@@ -219,10 +219,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
                     _playerMovement.ResetToWalkSpeed();
                     if (!GameManager.Instance.InfiniteArcana)
                     {
-                        _arcana--;
+                        Arcana--;
                     }
                     _playerUI.DecreaseArcana();
-                    _playerUI.SetArcana(_arcana);
+                    _playerUI.SetArcana(Arcana);
                     _audio.Sound("Hit").Play();
                     IsAttacking = true;
                     _playerAnimator.Arcana();
