@@ -3,170 +3,209 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerAnimator : MonoBehaviour
 {
-	[SerializeField] private PlayerStats _playerStats = default;
-	[SerializeField] private InputBuffer _inputBuffer = default;
-	private Animator _animator;
-	private SpriteLibrary _spriteLibrary;
-	private SpriteRenderer _spriteRenderer;
+    [SerializeField] private PlayerStats _playerStats = default;
+    [SerializeField] private InputBuffer _inputBuffer = default;
+    private Animator _animator;
+    private SpriteLibrary _spriteLibrary;
+    private SpriteRenderer _spriteRenderer;
 
-	public PlayerStats PlayerStats { get { return _playerStats; } private set { } }
+    public PlayerStats PlayerStats { get { return _playerStats; } private set { } }
 
-	void Awake()
-	{
-		_animator = GetComponent<Animator>();
-		_spriteLibrary = GetComponent<SpriteLibrary>();
-		_spriteRenderer = GetComponent<SpriteRenderer>();
-	}
+    void Awake()
+    {
+        _animator = GetComponent<Animator>();
+        _spriteLibrary = GetComponent<SpriteLibrary>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
-	void Start()
-	{
-		_animator.runtimeAnimatorController = _playerStats.PlayerStatsSO.runtimeAnimatorController;
-	}
+    void Start()
+    {
+        _animator.runtimeAnimatorController = _playerStats.PlayerStatsSO.runtimeAnimatorController;
+    }
 
-	public void SetMove(bool state)
-	{
-		_animator.SetBool("IsMoving", state);
-	}
+    public void Walk()
+    {
+        _animator.Play("Walk");
+    }
 
-	public void SetMovementX(float value)
-	{
-		_animator.SetFloat("MovementInputX", value);
-	}
+    public void Idle()
+    {
+        _animator.Play("Idle");
+    }
 
-	public void IsCrouching(bool state)
-	{
-		_animator.SetBool("IsCrouching", state);
-	}
+    public void Crouch()
+    {
+        _animator.Play("Crouch");
+    }
 
-	public void IsJumping(bool state)
-	{
-		_animator.SetBool("IsJumping", state);
-	}
+    public void Jump(bool reset = false)
+    {
+        if (reset)
+        {
+            _animator.Play("Jump", -1, 0f);
+        }
+        else
+        {
+            _animator.Play("Jump");
+        }
+    }
 
-	public void CancelAttack()
-	{
-		_animator.SetTrigger("Cancel");
-	}
+    public void JumpForward(bool reset = false)
+    {
+        if (reset)
+        {
+            _animator.Play("JumpForward", -1, 0f);
+        }
+        else
+        {
+            _animator.Play("JumpForward");
+        }
+    }
 
-	public void CancelHurt()
-	{
-		_animator.SetTrigger("CancelHurt");
-	}
+    public void CancelAttack()
+    {
+        _animator.SetTrigger("Cancel");
+    }
 
-	public void ResetAnimation(string name)
-	{
-		_animator.Play(name, -1, 0f);
-	}
+    public void CancelHurt()
+    {
+        _animator.SetTrigger("CancelHurt");
+    }
 
-	public void ResetTrigger(string name)
-	{
-		_animator.ResetTrigger(name);
-	}
+    public void ResetAnimation(string name)
+    {
+        _animator.Play(name, -1, 0f);
+    }
 
-	public void Attack(string attackType)
-	{
-		_animator.SetTrigger(attackType);
-	}
-	public void Shadowbreak()
-	{
-		_animator.SetTrigger("Shadowbreak");
-	}
-	public void Throw()
-	{
-		_animator.SetTrigger("Throw");
-	}
+    public void ResetTrigger(string name)
+    {
+        _animator.ResetTrigger(name);
+    }
 
-	public void Intro()
-	{
-		_animator.SetTrigger("Intro");
-	}
+    public void Attack(string attackType, bool reset = false)
+    {
+        if (reset)
+        {
+            _animator.Play(attackType, -1, 0f);
+        }
+        else
+        {
+            _animator.Play(attackType);
+        }
+    }
 
-	public void ThrowEnd()
-	{
-		_animator.SetTrigger("ThrowEnd");
-	}
+    public void Shadowbreak()
+    {
+        _animator.SetTrigger("Shadowbreak");
+    }
 
-	public void Arcana()
-	{
-		_animator.SetTrigger("Arcana");
-	}
+    public void Intro()
+    {
+        _animator.Play("Intro");
+    }
 
-	public void ArcanaEnd()
-	{
-		_animator.SetTrigger("ArcanaEnd");
-	}
+    public void Throw()
+    {
+        _animator.Play("Throw");
+    }
 
-	public void Hurt()
-	{
-		_animator.SetTrigger("Hurt");
-	}
+    public void ThrowEnd()
+    {
+        _animator.SetTrigger("ThrowEnd");
+    }
 
-	public void IsBlocking(bool state)
-	{
-		_animator.SetBool("IsBlocking", state);
-	}
+    public void Arcana()
+    {
+        _animator.Play("Arcana");
+    }
 
-	public void IsBlockingLow(bool state)
-	{
-		_animator.SetBool("IsBlockingLow", state);
-	}
-	public void IsBlockingAir(bool state)
-	{
-		_animator.SetBool("IsBlockingAir", state);
-	}
+    public void ArcanaEnd()
+    {
+        _animator.SetTrigger("ArcanaEnd");
+    }
 
-	public void IsDashing(bool state)
-	{
-		_animator.SetBool("IsDashing", state);
-	}
+    public void Hurt(bool reset = false)
+    {
+        if (reset)
+        {
+            _animator.Play("Hurt", -1, 0f);
+        }
+        else
+        {
+            _animator.Play("Hurt");
+        }
+    }
 
-	public void IsRunning(bool state)
-	{
-		_animator.SetBool("IsRunning", state);
-	}
+    public void IsBlocking(bool state)
+    {
+        _animator.SetBool("IsBlocking", state);
+    }
 
-	public void Taunt()
-	{
-		_animator.SetTrigger("Taunt");
-	}
+    public void IsBlockingLow(bool state)
+    {
+        _animator.SetBool("IsBlockingLow", state);
+    }
+    public void IsBlockingAir(bool state)
+    {
+        _animator.SetBool("IsBlockingAir", state);
+    }
 
-	public void Death()
-	{
-		_animator.SetTrigger("Death");
-	}
+    public void Dash()
+    {
+        _animator.Play("Dash");
+    }
 
-	public void IsKnockedDown(bool state)
-	{
-		_animator.SetBool("IsKnockedDown", state);
-	}
+    public void AirDash()
+    {
+        _animator.Play("Jump");
+    }
 
-	public void Rebind()
-	{
-		_animator.Rebind();
-	}
+    public void Run()
+    {
+        _animator.Play("Run");
+    }
 
-	public Sprite GetCurrentSprite()
-	{
-		return _spriteRenderer.sprite;
-	}
+    public void Taunt()
+    {
+        _animator.SetTrigger("Taunt");
+    }
 
-	public int SetSpriteLibraryAsset(int skinNumber)
-	{
-		if (skinNumber > PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1)
-		{
-			skinNumber = 0;
-		}
-		else if (skinNumber < 0)
-		{
-			skinNumber = PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1;
-		}
-		_spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
-		return skinNumber;
-	}
+    public void Death()
+    {
+        _animator.SetTrigger("Death");
+    }
 
-	public void SetSpriteOrder(int index)
-	{
-		_spriteRenderer.sortingOrder = index;
-	}
+    public void IsKnockedDown(bool state)
+    {
+        _animator.SetBool("IsKnockedDown", state);
+    }
+
+    public void Rebind()
+    {
+        _animator.Rebind();
+    }
+
+    public Sprite GetCurrentSprite()
+    {
+        return _spriteRenderer.sprite;
+    }
+
+    public int SetSpriteLibraryAsset(int skinNumber)
+    {
+        if (skinNumber > PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1)
+        {
+            skinNumber = 0;
+        }
+        else if (skinNumber < 0)
+        {
+            skinNumber = PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1;
+        }
+        _spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
+        return skinNumber;
+    }
+
+    public void SetSpriteOrder(int index)
+    {
+        _spriteRenderer.sortingOrder = index;
+    }
 }
-	
