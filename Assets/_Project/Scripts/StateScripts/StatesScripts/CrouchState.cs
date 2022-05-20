@@ -6,12 +6,14 @@ public class CrouchState : State
 {
     private IdleState _idleState;
     private AttackState _attackState;
+    private ArcanaState _arcanaState;
 
 
     void Awake()
     {
         _idleState = GetComponent<IdleState>();
         _attackState = GetComponent<AttackState>();
+        _arcanaState = GetComponent<ArcanaState>();
     }
 
     public override void Enter()
@@ -41,6 +43,16 @@ public class CrouchState : State
         _attackState.Initialize(true, false);
         _stateMachine.ChangeState(_attackState);
         return true;
+    }
+
+    public override bool ToArcanaState()
+    {
+        if (_player.Arcana >= 1.0f)
+        {
+            _stateMachine.ChangeState(_arcanaState);
+            return true;
+        }
+        return false;
     }
 
     public override void UpdatePhysics()

@@ -202,61 +202,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
     public virtual bool ArcaneAction()
     {
-        //REPLACE
-        if (Arcana >= 1.0f)
-        {
-            if (CanCancelAttack)
-            {
-                IsAttacking = false;
-                _playerAnimator.CancelAttack();
-                CanCancelAttack = false;
-            }
-            if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !IsKnockedDown)
-            {
-                if (_playerComboSystem.GetArcana().airOk || _playerMovement.IsGrounded)
-                {
-                    _playerMovement.StopKnockback();
-                    _playerMovement.ResetToWalkSpeed();
-                    if (!GameManager.Instance.InfiniteArcana)
-                    {
-                        Arcana--;
-                    }
-                    _playerUI.DecreaseArcana();
-                    _playerUI.SetArcana(Arcana);
-                    _audio.Sound("Hit").Play();
-                    IsAttacking = true;
-                    _playerAnimator.Arcana();
-                    CurrentAttack = _playerComboSystem.GetArcana();
-
-                    if (!string.IsNullOrEmpty(CurrentAttack.attackSound))
-                    {
-                        _audio.Sound(CurrentAttack.attackSound).Play();
-                    }
-                    if (!CurrentAttack.isAirAttack)
-                    {
-                        _playerMovement.TravelDistance(new Vector2(CurrentAttack.travelDistance * transform.localScale.x, CurrentAttack.travelDirection.y));
-                    }
-                    return true;
-                }
-            }
-        }
         return false;
-        //REPLACE
     }
 
     public virtual bool LightAction()
     {
-        return Attack(InputEnum.Light);
+        return false;
     }
 
     public virtual bool MediumAction()
     {
-        return Attack(InputEnum.Medium);
+        return false;
     }
 
     public virtual bool HeavyAction()
     {
-        return Attack(InputEnum.Heavy);
+        return false;
     }
 
     protected virtual bool Attack(InputEnum inputEnum)
@@ -566,10 +527,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
         _playerAnimator.IsBlockingLow(false);
         _playerAnimator.IsBlockingAir(false);
         _playerAnimator.ResetTrigger("CancelHurt");
-        if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
-        {
-            LightAction();
-        }
     }
 
     private void CheckIsBlocking()
@@ -663,10 +620,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
         IsKnockedDown = false;
         _controller.ActivateInput();
         _otherPlayerUI.ResetCombo();
-        if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
-        {
-            LightAction();
-        }
         yield return new WaitForSeconds(0.05f);
         _throwBreakInvulnerable = false;
     }
@@ -716,10 +669,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
         _playerUI.UpdateHealthDamaged();
         _otherPlayerUI.ResetCombo();
-        if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
-        {
-            LightAction();
-        }
     }
 
     public void StopStun(bool resetCombo)

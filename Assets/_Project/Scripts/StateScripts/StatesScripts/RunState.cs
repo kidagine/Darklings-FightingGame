@@ -9,11 +9,13 @@ public class RunState : State
     private IdleState _idleState;
     private JumpForwardState _jumpForwardState;
     private Coroutine _runCoroutine;
+    private ArcanaState _arcanaState;
 
     void Awake()
     {
         _idleState = GetComponent<IdleState>();
         _jumpForwardState = GetComponent<JumpForwardState>();
+        _arcanaState = GetComponent<ArcanaState>();
     }
 
     public override void Enter()
@@ -61,6 +63,16 @@ public class RunState : State
         {
             _playerMovement.HasJumped = false;
         }
+    }
+
+    public override bool ToArcanaState()
+    {
+        if (_player.Arcana >= 1.0f)
+        {
+            _stateMachine.ChangeState(_arcanaState);
+            return true;
+        }
+        return false;
     }
 
     public override void UpdatePhysics()

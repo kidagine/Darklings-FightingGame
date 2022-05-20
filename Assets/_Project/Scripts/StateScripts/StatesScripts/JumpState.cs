@@ -10,6 +10,7 @@ public class JumpState : State
     private JumpForwardState _jumpForwardState;
     private AirDashState _airDashState;
     private AttackState _attackState;
+    private ArcanaState _arcanaState;
 
     void Awake()
     {
@@ -17,6 +18,7 @@ public class JumpState : State
         _jumpForwardState = GetComponent<JumpForwardState>();
         _airDashState = GetComponent<AirDashState>();
         _attackState = GetComponent<AttackState>();
+        _arcanaState = GetComponent<ArcanaState>();
     }
 
     public override void Enter()
@@ -110,6 +112,16 @@ public class JumpState : State
         _attackState.Initialize(false, true);
         _stateMachine.ChangeState(_attackState);
         return true;
+    }
+
+    public override bool ToArcanaState()
+    {
+        if (_player.Arcana >= 1.0f && _playerComboSystem.GetArcana().airOk)
+        {
+            _stateMachine.ChangeState(_arcanaState);
+            return true;
+        }
+        return false;
     }
 
     public override void UpdatePhysics()
