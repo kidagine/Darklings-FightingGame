@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ArcanaState : State
@@ -19,11 +17,6 @@ public class ArcanaState : State
         _player.CurrentAttack = _playerComboSystem.GetArcana();
     }
 
-    public override void UpdateLogic()
-    {
-        base.UpdateLogic();
-    }
-
     public void ToIdleState()
     {
         if (_playerMovement._isGrounded)
@@ -36,10 +29,5 @@ public class ArcanaState : State
     {
         base.UpdatePhysics();
         _rigidbody.velocity = Vector2.zero;
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
     }
 }

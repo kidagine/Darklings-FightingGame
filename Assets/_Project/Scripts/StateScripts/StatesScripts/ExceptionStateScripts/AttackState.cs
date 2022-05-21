@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackState : State
@@ -56,11 +54,6 @@ public class AttackState : State
 			_playerAnimator.Jump();
 			_stateMachine.ChangeState(_fallState);
 		}
-	}
-
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
 	}
 
 	public override bool ToAttackState(InputEnum inputEnum)

@@ -40,7 +40,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
     public bool HitMiddair { get; set; }
     public bool IsAttacking { get; set; }
     public bool IsPlayerOne { get; set; }
-    public float Arcana { get; set; } = 7.5f;
+    public float Arcana { get; set; }
     public float ArcaneSlowdown { get; set; } = 7.5f;
     public bool IsStunned { get; private set; }
     public bool BlockingLow { get; set; }
@@ -149,15 +149,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
     private void AssistCharge()
     {
-        if (_assistGauge < 1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
-        {
-            _assistGauge += Time.deltaTime / (11.0f - _assist.AssistStats.assistRecharge);
-            if (GameManager.Instance.InfiniteAssist)
-            {
-                _assistGauge = 1.0f;
-            }
-            _playerUI.SetAssist(_assistGauge);
-        }
+        //if (_assistGauge < 1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
+        //{
+        //    _assistGauge += Time.deltaTime / (11.0f - _assist.AssistStats.assistRecharge);
+        //    if (GameManager.Instance.InfiniteAssist)
+        //    {
+        //        _assistGauge = 1.0f;
+        //    }
+        //    _playerUI.SetAssist(_assistGauge);
+        //}
     }
 
     private void ArcanaCharge()
@@ -165,10 +165,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
         if (Arcana < _playerStats.PlayerStatsSO.maxArcana && GameManager.Instance.HasGameStarted)
         {
             Arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.PlayerStatsSO.arcanaRecharge);
-            if (GameManager.Instance.InfiniteArcana)
-            {
-                Arcana = _playerStats.PlayerStatsSO.maxArcana;
-            }
+            //if (GameManager.Instance.InfiniteArcana)
+            //{
+            //    Arcana = _playerStats.PlayerStatsSO.maxArcana;
+            //}
             _playerUI.SetArcana(Arcana);
         }
     }

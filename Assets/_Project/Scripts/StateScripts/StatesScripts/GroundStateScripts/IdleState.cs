@@ -1,26 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : State
+public class IdleState : GroundParentState
 {
-	private WalkState _walkState;
-	private CrouchState _crouchState;
-	private JumpState _jumpState;
-	private DashState _dashState;
-	private AttackState _attackState;
-	private ArcanaState _arcanaState;
-
-	void Awake()
-	{
-		_walkState = GetComponent<WalkState>();
-		_crouchState = GetComponent<CrouchState>();
-		_jumpState = GetComponent<JumpState>();
-		_dashState = GetComponent<DashState>();
-		_attackState = GetComponent<AttackState>();
-		_arcanaState = GetComponent<ArcanaState>();
-	}
-
 	public override void Enter()
 	{
 		base.Enter();
@@ -80,24 +61,6 @@ public class IdleState : State
 			_dashState.DashDirection = -1;
 			_stateMachine.ChangeState(_dashState);
 		}
-	}
-
-	public override bool ToAttackState(InputEnum inputEnum)
-	{
-		_attackState.InputEnum = inputEnum;
-		_attackState.Initialize(false, false);
-		_stateMachine.ChangeState(_attackState);
-		return true;
-	}
-
-	public override bool ToArcanaState()
-	{
-		if (_player.Arcana >= 1.0f)
-		{
-			_stateMachine.ChangeState(_arcanaState);
-			return true;
-		}
-		return false;
 	}
 
 	public override void UpdatePhysics()
