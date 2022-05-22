@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Demonics.Sounds;
 using UnityEngine;
 
@@ -15,24 +13,22 @@ public class PlayerStateManager : StateMachine
     [SerializeField] private PlayerComboSystem _playerComboSystem = default;
     [SerializeField] private Audio _audio = default;
     [SerializeField] private Rigidbody2D _rigidbody = default;
-    private TrainingMenu _trainingMenu = default;
+    private TrainingMenu _trainingMenu;
+    private PlayerUI _playerUI;
     public AttackState AttackState { get; private set; }
     public IdleState IdleState { get; private set; }
     public HurtState HurtState { get; private set; }
     public ArcanaState ArcanaState { get; private set; }
     public FallState FallState { get; private set; }
 
-    public void SetTrainingMenu(TrainingMenu trainingMenu)
+    public void Initialize(PlayerUI playerUI, TrainingMenu trainingMenu)
     {
+        _playerUI = playerUI;
         _trainingMenu = trainingMenu;
-    }
-
-    private void Awake()
-    {
-        foreach (State state in GetComponents(typeof(State)))
+        foreach (State state in GetComponents<State>())
         {
             state.Initialize(
-            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerStats, _playerController, _playerComboSystem, _audio
+            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _playerController, _playerComboSystem, _audio
             );
         }
         AttackState = GetComponent<AttackState>();
