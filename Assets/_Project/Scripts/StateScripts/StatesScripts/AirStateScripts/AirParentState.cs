@@ -1,33 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class JumpForwardState : State
+public class AirParentState : State
 {
-    [SerializeField] private GameObject _jumpPrefab = default;
-    [SerializeField] private GameObject _groundedPrefab = default;
-    private FallState _fallState;
-    private JumpState _jumpState;
-    private AirDashState _airDashState;
-    private AttackState _attackState;
-    void Awake()
+    [SerializeField] protected GameObject _jumpPrefab = default;
+    [SerializeField] protected GameObject _groundedPrefab = default;
+    protected FallState _fallState;
+    protected JumpState _jumpState;
+    protected JumpForwardState _jumpForwardState;
+    protected AirDashState _airDashState;
+    protected AttackState _attackState;
+    protected ArcanaState _arcanaState;
+
+    protected virtual void Awake()
     {
-        _fallState = GetComponent<FallState>();
+            _fallState = GetComponent<FallState>();
         _jumpState = GetComponent<JumpState>();
+        _jumpForwardState = GetComponent<JumpForwardState>();
         _airDashState = GetComponent<AirDashState>();
         _attackState = GetComponent<AttackState>();
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-        Instantiate(_jumpPrefab, transform.position, Quaternion.identity);
-        _audio.Sound("Jump").Play();
-        _player.SetPushboxTrigger(true);
-        _playerAnimator.JumpForward(true);
-        _playerMovement.ResetToWalkSpeed();
-        _rigidbody.velocity = Vector2.zero;
-        _rigidbody.AddForce(new Vector2(Mathf.Round(_playerController.InputDirection.x) * (_playerStats.PlayerStatsSO.jumpForce / 2.5f), _playerStats.PlayerStatsSO.jumpForce + 1.0f), ForceMode2D.Impulse);
+        _arcanaState = GetComponent<ArcanaState>();
     }
 
     public override void UpdateLogic()
@@ -77,7 +68,7 @@ public class JumpForwardState : State
                 {
                     _playerMovement.HasDoubleJumped = true;
                     _playerMovement.HasJumped = true;
-                    _stateMachine.ChangeState(this);
+                    _stateMachine.ChangeState(_jumpForwardState);
                 }
                 else if (_playerController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
                 {
@@ -110,6 +101,16 @@ public class JumpForwardState : State
         _attackState.Initialize(false, true);
         _stateMachine.ChangeState(_attackState);
         return true;
+    }
+
+    public override bool ToArcanaState()
+    {
+        if (_player.Arcana >= 1.0f && _playerComboSystem.GetArcana().airOk)
+        {
+            _stateMachine.ChangeState(_arcanaState);
+            return true;
+        }
+        return false;
     }
 
     public override void UpdatePhysics()

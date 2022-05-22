@@ -1,20 +1,11 @@
 using Demonics.Manager;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class RunState : State
+public class RunState : GroundParentState
 {
     [SerializeField] private GameObject _playerGhostPrefab = default;
-    private IdleState _idleState;
-    private JumpForwardState _jumpForwardState;
     private Coroutine _runCoroutine;
-
-    void Awake()
-    {
-        _idleState = GetComponent<IdleState>();
-        _jumpForwardState = GetComponent<JumpForwardState>();
-    }
 
     public override void Enter()
     {

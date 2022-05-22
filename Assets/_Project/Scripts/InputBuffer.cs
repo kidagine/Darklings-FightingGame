@@ -73,7 +73,7 @@ public class InputBuffer : MonoBehaviour
         }
         else if (inputEnum == InputEnum.Special)
         {
-            inputBufferItem.Execute += () => _playerStateManager.TryToAttackState(inputEnum);
+            inputBufferItem.Execute += () => _playerStateManager.TryToArcanaState();
         }
         else if (inputEnum == InputEnum.Assist)
         {

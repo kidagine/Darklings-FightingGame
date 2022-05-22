@@ -1,22 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class WalkState : State
+public class WalkState : GroundParentState
 {
-    private IdleState _idleState;
-    private CrouchState _crouchState;
-    private JumpForwardState _jumpForwardState;
-    private AttackState _attackState;
-
-    void Awake()
-    {
-        _idleState = GetComponent<IdleState>();
-        _crouchState = GetComponent<CrouchState>();
-        _jumpForwardState = GetComponent<JumpForwardState>();
-        _attackState = GetComponent<AttackState>();
-    }
-
     public override void Enter()
     {
         base.Enter();
@@ -60,14 +45,6 @@ public class WalkState : State
         {
             _playerMovement.HasJumped = false;
         }
-    }
-
-    public override bool ToAttackState(InputEnum inputEnum)
-    {
-        _attackState.InputEnum = inputEnum;
-        _attackState.Initialize(false, false);
-        _stateMachine.ChangeState(_attackState);
-        return true;
     }
 
     public override void UpdatePhysics()

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HurtState : State
@@ -19,7 +18,7 @@ public class HurtState : State
         _playerAnimator.Hurt(true);
         GameObject effect = Instantiate(HurtAttack.hurtEffect);
         effect.transform.localPosition = HurtAttack.hurtEffectPosition;
-        _playerMovement.Knockback(new Vector2(1.0f, 0.0f), HurtAttack.knockback, HurtAttack.knockbackDuration);
+        _playerMovement.Knockback(new Vector2(transform.root.localScale.x * -1.0f, 0.0f), HurtAttack.knockback, HurtAttack.knockbackDuration);
         if (HurtAttack.cameraShaker != null)
         {
             CameraShake.Instance.Shake(HurtAttack.cameraShaker.intensity, HurtAttack.cameraShaker.timer);
@@ -34,11 +33,6 @@ public class HurtState : State
         // _playerUI.UpdateHealthDamaged();
         // _otherPlayerUI.ResetCombo();
         ToIdleState();
-    }
-
-    public override void UpdateLogic()
-    {
-        base.UpdateLogic();
     }
 
     private void ToIdleState()
