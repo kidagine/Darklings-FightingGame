@@ -96,7 +96,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_controller.ActiveController.enabled = true;
 		_controller.ActivateInput();
 		_effectsParent.gameObject.SetActive(true);
-		_playerAnimator.Rebind();
 		SetGroundPushBox(true);
 		SetAirPushBox(false);
 		SetPushboxTrigger(false);
@@ -371,11 +370,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public bool TakeDamage(AttackSO attackSO)
+	public bool TakeDamage(AttackSO attack)
 	{
-		_playerStateManager.HurtState.HurtAttack = attackSO;
-		_playerStateManager.ChangeState(_playerStateManager.HurtState);
-		return true;
+		return _playerStateManager.TryToHurtState(attack);
+
 		// CurrentHurtAttack = attackSO;
 		// DestroyEffects();
 		// if (!_playerMovement.IsGrounded)
@@ -577,7 +575,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private void Die()
 	{
 		DestroyEffects();
-		_playerAnimator.IsKnockedDown(true);
 		_controller.ActiveController.enabled = false;
 		SetGroundPushBox(false);
 		SetHurtbox(false);
@@ -610,9 +607,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_throwBreakInvulnerable = true;
 		_controller.DeactivateInput();
 		SetHurtbox(false);
-		_playerAnimator.IsKnockedDown(true);
 		yield return new WaitForSeconds(0.75f);
-		_playerAnimator.IsKnockedDown(false);
 		_playerAnimator.ResetTrigger("CancelHurt");
 		_playerMovement.SetLockMovement(false);
 		yield return new WaitForSeconds(0.25f);

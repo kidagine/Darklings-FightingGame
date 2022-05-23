@@ -4,10 +4,10 @@ public class AttackState : State
 {
 	private IdleState _idleState;
 	private FallState _fallState;
-	public InputEnum InputEnum { get; set; }
 	public static bool CanSkipAttack;
-	private bool _crouch;
+	private InputEnum _inputEnum;
 	private bool _air;
+	private bool _crouch;
 
 	void Awake()
 	{
@@ -15,8 +15,9 @@ public class AttackState : State
 		_fallState = GetComponent<FallState>();
 	}
 
-	public void Initialize(bool crouch, bool air)
+	public void Initialize(InputEnum inputEnum, bool crouch, bool air)
 	{
+		_inputEnum = inputEnum;
 		_crouch = crouch;
 		_air = air;
 	}
@@ -25,31 +26,31 @@ public class AttackState : State
 	{
 		base.Enter();
 		_audio.Sound("Hit").Play();
-		_player.CurrentAttack = _playerComboSystem.GetComboAttack(InputEnum, _crouch, _air);
+		_player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
 		_playerAnimator.Attack(_player.CurrentAttack.name, true);
 		if (!_air)
 		{
-			_playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDirection.y));
+			_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
+			_playerMovement.TravelDistance(new Vector2(
+				_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDirection.y));
+		}
+		else
+		{
+			_playerAnimator.OnCurrentAnimationFinished.AddListener(ToFallState);
 		}
 	}
 
-	public override void UpdateLogic()
+	private void ToIdleState()
 	{
-		base.UpdateLogic();
-		ToFallState();
-	}
-
-	public void ToIdleState()
-	{
-		if (_playerMovement._isGrounded)
+		if (_stateMachine.CurrentState == this)
 		{
 			_stateMachine.ChangeState(_idleState);
 		}
 	}
 
-	public void ToFallState()
+	private void ToFallState()
 	{
-		if (_playerMovement._isGrounded && _rigidbody.velocity.y <= 0.0f && _air)
+		if (_stateMachine.CurrentState == this)
 		{
 			_playerAnimator.Jump();
 			_stateMachine.ChangeState(_fallState);
@@ -60,6 +61,7 @@ public class AttackState : State
 	{
 		if (CanSkipAttack)
 		{
+			Initialize(inputEnum, _crouch, _air);
 			_stateMachine.ChangeState(this);
 			return true;
 		}

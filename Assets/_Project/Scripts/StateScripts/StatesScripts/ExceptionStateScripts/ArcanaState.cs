@@ -13,15 +13,16 @@ public class ArcanaState : State
 	{
 		base.Enter();
 		_playerAnimator.Arcana();
+		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
 		_player.CurrentAttack = _playerComboSystem.GetArcana();
 		_player.Arcana--;
 		_playerUI.DecreaseArcana();
 		_playerUI.SetArcana(_player.Arcana);
 	}
 
-	public void ToIdleState()
+	private void ToIdleState()
 	{
-		if (_playerMovement._isGrounded)
+		if (_stateMachine.CurrentState == this)
 		{
 			_stateMachine.ChangeState(_idleState);
 		}

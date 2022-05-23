@@ -18,6 +18,8 @@ public class PlayerStateManager : StateMachine
     public AttackState AttackState { get; private set; }
     public IdleState IdleState { get; private set; }
     public HurtState HurtState { get; private set; }
+    public AirborneHurtState AirborneHurtState { get; private set; }
+    public KnockdownState KnockbackState { get; private set; }
     public ArcanaState ArcanaState { get; private set; }
     public FallState FallState { get; private set; }
 
@@ -34,6 +36,8 @@ public class PlayerStateManager : StateMachine
         AttackState = GetComponent<AttackState>();
         IdleState = GetComponent<IdleState>();
         HurtState = GetComponent<HurtState>();
+        AirborneHurtState = GetComponent<AirborneHurtState>();
+        KnockbackState = GetComponent<KnockdownState>();
         ArcanaState = GetComponent<ArcanaState>();
         FallState = GetComponent<FallState>();
     }
@@ -51,6 +55,21 @@ public class PlayerStateManager : StateMachine
     public bool TryToArcanaState()
     {
         return CurrentState.ToArcanaState();
+    }
+
+    public bool TryToHurtState(AttackSO attack)
+    {
+        if (attack.causesKnockdown)
+        {
+            AirborneHurtState.Initialize(attack);
+            ChangeState(AirborneHurtState);
+        }
+        else
+        {
+            HurtState.Initialize(attack);
+            ChangeState(HurtState);
+        }
+        return true;
     }
 
     protected override State GetInitialState()

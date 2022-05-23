@@ -908,6 +908,9 @@ GameObject:
   - component: {fileID: 1355162583610085430}
   - component: {fileID: 7855595845877207489}
   - component: {fileID: 153298792918803171}
+  - component: {fileID: 6424551685482535852}
+  - component: {fileID: 590707302505620398}
+  - component: {fileID: 5908386114410977804}
   m_Layer: 10
   m_Name: Player_states
   m_TagString: Untagged
@@ -1033,6 +1036,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Fall
+  _jumpPrefab: {fileID: 0}
   _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
 --- !u!114 &6918343820534729796
 MonoBehaviour:
@@ -1130,6 +1134,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Hurt
+--- !u!114 &6424551685482535852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d691871356f7f94fb1132f0f57e1868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: AirborneHurt
+  _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
+--- !u!114 &590707302505620398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fae9962460925ee4c86eea2589552977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: Knockdown
+--- !u!114 &5908386114410977804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c445cada020482b4a857af470432f7eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: WakeUp
 --- !u!1 &7759221523502482170
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,7 +1457,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerStats: {fileID: 4618435349483342948}
-  _inputBuffer: {fileID: 4664395619888274278}
 --- !u!114 &8073473789928578682
 MonoBehaviour:
   m_ObjectHideFlags: 0

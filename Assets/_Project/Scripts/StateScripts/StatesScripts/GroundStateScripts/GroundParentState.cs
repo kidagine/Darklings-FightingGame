@@ -23,8 +23,7 @@ public class GroundParentState : State
 
 	public override bool ToAttackState(InputEnum inputEnum)
 	{
-		_attackState.InputEnum = inputEnum;
-		_attackState.Initialize(false, false);
+		_attackState.Initialize(inputEnum, false, false);
 		_stateMachine.ChangeState(_attackState);
 		return true;
 	}

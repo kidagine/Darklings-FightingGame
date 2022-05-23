@@ -4,27 +4,32 @@ using UnityEngine;
 public class HurtState : State
 {
     private IdleState _idleState;
-    public AttackSO HurtAttack { get; set; }
+    private AttackSO _hurtAttack;
 
     void Awake()
     {
         _idleState = GetComponent<IdleState>();
     }
 
+    public void Initialize(AttackSO hurtAttack)
+    {
+        _hurtAttack = hurtAttack;
+    }
+
     public override void Enter()
     {
         base.Enter();
-        _audio.Sound(HurtAttack.impactSound).Play();
+        _audio.Sound(_hurtAttack.impactSound).Play();
         _playerAnimator.Hurt(true);
-        GameObject effect = Instantiate(HurtAttack.hurtEffect);
-        effect.transform.localPosition = HurtAttack.hurtEffectPosition;
-        _playerMovement.Knockback(new Vector2(transform.root.localScale.x * -1.0f, 0.0f), HurtAttack.knockback, HurtAttack.knockbackDuration);
-        if (HurtAttack.cameraShaker != null)
+        GameObject effect = Instantiate(_hurtAttack.hurtEffect);
+        effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
+        _playerMovement.Knockback(new Vector2(transform.root.localScale.x * -1.0f, 0.0f), _hurtAttack.knockback, _hurtAttack.knockbackDuration);
+        if (_hurtAttack.cameraShaker != null)
         {
-            CameraShake.Instance.Shake(HurtAttack.cameraShaker.intensity, HurtAttack.cameraShaker.timer);
+            CameraShake.Instance.Shake(_hurtAttack.cameraShaker.intensity, _hurtAttack.cameraShaker.timer);
         }
-        GameManager.Instance.HitStop(HurtAttack.hitstop);
-        StartCoroutine(StunCoroutine(HurtAttack.hitStun));
+        GameManager.Instance.HitStop(_hurtAttack.hitstop);
+        StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
     }
 
     IEnumerator StunCoroutine(float hitStun)
