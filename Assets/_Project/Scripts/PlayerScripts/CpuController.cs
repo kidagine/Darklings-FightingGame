@@ -115,7 +115,7 @@ public class CpuController : BaseController
                 }
                 else
                 {
-                    _player.ThrowAction();
+                   // _player.ThrowAction();
                 }
                 _attackTimer = Random.Range(0.15f, 0.35f);
             }

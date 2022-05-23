@@ -8,6 +8,7 @@ public class GroundParentState : State
 	protected DashState _dashState;
 	protected AttackState _attackState;
 	protected ArcanaState _arcanaState;
+	protected ThrowState _throwState;
 
 	void Awake()
 	{
@@ -19,6 +20,7 @@ public class GroundParentState : State
 		_dashState = GetComponent<DashState>();
 		_attackState = GetComponent<AttackState>();
 		_arcanaState = GetComponent<ArcanaState>();
+		_throwState = GetComponent<ThrowState>();
 	}
 
 	public override bool ToAttackState(InputEnum inputEnum)
@@ -36,5 +38,11 @@ public class GroundParentState : State
 			return true;
 		}
 		return false;
+	}
+
+	public override bool ToThrowState()
+	{
+		_stateMachine.ChangeState(_throwState);
+		return true;
 	}
 }

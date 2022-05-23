@@ -17,6 +17,7 @@ public class ThrowState : State
 		_audio.Sound("Hit").Play();
 		_playerAnimator.Throw();
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
+		_player.CurrentAttack = _playerComboSystem.GetThrow();
 	}
 
 	private void ToIdleState()
@@ -25,5 +26,11 @@ public class ThrowState : State
 		{
 			_stateMachine.ChangeState(_idleState);
 		}
+	}
+
+	public override void UpdatePhysics()
+	{
+		base.UpdatePhysics();
+		_rigidbody.velocity = Vector2.zero;
 	}
 }

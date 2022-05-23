@@ -186,19 +186,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public bool ThrowAction()
-	{
-		if (!IsAttacking && _playerMovement.IsGrounded)
-		{
-			_audio.Sound("Hit").Play();
-			IsAttacking = true;
-			_playerAnimator.Throw();
-			_playerMovement.TravelDistance(Vector2.zero);
-			return true;
-		}
-		return false;
-	}
-
 	public virtual bool ArcaneAction()
 	{
 		return false;
