@@ -38,4 +38,5 @@ public class State : MonoBehaviour
     public virtual bool ToAttackState(InputEnum inputEnum) { return false; }
     public virtual bool ToArcanaState() { return false; }
     public virtual bool ToThrowState() { return false; }
+    public virtual bool ToHurtState(AttackSO attack) {  return true; }
 }

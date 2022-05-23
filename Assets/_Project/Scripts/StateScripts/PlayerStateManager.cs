@@ -73,8 +73,7 @@ public class PlayerStateManager : StateMachine
         }
         else
         {
-            HurtState.Initialize(attack);
-            ChangeState(HurtState);
+            CurrentState.ToHurtState(attack);
         }
         return true;
     }

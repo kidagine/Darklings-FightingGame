@@ -26,14 +26,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private BrainController _controller;
 	private Audio _audio;
 	private Coroutine _stunCoroutine;
-	private Coroutine _blockCoroutine;
 	private float _assistGauge = 1.0f;
 	private bool _throwBreakInvulnerable;
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
 	public AttackSO CurrentHurtAttack { get; set; }
-	public float Health { get; private set; }
+	public float Health { get; set; }
 	public int Lives { get; set; } = 2;
 	public bool IsBlocking { get; private set; }
 	public bool IsKnockedDown { get; private set; }
@@ -283,23 +282,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			AttackState.CanSkipAttack = true;
 		}
+
 		//if (gotHit && CurrentAttack.attackTypeEnum == AttackTypeEnum.Throw)
 		//{
 		//    Throw();
 		//}
-		//if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
-		//{
-		//    _playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
-		//}
-	}
-
-	private void Throw()
-	{
-		_playerMovement.FullyLockMovement = true;
-		_otherPlayer.GetComponent<Player>().GetThrown(_grabPoint);
-		_playerAnimator.ArcanaEnd();
-		_playerAnimator.ThrowEnd();
-		SetHurtbox(false);
+		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
+		{
+			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
+		}
 	}
 
 	public void ThrowEnd()
@@ -307,24 +298,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerMovement.FullyLockMovement = false;
 		_otherPlayer.GetComponent<Player>().GetThrownEnd();
 		SetHurtbox(true);
-	}
-	private void GetThrown(Transform grabPoint)
-	{
-		if (_stunCoroutine != null)
-		{
-			StopCoroutine(_stunCoroutine);
-		}
-		_playerMovement.SetRigidbodyToKinematic(true);
-		transform.SetParent(grabPoint);
-		transform.localPosition = Vector2.zero;
-		transform.localScale = new Vector2(-1.0f, 1.0f);
-		_controller.DeactivateInput();
-		_playerAnimator.Hurt();
-		_playerAnimator.SetSpriteOrder(-1);
-		if (_otherPlayer.GetComponent<Player>().IsStunned)
-		{
-			_otherPlayer.GetComponent<Player>().ThrowEnd();
-		}
 	}
 
 	private void GetThrownEnd()

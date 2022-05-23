@@ -9,8 +9,9 @@ public class GroundParentState : State
 	protected AttackState _attackState;
 	protected ArcanaState _arcanaState;
 	protected ThrowState _throwState;
+	protected HurtState _hurtState;
 
-	void Awake()
+	protected virtual void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
 		_walkState = GetComponent<WalkState>();
@@ -21,6 +22,7 @@ public class GroundParentState : State
 		_attackState = GetComponent<AttackState>();
 		_arcanaState = GetComponent<ArcanaState>();
 		_throwState = GetComponent<ThrowState>();
+		_hurtState = GetComponent<HurtState>();
 	}
 
 	public override bool ToAttackState(InputEnum inputEnum)
@@ -43,6 +45,13 @@ public class GroundParentState : State
 	public override bool ToThrowState()
 	{
 		_stateMachine.ChangeState(_throwState);
+		return true;
+	}
+
+	public override bool ToHurtState(AttackSO attack)
+	{
+		_hurtState.Initialize(attack);
+		_stateMachine.ChangeState(_hurtState);
 		return true;
 	}
 }

@@ -182,7 +182,7 @@ public class PlayerAnimator : MonoBehaviour
 
 	public void Taunt()
 	{
-		_animator.SetTrigger("Taunt");
+		_animator.Play("Taunt");
 	}
 
 	public void Death()
