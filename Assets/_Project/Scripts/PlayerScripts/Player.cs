@@ -319,8 +319,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerMovement.FullyLockMovement = false;
 		_otherPlayer.GetComponent<Player>().GetThrownEnd();
-		_playerAnimator.ResetTrigger("ArcanaEnd");
-		_playerAnimator.ResetTrigger("ThrowEnd");
 		SetHurtbox(true);
 	}
 	private void GetThrown(Transform grabPoint)
@@ -509,22 +507,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else
 		{
-			StartCoroutine(KnockdownCoroutine());
 			GameManager.Instance.HitStop(CurrentHurtAttack.hitstop);
 		}
 		_playerUI.UpdateHealthDamaged();
-	}
-
-	IEnumerator ResetBlockingCoroutine(float blockStun)
-	{
-		yield return new WaitForSeconds(blockStun);
-		IsBlocking = false;
-		_controller.ActivateInput();
-		_playerAnimator.CancelHurt();
-		_playerAnimator.IsBlocking(false);
-		_playerAnimator.IsBlockingLow(false);
-		_playerAnimator.IsBlockingAir(false);
-		_playerAnimator.ResetTrigger("CancelHurt");
 	}
 
 	private void CheckIsBlocking()
@@ -595,28 +580,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		IsDead = true;
 		GameManager.Instance.HitStop(0.35f);
-	}
-
-	public void Knockdown()
-	{
-		StartCoroutine(KnockdownCoroutine());
-	}
-
-	IEnumerator KnockdownCoroutine()
-	{
-		_throwBreakInvulnerable = true;
-		_controller.DeactivateInput();
-		SetHurtbox(false);
-		yield return new WaitForSeconds(0.75f);
-		_playerAnimator.ResetTrigger("CancelHurt");
-		_playerMovement.SetLockMovement(false);
-		yield return new WaitForSeconds(0.25f);
-		SetHurtbox(true);
-		IsKnockedDown = false;
-		_controller.ActivateInput();
-		_otherPlayerUI.ResetCombo();
-		yield return new WaitForSeconds(0.05f);
-		_throwBreakInvulnerable = false;
 	}
 
 	public void Taunt()

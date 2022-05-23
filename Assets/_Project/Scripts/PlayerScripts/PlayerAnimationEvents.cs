@@ -20,7 +20,6 @@ public class PlayerAnimationEvents : MonoBehaviour
 	public void UnlockMovement()
 	{
 		SetFramedata();
-		_inputBuffer.CheckForInputBufferItem();
 	}
 
 	public void UnlockMovementNoFramedata()

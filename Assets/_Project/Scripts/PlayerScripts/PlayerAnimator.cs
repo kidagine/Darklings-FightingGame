@@ -5,6 +5,7 @@ using UnityEngine.U2D.Animation;
 public class PlayerAnimator : MonoBehaviour
 {
 	[SerializeField] private PlayerStats _playerStats = default;
+	[SerializeField] private InputBuffer _inputBuffer = null;
 	private Animator _animator;
 	private SpriteLibrary _spriteLibrary;
 	private SpriteRenderer _spriteRenderer;
@@ -31,6 +32,7 @@ public class PlayerAnimator : MonoBehaviour
 		{
 			OnCurrentAnimationFinished?.Invoke();
 			OnCurrentAnimationFinished.RemoveAllListeners();
+			_inputBuffer.CheckForInputBufferItem();
 		}
 	}
 
@@ -81,16 +83,6 @@ public class PlayerAnimator : MonoBehaviour
 	public void CancelHurt()
 	{
 		_animator.SetTrigger("CancelHurt");
-	}
-
-	public void ResetAnimation(string name)
-	{
-		_animator.Play(name, -1, 0f);
-	}
-
-	public void ResetTrigger(string name)
-	{
-		_animator.ResetTrigger(name);
 	}
 
 	public void Attack(string attackType, bool reset = false)
