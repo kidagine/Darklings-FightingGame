@@ -4,98 +4,91 @@ using UnityEngine;
 
 public class PlayerAnimationEvents : MonoBehaviour
 {
-    [SerializeField] private Player _player = default;
-    [SerializeField] private PlayerMovement _playerMovement = default;
-    [SerializeField] private PlayerStateManager _playerStateManager = default;
-    [SerializeField] private InputBuffer _inputBuffer = default;
-    [SerializeField] private Audio _audio = default;
-    private TrainingMenu _trainingMenu;
+	[SerializeField] private Player _player = default;
+	[SerializeField] private PlayerMovement _playerMovement = default;
+	[SerializeField] private PlayerStateManager _playerStateManager = default;
+	[SerializeField] private InputBuffer _inputBuffer = default;
+	[SerializeField] private Audio _audio = default;
+	private TrainingMenu _trainingMenu;
 
 
-    public void SetTrainingMenu(TrainingMenu trainingMenu)
-    {
-        _trainingMenu = trainingMenu;
-    }
+	public void SetTrainingMenu(TrainingMenu trainingMenu)
+	{
+		_trainingMenu = trainingMenu;
+	}
 
-    public void UnlockMovement()
-    {
-        SetFramedata();
-        _playerStateManager.ChangeState(_playerStateManager.IdleState);
-        _inputBuffer.CheckForInputBufferItem();
-    }
+	public void UnlockMovement()
+	{
+		SetFramedata();
+	}
 
-    public void ToFallStateAnimationEvent()
-    {
-        _playerStateManager.ChangeState(_playerStateManager.FallState);
-    }
+	public void UnlockMovementNoFramedata()
+	{
+		_player.IsAttacking = false;
+		_playerMovement.SetLockMovement(false);
+		_player.CanCancelAttack = false;
+		_inputBuffer.CheckForInputBufferItem();
+		_player.CanShadowbreak = true;
+		_playerMovement.FullyLockMovement = false;
+	}
 
-    public void UnlockMovementNoFramedata()
-    {
-        _player.IsAttacking = false;
-        _playerMovement.SetLockMovement(false);
-        _player.CanCancelAttack = false;
-        _inputBuffer.CheckForInputBufferItem();
-        _player.CanShadowbreak = true;
-        _playerMovement.FullyLockMovement = false;
-    }
+	public void FullyLockMovement()
+	{
+		_playerMovement.FullyLockMovement = true;
+	}
 
-    public void FullyLockMovement()
-    {
-        _playerMovement.FullyLockMovement = true;
-    }
+	public void ThrowEnd()
+	{
+		_player.ThrowEnd();
+	}
 
-    public void ThrowEnd()
-    {
-        _player.ThrowEnd();
-    }
+	public void CreateEffectAnimationEvent(int isProjectile)
+	{
+		_player.CreateEffect(Convert.ToBoolean(isProjectile));
+	}
 
-    public void CreateEffectAnimationEvent(int isProjectile)
-    {
-        _player.CreateEffect(Convert.ToBoolean(isProjectile));
-    }
+	public void ResetTimeScale()
+	{
+		Time.timeScale = GameManager.Instance.GameSpeed;
+	}
 
-    public void ResetTimeScale()
-    {
-        Time.timeScale = GameManager.Instance.GameSpeed;
-    }
+	public void ZeroGravity()
+	{
+		_playerMovement.ZeroGravity();
+	}
 
-    public void ZeroGravity()
-    {
-        _playerMovement.ZeroGravity();
-    }
+	public void ResetGravity()
+	{
+		_playerMovement.ResetGravity();
+	}
 
-    public void ResetGravity()
-    {
-        _playerMovement.ResetGravity();
-    }
+	public void PlayerFootstepAnimationEvent()
+	{
+		_audio.SoundGroup("Footsteps").PlayInRandom();
+	}
 
-    public void PlayerFootstepAnimationEvent()
-    {
-        _audio.SoundGroup("Footsteps").PlayInRandom();
-    }
+	public void PlayerFootstepHeavyAnimationEvent()
+	{
+		_audio.SoundGroup("FootstepsHeavy").PlayInRandom();
+	}
 
-    public void PlayerFootstepHeavyAnimationEvent()
-    {
-        _audio.SoundGroup("FootstepsHeavy").PlayInRandom();
-    }
+	public void PlayerSoundAnimationEvent(string soundName)
+	{
+		_audio.Sound(soundName).Play();
+	}
 
-    public void PlayerSoundAnimationEvent(string soundName)
-    {
-        _audio.Sound(soundName).Play();
-    }
+	public void SetFramedata()
+	{
+		_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.CurrentAttack);
+	}
 
-    public void SetFramedata()
-    {
-        _trainingMenu.FramedataValue(_player.IsPlayerOne, _player.CurrentAttack);
-    }
+	public void AddForce(int moveHorizontally)
+	{
+		//_playerMovement.AddForce(moveHorizontally);
+	}
 
-    public void AddForce(int moveHorizontally)
-    {
-        //_playerMovement.AddForce(moveHorizontally);
-    }
-
-    public void ShakeCamera(CameraShakerSO cameraShaker)
-    {
-        CameraShake.Instance.Shake(cameraShaker.intensity, cameraShaker.timer);
-    }
+	public void ShakeCamera(CameraShakerSO cameraShaker)
+	{
+		CameraShake.Instance.Shake(cameraShaker.intensity, cameraShaker.timer);
+	}
 }

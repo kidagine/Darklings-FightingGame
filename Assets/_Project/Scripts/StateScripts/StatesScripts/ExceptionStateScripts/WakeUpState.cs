@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowState : State
+public class WakeUpState : State
 {
 	private IdleState _idleState;
 
@@ -14,10 +12,8 @@ public class ThrowState : State
 	public override void Enter()
 	{
 		base.Enter();
-		_audio.Sound("Hit").Play();
-		_playerAnimator.Throw();
+		_playerAnimator.WakeUp();
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
-		_player.CurrentAttack = _playerComboSystem.GetThrow();
 	}
 
 	private void ToIdleState()
@@ -32,5 +28,11 @@ public class ThrowState : State
 	{
 		base.UpdatePhysics();
 		_rigidbody.velocity = Vector2.zero;
+	}
+
+	public override void Exit()
+	{
+		base.Exit();
+		_player.SetHurtbox(true);
 	}
 }

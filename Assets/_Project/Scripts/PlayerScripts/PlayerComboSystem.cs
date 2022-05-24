@@ -3,11 +3,9 @@ using UnityEngine;
 public class PlayerComboSystem : MonoBehaviour
 {
 	private PlayerStats _playerStats;
-	private PlayerMovement _playerMovement;
 
 	void Awake()
 	{
-		_playerMovement = GetComponent<PlayerMovement>();
 		_playerStats = GetComponent<PlayerStats>();
 	}
 
@@ -66,6 +64,10 @@ public class PlayerComboSystem : MonoBehaviour
 		}
 	}
 
+	public AttackSO GetThrow()
+	{
+		return _playerStats.PlayerStatsSO.mThrow;
+	}
 
 	public ArcanaSO GetArcana()
 	{
