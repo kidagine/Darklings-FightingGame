@@ -14,9 +14,9 @@ public class HurtState : HurtParentState
 	}
 	public override void Enter()
 	{
-		base.Enter();
 		_playerAnimator.Hurt(true);
 		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
+		base.Enter();
 	}
 
 	IEnumerator StunCoroutine(float hitStun)
@@ -47,7 +47,7 @@ public class HurtState : HurtParentState
 	{
 		base.Exit();
 		if (_stunCoroutine != null)
-		{        
+		{
 			StopCoroutine(_stunCoroutine);
 		}
 	}

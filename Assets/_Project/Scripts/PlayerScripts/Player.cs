@@ -210,7 +210,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		if (CanCancelAttack)
 		{
 			IsAttacking = false;
-			_playerAnimator.CancelAttack();
 			CanCancelAttack = false;
 		}
 		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !IsKnockedDown)
@@ -306,7 +305,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerMovement.SetRigidbodyToKinematic(false);
 		_playerAnimator.SetSpriteOrder(0);
 		IsKnockedDown = true;
-		_playerAnimator.CancelHurt();
 		_controller.ActivateInput();
 		LoseHealth();
 	}
