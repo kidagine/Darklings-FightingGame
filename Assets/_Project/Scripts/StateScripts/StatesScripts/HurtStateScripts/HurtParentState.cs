@@ -29,6 +29,7 @@ public class HurtParentState : State
 		}
 		_player.Health--;
 		_playerUI.SetHealth(_player.Health);
+		_player.PlayerUI.IncreaseCombo();
 		GameManager.Instance.HitStop(_hurtAttack.hitstop);
 		if (_player.Health <= 0)
 		{
@@ -44,7 +45,6 @@ public class HurtParentState : State
 	public override void Exit()
 	{
 		base.Exit();
-		// _otherPlayerUI.ResetCombo();
 		_playerUI.UpdateHealthDamaged();
 	}
 }

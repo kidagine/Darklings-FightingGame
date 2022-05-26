@@ -27,6 +27,7 @@ public class HurtState : HurtParentState
 
 	private void ToIdleState()
 	{
+		_player.PlayerUI.ResetCombo();
 		_stateMachine.ChangeState(_idleState);
 	}
 
