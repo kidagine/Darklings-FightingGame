@@ -75,16 +75,6 @@ public class PlayerAnimator : MonoBehaviour
 		}
 	}
 
-	public void CancelAttack()
-	{
-		_animator.SetTrigger("Cancel");
-	}
-
-	public void CancelHurt()
-	{
-		_animator.SetTrigger("CancelHurt");
-	}
-
 	public void Attack(string attackType, bool reset = false)
 	{
 		if (reset)
@@ -122,11 +112,6 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.Play("Arcana", -1, 0f);
 	}
 
-	public void ArcanaEnd()
-	{
-		_animator.SetTrigger("ArcanaEnd");
-	}
-
 	public void Hurt(bool reset = false)
 	{
 		if (reset)
@@ -151,18 +136,18 @@ public class PlayerAnimator : MonoBehaviour
 		}
 	}
 
-	public void IsBlocking(bool state)
+	public void Block()
 	{
-		_animator.SetBool("IsBlocking", state);
+		_animator.Play("Block");
 	}
 
-	public void IsBlockingLow(bool state)
+	public void BlockLow()
 	{
-		_animator.SetBool("IsBlockingLow", state);
+		_animator.Play("BlockLow");
 	}
-	public void IsBlockingAir(bool state)
+	public void BlockAir()
 	{
-		_animator.SetBool("IsBlockingAir", state);
+		_animator.Play("BlockAir");
 	}
 
 	public void Dash()
@@ -183,11 +168,6 @@ public class PlayerAnimator : MonoBehaviour
 	public void Taunt()
 	{
 		_animator.Play("Taunt");
-	}
-
-	public void Death()
-	{
-		_animator.SetTrigger("Death");
 	}
 
 	public void Knockdown()

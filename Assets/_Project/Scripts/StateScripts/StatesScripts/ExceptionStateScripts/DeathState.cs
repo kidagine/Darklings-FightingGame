@@ -15,4 +15,9 @@ public class DeathState : State
 		base.UpdatePhysics();
 		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
 	}
+
+	public override bool ToHurtState(AttackSO attack)
+	{
+		return false;
+	}
 }
