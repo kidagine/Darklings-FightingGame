@@ -11,6 +11,7 @@ public class JumpForwardState : AirParentState
         _playerAnimator.JumpForward(true);
         _playerMovement.ResetToWalkSpeed();
         _rigidbody.velocity = Vector2.zero;
-        _rigidbody.AddForce(new Vector2(Mathf.Round(_baseController.InputDirection.x) * (_playerStats.PlayerStatsSO.jumpForce / 2.5f), _playerStats.PlayerStatsSO.jumpForce + 1.0f), ForceMode2D.Impulse);
+        _rigidbody.AddForce(new Vector2(
+            _baseController.InputDirection.x * (_playerStats.PlayerStatsSO.jumpForce / 2.5f), _playerStats.PlayerStatsSO.jumpForce + 1.0f), ForceMode2D.Impulse);
     }
 }

@@ -59,18 +59,13 @@ public class PlayerController : BaseController
         _playerMovement.MovementInput = InputDirection;
     }
 
-    public virtual bool Jump()
+    public override bool Jump()
     {
-        if (InputDirection.y > 0.0f && !_hasJumped)
+        if (InputDirection.y > 0.0f)
         {
-            _hasJumped = true;
             return true;
         }
-        else
-        {
-            _hasJumped = false;
-            return false;
-        }
+        return false;
     }
 
     public override bool Crouch()

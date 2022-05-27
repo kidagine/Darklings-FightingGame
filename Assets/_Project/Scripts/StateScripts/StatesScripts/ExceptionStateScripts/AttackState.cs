@@ -5,6 +5,7 @@ public class AttackState : State
 	private IdleState _idleState;
 	private CrouchState _crouchState;
 	private FallState _fallState;
+	private HurtState _hurtState;
 	public static bool CanSkipAttack;
 	private InputEnum _inputEnum;
 	private bool _air;
@@ -15,6 +16,7 @@ public class AttackState : State
 		_idleState = GetComponent<IdleState>();
 		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
+		_hurtState = GetComponent<HurtState>();
 	}
 
 	public void Initialize(InputEnum inputEnum, bool crouch, bool air)
@@ -52,7 +54,6 @@ public class AttackState : State
 
 	private void ToIdleState()
 	{
-		Debug.Log("I");
 		if (_stateMachine.CurrentState == this)
 		{
 			_stateMachine.ChangeState(_idleState);
@@ -61,7 +62,6 @@ public class AttackState : State
 
 	private void ToCrouchState()
 	{
-		Debug.Log("C");
 		if (_stateMachine.CurrentState == this)
 		{
 			_stateMachine.ChangeState(_crouchState);
@@ -88,6 +88,13 @@ public class AttackState : State
 		{
 			return false;
 		}
+	}
+
+	public override bool ToHurtState(AttackSO attack)
+	{
+		_hurtState.Initialize(attack);
+		_stateMachine.ChangeState(_hurtState);
+		return true;
 	}
 
 	public override void Exit()

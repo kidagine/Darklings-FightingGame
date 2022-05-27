@@ -36,6 +36,12 @@ public class AirborneHurtState : HurtParentState
 		ToKnockdownState();
 	}
 
+	public override void UpdatePhysics()
+	{
+		base.UpdatePhysics();
+		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
+	}
+
 	public void ToKnockdownState()
 	{
 		if (_playerMovement._isGrounded && _canCheckGround)
@@ -56,4 +62,5 @@ public class AirborneHurtState : HurtParentState
 			StopCoroutine(_canCheckGroundCoroutine);
 		}
 	}
+
 }

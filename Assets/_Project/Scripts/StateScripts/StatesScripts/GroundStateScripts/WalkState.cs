@@ -36,12 +36,12 @@ public class WalkState : GroundParentState
 
 	private void ToJumpForwardState()
 	{
-		if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+		if (_baseController.Jump() && !_playerMovement.HasJumped)
 		{
 			_playerMovement.HasJumped = true;
 			_stateMachine.ChangeState(_jumpForwardState);
 		}
-		else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+		else if (_playerMovement.HasJumped)
 		{
 			_playerMovement.HasJumped = false;
 		}

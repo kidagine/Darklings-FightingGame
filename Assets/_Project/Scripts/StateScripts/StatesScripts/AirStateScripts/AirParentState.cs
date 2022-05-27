@@ -120,9 +120,4 @@ public class AirParentState : State
 		_stateMachine.ChangeState(_airHurtState);
 		return true;
 	}
-
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-	}
 }

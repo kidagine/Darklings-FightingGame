@@ -6,6 +6,7 @@ public class IdleState : GroundParentState
 	{
 		base.Enter();
 		_playerAnimator.Idle();
+		_player.SetPushboxTrigger(false);
 		_playerMovement.HasAirDashed = false;
 		_playerMovement.HasDoubleJumped = false;
 	}
@@ -38,12 +39,12 @@ public class IdleState : GroundParentState
 
 	private void ToJumpState()
 	{
-		if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+		if (_baseController.Jump() && !_playerMovement.HasJumped)
 		{
 			_playerMovement.HasJumped = true;
 			_stateMachine.ChangeState(_jumpState);
 		}
-		else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+		else if (_playerMovement.HasJumped)
 		{
 			_playerMovement.HasJumped = false;
 		}

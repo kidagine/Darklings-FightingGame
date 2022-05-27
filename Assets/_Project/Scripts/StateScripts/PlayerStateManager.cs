@@ -10,7 +10,7 @@ public class PlayerStateManager : StateMachine
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private PlayerStats _playerStats = default;
     [SerializeField] private PlayerController _playerController = default;
-    [SerializeField] private BaseController _baseController = default;
+    [SerializeField] private BrainController _brainController = default;
     [SerializeField] private PlayerComboSystem _playerComboSystem = default;
     [SerializeField] private Audio _audio = default;
     [SerializeField] private Rigidbody2D _rigidbody = default;
@@ -33,8 +33,9 @@ public class PlayerStateManager : StateMachine
         foreach (State state in GetComponents<State>())
         {
             state.Initialize(
-            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _baseController, _playerComboSystem, _audio
+            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _playerComboSystem, _audio
             );
+            state.SetController(_brainController.ActiveController);
         }
         AttackState = GetComponent<AttackState>();
         ThrowState = GetComponent<ThrowState>();

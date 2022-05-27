@@ -17,7 +17,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Transform _keepFlip = default;
 	[SerializeField] private InputBuffer _inputBuffer = default;
 	[SerializeField] private GameObject[] _playerIcons = default;
-	private PlayerMovement _otherPlayer;
 	protected PlayerUI _playerUI;
 	private PlayerMovement _playerMovement;
 	protected PlayerComboSystem _playerComboSystem;
@@ -27,6 +26,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Coroutine _stunCoroutine;
 	private float _assistGauge = 1.0f;
 	private bool _throwBreakInvulnerable;
+	public PlayerMovement OtherPlayer { get; private set; }
 	public PlayerUI OtherPlayerUI { get; private set; }
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
@@ -80,7 +80,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void SetOtherPlayer(PlayerMovement otherPlayer)
 	{
-		_otherPlayer = otherPlayer;
+		OtherPlayer = otherPlayer;
 		OtherPlayerUI = otherPlayer.GetComponent<Player>().PlayerUI;
 	}
 
@@ -95,9 +95,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_controller.ActiveController.enabled = true;
 		_controller.ActivateInput();
 		_effectsParent.gameObject.SetActive(true);
-		SetGroundPushBox(true);
-		SetAirPushBox(false);
-		SetPushboxTrigger(false);
 		SetHurtbox(true);
 		_assistGauge = 1.0f;
 		_playerMovement.FullyLockMovement = false;
@@ -173,12 +170,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Flip()
 	{
-		if (_otherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && transform.localScale.x != 1.0f)
+		if (OtherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && transform.localScale.x != 1.0f)
 		{
 			transform.localScale = new Vector2(1.0f, transform.localScale.y);
 			_keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
 		}
-		else if (_otherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && transform.localScale.x != -1.0f)
+		else if (OtherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && transform.localScale.x != -1.0f)
 		{
 			transform.localScale = new Vector2(-1.0f, transform.localScale.y);
 			_keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
@@ -286,7 +283,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		//{
 		//    Throw();
 		//}
-		if (_otherPlayer.IsInCorner && !CurrentAttack.isProjectile)
+		if (OtherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
 		}
@@ -295,7 +292,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void ThrowEnd()
 	{
 		_playerMovement.FullyLockMovement = false;
-		_otherPlayer.GetComponent<Player>().GetThrownEnd();
+		OtherPlayer.GetComponent<Player>().GetThrownEnd();
 		SetHurtbox(true);
 	}
 
