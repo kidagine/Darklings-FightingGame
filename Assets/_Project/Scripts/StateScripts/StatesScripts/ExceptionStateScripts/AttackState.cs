@@ -97,6 +97,12 @@ public class AttackState : State
 		return true;
 	}
 
+	public override bool AssistCall()
+	{
+		_player.AssistAction();
+		return true;
+	}
+
 	public override void Exit()
 	{
 		base.Exit();

@@ -112,6 +112,12 @@ public class AirDashState : State
         }
     }
 
+    public override bool AssistCall()
+    {
+        _player.AssistAction();
+        return true;
+    }
+
     public override void Exit()
     {
         base.Exit();

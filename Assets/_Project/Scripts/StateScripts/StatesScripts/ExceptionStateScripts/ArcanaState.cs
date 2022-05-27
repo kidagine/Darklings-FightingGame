@@ -28,6 +28,12 @@ public class ArcanaState : State
 		}
 	}
 
+	public override bool AssistCall()
+	{
+		_player.AssistAction();
+		return true;
+	}
+
 	public override void UpdatePhysics()
 	{
 		base.UpdatePhysics();
