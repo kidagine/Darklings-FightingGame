@@ -54,4 +54,10 @@ public class GroundParentState : State
 		_stateMachine.ChangeState(_hurtState);
 		return true;
 	}
+
+	public override bool AssistCall()
+	{
+		_player.AssistAction();
+		return true;
+	}
 }

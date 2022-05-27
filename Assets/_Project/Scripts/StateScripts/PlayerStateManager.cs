@@ -68,6 +68,11 @@ public class PlayerStateManager : StateMachine
         return CurrentState.ToThrowState();
     }
 
+    public bool TryToAssistCall()
+    {
+        return CurrentState.AssistCall();
+    }
+
     public bool TryToHurtState(AttackSO attack)
     {
         if (attack.causesKnockdown)

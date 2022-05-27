@@ -120,4 +120,10 @@ public class AirParentState : State
 		_stateMachine.ChangeState(_airHurtState);
 		return true;
 	}
+
+	public override bool AssistCall()
+	{
+		_player.AssistAction();
+		return true;
+	}
 }

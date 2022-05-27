@@ -115,7 +115,7 @@ public class CpuController : BaseController
 				int arcanaRandom = Random.Range(0, 2);
 				if (arcanaRandom == 0)
 				{
-					_player.AssistAction();
+					_playerStateMachine.TryToAssistCall();
 				}
 				else if (arcanaRandom == 1)
 				{
