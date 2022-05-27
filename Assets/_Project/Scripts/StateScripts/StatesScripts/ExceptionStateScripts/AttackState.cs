@@ -3,6 +3,7 @@ using UnityEngine;
 public class AttackState : State
 {
 	private IdleState _idleState;
+	private CrouchState _crouchState;
 	private FallState _fallState;
 	public static bool CanSkipAttack;
 	private InputEnum _inputEnum;
@@ -12,6 +13,7 @@ public class AttackState : State
 	void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
+		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
 	}
 
@@ -30,7 +32,15 @@ public class AttackState : State
 		_playerAnimator.Attack(_player.CurrentAttack.name, true);
 		if (!_air)
 		{
-			_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
+			_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
+			if (_baseController.Crouch())
+			{
+				_playerAnimator.OnCurrentAnimationFinished.AddListener(ToCrouchState);
+			}
+			else
+			{
+				_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
+			}
 			_playerMovement.TravelDistance(new Vector2(
 				_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDirection.y));
 		}
@@ -42,12 +52,21 @@ public class AttackState : State
 
 	private void ToIdleState()
 	{
+		Debug.Log("I");
 		if (_stateMachine.CurrentState == this)
 		{
 			_stateMachine.ChangeState(_idleState);
 		}
 	}
 
+	private void ToCrouchState()
+	{
+		Debug.Log("C");
+		if (_stateMachine.CurrentState == this)
+		{
+			_stateMachine.ChangeState(_crouchState);
+		}
+	}
 	private void ToFallState()
 	{
 		if (_stateMachine.CurrentState == this)

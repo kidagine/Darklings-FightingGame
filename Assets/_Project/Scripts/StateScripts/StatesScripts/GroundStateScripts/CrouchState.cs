@@ -17,7 +17,7 @@ public class CrouchState : GroundParentState
 
     private void ToIdleState()
     {
-        if (_playerController.StandUp())
+        if (_baseController.StandUp())
         {
             _stateMachine.ChangeState(_idleState);
         }

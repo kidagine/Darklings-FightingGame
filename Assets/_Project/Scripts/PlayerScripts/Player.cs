@@ -19,7 +19,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private GameObject[] _playerIcons = default;
 	private PlayerMovement _otherPlayer;
 	protected PlayerUI _playerUI;
-	private PlayerUI _otherPlayerUI;
 	private PlayerMovement _playerMovement;
 	protected PlayerComboSystem _playerComboSystem;
 	private PlayerStats _playerStats;
@@ -28,6 +27,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Coroutine _stunCoroutine;
 	private float _assistGauge = 1.0f;
 	private bool _throwBreakInvulnerable;
+	public PlayerUI OtherPlayerUI { get; private set; }
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
@@ -81,7 +81,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void SetOtherPlayer(PlayerMovement otherPlayer)
 	{
 		_otherPlayer = otherPlayer;
-		_otherPlayerUI = otherPlayer.GetComponent<Player>().PlayerUI;
+		OtherPlayerUI = otherPlayer.GetComponent<Player>().PlayerUI;
 	}
 
 	public void ResetPlayer()
@@ -110,7 +110,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		IsKnockedDown = false;
 		StopAllCoroutines();
 		_playerMovement.StopAllCoroutines();
-		_otherPlayerUI.ResetCombo();
+		OtherPlayerUI.ResetCombo();
 		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(Arcana);
 		_playerUI.SetAssist(_assistGauge);
@@ -584,7 +584,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		yield return new WaitForSeconds(hitStun);
 
 		_playerUI.UpdateHealthDamaged();
-		_otherPlayerUI.ResetCombo();
+		OtherPlayerUI.ResetCombo();
 	}
 
 	public void StopStun(bool resetCombo)
@@ -594,7 +594,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			if (resetCombo)
 			{
 				_playerUI.UpdateHealthDamaged();
-				_otherPlayerUI.ResetCombo();
+				OtherPlayerUI.ResetCombo();
 			}
 			_playerStateManager.ChangeState(_playerStateManager.IdleState);
 			StopCoroutine(_stunCoroutine);

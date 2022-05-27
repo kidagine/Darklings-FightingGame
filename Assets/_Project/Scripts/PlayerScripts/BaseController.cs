@@ -8,7 +8,7 @@ public class BaseController : MonoBehaviour
     protected Player _player;
     protected PlayerMovement _playerMovement;
     protected InputBuffer _inputBuffer;
-
+    public Vector2 InputDirection { get; set; }
     public bool IsControllerEnabled { get; set; } = true;
 
     void Awake()
@@ -18,6 +18,11 @@ public class BaseController : MonoBehaviour
         _brainController = GetComponent<BrainController>();
         _inputBuffer = GetComponent<InputBuffer>();
     }
+    public virtual bool StandUp() { return false; }
+    public virtual bool Crouch() { return false; }
+
+    public virtual bool DashForward() { return false; }
+    public virtual bool DashBackward() { return false; }
 
     public virtual void ActivateInput()
     {

@@ -44,15 +44,15 @@ public class AirParentState : State
 	{
 		if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped)
 		{
-			if (_playerController.InputDirection.x == 0.0f)
+			if (_baseController.InputDirection.x == 0.0f)
 			{
-				if (_playerController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+				if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
 				{
 					_playerMovement.HasDoubleJumped = true;
 					_playerMovement.HasJumped = true;
 					_stateMachine.ChangeState(_jumpState);
 				}
-				else if (_playerController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+				else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
 				{
 					_playerMovement.HasJumped = false;
 				}
@@ -64,15 +64,15 @@ public class AirParentState : State
 	{
 		if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped)
 		{
-			if (_playerController.InputDirection.x != 0.0f)
+			if (_baseController.InputDirection.x != 0.0f)
 			{
-				if (_playerController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+				if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
 				{
 					_playerMovement.HasDoubleJumped = true;
 					_playerMovement.HasJumped = true;
 					_stateMachine.ChangeState(_jumpForwardState);
 				}
-				else if (_playerController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+				else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
 				{
 					_playerMovement.HasJumped = false;
 				}
@@ -84,12 +84,12 @@ public class AirParentState : State
 	{
 		if (!_playerMovement.HasAirDashed)
 		{
-			if (_playerController.DashForward())
+			if (_baseController.DashForward())
 			{
 				_airDashState.DashDirection = 1;
 				_stateMachine.ChangeState(_airDashState);
 			}
-			else if (_playerController.DashBackward())
+			else if (_baseController.DashBackward())
 			{
 				_airDashState.DashDirection = -1;
 				_stateMachine.ChangeState(_airDashState);

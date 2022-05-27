@@ -29,7 +29,7 @@ public class HurtParentState : State
 		}
 		_player.Health--;
 		_playerUI.SetHealth(_player.Health);
-		_player.PlayerUI.IncreaseCombo();
+		_player.OtherPlayerUI.IncreaseCombo();
 		GameManager.Instance.HitStop(_hurtAttack.hitstop);
 		if (_player.Health <= 0)
 		{

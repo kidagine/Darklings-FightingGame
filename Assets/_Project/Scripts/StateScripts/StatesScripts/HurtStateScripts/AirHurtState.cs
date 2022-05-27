@@ -26,7 +26,7 @@ public class AirHurtState : HurtParentState
 
 	private void ToIdleState()
 	{
-		_player.PlayerUI.ResetCombo();
+		_player.OtherPlayerUI.ResetCombo();
 		_stateMachine.ChangeState(_idleState);
 	}
 

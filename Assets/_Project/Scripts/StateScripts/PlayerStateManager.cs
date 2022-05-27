@@ -10,6 +10,7 @@ public class PlayerStateManager : StateMachine
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private PlayerStats _playerStats = default;
     [SerializeField] private PlayerController _playerController = default;
+    [SerializeField] private BaseController _baseController = default;
     [SerializeField] private PlayerComboSystem _playerComboSystem = default;
     [SerializeField] private Audio _audio = default;
     [SerializeField] private Rigidbody2D _rigidbody = default;
@@ -18,6 +19,7 @@ public class PlayerStateManager : StateMachine
     public AttackState AttackState { get; private set; }
     public ThrowState ThrowState { get; private set; }
     public IdleState IdleState { get; private set; }
+    public WalkState WalkState { get; private set; }
     public HurtState HurtState { get; private set; }
     public AirborneHurtState AirborneHurtState { get; private set; }
     public KnockdownState KnockbackState { get; private set; }
@@ -31,12 +33,13 @@ public class PlayerStateManager : StateMachine
         foreach (State state in GetComponents<State>())
         {
             state.Initialize(
-            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _playerController, _playerComboSystem, _audio
+            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _baseController, _playerComboSystem, _audio
             );
         }
         AttackState = GetComponent<AttackState>();
         ThrowState = GetComponent<ThrowState>();
         IdleState = GetComponent<IdleState>();
+        WalkState = GetComponent<WalkState>();
         HurtState = GetComponent<HurtState>();
         AirborneHurtState = GetComponent<AirborneHurtState>();
         KnockbackState = GetComponent<KnockdownState>();

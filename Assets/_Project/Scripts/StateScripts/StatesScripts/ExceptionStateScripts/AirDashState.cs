@@ -76,15 +76,15 @@ public class AirDashState : State
     {
         if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped && _dashCoroutine == null)
         {
-            if (_playerController.InputDirection.x == 0.0f)
+            if (_baseController.InputDirection.x == 0.0f)
             {
-                if (_playerController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+                if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
                 {
                     _playerMovement.HasDoubleJumped = true;
                     _playerMovement.HasJumped = true;
                     _stateMachine.ChangeState(_jumpState);
                 }
-                else if (_playerController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+                else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
                 {
                     _playerMovement.HasJumped = false;
                 }
@@ -96,15 +96,15 @@ public class AirDashState : State
     {
         if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped && _dashCoroutine == null)
         {
-            if (_playerController.InputDirection.x != 0.0f)
+            if (_baseController.InputDirection.x != 0.0f)
             {
-                if (_playerController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+                if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
                 {
                     _playerMovement.HasDoubleJumped = true;
                     _playerMovement.HasJumped = true;
                     _stateMachine.ChangeState(_jumpForwardState);
                 }
-                else if (_playerController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+                else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
                 {
                     _playerMovement.HasJumped = false;
                 }

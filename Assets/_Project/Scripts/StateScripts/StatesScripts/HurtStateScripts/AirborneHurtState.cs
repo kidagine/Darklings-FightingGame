@@ -51,7 +51,7 @@ public class AirborneHurtState : HurtParentState
 		base.Exit();
 		if (_canCheckGroundCoroutine != null)
 		{
-			_player.PlayerUI.ResetCombo();
+			_player.OtherPlayerUI.ResetCombo();
 			_canCheckGround = false;
 			StopCoroutine(_canCheckGroundCoroutine);
 		}

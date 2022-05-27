@@ -218,7 +218,7 @@ public class PlayerUI : MonoBehaviour
 
 	IEnumerator SetHealthDamagedCoroutine(float value)
 	{
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(0.5f);
 		float startValue = _healthDamagedSlider.value;
 		_currentEndDamageValue = value;
 		float elapsedTime = 0.0f;

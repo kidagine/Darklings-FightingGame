@@ -13,8 +13,6 @@ public class PlayerController : BaseController
     private bool j2;
     private float _dashInputCooldown2;
 
-    public Vector2 InputDirection { get; private set; }
-
 
     void Update()
     {
@@ -75,7 +73,7 @@ public class PlayerController : BaseController
         }
     }
 
-    public virtual bool Crouch()
+    public override bool Crouch()
     {
         if (InputDirection.y < 0.0f)
         {
@@ -84,7 +82,7 @@ public class PlayerController : BaseController
         return false;
     }
 
-    public virtual bool StandUp()
+    public override bool StandUp()
     {
         if (InputDirection.y == 0.0f)
         {
@@ -180,7 +178,7 @@ public class PlayerController : BaseController
         // DoubleTapAxis2(-1);
     }
 
-    public bool DashForward()
+    public override bool DashForward()
     {
         float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
         if (input == 1)
@@ -223,7 +221,7 @@ public class PlayerController : BaseController
         return false;
     }
 
-    public bool DashBackward()
+    public override bool DashBackward()
     {
         float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
         if (input == -1)
