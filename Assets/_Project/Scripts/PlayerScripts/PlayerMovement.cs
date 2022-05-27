@@ -90,39 +90,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _rigidbody.AddForce(new Vector2(travelDistance.x * 3.0f, travelDistance.y * 3.0f), ForceMode2D.Impulse);
     }
 
-    public bool CrouchAction()
-    {
-        if (!IsCrouching && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
-        {
-            ResetToWalkSpeed();
-            if (IsGrounded)
-            {
-                _rigidbody.velocity = Vector2.zero;
-            }
-            IsCrouching = true;
-            //_playerAnimator.IsCrouching(true);
-            return true;
-        }
-        return false;
-    }
-
-    public bool StandUpAction()
-    {
-        if (IsCrouching)
-        {
-            IsCrouching = false;
-            //_playerAnimator.IsCrouching(false);
-            return true;
-        }
-        return false;
-    }
-
     public void SetLockMovement(bool state)
     {
         MovementInput = Vector2.zero;
         _rigidbody.velocity = Vector2.zero;
         _isMovementLocked = state;
-        //_playerAnimator.Walk(false);
     }
 
     public void GroundedPoint(Transform other, float point)
@@ -131,13 +103,13 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         {
             float pushForceX = 8.0f;
             float pushForceY = -4.0f;
-            if (IsInCorner && transform.localScale.x > 1.0f)
+            if (IsInCorner && transform.localScale.x > 0.0f)
             {
                 _onTopOfPlayer = true;
                 _rigidbody.velocity = Vector2.zero;
                 _rigidbody.AddForce(new Vector2(-pushForceX, pushForceY), ForceMode2D.Impulse);
             }
-            else if (IsInCorner && transform.localScale.x < 1.0f)
+            else if (IsInCorner && transform.localScale.x < 0.0f)
             {
                 _onTopOfPlayer = true;
                 _rigidbody.velocity = Vector2.zero;

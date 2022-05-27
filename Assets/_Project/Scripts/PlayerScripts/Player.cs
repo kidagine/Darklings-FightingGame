@@ -182,11 +182,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public virtual bool ArcaneAction()
-	{
-		return false;
-	}
-
 	public virtual bool LightAction()
 	{
 		return false;
@@ -221,7 +216,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 			if (CurrentAttack.travelDirection.y > 0.0f)
 			{
-				SetPushboxTrigger(true);
 				SetAirPushBox(true);
 			}
 			return true;
@@ -279,10 +273,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			AttackState.CanSkipAttack = true;
 		}
 
-		//if (gotHit && CurrentAttack.attackTypeEnum == AttackTypeEnum.Throw)
-		//{
-		//    Throw();
-		//}
 		if (OtherPlayer.IsInCorner && !CurrentAttack.isProjectile)
 		{
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
@@ -326,124 +316,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool TakeDamage(AttackSO attack)
 	{
 		return _playerStateManager.TryToHurtState(attack);
-
-		// CurrentHurtAttack = attackSO;
-		// DestroyEffects();
-		// if (!_playerMovement.IsGrounded)
-		// {
-		//     HitMiddair = true;
-		// }
-
-		// if (attackSO.attackTypeEnum == AttackTypeEnum.Throw)
-		// {
-		//     if (_playerMovement.IsGrounded && !_throwBreakInvulnerable)
-		//     {
-		//         _playerAnimator.Hurt();
-		//         return true;
-		//     }
-		//     else
-		//     {
-		//         return false;
-		//     }
-		// }
-
-		// if (!IsAttacking && !_playerMovement.IsDashing && _controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && !IsStunned && GameManager.Instance.IsCpuOff)
-		// {
-		//     if (!_playerMovement.IsGrounded)
-		//     {
-		//         BlockingMiddair = true;
-		//     }
-		//     else
-		//     {
-		//         if (attackSO.attackTypeEnum == AttackTypeEnum.Overhead)
-		//         {
-		//             BlockingHigh = true;
-		//         }
-		//         else if (attackSO.attackTypeEnum == AttackTypeEnum.Mid)
-		//         {
-		//             BlockingHigh = true;
-		//         }
-		//         else if (attackSO.attackTypeEnum == AttackTypeEnum.Low)
-		//         {
-		//             BlockingLow = true;
-		//         }
-		//     }
-		// }
-
-		// if (!BlockingLow && !BlockingHigh && !BlockingMiddair || BlockingLow && attackSO.attackTypeEnum == AttackTypeEnum.Overhead || BlockingHigh && attackSO.attackTypeEnum == AttackTypeEnum.Low || attackSO.attackTypeEnum == AttackTypeEnum.Break)
-		// {
-		//     if (attackSO.attackTypeEnum == AttackTypeEnum.Break && _throwBreakInvulnerable)
-		//     {
-		//         return false;
-		//     }
-		//     _playerAnimator.Hurt();
-		//     if (attackSO.cameraShaker != null)
-		//     {
-		//         CameraShake.Instance.Shake(attackSO.cameraShaker.intensity, attackSO.cameraShaker.timer);
-		//     }
-		//     CanCancelAttack = false;
-		//     _playerMovement.StopGhosts();
-		//     GameObject effect = Instantiate(attackSO.hurtEffect);
-		//     effect.transform.localPosition = attackSO.hurtEffectPosition;
-		//     if (IsAttacking)
-		//     {
-		//         _otherPlayerUI.DisplayNotification("Punish");
-		//     }
-		//     IsKnockedDown = attackSO.causesKnockdown;
-		//     _audio.Sound(attackSO.impactSound).Play();
-		//     _playerMovement.StopDash();
-		//     _otherPlayerUI.IncreaseCombo();
-		//     Stun(attackSO.hitStun);
-		//     _inputBuffer.ClearInputBuffer();
-		//     _playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, attackSO.knockbackDirection.y), attackSO.knockback, attackSO.knockbackDuration);
-		//     IsAttacking = false;
-		//     if (!GameManager.Instance.InfiniteHealth)
-		//     {
-		//         Health--;
-		//         _playerUI.SetHealth(Health);
-		//     }
-		//     if (Health <= 0)
-		//     {
-		//         Die();
-		//     }
-		//     else
-		//     {
-		//         GameManager.Instance.HitStop(attackSO.hitstop);
-		//     }
-		//     return true;
-		// }
-		// else
-		// {
-		//     _playerAnimator.Hurt();
-		//     _playerMovement.Knockback(new Vector2(_otherPlayer.transform.localScale.x, 0.0f), attackSO.knockback, attackSO.knockbackDuration);
-		//     IsAttacking = false;
-		//     GameObject effect = Instantiate(_blockEffectPrefab);
-		//     effect.transform.localPosition = attackSO.hurtEffectPosition;
-		//     _audio.Sound("Block").Play();
-		//     if (!BlockingMiddair)
-		//     {
-		//         if (BlockingLow)
-		//         {
-		//             _playerAnimator.IsBlockingLow(true);
-		//         }
-		//         else
-		//         {
-		//             _playerAnimator.IsBlocking(true);
-		//         }
-		//     }
-		//     else
-		//     {
-		//         _playerAnimator.IsBlockingAir(true);
-		//     }
-
-		//     IsBlocking = true;
-		//     if (_blockCoroutine != null)
-		//     {
-		//         StopCoroutine(_blockCoroutine);
-		//     }
-		//     _blockCoroutine = StartCoroutine(ResetBlockingCoroutine(attackSO.hitStun));
-		//     return false;
-		// }
 	}
 
 	private void LoseHealth()
@@ -562,40 +434,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void SetAirPushBox(bool state)
 	{
+		SetPushboxTrigger(state);
 		_airPushbox.gameObject.SetActive(state);
 	}
 
 	public void SetHurtbox(bool state)
 	{
 		_hurtbox.gameObject.SetActive(state);
-	}
-
-	public void Stun(float hitStun)
-	{
-		StopStun(false);
-		_stunCoroutine = StartCoroutine(StunCoroutine(hitStun));
-	}
-
-	IEnumerator StunCoroutine(float hitStun)
-	{
-		yield return new WaitForSeconds(hitStun);
-
-		_playerUI.UpdateHealthDamaged();
-		OtherPlayerUI.ResetCombo();
-	}
-
-	public void StopStun(bool resetCombo)
-	{
-		if (_stunCoroutine != null)
-		{
-			if (resetCombo)
-			{
-				_playerUI.UpdateHealthDamaged();
-				OtherPlayerUI.ResetCombo();
-			}
-			_playerStateManager.ChangeState(_playerStateManager.IdleState);
-			StopCoroutine(_stunCoroutine);
-		}
 	}
 
 	private void DestroyEffects()

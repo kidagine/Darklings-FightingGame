@@ -23,6 +23,12 @@ public class AirParentState : State
 		_airHurtState = GetComponent<AirHurtState>();
 	}
 
+	public override void Enter()
+	{
+		base.Enter();
+		_player.SetAirPushBox(true);
+	}
+
 	public override void UpdateLogic()
 	{
 		base.UpdateLogic();

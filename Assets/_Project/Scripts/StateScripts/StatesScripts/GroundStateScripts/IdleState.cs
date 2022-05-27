@@ -6,6 +6,7 @@ public class IdleState : GroundParentState
 	{
 		base.Enter();
 		_playerAnimator.Idle();
+		_player.SetAirPushBox(false);
 		_player.SetPushboxTrigger(false);
 		_playerMovement.HasAirDashed = false;
 		_playerMovement.HasDoubleJumped = false;

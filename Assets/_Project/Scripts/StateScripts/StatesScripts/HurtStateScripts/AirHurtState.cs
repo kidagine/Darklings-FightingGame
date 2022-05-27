@@ -17,7 +17,7 @@ public class AirHurtState : HurtParentState
 	public override void Enter()
 	{
 		_playerAnimator.HurtAir(true);
-		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
+		//_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();
 	}
 
@@ -36,6 +36,7 @@ public class AirHurtState : HurtParentState
 
 	private void ToFallAfterStunState()
 	{
+		_playerAnimator.Jump();
 		_player.OtherPlayerUI.ResetCombo();
 		_stateMachine.ChangeState(_fallState);
 	}
@@ -52,7 +53,7 @@ public class AirHurtState : HurtParentState
 	public override void UpdatePhysics()
 	{
 		base.UpdatePhysics();
-		//_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
+		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y / 1.1f);
 	}
 
 	public override bool ToHurtState(AttackSO attack)
