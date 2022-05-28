@@ -23,7 +23,10 @@ public class CpuController : BaseController
 		if (!GameManager.Instance.IsCpuOff)
 		{
 			Movement();
-			Attack();
+			if (_distance <= 5.5f)
+			{
+				Attack();
+			}
 			Specials();
 		}
 	}
