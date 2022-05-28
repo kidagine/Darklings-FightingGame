@@ -374,9 +374,6 @@ public class GameManager : MonoBehaviour
             PlayerTwo.Taunt();
             PlayerOne.LoseLife();
         }
-        _playerMovementTwo.SetLockMovement(true);
-        _playerMovementOne.SetLockMovement(true);
-
         yield return new WaitForSeconds(0.5f);
         _readyAnimator.SetTrigger("Show");
         _uiAudio.Sound("TextSound").Play();

@@ -23,7 +23,8 @@ public class CpuController : BaseController
 		if (!GameManager.Instance.IsCpuOff)
 		{
 			Movement();
-			Arcana();
+			Attack();
+			Specials();
 		}
 	}
 
@@ -86,15 +87,15 @@ public class CpuController : BaseController
 				int attackRandom = Random.Range(0, 8);
 				if (attackRandom <= 2)
 				{
-					_player.LightAction();
+					_playerStateMachine.TryToAttackState(InputEnum.Light);
 				}
 				else if (attackRandom <= 4)
 				{
-					_player.MediumAction();
+					_playerStateMachine.TryToAttackState(InputEnum.Medium);
 				}
 				else if (attackRandom <= 6)
 				{
-					_player.HeavyAction();
+					_playerStateMachine.TryToAttackState(InputEnum.Heavy);
 				}
 				else
 				{
@@ -105,7 +106,7 @@ public class CpuController : BaseController
 		}
 	}
 
-	private void Arcana()
+	private void Specials()
 	{
 		if (IsControllerEnabled)
 		{
@@ -119,7 +120,6 @@ public class CpuController : BaseController
 				}
 				else if (arcanaRandom == 1)
 				{
-					//_player.ArcaneAction();
 					_playerStateMachine.TryToArcanaState();
 				}
 				_attackTimer = Random.Range(0.15f, 0.35f);
@@ -155,7 +155,6 @@ public class CpuController : BaseController
 			base.ActivateInput();
 		}
 	}
-
 
 	public override void DeactivateInput()
 	{

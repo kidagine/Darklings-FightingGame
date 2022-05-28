@@ -1,11 +1,11 @@
 using Demonics.Manager;
-using System.Collections;
 using UnityEngine;
 
 public class BlockParentState : State
 {
 	[SerializeField] private GameObject _blockEffectPrefab = default;
 	protected IdleState _idleState;
+	protected CrouchState _crouchState;
 	protected FallState _fallState;
 	protected AttackSO _blockAttack;
 	protected Coroutine _blockCoroutine;
@@ -18,6 +18,7 @@ public class BlockParentState : State
 	void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
+		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
 	}
 

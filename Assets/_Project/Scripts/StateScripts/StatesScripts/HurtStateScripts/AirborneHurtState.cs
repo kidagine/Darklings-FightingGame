@@ -39,6 +39,7 @@ public class AirborneHurtState : HurtParentState
 	public override void UpdatePhysics()
 	{
 		base.UpdatePhysics();
+		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
 	}
 
 	public void ToKnockdownState()

@@ -13,11 +13,11 @@ public class BlockLowState : BlockParentState
     IEnumerator BlockCoroutine(float blockStun)
     {
         yield return new WaitForSeconds(blockStun);
-        ToIdleState();
+        ToCrouchState();
     }
 
-    private void ToIdleState()
+    private void ToCrouchState()
     {
-        _stateMachine.ChangeState(_idleState);
+        _stateMachine.ChangeState(_crouchState);
     }
 }

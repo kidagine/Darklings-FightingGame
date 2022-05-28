@@ -3,10 +3,12 @@ using UnityEngine;
 public class ArcanaState : State
 {
 	private IdleState _idleState;
+	private HurtState _hurtState;
 
 	void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
+		_hurtState = GetComponent<HurtState>();
 	}
 
 	public override void Enter()
@@ -31,6 +33,13 @@ public class ArcanaState : State
 	public override bool AssistCall()
 	{
 		_player.AssistAction();
+		return true;
+	}
+
+	public override bool ToHurtState(AttackSO attack)
+	{
+		_hurtState.Initialize(attack);
+		_stateMachine.ChangeState(_hurtState);
 		return true;
 	}
 

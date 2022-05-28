@@ -23,7 +23,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private PlayerStats _playerStats;
 	private BrainController _controller;
 	private Audio _audio;
-	private Coroutine _stunCoroutine;
 	private float _assistGauge = 1.0f;
 	private bool _throwBreakInvulnerable;
 	public PlayerMovement OtherPlayer { get; private set; }
@@ -31,12 +30,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
-	public AttackSO CurrentHurtAttack { get; set; }
 	public float Health { get; set; }
 	public int Lives { get; set; } = 2;
 	public bool IsBlocking { get; private set; }
 	public bool IsKnockedDown { get; private set; }
-	public bool HitMiddair { get; set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
 	public float Arcana { get; set; }
@@ -88,7 +85,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerStateManager.ResetToInitialState();
 		transform.rotation = Quaternion.identity;
-		_playerMovement.SetLockMovement(true);
 		IsStunned = false;
 		IsDead = false;
 		IsAttacking = false;
@@ -139,7 +135,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		ArcanaCharge();
 		AssistCharge();
-		CheckIsBlocking();
 	}
 
 	private void AssistCharge()
@@ -199,19 +194,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool AssistAction()
 	{
-		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsKnockedDown && GameManager.Instance.HasGameStarted)
+		if (_assistGauge >= 1.0f && GameManager.Instance.HasGameStarted)
 		{
-			if (!IsBlocking)
-			{
-				_assist.Attack();
-			}
-			else
-			{
-				if (CanShadowbreak)
-				{
-					Shadowbreak();
-				}
-			}
+			_assist.Attack();
 			_assistGauge--;
 			_playerUI.SetAssist(_assistGauge);
 			return true;
@@ -219,15 +204,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		return false;
 	}
 
-	private void Shadowbreak()
+	public void Shadowbreak()
 	{
-		CanShadowbreak = false;
-		_audio.Sound("Shadowbreak").Play();
-		_playerAnimator.Shadowbreak();
-		_playerMovement.SetLockMovement(true);
-		CameraShake.Instance.Shake(0.5f, 0.1f);
-		Transform shadowbreak = Instantiate(_shadowbreakPrefab, _playerAnimator.transform).transform;
-		shadowbreak.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
+		if (_assistGauge >= 1.0f && GameManager.Instance.HasGameStarted)
+		{
+			CanShadowbreak = false;
+			_audio.Sound("Shadowbreak").Play();
+			_playerAnimator.Shadowbreak();
+			CameraShake.Instance.Shake(0.5f, 0.1f);
+			Transform shadowbreak = Instantiate(_shadowbreakPrefab, _playerAnimator.transform).transform;
+			shadowbreak.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
+		}
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
@@ -243,23 +230,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
 		}
-	}
-
-	public void ThrowEnd()
-	{
-		_playerMovement.FullyLockMovement = false;
-		OtherPlayer.GetComponent<Player>().GetThrownEnd();
-		SetHurtbox(true);
-	}
-
-	private void GetThrownEnd()
-	{
-		transform.SetParent(null);
-		_playerMovement.SetRigidbodyToKinematic(false);
-		_playerAnimator.SetSpriteOrder(0);
-		IsKnockedDown = true;
-		_controller.ActivateInput();
-		LoseHealth();
 	}
 
 	public virtual void CreateEffect(bool isProjectile = false)
@@ -293,104 +263,21 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private bool CanBlock(AttackSO attack)
 	{
-		return true;
-	}
-
-	private void LoseHealth()
-	{
-		_inputBuffer.ClearInputBuffer();
-		GameObject effect = Instantiate(CurrentHurtAttack.hurtEffect);
-		effect.transform.localPosition = new Vector2(transform.position.x, transform.position.y + 0.5f);
-		if (!GameManager.Instance.InfiniteHealth)
+		if (attack.attackTypeEnum == AttackTypeEnum.Break)
 		{
-			Health--;
-			_playerUI.SetHealth(Health);
+			return false;
 		}
-		if (Health <= 0)
+		if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f
+				   || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
 		{
-			Die();
+			return true;
 		}
-		else
-		{
-			GameManager.Instance.HitStop(CurrentHurtAttack.hitstop);
-		}
-		_playerUI.UpdateHealthDamaged();
-	}
-
-	private void CheckIsBlocking()
-	{
-		if (!IsAttacking && !_playerMovement.IsDashing)
-		{
-			if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f
-				|| transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
-			{
-				if (_playerMovement.IsGrounded)
-				{
-					if (_playerMovement.MovementInput.y < 0.0f)
-					{
-						BlockingLow = true;
-						BlockingHigh = false;
-						BlockingMiddair = false;
-					}
-					else
-					{
-						BlockingLow = false;
-						BlockingHigh = true;
-						BlockingMiddair = false;
-					}
-				}
-				else
-				{
-					BlockingLow = false;
-					BlockingHigh = false;
-					BlockingMiddair = true;
-				}
-
-			}
-			else
-			{
-				BlockingLow = false;
-				BlockingHigh = false;
-				BlockingMiddair = false;
-			}
-		}
-		else
-		{
-			BlockingLow = false;
-			BlockingHigh = false;
-			BlockingMiddair = false;
-		}
-	}
-
-	private void Die()
-	{
-		DestroyEffects();
-		_controller.ActiveController.enabled = false;
-		SetGroundPushBox(false);
-		SetHurtbox(false);
-		if (!IsDead)
-		{
-			if (GameManager.Instance.HasGameStarted && !GameManager.Instance.IsTrainingMode)
-			{
-				Lives--;
-			}
-			if (Lives <= 0)
-			{
-				GameManager.Instance.MatchOver();
-			}
-			else
-			{
-				GameManager.Instance.RoundOver();
-			}
-		}
-		IsDead = true;
-		GameManager.Instance.HitStop(0.35f);
+		return false;
 	}
 
 	public void Taunt()
 	{
 		_playerAnimator.Taunt();
-		_playerMovement.SetLockMovement(true);
 		_controller.ActiveController.enabled = false;
 	}
 
@@ -421,14 +308,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_hurtbox.gameObject.SetActive(state);
 	}
 
-	private void DestroyEffects()
-	{
-		foreach (Transform effect in _effectsParent)
-		{
-			Destroy(effect.gameObject);
-		}
-	}
-
 	public void Pause(bool isPlayerOne)
 	{
 		if (GameManager.Instance.IsTrainingMode)
@@ -447,10 +326,5 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_playerUI.ClosePauseHold();
 		}
-	}
-
-	public void HitboxCollidedGround(RaycastHit2D hit)
-	{
-		throw new System.NotImplementedException();
 	}
 }
