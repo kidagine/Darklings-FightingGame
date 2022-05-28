@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 
@@ -7,11 +8,17 @@ public class BlockState : BlockParentState
     {
         base.Enter();
         _playerAnimator.Block();
+        _blockCoroutine = StartCoroutine(BlockCoroutine(_blockAttack.hitStun));
     }
 
-    public override void UpdatePhysics()
+    IEnumerator BlockCoroutine(float blockStun)
     {
-        base.UpdatePhysics();
-        _rigidbody.velocity = Vector2.zero;
+        yield return new WaitForSeconds(blockStun);
+        ToIdleState();
+    }
+
+    private void ToIdleState()
+    {
+        _stateMachine.ChangeState(_idleState);
     }
 }

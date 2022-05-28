@@ -30,6 +30,13 @@ public class CrouchState : GroundParentState
         return true;
     }
 
+    public override bool ToBlockState(AttackSO attack)
+    {
+        _blockLowState.Initialize(attack);
+        _stateMachine.ChangeState(_blockLowState);
+        return true;
+    }
+
     public override void UpdatePhysics()
     {
         base.UpdatePhysics();

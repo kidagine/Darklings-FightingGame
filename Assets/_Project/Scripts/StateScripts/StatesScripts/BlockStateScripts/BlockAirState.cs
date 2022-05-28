@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BlockAirState : BlockParentState
@@ -6,6 +7,19 @@ public class BlockAirState : BlockParentState
     {
         base.Enter();
         _playerAnimator.BlockAir();
+        _blockCoroutine = StartCoroutine(BlockCoroutine(_blockAttack.hitStun));
+    }
+
+    IEnumerator BlockCoroutine(float blockStun)
+    {
+        yield return new WaitForSeconds(blockStun);
+        ToFallState();
+    }
+
+    private void ToFallState()
+    {
+        _playerAnimator.Jump();
+        _stateMachine.ChangeState(_fallState);
     }
 
     public override void UpdatePhysics()

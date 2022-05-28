@@ -1,11 +1,14 @@
+using Demonics.Manager;
 using System.Collections;
 using UnityEngine;
 
 public class BlockParentState : State
 {
+	[SerializeField] private GameObject _blockEffectPrefab = default;
 	protected IdleState _idleState;
+	protected FallState _fallState;
 	protected AttackSO _blockAttack;
-	private Coroutine _blockCoroutine;
+	protected Coroutine _blockCoroutine;
 
 	public void Initialize(AttackSO attack)
 	{
@@ -15,23 +18,24 @@ public class BlockParentState : State
 	void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
+		_fallState = GetComponent<FallState>();
 	}
 
 	public override void Enter()
 	{
 		base.Enter();
-		_blockCoroutine = StartCoroutine(BlockCoroutine(_blockAttack.hitStun));
+		_playerMovement.Knockback(new Vector2(
+			_player.OtherPlayer.transform.localScale.x, 0.0f), _blockAttack.knockback, _blockAttack.knockbackDuration);
+		GameObject effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);
+		effect.transform.localPosition = _blockAttack.hurtEffectPosition;
 	}
 
-	IEnumerator BlockCoroutine(float blockStun)
-	{
-		yield return new WaitForSeconds(blockStun);
-		ToIdleState();
-	}
 
-	private void ToIdleState()
+	public override bool ToBlockState(AttackSO attack)
 	{
-		_stateMachine.ChangeState(_idleState);
+		this.Initialize(attack);
+		_stateMachine.ChangeState(this);
+		return true;
 	}
 
 	public override void UpdatePhysics()
