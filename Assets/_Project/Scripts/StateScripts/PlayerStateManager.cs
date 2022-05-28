@@ -16,15 +16,8 @@ public class PlayerStateManager : StateMachine
     [SerializeField] private Rigidbody2D _rigidbody = default;
     private TrainingMenu _trainingMenu;
     private PlayerUI _playerUI;
-    public AttackState AttackState { get; private set; }
-    public ThrowState ThrowState { get; private set; }
-    public IdleState IdleState { get; private set; }
-    public WalkState WalkState { get; private set; }
-    public HurtState HurtState { get; private set; }
+
     public AirborneHurtState AirborneHurtState { get; private set; }
-    public KnockdownState KnockbackState { get; private set; }
-    public ArcanaState ArcanaState { get; private set; }
-    public FallState FallState { get; private set; }
 
     public void Initialize(PlayerUI playerUI, TrainingMenu trainingMenu)
     {
@@ -37,15 +30,7 @@ public class PlayerStateManager : StateMachine
             );
             state.SetController(_brainController.ActiveController);
         }
-        AttackState = GetComponent<AttackState>();
-        ThrowState = GetComponent<ThrowState>();
-        IdleState = GetComponent<IdleState>();
-        WalkState = GetComponent<WalkState>();
-        HurtState = GetComponent<HurtState>();
         AirborneHurtState = GetComponent<AirborneHurtState>();
-        KnockbackState = GetComponent<KnockdownState>();
-        ArcanaState = GetComponent<ArcanaState>();
-        FallState = GetComponent<FallState>();
     }
 
     public void ResetToInitialState()
@@ -85,6 +70,11 @@ public class PlayerStateManager : StateMachine
             CurrentState.ToHurtState(attack);
         }
         return true;
+    }
+
+    public bool TryToBlockState(AttackSO attack)
+    {
+        return CurrentState.ToBlockState(attack);
     }
 
     protected override State GetInitialState()

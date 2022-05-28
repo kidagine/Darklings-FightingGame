@@ -43,5 +43,6 @@ public class State : MonoBehaviour
     public virtual bool ToArcanaState() { return false; }
     public virtual bool ToThrowState() { return false; }
     public virtual bool ToHurtState(AttackSO attack) {  return true; }
+    public virtual bool ToBlockState(AttackSO attack) { return false; }
     public virtual bool AssistCall() { return false; }
 }

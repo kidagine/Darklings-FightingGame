@@ -914,6 +914,9 @@ GameObject:
   - component: {fileID: 590707302505620398}
   - component: {fileID: 5908386114410977804}
   - component: {fileID: 8763190588033756575}
+  - component: {fileID: 4720296448420222393}
+  - component: {fileID: 6721287234222021846}
+  - component: {fileID: 5154540708296696613}
   m_Layer: 10
   m_Name: Player_states
   m_TagString: Untagged
@@ -1218,6 +1221,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Taunt
+--- !u!114 &4720296448420222393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17d4790514b020c4ab5eeadbaed83a60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: Block
+--- !u!114 &6721287234222021846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d101552622074b844a7f415047e8d94a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: BlockLow
+--- !u!114 &5154540708296696613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1099e799d22c55440bf8f2b84d38e4f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: BlockAir
 --- !u!1 &7759221523502482170
 GameObject:
   m_ObjectHideFlags: 0

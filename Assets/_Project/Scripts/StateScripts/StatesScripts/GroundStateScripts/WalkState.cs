@@ -47,6 +47,13 @@ public class WalkState : GroundParentState
 		}
 	}
 
+	public override bool ToBlockState(AttackSO attack)
+	{
+		_blockState.Initialize(attack);
+		_stateMachine.ChangeState(_blockState);
+		return true;
+	}
+
 	public override void UpdatePhysics()
 	{
 		base.UpdatePhysics();

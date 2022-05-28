@@ -197,40 +197,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		return false;
 	}
 
-	protected virtual bool Attack(InputEnum inputEnum)
-	{
-		if (CanCancelAttack)
-		{
-			IsAttacking = false;
-			CanCancelAttack = false;
-		}
-		if (!IsAttacking && !IsBlocking && !_playerMovement.IsDashing && !IsKnockedDown)
-		{
-			_audio.Sound("Hit").Play();
-			IsAttacking = true;
-			_playerAnimator.Attack(inputEnum.ToString());
-			AttackTravel();
-			if (!string.IsNullOrEmpty(CurrentAttack.attackSound))
-			{
-				_audio.Sound(CurrentAttack.attackSound).Play();
-			}
-			if (CurrentAttack.travelDirection.y > 0.0f)
-			{
-				SetAirPushBox(true);
-			}
-			return true;
-		}
-		return false;
-	}
-
-	public void AttackTravel()
-	{
-		if (!CurrentAttack.isAirAttack)
-		{
-			_playerMovement.TravelDistance(new Vector2(CurrentAttack.travelDistance * transform.localScale.x, CurrentAttack.travelDirection.y));
-		}
-	}
-
 	public bool AssistAction()
 	{
 		if (_assistGauge >= 1.0f && !_playerMovement.FullyLockMovement && !IsStunned && !IsKnockedDown && GameManager.Instance.HasGameStarted)
@@ -315,7 +281,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool TakeDamage(AttackSO attack)
 	{
-		return _playerStateManager.TryToHurtState(attack);
+		if (CanBlock(attack))
+		{
+			return _playerStateManager.TryToBlockState(attack);
+		}
+		else
+		{
+			return _playerStateManager.TryToHurtState(attack);
+		}
+	}
+
+	private bool CanBlock(AttackSO attack)
+	{
+		return true;
 	}
 
 	private void LoseHealth()
