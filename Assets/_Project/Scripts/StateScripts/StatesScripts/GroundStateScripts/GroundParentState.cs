@@ -8,10 +8,11 @@ public class GroundParentState : State
 	protected DashState _dashState;
 	protected AttackState _attackState;
 	protected ArcanaState _arcanaState;
-	protected ThrowState _throwState;
+	protected GrabState _grabState;
 	protected HurtState _hurtState;
 	protected BlockState _blockState;
 	protected BlockLowState _blockLowState;
+	protected GrabbedState _grabbedState;
 
 	protected virtual void Awake()
 	{
@@ -23,10 +24,11 @@ public class GroundParentState : State
 		_dashState = GetComponent<DashState>();
 		_attackState = GetComponent<AttackState>();
 		_arcanaState = GetComponent<ArcanaState>();
-		_throwState = GetComponent<ThrowState>();
+		_grabState = GetComponent<GrabState>();
 		_hurtState = GetComponent<HurtState>();
 		_blockState = GetComponent<BlockState>();
 		_blockLowState = GetComponent<BlockLowState>();
+		_grabbedState = GetComponent<GrabbedState>();
 	}
 
 	public override bool ToAttackState(InputEnum inputEnum)
@@ -46,9 +48,9 @@ public class GroundParentState : State
 		return false;
 	}
 
-	public override bool ToThrowState()
+	public override bool ToGrabState()
 	{
-		_stateMachine.ChangeState(_throwState);
+		_stateMachine.ChangeState(_grabState);
 		return true;
 	}
 

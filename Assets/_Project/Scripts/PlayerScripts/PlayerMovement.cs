@@ -168,4 +168,17 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             MovementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
         }
     }
+
+    public void SetRigidbodyKinematic(bool state)
+    {
+        if (state)
+        {
+            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+        else
+        {
+            _rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+        }
+        _rigidbody.isKinematic = state;
+    }
 }

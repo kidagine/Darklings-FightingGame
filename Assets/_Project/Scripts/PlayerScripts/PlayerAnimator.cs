@@ -97,14 +97,14 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.Play("Intro");
 	}
 
+	public void Grab()
+	{
+		_animator.Play("Grab");
+	}
+
 	public void Throw()
 	{
 		_animator.Play("Throw");
-	}
-
-	public void ThrowEnd()
-	{
-		_animator.SetTrigger("ThrowEnd");
 	}
 
 	public void Arcana()

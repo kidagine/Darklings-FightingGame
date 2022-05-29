@@ -201,10 +201,10 @@ public class GameManager : MonoBehaviour
         PlayerTwo.SetPlayerUI(_playerTwoUI);
         PlayerOne.SetAssist(_assists[SceneSettings.AssistOne]);
         PlayerTwo.SetAssist(_assists[SceneSettings.AssistTwo]);
-        PlayerOne.SetOtherPlayer(_playerMovementTwo);
+        PlayerOne.SetOtherPlayer(PlayerTwo);
         PlayerOne.IsPlayerOne = true;
         _playerOneController.ControllerInputName = SceneSettings.ControllerOne;
-        PlayerTwo.SetOtherPlayer(_playerMovementOne);
+        PlayerTwo.SetOtherPlayer(PlayerOne);
         PlayerTwo.IsPlayerOne = false;
         _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
         PlayerOne.name = $"{_playerStats[SceneSettings.PlayerOne].name}({SceneSettings.ControllerOne})_player";

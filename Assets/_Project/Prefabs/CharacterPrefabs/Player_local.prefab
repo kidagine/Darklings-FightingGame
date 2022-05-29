@@ -906,7 +906,6 @@ GameObject:
   - component: {fileID: 8019448854678928122}
   - component: {fileID: 2960404323607353414}
   - component: {fileID: 1355162583610085430}
-  - component: {fileID: 7855595845877207489}
   - component: {fileID: 153298792918803171}
   - component: {fileID: 3943950838519817700}
   - component: {fileID: 6424551685482535852}
@@ -917,6 +916,9 @@ GameObject:
   - component: {fileID: 4720296448420222393}
   - component: {fileID: 6721287234222021846}
   - component: {fileID: 5154540708296696613}
+  - component: {fileID: 7855595845877207489}
+  - component: {fileID: 6770783201273014799}
+  - component: {fileID: 4867772287099482726}
   m_Layer: 10
   m_Name: Player_states
   m_TagString: Untagged
@@ -1116,19 +1118,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Arcana
---- !u!114 &7855595845877207489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7367645597814612059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fe705f86eda19b4fb8bfe6e011098fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stateName: Throw
 --- !u!114 &153298792918803171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1263,6 +1252,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: BlockAir
   _blockEffectPrefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
+--- !u!114 &7855595845877207489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fe705f86eda19b4fb8bfe6e011098fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: Grab
+--- !u!114 &6770783201273014799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4faf94401b508954782e06c23cecdca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: Grabbed
+--- !u!114 &4867772287099482726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c2904a8ab0c128409a6508857f3cbf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: Throw
 --- !u!1 &7759221523502482170
 GameObject:
   m_ObjectHideFlags: 0

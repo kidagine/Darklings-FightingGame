@@ -25,7 +25,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Audio _audio;
 	private float _assistGauge = 1.0f;
 	private bool _throwBreakInvulnerable;
-	public PlayerMovement OtherPlayer { get; private set; }
+	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
+	public PlayerStateManager OtherPlayerStateManager { get; private set; }
+	public Player OtherPlayer { get; private set; }
+	public PlayerMovement OtherPlayerMovement { get; private set; }
 	public PlayerUI OtherPlayerUI { get; private set; }
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
@@ -75,10 +78,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerUI = playerUI;
 	}
 
-	public void SetOtherPlayer(PlayerMovement otherPlayer)
+	public void SetOtherPlayer(Player otherPlayer)
 	{
 		OtherPlayer = otherPlayer;
-		OtherPlayerUI = otherPlayer.GetComponent<Player>().PlayerUI;
+		OtherPlayerMovement = otherPlayer.GetComponent<PlayerMovement>();
+		OtherPlayerUI = otherPlayer.PlayerUI;
+		OtherPlayerStateManager = otherPlayer.PlayerStateManager;
+	}
+
+	public void SetToGrabPoint(Player player)
+	{
+		player.transform.SetParent(_grabPoint);
+		player.transform.localPosition = Vector2.zero;
+		player.transform.localScale = new Vector2(-1.0f, 1.0f);
 	}
 
 	public void ResetPlayer()
@@ -225,8 +237,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			AttackState.CanSkipAttack = true;
 		}
-
-		if (OtherPlayer.IsInCorner && !CurrentAttack.isProjectile)
+		if (OtherPlayerMovement.IsInCorner && !CurrentAttack.isProjectile)
 		{
 			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
 		}
@@ -251,7 +262,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool TakeDamage(AttackSO attack)
 	{
-		if (CanBlock(attack))
+		if (attack.attackTypeEnum == AttackTypeEnum.Throw)
+		{
+			return _playerStateManager.TryToGrabbedState();
+		}
+		else if (CanBlock(attack))
 		{
 			return _playerStateManager.TryToBlockState(attack);
 		}

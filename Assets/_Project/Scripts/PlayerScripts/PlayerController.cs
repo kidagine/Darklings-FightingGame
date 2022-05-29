@@ -130,7 +130,7 @@ public class PlayerController : BaseController
     {
         if (Input.GetButtonDown(_brainController.ControllerInputName + "Throw"))
         {
-            _playerStateManager.TryToThrowState();
+            _playerStateManager.TryToGrabState();
             _inputBuffer.AddInputBufferItem(InputEnum.Throw);
         }
     }
