@@ -94,7 +94,6 @@ public class AttackState : State
 	{
 		if (CanSkipAttack)
 		{
-			Debug.Log("a");
 			Initialize(inputEnum, _crouch, _air);
 			_stateMachine.ChangeState(this);
 			return true;

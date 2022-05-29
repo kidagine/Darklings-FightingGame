@@ -17,7 +17,7 @@ public class AirHurtState : HurtParentState
 	public override void Enter()
 	{
 		_playerAnimator.HurtAir(true);
-		//_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
+		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();
 	}
 

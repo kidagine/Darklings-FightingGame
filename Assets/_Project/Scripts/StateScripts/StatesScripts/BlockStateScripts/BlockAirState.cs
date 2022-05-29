@@ -24,7 +24,6 @@ public class BlockAirState : BlockParentState
 
     public override void UpdatePhysics()
     {
-        base.UpdatePhysics();
-        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y / 1.1f);
     }
 }
