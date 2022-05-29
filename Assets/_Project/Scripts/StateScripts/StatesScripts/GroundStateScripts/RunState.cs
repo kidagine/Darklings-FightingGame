@@ -57,7 +57,7 @@ public class RunState : GroundParentState
     public override void UpdatePhysics()
     {
         base.UpdatePhysics();
-        _rigidbody.velocity = new Vector2(1.0f * _playerMovement.MovementSpeed, _rigidbody.velocity.y);
+        _rigidbody.velocity = new Vector2(transform.root.localScale.x * _playerMovement.MovementSpeed, _rigidbody.velocity.y);
     }
 
     public override void Exit()

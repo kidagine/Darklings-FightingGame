@@ -52,6 +52,20 @@ public class AttackState : State
 		}
 	}
 
+	public override void UpdateLogic()
+	{
+		base.UpdateLogic();
+		ToFallStateOnGround();
+	}
+
+	private void ToFallStateOnGround()
+	{
+		if (_air && _playerMovement._isGrounded && _rigidbody.velocity.y <= 0.0f)
+		{
+			_stateMachine.ChangeState(_fallState);
+		}
+	}
+
 	private void ToIdleState()
 	{
 		if (_stateMachine.CurrentState == this)
@@ -80,6 +94,7 @@ public class AttackState : State
 	{
 		if (CanSkipAttack)
 		{
+			Debug.Log("a");
 			Initialize(inputEnum, _crouch, _air);
 			_stateMachine.ChangeState(this);
 			return true;

@@ -51,7 +51,7 @@ public class DashState : State
         _rigidbody.velocity = Vector2.zero;
         _playerMovement.ResetGravity();
         ToIdleState();
-        if (_baseController.InputDirection.x * transform.localScale.x > 0.0f)
+        if (_baseController.InputDirection.x * transform.root.localScale.x > 0.0f)
         {
             ToRunState();
         }
@@ -90,6 +90,7 @@ public class DashState : State
         base.Exit();
         if (_dashCoroutine != null)
         {
+            _playerMovement.ResetGravity();
             StopCoroutine(_dashCoroutine);
         }
     }

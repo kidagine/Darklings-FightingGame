@@ -123,6 +123,7 @@ public class AirDashState : State
         base.Exit();
         if (_dashCoroutine != null)
         {
+            _playerMovement.ResetGravity();
             StopCoroutine(_dashCoroutine);
             _rigidbody.velocity = Vector2.zero;
         }
