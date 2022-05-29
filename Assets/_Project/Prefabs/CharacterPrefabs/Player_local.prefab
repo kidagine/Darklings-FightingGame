@@ -914,6 +914,9 @@ GameObject:
   - component: {fileID: 590707302505620398}
   - component: {fileID: 5908386114410977804}
   - component: {fileID: 8763190588033756575}
+  - component: {fileID: 4720296448420222393}
+  - component: {fileID: 6721287234222021846}
+  - component: {fileID: 5154540708296696613}
   m_Layer: 10
   m_Name: Player_states
   m_TagString: Untagged
@@ -954,6 +957,7 @@ MonoBehaviour:
   _playerAnimator: {fileID: 8073473789928578677}
   _playerStats: {fileID: 4618435349483342948}
   _playerController: {fileID: 6371053321382070875}
+  _brainController: {fileID: 8743540751678485471}
   _playerComboSystem: {fileID: 8073473790702501994}
   _audio: {fileID: 7611394710214668632}
   _rigidbody: {fileID: 8073473790702501985}
@@ -1217,6 +1221,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Taunt
+--- !u!114 &4720296448420222393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17d4790514b020c4ab5eeadbaed83a60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: Block
+  _blockEffectPrefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
+--- !u!114 &6721287234222021846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d101552622074b844a7f415047e8d94a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: BlockLow
+  _blockEffectPrefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
+--- !u!114 &5154540708296696613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1099e799d22c55440bf8f2b84d38e4f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: BlockAir
+  _blockEffectPrefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
 --- !u!1 &7759221523502482170
 GameObject:
   m_ObjectHideFlags: 0
@@ -1913,6 +1959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerStateManager: {fileID: 8168889133440061290}
+  _playerStateMachine: {fileID: 8168889133440061290}
 --- !u!114 &6371053321382070875
 MonoBehaviour:
   m_ObjectHideFlags: 0

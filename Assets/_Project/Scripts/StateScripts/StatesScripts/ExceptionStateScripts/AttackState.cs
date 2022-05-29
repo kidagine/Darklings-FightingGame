@@ -3,7 +3,9 @@ using UnityEngine;
 public class AttackState : State
 {
 	private IdleState _idleState;
+	private CrouchState _crouchState;
 	private FallState _fallState;
+	private HurtState _hurtState;
 	public static bool CanSkipAttack;
 	private InputEnum _inputEnum;
 	private bool _air;
@@ -12,7 +14,9 @@ public class AttackState : State
 	void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
+		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
+		_hurtState = GetComponent<HurtState>();
 	}
 
 	public void Initialize(InputEnum inputEnum, bool crouch, bool air)
@@ -30,7 +34,15 @@ public class AttackState : State
 		_playerAnimator.Attack(_player.CurrentAttack.name, true);
 		if (!_air)
 		{
-			_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
+			_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
+			if (_baseController.Crouch())
+			{
+				_playerAnimator.OnCurrentAnimationFinished.AddListener(ToCrouchState);
+			}
+			else
+			{
+				_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
+			}
 			_playerMovement.TravelDistance(new Vector2(
 				_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDirection.y));
 		}
@@ -48,6 +60,13 @@ public class AttackState : State
 		}
 	}
 
+	private void ToCrouchState()
+	{
+		if (_stateMachine.CurrentState == this)
+		{
+			_stateMachine.ChangeState(_crouchState);
+		}
+	}
 	private void ToFallState()
 	{
 		if (_stateMachine.CurrentState == this)
@@ -69,6 +88,19 @@ public class AttackState : State
 		{
 			return false;
 		}
+	}
+
+	public override bool ToHurtState(AttackSO attack)
+	{
+		_hurtState.Initialize(attack);
+		_stateMachine.ChangeState(_hurtState);
+		return true;
+	}
+
+	public override bool AssistCall()
+	{
+		_player.AssistAction();
+		return true;
 	}
 
 	public override void Exit()

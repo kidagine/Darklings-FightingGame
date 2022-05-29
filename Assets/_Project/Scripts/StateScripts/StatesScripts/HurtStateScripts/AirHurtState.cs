@@ -5,35 +5,55 @@ public class AirHurtState : HurtParentState
 {
 	private Coroutine _stunCoroutine;
 	private AirHurtState _airHurtState;
+	private FallState _fallState;
 
 	protected override void Awake()
 	{
+		base.Awake();
 		_airHurtState = GetComponent<AirHurtState>();
+		_fallState = GetComponent<FallState>();
 	}
 
 	public override void Enter()
 	{
 		_playerAnimator.HurtAir(true);
-		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
+		//_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();
 	}
 
 	IEnumerator StunCoroutine(float hitStun)
 	{
 		yield return new WaitForSeconds(hitStun);
-		ToIdleState();
+		ToFallAfterStunState();
 	}
 
-	private void ToIdleState()
+	public override void UpdateLogic()
 	{
-		_player.PlayerUI.ResetCombo();
-		_stateMachine.ChangeState(_idleState);
+		base.UpdateLogic();
+		ToFallStateAfterGround();
+	}
+
+
+	private void ToFallAfterStunState()
+	{
+		_playerAnimator.Jump();
+		_player.OtherPlayerUI.ResetCombo();
+		_stateMachine.ChangeState(_fallState);
+	}
+
+	private void ToFallStateAfterGround()
+	{
+		if (_playerMovement._isGrounded && _rigidbody.velocity.y <= 0.0f)
+		{
+			_player.OtherPlayerUI.ResetCombo();
+			_stateMachine.ChangeState(_fallState);
+		}
 	}
 
 	public override void UpdatePhysics()
 	{
 		base.UpdatePhysics();
-		_rigidbody.velocity = Vector2.zero;
+		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y / 1.1f);
 	}
 
 	public override bool ToHurtState(AttackSO attack)

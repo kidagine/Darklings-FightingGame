@@ -17,7 +17,7 @@ public class CrouchState : GroundParentState
 
     private void ToIdleState()
     {
-        if (_playerController.StandUp())
+        if (_baseController.StandUp())
         {
             _stateMachine.ChangeState(_idleState);
         }
@@ -27,6 +27,13 @@ public class CrouchState : GroundParentState
     {
         _attackState.Initialize(inputEnum, true, false);
         _stateMachine.ChangeState(_attackState);
+        return true;
+    }
+
+    public override bool ToBlockState(AttackSO attack)
+    {
+        _blockLowState.Initialize(attack);
+        _stateMachine.ChangeState(_blockLowState);
         return true;
     }
 

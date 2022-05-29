@@ -25,7 +25,6 @@ public class PlayerAnimationEvents : MonoBehaviour
 	public void UnlockMovementNoFramedata()
 	{
 		_player.IsAttacking = false;
-		_playerMovement.SetLockMovement(false);
 		_player.CanCancelAttack = false;
 		_inputBuffer.CheckForInputBufferItem();
 		_player.CanShadowbreak = true;
@@ -39,7 +38,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
 	public void ThrowEnd()
 	{
-		_player.ThrowEnd();
+		//_player.ThrowEnd();
 	}
 
 	public void CreateEffectAnimationEvent(int isProjectile)

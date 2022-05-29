@@ -25,11 +25,12 @@ public class HurtParentState : State
 		effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
 		if (!_playerMovement.IsInCorner)
 		{
-			_playerMovement.Knockback(new Vector2(transform.root.localScale.x * -1.0f, 0.0f), _hurtAttack.knockback, _hurtAttack.knockbackDuration);
+			_playerMovement.Knockback(new Vector2(
+				_player.OtherPlayer.transform.localScale.x, 0.0f), _hurtAttack.knockback, _hurtAttack.knockbackDuration);
 		}
 		_player.Health--;
 		_playerUI.SetHealth(_player.Health);
-		_player.PlayerUI.IncreaseCombo();
+		_player.OtherPlayerUI.IncreaseCombo();
 		GameManager.Instance.HitStop(_hurtAttack.hitstop);
 		if (_player.Health <= 0)
 		{

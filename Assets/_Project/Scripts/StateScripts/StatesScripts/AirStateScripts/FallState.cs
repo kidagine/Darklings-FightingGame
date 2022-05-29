@@ -22,7 +22,6 @@ public class FallState : AirParentState
         {
             Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
-            _player.SetPushboxTrigger(false);
             _stateMachine.ChangeState(_idleState);
         }
     }

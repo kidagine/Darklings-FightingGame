@@ -18,7 +18,7 @@ public class RunState : GroundParentState
 
     IEnumerator RunCoroutine()
     {
-        while (_playerController.InputDirection.x != 0.0f)
+        while (_baseController.InputDirection.x != 0.0f)
         {
             GameObject playerGhost = ObjectPoolingManager.Instance.Spawn(_playerGhostPrefab, transform.position);
             playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.root.localScale.x, Color.white);
@@ -35,7 +35,7 @@ public class RunState : GroundParentState
 
     private void ToIdleState()
     {
-        if (_playerController.InputDirection.x == 0.0f)
+        if (_baseController.InputDirection.x == 0.0f)
         {
             _stateMachine.ChangeState(_idleState);
         }
@@ -43,12 +43,12 @@ public class RunState : GroundParentState
 
     private void ToJumpForwardState()
     {
-        if (_playerController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+        if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
         {
             _playerMovement.HasJumped = true;
             _stateMachine.ChangeState(_jumpForwardState);
         }
-        else if (_playerController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+        else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
         {
             _playerMovement.HasJumped = false;
         }

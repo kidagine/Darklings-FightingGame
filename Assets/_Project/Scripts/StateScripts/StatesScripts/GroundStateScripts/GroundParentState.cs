@@ -10,6 +10,8 @@ public class GroundParentState : State
 	protected ArcanaState _arcanaState;
 	protected ThrowState _throwState;
 	protected HurtState _hurtState;
+	protected BlockState _blockState;
+	protected BlockLowState _blockLowState;
 
 	protected virtual void Awake()
 	{
@@ -23,6 +25,8 @@ public class GroundParentState : State
 		_arcanaState = GetComponent<ArcanaState>();
 		_throwState = GetComponent<ThrowState>();
 		_hurtState = GetComponent<HurtState>();
+		_blockState = GetComponent<BlockState>();
+		_blockLowState = GetComponent<BlockLowState>();
 	}
 
 	public override bool ToAttackState(InputEnum inputEnum)
@@ -52,6 +56,12 @@ public class GroundParentState : State
 	{
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
+		return true;
+	}
+
+	public override bool AssistCall()
+	{
+		_player.AssistAction();
 		return true;
 	}
 }

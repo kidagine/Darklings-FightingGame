@@ -51,7 +51,7 @@ public class DashState : State
         _rigidbody.velocity = Vector2.zero;
         _playerMovement.ResetGravity();
         ToIdleState();
-        if (_playerController.InputDirection.x * transform.localScale.x > 0.0f)
+        if (_baseController.InputDirection.x * transform.localScale.x > 0.0f)
         {
             ToRunState();
         }
@@ -77,6 +77,12 @@ public class DashState : State
     {
         base.UpdatePhysics();
         _player.Flip();
+    }
+
+    public override bool AssistCall()
+    {
+        _player.AssistAction();
+        return true;
     }
 
     public override void Exit()

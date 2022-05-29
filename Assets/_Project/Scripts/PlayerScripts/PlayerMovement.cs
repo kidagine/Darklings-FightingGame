@@ -1,5 +1,4 @@
 using Demonics.Sounds;
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,13 +14,9 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     private BrainController _playerController;
     protected Rigidbody2D _rigidbody;
     private PlayerStats _playerStats;
-    private InputBuffer _inputBuffer;
-    private Coroutine _ghostsCoroutine;
-    private Coroutine _knockbackCoroutine;
     private Audio _audio;
     protected bool _isMovementLocked;
     protected bool _onTopOfPlayer;
-    private bool _hasDashedMiddair;
     public bool _isGrounded;
     private UnityAction _knockbackAction;
     public bool HasJumped { get; set; }
@@ -44,7 +39,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _player = GetComponent<Player>();
         _playerStats = GetComponent<PlayerStats>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _inputBuffer = GetComponent<InputBuffer>();
         _audio = GetComponent<Audio>();
     }
 
@@ -52,7 +46,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         _playerController = GetComponent<BrainController>();
     }
-
 
     void Start()
     {
@@ -67,7 +60,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     public void ResetPlayerMovement()
     {
         IsGrounded = true;
-        SetLockMovement(false);
         CanDoubleJump = true;
         ResetGravity();
     }
@@ -90,54 +82,19 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _rigidbody.AddForce(new Vector2(travelDistance.x * 3.0f, travelDistance.y * 3.0f), ForceMode2D.Impulse);
     }
 
-    public bool CrouchAction()
-    {
-        if (!IsCrouching && !_player.IsBlocking && !IsDashing && !_player.IsKnockedDown)
-        {
-            ResetToWalkSpeed();
-            if (IsGrounded)
-            {
-                _rigidbody.velocity = Vector2.zero;
-            }
-            IsCrouching = true;
-            //_playerAnimator.IsCrouching(true);
-            return true;
-        }
-        return false;
-    }
-
-    public bool StandUpAction()
-    {
-        if (IsCrouching)
-        {
-            IsCrouching = false;
-            //_playerAnimator.IsCrouching(false);
-            return true;
-        }
-        return false;
-    }
-
-    public void SetLockMovement(bool state)
-    {
-        MovementInput = Vector2.zero;
-        _rigidbody.velocity = Vector2.zero;
-        _isMovementLocked = state;
-        //_playerAnimator.Walk(false);
-    }
-
     public void GroundedPoint(Transform other, float point)
     {
         if (_rigidbody.velocity.y < 0.0f)
         {
             float pushForceX = 8.0f;
             float pushForceY = -4.0f;
-            if (IsInCorner && transform.localScale.x > 1.0f)
+            if (IsInCorner && transform.localScale.x > 0.0f)
             {
                 _onTopOfPlayer = true;
                 _rigidbody.velocity = Vector2.zero;
                 _rigidbody.AddForce(new Vector2(-pushForceX, pushForceY), ForceMode2D.Impulse);
             }
-            else if (IsInCorner && transform.localScale.x < 1.0f)
+            else if (IsInCorner && transform.localScale.x < 0.0f)
             {
                 _onTopOfPlayer = true;
                 _rigidbody.velocity = Vector2.zero;
@@ -164,7 +121,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _isGrounded = false;
     }
 
-
     public void ShadowbreakKnockback()
     {
         _playerController.DeactivateInput();
@@ -175,7 +131,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
     {
         _rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce, transform.position.y));
-        _knockbackCoroutine = StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
+        StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
     }
 
     IEnumerator KnockbackCoroutine(Vector2 knockback, float knockbackDuration)
@@ -197,30 +153,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     public void ResetGravity()
     {
         _rigidbody.gravityScale = 2.0f;
-    }
-
-    public void StopKnockback()
-    {
-        if (_knockbackCoroutine != null)
-        {
-            StopCoroutine(_knockbackCoroutine);
-        }
-    }
-
-    public void SetRigidbodyToKinematic(bool state)
-    {
-        if (state)
-        {
-            StopKnockback();
-            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-        }
-        else
-        {
-            _rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-        }
-        FullyLockMovement = state;
-        _rigidbody.isKinematic = state;
-        _player.SetGroundPushBox(!state);
     }
 
     public void ZeroGravity()

@@ -11,6 +11,7 @@ public class AirParentState : State
 	protected AttackState _attackState;
 	protected ArcanaState _arcanaState;
 	protected AirHurtState _airHurtState;
+	protected BlockAirState _blockAirState;
 
 	protected virtual void Awake()
 	{
@@ -21,6 +22,13 @@ public class AirParentState : State
 		_attackState = GetComponent<AttackState>();
 		_arcanaState = GetComponent<ArcanaState>();
 		_airHurtState = GetComponent<AirHurtState>();
+		_blockAirState = GetComponent<BlockAirState>();
+	}
+
+	public override void Enter()
+	{
+		base.Enter();
+		_player.SetAirPushBox(true);
 	}
 
 	public override void UpdateLogic()
@@ -44,15 +52,15 @@ public class AirParentState : State
 	{
 		if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped)
 		{
-			if (_playerController.InputDirection.x == 0.0f)
+			if (_baseController.InputDirection.x == 0.0f)
 			{
-				if (_playerController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+				if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
 				{
 					_playerMovement.HasDoubleJumped = true;
 					_playerMovement.HasJumped = true;
 					_stateMachine.ChangeState(_jumpState);
 				}
-				else if (_playerController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+				else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
 				{
 					_playerMovement.HasJumped = false;
 				}
@@ -64,15 +72,15 @@ public class AirParentState : State
 	{
 		if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped)
 		{
-			if (_playerController.InputDirection.x != 0.0f)
+			if (_baseController.InputDirection.x != 0.0f)
 			{
-				if (_playerController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+				if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
 				{
 					_playerMovement.HasDoubleJumped = true;
 					_playerMovement.HasJumped = true;
 					_stateMachine.ChangeState(_jumpForwardState);
 				}
-				else if (_playerController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+				else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
 				{
 					_playerMovement.HasJumped = false;
 				}
@@ -84,12 +92,12 @@ public class AirParentState : State
 	{
 		if (!_playerMovement.HasAirDashed)
 		{
-			if (_playerController.DashForward())
+			if (_baseController.DashForward())
 			{
 				_airDashState.DashDirection = 1;
 				_stateMachine.ChangeState(_airDashState);
 			}
-			else if (_playerController.DashBackward())
+			else if (_baseController.DashBackward())
 			{
 				_airDashState.DashDirection = -1;
 				_stateMachine.ChangeState(_airDashState);
@@ -121,8 +129,16 @@ public class AirParentState : State
 		return true;
 	}
 
-	public override void UpdatePhysics()
+	public override bool ToBlockState(AttackSO attack)
 	{
-		base.UpdatePhysics();
+		_blockAirState.Initialize(attack);
+		_stateMachine.ChangeState(_blockAirState);
+		return true;
+	}
+
+	public override bool AssistCall()
+	{
+		_player.AssistAction();
+		return true;
 	}
 }

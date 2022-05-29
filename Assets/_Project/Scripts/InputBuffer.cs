@@ -76,8 +76,8 @@ public class InputBuffer : MonoBehaviour
 			inputBufferItem.Execute += () => _playerStateManager.TryToArcanaState();
 		}
 		else if (inputEnum == InputEnum.Assist)
-		{
-			inputBufferItem.Execute += _player.AssistAction;
+		{            
+			inputBufferItem.Execute += _playerStateManager.TryToAssistCall;
 		}
 		else if (inputEnum == InputEnum.Throw)
 		{

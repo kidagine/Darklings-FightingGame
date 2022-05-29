@@ -10,19 +10,14 @@ public class PlayerStateManager : StateMachine
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private PlayerStats _playerStats = default;
     [SerializeField] private PlayerController _playerController = default;
+    [SerializeField] private BrainController _brainController = default;
     [SerializeField] private PlayerComboSystem _playerComboSystem = default;
     [SerializeField] private Audio _audio = default;
     [SerializeField] private Rigidbody2D _rigidbody = default;
     private TrainingMenu _trainingMenu;
     private PlayerUI _playerUI;
-    public AttackState AttackState { get; private set; }
-    public ThrowState ThrowState { get; private set; }
-    public IdleState IdleState { get; private set; }
-    public HurtState HurtState { get; private set; }
+
     public AirborneHurtState AirborneHurtState { get; private set; }
-    public KnockdownState KnockbackState { get; private set; }
-    public ArcanaState ArcanaState { get; private set; }
-    public FallState FallState { get; private set; }
 
     public void Initialize(PlayerUI playerUI, TrainingMenu trainingMenu)
     {
@@ -31,17 +26,11 @@ public class PlayerStateManager : StateMachine
         foreach (State state in GetComponents<State>())
         {
             state.Initialize(
-            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _playerController, _playerComboSystem, _audio
+            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _playerComboSystem, _audio
             );
+            state.SetController(_brainController.ActiveController);
         }
-        AttackState = GetComponent<AttackState>();
-        ThrowState = GetComponent<ThrowState>();
-        IdleState = GetComponent<IdleState>();
-        HurtState = GetComponent<HurtState>();
         AirborneHurtState = GetComponent<AirborneHurtState>();
-        KnockbackState = GetComponent<KnockdownState>();
-        ArcanaState = GetComponent<ArcanaState>();
-        FallState = GetComponent<FallState>();
     }
 
     public void ResetToInitialState()
@@ -64,6 +53,11 @@ public class PlayerStateManager : StateMachine
         return CurrentState.ToThrowState();
     }
 
+    public bool TryToAssistCall()
+    {
+        return CurrentState.AssistCall();
+    }
+
     public bool TryToHurtState(AttackSO attack)
     {
         if (attack.causesKnockdown)
@@ -76,6 +70,11 @@ public class PlayerStateManager : StateMachine
             CurrentState.ToHurtState(attack);
         }
         return true;
+    }
+
+    public bool TryToBlockState(AttackSO attack)
+    {
+        return CurrentState.ToBlockState(attack);
     }
 
     protected override State GetInitialState()

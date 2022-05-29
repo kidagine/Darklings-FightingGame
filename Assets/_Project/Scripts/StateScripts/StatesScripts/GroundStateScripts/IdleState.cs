@@ -6,6 +6,8 @@ public class IdleState : GroundParentState
 	{
 		base.Enter();
 		_playerAnimator.Idle();
+		_player.SetAirPushBox(false);
+		_player.SetPushboxTrigger(false);
 		_playerMovement.HasAirDashed = false;
 		_playerMovement.HasDoubleJumped = false;
 	}
@@ -22,7 +24,7 @@ public class IdleState : GroundParentState
 
 	private void ToWalkState()
 	{
-		if (_playerController.InputDirection.x != 0.0f)
+		if (_baseController.InputDirection.x != 0.0f)
 		{
 			_stateMachine.ChangeState(_walkState);
 		}
@@ -30,7 +32,7 @@ public class IdleState : GroundParentState
 
 	private void ToCrouchState()
 	{
-		if (_playerController.Crouch())
+		if (_baseController.Crouch())
 		{
 			_stateMachine.ChangeState(_crouchState);
 		}
@@ -38,12 +40,12 @@ public class IdleState : GroundParentState
 
 	private void ToJumpState()
 	{
-		if (_playerController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+		if (_baseController.Jump() && !_playerMovement.HasJumped)
 		{
 			_playerMovement.HasJumped = true;
 			_stateMachine.ChangeState(_jumpState);
 		}
-		else if (_playerController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+		else if (_playerMovement.HasJumped)
 		{
 			_playerMovement.HasJumped = false;
 		}
@@ -51,16 +53,23 @@ public class IdleState : GroundParentState
 
 	private void ToDashState()
 	{
-		if (_playerController.DashForward())
+		if (_baseController.DashForward())
 		{
 			_dashState.DashDirection = 1;
 			_stateMachine.ChangeState(_dashState);
 		}
-		else if (_playerController.DashBackward())
+		else if (_baseController.DashBackward())
 		{
 			_dashState.DashDirection = -1;
 			_stateMachine.ChangeState(_dashState);
 		}
+	}
+
+	public override bool ToBlockState(AttackSO attack)
+	{
+		_blockState.Initialize(attack);
+		_stateMachine.ChangeState(_blockState);
+		return true;
 	}
 
 	public override void UpdatePhysics()
