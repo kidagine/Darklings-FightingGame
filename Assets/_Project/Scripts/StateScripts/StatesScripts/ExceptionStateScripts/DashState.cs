@@ -1,6 +1,5 @@
 using Demonics.Manager;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DashState : State
@@ -9,6 +8,7 @@ public class DashState : State
     [SerializeField] private GameObject _dashPrefab = default;
     private IdleState _idleState;
     private RunState _runState;
+    private HurtState _hurtState;
     private Coroutine _dashCoroutine;
 
     public int DashDirection { get; set; }
@@ -17,6 +17,7 @@ public class DashState : State
     {
         _idleState = GetComponent<IdleState>();
         _runState = GetComponent<RunState>();
+        _hurtState = GetComponent<HurtState>();
     }
 
     public override void Enter()
@@ -82,6 +83,13 @@ public class DashState : State
     public override bool AssistCall()
     {
         _player.AssistAction();
+        return true;
+    }
+
+    public override bool ToHurtState(AttackSO attack)
+    {
+        _hurtState.Initialize(attack);
+        _stateMachine.ChangeState(_hurtState);
         return true;
     }
 

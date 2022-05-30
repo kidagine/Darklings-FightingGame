@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class ThrowState : State
 {
 	private IdleState _idleState;
@@ -19,6 +21,12 @@ public class ThrowState : State
 	private void ToIdleState()
 	{
 		_stateMachine.ChangeState(_idleState);
+	}
+
+	public override void UpdatePhysics()
+	{
+		base.UpdatePhysics();
+		_rigidbody.velocity = Vector2.zero;
 	}
 
 	public override void Exit()

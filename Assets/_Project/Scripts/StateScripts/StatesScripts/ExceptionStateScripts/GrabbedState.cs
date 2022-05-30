@@ -43,6 +43,8 @@ public class GrabbedState : State
 	public override void Exit()
 	{
 		base.Exit();
+		_playerMovement.SetRigidbodyKinematic(false);
+		_player.SetPushboxTrigger(false);
 		_playerAnimator.SetSpriteOrder(0);
 		_playerUI.UpdateHealthDamaged();
 		_player.transform.SetParent(null);

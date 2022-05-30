@@ -117,6 +117,12 @@ public class AttackState : State
 		return true;
 	}
 
+	public override void UpdatePhysics()
+	{
+		base.UpdatePhysics();
+		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
+	}
+
 	public override void Exit()
 	{
 		base.Exit();
