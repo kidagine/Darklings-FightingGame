@@ -42,7 +42,7 @@ public class AirborneHurtState : HurtParentState
 		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
 	}
 
-	public void ToKnockdownState()
+	private new void ToKnockdownState()
 	{
 		if (_playerMovement._isGrounded && _canCheckGround)
 		{
