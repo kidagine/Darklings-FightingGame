@@ -54,12 +54,6 @@ public class WalkState : GroundParentState
 		return true;
 	}
 
-	public override bool ToGrabbedState()
-	{
-		_stateMachine.ChangeState(_grabbedState);
-		return true;
-	}
-
 	public override void UpdatePhysics()
 	{
 		base.UpdatePhysics();

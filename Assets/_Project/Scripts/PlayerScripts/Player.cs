@@ -23,7 +23,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private PlayerStats _playerStats;
 	private BrainController _controller;
 	private Audio _audio;
-	private float _assistGauge = 1.0f;
 	private bool _throwBreakInvulnerable;
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
 	public PlayerStateManager OtherPlayerStateManager { get; private set; }
@@ -39,6 +38,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool IsKnockedDown { get; private set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
+	public float AssistGauge { get; set; } = 1.0F;
 	public float Arcana { get; set; }
 	public float ArcaneSlowdown { get; set; } = 7.5f;
 	public bool IsStunned { get; private set; }
@@ -104,7 +104,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_controller.ActivateInput();
 		_effectsParent.gameObject.SetActive(true);
 		SetHurtbox(true);
-		_assistGauge = 1.0f;
+		AssistGauge = 1.0f;
 		_playerMovement.FullyLockMovement = false;
 		transform.SetParent(null);
 		_playerMovement.IsInCorner = false;
@@ -118,7 +118,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		OtherPlayerUI.ResetCombo();
 		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(Arcana);
-		_playerUI.SetAssist(_assistGauge);
+		_playerUI.SetAssist(AssistGauge);
 		_playerUI.ResetHealthDamaged();
 		InitializeStats();
 		_playerUI.ShowPlayerIcon();
@@ -151,14 +151,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private void AssistCharge()
 	{
-		if (_assistGauge < 1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
+		if (AssistGauge < 1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
 		{
-			_assistGauge += Time.deltaTime / (11.0f - _assist.AssistStats.assistRecharge);
+			AssistGauge += Time.deltaTime / (11.0f - _assist.AssistStats.assistRecharge);
 			if (GameManager.Instance.InfiniteAssist)
 			{
-				_assistGauge = 1.0f;
+				AssistGauge = 1.0f;
 			}
-			_playerUI.SetAssist(_assistGauge);
+			_playerUI.SetAssist(AssistGauge);
 		}
 	}
 
@@ -189,44 +189,21 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public virtual bool LightAction()
-	{
-		return false;
-	}
-
-	public virtual bool MediumAction()
-	{
-		return false;
-	}
-
-	public virtual bool HeavyAction()
-	{
-		return false;
-	}
-
 	public bool AssistAction()
 	{
-		if (_assistGauge >= 1.0f && GameManager.Instance.HasGameStarted)
+		if (AssistGauge >= 1.0f && GameManager.Instance.HasGameStarted)
 		{
 			_assist.Attack();
-			_assistGauge--;
-			_playerUI.SetAssist(_assistGauge);
+			DecreaseArcana();
 			return true;
 		}
 		return false;
 	}
 
-	public void Shadowbreak()
+	public void DecreaseArcana()
 	{
-		if (_assistGauge >= 1.0f && GameManager.Instance.HasGameStarted)
-		{
-			CanShadowbreak = false;
-			_audio.Sound("Shadowbreak").Play();
-			_playerAnimator.Shadowbreak();
-			CameraShake.Instance.Shake(0.5f, 0.1f);
-			Transform shadowbreak = Instantiate(_shadowbreakPrefab, _playerAnimator.transform).transform;
-			shadowbreak.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
-		}
+		AssistGauge--;
+		_playerUI.SetAssist(AssistGauge);
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)

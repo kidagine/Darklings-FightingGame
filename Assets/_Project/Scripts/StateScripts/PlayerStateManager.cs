@@ -63,6 +63,11 @@ public class PlayerStateManager : StateMachine
         return CurrentState.ToKnockdownState();
     }
 
+    public bool TryToKnockbackState()
+    {
+        return CurrentState.ToKnockbackState();
+    }
+
     public bool TryToAssistCall()
     {
         return CurrentState.AssistCall();

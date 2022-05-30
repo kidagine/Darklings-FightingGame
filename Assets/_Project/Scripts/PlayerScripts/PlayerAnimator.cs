@@ -89,7 +89,7 @@ public class PlayerAnimator : MonoBehaviour
 
 	public void Shadowbreak()
 	{
-		_animator.SetTrigger("Shadowbreak");
+		_animator.Play("Shadowbreak");
 	}
 
 	public void Intro()

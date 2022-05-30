@@ -904,6 +904,7 @@ GameObject:
   - component: {fileID: 6918343820534729796}
   - component: {fileID: 5838123894716320909}
   - component: {fileID: 8019448854678928122}
+  - component: {fileID: 736070327323889049}
   - component: {fileID: 2960404323607353414}
   - component: {fileID: 1355162583610085430}
   - component: {fileID: 153298792918803171}
@@ -911,6 +912,7 @@ GameObject:
   - component: {fileID: 6424551685482535852}
   - component: {fileID: 8107540455263638196}
   - component: {fileID: 590707302505620398}
+  - component: {fileID: 3011085337749538871}
   - component: {fileID: 5908386114410977804}
   - component: {fileID: 8763190588033756575}
   - component: {fileID: 4720296448420222393}
@@ -1092,6 +1094,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: Run
   _playerGhostPrefab: {fileID: 904796691893738277, guid: 0cfcd7936a9c5c54294ba46e75c919d5, type: 3}
+--- !u!114 &736070327323889049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00d6da3719e6104469fd56e87e822743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: Shadowbreak
+  _shadowbreakPrefab: {fileID: 6697712921357175186, guid: 93f3b4e55f7d0454b80fe978ef39dd19, type: 3}
 --- !u!114 &2960404323607353414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1184,6 +1200,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Knockdown
+--- !u!114 &3011085337749538871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3ad02b35fdfaf408d57ca74110d044, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: Knockback
+  _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
 --- !u!114 &5908386114410977804
 MonoBehaviour:
   m_ObjectHideFlags: 0

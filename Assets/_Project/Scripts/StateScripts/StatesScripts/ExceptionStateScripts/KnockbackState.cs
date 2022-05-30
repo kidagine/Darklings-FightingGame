@@ -1,16 +1,18 @@
 using System.Collections;
 using UnityEngine;
 
-public class AirborneHurtState : HurtParentState
+public class KnockbackState : State
 {
 	[SerializeField] private GameObject _groundedPrefab = default;
 	private KnockdownState _knockdownState;
 	private Coroutine _canCheckGroundCoroutine;
 	private bool _canCheckGround;
+	private readonly float _knockbackDirectionY = 0.5f;
+	private readonly float _knockbackDuration = 0.2f;
+	private readonly float _knockbackForce = 2.5f;
 
-	protected override void Awake()
+	protected void Awake()
 	{
-		base.Awake();
 		_knockdownState = GetComponent<KnockdownState>();
 	}
 
@@ -19,8 +21,8 @@ public class AirborneHurtState : HurtParentState
 		_playerAnimator.HurtAir(true);
 		base.Enter();
 		_playerMovement.Knockback(new Vector2(
-			_player.OtherPlayer.transform.localScale.x, _hurtAttack.knockbackDirection.y), _hurtAttack.knockback, _hurtAttack.knockbackDuration);
-		CameraShake.Instance.Shake(_hurtAttack.cameraShaker.intensity, _hurtAttack.cameraShaker.timer);
+			_player.OtherPlayer.transform.localScale.x, _knockbackDirectionY), _knockbackForce, _knockbackDuration);
+		CameraShake.Instance.Shake(1, 1);
 		_canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());
 	}
 

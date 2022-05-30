@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class GroundParentState : State
 {
 	protected IdleState _idleState;
@@ -13,6 +15,7 @@ public class GroundParentState : State
 	protected BlockState _blockState;
 	protected BlockLowState _blockLowState;
 	protected GrabbedState _grabbedState;
+	protected KnockbackState _knockbackState;
 
 	protected virtual void Awake()
 	{
@@ -29,6 +32,7 @@ public class GroundParentState : State
 		_blockState = GetComponent<BlockState>();
 		_blockLowState = GetComponent<BlockLowState>();
 		_grabbedState = GetComponent<GrabbedState>();
+		_knockbackState = GetComponent<KnockbackState>();
 	}
 
 	public override bool ToAttackState(InputEnum inputEnum)
@@ -58,6 +62,18 @@ public class GroundParentState : State
 	{
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
+		return true;
+	}
+
+	public override bool ToGrabbedState()
+	{
+		_stateMachine.ChangeState(_grabbedState);
+		return true;
+	}
+
+	public override bool ToKnockbackState()
+	{
+		_stateMachine.ChangeState(_knockbackState);
 		return true;
 	}
 

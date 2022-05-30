@@ -121,13 +121,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _isGrounded = false;
     }
 
-    public void ShadowbreakKnockback()
-    {
-        _playerController.DeactivateInput();
-        _knockbackAction += _playerController.ActivateInput;
-        Knockback(new Vector2(-transform.localScale.x, 0.3f), 4.5f, 0.3f);
-    }
-
     public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
     {
         _rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce, transform.position.y));

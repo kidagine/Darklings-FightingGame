@@ -7,6 +7,7 @@ public class BlockParentState : State
 	protected IdleState _idleState;
 	protected CrouchState _crouchState;
 	protected FallState _fallState;
+	protected ShadowbreakState _shadowbreakState;
 	protected AttackSO _blockAttack;
 	protected Coroutine _blockCoroutine;
 
@@ -20,6 +21,7 @@ public class BlockParentState : State
 		_idleState = GetComponent<IdleState>();
 		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
+		_shadowbreakState = GetComponent<ShadowbreakState>();
 	}
 
 	public override void Enter()
@@ -37,6 +39,16 @@ public class BlockParentState : State
 		this.Initialize(attack);
 		_stateMachine.ChangeState(this);
 		return true;
+	}
+
+	public override bool AssistCall()
+	{
+		if (_player.AssistGauge > 0.0f)
+		{
+			_stateMachine.ChangeState(_shadowbreakState);
+			return true;
+		}
+		return false;
 	}
 
 	public override void UpdatePhysics()

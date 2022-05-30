@@ -12,6 +12,7 @@ public class AirParentState : State
 	protected ArcanaState _arcanaState;
 	protected AirHurtState _airHurtState;
 	protected BlockAirState _blockAirState;
+	protected KnockbackState _knockbackState;
 
 	protected virtual void Awake()
 	{
@@ -23,6 +24,7 @@ public class AirParentState : State
 		_arcanaState = GetComponent<ArcanaState>();
 		_airHurtState = GetComponent<AirHurtState>();
 		_blockAirState = GetComponent<BlockAirState>();
+		_knockbackState = GetComponent<KnockbackState>();
 	}
 
 	public override void Enter()
@@ -133,6 +135,12 @@ public class AirParentState : State
 	{
 		_blockAirState.Initialize(attack);
 		_stateMachine.ChangeState(_blockAirState);
+		return true;
+	}
+
+	public override bool ToKnockbackState()
+	{
+		_stateMachine.ChangeState(_knockbackState);
 		return true;
 	}
 

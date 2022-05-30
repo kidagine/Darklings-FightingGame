@@ -6,6 +6,9 @@ public class AttackState : State
 	private CrouchState _crouchState;
 	private FallState _fallState;
 	private HurtState _hurtState;
+	private GrabbedState _grabbedState;
+	private ArcanaState _arcanaState;
+	private KnockbackState _knockbackState;
 	public static bool CanSkipAttack;
 	private InputEnum _inputEnum;
 	private bool _air;
@@ -17,6 +20,9 @@ public class AttackState : State
 		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
 		_hurtState = GetComponent<HurtState>();
+		_grabbedState = GetComponent<GrabbedState>();
+		_arcanaState = GetComponent<ArcanaState>();
+		_knockbackState = GetComponent<KnockbackState>();
 	}
 
 	public void Initialize(InputEnum inputEnum, bool crouch, bool air)
@@ -104,6 +110,16 @@ public class AttackState : State
 		}
 	}
 
+	public override bool ToArcanaState()
+	{
+		if (_player.Arcana >= 1.0f && CanSkipAttack)
+		{
+			_stateMachine.ChangeState(_arcanaState);
+			return true;
+		}
+		return false;
+	}
+
 	public override bool ToHurtState(AttackSO attack)
 	{
 		_hurtState.Initialize(attack);
@@ -111,9 +127,21 @@ public class AttackState : State
 		return true;
 	}
 
+	public override bool ToGrabbedState()
+	{
+		_stateMachine.ChangeState(_grabbedState);
+		return true;
+	}
+
 	public override bool AssistCall()
 	{
 		_player.AssistAction();
+		return true;
+	}
+
+	public override bool ToKnockbackState()
+	{
+		_stateMachine.ChangeState(_knockbackState);
 		return true;
 	}
 
