@@ -26,7 +26,7 @@ public class GrabbedState : State
 		_playerUI.SetHealth(_player.Health);
 		_player.OtherPlayerUI.IncreaseCombo();
 		_player.OtherPlayerUI.ResetCombo();
-		//GameManager.Instance.HitStop(_hurtAttack.hitstop);
+		GameManager.Instance.HitStop(_playerStats.PlayerStatsSO.mThrow.hitstop);
 		if (_player.Health <= 0)
 		{
 			ToDeathState();
