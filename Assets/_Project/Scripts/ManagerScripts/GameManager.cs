@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
     private PlayerAnimator _playerOneAnimator;
     private PlayerAnimator _playerTwoAnimator;
     private Coroutine _roundOverTrainingCoroutine;
+    private Coroutine _hitStopCoroutine;
     private Sound _currentMusic;
     private GameObject _currentStage;
     private Vector2 _cachedOneResetPosition;
@@ -366,12 +367,12 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0.25f;
         if (PlayerOne.Health > PlayerTwo.Health)
         {
-            PlayerOne.Taunt();
+            PlayerOne.PlayerStateManager.TryToTauntState();
             PlayerTwo.LoseLife();
         }
         else if (PlayerOne.Health < PlayerTwo.Health)
         {
-            PlayerTwo.Taunt();
+            PlayerTwo.PlayerStateManager.TryToTauntState();
             PlayerOne.LoseLife();
         }
         yield return new WaitForSeconds(0.5f);
@@ -424,14 +425,12 @@ public class GameManager : MonoBehaviour
         _countdownText.text = Mathf.Round(_countdown).ToString();
         PlayerOne.ResetPlayer();
         PlayerTwo.ResetPlayer();
-        _playerOneController.DeactivateInput();
-        _playerTwoController.DeactivateInput();
         PlayerOne.transform.position = _spawnPositions[0].position;
         PlayerTwo.transform.position = _spawnPositions[1].position;
         _playerOneUI.ResetCombo();
         _playerTwoUI.ResetCombo();
-        _playerOneAnimator.Intro();
-        _playerTwoAnimator.Intro();
+        PlayerOne.PlayerStateManager.TryToTauntState();
+        PlayerTwo.PlayerStateManager.TryToTauntState();
         StartCoroutine(ReadyCoroutine());
     }
 
@@ -776,11 +775,11 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(2.0f);
         if (!hasPlayerOneDied)
         {
-            PlayerOne.Taunt();
+            PlayerOne.PlayerStateManager.TryToTauntState();
         }
         else if (hasPlayerOneDied)
         {
-            PlayerTwo.Taunt();
+            PlayerTwo.PlayerStateManager.TryToTauntState();
         }
         yield return new WaitForSecondsRealtime(2.0f);
         for (int i = 0; i < _readyObjects.Length; i++)
@@ -864,7 +863,11 @@ public class GameManager : MonoBehaviour
     {
         if (hitstop > 0.0f)
         {
-            StartCoroutine(HitStopCoroutine(hitstop));
+            if (_hitStopCoroutine != null)
+            {
+                StopCoroutine(_hitStopCoroutine);
+            }
+            _hitStopCoroutine = StartCoroutine(HitStopCoroutine(hitstop));
         }
     }
 

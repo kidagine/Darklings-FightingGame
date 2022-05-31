@@ -48,5 +48,6 @@ public class State : MonoBehaviour
     public virtual bool ToHurtState(AttackSO attack) {  return true; }
     public virtual bool ToBlockState(AttackSO attack) { return false; }
     public virtual bool ToGrabbedState() { return false; }
+    public virtual bool ToTauntState() { return false; }
     public virtual bool AssistCall() { return false; }
 }

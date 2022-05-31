@@ -92,11 +92,6 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.Play("Shadowbreak");
 	}
 
-	public void Intro()
-	{
-		_animator.Play("Intro");
-	}
-
 	public void Grab()
 	{
 		_animator.Play("Grab");

@@ -16,6 +16,7 @@ public class GroundParentState : State
 	protected BlockLowState _blockLowState;
 	protected GrabbedState _grabbedState;
 	protected KnockbackState _knockbackState;
+	protected TauntState _tauntState;
 
 	protected virtual void Awake()
 	{
@@ -33,6 +34,7 @@ public class GroundParentState : State
 		_blockLowState = GetComponent<BlockLowState>();
 		_grabbedState = GetComponent<GrabbedState>();
 		_knockbackState = GetComponent<KnockbackState>();
+		_tauntState = GetComponent<TauntState>();
 	}
 
 	public override bool ToAttackState(InputEnum inputEnum)
@@ -73,7 +75,22 @@ public class GroundParentState : State
 
 	public override bool ToKnockbackState()
 	{
-		_stateMachine.ChangeState(_knockbackState);
+		if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f
+			   || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
+		{
+			_stateMachine.ChangeState(_blockState);
+			return false;
+		}
+		else
+		{
+			_stateMachine.ChangeState(_knockbackState);
+			return true;
+		}
+	}
+
+	public override bool ToTauntState()
+	{
+		_stateMachine.ChangeState(_tauntState);
 		return true;
 	}
 

@@ -1,5 +1,3 @@
-using Demonics.Sounds;
-using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
@@ -22,8 +20,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	protected PlayerComboSystem _playerComboSystem;
 	private PlayerStats _playerStats;
 	private BrainController _controller;
-	private Audio _audio;
-	private bool _throwBreakInvulnerable;
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
 	public PlayerStateManager OtherPlayerStateManager { get; private set; }
 	public Player OtherPlayer { get; private set; }
@@ -34,27 +30,23 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public AttackSO CurrentAttack { get; set; }
 	public float Health { get; set; }
 	public int Lives { get; set; } = 2;
-	public bool IsBlocking { get; private set; }
 	public bool IsKnockedDown { get; private set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
 	public float AssistGauge { get; set; } = 1.0F;
 	public float Arcana { get; set; }
 	public float ArcaneSlowdown { get; set; } = 7.5f;
-	public bool IsStunned { get; private set; }
+	public bool CanShadowbreak { get; set; } = true;
+	public bool CanCancelAttack { get; set; }
 	public bool BlockingLow { get; set; }
 	public bool BlockingHigh { get; set; }
 	public bool BlockingMiddair { get; set; }
-	public bool IsDead { get; set; }
-	public bool CanShadowbreak { get; set; } = true;
-	public bool CanCancelAttack { get; set; }
 
 	void Awake()
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
 		_playerComboSystem = GetComponent<PlayerComboSystem>();
 		_playerStats = GetComponent<PlayerStats>();
-		_audio = GetComponent<Audio>();
 	}
 
 	public void SetController()
@@ -97,9 +89,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerStateManager.ResetToInitialState();
 		transform.rotation = Quaternion.identity;
-		IsStunned = false;
-		IsDead = false;
-		IsAttacking = false;
 		_controller.ActiveController.enabled = true;
 		_controller.ActivateInput();
 		_effectsParent.gameObject.SetActive(true);
@@ -265,12 +254,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			return true;
 		}
 		return false;
-	}
-
-	public void Taunt()
-	{
-		_playerAnimator.Taunt();
-		_controller.ActiveController.enabled = false;
 	}
 
 	public void LoseLife()
