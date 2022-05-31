@@ -89,22 +89,17 @@ public class PlayerAnimator : MonoBehaviour
 
 	public void Shadowbreak()
 	{
-		_animator.SetTrigger("Shadowbreak");
+		_animator.Play("Shadowbreak");
 	}
 
-	public void Intro()
+	public void Grab()
 	{
-		_animator.Play("Intro");
+		_animator.Play("Grab");
 	}
 
 	public void Throw()
 	{
 		_animator.Play("Throw");
-	}
-
-	public void ThrowEnd()
-	{
-		_animator.SetTrigger("ThrowEnd");
 	}
 
 	public void Arcana()

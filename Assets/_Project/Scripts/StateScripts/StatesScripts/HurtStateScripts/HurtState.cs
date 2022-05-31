@@ -5,12 +5,13 @@ public class HurtState : HurtParentState
 {
 	private Coroutine _stunCoroutine;
 	private HurtState _hurtState;
-
+	private GrabbedState _grabbedState;
 
 	protected override void Awake()
 	{
 		base.Awake();
 		_hurtState = GetComponent<HurtState>();
+		_grabbedState = GetComponent<GrabbedState>();
 	}
 	public override void Enter()
 	{
@@ -41,6 +42,12 @@ public class HurtState : HurtParentState
 	{
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
+		return true;
+	}
+
+	public override bool ToGrabbedState()
+	{
+		_stateMachine.ChangeState(_grabbedState);
 		return true;
 	}
 

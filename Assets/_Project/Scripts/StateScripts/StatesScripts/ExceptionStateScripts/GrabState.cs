@@ -1,14 +1,16 @@
 using UnityEngine;
 
-public class ArcanaState : State
+public class GrabState : State
 {
 	private IdleState _idleState;
+	private ThrowState _throwState;
 	private HurtState _hurtState;
 	private GrabbedState _grabbedState;
 
 	void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
+		_throwState = GetComponent<ThrowState>();
 		_hurtState = GetComponent<HurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
 	}
@@ -16,12 +18,10 @@ public class ArcanaState : State
 	public override void Enter()
 	{
 		base.Enter();
-		_playerAnimator.Arcana();
+		_audio.Sound("Hit").Play();
+		_playerAnimator.Grab();
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
-		_player.CurrentAttack = _playerComboSystem.GetArcana();
-		_player.Arcana--;
-		_playerUI.DecreaseArcana();
-		_playerUI.SetArcana(_player.Arcana);
+		_player.CurrentAttack = _playerComboSystem.GetThrow();
 	}
 
 	private void ToIdleState()
@@ -32,9 +32,9 @@ public class ArcanaState : State
 		}
 	}
 
-	public override bool AssistCall()
+	public override bool ToThrowState()
 	{
-		_player.AssistAction();
+		_stateMachine.ChangeState(_throwState);
 		return true;
 	}
 

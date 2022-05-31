@@ -25,10 +25,4 @@ public class FallState : AirParentState
             _stateMachine.ChangeState(_idleState);
         }
     }
-
-    public override void Exit()
-    {
-        base.Exit();
-        _playerMovement.ResetGravity();
-    }
 }

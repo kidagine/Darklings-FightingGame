@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class ThrowState : State
 {
 	private IdleState _idleState;
 
-	void Awake()
+	private void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
 	}
@@ -14,23 +13,24 @@ public class ThrowState : State
 	public override void Enter()
 	{
 		base.Enter();
-		_audio.Sound("Hit").Play();
-		_playerAnimator.Throw();
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
-		_player.CurrentAttack = _playerComboSystem.GetThrow();
+		_playerAnimator.OnCurrentAnimationFinished.AddListener(() => { _player.OtherPlayerStateManager.TryToKnockdownState(); });
+		_playerAnimator.Throw();
 	}
 
 	private void ToIdleState()
 	{
-		if (_stateMachine.CurrentState == this)
-		{
-			_stateMachine.ChangeState(_idleState);
-		}
+		_stateMachine.ChangeState(_idleState);
 	}
 
 	public override void UpdatePhysics()
 	{
 		base.UpdatePhysics();
 		_rigidbody.velocity = Vector2.zero;
+	}
+
+	public override void Exit()
+	{
+		base.Exit();
 	}
 }

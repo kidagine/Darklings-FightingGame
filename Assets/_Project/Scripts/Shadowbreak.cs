@@ -4,9 +4,9 @@ public class Shadowbreak : MonoBehaviour
 {
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.transform.root.TryGetComponent(out PlayerMovement playerMovement))
+		if (collision.transform.root.TryGetComponent(out Player player))
 		{
-			playerMovement.ShadowbreakKnockback();
+			player.PlayerStateManager.TryToKnockbackState();
 		}
 	}
 }

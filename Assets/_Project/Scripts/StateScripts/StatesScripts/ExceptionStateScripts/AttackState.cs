@@ -6,6 +6,9 @@ public class AttackState : State
 	private CrouchState _crouchState;
 	private FallState _fallState;
 	private HurtState _hurtState;
+	private GrabbedState _grabbedState;
+	private ArcanaState _arcanaState;
+	private KnockbackState _knockbackState;
 	public static bool CanSkipAttack;
 	private InputEnum _inputEnum;
 	private bool _air;
@@ -17,6 +20,9 @@ public class AttackState : State
 		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
 		_hurtState = GetComponent<HurtState>();
+		_grabbedState = GetComponent<GrabbedState>();
+		_arcanaState = GetComponent<ArcanaState>();
+		_knockbackState = GetComponent<KnockbackState>();
 	}
 
 	public void Initialize(InputEnum inputEnum, bool crouch, bool air)
@@ -49,6 +55,20 @@ public class AttackState : State
 		else
 		{
 			_playerAnimator.OnCurrentAnimationFinished.AddListener(ToFallState);
+		}
+	}
+
+	public override void UpdateLogic()
+	{
+		base.UpdateLogic();
+		ToFallStateOnGround();
+	}
+
+	private void ToFallStateOnGround()
+	{
+		if (_air && _playerMovement._isGrounded && _rigidbody.velocity.y <= 0.0f)
+		{
+			_stateMachine.ChangeState(_fallState);
 		}
 	}
 
@@ -90,6 +110,16 @@ public class AttackState : State
 		}
 	}
 
+	public override bool ToArcanaState()
+	{
+		if (_player.Arcana >= 1.0f && CanSkipAttack)
+		{
+			_stateMachine.ChangeState(_arcanaState);
+			return true;
+		}
+		return false;
+	}
+
 	public override bool ToHurtState(AttackSO attack)
 	{
 		_hurtState.Initialize(attack);
@@ -97,10 +127,31 @@ public class AttackState : State
 		return true;
 	}
 
+	public override bool ToGrabbedState()
+	{
+		_stateMachine.ChangeState(_grabbedState);
+		return true;
+	}
+
 	public override bool AssistCall()
 	{
 		_player.AssistAction();
 		return true;
+	}
+
+	public override bool ToKnockbackState()
+	{
+		_stateMachine.ChangeState(_knockbackState);
+		return true;
+	}
+
+	public override void UpdatePhysics()
+	{
+		//if (!_air)
+		//{
+		//	base.UpdatePhysics();
+		//	_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
+		//}
 	}
 
 	public override void Exit()

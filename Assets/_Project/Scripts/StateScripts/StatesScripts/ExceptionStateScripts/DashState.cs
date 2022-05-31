@@ -1,6 +1,5 @@
 using Demonics.Manager;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DashState : State
@@ -9,6 +8,7 @@ public class DashState : State
     [SerializeField] private GameObject _dashPrefab = default;
     private IdleState _idleState;
     private RunState _runState;
+    private HurtState _hurtState;
     private Coroutine _dashCoroutine;
 
     public int DashDirection { get; set; }
@@ -17,6 +17,7 @@ public class DashState : State
     {
         _idleState = GetComponent<IdleState>();
         _runState = GetComponent<RunState>();
+        _hurtState = GetComponent<HurtState>();
     }
 
     public override void Enter()
@@ -51,7 +52,7 @@ public class DashState : State
         _rigidbody.velocity = Vector2.zero;
         _playerMovement.ResetGravity();
         ToIdleState();
-        if (_baseController.InputDirection.x * transform.localScale.x > 0.0f)
+        if (_baseController.InputDirection.x * transform.root.localScale.x > 0.0f)
         {
             ToRunState();
         }
@@ -85,11 +86,19 @@ public class DashState : State
         return true;
     }
 
+    public override bool ToHurtState(AttackSO attack)
+    {
+        _hurtState.Initialize(attack);
+        _stateMachine.ChangeState(_hurtState);
+        return true;
+    }
+
     public override void Exit()
     {
         base.Exit();
         if (_dashCoroutine != null)
         {
+            _playerMovement.ResetGravity();
             StopCoroutine(_dashCoroutine);
         }
     }

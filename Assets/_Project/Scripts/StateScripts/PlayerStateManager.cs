@@ -48,9 +48,29 @@ public class PlayerStateManager : StateMachine
         return CurrentState.ToArcanaState();
     }
 
+    public bool TryToGrabState()
+    {
+        return CurrentState.ToGrabState();
+    }
+
     public bool TryToThrowState()
     {
         return CurrentState.ToThrowState();
+    }
+
+    public bool TryToKnockdownState()
+    {
+        return CurrentState.ToKnockdownState();
+    }
+
+    public bool TryToKnockbackState()
+    {
+        return CurrentState.ToKnockbackState();
+    }
+
+    public bool TryToTauntState()
+    {
+        return CurrentState.ToTauntState();
     }
 
     public bool TryToAssistCall()
@@ -70,6 +90,11 @@ public class PlayerStateManager : StateMachine
             CurrentState.ToHurtState(attack);
         }
         return true;
+    }
+
+    public bool TryToGrabbedState()
+    {
+        return CurrentState.ToGrabbedState();
     }
 
     public bool TryToBlockState(AttackSO attack)

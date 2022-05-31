@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class GroundParentState : State
 {
 	protected IdleState _idleState;
@@ -8,10 +10,13 @@ public class GroundParentState : State
 	protected DashState _dashState;
 	protected AttackState _attackState;
 	protected ArcanaState _arcanaState;
-	protected ThrowState _throwState;
+	protected GrabState _grabState;
 	protected HurtState _hurtState;
 	protected BlockState _blockState;
 	protected BlockLowState _blockLowState;
+	protected GrabbedState _grabbedState;
+	protected KnockbackState _knockbackState;
+	protected TauntState _tauntState;
 
 	protected virtual void Awake()
 	{
@@ -23,10 +28,13 @@ public class GroundParentState : State
 		_dashState = GetComponent<DashState>();
 		_attackState = GetComponent<AttackState>();
 		_arcanaState = GetComponent<ArcanaState>();
-		_throwState = GetComponent<ThrowState>();
+		_grabState = GetComponent<GrabState>();
 		_hurtState = GetComponent<HurtState>();
 		_blockState = GetComponent<BlockState>();
 		_blockLowState = GetComponent<BlockLowState>();
+		_grabbedState = GetComponent<GrabbedState>();
+		_knockbackState = GetComponent<KnockbackState>();
+		_tauntState = GetComponent<TauntState>();
 	}
 
 	public override bool ToAttackState(InputEnum inputEnum)
@@ -46,9 +54,9 @@ public class GroundParentState : State
 		return false;
 	}
 
-	public override bool ToThrowState()
+	public override bool ToGrabState()
 	{
-		_stateMachine.ChangeState(_throwState);
+		_stateMachine.ChangeState(_grabState);
 		return true;
 	}
 
@@ -56,6 +64,33 @@ public class GroundParentState : State
 	{
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
+		return true;
+	}
+
+	public override bool ToGrabbedState()
+	{
+		_stateMachine.ChangeState(_grabbedState);
+		return true;
+	}
+
+	public override bool ToKnockbackState()
+	{
+		if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f
+			   || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
+		{
+			_stateMachine.ChangeState(_blockState);
+			return false;
+		}
+		else
+		{
+			_stateMachine.ChangeState(_knockbackState);
+			return true;
+		}
+	}
+
+	public override bool ToTauntState()
+	{
+		_stateMachine.ChangeState(_tauntState);
 		return true;
 	}
 
