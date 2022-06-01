@@ -144,11 +144,11 @@ public class CharacterMenu : BaseMenu
 	{
 		if (isPlayerOne)
 		{
-			_characterOneAnimator.SetTrigger("Taunt");
+			_playerAnimatorOne.Taunt();
 		}
 		else
 		{
-			_characterTwoAnimator.SetTrigger("Taunt");
+			_playerAnimatorTwo.Taunt();
 		}
 		StartCoroutine(TauntEndCoroutine());
 	}
