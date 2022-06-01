@@ -195,6 +195,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_playerUI.SetAssist(AssistGauge);
 	}
 
+	public void RecallAssist()
+	{
+		_assist.Recall();
+	}
+
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
