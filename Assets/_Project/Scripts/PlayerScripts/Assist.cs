@@ -38,10 +38,10 @@ public class Assist : MonoBehaviour, IHitboxResponder
 
 	public void Recall()
 	{
-		IsOnScreen = false;
-		_animator.Rebind();
-		if (_hitEffect != null)
+		if (IsOnScreen)
 		{
+			IsOnScreen = false;
+			_animator.Rebind();
 			_hitEffect.SetActive(false);
 		}
 	}
