@@ -36,6 +36,10 @@ public class AirHurtState : HurtParentState
 
 	private void ToFallAfterStunState()
 	{
+		if (GameManager.Instance.InfiniteHealth)
+		{
+			_player.MaxHealthStats();
+		}
 		_playerAnimator.Jump();
 		_player.OtherPlayerUI.ResetCombo();
 		_stateMachine.ChangeState(_fallState);

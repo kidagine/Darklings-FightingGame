@@ -12,6 +12,11 @@ public class WakeUpState : State
 	public override void Enter()
 	{
 		base.Enter();
+		if (GameManager.Instance.InfiniteHealth)
+		{
+			_player.MaxHealthStats();
+			_playerUI.UpdateHealthDamaged();
+		}
 		_playerAnimator.WakeUp();
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
 	}
