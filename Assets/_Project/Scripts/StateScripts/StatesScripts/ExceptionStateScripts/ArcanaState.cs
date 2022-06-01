@@ -3,12 +3,14 @@ using UnityEngine;
 public class ArcanaState : State
 {
 	private IdleState _idleState;
+	private FallState _fallState;
 	private HurtState _hurtState;
 	private GrabbedState _grabbedState;
 
 	void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
+		_fallState = GetComponent<FallState>();
 		_hurtState = GetComponent<HurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
 	}
@@ -17,19 +19,42 @@ public class ArcanaState : State
 	{
 		base.Enter();
 		_playerAnimator.Arcana();
-		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
+		_playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
 		_player.CurrentAttack = _playerComboSystem.GetArcana();
 		_player.Arcana--;
 		_playerUI.DecreaseArcana();
 		_playerUI.SetArcana(_player.Arcana);
 	}
 
-	private void ToIdleState()
+	public override void UpdateLogic()
+	{
+		base.UpdateLogic();
+	}
+
+	private void ArcanaEnd()
 	{
 		if (_stateMachine.CurrentState == this)
 		{
-			_stateMachine.ChangeState(_idleState);
+			if (_rigidbody.velocity.y <= 0.0f)
+			{
+				ToFallState();
+			}
+			else
+			{
+				ToIdleState();
+			}
 		}
+	}
+
+	private void ToIdleState()
+	{
+		_stateMachine.ChangeState(_idleState);
+	}
+
+	public void ToFallState()
+	{
+		_playerAnimator.Jump();
+		_stateMachine.ChangeState(_fallState);
 	}
 
 	public override bool AssistCall()
