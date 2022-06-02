@@ -32,7 +32,10 @@ public class PlayerAnimator : MonoBehaviour
 		{
 			OnCurrentAnimationFinished?.Invoke();
 			OnCurrentAnimationFinished.RemoveAllListeners();
-			_inputBuffer.CheckForInputBufferItem();
+			if (_inputBuffer != null)
+			{
+				_inputBuffer.CheckForInputBufferItem();
+			}
 		}
 	}
 

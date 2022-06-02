@@ -5,6 +5,11 @@ public class IdleState : GroundParentState
 	public override void Enter()
 	{
 		base.Enter();
+		if (GameManager.Instance.InfiniteHealth)
+		{
+			_player.MaxHealthStats();
+			_playerUI.UpdateHealthDamaged();
+		}
 		_playerAnimator.Idle();
 		_player.SetAirPushBox(false);
 		_player.SetPushboxTrigger(false);

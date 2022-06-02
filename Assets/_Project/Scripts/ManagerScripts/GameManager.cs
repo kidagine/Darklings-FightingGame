@@ -347,9 +347,7 @@ public class GameManager : MonoBehaviour
         }
         _isDialogueRunning = true;
         _introUI.SetPlayerNames(_playerStats[SceneSettings.PlayerOne].characterName.ToString(), _playerStats[SceneSettings.PlayerTwo].characterName.ToString());
-        _playerOneController.DeactivateInput();
-        _playerTwoController.DeactivateInput();
-        _playerOneDialogue.Initialize(true, _playerStats[SceneSettings.PlayerOne]._dialogue, _playerStats[SceneSettings.PlayerTwo].characterName);
+            _playerOneDialogue.Initialize(true, _playerStats[SceneSettings.PlayerOne]._dialogue, _playerStats[SceneSettings.PlayerTwo].characterName);
         _playerTwoDialogue.Initialize(false, _playerStats[SceneSettings.PlayerTwo]._dialogue, _playerStats[SceneSettings.PlayerOne].characterName);
         _introAnimator.SetBool("IsIntroRunning", true);
     }
