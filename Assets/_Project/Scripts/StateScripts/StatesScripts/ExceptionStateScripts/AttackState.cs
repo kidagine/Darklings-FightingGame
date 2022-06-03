@@ -100,6 +100,14 @@ public class AttackState : State
 	{
 		if (CanSkipAttack)
 		{
+			if (_baseController.Crouch())
+			{
+				_crouch = true;
+			}
+			else
+			{
+				_crouch = false;
+			}
 			Initialize(inputEnum, _crouch, _air);
 			_stateMachine.ChangeState(this);
 			return true;
@@ -122,6 +130,7 @@ public class AttackState : State
 
 	public override bool ToHurtState(AttackSO attack)
 	{
+		_player.OtherPlayerUI.DisplayNotification("Punish");
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
 		return true;

@@ -65,6 +65,7 @@ public class ArcanaState : State
 
 	public override bool ToHurtState(AttackSO attack)
 	{
+		_player.OtherPlayerUI.DisplayNotification("Punish");
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
 		return true;

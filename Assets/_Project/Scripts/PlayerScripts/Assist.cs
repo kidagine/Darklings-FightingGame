@@ -42,7 +42,10 @@ public class Assist : MonoBehaviour, IHitboxResponder
 		{
 			IsOnScreen = false;
 			_animator.Rebind();
-			_hitEffect.SetActive(false);
+			if (_hitEffect != null)
+			{
+				_hitEffect.SetActive(false);
+			}
 		}
 	}
 
