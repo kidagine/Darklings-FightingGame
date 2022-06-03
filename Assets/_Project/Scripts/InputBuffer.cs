@@ -6,16 +6,8 @@ public class InputBuffer : MonoBehaviour
 	[SerializeField] private PlayerStateManager _playerStateManager = default;
 	private readonly Queue<InputBufferItem> _inputBuffer = new Queue<InputBufferItem>();
 	private InputHistory _inputHistory;
-	private Player _player;
-	private PlayerMovement _playerMovement;
 	private bool _isExecuting;
 
-
-	void Start()
-	{
-		_player = GetComponent<Player>();
-		_playerMovement = GetComponent<PlayerMovement>();
-	}
 
 	void Update()
 	{

@@ -38,7 +38,14 @@ public class GroundParentState : State
 
 	public override bool ToAttackState(InputEnum inputEnum)
 	{
-		_attackState.Initialize(inputEnum, false, false);
+		if (_baseController.Crouch())
+		{
+			_attackState.Initialize(inputEnum, true, false);
+		}
+		else
+		{
+			_attackState.Initialize(inputEnum, false, false);
+		}
 		_stateMachine.ChangeState(_attackState);
 		return true;
 	}
