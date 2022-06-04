@@ -98,7 +98,7 @@ public class AttackState : State
 
 	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
 	{
-		if (CanSkipAttack)
+		if (CanSkipAttack && inputEnum != InputEnum.Throw)
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
 			{
