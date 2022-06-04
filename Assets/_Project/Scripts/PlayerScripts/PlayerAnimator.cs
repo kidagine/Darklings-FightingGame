@@ -30,6 +30,7 @@ public class PlayerAnimator : MonoBehaviour
 	{
 		if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
 		{
+			Debug.Log("b");
 			OnCurrentAnimationFinished?.Invoke();
 			OnCurrentAnimationFinished.RemoveAllListeners();
 			if (_inputBuffer != null)

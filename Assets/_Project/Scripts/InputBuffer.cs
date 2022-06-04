@@ -69,9 +69,9 @@ public class InputBuffer : MonoBehaviour
 		}
 		else
 		{
-			_playerStateManager.TryToAttackState(inputEnum, _lastInputDirection);
+			bool value = _playerStateManager.TryToAttackState(inputEnum, _lastInputDirection);
 			_lastInputDirection = InputDirectionEnum.None;
-			return true;
+			return value;
 		}
 	}
 

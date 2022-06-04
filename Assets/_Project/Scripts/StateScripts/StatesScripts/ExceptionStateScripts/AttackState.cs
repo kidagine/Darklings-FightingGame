@@ -56,6 +56,7 @@ public class AttackState : State
 		{
 			_playerAnimator.OnCurrentAnimationFinished.AddListener(ToFallState);
 		}
+		_inputBuffer.CheckInputBuffer();
 	}
 
 	public override void UpdateLogic()

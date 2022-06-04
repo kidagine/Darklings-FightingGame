@@ -15,7 +15,6 @@ public class IdleState : GroundParentState
 		_player.SetPushboxTrigger(false);
 		_playerMovement.HasAirDashed = false;
 		_playerMovement.HasDoubleJumped = false;
-		//_inputBuffer.CheckInputBuffer();
 	}
 
 	public override void UpdateLogic()
