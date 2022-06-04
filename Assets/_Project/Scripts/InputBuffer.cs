@@ -7,6 +7,7 @@ public class InputBuffer : MonoBehaviour
 	private readonly Queue<InputBufferItem> _inputBuffer = new Queue<InputBufferItem>();
 	private InputHistory _inputHistory;
 	private bool _isExecuting;
+	private InputDirectionEnum _lastInputDirection;
 
 
 	void Update()
@@ -32,53 +33,18 @@ public class InputBuffer : MonoBehaviour
 		InputBufferItem inputBufferItem = new(Time.time);
 		_inputBuffer.Enqueue(inputBufferItem);
 
-		if (inputEnum == InputEnum.Direction)
+		if (inputEnum != InputEnum.Direction)
 		{
-			if (inputDirectionEnum == InputDirectionEnum.Up)
-			{
-				inputBufferItem.Execute += () => { return true; };
-			}
-			else if (inputDirectionEnum == InputDirectionEnum.Down)
-			{
-				inputBufferItem.Execute += () => { return true; };
-			}
-			else if (inputDirectionEnum == InputDirectionEnum.Left)
-			{
-				inputBufferItem.Execute += () => { return true; };
-			}
-			else if (inputDirectionEnum == InputDirectionEnum.Right)
-			{
-				inputBufferItem.Execute += () => { return true; };
-			}
+			inputBufferItem.Execute += () => ExecuteInputBuffer(inputEnum);
 		}
-		else if (inputEnum == InputEnum.Light)
+		else
 		{
-			inputBufferItem.Execute += () => _playerStateManager.TryToAttackState(inputEnum);
+			inputBufferItem.Execute += () => { _lastInputDirection = inputDirectionEnum; return true; };
 		}
-		else if (inputEnum == InputEnum.Medium)
-		{
-			inputBufferItem.Execute += () => _playerStateManager.TryToAttackState(inputEnum);
-		}
-		else if (inputEnum == InputEnum.Heavy)
-		{
-			inputBufferItem.Execute += () => _playerStateManager.TryToAttackState(inputEnum);
-		}
-		else if (inputEnum == InputEnum.Special)
-		{
-			inputBufferItem.Execute += () => _playerStateManager.TryToArcanaState();
-		}
-		else if (inputEnum == InputEnum.Assist)
-		{            
-			inputBufferItem.Execute += _playerStateManager.TryToAssistCall;
-		}
-		else if (inputEnum == InputEnum.Throw)
-		{
-			inputBufferItem.Execute += () => { return true; };
-		}
-		CheckForInputBufferItem();
+		CheckInputBuffer();
 	}
 
-	public void CheckForInputBufferItem()
+	public void CheckInputBuffer()
 	{
 		if (_inputBuffer.Count > 0 && !_isExecuting)
 		{
@@ -88,6 +54,24 @@ public class InputBuffer : MonoBehaviour
 				_inputBuffer.Dequeue();
 			}
 			_isExecuting = false;
+		}
+	}
+
+	public bool ExecuteInputBuffer(InputEnum inputEnum)
+	{
+		if (inputEnum == InputEnum.Assist)
+		{
+			return _playerStateManager.TryToAssistCall();
+		}
+		else if (inputEnum == InputEnum.Special)
+		{
+			return _playerStateManager.TryToArcanaState();
+		}
+		else
+		{
+			_playerStateManager.TryToAttackState(inputEnum, _lastInputDirection);
+			_lastInputDirection = InputDirectionEnum.None;
+			return true;
 		}
 	}
 

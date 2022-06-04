@@ -36,9 +36,9 @@ public class GroundParentState : State
 		_tauntState = GetComponent<TauntState>();
 	}
 
-	public override bool ToAttackState(InputEnum inputEnum)
+	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
 	{
-		if (_baseController.Crouch())
+		if (inputDirectionEnum == InputDirectionEnum.Down)
 		{
 			_attackState.Initialize(inputEnum, true, false);
 		}

@@ -107,7 +107,7 @@ public class AirParentState : State
 		}
 	}
 
-	public override bool ToAttackState(InputEnum inputEnum)
+	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
 	{
 		_attackState.Initialize(inputEnum, false, true);
 		_stateMachine.ChangeState(_attackState);

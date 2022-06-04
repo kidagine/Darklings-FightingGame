@@ -29,6 +29,10 @@ public class CpuController : BaseController
 			}
 			Specials();
 		}
+		else
+		{
+	
+		}
 	}
 
 	private void Movement()
@@ -90,15 +94,15 @@ public class CpuController : BaseController
 				int attackRandom = Random.Range(0, 8);
 				if (attackRandom <= 2)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Light);
+					_playerStateMachine.TryToAttackState(InputEnum.Light, InputDirectionEnum.None);
 				}
 				else if (attackRandom <= 4)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Medium);
+					_playerStateMachine.TryToAttackState(InputEnum.Medium, InputDirectionEnum.None);
 				}
 				else if (attackRandom <= 6)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Heavy);
+					_playerStateMachine.TryToAttackState(InputEnum.Heavy, InputDirectionEnum.None);
 				}
 				else
 				{

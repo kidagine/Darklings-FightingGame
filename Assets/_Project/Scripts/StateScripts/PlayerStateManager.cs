@@ -12,6 +12,7 @@ public class PlayerStateManager : StateMachine
     [SerializeField] private PlayerController _playerController = default;
     [SerializeField] private BrainController _brainController = default;
     [SerializeField] private PlayerComboSystem _playerComboSystem = default;
+    [SerializeField] private InputBuffer _inputBuffer = default;
     [SerializeField] private Audio _audio = default;
     [SerializeField] private Rigidbody2D _rigidbody = default;
     private TrainingMenu _trainingMenu;
@@ -26,7 +27,7 @@ public class PlayerStateManager : StateMachine
         foreach (State state in GetComponents<State>())
         {
             state.Initialize(
-            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _playerComboSystem, _audio
+            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _playerComboSystem, _inputBuffer, _audio
             );
             state.SetController(_brainController.ActiveController);
         }
@@ -38,9 +39,9 @@ public class PlayerStateManager : StateMachine
         ChangeState(_initialState);
     }
 
-    public bool TryToAttackState(InputEnum inputEnum)
+    public bool TryToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
     {
-        return CurrentState.ToAttackState(inputEnum);
+        return CurrentState.ToAttackState(inputEnum, inputDirectionEnum);
     }
 
     public bool TryToArcanaState()

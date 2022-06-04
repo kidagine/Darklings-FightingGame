@@ -34,7 +34,7 @@ public class PlayerAnimator : MonoBehaviour
 			OnCurrentAnimationFinished.RemoveAllListeners();
 			if (_inputBuffer != null)
 			{
-				_inputBuffer.CheckForInputBufferItem();
+				_inputBuffer.CheckInputBuffer();
 			}
 		}
 	}
