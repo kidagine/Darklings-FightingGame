@@ -24,6 +24,9 @@ public class ArcanaState : State
 		_player.Arcana--;
 		_playerUI.DecreaseArcana();
 		_playerUI.SetArcana(_player.Arcana);
+		_player.CurrentAttack = _playerComboSystem.GetArcana();
+		_playerMovement.TravelDistance(new Vector2(
+				_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0.0f));
 	}
 
 	public override void UpdateLogic()
@@ -79,7 +82,10 @@ public class ArcanaState : State
 
 	public override void UpdatePhysics()
 	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = Vector2.zero;
+		if (_player.CurrentAttack.travelDistance == 0.0f)
+		{
+			base.UpdatePhysics();
+			_rigidbody.velocity = Vector2.zero;
+		}
 	}
 }
