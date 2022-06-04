@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class GroundParentState : State
 {
 	protected IdleState _idleState;

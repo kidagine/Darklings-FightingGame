@@ -70,7 +70,10 @@ public class InputBuffer : MonoBehaviour
 		else
 		{
 			bool value = _playerStateManager.TryToAttackState(inputEnum, _lastInputDirection);
-			_lastInputDirection = InputDirectionEnum.None;
+			if (value)
+			{
+				_lastInputDirection = InputDirectionEnum.None;
+			}
 			return value;
 		}
 	}
