@@ -34,6 +34,14 @@ public class PlayerStateManager : StateMachine
         AirborneHurtState = GetComponent<AirborneHurtState>();
     }
 
+    public void UpdateStateController()
+    {
+        foreach (State state in GetComponents<State>())
+        {
+            state.SetController(_brainController.ActiveController);
+        }
+    }
+
     public void ResetToInitialState()
     {
         ChangeState(_initialState);
