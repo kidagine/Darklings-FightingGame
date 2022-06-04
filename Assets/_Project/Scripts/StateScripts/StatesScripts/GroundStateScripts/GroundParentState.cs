@@ -40,7 +40,7 @@ public class GroundParentState : State
 
 	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
 	{
-		if (inputDirectionEnum == InputDirectionEnum.Down)
+		if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
 		{
 			_attackState.Initialize(inputEnum, true, false);
 		}
