@@ -56,6 +56,7 @@ public class AttackState : State
 		{
 			_playerAnimator.OnCurrentAnimationFinished.AddListener(ToFallState);
 		}
+		_inputBuffer.CheckInputBuffer();
 	}
 
 	public override void UpdateLogic()
@@ -66,7 +67,7 @@ public class AttackState : State
 
 	private void ToFallStateOnGround()
 	{
-		if (_air && _playerMovement._isGrounded && _rigidbody.velocity.y <= 0.0f)
+		if (_air && _playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
 		{
 			_stateMachine.ChangeState(_fallState);
 		}
@@ -96,10 +97,18 @@ public class AttackState : State
 		}
 	}
 
-	public override bool ToAttackState(InputEnum inputEnum)
+	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
 	{
-		if (CanSkipAttack)
+		if (CanSkipAttack && inputEnum != InputEnum.Throw)
 		{
+			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+			{
+				_crouch = true;
+			}
+			else
+			{
+				_crouch = false;
+			}
 			Initialize(inputEnum, _crouch, _air);
 			_stateMachine.ChangeState(this);
 			return true;
@@ -122,6 +131,7 @@ public class AttackState : State
 
 	public override bool ToHurtState(AttackSO attack)
 	{
+		_player.OtherPlayerUI.DisplayNotification("Punish");
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
 		return true;

@@ -44,7 +44,7 @@ public class AirborneHurtState : HurtParentState
 
 	private new void ToKnockdownState()
 	{
-		if (_playerMovement._isGrounded && _canCheckGround)
+		if (_playerMovement.IsGrounded && _canCheckGround)
 		{
 			Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
 			_audio.Sound("Landed").Play();

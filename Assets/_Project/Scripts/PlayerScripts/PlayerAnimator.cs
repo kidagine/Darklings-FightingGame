@@ -34,7 +34,7 @@ public class PlayerAnimator : MonoBehaviour
 			OnCurrentAnimationFinished.RemoveAllListeners();
 			if (_inputBuffer != null)
 			{
-				_inputBuffer.CheckForInputBufferItem();
+				_inputBuffer.CheckInputBuffer();
 			}
 		}
 	}
@@ -108,6 +108,11 @@ public class PlayerAnimator : MonoBehaviour
 	public void Arcana()
 	{
 		_animator.Play("Arcana", -1, 0f);
+	}
+
+	public void ArcanaThrow()
+	{
+		_animator.Play("ArcanaThrow");
 	}
 
 	public void Hurt(bool reset = false)

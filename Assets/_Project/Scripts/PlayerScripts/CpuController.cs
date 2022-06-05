@@ -12,6 +12,7 @@ public class CpuController : BaseController
 	private bool _crouch;
 	private bool _jump;
 	private bool _dash;
+	private bool _reset;
 
 	public void SetOtherPlayer(Transform otherPlayer)
 	{
@@ -20,14 +21,24 @@ public class CpuController : BaseController
 
 	void Update()
 	{
-		if (!GameManager.Instance.IsCpuOff)
+		if (!TrainingSettings.CpuOff)
 		{
+			Debug.Log("b");
 			Movement();
 			if (_distance <= 5.5f)
 			{
 				Attack();
 			}
 			Specials();
+		}
+		else
+		{
+			Debug.Log("a");
+			if (_reset)
+			{
+				_reset = false;
+				_playerStateMachine.ResetToInitialState();
+			}
 		}
 	}
 
@@ -90,15 +101,15 @@ public class CpuController : BaseController
 				int attackRandom = Random.Range(0, 8);
 				if (attackRandom <= 2)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Light);
+					_playerStateMachine.TryToAttackState(InputEnum.Light, RandomInputDirection());
 				}
 				else if (attackRandom <= 4)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Medium);
+					_playerStateMachine.TryToAttackState(InputEnum.Medium, RandomInputDirection());
 				}
 				else if (attackRandom <= 6)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Heavy);
+					_playerStateMachine.TryToAttackState(InputEnum.Heavy, RandomInputDirection());
 				}
 				else
 				{
@@ -106,6 +117,19 @@ public class CpuController : BaseController
 				}
 				_attackTimer = Random.Range(0.15f, 0.35f);
 			}
+		}
+	}
+
+	private InputDirectionEnum RandomInputDirection()
+	{
+		int attackRandom = Random.Range(0, 2);
+		if (attackRandom == 0)
+		{
+			return InputDirectionEnum.Down;
+		}
+		else
+		{
+			return InputDirectionEnum.None;
 		}
 	}
 
@@ -153,7 +177,7 @@ public class CpuController : BaseController
 
 	public override void ActivateInput()
 	{
-		if (!GameManager.Instance.IsCpuOff)
+		if (!TrainingSettings.CpuOff)
 		{
 			base.ActivateInput();
 		}
@@ -161,7 +185,7 @@ public class CpuController : BaseController
 
 	public override void DeactivateInput()
 	{
-		if (!GameManager.Instance.IsCpuOff)
+		if (!TrainingSettings.CpuOff)
 		{
 			base.DeactivateInput();
 		}

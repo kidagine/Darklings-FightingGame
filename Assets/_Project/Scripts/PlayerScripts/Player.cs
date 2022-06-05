@@ -8,8 +8,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Pushbox _groundPushbox = default;
 	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
-	[SerializeField] private GameObject _blockEffectPrefab = default;
-	[SerializeField] private GameObject _shadowbreakPrefab = default;
 	[SerializeField] protected Transform _effectsParent = default;
 	[SerializeField] private Transform _grabPoint = default;
 	[SerializeField] private Transform _keepFlip = default;
@@ -30,7 +28,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public AttackSO CurrentAttack { get; set; }
 	public float Health { get; set; }
 	public int Lives { get; set; } = 2;
-	public bool IsKnockedDown { get; private set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
 	public float AssistGauge { get; set; } = 1.0F;
@@ -89,23 +86,18 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerStateManager.ResetToInitialState();
 		transform.rotation = Quaternion.identity;
-		_controller.ActiveController.enabled = true;
-		_controller.ActivateInput();
 		_effectsParent.gameObject.SetActive(true);
 		SetHurtbox(true);
 		AssistGauge = 1.0f;
-		_playerMovement.FullyLockMovement = false;
 		transform.SetParent(null);
 		_playerMovement.IsInCorner = false;
 		if (!GameManager.Instance.InfiniteArcana)
 		{
 			Arcana = 0.0f;
 		}
-		IsKnockedDown = false;
 		StopAllCoroutines();
 		_playerMovement.StopAllCoroutines();
 		OtherPlayerUI.ResetCombo();
-		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(Arcana);
 		_playerUI.SetAssist(AssistGauge);
 		_playerUI.ResetHealthDamaged();
@@ -203,7 +195,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
-		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
+		hurtbox.TakeDamage(CurrentAttack);
 		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
 		{
 			AttackState.CanSkipAttack = true;

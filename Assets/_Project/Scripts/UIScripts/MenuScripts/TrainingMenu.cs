@@ -110,11 +110,11 @@ public class TrainingMenu : BaseMenu
         switch (value)
         {
             case 0:
-                GameManager.Instance.IsCpuOff = true;
+                TrainingSettings.CpuOff = true;
                 GameManager.Instance.DeactivateCpus();
                 break;
             case 1:
-                GameManager.Instance.IsCpuOff = false;
+                TrainingSettings.CpuOff = false;
                 GameManager.Instance.DeactivateCpus();
                 GameManager.Instance.ActivateCpus();
                 break;

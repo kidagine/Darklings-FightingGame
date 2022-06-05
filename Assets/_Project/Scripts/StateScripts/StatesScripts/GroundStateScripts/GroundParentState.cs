@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class GroundParentState : State
 {
 	protected IdleState _idleState;
@@ -36,9 +38,16 @@ public class GroundParentState : State
 		_tauntState = GetComponent<TauntState>();
 	}
 
-	public override bool ToAttackState(InputEnum inputEnum)
+	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
 	{
-		_attackState.Initialize(inputEnum, false, false);
+		if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+		{
+			_attackState.Initialize(inputEnum, true, false);
+		}
+		else
+		{
+			_attackState.Initialize(inputEnum, false, false);
+		}
 		_stateMachine.ChangeState(_attackState);
 		return true;
 	}

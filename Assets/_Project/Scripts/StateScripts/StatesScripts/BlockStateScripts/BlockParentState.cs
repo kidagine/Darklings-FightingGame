@@ -7,6 +7,7 @@ public class BlockParentState : State
 	protected IdleState _idleState;
 	protected CrouchState _crouchState;
 	protected FallState _fallState;
+	protected AttackState _attackState;
 	protected ShadowbreakState _shadowbreakState;
 	protected AttackSO _blockAttack;
 	protected Coroutine _blockCoroutine;
@@ -21,6 +22,7 @@ public class BlockParentState : State
 		_idleState = GetComponent<IdleState>();
 		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
+		_attackState = GetComponent<AttackState>();
 		_shadowbreakState = GetComponent<ShadowbreakState>();
 	}
 

@@ -12,12 +12,14 @@ public class State : MonoBehaviour
     protected PlayerUI _playerUI;
     protected PlayerStats _playerStats;
     protected BaseController _baseController;
+    protected BrainController _brainController;
     protected PlayerComboSystem _playerComboSystem;
+    protected InputBuffer _inputBuffer;
     protected Audio _audio;
 
 
     public void Initialize(StateMachine stateMachine, Rigidbody2D rigidbody, PlayerAnimator playerAnimator, Player player, PlayerMovement playerMovement,
-        PlayerUI playerUI, PlayerStats playerStats, PlayerComboSystem playerComboSystem, Audio audio)
+        PlayerUI playerUI, PlayerStats playerStats, PlayerComboSystem playerComboSystem, InputBuffer inputBuffer, Audio audio)
     {
         _stateMachine = stateMachine;
         _rigidbody = rigidbody;
@@ -27,19 +29,21 @@ public class State : MonoBehaviour
         _playerUI = playerUI;
         _playerStats = playerStats;
         _playerComboSystem = playerComboSystem;
+        _inputBuffer = inputBuffer;
         _audio = audio;
     }
 
-    public void SetController(BaseController baseController)
+    public void SetController(BrainController brainController)
     {
-        _baseController = baseController;
+        _brainController = brainController;
+        _baseController = brainController.ActiveController;
     }
 
     public virtual void Enter() { }
     public virtual void UpdateLogic() { }
     public virtual void UpdatePhysics() { }
     public virtual void Exit() { }
-    public virtual bool ToAttackState(InputEnum inputEnum) { return false; }
+    public virtual bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum) { return false; }
     public virtual bool ToArcanaState() { return false; }
     public virtual bool ToGrabState() { return false; }
     public virtual bool ToThrowState() { return false; }

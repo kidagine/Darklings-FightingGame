@@ -23,13 +23,6 @@ public class CrouchState : GroundParentState
         }
     }
 
-    public override bool ToAttackState(InputEnum inputEnum)
-    {
-        _attackState.Initialize(inputEnum, true, false);
-        _stateMachine.ChangeState(_attackState);
-        return true;
-    }
-
     public override bool ToBlockState(AttackSO attack)
     {
         _blockLowState.Initialize(attack);

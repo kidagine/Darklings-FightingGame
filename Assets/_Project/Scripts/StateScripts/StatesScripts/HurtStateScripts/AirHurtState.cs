@@ -47,7 +47,7 @@ public class AirHurtState : HurtParentState
 
 	private void ToFallStateAfterGround()
 	{
-		if (_playerMovement._isGrounded && _rigidbody.velocity.y <= 0.0f)
+		if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
 		{
 			_player.OtherPlayerUI.ResetCombo();
 			_stateMachine.ChangeState(_fallState);

@@ -14,11 +14,24 @@ public class BlockState : BlockParentState
     IEnumerator BlockCoroutine(float blockStun)
     {
         yield return new WaitForSeconds(blockStun);
-        ToIdleState();
+        if (_brainController.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+        {
+            ToAttackState();
+        }
+        else
+        {
+            ToIdleState();
+        }
     }
 
     private void ToIdleState()
     {
         _stateMachine.ChangeState(_idleState);
+    }
+
+    private void ToAttackState()
+    {
+        _attackState.Initialize(InputEnum.Light, false, false);
+        _stateMachine.ChangeState(_attackState);
     }
 }

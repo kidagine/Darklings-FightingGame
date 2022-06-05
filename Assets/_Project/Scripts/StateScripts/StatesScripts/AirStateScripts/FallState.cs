@@ -19,7 +19,7 @@ public class FallState : AirParentState
 
     public void ToIdleState()
     {
-        if (_playerMovement._isGrounded && _rigidbody.velocity.y <= 0.0f)
+        if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
         {
             Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();

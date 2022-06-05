@@ -6,6 +6,7 @@ public class ArcanaState : State
 	private FallState _fallState;
 	private HurtState _hurtState;
 	private GrabbedState _grabbedState;
+	private ArcanaThrowState _arcanaThrowState;
 
 	void Awake()
 	{
@@ -13,6 +14,7 @@ public class ArcanaState : State
 		_fallState = GetComponent<FallState>();
 		_hurtState = GetComponent<HurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
+		_arcanaThrowState = GetComponent<ArcanaThrowState>();
 	}
 
 	public override void Enter()
@@ -24,6 +26,9 @@ public class ArcanaState : State
 		_player.Arcana--;
 		_playerUI.DecreaseArcana();
 		_playerUI.SetArcana(_player.Arcana);
+		_player.CurrentAttack = _playerComboSystem.GetArcana();
+		_playerMovement.TravelDistance(new Vector2(
+				_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0.0f));
 	}
 
 	public override void UpdateLogic()
@@ -65,6 +70,7 @@ public class ArcanaState : State
 
 	public override bool ToHurtState(AttackSO attack)
 	{
+		_player.OtherPlayerUI.DisplayNotification("Punish");
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
 		return true;
@@ -76,9 +82,19 @@ public class ArcanaState : State
 		return true;
 	}
 
+	public override bool ToThrowState()
+	{
+		_stateMachine.ChangeState(_arcanaThrowState);
+		return true;
+	}
+
+
 	public override void UpdatePhysics()
 	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = Vector2.zero;
+		if (_player.CurrentAttack.travelDistance == 0.0f)
+		{
+			base.UpdatePhysics();
+			_rigidbody.velocity = Vector2.zero;
+		}
 	}
 }

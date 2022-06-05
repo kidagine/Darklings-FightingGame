@@ -9,9 +9,9 @@ public class PlayerStateManager : StateMachine
     [SerializeField] private PlayerMovement _playerMovement = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private PlayerStats _playerStats = default;
-    [SerializeField] private PlayerController _playerController = default;
     [SerializeField] private BrainController _brainController = default;
     [SerializeField] private PlayerComboSystem _playerComboSystem = default;
+    [SerializeField] private InputBuffer _inputBuffer = default;
     [SerializeField] private Audio _audio = default;
     [SerializeField] private Rigidbody2D _rigidbody = default;
     private TrainingMenu _trainingMenu;
@@ -26,11 +26,19 @@ public class PlayerStateManager : StateMachine
         foreach (State state in GetComponents<State>())
         {
             state.Initialize(
-            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _playerComboSystem, _audio
+            this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _playerComboSystem, _inputBuffer, _audio
             );
-            state.SetController(_brainController.ActiveController);
+            state.SetController(_brainController);
         }
         AirborneHurtState = GetComponent<AirborneHurtState>();
+    }
+
+    public void UpdateStateController()
+    {
+        foreach (State state in GetComponents<State>())
+        {
+            state.SetController(_brainController);
+        }
     }
 
     public void ResetToInitialState()
@@ -38,9 +46,9 @@ public class PlayerStateManager : StateMachine
         ChangeState(_initialState);
     }
 
-    public bool TryToAttackState(InputEnum inputEnum)
+    public bool TryToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
     {
-        return CurrentState.ToAttackState(inputEnum);
+        return CurrentState.ToAttackState(inputEnum, inputDirectionEnum);
     }
 
     public bool TryToArcanaState()

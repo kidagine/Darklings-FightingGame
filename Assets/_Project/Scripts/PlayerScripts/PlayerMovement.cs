@@ -1,50 +1,30 @@
 using Demonics.Sounds;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
     [SerializeField] protected PlayerAnimator _playerAnimator = default;
-    [SerializeField] private GameObject _dustUpPrefab = default;
-    [SerializeField] private GameObject _dustDownPrefab = default;
-    [SerializeField] private GameObject _dashPrefab = default;
-    [SerializeField] private GameObject _playerGhostPrefab = default;
-    protected Player _player;
-    private BrainController _playerController;
-    protected Rigidbody2D _rigidbody;
+    private Rigidbody2D _rigidbody;
     private PlayerStats _playerStats;
     private Audio _audio;
-    protected bool _isMovementLocked;
-    protected bool _onTopOfPlayer;
-    public bool _isGrounded;
-    private UnityAction _knockbackAction;
+    private bool _onTopOfPlayer;
     public bool HasJumped { get; set; }
     public bool HasDoubleJumped { get; set; }
     public bool HasAirDashed { get; set; }
-
     public float MovementSpeed { get; set; }
     public bool FullyLockMovement { get; set; }
     public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
-    public bool IsCrouching { get; private set; }
-    public bool IsMoving { get; protected set; }
-    public bool IsDashing { get; private set; }
     public bool CanDoubleJump { get; set; } = true;
     public bool IsInCorner { get; set; }
 
 
     void Awake()
     {
-        _player = GetComponent<Player>();
         _playerStats = GetComponent<PlayerStats>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _audio = GetComponent<Audio>();
-    }
-
-    public void SetController()
-    {
-        _playerController = GetComponent<BrainController>();
     }
 
     void Start()
@@ -55,13 +35,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     void FixedUpdate()
     {
         JumpControl();
-    }
-
-    public void ResetPlayerMovement()
-    {
-        IsGrounded = true;
-        CanDoubleJump = true;
-        ResetGravity();
     }
 
     private void JumpControl()
@@ -103,6 +76,17 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         }
     }
 
+    public void AddForce(int moveHorizontally)
+    {
+        float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 2.5f;
+        int direction = 0;
+        if (moveHorizontally == 1)
+        {
+            direction = (int)transform.localScale.x * -1;
+        }
+        _rigidbody.AddForce(new Vector2(Mathf.Round(direction) * (jumpForce / 2.5f), jumpForce + 1.0f), ForceMode2D.Impulse);
+    }
+
     public void GroundedPointExit()
     {
         if (_onTopOfPlayer)
@@ -113,12 +97,12 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void OnGrounded()
     {
-        _isGrounded = true;
+        IsGrounded = true;
     }
 
     public void OnAir()
     {
-        _isGrounded = false;
+        IsGrounded = false;
     }
 
     public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
@@ -139,8 +123,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             yield return null;
         }
         _rigidbody.MovePosition(finalPosition);
-        _knockbackAction?.Invoke();
-        _knockbackAction = null;
     }
 
     public void ResetGravity()

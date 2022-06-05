@@ -63,8 +63,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [SerializeField] private Audio _musicAudio = default;
     [SerializeField] private Audio _uiAudio = default;
-    private PlayerMovement _playerMovementOne;
-    private PlayerMovement _playerMovementTwo;
     protected BrainController _playerOneController;
     protected BrainController _playerTwoController;
     private PlayerAnimator _playerOneAnimator;
@@ -84,7 +82,6 @@ public class GameManager : MonoBehaviour
     private int _playerOneWins;
     private int _playerTwoWins;
 
-    public bool IsCpuOff { get; set; }
     public bool HasGameStarted { get; set; }
     public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
     public bool InfiniteHealth { get; set; }
@@ -157,8 +154,6 @@ public class GameManager : MonoBehaviour
         _playerTwoController = playerTwoObject.GetComponent<BrainController>();
         PlayerOne = playerOneObject.GetComponent<Player>();
         PlayerTwo = playerTwoObject.GetComponent<Player>();
-        _playerMovementOne = playerOneObject.GetComponent<PlayerMovement>();
-        _playerMovementTwo = playerTwoObject.GetComponent<PlayerMovement>();
         playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
         playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
         playerOneObject.SetActive(true);
@@ -183,8 +178,6 @@ public class GameManager : MonoBehaviour
         }
         PlayerOne.SetController();
         PlayerTwo.SetController();
-        _playerMovementOne.SetController();
-        _playerMovementTwo.SetController();
         _playerOneAnimator = PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimator>();
         _playerTwoAnimator = PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>();
         PlayerOne.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerOneUI, _trainingMenu);
@@ -339,7 +332,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void StartIntro()
+    public void StartIntro()
     {
         for (int i = 0; i < _arcanaObjects.Length; i++)
         {
@@ -414,6 +407,7 @@ public class GameManager : MonoBehaviour
 
     public virtual void StartRound()
     {
+        _timerMainAnimator.Rebind();
         _isDialogueRunning = false;
         for (int i = 0; i < _arcanaObjects.Length; i++)
         {
@@ -789,7 +783,6 @@ public class GameManager : MonoBehaviour
         _currentRound = 1;
         _matchOverMenu.Show();
         Time.timeScale = 0.0f;
-        DisableAllInput();
     }
 
     public void StartMatch()
@@ -843,18 +836,6 @@ public class GameManager : MonoBehaviour
     {
         _playerOneController.ActiveController.enabled = true;
         _playerTwoController.ActiveController.enabled = true;
-    }
-
-    public void SlowdownPunish()
-    {
-        StartCoroutine(SlowdownPunishCoroutine());
-    }
-
-    IEnumerator SlowdownPunishCoroutine()
-    {
-        Time.timeScale = 0.25f;
-        yield return new WaitForSecondsRealtime(0.25f);
-        Time.timeScale = GameSpeed;
     }
 
     public void HitStop(float hitstop)

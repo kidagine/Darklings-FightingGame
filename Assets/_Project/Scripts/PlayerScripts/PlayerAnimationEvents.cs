@@ -26,7 +26,6 @@ public class PlayerAnimationEvents : MonoBehaviour
 	{
 		_player.IsAttacking = false;
 		_player.CanCancelAttack = false;
-		_inputBuffer.CheckForInputBufferItem();
 		_player.CanShadowbreak = true;
 		_playerMovement.FullyLockMovement = false;
 	}
@@ -38,7 +37,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
 	public void ThrowEnd()
 	{
-		//_player.ThrowEnd();
+		_player.OtherPlayerStateManager.TryToKnockdownState();
 	}
 
 	public void CreateEffectAnimationEvent(int isProjectile)
@@ -83,7 +82,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
 	public void AddForce(int moveHorizontally)
 	{
-		//_playerMovement.AddForce(moveHorizontally);
+		_playerMovement.AddForce(moveHorizontally);
 	}
 
 	public void ShakeCamera(CameraShakerSO cameraShaker)
