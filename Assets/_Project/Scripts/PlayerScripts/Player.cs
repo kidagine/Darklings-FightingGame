@@ -195,7 +195,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
-		bool gotHit = hurtbox.TakeDamage(CurrentAttack);
+		hurtbox.TakeDamage(CurrentAttack);
 		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
 		{
 			AttackState.CanSkipAttack = true;

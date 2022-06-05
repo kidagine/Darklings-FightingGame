@@ -94,15 +94,15 @@ public class CpuController : BaseController
 				int attackRandom = Random.Range(0, 8);
 				if (attackRandom <= 2)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Light, InputDirectionEnum.None);
+					_playerStateMachine.TryToAttackState(InputEnum.Light, RandomInputDirection());
 				}
 				else if (attackRandom <= 4)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Medium, InputDirectionEnum.None);
+					_playerStateMachine.TryToAttackState(InputEnum.Medium, RandomInputDirection());
 				}
 				else if (attackRandom <= 6)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Heavy, InputDirectionEnum.None);
+					_playerStateMachine.TryToAttackState(InputEnum.Heavy, RandomInputDirection());
 				}
 				else
 				{
@@ -110,6 +110,19 @@ public class CpuController : BaseController
 				}
 				_attackTimer = Random.Range(0.15f, 0.35f);
 			}
+		}
+	}
+
+	private InputDirectionEnum RandomInputDirection()
+	{
+		int attackRandom = Random.Range(0, 2);
+		if (attackRandom == 0)
+		{
+			return InputDirectionEnum.Down;
+		}
+		else
+		{
+			return InputDirectionEnum.None;
 		}
 	}
 
