@@ -30,7 +30,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public AttackSO CurrentAttack { get; set; }
 	public float Health { get; set; }
 	public int Lives { get; set; } = 2;
-	public bool IsKnockedDown { get; private set; }
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
 	public float AssistGauge { get; set; } = 1.0F;
@@ -89,19 +88,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_playerStateManager.ResetToInitialState();
 		transform.rotation = Quaternion.identity;
-		_controller.ActiveController.enabled = true;
-		_controller.ActivateInput();
 		_effectsParent.gameObject.SetActive(true);
 		SetHurtbox(true);
 		AssistGauge = 1.0f;
-		_playerMovement.FullyLockMovement = false;
 		transform.SetParent(null);
 		_playerMovement.IsInCorner = false;
 		if (!GameManager.Instance.InfiniteArcana)
 		{
 			Arcana = 0.0f;
 		}
-		IsKnockedDown = false;
 		StopAllCoroutines();
 		_playerMovement.StopAllCoroutines();
 		OtherPlayerUI.ResetCombo();

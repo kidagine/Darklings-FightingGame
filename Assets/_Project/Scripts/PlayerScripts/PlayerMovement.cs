@@ -1,7 +1,6 @@
 using Demonics.Sounds;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
@@ -10,41 +9,27 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     [SerializeField] private GameObject _dustDownPrefab = default;
     [SerializeField] private GameObject _dashPrefab = default;
     [SerializeField] private GameObject _playerGhostPrefab = default;
-    protected Player _player;
-    private BrainController _playerController;
-    protected Rigidbody2D _rigidbody;
+    private Rigidbody2D _rigidbody;
     private PlayerStats _playerStats;
     private Audio _audio;
-    protected bool _isMovementLocked;
-    protected bool _onTopOfPlayer;
+    private bool _onTopOfPlayer;
     public bool _isGrounded;
-    private UnityAction _knockbackAction;
     public bool HasJumped { get; set; }
     public bool HasDoubleJumped { get; set; }
     public bool HasAirDashed { get; set; }
-
     public float MovementSpeed { get; set; }
     public bool FullyLockMovement { get; set; }
     public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
-    public bool IsCrouching { get; private set; }
-    public bool IsMoving { get; protected set; }
-    public bool IsDashing { get; private set; }
     public bool CanDoubleJump { get; set; } = true;
     public bool IsInCorner { get; set; }
 
 
     void Awake()
     {
-        _player = GetComponent<Player>();
         _playerStats = GetComponent<PlayerStats>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _audio = GetComponent<Audio>();
-    }
-
-    public void SetController()
-    {
-        _playerController = GetComponent<BrainController>();
     }
 
     void Start()
@@ -139,8 +124,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
             yield return null;
         }
         _rigidbody.MovePosition(finalPosition);
-        _knockbackAction?.Invoke();
-        _knockbackAction = null;
     }
 
     public void ResetGravity()

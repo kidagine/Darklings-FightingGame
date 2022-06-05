@@ -183,8 +183,6 @@ public class GameManager : MonoBehaviour
         }
         PlayerOne.SetController();
         PlayerTwo.SetController();
-        _playerMovementOne.SetController();
-        _playerMovementTwo.SetController();
         _playerOneAnimator = PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimator>();
         _playerTwoAnimator = PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>();
         PlayerOne.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerOneUI, _trainingMenu);
