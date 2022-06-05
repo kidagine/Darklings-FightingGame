@@ -110,6 +110,11 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.Play("Arcana", -1, 0f);
 	}
 
+	public void ArcanaThrow()
+	{
+		_animator.Play("ArcanaThrow");
+	}
+
 	public void Hurt(bool reset = false)
 	{
 		if (reset)

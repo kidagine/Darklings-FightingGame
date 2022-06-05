@@ -37,7 +37,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
 	public void ThrowEnd()
 	{
-		//_player.ThrowEnd();
+		_player.OtherPlayerStateManager.TryToKnockdownState();
 	}
 
 	public void CreateEffectAnimationEvent(int isProjectile)
@@ -82,7 +82,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
 	public void AddForce(int moveHorizontally)
 	{
-		//_playerMovement.AddForce(moveHorizontally);
+		_playerMovement.AddForce(moveHorizontally);
 	}
 
 	public void ShakeCamera(CameraShakerSO cameraShaker)

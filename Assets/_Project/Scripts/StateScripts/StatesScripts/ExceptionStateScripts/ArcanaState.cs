@@ -6,6 +6,7 @@ public class ArcanaState : State
 	private FallState _fallState;
 	private HurtState _hurtState;
 	private GrabbedState _grabbedState;
+	private ArcanaThrowState _arcanaThrowState;
 
 	void Awake()
 	{
@@ -13,6 +14,7 @@ public class ArcanaState : State
 		_fallState = GetComponent<FallState>();
 		_hurtState = GetComponent<HurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
+		_arcanaThrowState = GetComponent<ArcanaThrowState>();
 	}
 
 	public override void Enter()
@@ -79,6 +81,13 @@ public class ArcanaState : State
 		_stateMachine.ChangeState(_grabbedState);
 		return true;
 	}
+
+	public override bool ToThrowState()
+	{
+		_stateMachine.ChangeState(_arcanaThrowState);
+		return true;
+	}
+
 
 	public override void UpdatePhysics()
 	{

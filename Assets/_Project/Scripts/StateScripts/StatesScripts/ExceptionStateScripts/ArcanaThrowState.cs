@@ -1,7 +1,6 @@
-
 using UnityEngine;
 
-public class ThrowState : State
+public class ArcanaThrowState : State
 {
 	private IdleState _idleState;
 
@@ -14,18 +13,12 @@ public class ThrowState : State
 	{
 		base.Enter();
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
-		_playerAnimator.OnCurrentAnimationFinished.AddListener(() => { _player.OtherPlayerStateManager.TryToKnockdownState(); });
-		_playerAnimator.Throw();
+		_playerAnimator.ArcanaThrow();
+		_rigidbody.velocity = Vector2.zero;
 	}
 
 	private void ToIdleState()
 	{
 		_stateMachine.ChangeState(_idleState);
-	}
-
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = Vector2.zero;
 	}
 }
