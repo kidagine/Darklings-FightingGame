@@ -44,6 +44,7 @@ public class HurtParentState : State
 
 	private void ToDeathState()
 	{
+		_player.OtherPlayerUI.ResetCombo();
 		_stateMachine.ChangeState(_deathState);
 	}
 
