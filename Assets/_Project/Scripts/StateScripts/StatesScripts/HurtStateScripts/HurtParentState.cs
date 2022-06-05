@@ -4,12 +4,14 @@ public class HurtParentState : State
 {
 	protected IdleState _idleState;
 	protected DeathState _deathState;
+	protected AttackState _attackState;
 	protected AttackSO _hurtAttack;
 
 	protected virtual void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
 		_deathState = GetComponent<DeathState>();
+		_attackState = GetComponent<AttackState>();
 	}
 
 	public void Initialize(AttackSO hurtAttack)

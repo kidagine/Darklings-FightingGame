@@ -12,6 +12,7 @@ public class State : MonoBehaviour
     protected PlayerUI _playerUI;
     protected PlayerStats _playerStats;
     protected BaseController _baseController;
+    protected BrainController _brainController;
     protected PlayerComboSystem _playerComboSystem;
     protected InputBuffer _inputBuffer;
     protected Audio _audio;
@@ -32,9 +33,10 @@ public class State : MonoBehaviour
         _audio = audio;
     }
 
-    public void SetController(BaseController baseController)
+    public void SetController(BrainController brainController)
     {
-        _baseController = baseController;
+        _brainController = brainController;
+        _baseController = brainController.ActiveController;
     }
 
     public virtual void Enter() { }
