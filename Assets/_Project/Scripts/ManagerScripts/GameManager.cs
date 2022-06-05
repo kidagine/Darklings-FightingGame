@@ -84,7 +84,6 @@ public class GameManager : MonoBehaviour
     private int _playerOneWins;
     private int _playerTwoWins;
 
-    public bool IsCpuOff { get; set; }
     public bool HasGameStarted { get; set; }
     public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
     public bool InfiniteHealth { get; set; }

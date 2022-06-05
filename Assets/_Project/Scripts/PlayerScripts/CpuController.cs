@@ -12,6 +12,7 @@ public class CpuController : BaseController
 	private bool _crouch;
 	private bool _jump;
 	private bool _dash;
+	private bool _reset;
 
 	public void SetOtherPlayer(Transform otherPlayer)
 	{
@@ -20,8 +21,9 @@ public class CpuController : BaseController
 
 	void Update()
 	{
-		if (!GameManager.Instance.IsCpuOff)
+		if (!TrainingSettings.CpuOff)
 		{
+			Debug.Log("b");
 			Movement();
 			if (_distance <= 5.5f)
 			{
@@ -31,7 +33,12 @@ public class CpuController : BaseController
 		}
 		else
 		{
-	
+			Debug.Log("a");
+			if (_reset)
+			{
+				_reset = false;
+				_playerStateMachine.ResetToInitialState();
+			}
 		}
 	}
 
@@ -170,7 +177,7 @@ public class CpuController : BaseController
 
 	public override void ActivateInput()
 	{
-		if (!GameManager.Instance.IsCpuOff)
+		if (!TrainingSettings.CpuOff)
 		{
 			base.ActivateInput();
 		}
@@ -178,7 +185,7 @@ public class CpuController : BaseController
 
 	public override void DeactivateInput()
 	{
-		if (!GameManager.Instance.IsCpuOff)
+		if (!TrainingSettings.CpuOff)
 		{
 			base.DeactivateInput();
 		}
