@@ -35,11 +35,13 @@ public class HurtState : HurtParentState
 
 	private void ToIdleState()
 	{
+		_player.OtherPlayerUI.ResetCombo();
 		_stateMachine.ChangeState(_idleState);
 	}
 
 	private void ToAttackState()
 	{
+		_player.OtherPlayerUI.ResetCombo();
 		_attackState.Initialize(InputEnum.Light, false, false);	
 		_stateMachine.ChangeState(_attackState);
 	}
@@ -68,7 +70,6 @@ public class HurtState : HurtParentState
 		base.Exit();
 		if (_stunCoroutine != null)
 		{
-			_player.OtherPlayerUI.ResetCombo();
 			StopCoroutine(_stunCoroutine);
 		}
 	}
