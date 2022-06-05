@@ -5,15 +5,10 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
     [SerializeField] protected PlayerAnimator _playerAnimator = default;
-    [SerializeField] private GameObject _dustUpPrefab = default;
-    [SerializeField] private GameObject _dustDownPrefab = default;
-    [SerializeField] private GameObject _dashPrefab = default;
-    [SerializeField] private GameObject _playerGhostPrefab = default;
     private Rigidbody2D _rigidbody;
     private PlayerStats _playerStats;
     private Audio _audio;
     private bool _onTopOfPlayer;
-    public bool _isGrounded;
     public bool HasJumped { get; set; }
     public bool HasDoubleJumped { get; set; }
     public bool HasAirDashed { get; set; }
@@ -40,13 +35,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     void FixedUpdate()
     {
         JumpControl();
-    }
-
-    public void ResetPlayerMovement()
-    {
-        IsGrounded = true;
-        CanDoubleJump = true;
-        ResetGravity();
     }
 
     private void JumpControl()
@@ -98,12 +86,12 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void OnGrounded()
     {
-        _isGrounded = true;
+        IsGrounded = true;
     }
 
     public void OnAir()
     {
-        _isGrounded = false;
+        IsGrounded = false;
     }
 
     public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)

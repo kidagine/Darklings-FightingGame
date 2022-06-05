@@ -8,8 +8,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Pushbox _groundPushbox = default;
 	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private GameObject _hurtbox = default;
-	[SerializeField] private GameObject _blockEffectPrefab = default;
-	[SerializeField] private GameObject _shadowbreakPrefab = default;
 	[SerializeField] protected Transform _effectsParent = default;
 	[SerializeField] private Transform _grabPoint = default;
 	[SerializeField] private Transform _keepFlip = default;
@@ -100,7 +98,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		StopAllCoroutines();
 		_playerMovement.StopAllCoroutines();
 		OtherPlayerUI.ResetCombo();
-		_playerMovement.ResetPlayerMovement();
 		_playerUI.SetArcana(Arcana);
 		_playerUI.SetAssist(AssistGauge);
 		_playerUI.ResetHealthDamaged();
