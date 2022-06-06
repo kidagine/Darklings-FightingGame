@@ -245,6 +245,23 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			return false;
 		}
+		if (attack.attackTypeEnum == AttackTypeEnum.Overhead && BlockingLeftOrRight() && !_controller.ActiveController.Crouch())
+		{
+			return true;
+		}
+		if (attack.attackTypeEnum == AttackTypeEnum.Mid && BlockingLeftOrRight())
+		{
+			return true;
+		}
+		if (attack.attackTypeEnum == AttackTypeEnum.Low && BlockingLeftOrRight() && _controller.ActiveController.Crouch())
+		{
+			return true;
+		}
+		return false;
+	}
+
+	private bool BlockingLeftOrRight()
+	{
 		if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f
 				   || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
 		{
