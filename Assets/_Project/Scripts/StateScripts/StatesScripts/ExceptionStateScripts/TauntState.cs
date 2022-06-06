@@ -4,7 +4,9 @@ using UnityEngine;
 public class TauntState : State
 {
 	private IdleState _idleState;
+	private Coroutine _tauntCoroutine;
 	private readonly float _tauntTime = 2.75f;
+
 
 	private void Awake()
 	{
@@ -15,7 +17,7 @@ public class TauntState : State
 	{
 		base.Enter();
 		_playerAnimator.Taunt();
-		StartCoroutine(TauntCoroutine());
+		_tauntCoroutine = StartCoroutine(TauntCoroutine());
 	}
 
 	IEnumerator TauntCoroutine()
@@ -33,5 +35,14 @@ public class TauntState : State
 	{
 		base.UpdatePhysics();
 		_rigidbody.velocity = Vector2.zero;
+	}
+
+	public override void Exit()
+	{
+		base.Exit();
+		if (_tauntCoroutine != null)
+		{
+			StopCoroutine(_tauntCoroutine);
+		}
 	}
 }
