@@ -35,6 +35,7 @@ public class AttackState : State
 	public override void Enter()
 	{
 		base.Enter();
+		_player.Flip();
 		_audio.Sound("Hit").Play();
 		_player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
 		_playerAnimator.Attack(_player.CurrentAttack.name, true);
