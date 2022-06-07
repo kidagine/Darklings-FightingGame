@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class KnockdownState : State
 {
+	[SerializeField] private GameObject _groundedPrefab = default;
 	private WakeUpState _wakeUpState;
 	private DeathState _deathState;
 	private Coroutine _knockdownCoroutine;
@@ -18,6 +19,7 @@ public class KnockdownState : State
 		base.Enter();
 		_playerAnimator.Knockdown();
 		_player.SetHurtbox(false);
+		Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
 		_knockdownCoroutine = StartCoroutine(ToWakeUpStateCoroutine());
 		if (_player.Health <= 0)
 		{

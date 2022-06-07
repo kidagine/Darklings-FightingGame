@@ -1187,7 +1187,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: AirborneHurt
-  _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
 --- !u!114 &8107540455263638196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1214,6 +1213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Knockdown
+  _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
 --- !u!114 &3011085337749538871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1335,6 +1335,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Throw
+--- !u!1 &7684445122000850538
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3775412804825945539}
+  m_Layer: 0
+  m_Name: CameraPoint_emptyObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3775412804825945539
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7684445122000850538}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8073473789928578678}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7759221523502482170
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,6 +1633,7 @@ Transform:
   m_Children:
   - {fileID: 8073473790464433816}
   - {fileID: 7600070780512524519}
+  - {fileID: 3775412804825945539}
   m_Father: {fileID: 8073473790702501984}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1981,6 +2013,7 @@ MonoBehaviour:
   _hurtbox: {fileID: 8073473791272386163}
   _effectsParent: {fileID: 2017372758765848807}
   _grabPoint: {fileID: 7600070780512524519}
+  _cameraPoint: {fileID: 3775412804825945539}
   _keepFlip: {fileID: 4489081760178489291}
   _inputBuffer: {fileID: 4664395619888274278}
   _playerIcons:

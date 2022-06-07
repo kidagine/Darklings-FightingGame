@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private GameObject _hurtbox = default;
 	[SerializeField] protected Transform _effectsParent = default;
 	[SerializeField] private Transform _grabPoint = default;
+	[SerializeField] private Transform _cameraPoint = default;
 	[SerializeField] private Transform _keepFlip = default;
 	[SerializeField] private InputBuffer _inputBuffer = default;
 	[SerializeField] private GameObject[] _playerIcons = default;
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
+	public Transform CameraPoint { get { return _cameraPoint; } private set { } }
 	public float Health { get; set; }
 	public int Lives { get; set; } = 2;
 	public bool IsAttacking { get; set; }
@@ -245,6 +247,23 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			return false;
 		}
+		if (attack.attackTypeEnum == AttackTypeEnum.Overhead && BlockingLeftOrRight() && !_controller.ActiveController.Crouch())
+		{
+			return true;
+		}
+		if (attack.attackTypeEnum == AttackTypeEnum.Mid && BlockingLeftOrRight())
+		{
+			return true;
+		}
+		if (attack.attackTypeEnum == AttackTypeEnum.Low && BlockingLeftOrRight() && _controller.ActiveController.Crouch())
+		{
+			return true;
+		}
+		return false;
+	}
+
+	private bool BlockingLeftOrRight()
+	{
 		if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f
 				   || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
 		{

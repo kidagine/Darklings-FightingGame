@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class AirborneHurtState : HurtParentState
 {
-	[SerializeField] private GameObject _groundedPrefab = default;
 	private KnockdownState _knockdownState;
 	private Coroutine _canCheckGroundCoroutine;
 	private bool _canCheckGround;
@@ -46,7 +45,6 @@ public class AirborneHurtState : HurtParentState
 	{
 		if (_playerMovement.IsGrounded && _canCheckGround)
 		{
-			Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
 			_audio.Sound("Landed").Play();
 			_stateMachine.ChangeState(_knockdownState);
 		}

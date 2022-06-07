@@ -170,7 +170,7 @@ public class PlayerAnimator : MonoBehaviour
 
 	public void Taunt()
 	{
-		_animator.Play("Taunt");
+		_animator.Play("Taunt", -1, 0f);
 	}
 
 	public void Knockdown()
