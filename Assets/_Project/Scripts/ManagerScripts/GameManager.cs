@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
 
         if (_isTrainingMode)
         {
-            if (SceneSettings.ControllerOne == ControllerTypeEnum.ControllerOne.ToString() || SceneSettings.ControllerOne == ControllerTypeEnum.ControllerOne.ToString())
+            if (SceneSettings.ControllerOne == ControllerTypeEnum.ControllerOne.ToString())
             {
                 _controllerPrompts.SetActive(true);
                 _keyboardPrompts.SetActive(false);
