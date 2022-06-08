@@ -86,6 +86,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void ResetPlayer()
 	{
+		RecallAssist();
 		_playerStateManager.ResetToInitialState();
 		transform.rotation = Quaternion.identity;
 		_effectsParent.gameObject.SetActive(true);
