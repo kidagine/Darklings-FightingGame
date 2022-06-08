@@ -29,7 +29,6 @@ public class PlayerController : BaseController
                 Arcane();
                 Assist();
                 Throw();
-                Dash();
             }
             Pause();
             ResetRound();
@@ -164,12 +163,6 @@ public class PlayerController : BaseController
                 _player.UnPause();
             }
         }
-    }
-
-    protected virtual void Dash()
-    {
-        // DoubleTapAxis(1);
-        // DoubleTapAxis2(-1);
     }
 
     public override bool DashForward()
