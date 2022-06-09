@@ -234,7 +234,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else if (CanBlock(attack))
 		{
-			Debug.Log("a");
 			if (!_playerStateManager.TryToBlockState(attack))
 			{
 				return _playerStateManager.TryToHurtState(attack);

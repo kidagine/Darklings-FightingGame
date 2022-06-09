@@ -45,7 +45,10 @@ public class PlayerStateManager : StateMachine
 
 	public void ResetToInitialState()
 	{
-		ChangeState(GetInitialState());
+		if (CurrentState != GetInitialState())
+		{
+			ChangeState(GetInitialState());
+		}
 	}
 
 	public bool TryToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
