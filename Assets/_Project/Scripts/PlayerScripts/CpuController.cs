@@ -23,6 +23,7 @@ public class CpuController : BaseController
 	{
 		if (!TrainingSettings.CpuOff)
 		{
+			_reset = false;
 			Movement();
 			if (_distance <= 5.5f)
 			{
@@ -32,8 +33,12 @@ public class CpuController : BaseController
 		}
 		else
 		{
-			InputDirection = Vector2.zero;
-			_playerStateMachine.ResetToInitialState();
+			if (!_reset)
+			{
+				_reset = true;
+				InputDirection = Vector2.zero;
+				_playerStateMachine.ResetToInitialState();
+			}
 		}
 	}
 
