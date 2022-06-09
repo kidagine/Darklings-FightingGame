@@ -234,31 +234,40 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		else if (CanBlock(attack))
 		{
-			return _playerStateManager.TryToBlockState(attack);
+			Debug.Log("a");
+			if (!_playerStateManager.TryToBlockState(attack))
+			{
+				return _playerStateManager.TryToHurtState(attack);
+			}
 		}
-		else
-		{
-			return _playerStateManager.TryToHurtState(attack);
-		}
+		return _playerStateManager.TryToHurtState(attack);
 	}
 
 	private bool CanBlock(AttackSO attack)
 	{
+
 		if (attack.attackTypeEnum == AttackTypeEnum.Break)
 		{
 			return false;
 		}
-		if (attack.attackTypeEnum == AttackTypeEnum.Overhead && BlockingLeftOrRight() && !_controller.ActiveController.Crouch())
+		if (BlockingLeftOrRight())
 		{
-			return true;
-		}
-		if (attack.attackTypeEnum == AttackTypeEnum.Mid && BlockingLeftOrRight())
-		{
-			return true;
-		}
-		if (attack.attackTypeEnum == AttackTypeEnum.Low && BlockingLeftOrRight() && _controller.ActiveController.Crouch())
-		{
-			return true;
+			if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways)
+			{
+				return true;
+			}
+			if (attack.attackTypeEnum == AttackTypeEnum.Overhead && !_controller.ActiveController.Crouch())
+			{
+				return true;
+			}
+			if (attack.attackTypeEnum == AttackTypeEnum.Mid)
+			{
+				return true;
+			}
+			if (attack.attackTypeEnum == AttackTypeEnum.Low && _controller.ActiveController.Crouch())
+			{
+				return true;
+			}
 		}
 		return false;
 	}
