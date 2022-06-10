@@ -10,7 +10,7 @@ public class PlayerAnimator : MonoBehaviour
 	private SpriteLibrary _spriteLibrary;
 	private SpriteRenderer _spriteRenderer;
 
-	public UnityEvent OnCurrentAnimationFinished;
+	[HideInInspector] public UnityEvent OnCurrentAnimationFinished;
 	
 	public PlayerStats PlayerStats { get { return _playerStats; } private set { } }
 
