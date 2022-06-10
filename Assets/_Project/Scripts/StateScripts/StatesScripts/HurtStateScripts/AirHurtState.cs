@@ -57,7 +57,7 @@ public class AirHurtState : HurtParentState
 	public override void UpdatePhysics()
 	{
 		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y / 1.1f);
+		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
 	}
 
 	public override bool ToHurtState(AttackSO attack)
