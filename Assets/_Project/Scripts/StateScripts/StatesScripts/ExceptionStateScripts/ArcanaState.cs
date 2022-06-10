@@ -5,6 +5,7 @@ public class ArcanaState : State
 	private IdleState _idleState;
 	private FallState _fallState;
 	private HurtState _hurtState;
+	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
 	private ArcanaThrowState _arcanaThrowState;
 
@@ -13,6 +14,7 @@ public class ArcanaState : State
 		_idleState = GetComponent<IdleState>();
 		_fallState = GetComponent<FallState>();
 		_hurtState = GetComponent<HurtState>();
+		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
 		_arcanaThrowState = GetComponent<ArcanaThrowState>();
 	}
@@ -73,6 +75,14 @@ public class ArcanaState : State
 		_player.OtherPlayerUI.DisplayNotification("Punish");
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
+		return true;
+	}
+
+	public override bool ToAirborneHurtState(AttackSO attack)
+	{
+		_player.OtherPlayerUI.DisplayNotification("Punish");
+		_airborneHurtState.Initialize(attack);
+		_stateMachine.ChangeState(_airborneHurtState);
 		return true;
 	}
 

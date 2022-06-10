@@ -9,6 +9,7 @@ public class BlockParentState : State
 	protected FallState _fallState;
 	protected AttackState _attackState;
 	protected ShadowbreakState _shadowbreakState;
+	private HurtState _hurtState;
 	protected AttackSO _blockAttack;
 	protected Coroutine _blockCoroutine;
 
@@ -23,6 +24,7 @@ public class BlockParentState : State
 		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
 		_attackState = GetComponent<AttackState>();
+		_hurtState = GetComponent<HurtState>();
 		_shadowbreakState = GetComponent<ShadowbreakState>();
 	}
 
@@ -48,6 +50,17 @@ public class BlockParentState : State
 		if (_player.AssistGauge > 0.0f)
 		{
 			_stateMachine.ChangeState(_shadowbreakState);
+			return true;
+		}
+		return false;
+	}
+
+	public override bool ToHurtState(AttackSO attack)
+	{
+		if (attack.attackTypeEnum == AttackTypeEnum.Break)
+		{
+			_hurtState.Initialize(attack);
+			_stateMachine.ChangeState(_hurtState);
 			return true;
 		}
 		return false;

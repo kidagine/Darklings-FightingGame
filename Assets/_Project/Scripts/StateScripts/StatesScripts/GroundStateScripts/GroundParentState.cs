@@ -13,6 +13,7 @@ public class GroundParentState : State
 	protected ArcanaState _arcanaState;
 	protected GrabState _grabState;
 	protected HurtState _hurtState;
+	protected AirborneHurtState _airborneHurtState;
 	protected BlockState _blockState;
 	protected BlockLowState _blockLowState;
 	protected GrabbedState _grabbedState;
@@ -31,6 +32,7 @@ public class GroundParentState : State
 		_arcanaState = GetComponent<ArcanaState>();
 		_grabState = GetComponent<GrabState>();
 		_hurtState = GetComponent<HurtState>();
+		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_blockState = GetComponent<BlockState>();
 		_blockLowState = GetComponent<BlockLowState>();
 		_grabbedState = GetComponent<GrabbedState>();
@@ -72,6 +74,13 @@ public class GroundParentState : State
 	{
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
+		return true;
+	}
+
+	public override bool ToAirborneHurtState(AttackSO attack)
+	{
+		_airborneHurtState.Initialize(attack);
+		_stateMachine.ChangeState(_airborneHurtState);
 		return true;
 	}
 

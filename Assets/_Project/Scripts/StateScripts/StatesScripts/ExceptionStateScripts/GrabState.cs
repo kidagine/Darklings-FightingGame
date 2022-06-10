@@ -5,6 +5,7 @@ public class GrabState : State
 	private IdleState _idleState;
 	private ThrowState _throwState;
 	private HurtState _hurtState;
+	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
 
 	void Awake()
@@ -12,6 +13,7 @@ public class GrabState : State
 		_idleState = GetComponent<IdleState>();
 		_throwState = GetComponent<ThrowState>();
 		_hurtState = GetComponent<HurtState>();
+		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
 	}
 
@@ -42,6 +44,13 @@ public class GrabState : State
 	{
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
+		return true;
+	}
+
+	public override bool ToAirborneHurtState(AttackSO attack)
+	{
+		_airborneHurtState.Initialize(attack);
+		_stateMachine.ChangeState(_airborneHurtState);
 		return true;
 	}
 

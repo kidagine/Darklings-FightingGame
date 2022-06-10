@@ -11,6 +11,7 @@ public class AirParentState : State
 	protected AttackState _attackState;
 	protected ArcanaState _arcanaState;
 	protected AirHurtState _airHurtState;
+	protected AirborneHurtState _airborneHurtState;
 	protected BlockAirState _blockAirState;
 	protected KnockbackState _knockbackState;
 
@@ -23,6 +24,7 @@ public class AirParentState : State
 		_attackState = GetComponent<AttackState>();
 		_arcanaState = GetComponent<ArcanaState>();
 		_airHurtState = GetComponent<AirHurtState>();
+		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_blockAirState = GetComponent<BlockAirState>();
 		_knockbackState = GetComponent<KnockbackState>();
 	}
@@ -128,6 +130,13 @@ public class AirParentState : State
 	{
 		_airHurtState.Initialize(attack);
 		_stateMachine.ChangeState(_airHurtState);
+		return true;
+	}
+
+	public override bool ToAirborneHurtState(AttackSO attack)
+	{
+		_airborneHurtState.Initialize(attack);
+		_stateMachine.ChangeState(_airborneHurtState);
 		return true;
 	}
 

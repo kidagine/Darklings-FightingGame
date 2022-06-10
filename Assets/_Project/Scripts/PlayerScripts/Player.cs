@@ -244,17 +244,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private bool CanBlock(AttackSO attack)
 	{
-
 		if (attack.attackTypeEnum == AttackTypeEnum.Break)
 		{
 			return false;
 		}
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && TrainingSettings.CpuOff)
+		{
+			return true;
+		}
 		if (BlockingLeftOrRight())
 		{
-			if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways)
-			{
-				return true;
-			}
 			if (attack.attackTypeEnum == AttackTypeEnum.Overhead && !_controller.ActiveController.Crouch())
 			{
 				return true;
