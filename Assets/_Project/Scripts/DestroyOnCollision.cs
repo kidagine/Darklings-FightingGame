@@ -12,9 +12,12 @@ public class DestroyOnCollision : MonoBehaviour
 
 	void OnDestroy()
 	{
-		if (_hitbox.HitPoint.gameObject.layer == 6)
+		if (_hitbox.HitPoint != null)
 		{
-			Instantiate(_dustPrefab, transform.position, Quaternion.identity);
+			if (_hitbox.HitPoint.gameObject.layer == 6)
+			{
+				Instantiate(_dustPrefab, transform.position, Quaternion.identity);
+			}
 		}
 		_hitbox.OnCollision -= ()=> Destroy(gameObject);
 	}
