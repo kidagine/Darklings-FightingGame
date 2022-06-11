@@ -161,12 +161,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Flip()
 	{
-		if (OtherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && transform.localScale.x != 1.0f)
+		if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && transform.localScale.x != 1.0f)
 		{
 			transform.localScale = new Vector2(1.0f, transform.localScale.y);
 			_keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
 		}
-		else if (OtherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && transform.localScale.x != -1.0f)
+		else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner && transform.localScale.x != -1.0f)
 		{
 			transform.localScale = new Vector2(-1.0f, transform.localScale.y);
 			_keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
