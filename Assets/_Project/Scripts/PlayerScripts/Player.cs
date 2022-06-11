@@ -93,7 +93,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		SetHurtbox(true);
 		AssistGauge = 1.0f;
 		transform.SetParent(null);
-		_playerMovement.IsInCorner = false;
 		if (!GameManager.Instance.InfiniteArcana)
 		{
 			Arcana = 0.0f;
@@ -117,7 +116,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void MaxHealthStats()
 	{
 		Health = _playerStats.PlayerStatsSO.maxHealth;
-		_playerUI.SetHealth(Health);
+		_playerUI.MaxHealth(Health);
 	}
 
 	private void InitializeStats()
@@ -161,12 +160,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void Flip()
 	{
-		if (OtherPlayer.transform.position.x > transform.position.x && transform.position.x < 9.2f && transform.localScale.x != 1.0f)
+		if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && transform.localScale.x != 1.0f)
 		{
 			transform.localScale = new Vector2(1.0f, transform.localScale.y);
 			_keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
 		}
-		else if (OtherPlayer.transform.position.x < transform.position.x && transform.position.x > -9.2f && transform.localScale.x != -1.0f)
+		else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner && transform.localScale.x != -1.0f)
 		{
 			transform.localScale = new Vector2(-1.0f, transform.localScale.y);
 			_keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
@@ -199,13 +198,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
 		hurtbox.TakeDamage(CurrentAttack);
-		if (!CurrentAttack.isAirAttack && CurrentAttack.attackTypeEnum != AttackTypeEnum.Break && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
+		if (!CurrentAttack.isAirAttack && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
 		{
 			AttackState.CanSkipAttack = true;
 		}
+		Debug.Log(OtherPlayerMovement.IsInCorner);
 		if (OtherPlayerMovement.IsInCorner && !CurrentAttack.isProjectile)
 		{
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
+			_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
 		}
 	}
 
@@ -244,17 +244,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	private bool CanBlock(AttackSO attack)
 	{
-
 		if (attack.attackTypeEnum == AttackTypeEnum.Break)
 		{
 			return false;
 		}
+		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && TrainingSettings.CpuOff)
+		{
+			return true;
+		}
 		if (BlockingLeftOrRight())
 		{
-			if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways)
-			{
-				return true;
-			}
 			if (attack.attackTypeEnum == AttackTypeEnum.Overhead && !_controller.ActiveController.Crouch())
 			{
 				return true;

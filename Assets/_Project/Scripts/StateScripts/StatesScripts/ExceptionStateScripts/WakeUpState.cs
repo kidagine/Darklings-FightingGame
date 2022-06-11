@@ -15,7 +15,6 @@ public class WakeUpState : State
 		if (GameManager.Instance.InfiniteHealth)
 		{
 			_player.MaxHealthStats();
-			_playerUI.UpdateHealthDamaged();
 		}
 		_playerAnimator.WakeUp();
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);

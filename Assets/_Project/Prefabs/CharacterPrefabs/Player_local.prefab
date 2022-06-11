@@ -1311,6 +1311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: BlockAir
   _blockEffectPrefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
+  _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
 --- !u!114 &7855595845877207489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2047,6 +2048,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerAnimator: {fileID: 8073473789928578677}
+  _groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!114 &8073473790702501994
 MonoBehaviour:
   m_ObjectHideFlags: 0

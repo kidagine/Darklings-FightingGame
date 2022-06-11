@@ -4,7 +4,7 @@ using UnityEngine;
 public class InputBuffer : MonoBehaviour
 {
 	[SerializeField] private PlayerStateManager _playerStateManager = default;
-	private readonly Queue<InputBufferItem> _inputBuffer = new Queue<InputBufferItem>();
+	private readonly Queue<InputBufferItem> _inputBuffer = new();
 	private InputHistory _inputHistory;
 	private bool _isExecuting;
 	private InputDirectionEnum _lastInputDirection;
@@ -59,6 +59,10 @@ public class InputBuffer : MonoBehaviour
 
 	public bool ExecuteInputBuffer(InputEnum inputEnum)
 	{
+		if (inputEnum == InputEnum.Throw)
+		{
+			return _playerStateManager.TryToGrabState();
+		}
 		if (inputEnum == InputEnum.Assist)
 		{
 			return _playerStateManager.TryToAssistCall();

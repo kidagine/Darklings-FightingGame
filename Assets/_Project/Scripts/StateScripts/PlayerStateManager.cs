@@ -95,14 +95,12 @@ public class PlayerStateManager : StateMachine
 	{
 		if (attack.causesKnockdown)
 		{
-			AirborneHurtState.Initialize(attack);
-			ChangeState(AirborneHurtState);
+			return CurrentState.ToAirborneHurtState(attack);
 		}
 		else
 		{
-			CurrentState.ToHurtState(attack);
+			return CurrentState.ToHurtState(attack);
 		}
-		return true;
 	}
 
 	public bool TryToGrabbedState()

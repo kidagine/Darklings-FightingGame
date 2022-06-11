@@ -8,7 +8,6 @@ public class IdleState : GroundParentState
 		if (GameManager.Instance.InfiniteHealth)
 		{
 			_player.MaxHealthStats();
-			_playerUI.UpdateHealthDamaged();
 		}
 		_playerAnimator.Idle();
 		_player.SetAirPushBox(false);
