@@ -117,7 +117,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void MaxHealthStats()
 	{
 		Health = _playerStats.PlayerStatsSO.maxHealth;
-		_playerUI.SetHealth(Health);
+		_playerUI.MaxHealth(Health);
 	}
 
 	private void InitializeStats()

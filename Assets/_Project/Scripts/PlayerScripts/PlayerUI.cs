@@ -198,6 +198,16 @@ public class PlayerUI : MonoBehaviour
 		_healthSlider.value = value;
 	}
 
+	public void MaxHealth(float value)
+	{
+		_healthSlider.value = value;
+		_healthDamagedSlider.value = value;
+		if (_damagedHealthCoroutine != null)
+		{
+			StopCoroutine(_damagedHealthCoroutine);
+		}
+	}
+
 	public void ResetHealthDamaged()
 	{
 		if (_damagedHealthCoroutine != null)
