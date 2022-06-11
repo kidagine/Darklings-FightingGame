@@ -8,8 +8,9 @@ public class BlockParentState : State
 	protected CrouchState _crouchState;
 	protected FallState _fallState;
 	protected AttackState _attackState;
+	protected GrabbedState _grabbedState;
 	protected ShadowbreakState _shadowbreakState;
-	private HurtState _hurtState;
+	protected HurtState _hurtState;
 	protected AttackSO _blockAttack;
 	protected Coroutine _blockCoroutine;
 
@@ -24,6 +25,7 @@ public class BlockParentState : State
 		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
 		_attackState = GetComponent<AttackState>();
+		_grabbedState = GetComponent<GrabbedState>();
 		_hurtState = GetComponent<HurtState>();
 		_shadowbreakState = GetComponent<ShadowbreakState>();
 	}
@@ -64,6 +66,12 @@ public class BlockParentState : State
 			return true;
 		}
 		return false;
+	}
+
+	public override bool ToGrabbedState()
+	{
+		_stateMachine.ChangeState(_grabbedState);
+		return true;
 	}
 
 	public override void UpdatePhysics()
