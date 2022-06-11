@@ -6,6 +6,7 @@ public class AttackState : State
 	private CrouchState _crouchState;
 	private FallState _fallState;
 	private HurtState _hurtState;
+	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
 	private ArcanaState _arcanaState;
 	private KnockbackState _knockbackState;
@@ -20,6 +21,7 @@ public class AttackState : State
 		_crouchState = GetComponent<CrouchState>();
 		_fallState = GetComponent<FallState>();
 		_hurtState = GetComponent<HurtState>();
+		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
 		_arcanaState = GetComponent<ArcanaState>();
 		_knockbackState = GetComponent<KnockbackState>();
@@ -148,6 +150,13 @@ public class AttackState : State
 		_player.OtherPlayerUI.DisplayNotification("Punish");
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
+		return true;
+	}
+
+	public override bool ToAirborneHurtState(AttackSO attack)
+	{
+		_airborneHurtState.Initialize(attack);
+		_stateMachine.ChangeState(_airborneHurtState);
 		return true;
 	}
 
