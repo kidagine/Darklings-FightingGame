@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
-	[SerializeField] private LayerMask _groundLayerMask = default;
+	[SerializeField] private LayerMask _wallLayerMask = default;
 	private Rigidbody2D _rigidbody;
 	private PlayerStats _playerStats;
 	private Player _player;
@@ -134,7 +134,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	private void CheckIsInCorner()
 	{
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 1.0f, _groundLayerMask);
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 1.0f, _wallLayerMask);
 		if (hit.collider != null)
 		{
 			IsInCorner = true;
