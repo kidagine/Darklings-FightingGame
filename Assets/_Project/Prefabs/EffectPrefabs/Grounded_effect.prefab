@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 401367926962692712}
   - component: {fileID: 401367926962692713}
   - component: {fileID: 401367926962692718}
-  - component: {fileID: 4534546295074690026}
   - component: {fileID: 660897383169935121}
+  - component: {fileID: -1473276511291459018}
   m_Layer: 0
   m_Name: Grounded_effect
   m_TagString: Untagged
@@ -107,18 +107,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4534546295074690026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 401367926962692719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b84e46fd1d592c840a7adf1d4e50adb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &660897383169935121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,5 +117,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baaf2fda5785ef3419c32f6c8e9db2e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-1473276511291459018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401367926962692719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d5daa63efee6c4b95e1953de0e2d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
