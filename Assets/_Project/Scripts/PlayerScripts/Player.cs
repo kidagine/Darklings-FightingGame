@@ -93,7 +93,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		SetHurtbox(true);
 		AssistGauge = 1.0f;
 		transform.SetParent(null);
-		_playerMovement.IsInCorner = false;
 		if (!GameManager.Instance.InfiniteArcana)
 		{
 			Arcana = 0.0f;
@@ -203,9 +202,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			AttackState.CanSkipAttack = true;
 		}
+		Debug.Log(OtherPlayerMovement.IsInCorner);
 		if (OtherPlayerMovement.IsInCorner && !CurrentAttack.isProjectile)
 		{
-			_playerMovement.Knockback(new Vector2(-transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
+			_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
 		}
 	}
 

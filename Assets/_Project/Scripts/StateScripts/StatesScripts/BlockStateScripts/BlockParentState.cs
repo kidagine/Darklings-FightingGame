@@ -18,7 +18,7 @@ public class BlockParentState : State
 		_blockAttack = attack;
 	}
 
-	void Awake()
+	protected virtual void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
 		_crouchState = GetComponent<CrouchState>();
