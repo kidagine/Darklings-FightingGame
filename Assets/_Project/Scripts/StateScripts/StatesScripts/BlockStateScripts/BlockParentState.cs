@@ -47,7 +47,7 @@ public class BlockParentState : State
 
 	public override bool AssistCall()
 	{
-		if (_player.AssistGauge > 0.0f)
+		if (_player.AssistGauge >= 1.0f)
 		{
 			_stateMachine.ChangeState(_shadowbreakState);
 			return true;
