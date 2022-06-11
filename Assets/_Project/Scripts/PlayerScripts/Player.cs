@@ -202,7 +202,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			AttackState.CanSkipAttack = true;
 		}
-		Debug.Log(OtherPlayerMovement.IsInCorner);
 		if (OtherPlayerMovement.IsInCorner && !CurrentAttack.isProjectile)
 		{
 			_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
