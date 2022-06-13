@@ -351,10 +351,10 @@ public class PlayerUI : MonoBehaviour
 			_hasComboEnded = false;
 			_comboText.transform.parent.gameObject.SetActive(false);
 			_currentComboCount = 0;
-			_comboText.text = "Hits 0";
+			_comboText.text = "0 Hits";
 		}
 		_currentComboCount++;
-		_comboText.text = "Hits " + _currentComboCount.ToString();
+		_comboText.text = _currentComboCount.ToString() + " Hits";
 		if (_currentComboCount > 1)
 		{
 			_comboText.transform.parent.gameObject.SetActive(false);
