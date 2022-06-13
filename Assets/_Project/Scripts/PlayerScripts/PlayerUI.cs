@@ -1,5 +1,6 @@
 using Demonics.Sounds;
 using System.Collections;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -57,7 +58,7 @@ public class PlayerUI : MonoBehaviour
 	{
 		_animator = GetComponent<Animator>();
 		_audio = GetComponent<Audio>();
-		_comboText.transform.parent.gameObject.SetActive(false);
+		_comboText.transform.parent.parent.gameObject.SetActive(false);
 		_notification.gameObject.SetActive(false);
 	}
 
@@ -111,7 +112,7 @@ public class PlayerUI : MonoBehaviour
 					_playerName.text = PlayerName;
 				}
 			}
-			CharacterName = playerStats.characterName.ToString();
+			CharacterName = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 			_characterName.text = CharacterName;
 			if (_controller.IsPlayerOne)
 			{
@@ -349,16 +350,16 @@ public class PlayerUI : MonoBehaviour
 		{
 			StopCoroutine(_resetComboCoroutine);
 			_hasComboEnded = false;
-			_comboText.transform.parent.gameObject.SetActive(false);
+			_comboText.transform.parent.parent.gameObject.SetActive(false);
 			_currentComboCount = 0;
 			_comboText.text = "0 Hits";
 		}
 		_currentComboCount++;
-		_comboText.text = _currentComboCount.ToString() + " Hits";
+		_comboText.text = _currentComboCount.ToString();
 		if (_currentComboCount > 1)
 		{
-			_comboText.transform.parent.gameObject.SetActive(false);
-			_comboText.transform.parent.gameObject.SetActive(true);
+			_comboText.transform.parent.parent.gameObject.SetActive(false);
+			_comboText.transform.parent.parent.gameObject.SetActive(true);
 		}
 	}
 
@@ -389,7 +390,7 @@ public class PlayerUI : MonoBehaviour
 	IEnumerator ResetComboCoroutine()
 	{
 		yield return new WaitForSeconds(1.0f);
-		_comboText.transform.parent.gameObject.SetActive(false);
+		_comboText.transform.parent.parent.gameObject.SetActive(false);
 		_currentComboCount = 0;
 		_comboText.text = "";
 	}

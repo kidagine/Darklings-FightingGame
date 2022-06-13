@@ -16,7 +16,7 @@ public class Notification : MonoBehaviour
 
 	public void SetNotification(NotificationTypeEnum notificationType)
 	{
-		_notificationText.text = Regex.Replace(notificationType.ToString(), "([a-z])([A-Z])", "$1 $2");;
+		_notificationText.text = Regex.Replace(notificationType.ToString(), "([a-z])([A-Z])", "$1 $2");
 		switch (notificationType)
 		{
 			case NotificationTypeEnum.Punish:
