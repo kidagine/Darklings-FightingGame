@@ -149,7 +149,7 @@ public class AttackState : State
 
 	public override bool ToHurtState(AttackSO attack)
 	{
-		_player.OtherPlayerUI.DisplayNotification("Punish");
+		_player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
 		if (_playerMovement.IsGrounded)
 		{
 			_hurtState.Initialize(attack);

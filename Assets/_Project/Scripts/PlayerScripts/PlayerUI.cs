@@ -13,10 +13,10 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
 	[SerializeField] private Image _portraitImage = default;
+	[SerializeField] private Notification _notification = default;
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
 	[SerializeField] private TextMeshProUGUI _assistName = default;
-	[SerializeField] private TextMeshProUGUI _notificationText = default;
 	[SerializeField] private TextMeshProUGUI _comboText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
@@ -58,7 +58,7 @@ public class PlayerUI : MonoBehaviour
 		_animator = GetComponent<Animator>();
 		_audio = GetComponent<Audio>();
 		_comboText.transform.parent.gameObject.SetActive(false);
-		_notificationText.transform.parent.gameObject.SetActive(false);
+		_notification.gameObject.SetActive(false);
 	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
@@ -368,11 +368,11 @@ public class PlayerUI : MonoBehaviour
 		_resetComboCoroutine = StartCoroutine(ResetComboCoroutine());
 	}
 
-	public void DisplayNotification(string text)
+	public void DisplayNotification(NotificationTypeEnum notificationType)
 	{
 		_audio.Sound("Punish").Play();
-		_notificationText.transform.parent.gameObject.SetActive(true);
-		_notificationText.text = text;
+		_notification.SetNotification(notificationType);
+		_notification.gameObject.SetActive(true);
 		if (_notificiationCoroutine != null)
 		{
 			StopCoroutine(_notificiationCoroutine);
@@ -382,9 +382,9 @@ public class PlayerUI : MonoBehaviour
 
 	IEnumerator ResetDisplayNotificationCoroutine()
 	{
-		yield return new WaitForSeconds(1.0f);
-		_notificationText.transform.parent.gameObject.SetActive(false);
-		_notificationText.text = "";
+		yield return new WaitForSeconds(1.1f);
+		_notification.gameObject.SetActive(false);
+		//_notification.text = "";
 	}
 
 	IEnumerator ResetComboCoroutine()
