@@ -384,7 +384,6 @@ public class PlayerUI : MonoBehaviour
 	{
 		yield return new WaitForSeconds(1.1f);
 		_notification.gameObject.SetActive(false);
-		//_notification.text = "";
 	}
 
 	IEnumerator ResetComboCoroutine()

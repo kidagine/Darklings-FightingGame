@@ -19,7 +19,7 @@ public class KnockdownState : State
 		base.Enter();
 		_playerAnimator.Knockdown();
 		_player.SetHurtbox(false);
-		_player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Knockdown);
+		_playerUI.DisplayNotification(NotificationTypeEnum.Knockdown);
 		Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
 		_knockdownCoroutine = StartCoroutine(ToWakeUpStateCoroutine());
 		if (_player.Health <= 0)
