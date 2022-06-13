@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,11 +11,12 @@ public class Notification : MonoBehaviour
 	[SerializeField] private Color _punishColor = Color.red;
 	[SerializeField] private Color _knockdownColor = Color.blue;
 	[SerializeField] private Color _crossUpColor = Color.yellow;
+	[SerializeField] private Color _guardBreakColor = Color.yellow;
 
 
 	public void SetNotification(NotificationTypeEnum notificationType)
 	{
-		_notificationText.text = notificationType.ToString();
+		_notificationText.text = Regex.Replace(notificationType.ToString(), "([a-z])([A-Z])", "$1 $2");;
 		switch (notificationType)
 		{
 			case NotificationTypeEnum.Punish:
@@ -28,6 +30,10 @@ public class Notification : MonoBehaviour
 			case NotificationTypeEnum.CrossUp:
 				_notificationSlide.color = _crossUpColor;
 				_notificationText.color = _crossUpColor;
+				break;
+			case NotificationTypeEnum.GuardBreak:
+				_notificationSlide.color = _guardBreakColor;
+				_notificationText.color = _guardBreakColor;
 				break;
 		}
 	}

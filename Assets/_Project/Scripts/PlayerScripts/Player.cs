@@ -245,6 +245,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (attack.attackTypeEnum == AttackTypeEnum.Break)
 		{
+			if (BlockingLeftOrRight())
+			{
+				_playerUI.DisplayNotification(NotificationTypeEnum.GuardBreak);
+			}
 			return false;
 		}
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && TrainingSettings.CpuOff)

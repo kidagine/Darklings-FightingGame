@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public enum NotificationTypeEnum { Punish, Knockdown, CrossUp };
+public enum NotificationTypeEnum { Punish, Knockdown, CrossUp, GuardBreak, Counter, Reversal };
 
 public class NotificationTypes : MonoBehaviour
 {
