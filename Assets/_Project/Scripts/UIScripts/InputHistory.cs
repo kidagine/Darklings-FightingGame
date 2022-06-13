@@ -15,8 +15,8 @@ public class InputHistory : MonoBehaviour
 	[SerializeField] private Sprite _special = default;
 	[SerializeField] private Sprite _assist = default;
 	[SerializeField] private Sprite _throw = default;
-	private readonly List<InputHistoryImage> _inputHistoryImages = new List<InputHistoryImage>();
-	private readonly List<InputEnum> _inputEnums = new List<InputEnum>();
+	private readonly List<InputHistoryImage> _inputHistoryImages = new();
+	private readonly List<InputEnum> _inputEnums = new();
 	private Coroutine _inputBreakCoroutine;
 	private Coroutine _inputSubItemCoroutine;
 	private int _currentInputImageIndex;

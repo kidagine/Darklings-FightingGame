@@ -3,27 +3,25 @@ using UnityEngine;
 public class PlayerComboSystem : MonoBehaviour
 {
 	private PlayerStats _playerStats;
-	private PlayerMovement _playerMovement;
 
 	void Awake()
 	{
-		_playerMovement = GetComponent<PlayerMovement>();
 		_playerStats = GetComponent<PlayerStats>();
 	}
 
-	public AttackSO GetComboAttack(InputEnum inputEnum)
+	public AttackSO GetComboAttack(InputEnum inputEnum, bool isCrouching, bool isAir)
 	{
 		if (inputEnum == InputEnum.Throw)
 		{
 			return _playerStats.PlayerStatsSO.mThrow;
 		}
-		if (_playerMovement.IsCrouching && _playerMovement.IsGrounded)
+		if (isCrouching)
 		{
 			return GetCrouchingAttackType(inputEnum);
 		}
 		else
 		{
-			if (!_playerMovement.IsGrounded)
+			if (isAir)
 			{
 				return _playerStats.PlayerStatsSO.jumpL;
 			}
@@ -66,6 +64,10 @@ public class PlayerComboSystem : MonoBehaviour
 		}
 	}
 
+	public AttackSO GetThrow()
+	{
+		return _playerStats.PlayerStatsSO.mThrow;
+	}
 
 	public ArcanaSO GetArcana()
 	{

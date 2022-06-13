@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(CpuController))]
 public class BrainController : MonoBehaviour
 {
+	[SerializeField] private PlayerStateManager _playerStateManager = default;
 	private PlayerController _playerController;
 	private CpuController _cpuController;
 	private bool _cpuActive;
@@ -25,6 +26,7 @@ public class BrainController : MonoBehaviour
 		_cpuActive = false;
 		_playerController.enabled = true;
 		_cpuController.enabled = false;
+		_playerStateManager.UpdateStateController();
 		DeactivateCpu();
 	}
 
@@ -34,6 +36,7 @@ public class BrainController : MonoBehaviour
 		_cpuActive = true;
 		_playerController.enabled = false;
 		_cpuController.enabled = true;
+		_playerStateManager.UpdateStateController();
 		ActivateCpu();
 	}
 

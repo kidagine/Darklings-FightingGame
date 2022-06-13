@@ -3,18 +3,12 @@ using UnityEngine;
 
 public class InputBuffer : MonoBehaviour
 {
-	private readonly Queue<InputBufferItem> _inputBuffer = new Queue<InputBufferItem>();
+	[SerializeField] private PlayerStateManager _playerStateManager = default;
+	private readonly Queue<InputBufferItem> _inputBuffer = new();
 	private InputHistory _inputHistory;
-	private Player _player;
-	private PlayerMovement _playerMovement;
 	private bool _isExecuting;
+	private InputDirectionEnum _lastInputDirection;
 
-
-	void Start()
-	{
-		_player = GetComponent<Player>();
-		_playerMovement = GetComponent<PlayerMovement>();
-	}
 
 	void Update()
 	{
@@ -39,53 +33,18 @@ public class InputBuffer : MonoBehaviour
 		InputBufferItem inputBufferItem = new(Time.time);
 		_inputBuffer.Enqueue(inputBufferItem);
 
-		if (inputEnum == InputEnum.Direction)
+		if (inputEnum != InputEnum.Direction)
 		{
-			if (inputDirectionEnum == InputDirectionEnum.Up)
-			{
-				inputBufferItem.Execute += () => { return true; };
-			}
-			else if (inputDirectionEnum == InputDirectionEnum.Down)
-			{
-				inputBufferItem.Execute += () => { return true; };
-			}
-			else if(inputDirectionEnum == InputDirectionEnum.Left)
-			{
-				inputBufferItem.Execute += () => { _playerMovement.MovementInput = Vector2.left; return true; };
-			}
-			else if(inputDirectionEnum == InputDirectionEnum.Right)
-			{
-				inputBufferItem.Execute += () => { _playerMovement.MovementInput = Vector2.right; return true; };
-			}
+			inputBufferItem.Execute += () => ExecuteInputBuffer(inputEnum);
 		}
-		else if(inputEnum == InputEnum.Light)
+		else
 		{
-			inputBufferItem.Execute += _player.LightAction;
+			inputBufferItem.Execute += () => { _lastInputDirection = inputDirectionEnum; return true; };
 		}
-		else if (inputEnum == InputEnum.Medium)
-		{
-			inputBufferItem.Execute += _player.MediumAction;
-		}
-		else if (inputEnum == InputEnum.Heavy)
-		{
-			inputBufferItem.Execute += _player.HeavyAction;
-		}
-		else if(inputEnum == InputEnum.Special)
-		{
-			inputBufferItem.Execute += _player.ArcaneAction;
-		}
-		else if(inputEnum == InputEnum.Assist)
-		{
-			inputBufferItem.Execute += _player.AssistAction;
-		}
-		else if (inputEnum == InputEnum.Throw)
-		{
-			inputBufferItem.Execute += () => { return true; };
-		}
-		CheckForInputBufferItem();
+		CheckInputBuffer();
 	}
 
-	public void CheckForInputBufferItem()
+	public void CheckInputBuffer()
 	{
 		if (_inputBuffer.Count > 0 && !_isExecuting)
 		{
@@ -95,6 +54,31 @@ public class InputBuffer : MonoBehaviour
 				_inputBuffer.Dequeue();
 			}
 			_isExecuting = false;
+		}
+	}
+
+	public bool ExecuteInputBuffer(InputEnum inputEnum)
+	{
+		if (inputEnum == InputEnum.Throw)
+		{
+			return _playerStateManager.TryToGrabState();
+		}
+		if (inputEnum == InputEnum.Assist)
+		{
+			return _playerStateManager.TryToAssistCall();
+		}
+		else if (inputEnum == InputEnum.Special)
+		{
+			return _playerStateManager.TryToArcanaState();
+		}
+		else
+		{
+			bool value = _playerStateManager.TryToAttackState(inputEnum, _lastInputDirection);
+			if (value)
+			{
+				_lastInputDirection = InputDirectionEnum.None;
+			}
+			return value;
 		}
 	}
 

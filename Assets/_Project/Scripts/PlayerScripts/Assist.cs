@@ -8,6 +8,7 @@ public class Assist : MonoBehaviour, IHitboxResponder
 	[SerializeField] private GameObject _smokePrefab = default;
 	private Audio _audio;
 	private Transform _player;
+	private GameObject _hitEffect;
 
 	public AssistStatsSO AssistStats { get { return _assistStatsSO; } private set { } }
 	public bool IsOnScreen { get; set; }
@@ -35,15 +36,27 @@ public class Assist : MonoBehaviour, IHitboxResponder
 		transform.localScale = _player.localScale;
 	}
 
+	public void Recall()
+	{
+		if (IsOnScreen)
+		{
+			IsOnScreen = false;
+			_animator.Rebind();
+			if (_hitEffect != null)
+			{
+				_hitEffect.SetActive(false);
+			}
+		}
+	}
+
 	public void Projectile()
 	{
-		GameObject hitEffect;
-		hitEffect = Instantiate(_assistStatsSO.assistPrefab, transform);
-		hitEffect.transform.localPosition = Vector2.zero;
-		hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
-		hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation);
-		hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
-		hitEffect.transform.SetParent(null);
+		_hitEffect = Instantiate(_assistStatsSO.assistPrefab, transform);
+		_hitEffect.transform.localPosition = Vector2.zero;
+		_hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
+		_hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation);
+		_hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
+		_hitEffect.transform.SetParent(null);
 	}
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)

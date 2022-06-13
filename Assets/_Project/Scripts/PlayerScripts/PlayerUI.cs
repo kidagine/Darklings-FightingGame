@@ -111,7 +111,7 @@ public class PlayerUI : MonoBehaviour
 					_playerName.text = PlayerName;
 				}
 			}
-			CharacterName = playerStats.characterName;
+			CharacterName = playerStats.characterName.ToString();
 			_characterName.text = CharacterName;
 			if (_controller.IsPlayerOne)
 			{
@@ -198,6 +198,16 @@ public class PlayerUI : MonoBehaviour
 		_healthSlider.value = value;
 	}
 
+	public void MaxHealth(float value)
+	{
+		_healthSlider.value = value;
+		_healthDamagedSlider.value = value;
+		if (_damagedHealthCoroutine != null)
+		{
+			StopCoroutine(_damagedHealthCoroutine);
+		}
+	}
+
 	public void ResetHealthDamaged()
 	{
 		if (_damagedHealthCoroutine != null)
@@ -218,7 +228,7 @@ public class PlayerUI : MonoBehaviour
 
 	IEnumerator SetHealthDamagedCoroutine(float value)
 	{
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(0.5f);
 		float startValue = _healthDamagedSlider.value;
 		_currentEndDamageValue = value;
 		float elapsedTime = 0.0f;

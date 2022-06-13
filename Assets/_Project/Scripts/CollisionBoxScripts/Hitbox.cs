@@ -14,6 +14,7 @@ public class Hitbox : MonoBehaviour
 	private IHitboxResponder _hitboxResponder;
 	private Transform _sourceTransform;
 	[HideInInspector] public bool _hasHit;
+	public Transform HitPoint { get; private set; }
 
 	void Awake()
 	{
@@ -45,7 +46,7 @@ public class Hitbox : MonoBehaviour
 
 	void Update()
 	{
-		Vector2 hitboxPosition = new Vector2(transform.position.x + (_offset.x * transform.root.localScale.x), transform.position.y + (_offset.y * transform.root.localScale.y));
+		Vector2 hitboxPosition = new(transform.position.x + (_offset.x * transform.root.localScale.x), transform.position.y + (_offset.y * transform.root.localScale.y));
 		RaycastHit2D[] hit = Physics2D.BoxCastAll(hitboxPosition, _hitboxSize, 0.0f, Vector2.zero, 0.0f, _hurtboxLayerMask);
 		if (hit.Length > 0)
 		{
@@ -55,10 +56,10 @@ public class Hitbox : MonoBehaviour
 				{
 					if (_hitboxResponder != null && !hit[i].collider.transform.IsChildOf(_sourceTransform) && !_hasHit)
 					{
+						HitPoint = hit[i].transform;
 						if (_hitGround && hit[i].normal == Vector2.up)
 						{
 							OnCollision?.Invoke();
-							_hitboxResponder.HitboxCollidedGround(hit[i]);
 						}
 						if (hit[i].collider.transform.TryGetComponent(out Hurtbox hurtbox))
 						{
@@ -86,7 +87,7 @@ public class Hitbox : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 		_hitboxColor.a = 0.6f;
-		Vector2 hitboxPosition = new Vector2(transform.position.x + (_offset.x * transform.root.localScale.x), transform.position.y + (_offset.y * transform.root.localScale.y));
+		Vector2 hitboxPosition = new(transform.position.x + (_offset.x * transform.root.localScale.x), transform.position.y + (_offset.y * transform.root.localScale.y));
 		Gizmos.color = _hitboxColor;
 		Gizmos.matrix = Matrix4x4.TRS(hitboxPosition, transform.rotation, Vector2.one);
 

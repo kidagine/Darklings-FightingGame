@@ -60,7 +60,7 @@ public class CharacterMenu : BaseMenu
 			_characterOneImage.enabled = true;
 			if (!isRandomizer)
 			{
-				_playerOneName.text = playerStats.characterName;
+				_playerOneName.text = playerStats.characterName.ToString();
 				_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = playerStats;
 			}
@@ -85,7 +85,7 @@ public class CharacterMenu : BaseMenu
 			_characterTwoImage.enabled = true;
 			if (!isRandomizer)
 			{
-				_playerTwoName.text = playerStats.characterName;
+				_playerTwoName.text = playerStats.characterName.ToString();
 				_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = playerStats;
 			}
@@ -110,7 +110,7 @@ public class CharacterMenu : BaseMenu
 			{
 				int randomPlayer = Random.Range(0, _playerStatsArray.Length);
 				_playerStats = _playerStatsArray[randomPlayer];
-				_playerOneName.text = _playerStats.characterName;
+				_playerOneName.text = _playerStats.characterName.ToString();
 				_spriteLibraryOne.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
@@ -128,7 +128,7 @@ public class CharacterMenu : BaseMenu
 			{
 				int randomPlayer = Random.Range(0, _playerStatsArray.Length);
 				_playerStats = _playerStatsArray[randomPlayer];
-				_playerTwoName.text = _playerStats.characterName;
+				_playerTwoName.text = _playerStats.characterName.ToString();
 				_spriteLibraryTwo.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
@@ -144,11 +144,11 @@ public class CharacterMenu : BaseMenu
 	{
 		if (isPlayerOne)
 		{
-			_characterOneAnimator.SetTrigger("Taunt");
+			_playerAnimatorOne.Taunt();
 		}
 		else
 		{
-			_characterTwoAnimator.SetTrigger("Taunt");
+			_playerAnimatorTwo.Taunt();
 		}
 		StartCoroutine(TauntEndCoroutine());
 	}

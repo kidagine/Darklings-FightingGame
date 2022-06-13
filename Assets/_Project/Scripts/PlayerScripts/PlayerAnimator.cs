@@ -1,14 +1,17 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.U2D.Animation;
 
 public class PlayerAnimator : MonoBehaviour
 {
 	[SerializeField] private PlayerStats _playerStats = default;
-	[SerializeField] private InputBuffer _inputBuffer = default;
+	[SerializeField] private InputBuffer _inputBuffer = null;
 	private Animator _animator;
 	private SpriteLibrary _spriteLibrary;
 	private SpriteRenderer _spriteRenderer;
 
+	[HideInInspector] public UnityEvent OnCurrentAnimationFinished;
+	
 	public PlayerStats PlayerStats { get { return _playerStats; } private set { } }
 
 	void Awake()
@@ -23,116 +26,161 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.runtimeAnimatorController = _playerStats.PlayerStatsSO.runtimeAnimatorController;
 	}
 
-	public void SetMove(bool state)
+	void Update()
 	{
-		_animator.SetBool("IsMoving", state);
+		if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
+		{
+			OnCurrentAnimationFinished?.Invoke();
+			OnCurrentAnimationFinished.RemoveAllListeners();
+			if (_inputBuffer != null)
+			{
+				_inputBuffer.CheckInputBuffer();
+			}
+		}
 	}
 
-	public void SetMovementX(float value)
+	public void Walk()
 	{
-		_animator.SetFloat("MovementInputX", value);
+		_animator.Play("Walk");
 	}
 
-	public void IsCrouching(bool state)
+	public void Idle()
 	{
-		_animator.SetBool("IsCrouching", state);
+		_animator.Play("Idle");
 	}
 
-	public void IsJumping(bool state)
+	public void Crouch()
 	{
-		_animator.SetBool("IsJumping", state);
+		_animator.Play("Crouch");
 	}
 
-	public void CancelAttack()
+	public void Jump(bool reset = false)
 	{
-		_animator.SetTrigger("Cancel");
+		if (reset)
+		{
+			_animator.Play("Jump", -1, 0f);
+		}
+		else
+		{
+			_animator.Play("Jump");
+		}
 	}
 
-	public void CancelHurt()
+	public void JumpForward(bool reset = false)
 	{
-		_animator.SetTrigger("CancelHurt");
+		if (reset)
+		{
+			_animator.Play("JumpForward", -1, 0f);
+		}
+		else
+		{
+			_animator.Play("JumpForward");
+		}
 	}
 
-	public void ResetAnimation(string name)
+	public void Attack(string attackType, bool reset = false)
 	{
-		_animator.Play(name, -1, 0f);
+		if (reset)
+		{
+			_animator.Play(attackType, -1, 0f);
+		}
+		else
+		{
+			_animator.Play(attackType);
+		}
 	}
 
-	public void ResetTrigger(string name)
+	public void Shadowbreak()
 	{
-		_animator.ResetTrigger(name);
+		_animator.Play("Shadowbreak");
 	}
 
-	public void Attack(string attackType)
+	public void Grab()
 	{
-		_animator.SetTrigger(attackType);
+		_animator.Play("Grab");
 	}
+
 	public void Throw()
 	{
-		_animator.SetTrigger("Throw");
-	}
-	public void ThrowEnd()
-	{
-		_animator.SetTrigger("ThrowEnd");
+		_animator.Play("Throw");
 	}
 
 	public void Arcana()
 	{
-		_animator.SetTrigger("Arcana");
+		_animator.Play("Arcana", -1, 0f);
 	}
 
-	public void ArcanaEnd()
+	public void ArcanaThrow()
 	{
-		_animator.SetTrigger("ArcanaEnd");
+		_animator.Play("ArcanaThrow");
 	}
 
-	public void Hurt()
+	public void Hurt(bool reset = false)
 	{
-		_animator.SetTrigger("Hurt");
+		if (reset)
+		{
+			_animator.Play("Hurt", -1, 0f);
+		}
+		else
+		{
+			_animator.Play("Hurt");
+		}
 	}
 
-	public void IsBlocking(bool state)
+	public void HurtAir(bool reset = false)
 	{
-		_animator.SetBool("IsBlocking", state);
+		if (reset)
+		{
+			_animator.Play("HurtAir", -1, 0f);
+		}
+		else
+		{
+			_animator.Play("HurtAir");
+		}
 	}
 
-	public void IsBlockingLow(bool state)
+	public void Block()
 	{
-		_animator.SetBool("IsBlockingLow", state);
-	}
-	public void IsBlockingAir(bool state)
-	{
-		_animator.SetBool("IsBlockingAir", state);
+		_animator.Play("Block");
 	}
 
-	public void IsDashing(bool state)
+	public void BlockLow()
 	{
-		_animator.SetBool("IsDashing", state);
+		_animator.Play("BlockLow");
+	}
+	public void BlockAir()
+	{
+		_animator.Play("BlockAir");
 	}
 
-	public void IsRunning(bool state)
+	public void Dash()
 	{
-		_animator.SetBool("IsRunning", state);
+		_animator.Play("Dash");
+	}
+
+	public void AirDash()
+	{
+		_animator.Play("Jump");
+	}
+
+	public void Run()
+	{
+		_animator.Play("Run");
 	}
 
 	public void Taunt()
 	{
-		_animator.SetTrigger("Taunt");
+		_animator.Play("Taunt", -1, 0f);
 	}
 
-	public void Death()
+	public void Knockdown()
 	{
-		_animator.SetTrigger("Death");
+		_animator.Play("Knockdown");
 	}
 
-	public void IsKnockedDown(bool state)
+	public void WakeUp()
 	{
-		_animator.SetBool("IsKnockedDown", state);
-	}
-
-	public void Rebind()
-	{
-		_animator.Rebind();
+		_animator.Play("WakeUp");
 	}
 
 	public Sprite GetCurrentSprite()
@@ -159,4 +207,3 @@ public class PlayerAnimator : MonoBehaviour
 		_spriteRenderer.sortingOrder = index;
 	}
 }
-	

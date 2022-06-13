@@ -9,7 +9,8 @@ public class PlayerStatsSO : ScriptableObject
 	public Sprite[] portraits;
 	public SpriteLibraryAsset[] spriteLibraryAssets;
 	public RuntimeAnimatorController runtimeAnimatorController;
-	public string characterName;
+	public DialogueSO _dialogue;
+	public CharacterTypeEnum characterName;
 	public float maxHealth = 3;
 	[Header("Movement")]
 	public float walkSpeed = 3;

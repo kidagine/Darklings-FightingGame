@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc38aa9bd105964ea227944394dc39b, type: 3}
+  m_Name: 2L
+  m_EditorClassIdentifier: 
+  travelDistance: 0
+  travelDirection: {x: 0, y: 0}
+  hitStun: 0.41
+  blockStun: 0
+  knockback: 0.6
+  knockbackDirection: {x: 0, y: 0}
+  knockbackDuration: 0.05
+  attackTypeEnum: 2
+  hitstop: 0.075
+  isAirAttack: 0
+  isProjectile: 0
+  isArcana: 0
+  causesKnockdown: 0
+  attackSound: Hit
+  impactSound: Impact1
+  hitEffect: {fileID: 3294536446187043669, guid: 0b02975833814574abc4c70ad2fa705a, type: 3}
+  hitEffectPosition: {x: 0.9, y: 0.8}
+  hitEffectRotation: 0
+  hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
+  hurtEffectPosition: {x: -8.945563, y: -3.5800002}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 0}
+  startUpFrames: 7
+  activeFrames: 3
+  recoveryFrames: 13

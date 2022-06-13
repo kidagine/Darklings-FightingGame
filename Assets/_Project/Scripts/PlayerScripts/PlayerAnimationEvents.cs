@@ -6,6 +6,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 {
 	[SerializeField] private Player _player = default;
 	[SerializeField] private PlayerMovement _playerMovement = default;
+	[SerializeField] private PlayerStateManager _playerStateManager = default;
 	[SerializeField] private InputBuffer _inputBuffer = default;
 	[SerializeField] private Audio _audio = default;
 	private TrainingMenu _trainingMenu;
@@ -18,12 +19,15 @@ public class PlayerAnimationEvents : MonoBehaviour
 
 	public void UnlockMovement()
 	{
-		_player.IsAttacking = false;
-		_playerMovement.SetLockMovement(false);
-		_player.CanCancelAttack = false;
-		_inputBuffer.CheckForInputBufferItem();
-		_playerMovement.FullyLockMovement = false;
 		SetFramedata();
+	}
+
+	public void UnlockMovementNoFramedata()
+	{
+		_player.IsAttacking = false;
+		_player.CanCancelAttack = false;
+		_player.CanShadowbreak = true;
+		_playerMovement.FullyLockMovement = false;
 	}
 
 	public void FullyLockMovement()
@@ -33,7 +37,7 @@ public class PlayerAnimationEvents : MonoBehaviour
 
 	public void ThrowEnd()
 	{
-		_player.ThrowEnd();
+		_player.OtherPlayerStateManager.TryToKnockdownState();
 	}
 
 	public void CreateEffectAnimationEvent(int isProjectile)

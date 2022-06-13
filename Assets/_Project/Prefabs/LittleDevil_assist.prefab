@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7988372543926529754}
   - component: {fileID: 7988372543926529757}
   - component: {fileID: 2408057519768666704}
+  - component: {fileID: 1774755333107624249}
   m_Layer: 10
   m_Name: Assist_emulated
   m_TagString: Untagged
@@ -29,6 +30,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7988372544210796763}
   m_RootOrder: 0
@@ -87,7 +89,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &7988372543926529757
 Animator:
-  serializedVersion: 3
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -100,6 +102,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -117,6 +120,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _assist: {fileID: 7988372544210796760}
+  _playerAnimationEvents: {fileID: 0}
+--- !u!114 &1774755333107624249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7988372543926529759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad9c4c2ddf21184ab5ec5aed8ef5b75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerShadowPrefab: {fileID: 8266339266402425017, guid: b5638136e48e55046817e86cb7734bf8, type: 3}
 --- !u!1 &7988372544210796762
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,6 +161,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1, y: 3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7988372543926529756}
   m_Father: {fileID: 0}
@@ -163,5 +181,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 7988372543926529757}
   _assistStatsSO: {fileID: 11400000, guid: 2f7ef4e4812540b42bf60476b4910e16, type: 2}
-  _projectilePrefab: {fileID: 3294536446187043669, guid: 4c16d4107eb216e41bf4dadd675e93b0, type: 3}
   _smokePrefab: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}

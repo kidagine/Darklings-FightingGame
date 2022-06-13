@@ -3,7 +3,7 @@ using UnityEngine;
 public class DestroyOnCollision : MonoBehaviour
 {
 	[SerializeField] private Hitbox _hitbox = default;
-
+	[SerializeField] private GameObject _dustPrefab = default;
 
 	void Start()
 	{
@@ -12,6 +12,13 @@ public class DestroyOnCollision : MonoBehaviour
 
 	void OnDestroy()
 	{
+		if (_hitbox.HitPoint != null)
+		{
+			if (_hitbox.HitPoint.gameObject.layer == 6)
+			{
+				Instantiate(_dustPrefab, transform.position, Quaternion.identity);
+			}
+		}
 		_hitbox.OnCollision -= ()=> Destroy(gameObject);
 	}
 }

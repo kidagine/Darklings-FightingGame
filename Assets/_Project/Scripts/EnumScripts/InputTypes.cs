@@ -11,4 +11,5 @@ public class InputTypes : MonoBehaviour
 	[SerializeField] private InputEnum _inputEnum = default;
 
 	public InputEnum InputEnum { get { return _inputEnum; } private set { } }
+
 }
