@@ -1,5 +1,6 @@
 using Demonics.Sounds;
 using System.Collections;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,10 +14,10 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
 	[SerializeField] private Image _portraitImage = default;
+	[SerializeField] private Notification _notification = default;
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
 	[SerializeField] private TextMeshProUGUI _assistName = default;
-	[SerializeField] private TextMeshProUGUI _notificationText = default;
 	[SerializeField] private TextMeshProUGUI _comboText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
@@ -57,8 +58,8 @@ public class PlayerUI : MonoBehaviour
 	{
 		_animator = GetComponent<Animator>();
 		_audio = GetComponent<Audio>();
-		_comboText.transform.parent.gameObject.SetActive(false);
-		_notificationText.transform.parent.gameObject.SetActive(false);
+		_comboText.transform.parent.parent.gameObject.SetActive(false);
+		_notification.gameObject.SetActive(false);
 	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
@@ -111,7 +112,7 @@ public class PlayerUI : MonoBehaviour
 					_playerName.text = PlayerName;
 				}
 			}
-			CharacterName = playerStats.characterName.ToString();
+			CharacterName = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 			_characterName.text = CharacterName;
 			if (_controller.IsPlayerOne)
 			{
@@ -349,16 +350,16 @@ public class PlayerUI : MonoBehaviour
 		{
 			StopCoroutine(_resetComboCoroutine);
 			_hasComboEnded = false;
-			_comboText.transform.parent.gameObject.SetActive(false);
+			_comboText.transform.parent.parent.gameObject.SetActive(false);
 			_currentComboCount = 0;
-			_comboText.text = "Hits 0";
+			_comboText.text = "0 Hits";
 		}
 		_currentComboCount++;
-		_comboText.text = "Hits " + _currentComboCount.ToString();
+		_comboText.text = _currentComboCount.ToString();
 		if (_currentComboCount > 1)
 		{
-			_comboText.transform.parent.gameObject.SetActive(false);
-			_comboText.transform.parent.gameObject.SetActive(true);
+			_comboText.transform.parent.parent.gameObject.SetActive(false);
+			_comboText.transform.parent.parent.gameObject.SetActive(true);
 		}
 	}
 
@@ -368,11 +369,11 @@ public class PlayerUI : MonoBehaviour
 		_resetComboCoroutine = StartCoroutine(ResetComboCoroutine());
 	}
 
-	public void DisplayNotification(string text)
+	public void DisplayNotification(NotificationTypeEnum notificationType)
 	{
 		_audio.Sound("Punish").Play();
-		_notificationText.transform.parent.gameObject.SetActive(true);
-		_notificationText.text = text;
+		_notification.SetNotification(notificationType);
+		_notification.gameObject.SetActive(true);
 		if (_notificiationCoroutine != null)
 		{
 			StopCoroutine(_notificiationCoroutine);
@@ -382,15 +383,14 @@ public class PlayerUI : MonoBehaviour
 
 	IEnumerator ResetDisplayNotificationCoroutine()
 	{
-		yield return new WaitForSeconds(1.0f);
-		_notificationText.transform.parent.gameObject.SetActive(false);
-		_notificationText.text = "";
+		yield return new WaitForSeconds(1.1f);
+		_notification.gameObject.SetActive(false);
 	}
 
 	IEnumerator ResetComboCoroutine()
 	{
 		yield return new WaitForSeconds(1.0f);
-		_comboText.transform.parent.gameObject.SetActive(false);
+		_comboText.transform.parent.parent.gameObject.SetActive(false);
 		_currentComboCount = 0;
 		_comboText.text = "";
 	}

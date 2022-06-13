@@ -72,7 +72,7 @@ public class ArcanaState : State
 
 	public override bool ToHurtState(AttackSO attack)
 	{
-		_player.OtherPlayerUI.DisplayNotification("Punish");
+		_player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
 		return true;
@@ -80,7 +80,7 @@ public class ArcanaState : State
 
 	public override bool ToAirborneHurtState(AttackSO attack)
 	{
-		_player.OtherPlayerUI.DisplayNotification("Punish");
+		_player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
 		_airborneHurtState.Initialize(attack);
 		_stateMachine.ChangeState(_airborneHurtState);
 		return true;
