@@ -1,8 +1,10 @@
 using Demonics.UI;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
@@ -37,7 +39,7 @@ public class CharacterMenu : BaseMenu
 	public bool FirstCharacterSelected { get; private set; }
 
 
-	void Start()
+	void Awake()
 	{
 		_currentEventSystem = EventSystem.current;
 	}
@@ -108,16 +110,16 @@ public class CharacterMenu : BaseMenu
 			_assistOne.SetActive(true);
 			if (_playerStats == null)
 			{
-				int randomPlayer = Random.Range(0, _playerStatsArray.Length);
+				int randomPlayer = UnityEngine.Random.Range(0, _playerStatsArray.Length);
 				_playerStats = _playerStatsArray[randomPlayer];
 				_playerOneName.text = _playerStats.characterName.ToString();
 				_spriteLibraryOne.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
-			_hpTextOne.text = $"HP {_playerStats.maxHealth}";
-			_arcanaTextOne.text = $"ARCANA {_playerStats.maxArcana}";
-			_speedTextOne.text = $"SPEED {_playerStats.runSpeed}";
+			_hpTextOne.text = _playerStats.maxHealth.ToString();
+			_arcanaTextOne.text = _playerStats.maxArcana.ToString();
+			_speedTextOne.text = _playerStats.runSpeed.ToString();
 			SceneSettings.PlayerOne = _playerStats.characterIndex;
 		}
 		else
@@ -126,16 +128,16 @@ public class CharacterMenu : BaseMenu
 			_assistTwo.SetActive(true);
 			if (_playerStats == null)
 			{
-				int randomPlayer = Random.Range(0, _playerStatsArray.Length);
+				int randomPlayer = UnityEngine.Random.Range(0, _playerStatsArray.Length);
 				_playerStats = _playerStatsArray[randomPlayer];
 				_playerTwoName.text = _playerStats.characterName.ToString();
 				_spriteLibraryTwo.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
-			_hpTextTwo.text = $"HP {_playerStats.maxHealth}";
-			_arcanaTextTwo.text = $"ARCANA {_playerStats.maxArcana}";
-			_speedTextTwo.text = $"SPEED {_playerStats.runSpeed}";
+			_hpTextTwo.text = _playerStats.maxHealth.ToString();
+			_arcanaTextTwo.text = _playerStats.maxArcana.ToString();
+			_speedTextTwo.text = _playerStats.runSpeed.ToString();
 			SceneSettings.PlayerTwo = _playerStats.characterIndex;
 		}
 	}
@@ -165,8 +167,12 @@ public class CharacterMenu : BaseMenu
 		}
 		else
 		{
-			_baseMenu.Show();
-			gameObject.SetActive(false);
+			SceneSettings.SceneSettingsDecide = true;
+			if (SceneSettings.RandomStage)
+			{
+				SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
+			}
+			SceneManager.LoadScene(2);
 		}
 	}
 
@@ -178,21 +184,24 @@ public class CharacterMenu : BaseMenu
 
 	private void OnDisable()
 	{
-		_currentEventSystem.sendNavigationEvents = true;
-		FirstCharacterSelected = false;
-		_hpTextOne.text = "";
-		_arcanaTextOne.text = "";
-		_speedTextOne.text = "";
-		_hpTextTwo.text = "";
-		_arcanaTextTwo.text = "";
-		_speedTextTwo.text = "";
-		_playerOneName.text = "";
-		_characterOneImage.enabled = false;
-		_characterOneAnimator.runtimeAnimatorController = null;
-		_playerTwoName.text = "";
-		_characterTwoImage.enabled = false;
-		_characterTwoAnimator.runtimeAnimatorController = null;
-		_assistOneSpriteRenderer.enabled = false;
-		_assistTwoSpriteRenderer.enabled = false;
+		if (!SceneSettings.SceneSettingsDecide)
+		{
+			_currentEventSystem.sendNavigationEvents = true;
+			FirstCharacterSelected = false;
+			_hpTextOne.text = "";
+			_arcanaTextOne.text = "";
+			_speedTextOne.text = "";
+			_hpTextTwo.text = "";
+			_arcanaTextTwo.text = "";
+			_speedTextTwo.text = "";
+			_playerOneName.text = "";
+			_characterOneImage.enabled = false;
+			_characterOneAnimator.runtimeAnimatorController = null;
+			_characterTwoImage.enabled = false;
+			_characterTwoAnimator.runtimeAnimatorController = null;
+			_playerTwoName.text = "";
+			_assistOneSpriteRenderer.enabled = false;
+			_assistTwoSpriteRenderer.enabled = false;
+		}
 	}
 }

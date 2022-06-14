@@ -176,7 +176,9 @@ public class CharacterAssistSelector : MonoBehaviour
         _arrows.SetActive(true);
         _assistCount = 0;
         transform.GetChild(0).gameObject.SetActive(true);
-        gameObject.SetActive(false);
-        _assistAnimator.Rebind();
+        if (_assistAnimator != null)
+        {
+            _assistAnimator.Rebind();
+        }
     }
 }
