@@ -25,11 +25,9 @@ public class ChangeStageMenu : MonoBehaviour
 	{
 		_changeStageAnimator = GetComponent<Animator>();
 		_currentEventSystem = EventSystem.current;
-		SetStageSelectorValues();
-		SetMusicSelectorValues();
 	}
 
-	private void SetStageSelectorValues()
+	public void SetStageSelectorValues()
 	{
 		for (int i = 0; i < _stagesSO.Length; i++)
 		{
@@ -43,7 +41,7 @@ public class ChangeStageMenu : MonoBehaviour
 		}
 		_currentStage = _stagesSO[0];
 	}
-	private void SetMusicSelectorValues()
+	public void SetMusicSelectorValues()
 	{
 		for (int i = 0; i < _musicSO.songs.Length; i++)
 		{
@@ -80,15 +78,6 @@ public class ChangeStageMenu : MonoBehaviour
 			_changeStageAnimator.Play("ChangeStageClose");
 			_previousSelectable.Select();
 			IsOpen = false;
-			_musicText.text = SceneSettings.MusicName;
-			if (SceneSettings.Bit1)
-			{
-				_styleText.text = "1 Bit";
-			}
-			else 
-			{
-				_styleText.text = "Normal";
-			}
 		}
 	}
 
@@ -110,11 +99,13 @@ public class ChangeStageMenu : MonoBehaviour
 	{
 		if (index == 0)
 		{
+			_styleText.text = "Normal";
 			_stageImage.sprite = _currentStage.colorStage;
 			SceneSettings.Bit1 = false;
 		}
 		else if (index == 1)
 		{
+			_styleText.text = "1 Bit";
 			_stageImage.sprite = _currentStage.bit1Stage;
 			SceneSettings.Bit1 = true;
 		}
@@ -122,6 +113,7 @@ public class ChangeStageMenu : MonoBehaviour
 
 	public void SetMusic(int index)
 	{
+		_musicText.text = _musicSO.songs[index].ToString();
 		SceneSettings.MusicName = _musicSO.songs[index].ToString();
 	}
 

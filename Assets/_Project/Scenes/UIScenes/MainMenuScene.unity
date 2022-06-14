@@ -4859,7 +4859,7 @@ GameObject:
   - component: {fileID: 171122862}
   - component: {fileID: 171122861}
   m_Layer: 5
-  m_Name: 1Bit_selector
+  m_Name: StageStyle_selector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19894,7 +19894,7 @@ GameObject:
   - component: {fileID: 813866689}
   - component: {fileID: 813866688}
   m_Layer: 5
-  m_Name: Music_selector
+  m_Name: StageMusic_selector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41589,8 +41589,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _checkOnline: 1
+  _checkStage: 1
   _checkOptions: 1
   _checkTraining: 0
+  _changeStageMenu: {fileID: 1939241173}
   _playerNameInputFieldInitial: Demon
   _playerNameInputField: {fileID: 2052373590}
   _characterSelector: {fileID: 465378533}
@@ -41599,6 +41601,12 @@ MonoBehaviour:
   _characterAssistSelectorInitial: 0
   _characterColorSelector: {fileID: 862987997}
   _characterColorSelectorInitial: 0
+  _stageSelector: {fileID: 844696349}
+  _stageSelectorInitial: 0
+  _stageMusicSelector: {fileID: 813866689}
+  _stageMusicSelectorInitial: 0
+  _stageStyleSelector: {fileID: 171122862}
+  _stageStyleSelectorInitial: 0
   _vfxSelector: {fileID: 67027217}
   _vfxSelectorInitial: 10
   _uiSelector: {fileID: 454301043}
