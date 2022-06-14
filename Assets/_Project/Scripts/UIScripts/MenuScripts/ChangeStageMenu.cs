@@ -18,7 +18,7 @@ public class ChangeStageMenu : MonoBehaviour
 	private Selectable _previousSelectable;
 	private Animator _changeStageAnimator;
 	private EventSystem _currentEventSystem;
-	private bool _isOpen;
+	public bool IsOpen { get; private set; }
 
 
 	void Awake()
@@ -59,22 +59,27 @@ public class ChangeStageMenu : MonoBehaviour
 
 	public void ChangeStageOpen()
 	{
-		if (!_isOpen)
+		if (!IsOpen)
 		{
 			_previousSelectable = _currentEventSystem.currentSelectedGameObject.GetComponent<Selectable>();
 			_changeStageAnimator.Play("ChangeStageOpen");
-			_initialSelectable.Select();
-			_isOpen = true;
+			IsOpen = true;
 		}
+	}
+
+	public void ChangeStageOpenFinished()
+	{
+		_initialSelectable.Select();
 	}
 
 	public void ChangeStageClose()
 	{
-		if (_isOpen)
+		if (IsOpen)
 		{
+			_currentEventSystem.currentSelectedGameObject.GetComponent<Animator>().Rebind();
 			_changeStageAnimator.Play("ChangeStageClose");
 			_previousSelectable.Select();
-			_isOpen = false;
+			IsOpen = false;
 			_musicText.text = SceneSettings.MusicName;
 			if (SceneSettings.Bit1)
 			{

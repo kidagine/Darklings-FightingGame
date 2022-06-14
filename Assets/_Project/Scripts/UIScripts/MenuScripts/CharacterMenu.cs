@@ -19,6 +19,7 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private SpriteRenderer _assistTwoSpriteRenderer = default;
 	[SerializeField] private Animator _characterOneAnimator = default;
 	[SerializeField] private Animator _characterTwoAnimator = default;
+	[SerializeField] private ChangeStageMenu _changeStageMenu = default;
 	[SerializeField] private Button _firstCharacterButton = default;
 	[SerializeField] private PlayerAnimator _playerAnimatorOne = default;
 	[SerializeField] private PlayerAnimator _playerAnimatorTwo = default;
@@ -65,11 +66,22 @@ public class CharacterMenu : BaseMenu
 				_playerOneName.text = playerStats.characterName.ToString();
 				_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = playerStats;
+				_hpTextOne.text = _playerStats.maxHealth.ToString();
+				_arcanaTextOne.text = _playerStats.maxArcana.ToString();
+				_speedTextOne.text = _playerStats.runSpeed.ToString();
 			}
 			else
 			{
+				_hpTextOne.text = "?";
+				_arcanaTextOne.text = "?";
+				_speedTextOne.text = "?";
 				_playerOneName.text = "Random";
 			}
+			if (isRandomizer)
+			{
+
+			}
+
 			_characterOneAnimator.runtimeAnimatorController = animatorController;
 		}
 		else
@@ -90,11 +102,18 @@ public class CharacterMenu : BaseMenu
 				_playerTwoName.text = playerStats.characterName.ToString();
 				_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = playerStats;
+				_hpTextTwo.text = _playerStats.maxHealth.ToString();
+				_arcanaTextTwo.text = _playerStats.maxArcana.ToString();
+				_speedTextTwo.text = _playerStats.runSpeed.ToString();
 			}
 			else
 			{
+				_hpTextTwo.text = "?";
+				_arcanaTextTwo.text = "?";
+				_speedTextTwo.text = "?";
 				_playerTwoName.text = "Random";
 			}
+
 			_characterTwoAnimator.runtimeAnimatorController = animatorController;
 		}
 	}
@@ -173,6 +192,19 @@ public class CharacterMenu : BaseMenu
 				SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
 			}
 			SceneManager.LoadScene(2);
+		}
+	}
+
+	public void GoBack(BaseMenu otherMenu)
+	{
+		if (_changeStageMenu.IsOpen)
+		{
+			_changeStageMenu.ChangeStageClose();
+		}
+		else
+		{
+			OpenMenuHideCurrent(otherMenu);
+			ResetControllerInput();
 		}
 	}
 
