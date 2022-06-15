@@ -67,6 +67,7 @@ public class ChangeStageMenu : MonoBehaviour
 
 	public void ChangeStageOpenFinished()
 	{
+		_currentEventSystem.sendNavigationEvents = true;
 		_initialSelectable.Select();
 	}
 

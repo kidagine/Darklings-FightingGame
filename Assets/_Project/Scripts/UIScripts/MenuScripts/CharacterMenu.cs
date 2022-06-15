@@ -10,7 +10,6 @@ using UnityEngine.UI;
 
 public class CharacterMenu : BaseMenu
 {
-	[SerializeField] private BaseMenu _baseMenu = default;
 	[SerializeField] private SpriteRenderer _characterOneImage = default;
 	[SerializeField] private SpriteRenderer _characterTwoImage = default;
 	[SerializeField] private GameObject _assistOne = default;

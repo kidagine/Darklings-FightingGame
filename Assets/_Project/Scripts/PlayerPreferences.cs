@@ -68,14 +68,14 @@ public class PlayerPreferences : MonoBehaviour
 
 	void Start()
 	{
-		_changeStageMenu.SetMusicSelectorValues();
-		_changeStageMenu.SetStageSelectorValues();
 		if (_checkOnline)
 		{
 			LoadOnlinePreferences();
 		}
 		if (_checkStage)
 		{
+			_changeStageMenu.SetMusicSelectorValues();
+			_changeStageMenu.SetStageSelectorValues();
 			LoadStagePreferences();
 		}
 		if (_checkOptions)
