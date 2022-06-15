@@ -198,7 +198,10 @@ public class PlayerAnimator : MonoBehaviour
 		{
 			skinNumber = PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1;
 		}
-		_spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
+		if (_spriteLibrary != null)
+		{
+			_spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
+		}
 		return skinNumber;
 	}
 
