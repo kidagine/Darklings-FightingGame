@@ -2859,8 +2859,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _checkOnline: 0
+  _checkStage: 0
   _checkOptions: 0
   _checkTraining: 1
+  _changeStageMenu: {fileID: 0}
   _playerNameInputFieldInitial: Demon
   _playerNameInputField: {fileID: 0}
   _characterSelector: {fileID: 0}
@@ -2869,6 +2871,12 @@ MonoBehaviour:
   _characterAssistSelectorInitial: 0
   _characterColorSelector: {fileID: 0}
   _characterColorSelectorInitial: 0
+  _stageSelector: {fileID: 0}
+  _stageSelectorInitial: 0
+  _stageMusicSelector: {fileID: 0}
+  _stageMusicSelectorInitial: 0
+  _stageStyleSelector: {fileID: 0}
+  _stageStyleSelectorInitial: 0
   _vfxSelector: {fileID: 0}
   _vfxSelectorInitial: 0
   _uiSelector: {fileID: 0}
@@ -4659,7 +4667,7 @@ MonoBehaviour:
   _playerTwoSkin: 0
   _isTrainingMode: 1
   _isOnlineMode: 0
-  _1BitOn: 0
+  _1BitOn: 1
   _gameSpeed: 1
   _countdownTime: 99
   _spawnPositions:
@@ -28434,6 +28442,7 @@ MonoBehaviour:
   _whoPausedText: {fileID: 868862009}
   _whoPausedTrainingText: {fileID: 1560515001}
   _arcanaAmountText: {fileID: 93148798}
+  _hitsNumberText: {fileID: 1064699473}
   _arcanaAnimator: {fileID: 758689716}
   _healthDividerPivot: {fileID: 2359028110960082894}
   _healthDividerPrefab: {fileID: 5592667340369626980, guid: c8e765c1947768d429ca00f98abcdea5, type: 3}
@@ -28809,6 +28818,7 @@ MonoBehaviour:
   _whoPausedText: {fileID: 868862009}
   _whoPausedTrainingText: {fileID: 1560515001}
   _arcanaAmountText: {fileID: 809656142}
+  _hitsNumberText: {fileID: 1157472475}
   _arcanaAnimator: {fileID: 22157825}
   _healthDividerPivot: {fileID: 3915933148786555169}
   _healthDividerPrefab: {fileID: 5592667340369626980, guid: c8e765c1947768d429ca00f98abcdea5, type: 3}

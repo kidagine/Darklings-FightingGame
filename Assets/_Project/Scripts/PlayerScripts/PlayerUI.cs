@@ -22,6 +22,7 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _whoPausedText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
 	[SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
+	[SerializeField] private TextMeshProUGUI _hitsNumberText = default;
 	[SerializeField] private Animator _arcanaAnimator = default;
 	[SerializeField] private Transform _healthDividerPivot = default;
 	[SerializeField] private GameObject _healthDividerPrefab = default;
@@ -421,6 +422,7 @@ public class PlayerUI : MonoBehaviour
 		_healthImage.color = Color.white;
 		_arcanaImage.color = Color.white;
 		_assistImage.color = Color.white;
+		_hitsNumberText.color = Color.white;
 		for (int i = 0; i < _heartImages.Length; i++)
 		{
 			_heartImages[i].color = Color.white;
