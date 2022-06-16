@@ -30,20 +30,14 @@ public class ArcanaState : State
 	public override void Enter()
 	{
 		base.Enter();
-		if (_crouch || _air)
-		{
-			_playerAnimator.ArcanaCrouch();
-		}
-		else
-		{
-			_playerAnimator.Arcana();
-		}
 		if (_playerComboSystem.GetArcana(_crouch).reversal)
 		{
 			_playerUI.DisplayNotification(NotificationTypeEnum.Reversal);
 		}
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
+		_playerComboSystem.GetArcana(_crouch, _air);
 		_player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
+		_playerAnimator.Arcana(_player.CurrentAttack.name);
 		_player.Arcana--;
 		_playerUI.DecreaseArcana();
 		_playerUI.SetArcana(_player.Arcana);
