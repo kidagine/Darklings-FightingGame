@@ -9,6 +9,7 @@ public class ArcanaState : State
 	private GrabbedState _grabbedState;
 	private ArcanaThrowState _arcanaThrowState;
 	private bool _crouch;
+	private bool _air;
 
 	void Awake()
 	{
@@ -20,15 +21,16 @@ public class ArcanaState : State
 		_arcanaThrowState = GetComponent<ArcanaThrowState>();
 	}
 
-	public void Initialize(bool crouch)
+	public void Initialize(bool crouch = false, bool air = false)
 	{
 		_crouch = crouch;
+		_air = air;
 	}
 
 	public override void Enter()
 	{
 		base.Enter();
-		if (_crouch)
+		if (_crouch || _air)
 		{
 			_playerAnimator.ArcanaCrouch();
 		}
@@ -41,7 +43,7 @@ public class ArcanaState : State
 			_playerUI.DisplayNotification(NotificationTypeEnum.Reversal);
 		}
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
-		_player.CurrentAttack = _playerComboSystem.GetArcana(_crouch);
+		_player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
 		_player.Arcana--;
 		_playerUI.DecreaseArcana();
 		_playerUI.SetArcana(_player.Arcana);

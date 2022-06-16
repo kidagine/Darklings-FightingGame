@@ -23,7 +23,7 @@ public class PlayerComboSystem : MonoBehaviour
 		{
 			if (isAir)
 			{
-				return _playerStats.PlayerStatsSO.jumpL;
+				return _playerStats.PlayerStatsSO.jL;
 			}
 			else
 			{
@@ -69,12 +69,16 @@ public class PlayerComboSystem : MonoBehaviour
 		return _playerStats.PlayerStatsSO.mThrow;
 	}
 
-	public ArcanaSO GetArcana(bool isCrouching)
+	public ArcanaSO GetArcana(bool isCrouching = false, bool isAir = false)
 	{
+		if (isAir)
+		{
+			return _playerStats.PlayerStatsSO.jArcana;
+		}
 		if (isCrouching)
 		{
-			return _playerStats.PlayerStatsSO.arcanaCrouch;
+			return _playerStats.PlayerStatsSO.m2Arcana;
 		}
-		return _playerStats.PlayerStatsSO.arcana;
+		return _playerStats.PlayerStatsSO.m5Arcana;
 	}
 }
