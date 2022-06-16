@@ -56,9 +56,9 @@ public class PlayerStateManager : StateMachine
 		return CurrentState.ToAttackState(inputEnum, inputDirectionEnum);
 	}
 
-	public bool TryToArcanaState()
+	public bool TryToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
-		return CurrentState.ToArcanaState();
+		return CurrentState.ToArcanaState(inputDirectionEnum);
 	}
 
 	public bool TryToGrabState()

@@ -69,8 +69,12 @@ public class PlayerComboSystem : MonoBehaviour
 		return _playerStats.PlayerStatsSO.mThrow;
 	}
 
-	public ArcanaSO GetArcana()
+	public ArcanaSO GetArcana(bool isCrouching)
 	{
+		if (isCrouching)
+		{
+			return _playerStats.PlayerStatsSO.arcanaCrouch;
+		}
 		return _playerStats.PlayerStatsSO.arcana;
 	}
 }

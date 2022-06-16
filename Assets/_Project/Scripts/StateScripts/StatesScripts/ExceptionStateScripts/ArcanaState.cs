@@ -8,6 +8,7 @@ public class ArcanaState : State
 	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
 	private ArcanaThrowState _arcanaThrowState;
+	private bool _crouch;
 
 	void Awake()
 	{
@@ -19,16 +20,31 @@ public class ArcanaState : State
 		_arcanaThrowState = GetComponent<ArcanaThrowState>();
 	}
 
+	public void Initialize(bool crouch)
+	{
+		_crouch = crouch;
+	}
+
 	public override void Enter()
 	{
 		base.Enter();
-		_playerAnimator.Arcana();
+		if (_crouch)
+		{
+			_playerAnimator.ArcanaCrouch();
+		}
+		else
+		{
+			_playerAnimator.Arcana();
+		}
+		if (_playerComboSystem.GetArcana(_crouch).reversal)
+		{
+			_playerUI.DisplayNotification(NotificationTypeEnum.Reversal);
+		}
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
-		_player.CurrentAttack = _playerComboSystem.GetArcana();
+		_player.CurrentAttack = _playerComboSystem.GetArcana(_crouch);
 		_player.Arcana--;
 		_playerUI.DecreaseArcana();
 		_playerUI.SetArcana(_player.Arcana);
-		_player.CurrentAttack = _playerComboSystem.GetArcana();
 		_playerMovement.TravelDistance(new Vector2(
 				_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0.0f));
 	}

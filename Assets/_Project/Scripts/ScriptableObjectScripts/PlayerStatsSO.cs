@@ -32,4 +32,5 @@ public class PlayerStatsSO : ScriptableObject
 	public AttackSO jumpL;
 	public AttackSO mThrow;
 	public ArcanaSO arcana;
+	public ArcanaSO arcanaCrouch;
 }
