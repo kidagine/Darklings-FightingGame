@@ -118,8 +118,9 @@ public class AirParentState : State
 
 	public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
-		if (_player.Arcana >= 1.0f && _playerComboSystem.GetArcana(false).airOk)
+		if (_player.Arcana >= 1.0f && _playerComboSystem.GetArcana(true).airOk)
 		{
+			_arcanaState.Initialize(true);
 			_stateMachine.ChangeState(_arcanaState);
 			return true;
 		}
