@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AirDashState : State
 {
-    [SerializeField] private GameObject _groundedPrefab = default;
     [SerializeField] private GameObject _playerGhostPrefab = default;
     [SerializeField] private GameObject _dashPrefab = default;
     private FallState _fallState;

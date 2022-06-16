@@ -6,7 +6,6 @@ using UnityEngine;
 public class IntroUI : MonoBehaviour
 {
 	[SerializeField] private PlayerDialogue _playerOneDialogue = default;
-	[SerializeField] private PlayerDialogue _playerTwoDialogue = default;
 	[SerializeField] private TextMeshProUGUI _playerOneName = default;
 	[SerializeField] private TextMeshProUGUI _playerTwoName = default;
 	private Audio _audio;

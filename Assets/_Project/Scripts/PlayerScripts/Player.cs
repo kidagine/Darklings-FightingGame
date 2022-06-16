@@ -11,7 +11,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Transform _grabPoint = default;
 	[SerializeField] private Transform _cameraPoint = default;
 	[SerializeField] private Transform _keepFlip = default;
-	[SerializeField] private InputBuffer _inputBuffer = default;
 	[SerializeField] private GameObject[] _playerIcons = default;
 	protected PlayerUI _playerUI;
 	private PlayerMovement _playerMovement;

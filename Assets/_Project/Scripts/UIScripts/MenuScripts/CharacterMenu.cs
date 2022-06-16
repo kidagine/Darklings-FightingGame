@@ -65,7 +65,7 @@ public class CharacterMenu : BaseMenu
 				_playerOneName.text = playerStats.characterName.ToString();
 				_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = playerStats;
-				_hpTextOne.text = _playerStats.maxHealth.ToString();
+				_hpTextOne.text = _playerStats.defense.ToString();
 				_arcanaTextOne.text = _playerStats.maxArcana.ToString();
 				_speedTextOne.text = _playerStats.runSpeed.ToString();
 			}
@@ -101,7 +101,7 @@ public class CharacterMenu : BaseMenu
 				_playerTwoName.text = playerStats.characterName.ToString();
 				_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = playerStats;
-				_hpTextTwo.text = _playerStats.maxHealth.ToString();
+				_hpTextTwo.text = _playerStats.defense.ToString();
 				_arcanaTextTwo.text = _playerStats.maxArcana.ToString();
 				_speedTextTwo.text = _playerStats.runSpeed.ToString();
 			}
@@ -135,7 +135,7 @@ public class CharacterMenu : BaseMenu
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
-			_hpTextOne.text = _playerStats.maxHealth.ToString();
+			_hpTextOne.text = _playerStats.defense.ToString();
 			_arcanaTextOne.text = _playerStats.maxArcana.ToString();
 			_speedTextOne.text = _playerStats.runSpeed.ToString();
 			SceneSettings.PlayerOne = _playerStats.characterIndex;
@@ -153,7 +153,7 @@ public class CharacterMenu : BaseMenu
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
-			_hpTextTwo.text = _playerStats.maxHealth.ToString();
+			_hpTextTwo.text = _playerStats.defense.ToString();
 			_arcanaTextTwo.text = _playerStats.maxArcana.ToString();
 			_speedTextTwo.text = _playerStats.runSpeed.ToString();
 			SceneSettings.PlayerTwo = _playerStats.characterIndex;

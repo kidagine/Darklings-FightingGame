@@ -24,8 +24,6 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
 	[SerializeField] private TextMeshProUGUI _hitsNumberText = default;
 	[SerializeField] private Animator _arcanaAnimator = default;
-	[SerializeField] private Transform _healthDividerPivot = default;
-	[SerializeField] private GameObject _healthDividerPrefab = default;
 	[SerializeField] private Transform _arcanaDividerPivot = default;
 	[SerializeField] private GameObject _arcanaDividerPrefab = default;
 	[SerializeField] private Slider _pauseSlider = default;
@@ -141,18 +139,9 @@ public class PlayerUI : MonoBehaviour
 
 	private void SetMaxHealth(float value)
 	{
-		float healthSliderWidth = _healthSlider.GetComponent<RectTransform>().sizeDelta.x;
 		_healthSlider.maxValue = value;
 		_healthDamagedSlider.maxValue = value;
 		_healthDamagedSlider.value = value;
-		float increaseValue = healthSliderWidth / value;
-		float currentPositionX = 0.0f;
-		for (int i = 0; i < value + 1; i++)
-		{
-			GameObject healthDivider = Instantiate(_healthDividerPrefab, _healthDividerPivot);
-			healthDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 24.0f);
-			currentPositionX -= increaseValue;
-		}
 	}
 
 	private void SetMaxArcana(float value)
