@@ -371,7 +371,6 @@ public class PlayerUI : MonoBehaviour
 
 	public void DisplayNotification(NotificationTypeEnum notificationType)
 	{
-		_audio.Sound("Punish").Play();
 		_notification.SetNotification(notificationType);
 		_notification.gameObject.SetActive(false);
 		_notification.gameObject.SetActive(true);
