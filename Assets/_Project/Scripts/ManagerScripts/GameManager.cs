@@ -187,7 +187,14 @@ public class GameManager : MonoBehaviour
         _playerOneAnimator.SetSpriteLibraryAsset(SceneSettings.ColorOne);
         if (SceneSettings.ColorTwo == SceneSettings.ColorOne && PlayerOne.PlayerStats.characterName == PlayerTwo.PlayerStats.characterName)
         {
-            SceneSettings.ColorTwo++;
+            if (SceneSettings.ColorOne == 3)
+            {
+                SceneSettings.ColorTwo = 0;
+            }
+            else
+            {
+                SceneSettings.ColorTwo++;
+            }
         }
         _playerTwoAnimator.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
         _playerOneController.IsPlayerOne = true;
