@@ -44,6 +44,7 @@ public class PlayerUI : MonoBehaviour
 	private Animator _animator;
 	private Audio _audio;
 	private BrainController _controller;
+	private RectTransform _comboGroup;
 	private float _currentEndDamageValue;
 	private int _currentLifeIndex;
 	private int _currentComboCount;
@@ -59,6 +60,7 @@ public class PlayerUI : MonoBehaviour
 		_audio = GetComponent<Audio>();
 		_comboText.transform.parent.parent.gameObject.SetActive(false);
 		_notification.gameObject.SetActive(false);
+		_comboGroup = _comboText.transform.parent.parent.GetComponent<RectTransform>();
 	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
@@ -343,6 +345,10 @@ public class PlayerUI : MonoBehaviour
 			_comboText.transform.parent.parent.gameObject.SetActive(false);
 			_currentComboCount = 0;
 			_comboText.text = "0 Hits";
+			if (_comboGroup.anchoredPosition.x == 100.0f)
+			{
+				_comboGroup.anchoredPosition = new Vector2(180.0f, _comboGroup.anchoredPosition.y);
+			}
 		}
 		_currentComboCount++;
 		_comboText.text = _currentComboCount.ToString();
@@ -350,6 +356,10 @@ public class PlayerUI : MonoBehaviour
 		{
 			_comboText.transform.parent.parent.gameObject.SetActive(false);
 			_comboText.transform.parent.parent.gameObject.SetActive(true);
+		}
+		if (_currentComboCount >= 10 && _comboGroup.anchoredPosition.x == 180.0f)
+		{
+			_comboGroup.anchoredPosition = new Vector2(100.0f, _comboGroup.anchoredPosition.y);
 		}
 	}
 
