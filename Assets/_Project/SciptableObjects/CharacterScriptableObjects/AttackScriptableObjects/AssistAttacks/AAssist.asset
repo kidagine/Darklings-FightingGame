@@ -15,13 +15,16 @@ MonoBehaviour:
   travelDistance: 0
   travelDirection: {x: 0, y: 0}
   hitStun: 0.55
+  blockStun: 0
   knockback: 0.3
   knockbackDirection: {x: 1, y: 0}
   knockbackDuration: 0
   attackTypeEnum: 1
   hitstop: 0.05
+  damage: 300
   isAirAttack: 0
   isProjectile: 0
+  isArcana: 0
   causesKnockdown: 0
   attackSound: Hit
   impactSound: Impact1
@@ -29,8 +32,9 @@ MonoBehaviour:
   hitEffectPosition: {x: 1, y: 1}
   hitEffectRotation: -35
   hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
-  hurtEffectPosition: {x: -1.7080305, y: -1.7535539}
+  hurtEffectPosition: {x: -0.9674993, y: -2.079607}
   hurtEffectRotation: 0
+  cameraShaker: {fileID: 0}
   startUpFrames: 0
   activeFrames: 0
   recoveryFrames: 0

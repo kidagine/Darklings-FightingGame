@@ -147,7 +147,7 @@ public class CpuController : BaseController
 				}
 				else if (arcanaRandom == 1)
 				{
-					_playerStateMachine.TryToArcanaState();
+					_playerStateMachine.TryToArcanaState(RandomInputDirection());
 				}
 				_attackTimer = Random.Range(0.15f, 0.35f);
 				_arcanaTimer = Random.Range(0.4f, 0.85f);

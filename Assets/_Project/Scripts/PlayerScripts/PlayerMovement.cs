@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
-	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private LayerMask _wallLayerMask = default;
 	private Rigidbody2D _rigidbody;
 	private PlayerStats _playerStats;

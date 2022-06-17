@@ -105,9 +105,9 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.Play("Throw");
 	}
 
-	public void Arcana()
+	public void Arcana(string arcanaType)
 	{
-		_animator.Play("Arcana", -1, 0f);
+		_animator.Play(arcanaType, -1, 0f);
 	}
 
 	public void ArcanaThrow()
@@ -198,7 +198,10 @@ public class PlayerAnimator : MonoBehaviour
 		{
 			skinNumber = PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1;
 		}
-		_spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
+		if (_spriteLibrary != null)
+		{
+			_spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
+		}
 		return skinNumber;
 	}
 

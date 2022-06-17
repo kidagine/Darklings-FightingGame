@@ -16,6 +16,7 @@ public class AttackSO : ScriptableObject
 	public AttackTypeEnum attackTypeEnum;
 	[Range(0.0f, 1.0f)]
 	public float hitstop;
+	public int damage;
 	public bool isAirAttack;
 	public bool isProjectile;
 	public bool isArcana;

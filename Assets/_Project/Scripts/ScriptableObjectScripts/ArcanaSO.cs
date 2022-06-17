@@ -5,4 +5,5 @@ public class ArcanaSO : AttackSO
 {
 	[Header("Arcana")]
 	public bool airOk;
+	public bool reversal;
 }
