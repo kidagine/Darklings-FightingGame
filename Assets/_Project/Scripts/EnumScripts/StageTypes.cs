@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public enum StageTypeEnum { Grid, TheVoid, Graveyard, Arena, Bridge, Forest };
+public enum StageTypeEnum { Grid, TheVoid, Graveyard, Arena, Bridge, Ruins };
 
 public class StageType : MonoBehaviour
 {
