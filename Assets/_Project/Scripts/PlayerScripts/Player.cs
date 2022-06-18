@@ -3,6 +3,7 @@ using UnityEngine;
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
 	[SerializeField] private PlayerStateManager _playerStateManager = default;
+	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private Assist _assist = default;
 	[SerializeField] private Pushbox _groundPushbox = default;
 	[SerializeField] private Pushbox _airPushbox = default;
@@ -97,6 +98,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		StopAllCoroutines();
 		_playerMovement.StopAllCoroutines();
+		_playerMovement.ResetMovement();
+		_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
 		OtherPlayerUI.ResetCombo();
 		_playerUI.SetArcana(Arcana);
 		_playerUI.SetAssist(AssistGauge);
@@ -292,11 +295,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_groundPushbox.SetIsTrigger(state);
 	}
 
-	public void SetGroundPushBox(bool state)
-	{
-		_groundPushbox.gameObject.SetActive(state);
-	}
-
 	public void SetAirPushBox(bool state)
 	{
 		SetPushboxTrigger(state);
@@ -305,7 +303,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void SetHurtbox(bool state)
 	{
-		_hurtbox.gameObject.SetActive(state);
+		_hurtbox.SetActive(state);
 	}
 
 	public void Pause(bool isPlayerOne)
