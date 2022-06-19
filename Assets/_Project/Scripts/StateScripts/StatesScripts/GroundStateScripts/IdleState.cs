@@ -14,6 +14,7 @@ public class IdleState : GroundParentState
 		_player.SetPushboxTrigger(false);
 		_playerMovement.HasAirDashed = false;
 		_playerMovement.HasDoubleJumped = false;
+		_player.CanAirArcana = true;
 	}
 
 	public override void UpdateLogic()

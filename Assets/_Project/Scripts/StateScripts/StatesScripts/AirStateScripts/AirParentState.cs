@@ -120,9 +120,13 @@ public class AirParentState : State
 	{
 		if (_player.Arcana >= 1.0f && _playerComboSystem.GetArcana(isAir:true) != null)
 		{
-			_arcanaState.Initialize(air:true);
-			_stateMachine.ChangeState(_arcanaState);
-			return true;
+			if (_player.CanAirArcana)
+			{
+				_player.CanAirArcana = false;
+				_arcanaState.Initialize(air: true);
+				_stateMachine.ChangeState(_arcanaState);
+				return true;
+			}
 		}
 		return false;
 	}

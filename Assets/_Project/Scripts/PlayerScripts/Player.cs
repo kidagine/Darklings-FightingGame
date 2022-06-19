@@ -27,6 +27,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
 	public Transform CameraPoint { get { return _cameraPoint; } private set { } }
+	public bool CanAirArcana { get; set; }
 	public float Health { get; set; }
 	public int Lives { get; set; } = 2;
 	public bool IsAttacking { get; set; }
