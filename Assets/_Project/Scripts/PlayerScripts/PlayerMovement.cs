@@ -43,6 +43,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		JumpControl();
 	}
 
+	public void ResetMovement()
+	{
+		_rigidbody.velocity = Vector2.zero;
+	}
+
 	private void JumpControl()
 	{
 		if (_rigidbody.velocity.y < 0)

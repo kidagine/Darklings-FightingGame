@@ -54,6 +54,7 @@ public class DashState : State
         _rigidbody.velocity = Vector2.zero;
         _playerMovement.ResetGravity();
         ToIdleState();
+        _inputBuffer.CheckInputBuffer();
         if (_baseController.InputDirection.x * transform.root.localScale.x > 0.0f)
         {
             ToRunState();

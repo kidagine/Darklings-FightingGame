@@ -24,6 +24,7 @@ public class AirDashState : State
         base.Enter();
         _playerAnimator.AirDash();
         _audio.Sound("Dash").Play();
+        _player.SetPushboxTrigger(false);
         Transform dashEffect = ObjectPoolingManager.Instance.Spawn(_dashPrefab, transform.position).transform;
         if (DashDirection > 0.0f)
         {
