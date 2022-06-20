@@ -34,7 +34,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool IsPlayerOne { get; set; }
 	public float AssistGauge { get; set; } = 1.0F;
 	public float Arcana { get; set; }
-	public float ArcaneSlowdown { get; set; } = 7.5f;
+	public float ArcaneSlowdown { get; set; } = 6.5f;
 	public bool CanShadowbreak { get; set; } = true;
 	public bool CanCancelAttack { get; set; }
 	public bool BlockingLow { get; set; }
