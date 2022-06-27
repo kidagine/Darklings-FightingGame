@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
