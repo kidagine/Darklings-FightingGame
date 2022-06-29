@@ -170,6 +170,7 @@ public class CharacterAssistSelector : MonoBehaviour
 
     private void OnDisable()
     {
+        gameObject.SetActive(false);
         _playerAnimator.SetSpriteLibraryAsset(0);
         AssistLetter = 'A';
         _assistIndicatorText.text = "";

@@ -103,7 +103,6 @@ public class PlayerCharacterSelector : MonoBehaviour
                 }
                 if (_directionInput.y == -1.0f)
                 {
-                    Debug.Log(_canGoDown);
                     if (_canGoDown)
                     {
                         _rectTransform.anchoredPosition += new Vector2(0.0f, -_moveDistance);
@@ -155,15 +154,8 @@ public class PlayerCharacterSelector : MonoBehaviour
         {
             _canGoUp = true;
         }
-        Debug.Log(collision.transform.name);
-        if (collision.transform.name == "Enma_characterButton")
-        {
-            Debug.Log("a:" + collision.transform.localPosition.y);
-            Debug.Log("b:" + currentPosition.y);
-        }
         if (collision.transform.localPosition.y > currentPosition.y)
         {
-            Debug.Log("sucs");
             _canGoDown = true;
         }
     }
