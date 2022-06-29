@@ -107,6 +107,7 @@ public class ChangeStageMenu : MonoBehaviour
 		}
 		else
 		{
+			SceneSettings.RandomStage = false;
 			SceneSettings.StageIndex = index - 1;
 		}
 	}
