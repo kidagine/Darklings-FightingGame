@@ -52,10 +52,18 @@ public class GroundParentState : State
 		return true;
 	}
 
-	public override bool ToArcanaState()
+	public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
 		if (_player.Arcana >= 1.0f)
 		{
+			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+			{
+				_arcanaState.Initialize(true);
+			}
+			else
+			{
+				_arcanaState.Initialize(false);
+			}
 			_stateMachine.ChangeState(_arcanaState);
 			return true;
 		}

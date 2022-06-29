@@ -9,6 +9,7 @@ public class CharacterAssistSelector : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _playerOneColorNumber = default;
     [SerializeField] private TextMeshProUGUI _assistIndicatorText = default;
     [SerializeField] private Animator _assistAnimator = default;
+    [SerializeField] private ChangeStageMenu _changeStageMenu = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private GameObject _arrows = default;
     [SerializeField] private AssistStatsSO[] assistStatsSO = default;
@@ -105,7 +106,7 @@ public class CharacterAssistSelector : MonoBehaviour
 
     private void Update()
     {
-        if (!_inputDeactivated)
+        if (!_inputDeactivated && !_changeStageMenu.IsOpen)
         {
             _directionInput = new Vector2(Input.GetAxisRaw(_controllerInputName + "Horizontal"), 0.0f);
             if (_directionInput.x == 1.0f && _assistCount < assistStatsSO.Length - 1)
@@ -169,6 +170,7 @@ public class CharacterAssistSelector : MonoBehaviour
 
     private void OnDisable()
     {
+        gameObject.SetActive(false);
         _playerAnimator.SetSpriteLibraryAsset(0);
         AssistLetter = 'A';
         _assistIndicatorText.text = "";
@@ -176,7 +178,9 @@ public class CharacterAssistSelector : MonoBehaviour
         _arrows.SetActive(true);
         _assistCount = 0;
         transform.GetChild(0).gameObject.SetActive(true);
-        gameObject.SetActive(false);
-        _assistAnimator.Rebind();
+        if (_assistAnimator != null)
+        {
+            _assistAnimator.Rebind();
+        }
     }
 }

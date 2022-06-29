@@ -69,7 +69,12 @@ public class InputBuffer : MonoBehaviour
 		}
 		else if (inputEnum == InputEnum.Special)
 		{
-			return _playerStateManager.TryToArcanaState();
+			bool value = _playerStateManager.TryToArcanaState(_lastInputDirection);
+			if (value)
+			{
+				_lastInputDirection = InputDirectionEnum.None;
+			}
+			return value;
 		}
 		else
 		{

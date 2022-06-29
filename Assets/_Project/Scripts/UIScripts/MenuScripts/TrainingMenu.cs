@@ -14,11 +14,13 @@ public class TrainingMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _activeOneText = default;
     [SerializeField] private TextMeshProUGUI _recoveryOneText = default;
     [SerializeField] private TextMeshProUGUI _hitTypeOneText = default;
+    [SerializeField] private TextMeshProUGUI _damageOneText = default;
     [SerializeField] private TextMeshProUGUI _stateOneText = default;
     [SerializeField] private TextMeshProUGUI _startupTwoText = default;
     [SerializeField] private TextMeshProUGUI _activeTwoText = default;
     [SerializeField] private TextMeshProUGUI _recoveryTwoText = default;
     [SerializeField] private TextMeshProUGUI _hitTypeTwoText = default;
+    [SerializeField] private TextMeshProUGUI _damageTwoText = default;
     [SerializeField] private TextMeshProUGUI _stateTwoText = default;
     [SerializeField] private Canvas[] _uiCanvases = default;
     [SerializeField] private BaseMenu _trainingPauseMenu = default;
@@ -251,6 +253,10 @@ public class TrainingMenu : BaseMenu
             {
                 _hitTypeOneText.text = attack.attackTypeEnum.ToString();
             }
+            if (_damageOneText.gameObject.activeSelf)
+            {
+                _damageOneText.text = attack.damage.ToString();
+            }
         }
         else
         {
@@ -269,6 +275,10 @@ public class TrainingMenu : BaseMenu
             if (_hitTypeTwoText.gameObject.activeSelf)
             {
                 _hitTypeTwoText.text = attack.attackTypeEnum.ToString();
+            }
+            if (_damageTwoText.gameObject.activeSelf)
+            {
+                _damageTwoText.text = attack.damage.ToString();
             }
         }
     }
