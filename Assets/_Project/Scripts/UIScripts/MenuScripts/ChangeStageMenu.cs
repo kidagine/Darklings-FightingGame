@@ -18,6 +18,7 @@ public class ChangeStageMenu : MonoBehaviour
 	private Selectable _previousSelectable;
 	private Animator _changeStageAnimator;
 	private EventSystem _currentEventSystem;
+	private bool _isCharacterSelectDeactivated;
 	public bool IsOpen { get; private set; }
 
 
@@ -67,6 +68,10 @@ public class ChangeStageMenu : MonoBehaviour
 
 	public void ChangeStageOpenFinished()
 	{
+		if (!_currentEventSystem.sendNavigationEvents)
+		{
+			_isCharacterSelectDeactivated = true;
+		}
 		_currentEventSystem.sendNavigationEvents = true;
 		_initialSelectable.Select();
 	}
@@ -77,7 +82,10 @@ public class ChangeStageMenu : MonoBehaviour
 		{
 			_currentEventSystem.currentSelectedGameObject.GetComponent<Animator>().Rebind();
 			_changeStageAnimator.Play("ChangeStageClose");
-			_previousSelectable.Select();
+			if (!_isCharacterSelectDeactivated)
+			{
+				_previousSelectable.Select();
+			}
 			IsOpen = false;
 		}
 	}
@@ -85,7 +93,14 @@ public class ChangeStageMenu : MonoBehaviour
 	public void SetStage(int index)
 	{
 		_currentStage = _stagesSO[index];
-		_stageImage.sprite = _stagesSO[index].colorStage;
+		if (SceneSettings.Bit1)
+		{
+			_stageImage.sprite = _stagesSO[index].bit1Stage;
+		}
+		else
+		{
+			_stageImage.sprite = _stagesSO[index].colorStage;
+		}
 		if (index == 0)
 		{
 			SceneSettings.RandomStage = true;
