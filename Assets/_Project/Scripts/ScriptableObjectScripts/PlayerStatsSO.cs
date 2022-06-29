@@ -11,7 +11,8 @@ public class PlayerStatsSO : ScriptableObject
 	public RuntimeAnimatorController runtimeAnimatorController;
 	public DialogueSO _dialogue;
 	public CharacterTypeEnum characterName;
-	public float maxHealth = 3;
+	public float maxHealth = 10000f;
+	public float defense = 1.0f;
 	[Header("Movement")]
 	public float walkSpeed = 3;
 	public float runSpeed = 5;
@@ -28,7 +29,9 @@ public class PlayerStatsSO : ScriptableObject
 	public AttackSO m5M;
 	public AttackSO m2H;
 	public AttackSO m5H;
-	public AttackSO jumpL;
+	public AttackSO jL;
 	public AttackSO mThrow;
-	public ArcanaSO arcana;
+	public ArcanaSO m5Arcana;
+	public ArcanaSO m2Arcana;
+	public ArcanaSO jArcana;
 }

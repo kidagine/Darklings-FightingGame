@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AirDashState : State
 {
-    [SerializeField] private GameObject _groundedPrefab = default;
     [SerializeField] private GameObject _playerGhostPrefab = default;
     [SerializeField] private GameObject _dashPrefab = default;
     private FallState _fallState;
@@ -25,6 +24,7 @@ public class AirDashState : State
         base.Enter();
         _playerAnimator.AirDash();
         _audio.Sound("Dash").Play();
+        _player.SetPushboxTrigger(false);
         Transform dashEffect = ObjectPoolingManager.Instance.Spawn(_dashPrefab, transform.position).transform;
         if (DashDirection > 0.0f)
         {

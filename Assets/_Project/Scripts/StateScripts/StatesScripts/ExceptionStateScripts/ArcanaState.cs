@@ -8,6 +8,8 @@ public class ArcanaState : State
 	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
 	private ArcanaThrowState _arcanaThrowState;
+	private bool _crouch;
+	private bool _air;
 
 	void Awake()
 	{
@@ -19,16 +21,26 @@ public class ArcanaState : State
 		_arcanaThrowState = GetComponent<ArcanaThrowState>();
 	}
 
+	public void Initialize(bool crouch = false, bool air = false)
+	{
+		_crouch = crouch;
+		_air = air;
+	}
+
 	public override void Enter()
 	{
 		base.Enter();
-		_playerAnimator.Arcana();
+		if (_playerComboSystem.GetArcana(_crouch, _air).reversal)
+		{
+			_playerUI.DisplayNotification(NotificationTypeEnum.Reversal);
+		}
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
-		_player.CurrentAttack = _playerComboSystem.GetArcana();
+		_playerComboSystem.GetArcana(_crouch, _air);
+		_player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
+		_playerAnimator.Arcana(_player.CurrentAttack.name);
 		_player.Arcana--;
 		_playerUI.DecreaseArcana();
 		_playerUI.SetArcana(_player.Arcana);
-		_player.CurrentAttack = _playerComboSystem.GetArcana();
 		_playerMovement.TravelDistance(new Vector2(
 				_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0.0f));
 	}
@@ -72,7 +84,7 @@ public class ArcanaState : State
 
 	public override bool ToHurtState(AttackSO attack)
 	{
-		_player.OtherPlayerUI.DisplayNotification("Punish");
+		_player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
 		return true;
@@ -80,7 +92,7 @@ public class ArcanaState : State
 
 	public override bool ToAirborneHurtState(AttackSO attack)
 	{
-		_player.OtherPlayerUI.DisplayNotification("Punish");
+		_player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
 		_airborneHurtState.Initialize(attack);
 		_stateMachine.ChangeState(_airborneHurtState);
 		return true;

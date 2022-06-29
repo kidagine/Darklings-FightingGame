@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
@@ -12,7 +13,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Transform _grabPoint = default;
 	[SerializeField] private Transform _cameraPoint = default;
 	[SerializeField] private Transform _keepFlip = default;
-	[SerializeField] private InputBuffer _inputBuffer = default;
 	[SerializeField] private GameObject[] _playerIcons = default;
 	protected PlayerUI _playerUI;
 	private PlayerMovement _playerMovement;
@@ -28,13 +28,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
 	public Transform CameraPoint { get { return _cameraPoint; } private set { } }
+	public bool CanAirArcana { get; set; }
 	public float Health { get; set; }
 	public int Lives { get; set; } = 2;
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
 	public float AssistGauge { get; set; } = 1.0F;
 	public float Arcana { get; set; }
-	public float ArcaneSlowdown { get; set; } = 7.5f;
+	public float ArcaneSlowdown { get; set; } = 6.5f;
 	public bool CanShadowbreak { get; set; } = true;
 	public bool CanCancelAttack { get; set; }
 	public bool BlockingLow { get; set; }
@@ -99,6 +100,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 		StopAllCoroutines();
 		_playerMovement.StopAllCoroutines();
+		_playerMovement.ResetMovement();
+		_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
 		OtherPlayerUI.ResetCombo();
 		_playerUI.SetArcana(Arcana);
 		_playerUI.SetAssist(AssistGauge);
@@ -245,6 +248,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (attack.attackTypeEnum == AttackTypeEnum.Break)
 		{
+			if (BlockingLeftOrRight())
+			{
+				_playerUI.DisplayNotification(NotificationTypeEnum.GuardBreak);
+			}
 			return false;
 		}
 		if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && TrainingSettings.CpuOff)
@@ -290,11 +297,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_groundPushbox.SetIsTrigger(state);
 	}
 
-	public void SetGroundPushBox(bool state)
-	{
-		_groundPushbox.gameObject.SetActive(state);
-	}
-
 	public void SetAirPushBox(bool state)
 	{
 		SetPushboxTrigger(state);
@@ -303,7 +305,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void SetHurtbox(bool state)
 	{
-		_hurtbox.gameObject.SetActive(state);
+		_hurtbox.SetActive(state);
 	}
 
 	public void Pause(bool isPlayerOne)

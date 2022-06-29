@@ -5,8 +5,10 @@ using UnityEngine;
 public class PlayerPreferences : MonoBehaviour
 {
 	[SerializeField] private bool _checkOnline = default;
+	[SerializeField] private bool _checkStage = default;
 	[SerializeField] private bool _checkOptions = default;
 	[SerializeField] private bool _checkTraining = default;
+	[SerializeField] private ChangeStageMenu _changeStageMenu = default;
 	[Header("ONLINE")]
 	[SerializeField] private string _playerNameInputFieldInitial = "Demon";
 	[SerializeField] private TMP_InputField _playerNameInputField = default;
@@ -16,6 +18,13 @@ public class PlayerPreferences : MonoBehaviour
 	[SerializeField] private int _characterAssistSelectorInitial = default;
 	[SerializeField] private BaseSelector _characterColorSelector = default;
 	[SerializeField] private int _characterColorSelectorInitial = default;
+	[Header("STAGE")]
+	[SerializeField] private BaseSelector _stageSelector = default;
+	[SerializeField] private int _stageSelectorInitial = default;
+	[SerializeField] private BaseSelector _stageMusicSelector = default;
+	[SerializeField] private int _stageMusicSelectorInitial = default;
+	[SerializeField] private BaseSelector _stageStyleSelector = default;
+	[SerializeField] private int _stageStyleSelectorInitial = default;
 	[Header("OPTIONS")]
 	[Header("Audio")]
 	[SerializeField] private BaseSelector _vfxSelector = default;
@@ -63,6 +72,12 @@ public class PlayerPreferences : MonoBehaviour
 		{
 			LoadOnlinePreferences();
 		}
+		if (_checkStage)
+		{
+			_changeStageMenu.SetMusicSelectorValues();
+			_changeStageMenu.SetStageSelectorValues();
+			LoadStagePreferences();
+		}
 		if (_checkOptions)
 		{
 			LoadOptionPreferences();
@@ -83,6 +98,14 @@ public class PlayerPreferences : MonoBehaviour
 		_charactersAssistSelector.SetValue(PlayerPrefs.GetInt("characterAssist", _characterAssistSelectorInitial));
 		_characterColorSelector.SetValue(PlayerPrefs.GetInt("characterColor", _characterColorSelectorInitial));
 	}
+
+	private void LoadStagePreferences()
+	{
+		_stageSelector.SetValue(PlayerPrefs.GetInt("stage", _stageSelectorInitial));
+		_stageMusicSelector.SetValue(PlayerPrefs.GetInt("stageMusic", _stageMusicSelectorInitial));
+		_stageStyleSelector.SetValue(PlayerPrefs.GetInt("stageStyle", _stageStyleSelectorInitial));
+	}
+
 
 	private void LoadOptionPreferences()
 	{
@@ -114,7 +137,7 @@ public class PlayerPreferences : MonoBehaviour
 
 	public void SavePreference(string key, int value)
 	{
-		PlayerPrefs.SetInt(char.ToLowerInvariant(key[0]) + key.Substring(1), value);
+		PlayerPrefs.SetInt(char.ToLowerInvariant(key[0]) + key[1..], value);
 		PlayerPrefs.Save();
 	}
 

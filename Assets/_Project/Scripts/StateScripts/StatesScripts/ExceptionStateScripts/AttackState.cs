@@ -137,10 +137,19 @@ public class AttackState : State
 		}
 	}
 
-	public override bool ToArcanaState()
+	public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
 		if (_player.Arcana >= 1.0f && CanSkipAttack)
 		{
+			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+			{
+				_crouch = true;
+			}
+			else
+			{
+				_crouch = false;
+			}
+			_arcanaState.Initialize(_crouch);
 			_stateMachine.ChangeState(_arcanaState);
 			return true;
 		}
@@ -149,7 +158,7 @@ public class AttackState : State
 
 	public override bool ToHurtState(AttackSO attack)
 	{
-		_player.OtherPlayerUI.DisplayNotification("Punish");
+		_player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
 		if (_playerMovement.IsGrounded)
 		{
 			_hurtState.Initialize(attack);

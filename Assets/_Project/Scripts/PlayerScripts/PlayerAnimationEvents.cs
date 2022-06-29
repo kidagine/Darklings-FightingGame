@@ -6,8 +6,6 @@ public class PlayerAnimationEvents : MonoBehaviour
 {
 	[SerializeField] private Player _player = default;
 	[SerializeField] private PlayerMovement _playerMovement = default;
-	[SerializeField] private PlayerStateManager _playerStateManager = default;
-	[SerializeField] private InputBuffer _inputBuffer = default;
 	[SerializeField] private Audio _audio = default;
 	private TrainingMenu _trainingMenu;
 

@@ -1,5 +1,6 @@
 using Demonics.Sounds;
 using System.Collections;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,17 +14,16 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
 	[SerializeField] private Image _portraitImage = default;
+	[SerializeField] private Notification _notification = default;
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
 	[SerializeField] private TextMeshProUGUI _assistName = default;
-	[SerializeField] private TextMeshProUGUI _notificationText = default;
 	[SerializeField] private TextMeshProUGUI _comboText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
 	[SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
+	[SerializeField] private TextMeshProUGUI _hitsNumberText = default;
 	[SerializeField] private Animator _arcanaAnimator = default;
-	[SerializeField] private Transform _healthDividerPivot = default;
-	[SerializeField] private GameObject _healthDividerPrefab = default;
 	[SerializeField] private Transform _arcanaDividerPivot = default;
 	[SerializeField] private GameObject _arcanaDividerPrefab = default;
 	[SerializeField] private Slider _pauseSlider = default;
@@ -44,6 +44,7 @@ public class PlayerUI : MonoBehaviour
 	private Animator _animator;
 	private Audio _audio;
 	private BrainController _controller;
+	private RectTransform _comboGroup;
 	private float _currentEndDamageValue;
 	private int _currentLifeIndex;
 	private int _currentComboCount;
@@ -57,8 +58,9 @@ public class PlayerUI : MonoBehaviour
 	{
 		_animator = GetComponent<Animator>();
 		_audio = GetComponent<Audio>();
-		_comboText.transform.parent.gameObject.SetActive(false);
-		_notificationText.transform.parent.gameObject.SetActive(false);
+		_comboText.transform.parent.parent.gameObject.SetActive(false);
+		_notification.gameObject.SetActive(false);
+		_comboGroup = _comboText.transform.parent.parent.GetComponent<RectTransform>();
 	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
@@ -111,7 +113,7 @@ public class PlayerUI : MonoBehaviour
 					_playerName.text = PlayerName;
 				}
 			}
-			CharacterName = playerStats.characterName.ToString();
+			CharacterName = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 			_characterName.text = CharacterName;
 			if (_controller.IsPlayerOne)
 			{
@@ -139,18 +141,9 @@ public class PlayerUI : MonoBehaviour
 
 	private void SetMaxHealth(float value)
 	{
-		float healthSliderWidth = _healthSlider.GetComponent<RectTransform>().sizeDelta.x;
 		_healthSlider.maxValue = value;
 		_healthDamagedSlider.maxValue = value;
 		_healthDamagedSlider.value = value;
-		float increaseValue = healthSliderWidth / value;
-		float currentPositionX = 0.0f;
-		for (int i = 0; i < value + 1; i++)
-		{
-			GameObject healthDivider = Instantiate(_healthDividerPrefab, _healthDividerPivot);
-			healthDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 24.0f);
-			currentPositionX -= increaseValue;
-		}
 	}
 
 	private void SetMaxArcana(float value)
@@ -349,16 +342,24 @@ public class PlayerUI : MonoBehaviour
 		{
 			StopCoroutine(_resetComboCoroutine);
 			_hasComboEnded = false;
-			_comboText.transform.parent.gameObject.SetActive(false);
+			_comboText.transform.parent.parent.gameObject.SetActive(false);
 			_currentComboCount = 0;
-			_comboText.text = "Hits 0";
+			_comboText.text = "0 Hits";
+			if (_comboGroup.anchoredPosition.x == 100.0f)
+			{
+				_comboGroup.anchoredPosition = new Vector2(180.0f, _comboGroup.anchoredPosition.y);
+			}
 		}
 		_currentComboCount++;
-		_comboText.text = "Hits " + _currentComboCount.ToString();
+		_comboText.text = _currentComboCount.ToString();
 		if (_currentComboCount > 1)
 		{
-			_comboText.transform.parent.gameObject.SetActive(false);
-			_comboText.transform.parent.gameObject.SetActive(true);
+			_comboText.transform.parent.parent.gameObject.SetActive(false);
+			_comboText.transform.parent.parent.gameObject.SetActive(true);
+		}
+		if (_currentComboCount >= 10 && _comboGroup.anchoredPosition.x == 180.0f)
+		{
+			_comboGroup.anchoredPosition = new Vector2(100.0f, _comboGroup.anchoredPosition.y);
 		}
 	}
 
@@ -368,11 +369,11 @@ public class PlayerUI : MonoBehaviour
 		_resetComboCoroutine = StartCoroutine(ResetComboCoroutine());
 	}
 
-	public void DisplayNotification(string text)
+	public void DisplayNotification(NotificationTypeEnum notificationType)
 	{
-		_audio.Sound("Punish").Play();
-		_notificationText.transform.parent.gameObject.SetActive(true);
-		_notificationText.text = text;
+		_notification.SetNotification(notificationType);
+		_notification.gameObject.SetActive(false);
+		_notification.gameObject.SetActive(true);
 		if (_notificiationCoroutine != null)
 		{
 			StopCoroutine(_notificiationCoroutine);
@@ -382,15 +383,14 @@ public class PlayerUI : MonoBehaviour
 
 	IEnumerator ResetDisplayNotificationCoroutine()
 	{
-		yield return new WaitForSeconds(1.0f);
-		_notificationText.transform.parent.gameObject.SetActive(false);
-		_notificationText.text = "";
+		yield return new WaitForSeconds(1.1f);
+		_notification.gameObject.SetActive(false);
 	}
 
 	IEnumerator ResetComboCoroutine()
 	{
 		yield return new WaitForSeconds(1.0f);
-		_comboText.transform.parent.gameObject.SetActive(false);
+		_comboText.transform.parent.parent.gameObject.SetActive(false);
 		_currentComboCount = 0;
 		_comboText.text = "";
 	}
@@ -421,6 +421,7 @@ public class PlayerUI : MonoBehaviour
 		_healthImage.color = Color.white;
 		_arcanaImage.color = Color.white;
 		_assistImage.color = Color.white;
+		_hitsNumberText.color = Color.white;
 		for (int i = 0; i < _heartImages.Length; i++)
 		{
 			_heartImages[i].color = Color.white;

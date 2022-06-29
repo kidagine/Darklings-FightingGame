@@ -2,7 +2,6 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.U2D.Animation;
 
 public class LoadingHandler : MonoBehaviour
 {
