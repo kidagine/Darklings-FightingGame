@@ -32,6 +32,7 @@ public class HurtParentState : State
 		}
 		_player.Health -= _hurtAttack.damage / _playerStats.PlayerStatsSO.defense;
 		_playerUI.SetHealth(_player.Health);
+		_playerUI.Damaged();
 		_player.OtherPlayerUI.IncreaseCombo();
 		_playerMovement.ResetGravity();
 		_player.RecallAssist();

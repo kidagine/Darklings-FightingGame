@@ -4900,7 +4900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee34fd0a2311cf1499332a4f01184100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stage: 5
+  _stage: 4
   _characterOne: 0
   _characterTwo: 1
   _assistOne: 0
@@ -4910,7 +4910,7 @@ MonoBehaviour:
   _music: 0
   _playerOneSkin: 0
   _playerTwoSkin: 0
-  _isTrainingMode: 0
+  _isTrainingMode: 1
   _isOnlineMode: 0
   _1BitOn: 0
   _gameSpeed: 1
@@ -4960,8 +4960,8 @@ MonoBehaviour:
   - {fileID: 5904807064592484296}
   - {fileID: 6444861429886733698}
   - {fileID: 845562801584857583}
-  - {fileID: 6226891034005608214}
   - {fileID: 493586515201800811}
+  - {fileID: 6226891034005608214}
   - {fileID: 1273802532}
   _assists:
   - {fileID: 11400000, guid: 2f7ef4e4812540b42bf60476b4910e16, type: 2}
@@ -31453,6 +31453,8 @@ MonoBehaviour:
   _pauseMenu: {fileID: 860885408}
   _trainingPauseMenu: {fileID: 534647985}
   _trainingMenu: {fileID: 729468312}
+  _healthNormalColor: {r: 0, g: 0, b: 0, a: 0}
+  _healthDamagedColor: {r: 0, g: 0, b: 0, a: 0}
   _healthImage: {fileID: 47249489669798708}
   _arcanaImage: {fileID: 2113286081}
   _assistImage: {fileID: 1649658741578152849}
@@ -31827,6 +31829,8 @@ MonoBehaviour:
   _pauseMenu: {fileID: 860885408}
   _trainingPauseMenu: {fileID: 534647985}
   _trainingMenu: {fileID: 729468312}
+  _healthNormalColor: {r: 0, g: 0, b: 0, a: 0}
+  _healthDamagedColor: {r: 0, g: 0, b: 0, a: 0}
   _healthImage: {fileID: 1604159753374727643}
   _arcanaImage: {fileID: 1282009096}
   _assistImage: {fileID: 1830092158}

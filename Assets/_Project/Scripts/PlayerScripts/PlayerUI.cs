@@ -30,6 +30,8 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private PauseMenu _trainingPauseMenu = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
+	[SerializeField] private Color _healthNormalColor = default;
+	[SerializeField] private Color _healthDamagedColor = default;
 	[Header("1BitVisuals")]
 	[SerializeField] private Image _healthImage = default;
 	[SerializeField] private Image _arcanaImage = default;
@@ -41,6 +43,7 @@ public class PlayerUI : MonoBehaviour
 	private Coroutine _resetComboCoroutine;
 	private Coroutine _showPlayerIconCoroutine;
 	private Coroutine _damagedHealthCoroutine;
+	private Coroutine _damagedCoroutine;
 	private Animator _animator;
 	private Audio _audio;
 	private BrainController _controller;
@@ -199,6 +202,24 @@ public class PlayerUI : MonoBehaviour
 		{
 			StopCoroutine(_damagedHealthCoroutine);
 		}
+	}
+
+	public void Damaged()
+	{
+		if (_damagedCoroutine != null)
+		{
+			StopCoroutine(_damagedCoroutine);
+		}
+		_damagedCoroutine = StartCoroutine(DamagedCoroutine());
+	}
+
+	IEnumerator DamagedCoroutine()
+	{
+		_healthImage.color = _healthDamagedColor;
+		_portraitImage.color = _healthDamagedColor;
+		yield return new WaitForSeconds(0.005f);
+		_healthImage.color = _healthNormalColor;
+		_portraitImage.color = Color.white;
 	}
 
 	public void ResetHealthDamaged()
