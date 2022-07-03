@@ -33,6 +33,7 @@ public class BlockParentState : State
 	public override void Enter()
 	{
 		base.Enter();
+		_audio.Sound("Block").Play();
 		_playerMovement.Knockback(new Vector2(
 			_player.OtherPlayer.transform.localScale.x, 0.0f), _blockAttack.knockback, _blockAttack.knockbackDuration);
 		GameObject effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);

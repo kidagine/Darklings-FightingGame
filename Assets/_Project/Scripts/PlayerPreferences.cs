@@ -137,7 +137,8 @@ public class PlayerPreferences : MonoBehaviour
 
 	public void SavePreference(string key, int value)
 	{
-		PlayerPrefs.SetInt(char.ToLowerInvariant(key[0]) + key[1..], value);
+		string keyLower = key.ToLower();
+		PlayerPrefs.SetInt(keyLower[0] + keyLower[1..], value);
 		PlayerPrefs.Save();
 	}
 

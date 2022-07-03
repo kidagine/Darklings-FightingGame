@@ -117,6 +117,10 @@ public class AttackState : State
 		{
 			return false;
 		}
+		if (inputEnum == InputEnum.Medium && _crouch && _player.CurrentAttack == _playerStats.PlayerStatsSO.m2M)
+		{
+			return false;
+		}
 		if (CanSkipAttack && inputEnum != InputEnum.Throw)
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
