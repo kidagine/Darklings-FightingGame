@@ -152,6 +152,7 @@ public class PlayersMenu : BaseMenu
 			}
 			else
 			{
+				Debug.Log("a");
 				SceneSettings.ControllerTwo = "Cpu";
 			}
 			if (_playerIcons[0].anchoredPosition.x == -375.0f)

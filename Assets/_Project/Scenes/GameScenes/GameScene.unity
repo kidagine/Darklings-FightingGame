@@ -3295,7 +3295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.81960785, g: 0.21176471, b: 0.31298137, a: 1}
+  m_Color: {r: 0.6886792, g: 0.1323912, b: 0.22630979, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4900,17 +4900,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee34fd0a2311cf1499332a4f01184100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stage: 5
-  _characterOne: 0
+  _stage: 3
+  _characterOne: 3
   _characterTwo: 1
   _assistOne: 0
   _assistTwo: 0
   _controllerOne: 0
-  _controllerTwo: 1
+  _controllerTwo: 4
   _music: 0
   _playerOneSkin: 0
   _playerTwoSkin: 0
-  _isTrainingMode: 0
+  _isTrainingMode: 1
   _isOnlineMode: 0
   _1BitOn: 0
   _gameSpeed: 1
@@ -4960,8 +4960,8 @@ MonoBehaviour:
   - {fileID: 5904807064592484296}
   - {fileID: 6444861429886733698}
   - {fileID: 845562801584857583}
-  - {fileID: 6226891034005608214}
   - {fileID: 493586515201800811}
+  - {fileID: 6226891034005608214}
   - {fileID: 1273802532}
   _assists:
   - {fileID: 11400000, guid: 2f7ef4e4812540b42bf60476b4910e16, type: 2}
@@ -5251,7 +5251,7 @@ PrefabInstance:
     - target: {fileID: 4586557407155603638, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_SpriteLibraryAsset
       value: 
-      objectReference: {fileID: 7108339969198208228, guid: 8ee9ae6c50db4ad4c82877c8af296857, type: 3}
+      objectReference: {fileID: 7108339969198208228, guid: 75786e7796e4552499fd4d9a23b17eb3, type: 3}
     - target: {fileID: 4879431347392356363, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Size.x
       value: 1.75
@@ -5367,7 +5367,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -449614260, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
+      objectReference: {fileID: -583230338, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -23581,7 +23581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8196079, g: 0.21176472, b: 0.3137255, a: 1}
+  m_Color: {r: 0.6886792, g: 0.1323912, b: 0.22630979, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -31453,6 +31453,8 @@ MonoBehaviour:
   _pauseMenu: {fileID: 860885408}
   _trainingPauseMenu: {fileID: 534647985}
   _trainingMenu: {fileID: 729468312}
+  _healthNormalColor: {r: 0.21176471, g: 0.81960785, b: 0.2901961, a: 1}
+  _healthDamagedColor: {r: 0.96862745, g: 0.007843138, b: 0.12156863, a: 1}
   _healthImage: {fileID: 47249489669798708}
   _arcanaImage: {fileID: 2113286081}
   _assistImage: {fileID: 1649658741578152849}
@@ -31827,6 +31829,8 @@ MonoBehaviour:
   _pauseMenu: {fileID: 860885408}
   _trainingPauseMenu: {fileID: 534647985}
   _trainingMenu: {fileID: 729468312}
+  _healthNormalColor: {r: 0.21176471, g: 0.81960785, b: 0.2901961, a: 1}
+  _healthDamagedColor: {r: 0.96862745, g: 0.007843138, b: 0.12156863, a: 1}
   _healthImage: {fileID: 1604159753374727643}
   _arcanaImage: {fileID: 1282009096}
   _assistImage: {fileID: 1830092158}
@@ -32416,7 +32420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.21293166, g: 0.8207547, b: 0.29063433, a: 1}
+  m_Color: {r: 0.21176471, g: 0.81960785, b: 0.2901961, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -35030,7 +35034,7 @@ SpriteRenderer:
   m_SortingLayerID: -846761795
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: fe4097f05c842c447b277cb5e3fea455, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a88c6b8ee3d64ee4689a1abe8f7439fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
