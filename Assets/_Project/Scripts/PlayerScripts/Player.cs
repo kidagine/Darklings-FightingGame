@@ -161,18 +161,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	public void Flip()
+	public void CheckFlip()
 	{
 		if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && transform.localScale.x != 1.0f)
 		{
-			transform.localScale = new Vector2(1.0f, transform.localScale.y);
-			_keepFlip.localScale = new Vector2(1.0f, transform.localScale.y);
+			Flip(1);
 		}
 		else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner && transform.localScale.x != -1.0f)
 		{
-			transform.localScale = new Vector2(-1.0f, transform.localScale.y);
-			_keepFlip.localScale = new Vector2(-1.0f, transform.localScale.y);
+			Flip(-1);
 		}
+	}
+
+	public void Flip(int xDirection)
+	{
+		transform.localScale = new Vector2(xDirection, transform.localScale.y);
+		_keepFlip.localScale = new Vector2(xDirection, transform.localScale.y);
 	}
 
 	public bool AssistAction()

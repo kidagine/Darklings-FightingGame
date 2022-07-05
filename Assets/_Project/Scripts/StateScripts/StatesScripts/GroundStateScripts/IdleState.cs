@@ -24,7 +24,7 @@ public class IdleState : GroundParentState
 		ToCrouchState();
 		ToJumpState();
 		ToDashState();
-		_player.Flip();
+		_player.CheckFlip();
 	}
 
 	private void ToWalkState()
