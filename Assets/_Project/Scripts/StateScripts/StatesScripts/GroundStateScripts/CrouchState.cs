@@ -12,7 +12,7 @@ public class CrouchState : GroundParentState
     {
         base.UpdateLogic();
         ToIdleState();
-        _player.Flip();
+        _player.CheckFlip();
     }
 
     private void ToIdleState()

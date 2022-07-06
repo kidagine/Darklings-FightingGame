@@ -152,7 +152,6 @@ public class PlayersMenu : BaseMenu
 			}
 			else
 			{
-				Debug.Log("a");
 				SceneSettings.ControllerTwo = "Cpu";
 			}
 			if (_playerIcons[0].anchoredPosition.x == -375.0f)
@@ -180,6 +179,13 @@ public class PlayersMenu : BaseMenu
 			gameObject.SetActive(false);
 			_characterMenu.Show();
 		}
+	}
+
+	public void ConfirmQuickAssign()
+	{
+		_audio.Sound("Selected").Play();
+		_cpuTextLeft.SetActive(false);
+		_playerIcons[0].anchoredPosition = new Vector2(-375.0f, _playerIcons[0].anchoredPosition.y);
 	}
 
 	public void OpenKeyboardCoOp()

@@ -17,7 +17,7 @@ public class HurtState : HurtParentState
 	}
 	public override void Enter()
 	{
-		_player.Flip();
+		_player.CheckFlip();
 		_playerAnimator.Hurt(true);
 		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();

@@ -14,7 +14,7 @@ public class IntroState : State
 	{
 		base.Enter();
 		_playerAnimator.Idle();
-		_player.Flip();
+		_player.CheckFlip();
 	}
 
 	public override bool ToTauntState()
