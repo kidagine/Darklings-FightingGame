@@ -518,6 +518,10 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SwitchCharactersCoroutine()
     {
+        PlayerStatsSO playerStatsOneTemp = PlayerOne.PlayerStats;
+        PlayerOne.PlayerStats = PlayerTwo.PlayerStats;
+        PlayerTwo.PlayerStats = playerStatsOneTemp;
+
         _playerTwoController.IsPlayerOne = !_playerTwoController.IsPlayerOne;
         _playerOneController.IsPlayerOne = !_playerOneController.IsPlayerOne;
         _playerOneUI.ShowPlayerIcon();

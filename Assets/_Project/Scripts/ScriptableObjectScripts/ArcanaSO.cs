@@ -8,4 +8,7 @@ public class ArcanaSO : AttackSO
 	public bool reversal;
 	[Header("Arcana Information")]
 	public string arcanaName;
+	[TextArea(5,7)]
+	public string arcanaDescription;
+	public Sprite arcanaShowcase;
 }

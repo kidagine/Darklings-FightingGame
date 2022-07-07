@@ -45,7 +45,6 @@ public class PlayerUI : MonoBehaviour
 	private Coroutine _damagedHealthCoroutine;
 	private Coroutine _damagedCoroutine;
 	private Animator _animator;
-	private Audio _audio;
 	private BrainController _controller;
 	private RectTransform _comboGroup;
 	private float _currentEndDamageValue;
@@ -60,7 +59,6 @@ public class PlayerUI : MonoBehaviour
 	void Awake()
 	{
 		_animator = GetComponent<Animator>();
-		_audio = GetComponent<Audio>();
 		_comboText.transform.parent.parent.gameObject.SetActive(false);
 		_notification.gameObject.SetActive(false);
 		_comboGroup = _comboText.transform.parent.parent.GetComponent<RectTransform>();
@@ -316,14 +314,7 @@ public class PlayerUI : MonoBehaviour
 
 	public void OpenPause(bool isPlayerOne)
 	{
-		if (isPlayerOne)
-		{
-			_whoPausedText.text = "Player 1 Paused";
-		}
-		else
-		{
-			_whoPausedText.text = "Player 2 Paused";
-		}
+		_pauseMenu.SetWhoPaused(isPlayerOne);
 		Time.timeScale = 0.0f;
 		GameManager.Instance.DisableAllInput();
 		GameManager.Instance.PauseMusic();
@@ -333,14 +324,7 @@ public class PlayerUI : MonoBehaviour
 
 	public void OpenTrainingPause(bool isPlayerOne)
 	{
-		if (isPlayerOne)
-		{
-			_whoPausedTrainingText.text = "Player 1 Paused";
-		}
-		else
-		{
-			_whoPausedTrainingText.text = "Player 2 Paused";
-		}
+		_trainingPauseMenu.SetWhoPaused(isPlayerOne);
 		Time.timeScale = 0.0f;
 		GameManager.Instance.DisableAllInput();
 		GameManager.Instance.PauseMusic();

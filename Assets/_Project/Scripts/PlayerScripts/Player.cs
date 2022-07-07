@@ -24,7 +24,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public Player OtherPlayer { get; private set; }
 	public PlayerMovement OtherPlayerMovement { get; private set; }
 	public PlayerUI OtherPlayerUI { get; private set; }
-	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } private set { } }
+	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
 	public Transform CameraPoint { get { return _cameraPoint; } private set { } }
