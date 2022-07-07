@@ -6,4 +6,6 @@ public class ArcanaSO : AttackSO
 	[Header("Arcana")]
 	public bool airOk;
 	public bool reversal;
+	[Header("Arcana Information")]
+	public string arcanaName;
 }
