@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	protected PlayerComboSystem _playerComboSystem;
 	private PlayerStats _playerStats;
 	private BrainController _controller;
+	private Coroutine _comboTimerCoroutine;
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
 	public PlayerStateManager OtherPlayerStateManager { get; private set; }
 	public Player OtherPlayer { get; private set; }
@@ -99,10 +101,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			Arcana = 0.0f;
 		}
 		StopAllCoroutines();
+		StopComboTimer();
 		_playerMovement.StopAllCoroutines();
 		_playerMovement.ResetMovement();
 		_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
-		OtherPlayerUI.ResetCombo();
 		_playerUI.SetArcana(Arcana);
 		_playerUI.SetAssist(AssistGauge);
 		_playerUI.ResetHealthDamaged();
@@ -200,6 +202,48 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		AssistGauge--;
 		_playerUI.SetAssist(AssistGauge);
+	}
+
+	public void StartComboTimer(ComboTimerStarterEnum comboTimerStarter)
+	{
+		_playerUI.SetComboTimerActive(true);
+		_playerUI.SetComboTimer(1.0f, Color.yellow);
+		switch (comboTimerStarter)
+		{
+			case ComboTimerStarterEnum.Blue:
+				_comboTimerCoroutine = StartCoroutine(StartComboTimerCoroutine(3.5f, Color.blue));
+				break;
+			case ComboTimerStarterEnum.Yellow:
+				_comboTimerCoroutine = StartCoroutine(StartComboTimerCoroutine(3.0f, Color.yellow));
+				break;
+			case ComboTimerStarterEnum.Red:
+				_comboTimerCoroutine = StartCoroutine(StartComboTimerCoroutine(2.5f, Color.red));
+				break;
+		}	
+	}
+
+	public void StopComboTimer()
+	{
+		if (_comboTimerCoroutine != null)
+		{
+			StopCoroutine(_comboTimerCoroutine);
+			_playerUI.SetComboTimerActive(false);
+			_playerUI.ResetCombo();
+		}
+	}
+
+	IEnumerator StartComboTimerCoroutine(float comboTime, Color comboColor)
+	{
+		float elapsedTime = 0.0f;
+		float waitTime = comboTime;
+		while (elapsedTime < waitTime)
+		{
+			float value = Mathf.Lerp(1.0f, 0.0f, elapsedTime / waitTime);
+			elapsedTime += Time.deltaTime;
+			_playerUI.SetComboTimer(value, comboColor);
+			yield return null;
+		}
+		_playerUI.SetComboTimerActive(false);
 	}
 
 	public void RecallAssist()

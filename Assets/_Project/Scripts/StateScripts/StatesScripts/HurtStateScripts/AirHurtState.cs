@@ -41,7 +41,7 @@ public class AirHurtState : HurtParentState
 			_player.MaxHealthStats();
 		}
 		_playerAnimator.Jump();
-		_player.OtherPlayerUI.ResetCombo();
+		_player.OtherPlayer.StopComboTimer();
 		_stateMachine.ChangeState(_fallState);
 	}
 
@@ -49,7 +49,7 @@ public class AirHurtState : HurtParentState
 	{
 		if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
 		{
-			_player.OtherPlayerUI.ResetCombo();
+			_player.OtherPlayer.StopComboTimer();
 			_stateMachine.ChangeState(_fallState);
 		}
 	}

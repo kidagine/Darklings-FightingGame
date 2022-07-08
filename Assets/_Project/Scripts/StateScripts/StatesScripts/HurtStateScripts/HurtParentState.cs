@@ -31,6 +31,17 @@ public class HurtParentState : State
 				_player.OtherPlayer.transform.localScale.x, 0.0f), _hurtAttack.knockback, _hurtAttack.knockbackDuration);
 		}
 		_player.OtherPlayerUI.IncreaseCombo();
+		if (_player.OtherPlayerUI.CurrentComboCount == 1)
+		{
+			if (_hurtAttack.attackTypeEnum == AttackTypeEnum.Break)
+			{
+				_player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Red);
+			}
+			else
+			{
+				_player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
+			}
+		}
 		_player.Health -= CalculateDamage();
 		_playerUI.SetHealth(_player.Health);
 		_playerUI.Damaged();
@@ -62,7 +73,7 @@ public class HurtParentState : State
 
 	private void ToDeathState()
 	{
-		_player.OtherPlayerUI.ResetCombo();
+		_player.OtherPlayer.StopComboTimer();
 		_stateMachine.ChangeState(_deathState);
 	}
 

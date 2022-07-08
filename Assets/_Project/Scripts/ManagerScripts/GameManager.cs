@@ -426,8 +426,8 @@ public class GameManager : MonoBehaviour
         PlayerTwo.ResetPlayer();
         PlayerOne.transform.position = _spawnPositions[0].position;
         PlayerTwo.transform.position = _spawnPositions[1].position;
-        _playerOneUI.ResetCombo();
-        _playerTwoUI.ResetCombo();
+        PlayerOne.StopComboTimer();
+        PlayerTwo.StopComboTimer();
         PlayerOne.PlayerStateManager.TryToTauntState();
         PlayerTwo.PlayerStateManager.TryToTauntState();
         StartCoroutine(ReadyCoroutine());

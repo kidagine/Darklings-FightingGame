@@ -27,6 +27,8 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Transform _arcanaDividerPivot = default;
 	[SerializeField] private GameObject _arcanaDividerPrefab = default;
 	[SerializeField] private Slider _pauseSlider = default;
+	[SerializeField] private Slider _comboTimerSlider = default;
+	[SerializeField] private Image _comboTimerImage = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private PauseMenu _trainingPauseMenu = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
@@ -61,6 +63,7 @@ public class PlayerUI : MonoBehaviour
 		_animator = GetComponent<Animator>();
 		_comboText.transform.parent.parent.gameObject.SetActive(false);
 		_notification.gameObject.SetActive(false);
+		_comboTimerSlider.gameObject.SetActive(false);
 		_comboGroup = _comboText.transform.parent.parent.GetComponent<RectTransform>();
 	}
 
@@ -258,6 +261,17 @@ public class PlayerUI : MonoBehaviour
 	{
 		_lostLivesAnimator[_currentLifeIndex].Play("LifeLost");
 		_currentLifeIndex++;
+	}
+
+	public void SetComboTimer(float value, Color color)
+	{
+		_comboTimerImage.color = color;
+		_comboTimerSlider.value = value;
+	}
+
+	public void SetComboTimerActive(bool state)
+	{
+		_comboTimerSlider.gameObject.SetActive(state);
 	}
 
 	public void ResetLives()
