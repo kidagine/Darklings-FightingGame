@@ -2,7 +2,6 @@ using Demonics.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class CommandListMenu : BaseMenu
@@ -12,6 +11,10 @@ public class CommandListMenu : BaseMenu
 	[SerializeField] private VideoPlayer _showcaseVideo = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private CommandListButton[] _commandListButtons = default;
+	[SerializeField] private GameObject _knockdownImage = default;
+	[SerializeField] private GameObject _reversalImage = default;
+	[SerializeField] private GameObject _projectileImage = default;
+
 	private Player _playerOne;
 	private Player _playerTwo;
 	private Player _currentlyDisplayedPlayer;
@@ -64,6 +67,21 @@ public class CommandListMenu : BaseMenu
 		_showcaseVideo.clip = command.arcanaVideo;
 		_showcaseVideo.Stop();
 		_showcaseVideo.Play();
+		_reversalImage.SetActive(false);
+		_knockdownImage.SetActive(false);
+		_projectileImage.SetActive(false);
+		if (command.reversal)
+		{
+			_reversalImage.SetActive(true);
+		}
+		if (command.causesKnockdown)
+		{
+			_knockdownImage.SetActive(true);
+		}
+		if (command.isProjectile)
+		{
+			_projectileImage.SetActive(true);
+		}
 	}
 
 	private void OnEnable()
