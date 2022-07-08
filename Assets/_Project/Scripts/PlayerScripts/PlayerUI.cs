@@ -49,12 +49,12 @@ public class PlayerUI : MonoBehaviour
 	private RectTransform _comboGroup;
 	private float _currentEndDamageValue;
 	private int _currentLifeIndex;
-	private int _currentComboCount;
 	private bool _hasComboEnded;
 	private bool _initializedStats;
 	public string PlayerName { get; private set; }
 	public string CharacterName { get; private set; }
 
+	public int CurrentComboCount { get; private set; }
 
 	void Awake()
 	{
@@ -348,21 +348,21 @@ public class PlayerUI : MonoBehaviour
 			StopCoroutine(_resetComboCoroutine);
 			_hasComboEnded = false;
 			_comboText.transform.parent.parent.gameObject.SetActive(false);
-			_currentComboCount = 0;
+			CurrentComboCount = 0;
 			_comboText.text = "0 Hits";
 			if (_comboGroup.anchoredPosition.x == 100.0f)
 			{
 				_comboGroup.anchoredPosition = new Vector2(180.0f, _comboGroup.anchoredPosition.y);
 			}
 		}
-		_currentComboCount++;
-		_comboText.text = _currentComboCount.ToString();
-		if (_currentComboCount > 1)
+		CurrentComboCount++;
+		_comboText.text = CurrentComboCount.ToString();
+		if (CurrentComboCount > 1)
 		{
 			_comboText.transform.parent.parent.gameObject.SetActive(false);
 			_comboText.transform.parent.parent.gameObject.SetActive(true);
 		}
-		if (_currentComboCount >= 10 && _comboGroup.anchoredPosition.x == 180.0f)
+		if (CurrentComboCount >= 10 && _comboGroup.anchoredPosition.x == 180.0f)
 		{
 			_comboGroup.anchoredPosition = new Vector2(100.0f, _comboGroup.anchoredPosition.y);
 		}
@@ -396,7 +396,7 @@ public class PlayerUI : MonoBehaviour
 	{
 		yield return new WaitForSeconds(1.0f);
 		_comboText.transform.parent.parent.gameObject.SetActive(false);
-		_currentComboCount = 0;
+		CurrentComboCount = 0;
 		_comboText.text = "";
 	}
 

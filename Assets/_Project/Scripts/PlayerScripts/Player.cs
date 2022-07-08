@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.U2D.Animation;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
@@ -27,6 +26,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
+	public AttackSO ResultAttack { get; set; }
 	public Transform CameraPoint { get { return _cameraPoint; } private set { } }
 	public bool CanAirArcana { get; set; }
 	public float Health { get; set; }
@@ -188,6 +188,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			return true;
 		}
 		return false;
+	}
+
+	public void SetResultAttack(int calculatedDamage)
+	{
+		ResultAttack = Instantiate(CurrentAttack);
+		ResultAttack.damage = calculatedDamage;
 	}
 
 	public void DecreaseArcana()

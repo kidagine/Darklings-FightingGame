@@ -2,12 +2,13 @@ using Demonics.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class CommandListMenu : BaseMenu
 {
 	[SerializeField] private TextMeshProUGUI _characterText = default;
 	[SerializeField] private TextMeshProUGUI _descriptionText = default;
-	[SerializeField] private Image _showcaseImage = default;
+	[SerializeField] private VideoPlayer _showcaseVideo = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private CommandListButton[] _commandListButtons = default;
 	private Player _playerOne;
@@ -56,8 +57,10 @@ public class CommandListMenu : BaseMenu
 
 	public void SetCommandListShowcase(ArcanaSO command)
 	{
-		_showcaseImage.sprite = command.arcanaShowcase;
 		_descriptionText.text = command.arcanaDescription;
+		_showcaseVideo.clip = command.arcanaVideo;
+		_showcaseVideo.Stop();
+		_showcaseVideo.Play();
 	}
 
 	private void OnEnable()
