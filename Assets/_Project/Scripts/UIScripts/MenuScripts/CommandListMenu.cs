@@ -1,6 +1,7 @@
 using Demonics.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -36,6 +37,8 @@ public class CommandListMenu : BaseMenu
 				_currentlyDisplayedPlayer = _playerOne;
 			}
 			SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
+			EventSystem.current.SetSelectedGameObject(null);
+			_startingOption.Select();
 		}
 	}
 
