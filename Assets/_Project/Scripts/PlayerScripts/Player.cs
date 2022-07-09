@@ -1,5 +1,5 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.U2D.Animation;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
@@ -19,6 +19,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	protected PlayerComboSystem _playerComboSystem;
 	private PlayerStats _playerStats;
 	private BrainController _controller;
+	private Coroutine _comboTimerCoroutine;
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
 	public PlayerStateManager OtherPlayerStateManager { get; private set; }
 	public Player OtherPlayer { get; private set; }
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
+	public AttackSO ResultAttack { get; set; }
 	public Transform CameraPoint { get { return _cameraPoint; } private set { } }
 	public bool CanAirArcana { get; set; }
 	public float Health { get; set; }
@@ -99,10 +101,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			Arcana = 0.0f;
 		}
 		StopAllCoroutines();
+		StopComboTimer();
 		_playerMovement.StopAllCoroutines();
 		_playerMovement.ResetMovement();
 		_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
-		OtherPlayerUI.ResetCombo();
 		_playerUI.SetArcana(Arcana);
 		_playerUI.SetAssist(AssistGauge);
 		_playerUI.ResetHealthDamaged();
@@ -190,10 +192,48 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		return false;
 	}
 
+	public void SetResultAttack(int calculatedDamage)
+	{
+		ResultAttack = Instantiate(CurrentAttack);
+		ResultAttack.damage = calculatedDamage;
+	}
+
 	public void DecreaseArcana()
 	{
 		AssistGauge--;
 		_playerUI.SetAssist(AssistGauge);
+	}
+
+	public void StartComboTimer(ComboTimerStarterEnum comboTimerStarter)
+	{
+		_playerUI.SetComboTimerActive(true);
+		_comboTimerCoroutine = StartCoroutine(StartComboTimerCoroutine(comboTimerStarter));
+	}
+
+	public void StopComboTimer()
+	{
+		if (_comboTimerCoroutine != null)
+		{
+			StopCoroutine(_comboTimerCoroutine);
+			_playerUI.SetComboTimerActive(false);
+			_playerUI.ResetCombo();
+		}
+	}
+
+	IEnumerator StartComboTimerCoroutine(ComboTimerStarterEnum comboTimerStarter)
+	{
+		float elapsedTime = 0.0f;
+		float waitTime = ComboTimerStarterTypes.GetComboTimerStarterValue(comboTimerStarter);
+		Color color = ComboTimerStarterTypes.GetComboTimerStarterColor(comboTimerStarter);
+		while (elapsedTime < waitTime)
+		{
+			float value = Mathf.Lerp(1.0f, 0.0f, elapsedTime / waitTime);
+			elapsedTime += Time.deltaTime;
+			_playerUI.SetComboTimer(value, color);
+			yield return null;
+		}
+		OtherPlayer._playerStateManager.TryToIdleState();
+		_playerUI.SetComboTimerActive(false);
 	}
 
 	public void RecallAssist()

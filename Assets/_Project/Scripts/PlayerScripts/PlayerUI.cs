@@ -18,7 +18,6 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
 	[SerializeField] private TextMeshProUGUI _assistName = default;
-	[SerializeField] private TextMeshProUGUI _comboText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
 	[SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
@@ -27,6 +26,8 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Transform _arcanaDividerPivot = default;
 	[SerializeField] private GameObject _arcanaDividerPrefab = default;
 	[SerializeField] private Slider _pauseSlider = default;
+	[SerializeField] private Slider _comboTimerSlider = default;
+	[SerializeField] private Image _comboTimerImage = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private PauseMenu _trainingPauseMenu = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
@@ -49,19 +50,21 @@ public class PlayerUI : MonoBehaviour
 	private RectTransform _comboGroup;
 	private float _currentEndDamageValue;
 	private int _currentLifeIndex;
-	private int _currentComboCount;
 	private bool _hasComboEnded;
 	private bool _initializedStats;
 	public string PlayerName { get; private set; }
 	public string CharacterName { get; private set; }
 
+	public int CurrentComboCount { get; private set; }
 
 	void Awake()
 	{
 		_animator = GetComponent<Animator>();
-		_comboText.transform.parent.parent.gameObject.SetActive(false);
+		_hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
 		_notification.gameObject.SetActive(false);
-		_comboGroup = _comboText.transform.parent.parent.GetComponent<RectTransform>();
+		_comboTimerSlider.transform.GetChild(0).gameObject.SetActive(false);
+		_comboTimerSlider.transform.GetChild(1).gameObject.SetActive(false); 
+		_comboGroup = _hitsNumberText.transform.parent.parent.parent.GetComponent<RectTransform>();
 	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
@@ -260,6 +263,19 @@ public class PlayerUI : MonoBehaviour
 		_currentLifeIndex++;
 	}
 
+	public void SetComboTimer(float value, Color color)
+	{
+		_hitsNumberText.color = color;
+		_comboTimerImage.color = color;
+		_comboTimerSlider.value = value;
+	}
+
+	public void SetComboTimerActive(bool state)
+	{
+		_comboTimerSlider.transform.GetChild(0).gameObject.SetActive(state);
+		_comboTimerSlider.transform.GetChild(1).gameObject.SetActive(state);
+	}
+
 	public void ResetLives()
 	{
 		_lostLivesAnimator[0].Rebind();
@@ -347,24 +363,24 @@ public class PlayerUI : MonoBehaviour
 		{
 			StopCoroutine(_resetComboCoroutine);
 			_hasComboEnded = false;
-			_comboText.transform.parent.parent.gameObject.SetActive(false);
-			_currentComboCount = 0;
-			_comboText.text = "0 Hits";
-			if (_comboGroup.anchoredPosition.x == 100.0f)
+			_hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
+			CurrentComboCount = 0;
+			_hitsNumberText.text = "0 Hits";
+			if (_comboGroup.anchoredPosition.x == -110.0f)
 			{
-				_comboGroup.anchoredPosition = new Vector2(180.0f, _comboGroup.anchoredPosition.y);
+				_comboGroup.anchoredPosition = new Vector2(-40.0f, _comboGroup.anchoredPosition.y);
 			}
 		}
-		_currentComboCount++;
-		_comboText.text = _currentComboCount.ToString();
-		if (_currentComboCount > 1)
+		CurrentComboCount++;
+		_hitsNumberText.text = CurrentComboCount.ToString();
+		if (CurrentComboCount > 1)
 		{
-			_comboText.transform.parent.parent.gameObject.SetActive(false);
-			_comboText.transform.parent.parent.gameObject.SetActive(true);
+			_hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
+			_hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(true);
 		}
-		if (_currentComboCount >= 10 && _comboGroup.anchoredPosition.x == 180.0f)
+		if (CurrentComboCount >= 10 && _comboGroup.anchoredPosition.x == -40.0f)
 		{
-			_comboGroup.anchoredPosition = new Vector2(100.0f, _comboGroup.anchoredPosition.y);
+			_comboGroup.anchoredPosition = new Vector2(-110.0f, _comboGroup.anchoredPosition.y);
 		}
 	}
 
@@ -395,9 +411,9 @@ public class PlayerUI : MonoBehaviour
 	IEnumerator ResetComboCoroutine()
 	{
 		yield return new WaitForSeconds(1.0f);
-		_comboText.transform.parent.parent.gameObject.SetActive(false);
-		_currentComboCount = 0;
-		_comboText.text = "";
+		_hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
+		CurrentComboCount = 0;
+		_hitsNumberText.text = "";
 	}
 
 	public void ShowPlayerIcon()

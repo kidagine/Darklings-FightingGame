@@ -59,7 +59,7 @@ public class KnockbackState : State
 		base.Exit();
 		if (_canCheckGroundCoroutine != null)
 		{
-			_player.OtherPlayerUI.ResetCombo();
+			_player.OtherPlayer.StopComboTimer();
 			_canCheckGround = false;
 			StopCoroutine(_canCheckGroundCoroutine);
 		}

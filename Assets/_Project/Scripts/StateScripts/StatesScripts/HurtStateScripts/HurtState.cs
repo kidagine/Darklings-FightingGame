@@ -36,15 +36,16 @@ public class HurtState : HurtParentState
 		}
 	}
 
-	private void ToIdleState()
+	public override bool ToIdleState()
 	{
-		_player.OtherPlayerUI.ResetCombo();
+		_player.OtherPlayer.StopComboTimer();
 		_stateMachine.ChangeState(_idleState);
+		return true;
 	}
 
 	private void ToAttackState()
 	{
-		_player.OtherPlayerUI.ResetCombo();
+		_player.OtherPlayer.StopComboTimer();
 		_attackState.Initialize(InputEnum.Light, false, false);	
 		_stateMachine.ChangeState(_attackState);
 	}
