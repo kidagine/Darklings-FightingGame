@@ -207,19 +207,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public void StartComboTimer(ComboTimerStarterEnum comboTimerStarter)
 	{
 		_playerUI.SetComboTimerActive(true);
-		_playerUI.SetComboTimer(1.0f, Color.yellow);
-		switch (comboTimerStarter)
-		{
-			case ComboTimerStarterEnum.Blue:
-				_comboTimerCoroutine = StartCoroutine(StartComboTimerCoroutine(3.5f, Color.blue));
-				break;
-			case ComboTimerStarterEnum.Yellow:
-				_comboTimerCoroutine = StartCoroutine(StartComboTimerCoroutine(3.0f, Color.yellow));
-				break;
-			case ComboTimerStarterEnum.Red:
-				_comboTimerCoroutine = StartCoroutine(StartComboTimerCoroutine(2.5f, Color.red));
-				break;
-		}	
+		_comboTimerCoroutine = StartCoroutine(StartComboTimerCoroutine(comboTimerStarter));
 	}
 
 	public void StopComboTimer()
@@ -232,17 +220,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
-	IEnumerator StartComboTimerCoroutine(float comboTime, Color comboColor)
+	IEnumerator StartComboTimerCoroutine(ComboTimerStarterEnum comboTimerStarter)
 	{
 		float elapsedTime = 0.0f;
-		float waitTime = comboTime;
+		float waitTime = ComboTimerStarterTypes.GetComboTimerStarterValue(comboTimerStarter);
+		Color color = ComboTimerStarterTypes.GetComboTimerStarterColor(comboTimerStarter);
 		while (elapsedTime < waitTime)
 		{
 			float value = Mathf.Lerp(1.0f, 0.0f, elapsedTime / waitTime);
 			elapsedTime += Time.deltaTime;
-			_playerUI.SetComboTimer(value, comboColor);
+			_playerUI.SetComboTimer(value, color);
 			yield return null;
 		}
+		OtherPlayer._playerStateManager.TryToIdleState();
 		_playerUI.SetComboTimerActive(false);
 	}
 

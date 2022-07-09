@@ -63,7 +63,8 @@ public class PlayerUI : MonoBehaviour
 		_animator = GetComponent<Animator>();
 		_comboText.transform.parent.parent.gameObject.SetActive(false);
 		_notification.gameObject.SetActive(false);
-		_comboTimerSlider.gameObject.SetActive(false);
+		_comboTimerSlider.transform.GetChild(0).gameObject.SetActive(false);
+		_comboTimerSlider.transform.GetChild(1).gameObject.SetActive(false); 
 		_comboGroup = _comboText.transform.parent.parent.GetComponent<RectTransform>();
 	}
 
@@ -265,13 +266,15 @@ public class PlayerUI : MonoBehaviour
 
 	public void SetComboTimer(float value, Color color)
 	{
+		_hitsNumberText.color = color;
 		_comboTimerImage.color = color;
 		_comboTimerSlider.value = value;
 	}
 
 	public void SetComboTimerActive(bool state)
 	{
-		_comboTimerSlider.gameObject.SetActive(state);
+		_comboTimerSlider.transform.GetChild(0).gameObject.SetActive(state);
+		_comboTimerSlider.transform.GetChild(1).gameObject.SetActive(state);
 	}
 
 	public void ResetLives()
@@ -364,9 +367,9 @@ public class PlayerUI : MonoBehaviour
 			_comboText.transform.parent.parent.gameObject.SetActive(false);
 			CurrentComboCount = 0;
 			_comboText.text = "0 Hits";
-			if (_comboGroup.anchoredPosition.x == 100.0f)
+			if (_comboGroup.anchoredPosition.x == 30.0f)
 			{
-				_comboGroup.anchoredPosition = new Vector2(180.0f, _comboGroup.anchoredPosition.y);
+				_comboGroup.anchoredPosition = new Vector2(90.0f, _comboGroup.anchoredPosition.y);
 			}
 		}
 		CurrentComboCount++;
@@ -376,9 +379,9 @@ public class PlayerUI : MonoBehaviour
 			_comboText.transform.parent.parent.gameObject.SetActive(false);
 			_comboText.transform.parent.parent.gameObject.SetActive(true);
 		}
-		if (CurrentComboCount >= 10 && _comboGroup.anchoredPosition.x == 180.0f)
+		if (CurrentComboCount >= 10 && _comboGroup.anchoredPosition.x == 90.0f)
 		{
-			_comboGroup.anchoredPosition = new Vector2(100.0f, _comboGroup.anchoredPosition.y);
+			_comboGroup.anchoredPosition = new Vector2(30.0f, _comboGroup.anchoredPosition.y);
 		}
 	}
 

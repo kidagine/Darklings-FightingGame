@@ -36,10 +36,11 @@ public class HurtState : HurtParentState
 		}
 	}
 
-	private void ToIdleState()
+	public override bool ToIdleState()
 	{
 		_player.OtherPlayer.StopComboTimer();
 		_stateMachine.ChangeState(_idleState);
+		return true;
 	}
 
 	private void ToAttackState()
