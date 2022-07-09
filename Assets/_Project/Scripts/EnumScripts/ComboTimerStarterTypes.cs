@@ -9,7 +9,7 @@ public class ComboTimerStarterTypes : MonoBehaviour
 	[SerializeField] private ComboTimerStarterEnum _comboTimerStarterEnum = default;
 	private static Color _red = new(1.0f, 0.3254902f, 0.3254902f);
 	private static Color _yellow = new(0.9647059f, 0.8941177f, 0.4078431f);
-	private static Color _blue = new(1, 1, 1);
+	private static Color _blue = new(1.0f, 1.0f, 1.0f);
 
 
 	public static float GetComboTimerStarterValue(ComboTimerStarterEnum comboTimerStarter)

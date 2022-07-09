@@ -18,7 +18,6 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
 	[SerializeField] private TextMeshProUGUI _assistName = default;
-	[SerializeField] private TextMeshProUGUI _comboText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedText = default;
 	[SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
 	[SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
@@ -61,11 +60,11 @@ public class PlayerUI : MonoBehaviour
 	void Awake()
 	{
 		_animator = GetComponent<Animator>();
-		_comboText.transform.parent.parent.gameObject.SetActive(false);
+		_hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
 		_notification.gameObject.SetActive(false);
 		_comboTimerSlider.transform.GetChild(0).gameObject.SetActive(false);
 		_comboTimerSlider.transform.GetChild(1).gameObject.SetActive(false); 
-		_comboGroup = _comboText.transform.parent.parent.GetComponent<RectTransform>();
+		_comboGroup = _hitsNumberText.transform.parent.parent.parent.GetComponent<RectTransform>();
 	}
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
@@ -364,24 +363,24 @@ public class PlayerUI : MonoBehaviour
 		{
 			StopCoroutine(_resetComboCoroutine);
 			_hasComboEnded = false;
-			_comboText.transform.parent.parent.gameObject.SetActive(false);
+			_hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
 			CurrentComboCount = 0;
-			_comboText.text = "0 Hits";
-			if (_comboGroup.anchoredPosition.x == 30.0f)
+			_hitsNumberText.text = "0 Hits";
+			if (_comboGroup.anchoredPosition.x == -110.0f)
 			{
-				_comboGroup.anchoredPosition = new Vector2(90.0f, _comboGroup.anchoredPosition.y);
+				_comboGroup.anchoredPosition = new Vector2(-40.0f, _comboGroup.anchoredPosition.y);
 			}
 		}
 		CurrentComboCount++;
-		_comboText.text = CurrentComboCount.ToString();
+		_hitsNumberText.text = CurrentComboCount.ToString();
 		if (CurrentComboCount > 1)
 		{
-			_comboText.transform.parent.parent.gameObject.SetActive(false);
-			_comboText.transform.parent.parent.gameObject.SetActive(true);
+			_hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
+			_hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(true);
 		}
-		if (CurrentComboCount >= 10 && _comboGroup.anchoredPosition.x == 90.0f)
+		if (CurrentComboCount >= 10 && _comboGroup.anchoredPosition.x == -40.0f)
 		{
-			_comboGroup.anchoredPosition = new Vector2(30.0f, _comboGroup.anchoredPosition.y);
+			_comboGroup.anchoredPosition = new Vector2(-110.0f, _comboGroup.anchoredPosition.y);
 		}
 	}
 
@@ -412,9 +411,9 @@ public class PlayerUI : MonoBehaviour
 	IEnumerator ResetComboCoroutine()
 	{
 		yield return new WaitForSeconds(1.0f);
-		_comboText.transform.parent.parent.gameObject.SetActive(false);
+		_hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
 		CurrentComboCount = 0;
-		_comboText.text = "";
+		_hitsNumberText.text = "";
 	}
 
 	public void ShowPlayerIcon()
