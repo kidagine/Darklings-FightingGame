@@ -43,6 +43,18 @@ public class PlayerAnimationEvents : MonoBehaviour
 		_player.CreateEffect(Convert.ToBoolean(isProjectile));
 	}
 
+	public void SetParryingAnimationEvent(int state)
+	{
+		if (state == 0)
+		{
+			_player.Parrying = false;
+		}
+		else
+		{
+			_player.Parrying = true;
+		}
+	}
+
 	public void ResetTimeScale()
 	{
 		Time.timeScale = GameManager.Instance.GameSpeed;

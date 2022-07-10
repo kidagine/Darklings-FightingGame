@@ -105,6 +105,11 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.Play("Throw");
 	}
 
+	public void Parry()
+	{
+		_animator.Play("Parry");
+	}
+
 	public void Arcana(string arcanaType)
 	{
 		_animator.Play(arcanaType, -1, 0f);

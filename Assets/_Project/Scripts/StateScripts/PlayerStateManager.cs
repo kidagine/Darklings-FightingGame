@@ -66,6 +66,11 @@ public class PlayerStateManager : StateMachine
 		return CurrentState.ToGrabState();
 	}
 
+	public bool TryToParryState()
+	{
+		return CurrentState.ToParryState();
+	}
+
 	public bool TryToThrowState()
 	{
 		return CurrentState.ToThrowState();

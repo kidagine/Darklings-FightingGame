@@ -56,6 +56,12 @@ public class IdleState : GroundParentState
 		}
 	}
 
+	public override bool ToParryState()
+	{
+		_stateMachine.ChangeState(_parryState);
+		return true;
+	}
+
 	private void ToDashState()
 	{
 		if (_baseController.DashForward())

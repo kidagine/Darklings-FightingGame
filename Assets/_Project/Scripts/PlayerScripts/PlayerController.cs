@@ -29,6 +29,7 @@ public class PlayerController : BaseController
                 Arcane();
                 Assist();
                 Throw();
+                Parry();
             }
             Pause();
             ResetRound();
@@ -131,6 +132,15 @@ public class PlayerController : BaseController
         {
             _playerStateManager.TryToGrabState();
             _inputBuffer.AddInputBufferItem(InputEnum.Throw);
+        }
+    }
+
+    protected virtual void Parry()
+    {
+        if (Input.GetButtonDown(_brainController.ControllerInputName + "Parry"))
+        {
+            _playerStateManager.TryToParryState();
+            //_inputBuffer.AddInputBufferItem(InputEnum.Parry);
         }
     }
 
