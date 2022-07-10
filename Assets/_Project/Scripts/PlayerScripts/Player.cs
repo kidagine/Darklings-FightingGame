@@ -165,6 +165,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		}
 	}
 
+	public void ArcanaGain(float arcana)
+	{
+		if (Arcana < _playerStats.PlayerStatsSO.maxArcana && GameManager.Instance.HasGameStarted)
+		{
+			Arcana += arcana;
+			_playerUI.SetArcana(Arcana);
+		}
+	}
+
 	public void CheckFlip()
 	{
 		if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && transform.localScale.x != 1.0f)

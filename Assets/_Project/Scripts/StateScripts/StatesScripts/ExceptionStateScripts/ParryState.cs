@@ -31,19 +31,12 @@ public class ParryState : State
 	{
 		if (_player.Parrying)
 		{
-			_audio.Sound(attack.impactSound).Play();
-			GameManager.Instance.HitStop(0.2f);
-			GameObject effect = Instantiate(_parryEffect);
-			effect.transform.localPosition = attack.hurtEffectPosition;
-			if (!_playerMovement.IsInCorner)
-			{
-				_playerMovement.Knockback(new Vector2(
-					_player.OtherPlayer.transform.localScale.x, 0.0f), attack.knockback, attack.knockbackDuration);
-			}
+			Parry(attack);
 			return false;
 		}
 		else
 		{
+			_hurtState.Initialize(attack);
 			_stateMachine.ChangeState(_hurtState);
 			return true;
 		}
@@ -53,21 +46,28 @@ public class ParryState : State
 	{
 		if (_player.Parrying)
 		{
-			_audio.Sound(attack.impactSound).Play();
-			GameManager.Instance.HitStop(0.2f);
-			GameObject effect = Instantiate(_parryEffect);
-			effect.transform.localPosition = attack.hurtEffectPosition;
-			if (!_playerMovement.IsInCorner)
-			{
-				_playerMovement.Knockback(new Vector2(
-					_player.OtherPlayer.transform.localScale.x, 0.0f), attack.knockback, attack.knockbackDuration);
-			}
+			Parry(attack);
 			return false;
 		}
 		else
 		{
+			_airborneHurtState.Initialize(attack);
 			_stateMachine.ChangeState(_airborneHurtState);
 			return true;
+		}
+	}
+
+	private void Parry(AttackSO attack)
+	{
+		_audio.Sound(attack.impactSound).Play();
+		_player.ArcanaGain(0.3f);
+		GameManager.Instance.HitStop(0.2f);
+		GameObject effect = Instantiate(_parryEffect);
+		effect.transform.localPosition = attack.hurtEffectPosition;
+		if (!_playerMovement.IsInCorner)
+		{
+			_playerMovement.Knockback(new Vector2(
+				_player.OtherPlayer.transform.localScale.x, 0.0f), attack.knockback, attack.knockbackDuration);
 		}
 	}
 
