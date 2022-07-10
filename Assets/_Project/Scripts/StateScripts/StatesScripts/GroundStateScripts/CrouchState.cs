@@ -23,6 +23,12 @@ public class CrouchState : GroundParentState
         }
     }
 
+    public override bool ToParryState()
+    {
+        _stateMachine.ChangeState(_parryState);
+        return true;
+    }
+
     public override bool ToBlockState(AttackSO attack)
     {
         _blockLowState.Initialize(attack);

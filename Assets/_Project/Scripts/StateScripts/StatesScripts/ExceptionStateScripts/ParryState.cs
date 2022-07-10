@@ -6,6 +6,7 @@ public class ParryState : State
 	private IdleState _idleState;
 	private HurtState _hurtState;
 	private AirborneHurtState _airborneHurtState;
+	private bool _parried;
 
 	private void Awake()
 	{
@@ -17,6 +18,7 @@ public class ParryState : State
 	public override void Enter()
 	{
 		base.Enter();
+		_audio.Sound("ParryStart").Play();
 		_playerAnimator.Parry();
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
 	}
@@ -59,17 +61,29 @@ public class ParryState : State
 
 	private void Parry(AttackSO attack)
 	{
-		_audio.Sound(attack.impactSound).Play();
+		_audio.Sound("Parry").Play();
 		_player.ArcanaGain(0.3f);
+		_parried = true;
 		GameManager.Instance.HitStop(0.2f);
 		GameObject effect = Instantiate(_parryEffect);
 		effect.transform.localPosition = attack.hurtEffectPosition;
 		if (!_playerMovement.IsInCorner)
 		{
 			_playerMovement.Knockback(new Vector2(
-				_player.OtherPlayer.transform.localScale.x, 0.0f), attack.knockback, attack.knockbackDuration);
+				_player.OtherPlayer.transform.localScale.x, 0.0f), attack.knockback / 2.0f, attack.knockbackDuration);
 		}
 	}
+
+	public override bool ToParryState()
+	{
+		if (_parried)
+		{
+			_stateMachine.ChangeState(this);
+			return true;
+		}
+		return false;
+	}
+
 
 	public override void UpdatePhysics()
 	{
@@ -80,6 +94,7 @@ public class ParryState : State
 	public override void Exit()
 	{
 		base.Exit();
+		_parried = false;
 		_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
 	}
 }
