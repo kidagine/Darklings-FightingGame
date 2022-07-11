@@ -11,6 +11,7 @@ public class PlayerController : BaseController
     private bool reset2;
     private bool k2;
     private bool j2;
+    private bool _pressedAction = false;
     private float _dashInputCooldown2;
 
 
@@ -23,13 +24,14 @@ public class PlayerController : BaseController
                 Movement();
                 Jump();
                 Crouch();
+                Parry();
                 Light();
                 Medium();
                 Heavy();
                 Arcane();
                 Assist();
                 Throw();
-                Parry();
+                _pressedAction = false;
             }
             Pause();
             ResetRound();
@@ -96,25 +98,37 @@ public class PlayerController : BaseController
 
     protected virtual void Medium()
     {
-        if (Input.GetButtonDown(_brainController.ControllerInputName + "Medium"))
+        if (!_pressedAction)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Medium);
+            if (Input.GetButtonDown(_brainController.ControllerInputName + "Medium"))
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Medium);
+                _pressedAction = true;
+            }
         }
     }
 
     protected virtual void Heavy()
     {
-        if (Input.GetButtonDown(_brainController.ControllerInputName + "Heavy"))
+        if (!_pressedAction)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
+            if (Input.GetButtonDown(_brainController.ControllerInputName + "Heavy"))
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
+                _pressedAction = true;
+            }
         }
     }
 
     protected virtual void Arcane()
     {
-        if (Input.GetButtonDown(_brainController.ControllerInputName + "Arcane"))
+        if (!_pressedAction)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Special);
+            if (Input.GetButtonDown(_brainController.ControllerInputName + "Arcane"))
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Special);
+                _pressedAction = true;
+            }
         }
     }
 
@@ -137,10 +151,16 @@ public class PlayerController : BaseController
 
     protected virtual void Parry()
     {
-        if (Input.GetButtonDown(_brainController.ControllerInputName + "Parry"))
+        if (!_pressedAction)
         {
-            _playerStateManager.TryToParryState();
-            //_inputBuffer.AddInputBufferItem(InputEnum.Parry);
+            if ((Input.GetButtonDown(_brainController.ControllerInputName + "Medium") &&
+                Input.GetButtonDown(_brainController.ControllerInputName + "Heavy")) ||
+                Input.GetButtonDown(_brainController.ControllerInputName + "Parry"))
+            {
+                _playerStateManager.TryToParryState();
+                _inputBuffer.AddInputBufferItem(InputEnum.Parry);
+                _pressedAction = true;
+            }
         }
     }
 

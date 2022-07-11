@@ -36,7 +36,6 @@ public class InputHistory : MonoBehaviour
 
 	public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
-		Debug.Log("a");
 		if (_inputHistoryImages.Count > 0 && gameObject.activeSelf)
 		{
 			if (_inputBreakCoroutine != null)
