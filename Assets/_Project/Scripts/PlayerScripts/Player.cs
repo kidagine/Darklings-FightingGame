@@ -198,6 +198,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_assist.Attack();
 			DecreaseArcana();
+			CurrentAttack = _assist.AssistStats.attackSO;
 			return true;
 		}
 		return false;
