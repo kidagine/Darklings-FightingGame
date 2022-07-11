@@ -25,12 +25,12 @@ public class PlayerController : BaseController
                 Jump();
                 Crouch();
                 Parry();
+                Throw();
                 Light();
                 Medium();
                 Heavy();
                 Arcane();
                 Assist();
-                Throw();
                 _pressedAction = false;
             }
             Pause();
@@ -90,9 +90,13 @@ public class PlayerController : BaseController
 
     protected virtual void Light()
     {
-        if (Input.GetButtonDown(_brainController.ControllerInputName + "Light"))
+        if (!_pressedAction)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Light);
+            if (Input.GetButtonDown(_brainController.ControllerInputName + "Light"))
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Light);
+                _pressedAction = true;
+            }
         }
     }
 
@@ -142,10 +146,16 @@ public class PlayerController : BaseController
 
     protected virtual void Throw()
     {
-        if (Input.GetButtonDown(_brainController.ControllerInputName + "Throw"))
+        if (!_pressedAction)
         {
-            _playerStateManager.TryToGrabState();
-            _inputBuffer.AddInputBufferItem(InputEnum.Throw);
+            if ((Input.GetButtonDown(_brainController.ControllerInputName + "Light") &&
+                Input.GetButtonDown(_brainController.ControllerInputName + "Medium")) ||
+                Input.GetButtonDown(_brainController.ControllerInputName + "Throw"))
+            {
+                _playerStateManager.TryToGrabState();
+                _inputBuffer.AddInputBufferItem(InputEnum.Throw);
+                _pressedAction = true;
+            }
         }
     }
 
