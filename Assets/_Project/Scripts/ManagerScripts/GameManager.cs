@@ -212,6 +212,8 @@ public class GameManager : MonoBehaviour
         PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
         PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
         PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
+        _inputHistories[0].PlayerController = PlayerOne.GetComponent<PlayerController>();
+        _inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
         _cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
         _cinemachineTargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
     }

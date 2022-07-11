@@ -14,16 +14,15 @@ public class InputHistory : MonoBehaviour
 	[SerializeField] private Sprite _heavy = default;
 	[SerializeField] private Sprite _special = default;
 	[SerializeField] private Sprite _assist = default;
-	[SerializeField] private Sprite _throw = default;
-	[SerializeField] private Sprite _parry = default;
 	private readonly List<InputHistoryImage> _inputHistoryImages = new();
 	private readonly List<InputEnum> _inputEnums = new();
 	private Coroutine _inputBreakCoroutine;
-	private Coroutine _inputSubItemCoroutine;
 	private int _currentInputImageIndex;
 	private int _previousInputImageIndex;
 	private bool _isNextInputBreak;
 	private bool _isNextInputSubItem;
+
+	public PlayerController PlayerController { get; set; }
 
 
 	void Awake()
@@ -31,7 +30,7 @@ public class InputHistory : MonoBehaviour
 		foreach (Transform child in transform)
 		{
 			_inputHistoryImages.Add(child.GetComponent<InputHistoryImage>());
-		}	
+		}
 	}
 
 	public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
@@ -43,39 +42,99 @@ public class InputHistory : MonoBehaviour
 				StopCoroutine(_inputBreakCoroutine);
 			}
 
+			if (inputEnum != InputEnum.Direction)
+			{
+				if (PlayerController.InputDirection.y == -1.0f)
+				{
+					AddMainInput(InputEnum.Direction, InputDirectionEnum.Down);
+				}
+			}
 
 			if (_isNextInputSubItem && !_inputEnums.Contains(inputEnum))
 			{
-				InputHistoryImage inputHistoryImage = _inputHistoryImages[_previousInputImageIndex];
-				Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, false);
-				SetInputImageSprite(image, inputEnum, inputDirectionEnum);
-				_inputEnums.Add(inputEnum);
+				AddSubInput(inputEnum, inputDirectionEnum);
 			}
 			else
 			{
-				if (_inputSubItemCoroutine != null)
-				{
-					StopCoroutine(_inputSubItemCoroutine);
-				}
-				InputHistoryImage inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
-				if (_isNextInputBreak)
-				{
-					_isNextInputBreak = false;
-					inputHistoryImage.ActivateEmptyHistoryImage();
-					IncreaseCurrentInputImageIndex();
-					inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
-				}
-				Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, true);
-				SetInputImageSprite(image, inputEnum, inputDirectionEnum);
-				_inputEnums.Add(inputEnum);
-
-				IncreaseCurrentInputImageIndex();
-				_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
-				_inputSubItemCoroutine = StartCoroutine(InputSubItemCoroutine());
+				AddMainInput(inputEnum, inputDirectionEnum);
 			}
 
 		}
 	}
+
+	private void AddSubInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
+	{
+		InputHistoryImage inputHistoryImage = _inputHistoryImages[_previousInputImageIndex];
+		if (inputEnum == InputEnum.Parry)
+		{
+			Image image = inputHistoryImage.ActivateHistoryImage(InputEnum.Medium, false);
+			SetInputImageSprite(image, InputEnum.Medium, inputDirectionEnum);
+			_inputEnums.Add(InputEnum.Medium);
+
+			Image image1 = inputHistoryImage.ActivateHistoryImage(InputEnum.Heavy, false);
+			SetInputImageSprite(image1, InputEnum.Heavy, inputDirectionEnum);
+			_inputEnums.Add(InputEnum.Heavy);
+		}
+		else if (inputEnum == InputEnum.Throw)
+		{
+			Image image = inputHistoryImage.ActivateHistoryImage(InputEnum.Light, false);
+			SetInputImageSprite(image, InputEnum.Light, inputDirectionEnum);
+			_inputEnums.Add(InputEnum.Light);
+
+			Image image1 = inputHistoryImage.ActivateHistoryImage(InputEnum.Medium, false);
+			SetInputImageSprite(image1, InputEnum.Medium, inputDirectionEnum);
+			_inputEnums.Add(InputEnum.Medium);
+		}
+		else
+		{
+			Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, false);
+			SetInputImageSprite(image, inputEnum, inputDirectionEnum);
+			_inputEnums.Add(inputEnum);
+		}
+	}
+
+	private void AddMainInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
+	{
+		InputHistoryImage inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
+		if (_isNextInputBreak)
+		{
+			_isNextInputBreak = false;
+			inputHistoryImage.ActivateEmptyHistoryImage();
+			IncreaseCurrentInputImageIndex();
+			inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
+		}
+		if (inputEnum == InputEnum.Parry)
+		{
+			Image image = inputHistoryImage.ActivateHistoryImage(InputEnum.Medium, true);
+			SetInputImageSprite(image, InputEnum.Medium, inputDirectionEnum);
+			_inputEnums.Add(InputEnum.Medium);
+
+			Image image1 = inputHistoryImage.ActivateHistoryImage(InputEnum.Heavy, false);
+			SetInputImageSprite(image1, InputEnum.Heavy, inputDirectionEnum);
+			_inputEnums.Add(InputEnum.Heavy);
+		}
+		else if (inputEnum == InputEnum.Throw)
+		{
+			Image image = inputHistoryImage.ActivateHistoryImage(InputEnum.Light, true);
+			SetInputImageSprite(image, InputEnum.Light, inputDirectionEnum);
+			_inputEnums.Add(InputEnum.Light);
+
+			Image image1 = inputHistoryImage.ActivateHistoryImage(InputEnum.Medium, false);
+			SetInputImageSprite(image1, InputEnum.Medium, inputDirectionEnum);
+			_inputEnums.Add(InputEnum.Medium);
+		}
+		else
+		{
+			Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, true);
+			SetInputImageSprite(image, inputEnum, inputDirectionEnum);
+			_inputEnums.Add(inputEnum);
+		}
+
+		IncreaseCurrentInputImageIndex();
+		_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
+		StartCoroutine(InputSubItemCoroutine());
+	}
+
 
 	private IEnumerator InputBreakCoroutine()
 	{
@@ -141,12 +200,7 @@ public class InputHistory : MonoBehaviour
 			case InputEnum.Assist:
 				inputImage.sprite = _assist;
 				break;
-			case InputEnum.Throw:
-				inputImage.sprite = _throw;
-				break;
-			case InputEnum.Parry:
-				inputImage.sprite = _parry;
-				break;
 		}
 	}
+
 }

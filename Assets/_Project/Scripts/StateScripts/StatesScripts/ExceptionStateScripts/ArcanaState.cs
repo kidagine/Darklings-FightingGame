@@ -35,7 +35,6 @@ public class ArcanaState : State
 			_playerUI.DisplayNotification(NotificationTypeEnum.Reversal);
 		}
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
-		_playerComboSystem.GetArcana(_crouch, _air);
 		_player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
 		_playerAnimator.Arcana(_player.CurrentAttack.name);
 		_player.Arcana--;
@@ -54,7 +53,7 @@ public class ArcanaState : State
 	{
 		if (_stateMachine.CurrentState == this)
 		{
-			if (_rigidbody.velocity.y <= 0.0f)
+			if (!_playerMovement.IsGrounded)
 			{
 				ToFallState();
 			}
