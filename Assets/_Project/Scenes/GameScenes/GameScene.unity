@@ -5920,14 +5920,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stage: 0
   _characterOne: 0
-  _characterTwo: 1
+  _characterTwo: 2
   _assistOne: 0
   _assistTwo: 0
   _controllerOne: 0
-  _controllerTwo: 4
+  _controllerTwo: 1
   _music: 0
   _playerOneSkin: 0
-  _playerTwoSkin: 0
+  _playerTwoSkin: 1
   _isTrainingMode: 1
   _isOnlineMode: 0
   _1BitOn: 0
@@ -6280,12 +6280,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2618116373784590578, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_SpriteKey
-      value: 0
+      value: -0.0000015950221
       objectReference: {fileID: 0}
     - target: {fileID: 4586557407155603638, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_SpriteLibraryAsset
       value: 
-      objectReference: {fileID: 7108339969198208228, guid: 26653651365972542ac455b873c68b8e, type: 3}
+      objectReference: {fileID: 7108339969198208228, guid: 7b8be8b8bea96684cbe091f2b82fa578, type: 3}
     - target: {fileID: 4879431347392356363, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Size.x
       value: 1.75
@@ -6358,6 +6358,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7611394710214668632, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+      propertyPath: _sounds.Array.data[15].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 68b24d19592e7aa4883c6955f062dd22, type: 3}
     - target: {fileID: 7657508819943265675, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: _dustUpPrefab
       value: 
@@ -6401,7 +6405,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 2182767507686769444, guid: 214dbd9af3f0f624c9bdbf8c5fb80fd7, type: 3}
+      objectReference: {fileID: -1269549160, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -6433,7 +6437,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578679, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: c0acca90970e15241b8dd1a134c692a0, type: 2}
+      objectReference: {fileID: 9100000, guid: d07b4c2442277164a847eaaa08ae9e05, type: 2}
     - target: {fileID: 8073473790702501984, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -10334,6 +10338,7 @@ MonoBehaviour:
   _special: {fileID: 612874030, guid: 06aca27c1d930e243bf429b5aef302fb, type: 3}
   _assist: {fileID: -1251521985, guid: 06aca27c1d930e243bf429b5aef302fb, type: 3}
   _throw: {fileID: -2035982963, guid: 06aca27c1d930e243bf429b5aef302fb, type: 3}
+  _parry: {fileID: -2035982963, guid: 06aca27c1d930e243bf429b5aef302fb, type: 3}
 --- !u!114 &653925897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27721,6 +27726,7 @@ MonoBehaviour:
   _special: {fileID: 612874030, guid: 06aca27c1d930e243bf429b5aef302fb, type: 3}
   _assist: {fileID: -1251521985, guid: 06aca27c1d930e243bf429b5aef302fb, type: 3}
   _throw: {fileID: -2035982963, guid: 06aca27c1d930e243bf429b5aef302fb, type: 3}
+  _parry: {fileID: -2035982963, guid: 06aca27c1d930e243bf429b5aef302fb, type: 3}
 --- !u!114 &1613036432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42031,6 +42037,8 @@ MonoBehaviour:
   - prefab: {fileID: 3294536446187043669, guid: 4c16d4107eb216e41bf4dadd675e93b0, type: 3}
     size: 4
   - prefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
+    size: 4
+  - prefab: {fileID: 6697712921357175186, guid: 0d500f9f22d720e499108f837ea8316b, type: 3}
     size: 4
 --- !u!1 &5904807064592484296
 GameObject:

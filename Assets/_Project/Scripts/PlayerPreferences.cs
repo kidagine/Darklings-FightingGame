@@ -95,15 +95,15 @@ public class PlayerPreferences : MonoBehaviour
 	{
 		_playerNameInputField.text = PlayerPrefs.GetString("playerName", _playerNameInputFieldInitial);
 		_characterSelector.SetValue(PlayerPrefs.GetInt("character", _characterSelectorInitial));
-		_charactersAssistSelector.SetValue(PlayerPrefs.GetInt("characterAssist", _characterAssistSelectorInitial));
-		_characterColorSelector.SetValue(PlayerPrefs.GetInt("characterColor", _characterColorSelectorInitial));
+		_charactersAssistSelector.SetValue(PlayerPrefs.GetInt("characterassist", _characterAssistSelectorInitial));
+		_characterColorSelector.SetValue(PlayerPrefs.GetInt("charactercolor", _characterColorSelectorInitial));
 	}
 
 	private void LoadStagePreferences()
 	{
 		_stageSelector.SetValue(PlayerPrefs.GetInt("stage", _stageSelectorInitial));
-		_stageMusicSelector.SetValue(PlayerPrefs.GetInt("stageMusic", _stageMusicSelectorInitial));
-		_stageStyleSelector.SetValue(PlayerPrefs.GetInt("stageStyle", _stageStyleSelectorInitial));
+		_stageMusicSelector.SetValue(PlayerPrefs.GetInt("stagemusic", _stageMusicSelectorInitial));
+		_stageStyleSelector.SetValue(PlayerPrefs.GetInt("stagestyle", _stageStyleSelectorInitial));
 	}
 
 
@@ -124,7 +124,7 @@ public class PlayerPreferences : MonoBehaviour
 		//Cpu
 		_cpuSelector.SetValue(PlayerPrefs.GetInt("cpu", _cpuSelectorInitial));
 		_blockSelector.SetValue(PlayerPrefs.GetInt("block", _blockSelectorInitial));
-		_onHitSelector.SetValue(PlayerPrefs.GetInt("onHit", _onHitSelectorInitial));
+		_onHitSelector.SetValue(PlayerPrefs.GetInt("onhit", _onHitSelectorInitial));
 		_stanceSelector.SetValue(PlayerPrefs.GetInt("stance", _stanceSelectorInitial));
 
 		//Misc
@@ -132,7 +132,7 @@ public class PlayerPreferences : MonoBehaviour
 		_framedataSelector.SetValue(PlayerPrefs.GetInt("framedata", _framedataSelectorInitial));
 		_slowdownSelector.SetValue(PlayerPrefs.GetInt("slowdown", _slowdownSelectorInitial));
 		_inputSelector.SetValue(PlayerPrefs.GetInt("input", _inputSelectorInitial));
-		_uiCanvasSelector.SetValue(PlayerPrefs.GetInt("uiCanvas", _uiCanvasSelectorInitial));
+		_uiCanvasSelector.SetValue(PlayerPrefs.GetInt("uicanvas", _uiCanvasSelectorInitial));
 	}
 
 	public void SavePreference(string key, int value)

@@ -15,6 +15,7 @@ public class InputHistory : MonoBehaviour
 	[SerializeField] private Sprite _special = default;
 	[SerializeField] private Sprite _assist = default;
 	[SerializeField] private Sprite _throw = default;
+	[SerializeField] private Sprite _parry = default;
 	private readonly List<InputHistoryImage> _inputHistoryImages = new();
 	private readonly List<InputEnum> _inputEnums = new();
 	private Coroutine _inputBreakCoroutine;
@@ -35,6 +36,7 @@ public class InputHistory : MonoBehaviour
 
 	public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
+		Debug.Log("a");
 		if (_inputHistoryImages.Count > 0 && gameObject.activeSelf)
 		{
 			if (_inputBreakCoroutine != null)
@@ -142,6 +144,9 @@ public class InputHistory : MonoBehaviour
 				break;
 			case InputEnum.Throw:
 				inputImage.sprite = _throw;
+				break;
+			case InputEnum.Parry:
+				inputImage.sprite = _parry;
 				break;
 		}
 	}

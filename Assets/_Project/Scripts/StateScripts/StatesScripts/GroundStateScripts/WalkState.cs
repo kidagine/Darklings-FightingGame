@@ -34,6 +34,12 @@ public class WalkState : GroundParentState
 		}
 	}
 
+	public override bool ToParryState()
+	{
+		_stateMachine.ChangeState(_parryState);
+		return true;
+	}
+
 	private void ToJumpForwardState()
 	{
 		if (_baseController.Jump() && !_playerMovement.HasJumped)

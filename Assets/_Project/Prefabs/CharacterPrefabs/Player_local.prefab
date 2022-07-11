@@ -923,6 +923,7 @@ GameObject:
   - component: {fileID: 7855595845877207489}
   - component: {fileID: 6770783201273014799}
   - component: {fileID: 4867772287099482726}
+  - component: {fileID: 5968869363467781238}
   m_Layer: 10
   m_Name: Player_states
   m_TagString: Untagged
@@ -1080,7 +1081,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: AirDash
-  _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
   _playerGhostPrefab: {fileID: 904796691893738277, guid: 0cfcd7936a9c5c54294ba46e75c919d5, type: 3}
   _dashPrefab: {fileID: 5833315189278568593, guid: d1a8205ac964ba545b3fc474fd11b27e, type: 3}
 --- !u!114 &8019448854678928122
@@ -1351,6 +1351,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Throw
+--- !u!114 &5968869363467781238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d20079fde9ae7147967eedf8d67ffb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: Parry
+  _parryEffect: {fileID: 6697712921357175186, guid: 0d500f9f22d720e499108f837ea8316b, type: 3}
 --- !u!1 &7684445122000850538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1684,8 +1698,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 8073473790702501988}
   _playerMovement: {fileID: 8073473790702501987}
-  _playerStateManager: {fileID: 8168889133440061290}
-  _inputBuffer: {fileID: 4664395619888274278}
   _audio: {fileID: 7611394710214668632}
 --- !u!212 &8073473789928578676
 SpriteRenderer:
@@ -2031,7 +2043,6 @@ MonoBehaviour:
   _grabPoint: {fileID: 7600070780512524519}
   _cameraPoint: {fileID: 3775412804825945539}
   _keepFlip: {fileID: 4489081760178489291}
-  _inputBuffer: {fileID: 4664395619888274278}
   _playerIcons:
   - {fileID: 7759221523502482170}
   - {fileID: 3488833446598643948}
@@ -2047,7 +2058,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a6ea18400d51841a15234546f7cd06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerAnimator: {fileID: 8073473789928578677}
   _wallLayerMask:
     serializedVersion: 2
     m_Bits: 4096
@@ -2260,6 +2270,22 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     name: Shadowbreak
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 02fd53724b1464243b8afc3e7205623b, type: 3}
+    volume: 0.2
+    pitch: 0.9
+    name: Parry
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 31c77bdcfdc482e4fbcf0ec3b84d940c, type: 3}
+    volume: 0.15
+    pitch: 1
+    name: ParryStart
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0

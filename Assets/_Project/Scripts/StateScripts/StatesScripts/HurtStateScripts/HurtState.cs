@@ -15,6 +15,7 @@ public class HurtState : HurtParentState
 		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
 	}
+
 	public override void Enter()
 	{
 		_player.CheckFlip();
