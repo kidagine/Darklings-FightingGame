@@ -5,7 +5,6 @@ public class PlayerIcon : MonoBehaviour
 {
 	[SerializeField] private PlayersMenu _playersMenu = default;
 	[SerializeField] private string _inputName = default;
-	[SerializeField] private int _inputIndex = default;
 	private RectTransform _rectTransform;
 	private Audio _audio;
 	private float _originalPositionY;
@@ -24,10 +23,10 @@ public class PlayerIcon : MonoBehaviour
 
 	void Update()
 	{
-		Movement(_inputName, _inputIndex);
+		Movement(_inputName);
 	}
 
-	private void Movement(string inputName, int index)
+	private void Movement(string inputName)
 	{
 		float movement = Input.GetAxisRaw(inputName + "Horizontal");
 		if (movement != 0.0f)
@@ -40,10 +39,7 @@ public class PlayerIcon : MonoBehaviour
 					if (_rectTransform.anchoredPosition.x == _left)
 					{
 						_audio.Sound("Selected").Play();
-						transform.GetChild(0).gameObject.SetActive(true);
-						transform.GetChild(1).gameObject.SetActive(true);
-						_playersMenu.CpuTextLeft.SetActive(true);
-						_rectTransform.anchoredPosition = new Vector2(_center, _originalPositionY);
+						Center();
 					}
 					else if (!_playersMenu.IsOnRight())
 					{
@@ -58,10 +54,7 @@ public class PlayerIcon : MonoBehaviour
 					if (_rectTransform.anchoredPosition.x == _right)
 					{
 						_audio.Sound("Selected").Play();
-						transform.GetChild(0).gameObject.SetActive(true);
-						transform.GetChild(1).gameObject.SetActive(true);
-						_playersMenu.CpuTextRight.SetActive(true); 
-						_rectTransform.anchoredPosition = new Vector2(_center, _originalPositionY);
+						Center();
 					}
 					else if (!_playersMenu.IsOnLeft())
 					{
@@ -77,5 +70,14 @@ public class PlayerIcon : MonoBehaviour
 		{
 			_isMovenentInUse = false;
 		}
+	}
+
+	public void Center()
+	{
+		transform.GetChild(0).gameObject.SetActive(true);
+		transform.GetChild(1).gameObject.SetActive(true);
+		_playersMenu.CpuTextLeft.SetActive(true);
+		_playersMenu.CpuTextRight.SetActive(true);
+		_rectTransform.anchoredPosition = new Vector2(_center, _originalPositionY);
 	}
 }

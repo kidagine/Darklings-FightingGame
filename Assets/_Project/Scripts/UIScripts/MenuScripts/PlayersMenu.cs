@@ -45,12 +45,12 @@ public class PlayersMenu : BaseMenu
 				case InputDeviceChange.Removed:
 					if (device.name == "XInputControllerWindows")
 					{
-						_playerIcons[1].anchoredPosition = new Vector2(25.0f, _playerIcons[1].anchoredPosition.y);
+						_playerIcons[1].anchoredPosition = new Vector2(_center, _playerIcons[1].anchoredPosition.y);
 						_playerIcons[1].gameObject.SetActive(false);
 					}
 					else if (device.name == "XInputControllerWindows1")
 					{
-						_playerIcons[2].anchoredPosition = new Vector2(25.0f, _playerIcons[2].anchoredPosition.y);
+						_playerIcons[2].anchoredPosition = new Vector2(_center, _playerIcons[2].anchoredPosition.y);
 						_playerIcons[2].gameObject.SetActive(false);
 					}
 					break;
@@ -86,7 +86,7 @@ public class PlayersMenu : BaseMenu
 
 	public void OpenOtherMenu()
 	{
-		if (_playerIcons[0].anchoredPosition.x != _center || _playerIcons[1].anchoredPosition.x != _center || _playerIcons[2].anchoredPosition.x != 25.0f)
+		if (_playerIcons[0].anchoredPosition.x != _center || _playerIcons[1].anchoredPosition.x != _center || _playerIcons[2].anchoredPosition.x != _center)
 		{
 			_audio.Sound("Pressed").Play();
 			if (_playerIcons[0].anchoredPosition.x == _right)
@@ -127,16 +127,23 @@ public class PlayersMenu : BaseMenu
 			{
 				_characterMenu.EnablePlayerTwoSelector();
 			}
-			gameObject.SetActive(false);
+			for (int i = 0; i < _playerIcons.Length; i++)
+			{
+				_playerIcons[i].GetComponent<PlayerIcon>().Center();
+			}
 			_characterMenu.Show();
+			gameObject.SetActive(false);
 		}
 	}
 
 	public void ConfirmQuickAssign()
 	{
-		_audio.Sound("Selected").Play();
-		_cpuTextLeft.SetActive(false);
-		_playerIcons[0].anchoredPosition = new Vector2(_left, _playerIcons[0].anchoredPosition.y);
+		if (gameObject.activeSelf)
+		{
+			_audio.Sound("Selected").Play();
+			_cpuTextLeft.SetActive(false);
+			_playerIcons[0].anchoredPosition = new Vector2(_left, _playerIcons[0].anchoredPosition.y);
+		}
 	}
 
 	public void OpenKeyboardCoOp()
