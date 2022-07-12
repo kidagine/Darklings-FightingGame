@@ -1,33 +1,81 @@
+using Demonics.Sounds;
 using UnityEngine;
 
 public class PlayerIcon : MonoBehaviour
 {
-    private RectTransform _rectTransform;
-    private float _originalPositionY;
+	[SerializeField] private PlayersMenu _playersMenu = default;
+	[SerializeField] private string _inputName = default;
+	[SerializeField] private int _inputIndex = default;
+	private RectTransform _rectTransform;
+	private Audio _audio;
+	private float _originalPositionY;
+	private readonly float _left = -375.0f;
+	private readonly float _right = 375.0f;
+	private readonly float _center = 0.0f;
+	private bool _isMovenentInUse;
+
 
 	private void Awake()
 	{
-        _rectTransform = GetComponent<RectTransform>();
-        _originalPositionY = _rectTransform.anchoredPosition.y;
-    }
+		_audio = GetComponent<Audio>();
+		_rectTransform = GetComponent<RectTransform>();
+		_originalPositionY = _rectTransform.anchoredPosition.y;
+	}
 
 	void Update()
-    {
-        if (_rectTransform.anchoredPosition.x == -375.0f)
-        {
-            _rectTransform.anchoredPosition = new Vector2(_rectTransform.anchoredPosition.x, 250.0f);
-            transform.GetChild(0).gameObject.SetActive(false);
-        }
-        else if (_rectTransform.anchoredPosition.x == 375.0f)
-        {
-            _rectTransform.anchoredPosition = new Vector2(_rectTransform.anchoredPosition.x, 250.0f);
-            transform.GetChild(1).gameObject.SetActive(false);
-        }
-        else
-        {
-            _rectTransform.anchoredPosition = new Vector2(_rectTransform.anchoredPosition.x, _originalPositionY);
-            transform.GetChild(0).gameObject.SetActive(true);
-            transform.GetChild(1).gameObject.SetActive(true);
-        }
-    }
+	{
+		Movement(_inputName, _inputIndex);
+	}
+
+	private void Movement(string inputName, int index)
+	{
+		float movement = Input.GetAxisRaw(inputName + "Horizontal");
+		if (movement != 0.0f)
+		{
+			if (!_isMovenentInUse)
+			{
+				_isMovenentInUse = true;
+				if (movement > 0.0f)
+				{
+					if (_rectTransform.anchoredPosition.x == _left)
+					{
+						_audio.Sound("Selected").Play();
+						transform.GetChild(0).gameObject.SetActive(true);
+						transform.GetChild(1).gameObject.SetActive(true);
+						_playersMenu.CpuTextLeft.SetActive(true);
+						_rectTransform.anchoredPosition = new Vector2(_center, _originalPositionY);
+					}
+					else if (!_playersMenu.IsOnRight())
+					{
+						_audio.Sound("Selected").Play();
+						transform.GetChild(1).gameObject.SetActive(false);
+						_playersMenu.CpuTextRight.SetActive(false);
+						_rectTransform.anchoredPosition = new Vector2(_right, 275.0f);
+					}
+				}
+				else if (movement < 0.0f)
+				{
+					if (_rectTransform.anchoredPosition.x == _right)
+					{
+						_audio.Sound("Selected").Play();
+						transform.GetChild(0).gameObject.SetActive(true);
+						transform.GetChild(1).gameObject.SetActive(true);
+						_playersMenu.CpuTextRight.SetActive(true); 
+						_rectTransform.anchoredPosition = new Vector2(_center, _originalPositionY);
+					}
+					else if (!_playersMenu.IsOnLeft())
+					{
+						_audio.Sound("Selected").Play(); 
+						transform.GetChild(0).gameObject.SetActive(false);
+						_playersMenu.CpuTextLeft.SetActive(false);
+						_rectTransform.anchoredPosition = new Vector2(_left, 275.0f);
+					}
+				}
+			}
+		}
+		if (movement == 0.0f)
+		{
+			_isMovenentInUse = false;
+		}
+	}
 }
