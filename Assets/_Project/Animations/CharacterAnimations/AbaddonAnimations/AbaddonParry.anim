@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TobiDarkParry
+  m_Name: AbaddonParry
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -68,7 +68,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.42
+        value: 0.23
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -96,7 +96,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1.8
+        value: 2.49
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -115,7 +115,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.35
+        value: 0.24
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -124,7 +124,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.87
+        value: 0.51
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -143,13 +143,22 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 2.62
+        value: 1.78
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      - serializedVersion: 3
+        time: 0.05
+        value: 3.3
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -162,7 +171,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.36
+        value: 0.08
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -171,7 +180,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.01
+        value: 0.19
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -190,7 +199,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1.15
+        value: 1.5
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -199,7 +208,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 1.38
+        value: 1.83
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -218,7 +227,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1.25
+        value: 1.49
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -227,7 +236,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.96
+        value: 1.2
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -246,7 +255,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.36
+        value: 0.51
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -255,7 +264,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.45
+        value: 0.63
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -274,7 +283,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.66
+        value: 0.96
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -283,7 +292,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.9
+        value: 1.17
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -294,6 +303,53 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Size.y
+    path: Colliders_group/Hurtboxes_group/Main_hurtbox (2)
+    classID: 61
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.43
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Size.x
+    path: Colliders_group/Hurtboxes_group/Main_hurtbox
+    classID: 61
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.75
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.05
+        value: 2.17
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Size.x
     path: Colliders_group/Hurtboxes_group/Main_hurtbox (2)
     classID: 61
     script: {fileID: 0}
@@ -375,6 +431,20 @@ AnimationClip:
       typeID: 61
       customType: 0
       isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 2102565819
+      attribute: 4197328169
+      script: {fileID: 0}
+      typeID: 61
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 1036167427
+      attribute: 4197328169
+      script: {fileID: 0}
+      typeID: 61
+      customType: 0
+      isPPtrCurve: 0
     pptrCurveMapping: []
   m_AnimationClipSettings:
     serializedVersion: 2
@@ -448,7 +518,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.42
+        value: 0.23
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -476,7 +546,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1.8
+        value: 2.49
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -495,7 +565,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.35
+        value: 0.24
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -504,7 +574,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.87
+        value: 0.51
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -523,13 +593,22 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 2.62
+        value: 1.78
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      - serializedVersion: 3
+        time: 0.05
+        value: 3.3
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -542,7 +621,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.36
+        value: 0.08
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -551,7 +630,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.01
+        value: 0.19
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -570,7 +649,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1.15
+        value: 1.5
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -579,7 +658,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 1.38
+        value: 1.83
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -598,7 +677,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1.25
+        value: 1.49
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -607,7 +686,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.96
+        value: 1.2
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -626,7 +705,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.36
+        value: 0.51
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -635,7 +714,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.45
+        value: 0.63
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -654,7 +733,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.66
+        value: 0.96
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -663,7 +742,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.05
-        value: 0.9
+        value: 1.17
         inSlope: Infinity
         outSlope: Infinity
         tangentMode: 103
@@ -674,6 +753,53 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Size.y
+    path: Colliders_group/Hurtboxes_group/Main_hurtbox (2)
+    classID: 61
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.43
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Size.x
+    path: Colliders_group/Hurtboxes_group/Main_hurtbox
+    classID: 61
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1.75
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.05
+        value: 2.17
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Size.x
     path: Colliders_group/Hurtboxes_group/Main_hurtbox (2)
     classID: 61
     script: {fileID: 0}
