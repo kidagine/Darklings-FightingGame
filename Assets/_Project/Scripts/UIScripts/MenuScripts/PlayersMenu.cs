@@ -58,6 +58,22 @@ public class PlayersMenu : BaseMenu
 		};
 	}
 
+	void Update()
+	{
+		if (Input.GetButtonDown("KeyboardOne" + "Confirm"))
+		{
+			ConfirmQuickAssign(0);
+		}
+		else if (Input.GetButtonDown("ControllerOne" + "Confirm"))
+		{
+			ConfirmQuickAssign(1);
+		}
+		else if (Input.GetButtonDown("ControllerTwo" + "Confirm"))
+		{
+			ConfirmQuickAssign(2);
+		}
+	}
+
 	public bool IsOnRight()
 	{
 		for (int i = 0; i < _playerIcons.Length; i++)
@@ -136,13 +152,13 @@ public class PlayersMenu : BaseMenu
 		}
 	}
 
-	public void ConfirmQuickAssign()
+	public void ConfirmQuickAssign(int index)
 	{
 		if (gameObject.activeSelf)
 		{
 			_audio.Sound("Selected").Play();
 			_cpuTextLeft.SetActive(false);
-			_playerIcons[0].anchoredPosition = new Vector2(_left, _playerIcons[0].anchoredPosition.y);
+			_playerIcons[index].anchoredPosition = new Vector2(_left, 275.0f);
 		}
 	}
 
