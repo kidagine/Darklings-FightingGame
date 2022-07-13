@@ -4,13 +4,11 @@ using UnityEngine;
 public class AirHurtState : HurtParentState
 {
 	private Coroutine _stunCoroutine;
-	private AirHurtState _airHurtState;
 	private FallState _fallState;
 
 	protected override void Awake()
 	{
 		base.Awake();
-		_airHurtState = GetComponent<AirHurtState>();
 		_fallState = GetComponent<FallState>();
 	}
 
@@ -62,8 +60,8 @@ public class AirHurtState : HurtParentState
 
 	public override bool ToHurtState(AttackSO attack)
 	{
-		_airHurtState.Initialize(attack);
-		_stateMachine.ChangeState(_airHurtState);
+		this.Initialize(attack);
+		_stateMachine.ChangeState(this);
 		return true;
 	}
 
