@@ -41,7 +41,7 @@ public class PlayerIcon : MonoBehaviour
 						_audio.Sound("Selected").Play();
 						Center();
 					}
-					else if (!_playersMenu.IsOnRight())
+					else if (!_playersMenu.IsOnRight()) 
 					{
 						_audio.Sound("Selected").Play();
 						transform.GetChild(1).gameObject.SetActive(false);
