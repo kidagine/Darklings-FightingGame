@@ -6,6 +6,7 @@ public class ParryState : State
 	private IdleState _idleState;
 	private HurtState _hurtState;
 	private AirborneHurtState _airborneHurtState;
+	private GrabbedState _grabbedState;
 	private bool _parried;
 
 	private void Awake()
@@ -13,6 +14,7 @@ public class ParryState : State
 		_idleState = GetComponent<IdleState>();
 		_hurtState = GetComponent<HurtState>();
 		_airborneHurtState = GetComponent<AirborneHurtState>();
+		_grabbedState = GetComponent<GrabbedState>();
 	}
 
 	public override void Enter()
@@ -62,7 +64,7 @@ public class ParryState : State
 	private void Parry(AttackSO attack)
 	{
 		_audio.Sound("Parry").Play();
-		_player.ArcanaGain(0.3f);
+		_player.ArcanaGain(0.5f);
 		_parried = true;
 		GameManager.Instance.HitStop(0.2f);
 		GameObject effect = Instantiate(_parryEffect);
@@ -84,6 +86,11 @@ public class ParryState : State
 		return false;
 	}
 
+	public override bool ToGrabbedState()
+	{
+		_stateMachine.ChangeState(_grabbedState);
+		return true;
+	}
 
 	public override void UpdatePhysics()
 	{

@@ -5,6 +5,7 @@ public class ArcanaState : State
 	private IdleState _idleState;
 	private FallState _fallState;
 	private HurtState _hurtState;
+	private AirHurtState _airHurtState;
 	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
 	private ArcanaThrowState _arcanaThrowState;
@@ -16,6 +17,7 @@ public class ArcanaState : State
 		_idleState = GetComponent<IdleState>();
 		_fallState = GetComponent<FallState>();
 		_hurtState = GetComponent<HurtState>();
+		_airHurtState =	GetComponent<AirHurtState>();
 		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
 		_arcanaThrowState = GetComponent<ArcanaThrowState>();
@@ -35,7 +37,6 @@ public class ArcanaState : State
 			_playerUI.DisplayNotification(NotificationTypeEnum.Reversal);
 		}
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
-		_playerComboSystem.GetArcana(_crouch, _air);
 		_player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
 		_playerAnimator.Arcana(_player.CurrentAttack.name);
 		_player.Arcana--;
@@ -54,7 +55,7 @@ public class ArcanaState : State
 	{
 		if (_stateMachine.CurrentState == this)
 		{
-			if (_rigidbody.velocity.y <= 0.0f)
+			if (!_playerMovement.IsGrounded)
 			{
 				ToFallState();
 			}
@@ -85,8 +86,16 @@ public class ArcanaState : State
 	public override bool ToHurtState(AttackSO attack)
 	{
 		_player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
-		_hurtState.Initialize(attack);
-		_stateMachine.ChangeState(_hurtState);
+		if (_playerMovement.IsGrounded)
+		{
+			_hurtState.Initialize(attack);
+			_stateMachine.ChangeState(_hurtState);
+		}
+		else
+		{
+			_airHurtState.Initialize(attack);
+			_stateMachine.ChangeState(_airHurtState);
+		}
 		return true;
 	}
 

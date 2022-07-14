@@ -25,12 +25,6 @@ public class PlayerAnimationEvents : MonoBehaviour
 		_player.IsAttacking = false;
 		_player.CanCancelAttack = false;
 		_player.CanShadowbreak = true;
-		_playerMovement.FullyLockMovement = false;
-	}
-
-	public void FullyLockMovement()
-	{
-		_playerMovement.FullyLockMovement = true;
 	}
 
 	public void ThrowEnd()

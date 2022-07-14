@@ -14,7 +14,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	public bool HasDoubleJumped { get; set; }
 	public bool HasAirDashed { get; set; }
 	public float MovementSpeed { get; set; }
-	public bool FullyLockMovement { get; set; }
 	public Vector2 MovementInput { get; set; }
 	public bool IsGrounded { get; set; } = true;
 	public bool CanDoubleJump { get; set; } = true;

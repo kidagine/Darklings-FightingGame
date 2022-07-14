@@ -316,6 +316,7 @@ public class PlayerUI : MonoBehaviour
 	{
 		_trainingMenu.ResetTrainingOptions();
 		Time.timeScale = 1.0f;
+		SceneSettings.SceneSettingsDecide = false;
 		SceneSettings.ChangeCharacter = true;
 		SceneManager.LoadScene(1);
 	}
@@ -324,6 +325,7 @@ public class PlayerUI : MonoBehaviour
 	{
 		_trainingMenu.ResetTrainingOptions();
 		Time.timeScale = 1.0f;
+		SceneSettings.SceneSettingsDecide = false;
 		SceneSettings.ChangeCharacter = false;
 		SceneManager.LoadScene(1);
 	}
