@@ -7,11 +7,11 @@ public class PlayerIcon : MonoBehaviour
 	[SerializeField] private string _inputName = default;
 	private RectTransform _rectTransform;
 	private Audio _audio;
-	private float _originalPositionY;
 	private readonly float _left = -375.0f;
 	private readonly float _right = 375.0f;
 	private readonly float _center = 0.0f;
 	private bool _isMovenentInUse;
+	private float _originalPositionY;
 
 
 	private void Awake()
@@ -70,6 +70,11 @@ public class PlayerIcon : MonoBehaviour
 		{
 			_isMovenentInUse = false;
 		}
+	}
+
+	void OnDisable()
+	{
+		_rectTransform.anchoredPosition = new Vector2(_center,_originalPositionY);
 	}
 
 	public void Center()
