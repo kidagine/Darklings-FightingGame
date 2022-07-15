@@ -795,6 +795,7 @@ public class GameManager : MonoBehaviour
         _readyText.text = "";
         _currentRound = 1;
         _matchOverMenu.Show();
+        ReplayManager.Instance.SaveReplay();
         Time.timeScale = 0.0f;
     }
 

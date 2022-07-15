@@ -36,6 +36,8 @@ public class ReplaysMenu : BaseMenu
 		SceneSettings.StageIndex = replayCard.ReplayCardData.stage;
 		SceneSettings.MusicName = replayCard.ReplayCardData.musicName;
 		SceneSettings.Bit1 = replayCard.ReplayCardData.bit1;
+		SceneSettings.ControllerOne = "Cpu";
+		SceneSettings.ControllerTwo = "Cpu";
 		SceneManager.LoadScene(2);
 	}
 }

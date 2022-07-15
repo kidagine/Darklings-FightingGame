@@ -74,7 +74,7 @@ public class ReplayManager : MonoBehaviour
 					$"\n Player Two: \n {SceneSettings.PlayerTwo}, {SceneSettings.ColorTwo}, {SceneSettings.AssistTwo}");
 				fileStream.Write(playerTwo, 0, playerTwo.Length);
 				byte[] stage = new UTF8Encoding(true).GetBytes(
-					$"\n Stage: \n {SceneSettings.StageIndex}, {SceneSettings.MusicName} {SceneSettings.Bit1}");
+					$"\n Stage: \n {SceneSettings.StageIndex}, {SceneSettings.MusicName}, {SceneSettings.Bit1}");
 				fileStream.Write(stage, 0, stage.Length);
 			}
 			catch (Exception e)
