@@ -92,10 +92,27 @@ public class ReplayManager : MonoBehaviour
 	public ReplayCardData GetReplayData(int index)
 	{
 		string replayText = File.ReadAllText(_replayFiles[index]);
-		Debug.Log(replayText);
+
 		int versionTextPosition = replayText.IndexOf(_versionSplit) + _versionSplit.Length;
-		string versionWhole = " " + replayText[versionTextPosition..replayText.LastIndexOf(_playerOneSplit)].Trim();
-		ReplayCardData replayData = new() { characterOne = index, characterTwo = index, versionNumber = versionWhole };
+		string versionNumber = " " + replayText[versionTextPosition..replayText.LastIndexOf(_playerOneSplit)].Trim();
+
+		int playerOneTextPosition = replayText.IndexOf(_playerOneSplit) + _playerOneSplit.Length;
+		string playerOneTextWhole = " " + replayText[playerOneTextPosition..replayText.LastIndexOf(_playerTwoSplit)].Trim();
+		string[] playerOneInfo = playerOneTextWhole.Split(',');
+
+		int playerTwoTextPosition = replayText.IndexOf(_playerTwoSplit) + _playerTwoSplit.Length;
+		string playerTwoTextWhole = " " + replayText[playerTwoTextPosition..replayText.LastIndexOf(_stageSplit)].Trim();
+		string[] playerTwoInfo = playerTwoTextWhole.Split(',');
+
+		string stageTextWhole = " " + replayText[(replayText.IndexOf(_stageSplit) + _stageSplit.Length)..].Trim();
+		string[] stageInfo = stageTextWhole.Split(',');
+
+		ReplayCardData replayData = new()
+		{ versionNumber = versionNumber,
+			characterOne = int.Parse(playerOneInfo[0]), colorOne = int.Parse(playerOneInfo[1]), assistOne = int.Parse(playerOneInfo[2]),
+			characterTwo = int.Parse(playerTwoInfo[0]), colorTwo = int.Parse(playerTwoInfo[1]), assistTwo = int.Parse(playerTwoInfo[2]),
+			stage = int.Parse(stageInfo[0]), musicName = stageInfo[1].Trim(), bit1 = bool.Parse(stageInfo[2])
+		};
 		return replayData;
 	}
 

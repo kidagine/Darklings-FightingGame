@@ -8,9 +8,12 @@ public class ReplayCard : MonoBehaviour
 	[SerializeField] private Image _playerTwoImage = default;
 	[SerializeField] private TextMeshProUGUI _versionText = default;
 	[SerializeField] private Sprite[] _characterPortraits = default;
+	public ReplayCardData ReplayCardData { get; private set; }
+
 
 	public void SetData(ReplayCardData replayData)
 	{
+		ReplayCardData = replayData;
 		_playerOneImage.sprite = GetCharacterPortrait(replayData.characterOne);
 		_playerTwoImage.sprite = GetCharacterPortrait(replayData.characterTwo);
 		_versionText.text = $"Ver {replayData.versionNumber}";
@@ -37,5 +40,5 @@ public struct ReplayCardData
 	public int assistTwo;
 	public int stage;
 	public string musicName;
-	public int bit1;
+	public bool bit1;
 }
