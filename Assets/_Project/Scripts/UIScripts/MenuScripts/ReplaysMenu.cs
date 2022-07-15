@@ -20,7 +20,9 @@ public class ReplaysMenu : BaseMenu
 		{
 			ReplayCard replayCard = Instantiate(_replayPrefab, _replaysGroup).GetComponent<ReplayCard>();
 			replayCard.SetData(ReplayManager.Instance.GetReplayData(i));
-			replayCard.GetComponent<BaseButton>()._onClickedAnimationEnd.AddListener(()=> LoadReplayMatch(0));
+			Debug.Log(i);
+			int index = i;
+			replayCard.GetComponent<BaseButton>()._onClickedAnimationEnd.AddListener(()=> LoadReplayMatch(index));
 			replayCard.GetComponent<BaseButton>()._scrollView = _scrollView;
 
 			_replayCards.Add(replayCard);
@@ -31,22 +33,33 @@ public class ReplaysMenu : BaseMenu
 		StartCoroutine(SetUpScrollViewCoroutine());
 	}
 
+
 	public void LoadReplayMatch(int index)
 	{
 		ReplayCard replayCard = _replayCards[index];
-		SceneSettings.SceneSettingsDecide = true;
-		SceneSettings.PlayerOne = replayCard.ReplayCardData.characterOne;
-		SceneSettings.ColorOne = replayCard.ReplayCardData.colorOne;
-		SceneSettings.AssistOne = replayCard.ReplayCardData.assistOne;
-		SceneSettings.PlayerTwo = replayCard.ReplayCardData.characterTwo;
-		SceneSettings.ColorTwo = replayCard.ReplayCardData.colorTwo;
-		SceneSettings.AssistTwo = replayCard.ReplayCardData.assistTwo;
-		SceneSettings.StageIndex = replayCard.ReplayCardData.stage;
-		SceneSettings.MusicName = replayCard.ReplayCardData.musicName;
-		SceneSettings.Bit1 = replayCard.ReplayCardData.bit1;
-		SceneSettings.ControllerOne = "Cpu";
-		SceneSettings.ControllerTwo = "Cpu";
-		SceneManager.LoadScene(2);
+
+		if (replayCard.ReplayCardData.versionNumber == ReplayManager.Instance.VersionNumber)
+		{
+			SceneSettings.SceneSettingsDecide = true;
+			SceneSettings.PlayerOne = replayCard.ReplayCardData.characterOne;
+			SceneSettings.ColorOne = replayCard.ReplayCardData.colorOne;
+			SceneSettings.AssistOne = replayCard.ReplayCardData.assistOne;
+			SceneSettings.PlayerTwo = replayCard.ReplayCardData.characterTwo;
+			SceneSettings.ColorTwo = replayCard.ReplayCardData.colorTwo;
+			SceneSettings.AssistTwo = replayCard.ReplayCardData.assistTwo;
+			SceneSettings.StageIndex = replayCard.ReplayCardData.stage;
+			SceneSettings.MusicName = replayCard.ReplayCardData.musicName;
+			SceneSettings.Bit1 = replayCard.ReplayCardData.bit1;
+			SceneSettings.ControllerOne = "Cpu";
+			SceneSettings.ControllerTwo = "Cpu";
+			SceneSettings.ReplayMode = true;
+			SceneManager.LoadScene(2);
+		}
+		else
+		{
+			replayCard.GetComponent<Animator>().Rebind();
+			//TODO
+		}
 	}
 
 	void OnEnable()

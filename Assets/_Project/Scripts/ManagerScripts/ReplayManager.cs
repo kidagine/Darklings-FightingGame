@@ -6,18 +6,21 @@ using UnityEngine;
 public class ReplayManager : MonoBehaviour
 {
 	[SerializeField] private TextAsset _versionTextAsset = default;
+	[SerializeField] private Animator _replayNotificationAnimator = default;
 	private readonly string _replayPath = "/_Project/Replays/";
 	private readonly int _replaysLimit = 100;
 	private string[] _replayFiles;
-	private string _versionNumber;
 	private readonly string _versionSplit = "Version:";
 	private readonly string _patchNotesSplit = "Patch Notes:";
 	private readonly string _playerOneSplit = "Player One:";
 	private readonly string _playerTwoSplit = "Player Two:";
 	private readonly string _stageSplit = "Stage:";
 
-	public static ReplayManager Instance { get; private set; }
+	public string VersionNumber { get; private set; }
 	public int ReplayFilesAmount { get { return _replayFiles.Length; } private set { } }
+	public static ReplayManager Instance { get; private set; }
+
+
 
 	void Awake()
 	{
@@ -42,13 +45,13 @@ public class ReplayManager : MonoBehaviour
 		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
 		string versionText = _versionTextAsset.text;
 		int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
-		_versionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
+		VersionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
 
 	}
 
 	public void SaveReplay()
 	{
-		if (!SceneSettings.IsTrainingMode)
+		if (!SceneSettings.IsTrainingMode && _replayNotificationAnimator != null)
 		{
 			if (_replayFiles.Length == _replaysLimit)
 			{
@@ -65,7 +68,7 @@ public class ReplayManager : MonoBehaviour
 
 				using FileStream fileStream = File.Create(fileName);
 				byte[] version = new UTF8Encoding(true).GetBytes(
-					$"Version: \n {_versionNumber}");
+					$"Version: \n {VersionNumber}");
 				fileStream.Write(version, 0, version.Length);
 				byte[] playerOne = new UTF8Encoding(true).GetBytes(
 					$"\n Player One: \n {SceneSettings.PlayerOne}, {SceneSettings.ColorOne}, {SceneSettings.AssistOne}");
@@ -76,6 +79,7 @@ public class ReplayManager : MonoBehaviour
 				byte[] stage = new UTF8Encoding(true).GetBytes(
 					$"\n Stage: \n {SceneSettings.StageIndex}, {SceneSettings.MusicName}, {SceneSettings.Bit1}");
 				fileStream.Write(stage, 0, stage.Length);
+				_replayNotificationAnimator.SetTrigger("Save");
 			}
 			catch (Exception e)
 			{
