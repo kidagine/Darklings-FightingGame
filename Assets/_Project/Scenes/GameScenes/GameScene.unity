@@ -5921,10 +5921,10 @@ MonoBehaviour:
   _assistTwo: 0
   _controllerOne: 0
   _controllerTwo: 1
-  _music: 8
+  _music: 1
   _playerOneSkin: 0
   _playerTwoSkin: 0
-  _isTrainingMode: 1
+  _isTrainingMode: 0
   _isOnlineMode: 0
   _1BitOn: 0
   _gameSpeed: 1
@@ -6039,7 +6039,7 @@ MonoBehaviour:
     sounds:
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 87a56925bb6e7bc4b8d72827918d05fb, type: 3}
-      volume: 1
+      volume: 0.5
       pitch: 1
       name: Beat28
       loop: 1
@@ -6047,7 +6047,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: fe2b4491056a95742ba221fa762f8230, type: 3}
-      volume: 1
+      volume: 0.5
       pitch: 1
       name: Lit
       loop: 1
@@ -6055,7 +6055,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: ea755af53de71f54587be75ac0a5b587, type: 3}
-      volume: 1
+      volume: 0.5
       pitch: 1
       name: Lounge
       loop: 1
@@ -6063,7 +6063,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 98e7120f17a914b44ba5721fc6831879, type: 3}
-      volume: 1
+      volume: 0.5
       pitch: 1
       name: Soap
       loop: 1
@@ -6071,7 +6071,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 2d30a16bd689575469d356ab2320c7fc, type: 3}
-      volume: 1
+      volume: 0.5
       pitch: 1
       name: Tussle
       loop: 1
@@ -6079,7 +6079,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 9dcc8ea581562344ca4092aeaf45eee1, type: 3}
-      volume: 1
+      volume: 0.5
       pitch: 1
       name: Yee
       loop: 1
@@ -6087,7 +6087,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 84ee44aa7214715488c3c4af4925ccbd, type: 3}
-      volume: 1
+      volume: 0.5
       pitch: 1
       name: Upbeat
       loop: 1
@@ -6095,7 +6095,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: e8226df453d067c49b69de9f82eb7688, type: 3}
-      volume: 1
+      volume: 0.5
       pitch: 1
       name: Snooze5
       loop: 1
@@ -6441,7 +6441,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578679, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: 7c05a2f8ad7d54d468c47b3141a06f56, type: 2}
+      objectReference: {fileID: 9100000, guid: d07b4c2442277164a847eaaa08ae9e05, type: 2}
     - target: {fileID: 8073473790702501984, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -12558,7 +12558,8 @@ MonoBehaviour:
   _characterText: {fileID: 687649464}
   _descriptionText: {fileID: 1228321249}
   _showcaseVideo: {fileID: 696534686}
-  _pauseMenu: {fileID: 534647985}
+  _pauseMenu: {fileID: 860885408}
+  _pauseTrainingMenu: {fileID: 534647985}
   _commandListButtons:
   - {fileID: 8021248159409412161}
   - {fileID: 8021248159050021082}
@@ -28912,12 +28913,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 784621987}
-        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
-        m_MethodName: OpenMenuHideCurrent
-        m_Mode: 2
+        m_TargetAssemblyTypeName: CommandListMenu, Scripts
+        m_MethodName: Back
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 534647985}
-          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

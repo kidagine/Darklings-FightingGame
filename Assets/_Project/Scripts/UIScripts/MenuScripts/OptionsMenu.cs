@@ -21,7 +21,7 @@ public class OptionsMenu : BaseMenu
 
     public void SetMusic(int value)
     {
-        float parsedValue = ((float)(value / 5) / 10) + 0.00001f;
+        float parsedValue = ((float)value / 10) + 0.00001f;
         _audioMixer.SetFloat("MusicVolume", Mathf.Log10(parsedValue) * 20);
     }
 }
