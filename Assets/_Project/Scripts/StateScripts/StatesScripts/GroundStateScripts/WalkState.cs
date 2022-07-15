@@ -15,7 +15,7 @@ public class WalkState : GroundParentState
 		ToIdleState();
 		ToCrouchState();
 		ToJumpForwardState();
-		_player.Flip();
+		_player.CheckFlip();
 	}
 
 	private void ToIdleState()
@@ -32,6 +32,12 @@ public class WalkState : GroundParentState
 		{
 			_stateMachine.ChangeState(_crouchState);
 		}
+	}
+
+	public override bool ToParryState()
+	{
+		_stateMachine.ChangeState(_parryState);
+		return true;
 	}
 
 	private void ToJumpForwardState()

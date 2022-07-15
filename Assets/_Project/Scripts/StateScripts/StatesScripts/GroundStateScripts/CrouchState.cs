@@ -12,7 +12,7 @@ public class CrouchState : GroundParentState
     {
         base.UpdateLogic();
         ToIdleState();
-        _player.Flip();
+        _player.CheckFlip();
     }
 
     private void ToIdleState()
@@ -21,6 +21,12 @@ public class CrouchState : GroundParentState
         {
             _stateMachine.ChangeState(_idleState);
         }
+    }
+
+    public override bool ToParryState()
+    {
+        _stateMachine.ChangeState(_parryState);
+        return true;
     }
 
     public override bool ToBlockState(AttackSO attack)

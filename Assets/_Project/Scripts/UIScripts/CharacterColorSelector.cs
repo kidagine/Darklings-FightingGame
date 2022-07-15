@@ -33,21 +33,7 @@ public class CharacterColorSelector : MonoBehaviour
 		{
 			if (SceneSettings.ControllerOne == "Cpu")
 			{
-				if (SceneSettings.ControllerTwo == "Cpu")
-				{
-					_controllerInputName = "Keyboard";
-				}
-				else
-				{
-					if (SceneSettings.ControllerTwo == "KeyboardOne" || SceneSettings.ControllerTwo == "KeyboardTwo")
-					{
-						_controllerInputName = "Keyboard";
-					}
-					else
-					{
-						_controllerInputName = SceneSettings.ControllerTwo;
-					}
-				}
+				_controllerInputName = SceneSettings.ControllerTwo;
 			}
 			else
 			{
@@ -65,21 +51,7 @@ public class CharacterColorSelector : MonoBehaviour
 		{
 			if (SceneSettings.ControllerTwo == "Cpu")
 			{
-				if (SceneSettings.ControllerOne == "Cpu")
-				{
-					_controllerInputName = "Keyboard";
-				}
-				else
-				{
-					if (SceneSettings.ControllerOne == "KeyboardOne" || SceneSettings.ControllerOne == "KeyboardTwo")
-					{
-						_controllerInputName = "Keyboard";
-					}
-					else
-					{
-						_controllerInputName = SceneSettings.ControllerTwo;
-					}
-				}
+				_controllerInputName = SceneSettings.ControllerOne;
 			}
 			else
 			{
@@ -92,12 +64,6 @@ public class CharacterColorSelector : MonoBehaviour
 					_controllerInputName = SceneSettings.ControllerTwo;
 				}
 			}
-		}
-
-		//Refactor
-		if (_controllerInputName == "KeyboardTwo")
-		{
-			_controllerInputName = "Keyboard";
 		}
 	}
 

@@ -80,7 +80,7 @@ public class DashState : State
     public override void UpdatePhysics()
     {
         base.UpdatePhysics();
-        _player.Flip();
+        _player.CheckFlip();
     }
 
     public override bool AssistCall()

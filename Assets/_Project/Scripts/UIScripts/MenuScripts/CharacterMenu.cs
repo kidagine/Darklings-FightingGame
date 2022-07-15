@@ -215,7 +215,6 @@ public class CharacterMenu : BaseMenu
 
 	private void OnDisable()
 	{
-		Debug.Log(SceneSettings.SceneSettingsDecide);
 		if (!SceneSettings.SceneSettingsDecide)
 		{
 			_currentEventSystem.sendNavigationEvents = true;

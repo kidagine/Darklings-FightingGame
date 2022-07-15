@@ -18,7 +18,7 @@ public class PromptsInput : MonoBehaviour
         {
             _backUnityEvent?.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) || Input.GetButtonDown("ControllerOne" + "Medium"))
         {
             _mainSpecialUnityEvent?.Invoke();
         }

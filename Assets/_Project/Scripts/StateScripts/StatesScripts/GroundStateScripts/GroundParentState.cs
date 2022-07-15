@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class GroundParentState : State
 {
 	protected IdleState _idleState;
@@ -17,6 +19,7 @@ public class GroundParentState : State
 	protected GrabbedState _grabbedState;
 	protected KnockbackState _knockbackState;
 	protected TauntState _tauntState;
+	protected ParryState _parryState;
 
 	protected virtual void Awake()
 	{
@@ -36,6 +39,7 @@ public class GroundParentState : State
 		_grabbedState = GetComponent<GrabbedState>();
 		_knockbackState = GetComponent<KnockbackState>();
 		_tauntState = GetComponent<TauntState>();
+		_parryState = GetComponent<ParryState>();
 	}
 
 	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)

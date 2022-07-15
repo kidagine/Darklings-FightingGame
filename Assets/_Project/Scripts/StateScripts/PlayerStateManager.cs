@@ -66,6 +66,11 @@ public class PlayerStateManager : StateMachine
 		return CurrentState.ToGrabState();
 	}
 
+	public bool TryToParryState()
+	{
+		return CurrentState.ToParryState();
+	}
+
 	public bool TryToThrowState()
 	{
 		return CurrentState.ToThrowState();
@@ -90,6 +95,12 @@ public class PlayerStateManager : StateMachine
 	{
 		return CurrentState.AssistCall();
 	}
+
+	public bool TryToIdleState()
+	{
+		return CurrentState.ToIdleState();
+	}
+
 
 	public bool TryToHurtState(AttackSO attack)
 	{

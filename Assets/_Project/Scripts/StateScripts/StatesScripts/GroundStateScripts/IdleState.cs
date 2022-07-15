@@ -24,7 +24,7 @@ public class IdleState : GroundParentState
 		ToCrouchState();
 		ToJumpState();
 		ToDashState();
-		_player.Flip();
+		_player.CheckFlip();
 	}
 
 	private void ToWalkState()
@@ -54,6 +54,12 @@ public class IdleState : GroundParentState
 		{
 			_playerMovement.HasJumped = false;
 		}
+	}
+
+	public override bool ToParryState()
+	{
+		_stateMachine.ChangeState(_parryState);
+		return true;
 	}
 
 	private void ToDashState()

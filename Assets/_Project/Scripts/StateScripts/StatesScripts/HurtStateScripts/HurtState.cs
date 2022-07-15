@@ -15,9 +15,10 @@ public class HurtState : HurtParentState
 		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
 	}
+
 	public override void Enter()
 	{
-		_player.Flip();
+		_player.CheckFlip();
 		_playerAnimator.Hurt(true);
 		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();
@@ -36,15 +37,16 @@ public class HurtState : HurtParentState
 		}
 	}
 
-	private void ToIdleState()
+	public override bool ToIdleState()
 	{
-		_player.OtherPlayerUI.ResetCombo();
+		_player.OtherPlayer.StopComboTimer();
 		_stateMachine.ChangeState(_idleState);
+		return true;
 	}
 
 	private void ToAttackState()
 	{
-		_player.OtherPlayerUI.ResetCombo();
+		_player.OtherPlayer.StopComboTimer();
 		_attackState.Initialize(InputEnum.Light, false, false);	
 		_stateMachine.ChangeState(_attackState);
 	}

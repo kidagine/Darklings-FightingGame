@@ -21,7 +21,7 @@ public class CpuController : BaseController
 
 	void Update()
 	{
-		if (!TrainingSettings.CpuOff)
+		if (!TrainingSettings.CpuOff || !SceneSettings.IsTrainingMode)
 		{
 			_reset = false;
 			Movement();

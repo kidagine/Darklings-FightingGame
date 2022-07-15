@@ -16,7 +16,7 @@ public class TauntState : State
 	public override void Enter()
 	{
 		base.Enter();
-		_player.Flip();
+		_player.CheckFlip();
 		_playerAnimator.Taunt();
 		_tauntCoroutine = StartCoroutine(TauntCoroutine());
 	}

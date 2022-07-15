@@ -212,6 +212,8 @@ public class GameManager : MonoBehaviour
         PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
         PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
         PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
+        _inputHistories[0].PlayerController = PlayerOne.GetComponent<PlayerController>();
+        _inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
         _cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
         _cinemachineTargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
     }
@@ -426,8 +428,8 @@ public class GameManager : MonoBehaviour
         PlayerTwo.ResetPlayer();
         PlayerOne.transform.position = _spawnPositions[0].position;
         PlayerTwo.transform.position = _spawnPositions[1].position;
-        _playerOneUI.ResetCombo();
-        _playerTwoUI.ResetCombo();
+        PlayerOne.StopComboTimer();
+        PlayerTwo.StopComboTimer();
         PlayerOne.PlayerStateManager.TryToTauntState();
         PlayerTwo.PlayerStateManager.TryToTauntState();
         StartCoroutine(ReadyCoroutine());
@@ -518,6 +520,10 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SwitchCharactersCoroutine()
     {
+        PlayerStatsSO playerStatsOneTemp = PlayerOne.PlayerStats;
+        PlayerOne.PlayerStats = PlayerTwo.PlayerStats;
+        PlayerTwo.PlayerStats = playerStatsOneTemp;
+
         _playerTwoController.IsPlayerOne = !_playerTwoController.IsPlayerOne;
         _playerOneController.IsPlayerOne = !_playerOneController.IsPlayerOne;
         _playerOneUI.ShowPlayerIcon();

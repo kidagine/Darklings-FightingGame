@@ -22,10 +22,11 @@ public class GrabbedState : State
 
 	public override bool ToKnockdownState()
 	{
+		_player.OtherPlayer.SetResultAttack(_playerStats.PlayerStatsSO.mThrow.damage);
 		_player.Health -= _playerStats.PlayerStatsSO.mThrow.damage;
 		_playerUI.SetHealth(_player.Health);
 		_player.OtherPlayerUI.IncreaseCombo();
-		_player.OtherPlayerUI.ResetCombo();
+		_player.OtherPlayer.StopComboTimer();
 		GameManager.Instance.HitStop(_playerStats.PlayerStatsSO.mThrow.hitstop);
 		if (_player.Health <= 0)
 		{

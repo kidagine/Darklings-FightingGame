@@ -14,7 +14,7 @@ public class FallState : AirParentState
     {
         base.UpdateLogic();
         ToIdleState();
-        _player.Flip();
+        _player.CheckFlip();
     }
 
     public void ToIdleState()

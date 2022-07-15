@@ -39,7 +39,7 @@ public class AttackState : State
 	public override void Enter()
 	{
 		base.Enter();
-		_player.Flip();
+		_player.CheckFlip();
 		_audio.Sound("Hit").Play();
 		_player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
 		_playerAnimator.Attack(_player.CurrentAttack.name, true);
@@ -114,6 +114,10 @@ public class AttackState : State
 	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
 	{
 		if (inputEnum == InputEnum.Heavy && inputDirectionEnum == InputDirectionEnum.None)
+		{
+			return false;
+		}
+		if (inputEnum == InputEnum.Medium && _crouch && _player.CurrentAttack == _playerStats.PlayerStatsSO.m2M)
 		{
 			return false;
 		}
