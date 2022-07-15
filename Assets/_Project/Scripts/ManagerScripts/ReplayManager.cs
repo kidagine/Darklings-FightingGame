@@ -19,7 +19,7 @@ public class ReplayManager : MonoBehaviour
 	public static ReplayManager Instance { get; private set; }
 	public int ReplayFilesAmount { get { return _replayFiles.Length; } private set { } }
 
-	void Start()
+	void Awake()
 	{
 		CheckInstance();
 		Setup();
