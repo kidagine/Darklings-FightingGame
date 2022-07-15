@@ -5914,14 +5914,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee34fd0a2311cf1499332a4f01184100, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stage: 0
-  _characterOne: 0
+  _stage: 4
+  _characterOne: 3
   _characterTwo: 1
   _assistOne: 0
   _assistTwo: 0
-  _controllerOne: 2
-  _controllerTwo: 4
-  _music: 8
+  _controllerOne: 0
+  _controllerTwo: 1
+  _music: 1
   _playerOneSkin: 0
   _playerTwoSkin: 0
   _isTrainingMode: 1
@@ -6039,7 +6039,7 @@ MonoBehaviour:
     sounds:
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 87a56925bb6e7bc4b8d72827918d05fb, type: 3}
-      volume: 1
+      volume: 0.4
       pitch: 1
       name: Beat28
       loop: 1
@@ -6047,7 +6047,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: fe2b4491056a95742ba221fa762f8230, type: 3}
-      volume: 1
+      volume: 0.4
       pitch: 1
       name: Lit
       loop: 1
@@ -6055,7 +6055,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: ea755af53de71f54587be75ac0a5b587, type: 3}
-      volume: 1
+      volume: 0.4
       pitch: 1
       name: Lounge
       loop: 1
@@ -6063,7 +6063,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 98e7120f17a914b44ba5721fc6831879, type: 3}
-      volume: 1
+      volume: 0.4
       pitch: 1
       name: Soap
       loop: 1
@@ -6071,7 +6071,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 2d30a16bd689575469d356ab2320c7fc, type: 3}
-      volume: 1
+      volume: 0.4
       pitch: 1
       name: Tussle
       loop: 1
@@ -6079,7 +6079,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 9dcc8ea581562344ca4092aeaf45eee1, type: 3}
-      volume: 1
+      volume: 0.4
       pitch: 1
       name: Yee
       loop: 1
@@ -6087,7 +6087,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: 84ee44aa7214715488c3c4af4925ccbd, type: 3}
-      volume: 1
+      volume: 0.4
       pitch: 1
       name: Upbeat
       loop: 1
@@ -6095,7 +6095,7 @@ MonoBehaviour:
       playOneInstanceAtATime: 0
     - source: {fileID: 0}
       clip: {fileID: 8300000, guid: e8226df453d067c49b69de9f82eb7688, type: 3}
-      volume: 1
+      volume: 0.4
       pitch: 1
       name: Snooze5
       loop: 1
@@ -6355,9 +6355,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7611394710214668632, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+      propertyPath: _sounds.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: afac0f65b0fb5e048a466025da6e2970, type: 3}
+    - target: {fileID: 7611394710214668632, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: _sounds.Array.data[15].clip
       value: 
       objectReference: {fileID: 8300000, guid: 68b24d19592e7aa4883c6955f062dd22, type: 3}
+    - target: {fileID: 7611394710214668632, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+      propertyPath: _sounds.Array.data[0].volume
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7657508819943265675, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: _dustUpPrefab
       value: 
@@ -6401,7 +6409,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 2124612087, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
+      objectReference: {fileID: -1008733976, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -6433,7 +6441,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578679, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: 7c05a2f8ad7d54d468c47b3141a06f56, type: 2}
+      objectReference: {fileID: 9100000, guid: d07b4c2442277164a847eaaa08ae9e05, type: 2}
     - target: {fileID: 8073473790702501984, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -7060,7 +7068,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -11181,7 +11189,7 @@ VideoPlayer:
   - {fileID: 0}
   m_DirectAudioVolumes:
   - 1
-  m_Url: https://www.youtube.com/watch?v=1IJ6bUUhj9U
+  m_Url: https://drive.google.com/file/d/1-cl6JZlh8SbLWvMsG1u2Sd2jmOqcaobP/view?usp=sharingU
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
@@ -12550,7 +12558,8 @@ MonoBehaviour:
   _characterText: {fileID: 687649464}
   _descriptionText: {fileID: 1228321249}
   _showcaseVideo: {fileID: 696534686}
-  _pauseMenu: {fileID: 534647985}
+  _pauseMenu: {fileID: 860885408}
+  _pauseTrainingMenu: {fileID: 534647985}
   _commandListButtons:
   - {fileID: 8021248159409412161}
   - {fileID: 8021248159050021082}
@@ -28904,12 +28913,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 784621987}
-        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
-        m_MethodName: OpenMenuHideCurrent
-        m_Mode: 2
+        m_TargetAssemblyTypeName: CommandListMenu, Scripts
+        m_MethodName: Back
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 534647985}
-          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

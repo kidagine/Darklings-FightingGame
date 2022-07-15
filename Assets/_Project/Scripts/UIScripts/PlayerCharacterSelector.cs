@@ -76,6 +76,7 @@ public class PlayerCharacterSelector : MonoBehaviour
 		{
 			if (!_inputDeactivated)
 			{
+				Debug.Log(SceneSettings.ControllerOne);
 				_directionInput = new Vector2(Input.GetAxisRaw(_controllerInputName + "Horizontal"), Input.GetAxisRaw(_controllerInputName + "Vertical"));
 				if (_directionInput.x == 1.0f)
 				{

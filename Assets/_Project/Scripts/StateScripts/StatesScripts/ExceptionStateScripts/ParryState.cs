@@ -66,7 +66,7 @@ public class ParryState : State
 		_audio.Sound("Parry").Play();
 		_player.ArcanaGain(0.5f);
 		_parried = true;
-		GameManager.Instance.HitStop(0.2f);
+		GameManager.Instance.HitStop(0.25f);
 		GameObject effect = Instantiate(_parryEffect);
 		effect.transform.localPosition = attack.hurtEffectPosition;
 		if (!_playerMovement.IsInCorner)

@@ -10,10 +10,12 @@ public class CommandListMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _descriptionText = default;
 	[SerializeField] private VideoPlayer _showcaseVideo = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
+	[SerializeField] private PauseMenu _pauseTrainingMenu = default;
 	[SerializeField] private CommandListButton[] _commandListButtons = default;
 	[SerializeField] private GameObject _knockdownImage = default;
 	[SerializeField] private GameObject _reversalImage = default;
 	[SerializeField] private GameObject _projectileImage = default;
+	private PauseMenu _currentPauseMenu;
 
 	private Player _playerOne;
 	private Player _playerTwo;
@@ -28,8 +30,8 @@ public class CommandListMenu : BaseMenu
 
 	void Update()
 	{
-		if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UILeft")
-			|| Input.GetButtonDown(_pauseMenu.PauseControllerType + "UIRight"))
+		if (Input.GetButtonDown(_currentPauseMenu.PauseControllerType + "UILeft")
+			|| Input.GetButtonDown(_currentPauseMenu.PauseControllerType + "UIRight"))
 		{
 			if (_playerOne == _currentlyDisplayedPlayer)
 			{
@@ -84,8 +86,22 @@ public class CommandListMenu : BaseMenu
 		}
 	}
 
+	public void Back()
+	{
+		_currentPauseMenu.Show();
+		Hide();
+	}
+
 	private void OnEnable()
 	{
+		if (GameManager.Instance.IsTrainingMode)
+		{
+			_currentPauseMenu = _pauseTrainingMenu;
+		}
+		else
+		{
+			_currentPauseMenu = _pauseMenu;
+		}
 		if (_pauseMenu.PlayerOnePaused)
 		{
 			_currentlyDisplayedPlayer = _playerOne;

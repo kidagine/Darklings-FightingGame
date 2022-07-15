@@ -175,10 +175,6 @@ public class PlayersMenu : BaseMenu
 	{
 		_cpuTextLeft.SetActive(true);
 		_cpuTextRight.SetActive(true);
-		for (int i = 0; i < _playerIcons.Length; i++)
-		{
-			_playerIcons[i].anchoredPosition = new Vector2(_center, _playerIcons[i].anchoredPosition.y);
-		}
 	}
 
 	public void Back()
