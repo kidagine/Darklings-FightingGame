@@ -20,6 +20,7 @@ public class ReplayManager : MonoBehaviour
 	private BrainController _playerTwoController;
 	private InputBuffer _playerOneInputBuffer;
 	private InputBuffer _playerTwoInputBuffer;
+	private Coroutine _replayCoroutine;
 	private readonly string _replayPath = "/_Project/Replays/";
 	private readonly int _replaysLimit = 100;
 	private string[] _replayFiles;
@@ -137,7 +138,7 @@ public class ReplayManager : MonoBehaviour
 		_playerOneController.SetControllerToCpu();
 		_playerTwoController.SetControllerToCpu();
 		ReplayCardData replayCardData = GetReplayData(_replayIndex - 1);
-		StartCoroutine(LoadReplayCoroutine(replayCardData));
+		_replayCoroutine = StartCoroutine(LoadReplayCoroutine(replayCardData));
 	}
 
 	IEnumerator LoadReplayCoroutine(ReplayCardData replayCardData)
@@ -145,7 +146,7 @@ public class ReplayManager : MonoBehaviour
 		for (int i = 0; i < replayCardData.playerOneInputs.Length; i++)
 		{
 			string[] playerOneInputInfo = replayCardData.playerOneInputs[i].Split(',');
-			yield return new WaitForSeconds(int.Parse(playerOneInputInfo[2]));
+			yield return new WaitForSecondsRealtime(int.Parse(playerOneInputInfo[2]));
 			_playerOneInputBuffer.AddInputBufferItem((InputEnum)int.Parse(playerOneInputInfo[0]), (InputDirectionEnum)int.Parse(playerOneInputInfo[1]));
 			switch ((InputDirectionEnum)int.Parse(playerOneInputInfo[1]))
 			{
@@ -228,5 +229,13 @@ public class ReplayManager : MonoBehaviour
 	public void ShowReplayPrompts()
 	{
 		_replayPrompts.SetActive(true);
+	}
+
+	private void OnDisable()
+	{
+		if (_replayCoroutine != null)
+		{
+			StopCoroutine(_replayCoroutine);
+		}
 	}
 }
