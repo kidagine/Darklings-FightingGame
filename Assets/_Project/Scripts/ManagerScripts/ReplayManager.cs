@@ -1,23 +1,42 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Text;
 using UnityEngine;
 
 public class ReplayManager : MonoBehaviour
 {
+	[SerializeField] private PauseMenu _replayPauseMenu = default;
 	[SerializeField] private TextAsset _versionTextAsset = default;
+	[SerializeField] private GameObject _replayPrompts = default;
+	[SerializeField] private Animator _replayNotificationAnimator = default;
+	[SerializeField] private InputHistory _playerOneInputHistory = default;
+	[SerializeField] private InputHistory _playerTwoInputHistory = default;
+	[Header("Debug")]
+	[SerializeField] private bool _isReplayMode;
+	[Range(1, 100)]
+	[SerializeField] private int _replayIndex;
+	private BrainController _playerOneController;
+	private BrainController _playerTwoController;
+	private InputBuffer _playerOneInputBuffer;
+	private InputBuffer _playerTwoInputBuffer;
+	private Coroutine _replayCoroutine;
 	private readonly string _replayPath = "/_Project/Replays/";
 	private readonly int _replaysLimit = 100;
 	private string[] _replayFiles;
-	private string _versionNumber;
 	private readonly string _versionSplit = "Version:";
 	private readonly string _patchNotesSplit = "Patch Notes:";
 	private readonly string _playerOneSplit = "Player One:";
 	private readonly string _playerTwoSplit = "Player Two:";
 	private readonly string _stageSplit = "Stage:";
+	private readonly string _playerOneInputsSplit = "Player One Inputs:";
+	private readonly string _playerTwoInputsSplit = "Player Two Inputs:";
 
-	public static ReplayManager Instance { get; private set; }
+	public string VersionNumber { get; private set; }
 	public int ReplayFilesAmount { get { return _replayFiles.Length; } private set { } }
+	public static ReplayManager Instance { get; private set; }
+
+
 
 	void Awake()
 	{
@@ -37,18 +56,28 @@ public class ReplayManager : MonoBehaviour
 		}
 	}
 
+	void Start()
+	{
+		if (_isReplayMode)
+		{
+			LoadReplay();
+		}
+	}
+
+
 	private void Setup()
 	{
 		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
 		string versionText = _versionTextAsset.text;
 		int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
-		_versionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
-
+		VersionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
+		_playerOneInputBuffer = GameManager.Instance.PlayerOne.GetComponent<InputBuffer>();
+		_playerTwoInputBuffer = GameManager.Instance.PlayerTwo.GetComponent<InputBuffer>();
 	}
 
 	public void SaveReplay()
 	{
-		if (!SceneSettings.IsTrainingMode)
+		if (!SceneSettings.IsTrainingMode && _replayNotificationAnimator != null)
 		{
 			if (_replayFiles.Length == _replaysLimit)
 			{
@@ -65,7 +94,7 @@ public class ReplayManager : MonoBehaviour
 
 				using FileStream fileStream = File.Create(fileName);
 				byte[] version = new UTF8Encoding(true).GetBytes(
-					$"Version: \n {_versionNumber}");
+					$"Version: \n {VersionNumber}");
 				fileStream.Write(version, 0, version.Length);
 				byte[] playerOne = new UTF8Encoding(true).GetBytes(
 					$"\n Player One: \n {SceneSettings.PlayerOne}, {SceneSettings.ColorOne}, {SceneSettings.AssistOne}");
@@ -76,6 +105,23 @@ public class ReplayManager : MonoBehaviour
 				byte[] stage = new UTF8Encoding(true).GetBytes(
 					$"\n Stage: \n {SceneSettings.StageIndex}, {SceneSettings.MusicName}, {SceneSettings.Bit1}");
 				fileStream.Write(stage, 0, stage.Length);
+				string playerOneInputsHistory = "";
+				for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
+				{
+					playerOneInputsHistory += _playerOneInputHistory.Inputs[i] + ", ";
+				}
+				byte[] playerOneInputs = new UTF8Encoding(true).GetBytes(
+					$"\n Player One Inputs: \n {playerOneInputsHistory}");
+				fileStream.Write(playerOneInputs, 0, playerOneInputs.Length);
+				string playerTwoInputsHistory = "";
+				for (int i = 0; i < _playerTwoInputHistory.Inputs.Count; i++)
+				{
+					playerTwoInputsHistory += _playerTwoInputHistory.Inputs[i].ToString();
+				}
+				byte[] playerTwoInputs = new UTF8Encoding(true).GetBytes(
+					$"\n Player Two Inputs: \n {playerTwoInputsHistory}");
+				fileStream.Write(playerTwoInputs, 0, playerTwoInputs.Length);
+				_replayNotificationAnimator.SetTrigger("Save");
 			}
 			catch (Exception e)
 			{
@@ -86,7 +132,41 @@ public class ReplayManager : MonoBehaviour
 
 	public void LoadReplay()
 	{
+		SceneSettings.ReplayMode = true;
+		_playerOneController = GameManager.Instance.PlayerOne.GetComponent<BrainController>();
+		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
+		_playerOneController.SetControllerToCpu();
+		_playerTwoController.SetControllerToCpu();
+		ReplayCardData replayCardData = GetReplayData(_replayIndex - 1);
+		_replayCoroutine = StartCoroutine(LoadReplayCoroutine(replayCardData));
+	}
 
+	IEnumerator LoadReplayCoroutine(ReplayCardData replayCardData)
+	{
+		for (int i = 0; i < replayCardData.playerOneInputs.Length; i++)
+		{
+			string[] playerOneInputInfo = replayCardData.playerOneInputs[i].Split(',');
+			yield return new WaitForSecondsRealtime(int.Parse(playerOneInputInfo[2]));
+			_playerOneInputBuffer.AddInputBufferItem((InputEnum)int.Parse(playerOneInputInfo[0]), (InputDirectionEnum)int.Parse(playerOneInputInfo[1]));
+			switch ((InputDirectionEnum)int.Parse(playerOneInputInfo[1]))
+			{
+				case InputDirectionEnum.None:
+					_playerOneController.ActiveController.InputDirection = new Vector2(0, 0);
+					break;
+				case InputDirectionEnum.Up:
+					_playerOneController.ActiveController.InputDirection = new Vector2(0, 1);
+					break;
+				case InputDirectionEnum.Down:
+					_playerOneController.ActiveController.InputDirection = new Vector2(0, -1);
+					break;
+				case InputDirectionEnum.Left:
+					_playerOneController.ActiveController.InputDirection = new Vector2(-1, 0);
+					break;
+				case InputDirectionEnum.Right:
+					_playerOneController.ActiveController.InputDirection = new Vector2(1, 0);
+					break;
+			}
+		}
 	}
 
 	public ReplayCardData GetReplayData(int index)
@@ -104,14 +184,31 @@ public class ReplayManager : MonoBehaviour
 		string playerTwoTextWhole = " " + replayText[playerTwoTextPosition..replayText.LastIndexOf(_stageSplit)].Trim();
 		string[] playerTwoInfo = playerTwoTextWhole.Split(',');
 
-		string stageTextWhole = " " + replayText[(replayText.IndexOf(_stageSplit) + _stageSplit.Length)..].Trim();
+		int stageTextPosition = replayText.IndexOf(_stageSplit) + _stageSplit.Length;
+		string stageTextWhole = " " + replayText[stageTextPosition..replayText.LastIndexOf(_playerOneInputsSplit)].Trim();
 		string[] stageInfo = stageTextWhole.Split(',');
 
+		int playerOneInputTextPosition = replayText.IndexOf(_playerOneInputsSplit) + _playerOneInputsSplit.Length;
+		string playerOneInputTextWhole = " " + replayText[playerOneInputTextPosition..replayText.LastIndexOf(_playerTwoInputsSplit)].Trim();
+		string[] playerOneInputInfo = playerOneInputTextWhole.Split('|');
+
+		string playerTwoInputTextWhole = " " + replayText[(replayText.IndexOf(_playerTwoInputsSplit) + _playerTwoInputsSplit.Length)..].Trim();
+		string[] playerTwoInputInfo = playerTwoInputTextWhole.Split('|');
+
 		ReplayCardData replayData = new()
-		{ versionNumber = versionNumber,
-			characterOne = int.Parse(playerOneInfo[0]), colorOne = int.Parse(playerOneInfo[1]), assistOne = int.Parse(playerOneInfo[2]),
-			characterTwo = int.Parse(playerTwoInfo[0]), colorTwo = int.Parse(playerTwoInfo[1]), assistTwo = int.Parse(playerTwoInfo[2]),
-			stage = int.Parse(stageInfo[0]), musicName = stageInfo[1].Trim(), bit1 = bool.Parse(stageInfo[2])
+		{
+			versionNumber = versionNumber,
+			characterOne = int.Parse(playerOneInfo[0]),
+			colorOne = int.Parse(playerOneInfo[1]),
+			assistOne = int.Parse(playerOneInfo[2]),
+			characterTwo = int.Parse(playerTwoInfo[0]),
+			colorTwo = int.Parse(playerTwoInfo[1]),
+			assistTwo = int.Parse(playerTwoInfo[2]),
+			stage = int.Parse(stageInfo[0]),
+			musicName = stageInfo[1].Trim(),
+			bit1 = bool.Parse(stageInfo[2]),
+			playerOneInputs = playerOneInputInfo,
+			playerTwoInputs = playerTwoInputInfo
 		};
 		return replayData;
 	}
@@ -119,5 +216,26 @@ public class ReplayManager : MonoBehaviour
 	private void DeleteReplay()
 	{
 		File.Delete(_replayFiles[0]);
+	}
+
+	public void Pause()
+	{
+		Time.timeScale = 0.0f;
+		GameManager.Instance.DisableAllInput();
+		GameManager.Instance.PauseMusic();
+		_replayPauseMenu.Show();
+	}
+
+	public void ShowReplayPrompts()
+	{
+		_replayPrompts.SetActive(true);
+	}
+
+	private void OnDisable()
+	{
+		if (_replayCoroutine != null)
+		{
+			StopCoroutine(_replayCoroutine);
+		}
 	}
 }

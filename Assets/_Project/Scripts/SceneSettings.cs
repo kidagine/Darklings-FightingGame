@@ -20,4 +20,6 @@ public class SceneSettings
 	public static bool IsTrainingMode = false;
 	//Main Menu
 	public static bool ChangeCharacter = false;
+	//Replay
+	public static bool ReplayMode = false;
 }

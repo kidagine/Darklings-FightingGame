@@ -41,4 +41,6 @@ public struct ReplayCardData
 	public int stage;
 	public string musicName;
 	public bool bit1;
+	public string[] playerOneInputs;
+	public string[] playerTwoInputs;
 }
