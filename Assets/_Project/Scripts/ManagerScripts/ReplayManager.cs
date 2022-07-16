@@ -11,6 +11,10 @@ public class ReplayManager : MonoBehaviour
 	[SerializeField] private Animator _replayNotificationAnimator = default;
 	[SerializeField] private InputHistory _playerOneInputHistory = default;
 	[SerializeField] private InputHistory _playerTwoInputHistory = default;
+	[Header("Debug")]
+	[SerializeField] private bool _isReplayMode;
+	[Range(1, 100)]
+	[SerializeField] private int _replayIndex;
 	private readonly string _replayPath = "/_Project/Replays/";
 	private readonly int _replaysLimit = 100;
 	private string[] _replayFiles;
@@ -45,6 +49,15 @@ public class ReplayManager : MonoBehaviour
 			Instance = this;
 		}
 	}
+
+	void Start()
+	{
+		if (_isReplayMode)
+		{
+			LoadReplay();
+		}
+	}
+
 
 	private void Setup()
 	{
@@ -112,9 +125,14 @@ public class ReplayManager : MonoBehaviour
 
 	public void LoadReplay()
 	{
-
+		SceneSettings.ReplayMode = true;
+		//_playerOneController = GameManager.Instance.PlayerOne.GetComponent<BrainController>();
+		//_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
+		//_playerOneController.SetControllerToCpu();
+		//_playerTwoController.SetControllerToCpu();
+		//ReplayCardData replayCardData = GetReplayData(_replayIndex - 1);
+		//StartCoroutine(LoadReplayCoroutine(replayCardData));
 	}
-
 	public ReplayCardData GetReplayData(int index)
 	{
 		string replayText = File.ReadAllText(_replayFiles[index]);
