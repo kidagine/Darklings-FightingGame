@@ -16,20 +16,22 @@ public class ReplaysMenu : BaseMenu
 	void Start()
 	{
 		_replaysGroup.anchoredPosition = new Vector2(0.0f, _replaysGroup.anchoredPosition.y);
-		for (int i = 0; i < ReplayManager.Instance.ReplayFilesAmount; i++)
+		if (ReplayManager.Instance.ReplayFilesAmount > 0)
 		{
-			ReplayCard replayCard = Instantiate(_replayPrefab, _replaysGroup).GetComponent<ReplayCard>();
-			replayCard.SetData(ReplayManager.Instance.GetReplayData(i));
-			Debug.Log(i);
-			int index = i;
-			replayCard.GetComponent<BaseButton>()._onClickedAnimationEnd.AddListener(()=> LoadReplayMatch(index));
-			replayCard.GetComponent<BaseButton>()._scrollView = _scrollView;
+			for (int i = 0; i < ReplayManager.Instance.ReplayFilesAmount; i++)
+			{
+				ReplayCard replayCard = Instantiate(_replayPrefab, _replaysGroup).GetComponent<ReplayCard>();
+				replayCard.SetData(ReplayManager.Instance.GetReplayData(i));
+				int index = i;
+				replayCard.GetComponent<BaseButton>()._onClickedAnimationEnd.AddListener(() => LoadReplayMatch(index));
+				replayCard.GetComponent<BaseButton>()._scrollView = _scrollView;
 
-			_replayCards.Add(replayCard);
+				_replayCards.Add(replayCard);
+			}
+			_replayCards[0].GetComponent<BaseButton>()._scrollUpAmount = 0.0f;
+			_replayCards[_replayCards.Count - 1].GetComponent<BaseButton>()._scrollDownAmount = 0.0f;
+			_replayCards[0].GetComponent<Button>().Select();
 		}
-		_replayCards[0].GetComponent<BaseButton>()._scrollUpAmount = 0.0f;
-		_replayCards[_replayCards.Count - 1].GetComponent<BaseButton>()._scrollDownAmount = 0.0f;
-		_replayCards[0].GetComponent<Button>().Select();
 		StartCoroutine(SetUpScrollViewCoroutine());
 	}
 
@@ -65,6 +67,10 @@ public class ReplaysMenu : BaseMenu
 	void OnEnable()
 	{
 		_scrollView.anchoredPosition = Vector2.zero;
+		if (_replayCards.Count > 0)
+		{
+			_replayCards[0].GetComponent<Button>().Select();
+		}
 	}
 
 	IEnumerator SetUpScrollViewCoroutine()

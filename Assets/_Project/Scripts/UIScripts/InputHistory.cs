@@ -22,12 +22,13 @@ public class InputHistory : MonoBehaviour
 	private bool _isNextInputBreak;
 	private bool _isNextInputSubItem;
 
+	public List<InputEnum> Inputs { get; private set; } = new();
 	public PlayerController PlayerController { get; set; }
 
 
 	void Awake()
 	{
-		foreach (Transform child in transform)
+		foreach (Transform child in transform.GetChild(0))
 		{
 			_inputHistoryImages.Add(child.GetComponent<InputHistoryImage>());
 		}
@@ -35,7 +36,7 @@ public class InputHistory : MonoBehaviour
 
 	public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
-		if (_inputHistoryImages.Count > 0 && gameObject.activeSelf)
+		if (_inputHistoryImages.Count > 0)
 		{
 			if (_inputBreakCoroutine != null)
 			{
@@ -58,7 +59,6 @@ public class InputHistory : MonoBehaviour
 			{
 				AddMainInput(inputEnum, inputDirectionEnum);
 			}
-
 		}
 	}
 
@@ -129,7 +129,7 @@ public class InputHistory : MonoBehaviour
 			SetInputImageSprite(image, inputEnum, inputDirectionEnum);
 			_inputEnums.Add(inputEnum);
 		}
-
+		Inputs.AddRange(_inputEnums);
 		IncreaseCurrentInputImageIndex();
 		_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
 		StartCoroutine(InputSubItemCoroutine());

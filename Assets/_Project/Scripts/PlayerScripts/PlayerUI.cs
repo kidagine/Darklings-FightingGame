@@ -30,6 +30,7 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Image _comboTimerImage = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private PauseMenu _trainingPauseMenu = default;
+	[SerializeField] private PauseMenu _replayPauseMenu = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
 	[SerializeField] private Color _healthNormalColor = default;
 	[SerializeField] private Color _healthDamagedColor = default;
@@ -327,6 +328,7 @@ public class PlayerUI : MonoBehaviour
 		Time.timeScale = 1.0f;
 		SceneSettings.SceneSettingsDecide = false;
 		SceneSettings.ChangeCharacter = false;
+		SceneSettings.ReplayMode = false;
 		SceneManager.LoadScene(1);
 	}
 
@@ -357,6 +359,7 @@ public class PlayerUI : MonoBehaviour
 		GameManager.Instance.PlayMusic();
 		_pauseMenu.Hide();
 		_trainingPauseMenu.Hide();
+		_replayPauseMenu.Hide();
 	}
 
 	public void IncreaseCombo()

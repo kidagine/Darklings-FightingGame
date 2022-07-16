@@ -277,6 +277,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (SceneSettings.ReplayMode)
+        {
+            ReplayManager.Instance.ShowReplayPrompts();
+        }
         if (SceneSettings.MusicName == "Random")
         {
             _currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
@@ -303,8 +307,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            _inputHistories[0].gameObject.SetActive(false);
-            _inputHistories[1].gameObject.SetActive(false);
+            _inputHistories[0].transform.GetChild(0).gameObject.SetActive(false);
+            _inputHistories[1].transform.GetChild(0).gameObject.SetActive(false);
             _trainingPrompts.gameObject.SetActive(false);
             StartIntro();
         }
