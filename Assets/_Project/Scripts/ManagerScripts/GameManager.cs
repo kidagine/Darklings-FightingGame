@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
 	private bool _hasSwitchedCharacters;
 	private bool _canCallSwitchCharacter = true;
 	private bool _isDialogueRunning;
+	private bool _finalRound;
 	private int _playerOneWins;
 	private int _playerTwoWins;
 
@@ -358,67 +359,6 @@ public class GameManager : MonoBehaviour
 		_introAnimator.SetBool("IsIntroRunning", true);
 	}
 
-	IEnumerator RoundTieCoroutine()
-	{
-		for (int i = 0; i < _readyObjects.Length; i++)
-		{
-			_readyObjects[i].SetActive(true);
-		}
-		HasGameStarted = false;
-		_readyAnimator.SetTrigger("Show");
-		_uiAudio.Sound("TextSound").Play();
-		_readyText.text = "TIME'S OUT";
-		Time.timeScale = 0.25f;
-		if (PlayerOne.Health > PlayerTwo.Health)
-		{
-			PlayerOne.PlayerStateManager.TryToTauntState();
-			PlayerTwo.LoseLife();
-		}
-		else if (PlayerOne.Health < PlayerTwo.Health)
-		{
-			PlayerTwo.PlayerStateManager.TryToTauntState();
-			PlayerOne.LoseLife();
-		}
-		yield return new WaitForSeconds(0.5f);
-		_readyAnimator.SetTrigger("Show");
-		_uiAudio.Sound("TextSound").Play();
-		if (PlayerOne.Health == PlayerTwo.Health)
-		{
-			_readyText.text = "TIE";
-		}
-		else
-		{
-			_readyText.text = "WINNER";
-			if (PlayerOne.Health > PlayerTwo.Health)
-			{
-				_winnerNameText.text = $"{_playerOneUI.PlayerName}\n{_playerOneUI.CharacterName}";
-				_currentRound++;
-			}
-			else
-			{
-				_winnerNameText.text = $"{_playerTwoUI.PlayerName}\n{_playerTwoUI.CharacterName}";
-				_currentRound++;
-			}
-		}
-
-		yield return new WaitForSeconds(0.5f);
-		for (int i = 0; i < _readyObjects.Length; i++)
-		{
-			_readyObjects[i].SetActive(false);
-		}
-		_winnerNameText.text = "";
-		_readyText.text = "";
-		if (PlayerOne.Lives == 0 || PlayerTwo.Lives == 0)
-		{
-			Time.timeScale = 0.0f;
-			_matchOverMenu.Show();
-		}
-		else
-		{
-			StartRound();
-		}
-	}
-
 	IEnumerator RoundOverCoroutine(bool timeout)
 	{
 		HasGameStarted = false;
@@ -437,16 +377,22 @@ public class GameManager : MonoBehaviour
 			}
 			else if (PlayerOne.Lives == 1 && PlayerTwo.Lives > 1)
 			{
+				playerTwoWon = true;
 				PlayerOne.LoseLife();
 			}
 			else if (PlayerTwo.Lives == 1 && PlayerOne.Lives > 1)
 			{
+				playerOneWon = true;
 				PlayerTwo.LoseLife();
 			}
-			else if (PlayerOne.Lives == 1 && PlayerTwo.Lives == 1 && _currentRound == 3)
+			else if (PlayerOne.Lives == 1 && PlayerTwo.Lives == 1 && _finalRound)
 			{
 				PlayerOne.LoseLife();
 				PlayerTwo.LoseLife();
+			}
+			else
+			{
+				_finalRound = true;
 			}
 		}
 		else
@@ -507,57 +453,71 @@ public class GameManager : MonoBehaviour
 		}
 		yield return new WaitForSecondsRealtime(2.0f);
 
-		//if (playerOneWon)
-		//{
-		//	PlayerOne.PlayerStateManager.TryToTauntState();
-		//}
-		//else if (playerTwoWon)
-		//{
-		//	PlayerTwo.PlayerStateManager.TryToTauntState();
-		//}
+		if (playerOneWon)
+		{
+			PlayerOne.PlayerStateManager.TryToTauntState();
+			PlayerTwo.PlayerStateManager.TryToGiveUpState();
+		}
+		else if (playerTwoWon)
+		{
+			PlayerOne.PlayerStateManager.TryToGiveUpState();
+			PlayerTwo.PlayerStateManager.TryToTauntState();
+		}
+		else
+		{
+			PlayerOne.PlayerStateManager.TryToGiveUpState();
+			PlayerTwo.PlayerStateManager.TryToGiveUpState();
+		}
+		yield return new WaitForSecondsRealtime(2.0f);
 
-		//yield return new WaitForSecondsRealtime(2.0f);
-		//for (int i = 0; i < _readyObjects.Length; i++)
-		//{
-		//	_readyObjects[i].SetActive(false);
-		//}
-		//_winnerNameText.text = "";
-		//_readyText.text = "";
-
-		//if (playerOneWon)
-		//{
-		//	if (PlayerTwo.Lives == 0)
-		//	{
-		//		_playerOneWins++;
-		//		_winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
-		//		MatchOver();
-		//	}
-		//	else
-		//	{
-		//		StartRound();
-		//	}
-		//}
-		//else if (playerTwoWon)
-		//{
-		//	if (PlayerOne.Lives == 0)
-		//	{
-		//		_playerTwoWins++;
-		//		_winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
-		//		MatchOver();
-		//	}
-		//	else
-		//	{
-		//		StartRound();
-		//	}
-		//}
-		//else
-		//{
-		//	StartRound();
-		//}
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(false);
+		}
+		_winnerNameText.text = "";
+		_readyText.text = "";
+		if (playerOneWon)
+		{
+			if (PlayerTwo.Lives == 0)
+			{
+				_playerOneWins++;
+				_winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
+				MatchOver();
+			}
+			else
+			{
+				StartRound();
+			}
+		}
+		else if (playerTwoWon)
+		{
+			if (PlayerOne.Lives == 0)
+			{
+				_playerTwoWins++;
+				_winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
+				MatchOver();
+			}
+			else
+			{
+				StartRound();
+			}
+		}
+		else
+		{
+			if (PlayerTwo.Lives == 0 || PlayerOne.Lives == 0)
+			{
+				MatchOver();
+			}
+			else
+			{
+				StartRound();
+			}
+		}
 	}
 
 	private void MatchOver()
 	{
+		_finalRound = false;
 		_winnerNameText.text = "";
 		_readyText.text = "";
 		_currentRound = 1;
@@ -608,11 +568,15 @@ public class GameManager : MonoBehaviour
 		yield return new WaitForSeconds(0.5f);
 		_uiAudio.Sound("TextSound").Play();
 		_readyAnimator.SetTrigger("Show");
+		if (_currentRound == 4)
+		{
+			_finalRound = true;
+		}
 		for (int i = 0; i < _readyObjects.Length; i++)
 		{
 			_readyObjects[i].SetActive(true);
 		}
-		if (_currentRound == 3)
+		if (_finalRound)
 		{
 			_readyText.text = $"Final Round";
 		}

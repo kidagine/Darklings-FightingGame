@@ -21,25 +21,34 @@ public class CpuController : BaseController
 
 	void Update()
 	{
-		if (!TrainingSettings.CpuOff || !SceneSettings.IsTrainingMode)
+		if (GameManager.Instance.HasGameStarted)
 		{
-			_reset = false;
-			Movement();
-			if (_distance <= 5.5f)
+			if (!TrainingSettings.CpuOff || !SceneSettings.IsTrainingMode)
 			{
-				Attack();
+				_reset = false;
+				Movement();
+				if (_distance <= 5.5f)
+				{
+					Attack();
+				}
+				Specials();
 			}
-			Specials();
+			else
+			{
+				if (!_reset)
+				{
+					_reset = true;
+					InputDirection = Vector2.zero;
+					_playerStateMachine.ResetToInitialState();
+				}
+			}
 		}
 		else
 		{
-			if (!_reset)
-			{
-				_reset = true;
-				InputDirection = Vector2.zero;
-				_playerStateMachine.ResetToInitialState();
-			}
+			InputDirection = Vector2.zero;
+			_playerStateMachine.ResetToInitialState();
 		}
+
 	}
 
 	private void Movement()

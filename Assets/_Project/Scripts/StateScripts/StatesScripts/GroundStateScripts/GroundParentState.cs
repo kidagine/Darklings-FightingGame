@@ -19,6 +19,7 @@ public class GroundParentState : State
 	protected GrabbedState _grabbedState;
 	protected KnockbackState _knockbackState;
 	protected TauntState _tauntState;
+	protected GiveUpState _giveUpState;
 	protected ParryState _parryState;
 
 	protected virtual void Awake()
@@ -39,6 +40,7 @@ public class GroundParentState : State
 		_grabbedState = GetComponent<GrabbedState>();
 		_knockbackState = GetComponent<KnockbackState>();
 		_tauntState = GetComponent<TauntState>();
+		_giveUpState = GetComponent<GiveUpState>();
 		_parryState = GetComponent<ParryState>();
 	}
 
@@ -118,6 +120,12 @@ public class GroundParentState : State
 	public override bool ToTauntState()
 	{
 		_stateMachine.ChangeState(_tauntState);
+		return true;
+	}
+
+	public override bool ToGiveUpState()
+	{
+		_stateMachine.ChangeState(_giveUpState);
 		return true;
 	}
 
