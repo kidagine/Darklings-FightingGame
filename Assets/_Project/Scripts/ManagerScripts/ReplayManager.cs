@@ -152,8 +152,6 @@ public class ReplayManager : MonoBehaviour
 		SceneSettings.ReplayMode = true;
 		_playerOneController = GameManager.Instance.PlayerOne.GetComponent<BrainController>();
 		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
-		//_playerOneController.SetControllerToCpu();
-		//_playerTwoController.SetControllerToCpu();
 		ReplayCardData replayCardData = GetReplayData(_replayIndex - 1);
 		StartCoroutine(LoadReplayCoroutine(replayCardData));
 		StartCoroutine(LoadReplayCoroutine2(replayCardData));

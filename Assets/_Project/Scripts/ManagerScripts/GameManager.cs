@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private GameObject[] _stages = default;
 	[SerializeField] private AssistStatsSO[] _assists = default;
 	[SerializeField] private BaseMenu _matchOverMenu = default;
+	[SerializeField] private BaseMenu _matchOverReplayMenu = default;
 	[SerializeField] private Animator _readyAnimator = default;
 	[SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
 	[SerializeField] private Audio _musicAudio = default;
@@ -522,7 +523,14 @@ public class GameManager : MonoBehaviour
 		_winnerNameText.text = "";
 		_readyText.text = "";
 		_currentRound = 1;
-		_matchOverMenu.Show();
+		if (SceneSettings.ReplayMode)
+		{
+			_matchOverReplayMenu.Show();
+		}
+		else
+		{
+			_matchOverMenu.Show();
+		}
 		ReplayManager.Instance.SaveReplay();
 		Time.timeScale = 0.0f;
 	}
