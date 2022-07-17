@@ -46,9 +46,7 @@ public class CpuController : BaseController
 		else
 		{
 			InputDirection = Vector2.zero;
-			_playerStateMachine.ResetToInitialState();
 		}
-
 	}
 
 	private void Movement()
