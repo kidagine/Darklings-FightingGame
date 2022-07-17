@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 2496761}
   - component: {fileID: 2496763}
   - component: {fileID: 2496762}
+  - component: {fileID: 2496764}
   m_Layer: 5
   m_Name: WinnerName_text
   m_TagString: Untagged
@@ -258,6 +259,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2496760}
   m_CullTransparentMesh: 1
+--- !u!114 &2496764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2496760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b829383902dc9db4a96bf689b6a55349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
+  _spacing: 5
 --- !u!1 &9294218
 GameObject:
   m_ObjectHideFlags: 0
@@ -6423,7 +6438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stage: 4
   _characterOne: 0
-  _characterTwo: 2
+  _characterTwo: 0
   _assistOne: 0
   _assistTwo: 0
   _controllerOne: 0
@@ -6431,11 +6446,11 @@ MonoBehaviour:
   _music: 1
   _playerOneSkin: 0
   _playerTwoSkin: 0
-  _isTrainingMode: 1
+  _isTrainingMode: 0
   _isOnlineMode: 0
   _1BitOn: 0
   _gameSpeed: 1
-  _countdownTime: 99
+  _countdownTime: 11
   _spawnPositions:
   - {fileID: 1725751517}
   - {fileID: 963923573}
@@ -14822,7 +14837,7 @@ MonoBehaviour:
   _replayNotificationAnimator: {fileID: 1059549328}
   _playerOneInputHistory: {fileID: 1607718335}
   _playerTwoInputHistory: {fileID: 446620529}
-  _isReplayMode: 1
+  _isReplayMode: 0
   _replayIndex: 2
 --- !u!4 &856490119
 Transform:

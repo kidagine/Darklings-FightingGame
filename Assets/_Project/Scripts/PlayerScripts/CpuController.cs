@@ -73,10 +73,12 @@ public class CpuController : BaseController
 			{
 				_jump = true;
 				_movementInputX = transform.localScale.x * 1.0f;
+				_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
 			}
 			if (crouchRandom == 2)
 			{
 				_crouch = true;
+				_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
 			}
 			if (standingRandom == 2)
 			{
@@ -101,19 +103,20 @@ public class CpuController : BaseController
 				int attackRandom = Random.Range(0, 8);
 				if (attackRandom <= 2)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Light, RandomInputDirection());
+					_inputBuffer.AddInputBufferItem(InputEnum.Light);
 				}
 				else if (attackRandom <= 4)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Medium, RandomInputDirection());
+					_inputBuffer.AddInputBufferItem(InputEnum.Medium);
 				}
 				else if (attackRandom <= 6)
 				{
-					_playerStateMachine.TryToAttackState(InputEnum.Heavy, RandomInputDirection());
+					_inputBuffer.AddInputBufferItem(InputEnum.Heavy);
 				}
 				else
 				{
 					_playerStateMachine.TryToGrabState();
+					_inputBuffer.AddInputBufferItem(InputEnum.Throw);
 				}
 				_attackTimer = Random.Range(0.15f, 0.35f);
 			}
@@ -143,7 +146,7 @@ public class CpuController : BaseController
 				int arcanaRandom = Random.Range(0, 2);
 				if (arcanaRandom == 0)
 				{
-					_playerStateMachine.TryToAssistCall();
+					_inputBuffer.AddInputBufferItem(InputEnum.Assist);
 				}
 				else if (arcanaRandom == 1)
 				{

@@ -18,7 +18,7 @@ public class PlayerController : BaseController
 
 	void Update()
 	{
-		if (!string.IsNullOrEmpty(_brainController.ControllerInputName))
+		if (!string.IsNullOrEmpty(_brainController.ControllerInputName) && !SceneSettings.ReplayMode)
 		{
 			if (IsControllerEnabled)
 			{

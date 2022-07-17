@@ -20,7 +20,6 @@ public class ReplayManager : MonoBehaviour
 	private BrainController _playerTwoController;
 	private InputBuffer _playerOneInputBuffer;
 	private InputBuffer _playerTwoInputBuffer;
-	private Coroutine _replayCoroutine;
 	private readonly string _replayPath = "/_Project/Replays/";
 	private readonly int _replaysLimit = 100;
 	private string[] _replayFiles;
@@ -135,10 +134,11 @@ public class ReplayManager : MonoBehaviour
 		SceneSettings.ReplayMode = true;
 		_playerOneController = GameManager.Instance.PlayerOne.GetComponent<BrainController>();
 		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
-		_playerOneController.SetControllerToCpu();
-		_playerTwoController.SetControllerToCpu();
+		//_playerOneController.SetControllerToCpu();
+		//_playerTwoController.SetControllerToCpu();
 		ReplayCardData replayCardData = GetReplayData(_replayIndex - 1);
-		_replayCoroutine = StartCoroutine(LoadReplayCoroutine(replayCardData));
+		StartCoroutine(LoadReplayCoroutine(replayCardData));
+		StartCoroutine(LoadReplayCoroutine2(replayCardData));
 	}
 
 	IEnumerator LoadReplayCoroutine(ReplayCardData replayCardData)
@@ -164,6 +164,34 @@ public class ReplayManager : MonoBehaviour
 					break;
 				case InputDirectionEnum.Right:
 					_playerOneController.ActiveController.InputDirection = new Vector2(1, 0);
+					break;
+			}
+		}
+	}
+
+	IEnumerator LoadReplayCoroutine2(ReplayCardData replayCardData)
+	{
+		for (int i = 0; i < replayCardData.playerOneInputs.Length; i++)
+		{
+			string[] playerTwoInputInfo = replayCardData.playerTwoInputs[i].Split(',');
+			yield return new WaitForSecondsRealtime(int.Parse(playerTwoInputInfo[2]));
+			_playerTwoInputBuffer.AddInputBufferItem((InputEnum)int.Parse(playerTwoInputInfo[0]), (InputDirectionEnum)int.Parse(playerTwoInputInfo[1]));
+			switch ((InputDirectionEnum)int.Parse(playerTwoInputInfo[1]))
+			{
+				case InputDirectionEnum.None:
+					_playerTwoController.ActiveController.InputDirection = new Vector2(0, 0);
+					break;
+				case InputDirectionEnum.Up:
+					_playerTwoController.ActiveController.InputDirection = new Vector2(0, 1);
+					break;
+				case InputDirectionEnum.Down:
+					_playerTwoController.ActiveController.InputDirection = new Vector2(0, -1);
+					break;
+				case InputDirectionEnum.Left:
+					_playerTwoController.ActiveController.InputDirection = new Vector2(-1, 0);
+					break;
+				case InputDirectionEnum.Right:
+					_playerTwoController.ActiveController.InputDirection = new Vector2(1, 0);
 					break;
 			}
 		}
@@ -229,13 +257,5 @@ public class ReplayManager : MonoBehaviour
 	public void ShowReplayPrompts()
 	{
 		_replayPrompts.SetActive(true);
-	}
-
-	private void OnDisable()
-	{
-		if (_replayCoroutine != null)
-		{
-			StopCoroutine(_replayCoroutine);
-		}
 	}
 }
