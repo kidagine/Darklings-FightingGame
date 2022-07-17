@@ -278,10 +278,6 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
-		if (SceneSettings.ReplayMode)
-		{
-			ReplayManager.Instance.ShowReplayPrompts();
-		}
 		if (SceneSettings.MusicName == "Random")
 		{
 			_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
@@ -333,17 +329,22 @@ public class GameManager : MonoBehaviour
 			}
 
 		}
-		if (_isDialogueRunning)
+		if (_isDialogueRunning && !SceneSettings.ReplayMode)
 		{
 			if (Input.anyKeyDown)
 			{
-				_playerOneDialogue.StopDialogue();
-				_playerTwoDialogue.StopDialogue();
-				StartRound();
-				_introAnimator.SetBool("IsIntroRunning", false);
-				_isDialogueRunning = false;
+				SkipIntro();
 			}
 		}
+	}
+
+	public void SkipIntro()
+	{
+		_playerOneDialogue.StopDialogue();
+		_playerTwoDialogue.StopDialogue();
+		StartRound();
+		_introAnimator.SetBool("IsIntroRunning", false);
+		_isDialogueRunning = false;
 	}
 
 	public void StartIntro()
@@ -528,6 +529,10 @@ public class GameManager : MonoBehaviour
 
 	public virtual void StartRound()
 	{
+		if (SceneSettings.ReplayMode)
+		{
+			ReplayManager.Instance.ShowReplayPrompts();
+		}
 		_timerMainAnimator.Rebind();
 		_isDialogueRunning = false;
 		for (int i = 0; i < _arcanaObjects.Length; i++)

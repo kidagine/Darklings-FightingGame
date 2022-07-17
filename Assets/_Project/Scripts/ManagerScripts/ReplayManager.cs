@@ -28,6 +28,7 @@ public class ReplayManager : MonoBehaviour
 	private readonly string _playerOneSplit = "Player One:";
 	private readonly string _playerTwoSplit = "Player Two:";
 	private readonly string _stageSplit = "Stage:";
+	private readonly string _skipSplit = "Skip:";
 	private readonly string _playerOneInputsSplit = "Player One Inputs:";
 	private readonly string _playerTwoInputsSplit = "Player Two Inputs:";
 
@@ -39,8 +40,25 @@ public class ReplayManager : MonoBehaviour
 
 	void Awake()
 	{
+		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
+		if (_isReplayMode)
+		{
+			ReplayCardData replayCardData = GetReplayData(_replayIndex - 1);
+			SceneSettings.SceneSettingsDecide = true;
+			SceneSettings.PlayerOne = replayCardData.characterOne;
+			SceneSettings.ColorOne = replayCardData.colorOne;
+			SceneSettings.AssistOne = replayCardData.assistOne;
+			SceneSettings.PlayerTwo = replayCardData.characterTwo;
+			SceneSettings.ColorTwo = replayCardData.colorTwo;
+			SceneSettings.AssistTwo = replayCardData.assistTwo;
+			SceneSettings.StageIndex = replayCardData.stage;
+			SceneSettings.MusicName = replayCardData.musicName;
+			SceneSettings.Bit1 = replayCardData.bit1;
+			SceneSettings.ControllerOne = "KeyboardOne";
+			SceneSettings.ControllerTwo = "KeyboardTwo";
+			SceneSettings.ReplayMode = true;
+		}
 		CheckInstance();
-		Setup();
 	}
 
 	private void CheckInstance()
@@ -57,6 +75,7 @@ public class ReplayManager : MonoBehaviour
 
 	void Start()
 	{
+		Setup();
 		if (_isReplayMode)
 		{
 			LoadReplay();
@@ -66,7 +85,6 @@ public class ReplayManager : MonoBehaviour
 
 	private void Setup()
 	{
-		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
 		string versionText = _versionTextAsset.text;
 		int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
 		VersionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
@@ -139,15 +157,16 @@ public class ReplayManager : MonoBehaviour
 		ReplayCardData replayCardData = GetReplayData(_replayIndex - 1);
 		StartCoroutine(LoadReplayCoroutine(replayCardData));
 		StartCoroutine(LoadReplayCoroutine2(replayCardData));
-		ShowReplayPrompts();
 	}
 
 	IEnumerator LoadReplayCoroutine(ReplayCardData replayCardData)
 	{
+		yield return new WaitForSeconds(replayCardData.skip);
+		GameManager.Instance.SkipIntro();
 		for (int i = 0; i < replayCardData.playerOneInputs.Length; i++)
 		{
 			string[] playerOneInputInfo = replayCardData.playerOneInputs[i].Split(',');
-			yield return new WaitForSecondsRealtime(int.Parse(playerOneInputInfo[2]));
+			yield return new WaitForSeconds(int.Parse(playerOneInputInfo[2]));
 			_playerOneInputBuffer.AddInputBufferItem((InputEnum)int.Parse(playerOneInputInfo[0]), (InputDirectionEnum)int.Parse(playerOneInputInfo[1]));
 			switch ((InputDirectionEnum)int.Parse(playerOneInputInfo[1]))
 			{
@@ -172,10 +191,12 @@ public class ReplayManager : MonoBehaviour
 
 	IEnumerator LoadReplayCoroutine2(ReplayCardData replayCardData)
 	{
+		yield return new WaitForSeconds(replayCardData.skip);
+		GameManager.Instance.SkipIntro();
 		for (int i = 0; i < replayCardData.playerOneInputs.Length; i++)
 		{
 			string[] playerTwoInputInfo = replayCardData.playerTwoInputs[i].Split(',');
-			yield return new WaitForSecondsRealtime(int.Parse(playerTwoInputInfo[2]));
+			yield return new WaitForSeconds(int.Parse(playerTwoInputInfo[2]));
 			_playerTwoInputBuffer.AddInputBufferItem((InputEnum)int.Parse(playerTwoInputInfo[0]), (InputDirectionEnum)int.Parse(playerTwoInputInfo[1]));
 			switch ((InputDirectionEnum)int.Parse(playerTwoInputInfo[1]))
 			{
@@ -203,26 +224,30 @@ public class ReplayManager : MonoBehaviour
 		string replayText = File.ReadAllText(_replayFiles[index]);
 
 		int versionTextPosition = replayText.IndexOf(_versionSplit) + _versionSplit.Length;
-		string versionNumber = " " + replayText[versionTextPosition..replayText.LastIndexOf(_playerOneSplit)].Trim();
+		string versionNumber = replayText[versionTextPosition..replayText.LastIndexOf(_playerOneSplit)].Trim();
 
 		int playerOneTextPosition = replayText.IndexOf(_playerOneSplit) + _playerOneSplit.Length;
-		string playerOneTextWhole = " " + replayText[playerOneTextPosition..replayText.LastIndexOf(_playerTwoSplit)].Trim();
+		string playerOneTextWhole = replayText[playerOneTextPosition..replayText.LastIndexOf(_playerTwoSplit)].Trim();
 		string[] playerOneInfo = playerOneTextWhole.Split(',');
 
 		int playerTwoTextPosition = replayText.IndexOf(_playerTwoSplit) + _playerTwoSplit.Length;
-		string playerTwoTextWhole = " " + replayText[playerTwoTextPosition..replayText.LastIndexOf(_stageSplit)].Trim();
+		string playerTwoTextWhole = replayText[playerTwoTextPosition..replayText.LastIndexOf(_stageSplit)].Trim();
 		string[] playerTwoInfo = playerTwoTextWhole.Split(',');
 
 		int stageTextPosition = replayText.IndexOf(_stageSplit) + _stageSplit.Length;
-		string stageTextWhole = " " + replayText[stageTextPosition..replayText.LastIndexOf(_playerOneInputsSplit)].Trim();
+		string stageTextWhole = replayText[stageTextPosition..replayText.LastIndexOf(_playerOneInputsSplit)].Trim();
 		string[] stageInfo = stageTextWhole.Split(',');
 
 		int playerOneInputTextPosition = replayText.IndexOf(_playerOneInputsSplit) + _playerOneInputsSplit.Length;
-		string playerOneInputTextWhole = " " + replayText[playerOneInputTextPosition..replayText.LastIndexOf(_playerTwoInputsSplit)].Trim();
+		string playerOneInputTextWhole = replayText[playerOneInputTextPosition..replayText.LastIndexOf(_playerTwoInputsSplit)].Trim();
 		string[] playerOneInputInfo = playerOneInputTextWhole.Split('|');
 
-		string playerTwoInputTextWhole = " " + replayText[(replayText.IndexOf(_playerTwoInputsSplit) + _playerTwoInputsSplit.Length)..].Trim();
+
+		int playerTwoInputTextPosition = replayText.IndexOf(_playerTwoInputsSplit) + _playerTwoInputsSplit.Length;
+		string playerTwoInputTextWhole = replayText[playerTwoInputTextPosition..replayText.LastIndexOf(_skipSplit)].Trim();
 		string[] playerTwoInputInfo = playerTwoInputTextWhole.Split('|');
+
+		string skipTextWhole = replayText[(replayText.IndexOf(_skipSplit) + _skipSplit.Length)..].Trim();
 
 		ReplayCardData replayData = new()
 		{
@@ -237,7 +262,8 @@ public class ReplayManager : MonoBehaviour
 			musicName = stageInfo[1].Trim(),
 			bit1 = bool.Parse(stageInfo[2]),
 			playerOneInputs = playerOneInputInfo,
-			playerTwoInputs = playerTwoInputInfo
+			playerTwoInputs = playerTwoInputInfo,
+			skip = int.Parse(skipTextWhole)
 		};
 		return replayData;
 	}
