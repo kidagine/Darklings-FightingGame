@@ -5,8 +5,10 @@ public class ParryState : State
 	[SerializeField] private GameObject _parryEffect = default;
 	private IdleState _idleState;
 	private HurtState _hurtState;
+	private AttackState _attackState;
 	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
+	private BlockState _blockState;
 	private bool _parried;
 
 	private void Awake()
@@ -15,6 +17,8 @@ public class ParryState : State
 		_hurtState = GetComponent<HurtState>();
 		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
+		_attackState = GetComponent<AttackState>();
+		_blockState = GetComponent<BlockState>();
 	}
 
 	public override void Enter()
@@ -38,12 +42,9 @@ public class ParryState : State
 			Parry(attack);
 			return false;
 		}
-		else
-		{
-			_hurtState.Initialize(attack);
-			_stateMachine.ChangeState(_hurtState);
-			return true;
-		}
+		_hurtState.Initialize(attack);
+		_stateMachine.ChangeState(_hurtState);
+		return true;
 	}
 
 	public override bool ToAirborneHurtState(AttackSO attack)
@@ -53,27 +54,61 @@ public class ParryState : State
 			Parry(attack);
 			return false;
 		}
-		else
+		_airborneHurtState.Initialize(attack);
+		_stateMachine.ChangeState(_airborneHurtState);
+		return true;
+	}
+
+	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
+	{
+		if (_parried)
 		{
-			_airborneHurtState.Initialize(attack);
-			_stateMachine.ChangeState(_airborneHurtState);
+			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+			{
+				_attackState.Initialize(inputEnum, true, false);
+			}
+			else
+			{
+				_attackState.Initialize(inputEnum, false, false);
+			}
+			_stateMachine.ChangeState(_attackState);
 			return true;
 		}
+		return false;
 	}
 
 	private void Parry(AttackSO attack)
 	{
 		_audio.Sound("Parry").Play();
-		_player.ArcanaGain(0.5f);
+		if (attack.isArcana)
+		{
+			_player.ArcanaGain(0.5f);
+		}
+		else
+		{
+			_player.ArcanaGain(0.1f);
+		}
 		_parried = true;
-		GameManager.Instance.HitStop(0.25f);
+		GameManager.Instance.HitStop(0.15f);
 		GameObject effect = Instantiate(_parryEffect);
 		effect.transform.localPosition = attack.hurtEffectPosition;
-		if (!_playerMovement.IsInCorner)
+		if (!attack.isProjectile)
 		{
-			_playerMovement.Knockback(new Vector2(
-				_player.OtherPlayer.transform.localScale.x, 0.0f), attack.knockback / 2.0f, attack.knockbackDuration);
+			_player.OtherPlayerMovement.Knockback(new Vector2(
+				_player.transform.localScale.x, 0.0f), 2.0f, attack.knockbackDuration);
 		}
+		_inputBuffer.CheckInputBuffer();
+	}
+
+	public override bool ToBlockState(AttackSO attack)
+	{
+		if (_parried)
+		{
+			_blockState.Initialize(attack);
+			_stateMachine.ChangeState(_blockState);
+			return true;
+		}
+		return false;
 	}
 
 	public override bool ToParryState()

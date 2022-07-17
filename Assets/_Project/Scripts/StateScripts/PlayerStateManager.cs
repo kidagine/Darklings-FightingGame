@@ -53,6 +53,8 @@ public class PlayerStateManager : StateMachine
 
 	public bool TryToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
 	{
+		if (_player.IsPlayerOne)
+		Debug.Log("a");
 		return CurrentState.ToAttackState(inputEnum, inputDirectionEnum);
 	}
 
