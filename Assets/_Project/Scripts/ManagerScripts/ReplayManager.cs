@@ -139,6 +139,7 @@ public class ReplayManager : MonoBehaviour
 		ReplayCardData replayCardData = GetReplayData(_replayIndex - 1);
 		StartCoroutine(LoadReplayCoroutine(replayCardData));
 		StartCoroutine(LoadReplayCoroutine2(replayCardData));
+		ShowReplayPrompts();
 	}
 
 	IEnumerator LoadReplayCoroutine(ReplayCardData replayCardData)
