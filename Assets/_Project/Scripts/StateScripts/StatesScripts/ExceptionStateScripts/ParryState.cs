@@ -5,7 +5,6 @@ public class ParryState : State
 	[SerializeField] private GameObject _parryEffect = default;
 	private IdleState _idleState;
 	private HurtState _hurtState;
-	private AttackState _attackState;
 	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
 	private BlockState _blockState;
@@ -17,7 +16,6 @@ public class ParryState : State
 		_hurtState = GetComponent<HurtState>();
 		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_grabbedState = GetComponent<GrabbedState>();
-		_attackState = GetComponent<AttackState>();
 		_blockState = GetComponent<BlockState>();
 	}
 
@@ -59,24 +57,6 @@ public class ParryState : State
 		return true;
 	}
 
-	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
-	{
-		if (_parried)
-		{
-			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
-			{
-				_attackState.Initialize(inputEnum, true, false);
-			}
-			else
-			{
-				_attackState.Initialize(inputEnum, false, false);
-			}
-			_stateMachine.ChangeState(_attackState);
-			return true;
-		}
-		return false;
-	}
-
 	private void Parry(AttackSO attack)
 	{
 		_audio.Sound("Parry").Play();
@@ -95,9 +75,8 @@ public class ParryState : State
 		if (!attack.isProjectile)
 		{
 			_player.OtherPlayerMovement.Knockback(new Vector2(
-				_player.transform.localScale.x, 0.0f), 2.0f, attack.knockbackDuration);
+				_player.transform.localScale.x, 0.0f), 2.5f, 0.2f);
 		}
-		_inputBuffer.CheckInputBuffer();
 	}
 
 	public override bool ToBlockState(AttackSO attack)
