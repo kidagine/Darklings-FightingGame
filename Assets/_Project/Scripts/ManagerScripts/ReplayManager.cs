@@ -40,10 +40,15 @@ public class ReplayManager : MonoBehaviour
 
 	void Awake()
 	{
-		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
-		if (_isReplayMode)
+		if (!SceneSettings.SceneSettingsDecide)
 		{
-			ReplayCardData replayCardData = GetReplayData(_replayIndex - 1);
+			SceneSettings.ReplayMode = _isReplayMode;
+			SceneSettings.ReplayIndex = _replayIndex;
+		}
+		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
+		if (SceneSettings.ReplayMode)
+		{
+			ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
 			SceneSettings.SceneSettingsDecide = true;
 			SceneSettings.PlayerOne = replayCardData.characterOne;
 			SceneSettings.ColorOne = replayCardData.colorOne;
@@ -76,20 +81,22 @@ public class ReplayManager : MonoBehaviour
 	void Start()
 	{
 		Setup();
-		if (_isReplayMode)
+		if (SceneSettings.ReplayMode)
 		{
 			LoadReplay();
 		}
 	}
 
-
 	private void Setup()
 	{
 		string versionText = _versionTextAsset.text;
 		int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
-		VersionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
-		_playerOneInputBuffer = GameManager.Instance.PlayerOne.GetComponent<InputBuffer>();
-		_playerTwoInputBuffer = GameManager.Instance.PlayerTwo.GetComponent<InputBuffer>();
+		VersionNumber = versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
+		if (GameManager.Instance != null)
+		{
+			_playerOneInputBuffer = GameManager.Instance.PlayerOne.GetComponent<InputBuffer>();
+			_playerTwoInputBuffer = GameManager.Instance.PlayerTwo.GetComponent<InputBuffer>();
+		}
 	}
 
 	public void SaveReplay()
@@ -152,7 +159,7 @@ public class ReplayManager : MonoBehaviour
 		SceneSettings.ReplayMode = true;
 		_playerOneController = GameManager.Instance.PlayerOne.GetComponent<BrainController>();
 		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
-		ReplayCardData replayCardData = GetReplayData(_replayIndex - 1);
+		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
 		StartCoroutine(LoadReplayCoroutine(replayCardData));
 		StartCoroutine(LoadReplayCoroutine2(replayCardData));
 	}
