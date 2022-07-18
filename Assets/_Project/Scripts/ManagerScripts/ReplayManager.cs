@@ -134,7 +134,7 @@ public class ReplayManager : MonoBehaviour
 				string playerOneInputsHistory = "";
 				for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
 				{
-					playerOneInputsHistory += $"{(int)_playerOneInputHistory.Inputs[i]},{(int)_playerOneInputHistory.Directions[i]},{_playerOneInputHistory.InputTimes[i]}";
+					playerOneInputsHistory += $"{_playerOneInputHistory.Inputs[i]},{_playerOneInputHistory.Directions[i]},{_playerOneInputHistory.InputTimes[i]}";
 					if (i != _playerOneInputHistory.Inputs.Count - 1)
 					{
 						playerOneInputsHistory += "|";
@@ -146,7 +146,7 @@ public class ReplayManager : MonoBehaviour
 				string playerTwoInputsHistory = "";
 				for (int i = 0; i < _playerTwoInputHistory.Inputs.Count; i++)
 				{
-					playerTwoInputsHistory += $"{(int)_playerTwoInputHistory.Inputs[i]},{(int)_playerTwoInputHistory.Directions[i]},{_playerTwoInputHistory.InputTimes[i]}";
+					playerTwoInputsHistory += $"{_playerTwoInputHistory.Inputs[i]},{_playerTwoInputHistory.Directions[i]},{_playerTwoInputHistory.InputTimes[i]}";
 					if (i != _playerTwoInputHistory.Inputs.Count - 1)
 					{
 						playerTwoInputsHistory += "|";
@@ -189,10 +189,9 @@ public class ReplayManager : MonoBehaviour
 	{
 		for (int i = 0; i < playerInputs.Length; i++)
 		{
-			yield return new WaitForSeconds(t);
-			//yield return new WaitForSecondsRealtime(playerInputs[i].time);
+			//yield return new WaitForSecondsRealtime(t);
+			yield return new WaitForSeconds(playerInputs[i].time);
 			if (controller == _playerOneController)
-			Debug.Log(playerInputs[i].input);
 			inputBuffer.AddInputBufferItem(playerInputs[i].input, playerInputs[i].direction);
 			switch (playerInputs[i].direction)
 			{
@@ -251,7 +250,7 @@ public class ReplayManager : MonoBehaviour
 			for (int i = 0; i < playerOneInputInfo.Length; i++)
 			{
 				string[] playerInput = playerOneInputInfo[i].Split(',');
-				replayOneInputs.Add(new ReplayInput() { input = (InputEnum)int.Parse(playerInput[0]), direction = (InputDirectionEnum)int.Parse(playerInput[1]), time = float.Parse(playerInput[2]) });
+				replayOneInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = float.Parse(playerInput[2]) });
 			}
 		}
 		List<ReplayInput> replayTwoInputs = new();
@@ -260,7 +259,7 @@ public class ReplayManager : MonoBehaviour
 			for (int i = 0; i < playerTwoInputInfo.Length; i++)
 			{
 				string[] playerInput = playerTwoInputInfo[i].Split(',');
-				replayTwoInputs.Add(new ReplayInput() { input = (InputEnum)int.Parse(playerInput[0]), direction = (InputDirectionEnum)int.Parse(playerInput[1]), time = float.Parse(playerInput[2]) });
+				replayTwoInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = float.Parse(playerInput[2]) });
 			}
 
 		}

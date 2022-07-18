@@ -50,19 +50,19 @@ public class InputHistory : MonoBehaviour
 			{
 				if (PlayerController.InputDirection.y == -1.0f)
 				{
-					InputTimes.Add(_startInputTime - Time.time);
+					InputTimes.Add(Time.time - _startInputTime);
 					AddMainInput(InputEnum.Direction, InputDirectionEnum.Down);
 				}
 			}
 
 			if (_isNextInputSubItem && !_inputEnums.Contains(inputEnum))
 			{
-				InputTimes.Add(_startInputTime - Time.time);
+				InputTimes.Add(Time.time -_startInputTime);
 				AddSubInput(inputEnum, inputDirectionEnum);
 			}
 			else
 			{
-				InputTimes.Add(_startInputTime - Time.time);
+				InputTimes.Add(Time.time - _startInputTime);
 				AddMainInput(inputEnum, inputDirectionEnum);
 			}
 		}
@@ -97,6 +97,7 @@ public class InputHistory : MonoBehaviour
 			SetInputImageSprite(image, inputEnum, inputDirectionEnum);
 			_inputEnums.Add(inputEnum);
 		}
+		_startInputTime = Time.time;
 	}
 
 	private void AddMainInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
