@@ -61,7 +61,7 @@ public class InputBuffer : MonoBehaviour
 	{
 		if (inputEnum == InputEnum.Parry)
 		{
-			return false;
+			return _playerStateManager.TryToParryState();
 		}
 		if (inputEnum == InputEnum.Throw)
 		{

@@ -43,5 +43,5 @@ public struct ReplayCardData
 	public bool bit1;
 	public string[] playerOneInputs;
 	public string[] playerTwoInputs;
-	public int skip;
+	public float skip;
 }

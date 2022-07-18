@@ -17,12 +17,15 @@ public class InputHistory : MonoBehaviour
 	private readonly List<InputHistoryImage> _inputHistoryImages = new();
 	private readonly List<InputEnum> _inputEnums = new();
 	private Coroutine _inputBreakCoroutine;
+	private float _startInputTime;
 	private int _currentInputImageIndex;
 	private int _previousInputImageIndex;
 	private bool _isNextInputBreak;
 	private bool _isNextInputSubItem;
 
 	public List<InputEnum> Inputs { get; private set; } = new();
+	public List<InputDirectionEnum> Directions { get; private set; } = new();
+	public List<float> InputTimes { get; private set; } = new();
 	public PlayerController PlayerController { get; set; }
 
 
@@ -47,16 +50,19 @@ public class InputHistory : MonoBehaviour
 			{
 				if (PlayerController.InputDirection.y == -1.0f)
 				{
+					InputTimes.Add(_startInputTime - Time.time);
 					AddMainInput(InputEnum.Direction, InputDirectionEnum.Down);
 				}
 			}
 
 			if (_isNextInputSubItem && !_inputEnums.Contains(inputEnum))
 			{
+				InputTimes.Add(_startInputTime - Time.time);
 				AddSubInput(inputEnum, inputDirectionEnum);
 			}
 			else
 			{
+				InputTimes.Add(_startInputTime - Time.time);
 				AddMainInput(inputEnum, inputDirectionEnum);
 			}
 		}
@@ -128,8 +134,11 @@ public class InputHistory : MonoBehaviour
 			Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, true);
 			SetInputImageSprite(image, inputEnum, inputDirectionEnum);
 			_inputEnums.Add(inputEnum);
+
 		}
-		Inputs.AddRange(_inputEnums);
+		Inputs.Add(inputEnum);
+		Directions.Add(inputDirectionEnum);
+		_startInputTime = Time.time;
 		IncreaseCurrentInputImageIndex();
 		_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
 		StartCoroutine(InputSubItemCoroutine());
