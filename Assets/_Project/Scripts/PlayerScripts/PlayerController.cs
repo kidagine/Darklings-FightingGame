@@ -18,25 +18,32 @@ public class PlayerController : BaseController
 
 	void Update()
 	{
-		if (!string.IsNullOrEmpty(_brainController.ControllerInputName))
+		if (GameManager.Instance.HasGameStarted)
 		{
-			if (IsControllerEnabled)
+			if (!string.IsNullOrEmpty(_brainController.ControllerInputName) && !SceneSettings.ReplayMode)
 			{
-				Movement();
-				Jump();
-				Crouch();
-				Parry();
-				Throw();
-				Light();
-				Medium();
-				Heavy();
-				Arcane();
-				Assist();
-				_pressedAction = false;
+				if (IsControllerEnabled)
+				{
+					Movement();
+					Jump();
+					Crouch();
+					Parry();
+					Throw();
+					Light();
+					Medium();
+					Heavy();
+					Arcane();
+					Assist();
+					_pressedAction = false;
+				}
+				Pause();
+				ResetRound();
+				SwitchCharacter();
 			}
-			Pause();
-			ResetRound();
-			SwitchCharacter();
+		}
+		else
+		{
+			InputDirection = Vector2.zero;
 		}
 	}
 

@@ -22,4 +22,5 @@ public class SceneSettings
 	public static bool ChangeCharacter = false;
 	//Replay
 	public static bool ReplayMode = false;
+	public static int ReplayIndex = 0;
 }

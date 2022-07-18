@@ -39,27 +39,18 @@ public class ReplaysMenu : BaseMenu
 	public void LoadReplayMatch(int index)
 	{
 		ReplayCard replayCard = _replayCards[index];
-
-		if (replayCard.ReplayCardData.versionNumber == ReplayManager.Instance.VersionNumber)
+		if (replayCard.ReplayCardData.versionNumber.Trim() == ReplayManager.Instance.VersionNumber)
 		{
 			SceneSettings.SceneSettingsDecide = true;
-			SceneSettings.PlayerOne = replayCard.ReplayCardData.characterOne;
-			SceneSettings.ColorOne = replayCard.ReplayCardData.colorOne;
-			SceneSettings.AssistOne = replayCard.ReplayCardData.assistOne;
-			SceneSettings.PlayerTwo = replayCard.ReplayCardData.characterTwo;
-			SceneSettings.ColorTwo = replayCard.ReplayCardData.colorTwo;
-			SceneSettings.AssistTwo = replayCard.ReplayCardData.assistTwo;
-			SceneSettings.StageIndex = replayCard.ReplayCardData.stage;
-			SceneSettings.MusicName = replayCard.ReplayCardData.musicName;
-			SceneSettings.Bit1 = replayCard.ReplayCardData.bit1;
-			SceneSettings.ControllerOne = "Cpu";
-			SceneSettings.ControllerTwo = "Cpu";
 			SceneSettings.ReplayMode = true;
+			SceneSettings.IsTrainingMode = false;
+			SceneSettings.ReplayIndex = index;
 			SceneManager.LoadScene(2);
 		}
 		else
 		{
 			replayCard.GetComponent<Animator>().Rebind();
+			Debug.Log("Different version");
 			//TODO
 		}
 	}

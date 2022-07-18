@@ -91,6 +91,11 @@ public class PlayerStateManager : StateMachine
 		return CurrentState.ToTauntState();
 	}
 
+	public bool TryToGiveUpState()
+	{
+		return CurrentState.ToGiveUpState();
+	}
+
 	public bool TryToAssistCall()
 	{
 		return CurrentState.AssistCall();

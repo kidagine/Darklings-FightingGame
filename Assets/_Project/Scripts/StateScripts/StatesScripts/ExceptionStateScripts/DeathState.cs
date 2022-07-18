@@ -8,18 +8,7 @@ public class DeathState : State
 		_playerAnimator.Knockdown();
 		_player.SetHurtbox(false);
 		_player.SetPushboxTrigger(true);
-		if (!GameManager.Instance.IsTrainingMode)
-		{
-			_player.Lives--;
-		}
-		if (_player.Lives <= 0)
-		{
-			GameManager.Instance.MatchOver();
-		}
-		else
-		{
-			GameManager.Instance.RoundOver();
-		}
+		GameManager.Instance.RoundOver(false);
 		GameManager.Instance.HitStop(0.35f);
 	}
 
