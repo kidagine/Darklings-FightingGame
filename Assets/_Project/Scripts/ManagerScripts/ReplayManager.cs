@@ -50,22 +50,27 @@ public class ReplayManager : MonoBehaviour
 		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
 		if (SceneSettings.ReplayMode)
 		{
-			ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-			SceneSettings.SceneSettingsDecide = true;
-			SceneSettings.PlayerOne = replayCardData.characterOne;
-			SceneSettings.ColorOne = replayCardData.colorOne;
-			SceneSettings.AssistOne = replayCardData.assistOne;
-			SceneSettings.PlayerTwo = replayCardData.characterTwo;
-			SceneSettings.ColorTwo = replayCardData.colorTwo;
-			SceneSettings.AssistTwo = replayCardData.assistTwo;
-			SceneSettings.StageIndex = replayCardData.stage;
-			SceneSettings.MusicName = replayCardData.musicName;
-			SceneSettings.Bit1 = replayCardData.bit1;
-			SceneSettings.ControllerOne = "KeyboardOne";
-			SceneSettings.ControllerTwo = "KeyboardTwo";
-			SceneSettings.ReplayMode = true;
+			SetReplay();
 		}
 		CheckInstance();
+	}
+
+	public void SetReplay()
+	{
+		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
+		SceneSettings.SceneSettingsDecide = true;
+		SceneSettings.PlayerOne = replayCardData.characterOne;
+		SceneSettings.ColorOne = replayCardData.colorOne;
+		SceneSettings.AssistOne = replayCardData.assistOne;
+		SceneSettings.PlayerTwo = replayCardData.characterTwo;
+		SceneSettings.ColorTwo = replayCardData.colorTwo;
+		SceneSettings.AssistTwo = replayCardData.assistTwo;
+		SceneSettings.StageIndex = replayCardData.stage;
+		SceneSettings.MusicName = replayCardData.musicName;
+		SceneSettings.Bit1 = replayCardData.bit1;
+		SceneSettings.ControllerOne = "KeyboardOne";
+		SceneSettings.ControllerTwo = "KeyboardTwo";
+		SceneSettings.ReplayMode = true;
 	}
 
 	private void CheckInstance()
@@ -303,7 +308,7 @@ public class ReplayManager : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.R))
+		if (Input.GetKeyDown(KeyCode.CapsLock))
 		{
 			SaveReplay();
 		}

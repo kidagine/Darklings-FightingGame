@@ -46,8 +46,7 @@ public class ReplaysMenu : BaseMenu
 		ReplayCard replayCard = _replayCards[index];
 		if (replayCard.ReplayCardData.versionNumber.Trim() == ReplayManager.Instance.VersionNumber)
 		{
-			SceneSettings.SceneSettingsDecide = true;
-			SceneSettings.ReplayMode = true;
+			ReplayManager.Instance.SetReplay();
 			SceneSettings.IsTrainingMode = false;
 			SceneSettings.ReplayIndex = index;
 			SceneManager.LoadScene(2);
