@@ -39,6 +39,10 @@ public class InputHistory : MonoBehaviour
 
 	public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
+		if (inputDirectionEnum == InputDirectionEnum.None)
+		{
+			return;
+		}
 		if (_inputHistoryImages.Count > 0)
 		{
 			if (_inputBreakCoroutine != null)
