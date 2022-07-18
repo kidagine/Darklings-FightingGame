@@ -41,7 +41,14 @@ public struct ReplayCardData
 	public int stage;
 	public string musicName;
 	public bool bit1;
-	public string[] playerOneInputs;
-	public string[] playerTwoInputs;
+	public ReplayInput[] playerOneInputs;
+	public ReplayInput[] playerTwoInputs;
 	public float skip;
+}
+
+public struct ReplayInput
+{
+	public InputEnum input;
+	public InputDirectionEnum direction;
+	public float time;
 }
