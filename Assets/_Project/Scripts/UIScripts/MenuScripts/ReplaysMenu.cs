@@ -10,6 +10,7 @@ public class ReplaysMenu : BaseMenu
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private RectTransform _replaysGroup = default;
 	[SerializeField] private GameObject _replayPrefab = default;
+	[SerializeField] private GameObject _noReplaysFound = default;
 	private readonly List<ReplayCard> _replayCards = new();
 	
 
@@ -31,6 +32,10 @@ public class ReplaysMenu : BaseMenu
 			_replayCards[0].GetComponent<BaseButton>()._scrollUpAmount = 0.0f;
 			_replayCards[_replayCards.Count - 1].GetComponent<BaseButton>()._scrollDownAmount = 0.0f;
 			_replayCards[0].GetComponent<Button>().Select();
+		}
+		else
+		{
+			_noReplaysFound.SetActive(true);
 		}
 		StartCoroutine(SetUpScrollViewCoroutine());
 	}

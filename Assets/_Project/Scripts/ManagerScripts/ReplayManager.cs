@@ -172,75 +172,42 @@ public class ReplayManager : MonoBehaviour
 		_playerOneController = GameManager.Instance.PlayerOne.GetComponent<BrainController>();
 		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
 		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-		StartCoroutine(LoadReplayCoroutine(replayCardData));
-		//StartCoroutine(LoadReplayCoroutine2(replayCardData));
+		StartCoroutine(ReplayCoroutine(replayCardData));
 	}
 
-	IEnumerator LoadReplayCoroutine(ReplayCardData replayCardData)
+	IEnumerator ReplayCoroutine(ReplayCardData replayCardData)
 	{
 		yield return new WaitForSeconds(replayCardData.skip);
 		GameManager.Instance.SkipIntro();
-		if (replayCardData.playerOneInputs[0] != "")
+		StartCoroutine(LoadReplayCoroutine(replayCardData.playerOneInputs, _playerOneInputBuffer, _playerOneController));
+		StartCoroutine(LoadReplayCoroutine(replayCardData.playerTwoInputs, _playerTwoInputBuffer, _playerTwoController));
+	}
+
+	IEnumerator LoadReplayCoroutine(string[] playerInputs, InputBuffer inputBuffer, BrainController controller)
+	{
+		if (playerInputs[0] != "")
 		{
-			for (int i = 0; i < replayCardData.playerOneInputs.Length; i++)
+			for (int i = 0; i < playerInputs.Length; i++)
 			{
-				string[] playerOneInputInfo = replayCardData.playerOneInputs[i].Split(',');
-				yield return new WaitForSecondsRealtime(Mathf.Abs(float.Parse(playerOneInputInfo[2])));
-				_playerOneInputBuffer.AddInputBufferItem((InputEnum)int.Parse(playerOneInputInfo[0]), (InputDirectionEnum)int.Parse(playerOneInputInfo[1]));
+				string[] playerOneInputInfo = playerInputs[i].Split(',');
+				yield return new WaitForSeconds(Mathf.Abs(float.Parse(playerOneInputInfo[2])));
+				inputBuffer.AddInputBufferItem((InputEnum)int.Parse(playerOneInputInfo[0]), (InputDirectionEnum)int.Parse(playerOneInputInfo[1]));
 				switch ((InputDirectionEnum)int.Parse(playerOneInputInfo[1]))
 				{
 					case InputDirectionEnum.None:
-						_playerOneController.ActiveController.InputDirection = new Vector2(0, 0);
+						controller.ActiveController.InputDirection = new Vector2(0, 0);
 						break;
 					case InputDirectionEnum.Up:
-						_playerOneController.ActiveController.InputDirection = new Vector2(0, 1);
+						controller.ActiveController.InputDirection = new Vector2(controller.ActiveController.InputDirection.x, 1);
 						break;
 					case InputDirectionEnum.Down:
-						_playerOneController.ActiveController.InputDirection = new Vector2(0, -1);
+						controller.ActiveController.InputDirection = new Vector2(controller.ActiveController.InputDirection.x, -1);
 						break;
 					case InputDirectionEnum.Left:
-						_playerOneController.ActiveController.InputDirection = new Vector2(-1, 0);
+						controller.ActiveController.InputDirection = new Vector2(-1, controller.ActiveController.InputDirection.y);
 						break;
 					case InputDirectionEnum.Right:
-						_playerOneController.ActiveController.InputDirection = new Vector2(1, 0);
-						break;
-				}
-			}
-		}
-	}
-
-	IEnumerator LoadReplayCoroutine2(ReplayCardData replayCardData)
-	{
-		yield return new WaitForSeconds(replayCardData.skip);
-		GameManager.Instance.SkipIntro();
-		while (!GameManager.Instance.HasGameStarted)
-		{
-			yield return null;
-		}
-		yield return null;
-		if (replayCardData.playerTwoInputs[0] != "")
-		{
-			for (int i = 0; i < replayCardData.playerTwoInputs.Length; i++)
-			{
-				string[] playerTwoInputInfo = replayCardData.playerTwoInputs[i].Split(',');
-				yield return new WaitForSeconds(float.Parse(playerTwoInputInfo[2]));
-				_playerTwoInputBuffer.AddInputBufferItem((InputEnum)int.Parse(playerTwoInputInfo[0]), (InputDirectionEnum)int.Parse(playerTwoInputInfo[1]));
-				switch ((InputDirectionEnum)int.Parse(playerTwoInputInfo[1]))
-				{
-					case InputDirectionEnum.None:
-						_playerTwoController.ActiveController.InputDirection = new Vector2(0, 0);
-						break;
-					case InputDirectionEnum.Up:
-						_playerTwoController.ActiveController.InputDirection = new Vector2(0, 1);
-						break;
-					case InputDirectionEnum.Down:
-						_playerTwoController.ActiveController.InputDirection = new Vector2(0, -1);
-						break;
-					case InputDirectionEnum.Left:
-						_playerTwoController.ActiveController.InputDirection = new Vector2(-1, 0);
-						break;
-					case InputDirectionEnum.Right:
-						_playerTwoController.ActiveController.InputDirection = new Vector2(1, 0);
+						controller.ActiveController.InputDirection = new Vector2(1, controller.ActiveController.InputDirection.y);
 						break;
 				}
 			}
