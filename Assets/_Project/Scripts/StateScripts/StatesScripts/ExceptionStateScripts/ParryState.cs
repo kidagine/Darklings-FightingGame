@@ -8,6 +8,7 @@ public class ParryState : State
 	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
 	private BlockState _blockState;
+	private readonly float _parryKnockback = 2.5f;
 	private bool _parried;
 
 	private void Awake()
@@ -75,7 +76,7 @@ public class ParryState : State
 		if (!attack.isProjectile)
 		{
 			_player.OtherPlayerMovement.Knockback(new Vector2(
-				_player.transform.localScale.x, 0.0f), 2.5f, 0.2f);
+				_player.transform.localScale.x, 0.0f), new Vector2(_parryKnockback, 0.0f), 0.2f);
 		}
 	}
 

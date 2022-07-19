@@ -36,7 +36,7 @@ public class BlockParentState : State
 		base.Enter();
 		_audio.Sound("Block").Play();
 		_playerMovement.Knockback(new Vector2(
-			_player.OtherPlayer.transform.localScale.x, 0.0f), _blockAttack.knockback, _blockAttack.knockbackDuration);
+			_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_blockAttack.knockback, 0.0f), _blockAttack.knockbackDuration);
 		GameObject effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);
 		effect.transform.localPosition = _blockAttack.hurtEffectPosition;
 		if (_blockAttack.isArcana)

@@ -31,7 +31,7 @@ public class HurtParentState : State
 		if (!_playerMovement.IsInCorner)
 		{
 			_playerMovement.Knockback(new Vector2(
-				_player.OtherPlayer.transform.localScale.x, 0.0f), _hurtAttack.knockback, _hurtAttack.knockbackDuration);
+				_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_hurtAttack.knockback, 0.0f), _hurtAttack.knockbackDuration);
 		}
 		_player.OtherPlayerUI.IncreaseCombo();
 		if (_player.OtherPlayerUI.CurrentComboCount == 1)

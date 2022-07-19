@@ -20,7 +20,7 @@ public class AirHurtState : HurtParentState
 		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();
 		_playerMovement.Knockback(new Vector2(
-	_player.OtherPlayer.transform.localScale.x, 0.0f), _hurtAttack.knockback, _hurtAttack.knockbackDuration);
+	_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_hurtAttack.knockback, 0.0f), _hurtAttack.knockbackDuration);
 	}
 
 	IEnumerator StunCoroutine(float hitStun)
