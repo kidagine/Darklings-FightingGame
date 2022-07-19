@@ -47,7 +47,7 @@ public class ReplayManager : MonoBehaviour
 			SceneSettings.ReplayMode = _isReplayMode;
 			SceneSettings.ReplayIndex = _replayIndex;
 		}
-		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
+		//_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
 		if (SceneSettings.ReplayMode)
 		{
 			SetReplay();
