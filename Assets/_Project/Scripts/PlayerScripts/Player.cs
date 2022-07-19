@@ -278,7 +278,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			if (isProjectile)
 			{
 				hitEffect.transform.SetParent(null);
-				hitEffect.GetComponent<MoveInDirection>().Direction = new Vector2(transform.localScale.x, 0.0f);
+				hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0.0f);
 				hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
 			}
 		}
