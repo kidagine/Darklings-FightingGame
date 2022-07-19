@@ -66,6 +66,10 @@ public class PlayerController : BaseController
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
 		}
+		if (InputDirection == Vector2.zero && _playerMovement.MovementInput != InputDirection)
+		{
+			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.None);
+		}
 		_playerMovement.MovementInput = InputDirection;
 	}
 

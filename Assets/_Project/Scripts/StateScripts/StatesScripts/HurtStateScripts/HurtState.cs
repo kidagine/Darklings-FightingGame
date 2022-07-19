@@ -21,7 +21,10 @@ public class HurtState : HurtParentState
 		_player.CheckFlip();
 		_playerAnimator.Hurt(true);
 		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
-		base.Enter();
+		if (!_skipEnter)
+		{
+			base.Enter();
+		}
 	}
 
 	IEnumerator StunCoroutine(float hitStun)

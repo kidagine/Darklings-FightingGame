@@ -39,6 +39,7 @@ public class Hurtbox : MonoBehaviour
     {
         return _hurtboxResponder.TakeDamage(attackSO);
     }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

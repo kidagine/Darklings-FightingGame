@@ -6439,8 +6439,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stage: 0
   _characterOne: 0
-  _characterTwo: 3
-  _assistOne: 0
+  _characterTwo: 1
+  _assistOne: 2
   _assistTwo: 0
   _controllerOne: 0
   _controllerTwo: 1
@@ -6503,6 +6503,7 @@ MonoBehaviour:
   _assists:
   - {fileID: 11400000, guid: 2f7ef4e4812540b42bf60476b4910e16, type: 2}
   - {fileID: 11400000, guid: 75d5a494b32c577439e9a3ad7b3a7027, type: 2}
+  - {fileID: 11400000, guid: b6e45e41ee7306646a5f76f8d2262378, type: 2}
   _matchOverMenu: {fileID: 1202960004}
   _matchOverReplayMenu: {fileID: 1691356162}
   _readyAnimator: {fileID: 9123090234613714750}
@@ -6800,12 +6801,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2618116373784590578, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_SpriteKey
-      value: -0.0000015950221
+      value: -1.2968023e-15
       objectReference: {fileID: 0}
     - target: {fileID: 4586557407155603638, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_SpriteLibraryAsset
       value: 
-      objectReference: {fileID: 7108339969198208228, guid: 7b8be8b8bea96684cbe091f2b82fa578, type: 3}
+      objectReference: {fileID: 7108339969198208228, guid: 26653651365972542ac455b873c68b8e, type: 3}
     - target: {fileID: 4879431347392356363, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Size.x
       value: 1.75
@@ -6933,10 +6934,14 @@ PrefabInstance:
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1543001145, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      objectReference: {fileID: 2560034891741805157, guid: 214dbd9af3f0f624c9bdbf8c5fb80fd7, type: 3}
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8073473789928578678, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8073473789928578678, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11957,18 +11962,18 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_PlaybackSpeed: 1
-  m_AudioOutputMode: 2
+  m_AudioOutputMode: 0
   m_TargetAudioSources:
   - {fileID: 0}
   m_DirectAudioVolumes:
-  - 1
-  m_Url: https://drive.google.com/file/d/1-cl6JZlh8SbLWvMsG1u2Sd2jmOqcaobP/view?usp=sharingU
+  - 0
+  m_Url: 
   m_EnabledAudioTracks: 01
-  m_DirectAudioMutes: 00
+  m_DirectAudioMutes: 01
   m_ControlledAudioTrackCount: 1
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_SkipOnDrop: 1
   m_Looping: 1
   m_WaitForFirstFrame: 1
@@ -15091,7 +15096,7 @@ MonoBehaviour:
   _playerOneInputHistory: {fileID: 1607718335}
   _playerTwoInputHistory: {fileID: 446620529}
   _isReplayMode: 0
-  _replayIndex: 1
+  _replayIndex: 2
 --- !u!4 &856490119
 Transform:
   m_ObjectHideFlags: 0

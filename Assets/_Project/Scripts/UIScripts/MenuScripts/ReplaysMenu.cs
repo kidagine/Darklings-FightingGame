@@ -10,6 +10,7 @@ public class ReplaysMenu : BaseMenu
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private RectTransform _replaysGroup = default;
 	[SerializeField] private GameObject _replayPrefab = default;
+	[SerializeField] private GameObject _noReplaysFound = default;
 	private readonly List<ReplayCard> _replayCards = new();
 	
 
@@ -32,6 +33,10 @@ public class ReplaysMenu : BaseMenu
 			_replayCards[_replayCards.Count - 1].GetComponent<BaseButton>()._scrollDownAmount = 0.0f;
 			_replayCards[0].GetComponent<Button>().Select();
 		}
+		else
+		{
+			_noReplaysFound.SetActive(true);
+		}
 		StartCoroutine(SetUpScrollViewCoroutine());
 	}
 
@@ -41,8 +46,7 @@ public class ReplaysMenu : BaseMenu
 		ReplayCard replayCard = _replayCards[index];
 		if (replayCard.ReplayCardData.versionNumber.Trim() == ReplayManager.Instance.VersionNumber)
 		{
-			SceneSettings.SceneSettingsDecide = true;
-			SceneSettings.ReplayMode = true;
+			ReplayManager.Instance.SetReplay();
 			SceneSettings.IsTrainingMode = false;
 			SceneSettings.ReplayIndex = index;
 			SceneManager.LoadScene(2);

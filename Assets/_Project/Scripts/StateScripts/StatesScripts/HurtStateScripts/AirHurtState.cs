@@ -5,11 +5,13 @@ public class AirHurtState : HurtParentState
 {
 	private Coroutine _stunCoroutine;
 	private FallState _fallState;
+	private HurtState _hurtState;
 
 	protected override void Awake()
 	{
 		base.Awake();
 		_fallState = GetComponent<FallState>();
+		_hurtState = GetComponent<HurtState>();
 	}
 
 	public override void Enter()
@@ -17,6 +19,8 @@ public class AirHurtState : HurtParentState
 		_playerAnimator.HurtAir(true);
 		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();
+		_playerMovement.Knockback(new Vector2(
+	_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_hurtAttack.knockback, 0.0f), _hurtAttack.knockbackDuration);
 	}
 
 	IEnumerator StunCoroutine(float hitStun)
@@ -47,8 +51,8 @@ public class AirHurtState : HurtParentState
 	{
 		if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
 		{
-			_player.OtherPlayer.StopComboTimer();
-			_stateMachine.ChangeState(_fallState);
+			_hurtState.Initialize(_hurtAttack, true);
+			_stateMachine.ChangeState(_hurtState);
 		}
 	}
 

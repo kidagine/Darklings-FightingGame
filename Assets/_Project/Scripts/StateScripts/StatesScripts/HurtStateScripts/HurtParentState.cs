@@ -7,6 +7,8 @@ public class HurtParentState : State
 	protected AttackState _attackState;
 	protected AttackSO _hurtAttack;
 	private readonly float _damageDecay = 0.97f;
+	protected bool _skipEnter;
+
 	protected virtual void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
@@ -14,9 +16,10 @@ public class HurtParentState : State
 		_attackState = GetComponent<AttackState>();
 	}
 
-	public void Initialize(AttackSO hurtAttack)
+	public void Initialize(AttackSO hurtAttack, bool skipEnter = false)
 	{
 		_hurtAttack = hurtAttack;
+		_skipEnter = skipEnter;
 	}
 
 	public override void Enter()
@@ -28,7 +31,7 @@ public class HurtParentState : State
 		if (!_playerMovement.IsInCorner)
 		{
 			_playerMovement.Knockback(new Vector2(
-				_player.OtherPlayer.transform.localScale.x, 0.0f), _hurtAttack.knockback, _hurtAttack.knockbackDuration);
+				_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_hurtAttack.knockback, 0.0f), _hurtAttack.knockbackDuration);
 		}
 		_player.OtherPlayerUI.IncreaseCombo();
 		if (_player.OtherPlayerUI.CurrentComboCount == 1)

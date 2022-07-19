@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
 	private Vector2 _cachedOneResetPosition;
 	private Vector2 _cachedTwoResetPosition;
 	private float _countdown;
+	private float _startSkipTime;
 	private int _currentRound = 1;
 	private bool _reverseReset;
 	private bool _hasSwitchedCharacters;
@@ -97,6 +98,7 @@ public class GameManager : MonoBehaviour
 
 	void Awake()
 	{
+		_startSkipTime = Time.time;
 		HasGameStarted = false;
 		GameSpeed = _gameSpeed;
 		Application.targetFrameRate = 60;
@@ -334,6 +336,7 @@ public class GameManager : MonoBehaviour
 		{
 			if (Input.anyKeyDown)
 			{
+				ReplayManager.Instance.Skip = Time.time - _startSkipTime;
 				SkipIntro();
 			}
 		}

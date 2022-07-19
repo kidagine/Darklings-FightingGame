@@ -16,6 +16,7 @@ public class CommandListMenu : BaseMenu
 	[SerializeField] private GameObject _reversalImage = default;
 	[SerializeField] private GameObject _projectileImage = default;
 	private PauseMenu _currentPauseMenu;
+	private readonly string _baseUrl = "https://kidagine.github.io/Darklings-CommandListVideos/";
 
 	private Player _playerOne;
 	private Player _playerTwo;
@@ -66,7 +67,12 @@ public class CommandListMenu : BaseMenu
 	public void SetCommandListShowcase(ArcanaSO command)
 	{
 		_descriptionText.text = command.arcanaDescription;
+#if UNITY_STANDALONE_WIN
 		_showcaseVideo.clip = command.arcanaVideo;
+#endif
+#if UNITY_WEBGL
+		_showcaseVideo.url = _baseUrl + command.arcanaVideo.name + ".mp4";
+#endif
 		_showcaseVideo.Stop();
 		_showcaseVideo.Play();
 		_reversalImage.SetActive(false);

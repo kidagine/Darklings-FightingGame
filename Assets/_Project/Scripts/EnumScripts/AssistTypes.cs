@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public enum AssistTypeEnum { A, B };
+public enum AssistTypeEnum { A, B, C };
 
 public class AssistType : MonoBehaviour
 {
