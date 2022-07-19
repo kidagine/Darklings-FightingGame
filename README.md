@@ -8,7 +8,7 @@ Website at: https://kidagine.github.io/Darklings-Website/
 
 Website repository: https://github.com/kidagine/Darklings-Website <br>
 Launcher repository: https://github.com/kidagine/Darklings-Launcher <br>
-Command Videos repository: https://github.com/kidagine/Darklings-CommandListVideos <br>
+Command videos for WebGL repository: https://github.com/kidagine/Darklings-CommandListVideos <br>
 Demonics library repository: https://github.com/kidagine/Demonics-Base-UnityLibrary
 
 ![Darkling](https://i.imgur.com/Gy2ZYS6.png)
