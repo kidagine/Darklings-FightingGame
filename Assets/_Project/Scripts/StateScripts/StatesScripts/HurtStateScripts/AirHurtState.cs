@@ -19,6 +19,8 @@ public class AirHurtState : HurtParentState
 		_playerAnimator.HurtAir(true);
 		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();
+		_playerMovement.Knockback(new Vector2(
+	_player.OtherPlayer.transform.localScale.x, 0.0f), _hurtAttack.knockback, _hurtAttack.knockbackDuration);
 	}
 
 	IEnumerator StunCoroutine(float hitStun)
@@ -49,7 +51,7 @@ public class AirHurtState : HurtParentState
 	{
 		if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
 		{
-			_hurtState.Initialize(_hurtAttack);
+			_hurtState.Initialize(_hurtAttack, true);
 			_stateMachine.ChangeState(_hurtState);
 		}
 	}

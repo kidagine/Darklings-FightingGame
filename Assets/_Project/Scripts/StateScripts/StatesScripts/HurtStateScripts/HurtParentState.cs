@@ -7,6 +7,8 @@ public class HurtParentState : State
 	protected AttackState _attackState;
 	protected AttackSO _hurtAttack;
 	private readonly float _damageDecay = 0.97f;
+	protected bool _skipEnter;
+
 	protected virtual void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
@@ -14,9 +16,10 @@ public class HurtParentState : State
 		_attackState = GetComponent<AttackState>();
 	}
 
-	public void Initialize(AttackSO hurtAttack)
+	public void Initialize(AttackSO hurtAttack, bool skipEnter = false)
 	{
 		_hurtAttack = hurtAttack;
+		_skipEnter = skipEnter;
 	}
 
 	public override void Enter()
