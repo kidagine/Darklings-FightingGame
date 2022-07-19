@@ -856,7 +856,6 @@ public class GameManager : MonoBehaviour
 	{
 		Time.timeScale = 0.0f;
 		yield return new WaitForSecondsRealtime(hitstop);
-		Debug.Log(hitstop);
 		Time.timeScale = GameSpeed;
 	}
 }

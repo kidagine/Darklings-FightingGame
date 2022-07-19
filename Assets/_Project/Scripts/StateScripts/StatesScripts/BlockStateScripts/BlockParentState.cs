@@ -13,6 +13,7 @@ public class BlockParentState : State
 	protected HurtState _hurtState;
 	protected AttackSO _blockAttack;
 	protected Coroutine _blockCoroutine;
+	private readonly float _chipDamage = 250;
 
 	public void Initialize(AttackSO attack)
 	{
@@ -38,6 +39,13 @@ public class BlockParentState : State
 			_player.OtherPlayer.transform.localScale.x, 0.0f), _blockAttack.knockback, _blockAttack.knockbackDuration);
 		GameObject effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);
 		effect.transform.localPosition = _blockAttack.hurtEffectPosition;
+		if (_blockAttack.isArcana)
+		{
+			_player.Health -= _chipDamage;
+			_playerUI.SetHealth(_player.Health);
+			_playerUI.Damaged();
+			_playerUI.UpdateHealthDamaged();
+		}
 	}
 
 
