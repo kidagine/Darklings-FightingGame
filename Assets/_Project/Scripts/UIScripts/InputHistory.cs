@@ -41,6 +41,9 @@ public class InputHistory : MonoBehaviour
 	{
 		if (inputDirectionEnum == InputDirectionEnum.None && inputEnum == InputEnum.Direction)
 		{
+			InputTimes.Add(Time.time - _startInputTime);
+ 			Inputs.Add(inputEnum);
+			Directions.Add(inputDirectionEnum);
 			return;
 		}
 		if (_inputHistoryImages.Count > 0)
