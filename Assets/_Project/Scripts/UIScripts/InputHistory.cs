@@ -39,7 +39,7 @@ public class InputHistory : MonoBehaviour
 
 	public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
-		if (inputDirectionEnum == InputDirectionEnum.None)
+		if (inputDirectionEnum == InputDirectionEnum.None && inputEnum == InputEnum.Direction)
 		{
 			return;
 		}
@@ -101,6 +101,8 @@ public class InputHistory : MonoBehaviour
 			SetInputImageSprite(image, inputEnum, inputDirectionEnum);
 			_inputEnums.Add(inputEnum);
 		}
+		Inputs.Add(inputEnum);
+		Directions.Add(inputDirectionEnum);
 		_startInputTime = Time.time;
 	}
 
@@ -139,7 +141,6 @@ public class InputHistory : MonoBehaviour
 			Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, true);
 			SetInputImageSprite(image, inputEnum, inputDirectionEnum);
 			_inputEnums.Add(inputEnum);
-
 		}
 		Inputs.Add(inputEnum);
 		Directions.Add(inputDirectionEnum);
