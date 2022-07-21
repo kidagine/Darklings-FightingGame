@@ -24,11 +24,12 @@ public class AirborneHurtState : HurtParentState
 		base.Enter();
 		if (WallSplat)
 		{
-			_player.Flip((int)-_player.transform.localScale.x);
+			_player.Flip((int) -_player.transform.localScale.x);
 			_rigidbody.AddForce(new Vector2(-_player.transform.localScale.x * 5, 12), ForceMode2D.Impulse);
 		}
 		else
 		{
+			_player.Flip((int)-_player.OtherPlayer.transform.localScale.x);
 			GameObject effect = Instantiate(_hurtAttack.hurtEffect);
 			effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
 			_playerMovement.Knockback(new Vector2(
@@ -76,13 +77,12 @@ public class AirborneHurtState : HurtParentState
 		}
 	}
 
-	//public override bool ToAirborneHurtState(AttackSO attack)
-	//{
-	//	WallSplat = false;
-	//	this.Initialize(attack);
-	//	_stateMachine.ChangeState(this);
-	//	return true;
-	//}
+	public override bool ToAirborneHurtState(AttackSO attack)
+	{
+		this.Initialize(attack);
+		_stateMachine.ChangeState(this);
+		return true;
+	}
 
 	public override void Exit()
 	{
@@ -92,8 +92,8 @@ public class AirborneHurtState : HurtParentState
 			_player.OtherPlayer.StopComboTimer();
 			StopCoroutine(_canCheckGroundCoroutine);
 		}
-		_canCheckGround = false;
 		WallSplat = false;
+		_canCheckGround = false;
 		_player.SetAirPushBox(false);
 	}
 }
