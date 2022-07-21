@@ -24,6 +24,7 @@ public class AirborneHurtState : HurtParentState
 	{
 		_playerAnimator.HurtAir(true);
 		base.Enter();
+		_rigidbody.velocity = Vector2.zero;
 		_player.OtherPlayer.FreezeComboTimer();
 		if (WallSplat)
 		{
