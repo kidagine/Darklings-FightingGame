@@ -23,7 +23,7 @@ public class WallSplatState : State
 		_playerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
 		GameObject effect = Instantiate(_wallSplatPrefab);
 		effect.transform.localPosition = transform.position;
-		StartCoroutine(WallSplatStateCoroutine());
+		_wallSplatCoroutine = StartCoroutine(WallSplatStateCoroutine());
 	}
 
 	IEnumerator WallSplatStateCoroutine()
