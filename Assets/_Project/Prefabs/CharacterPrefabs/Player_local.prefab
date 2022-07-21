@@ -925,6 +925,7 @@ GameObject:
   - component: {fileID: 6770783201273014799}
   - component: {fileID: 4867772287099482726}
   - component: {fileID: 5968869363467781238}
+  - component: {fileID: 7451506977121168975}
   m_Layer: 10
   m_Name: Player_states
   m_TagString: Untagged
@@ -1379,6 +1380,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: Parry
   _parryEffect: {fileID: 6697712921357175186, guid: 0d500f9f22d720e499108f837ea8316b, type: 3}
+--- !u!114 &7451506977121168975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef11ed8efa884b9409dce22f6d45abc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: WallSplat
+  _wallSplatPrefab: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
 --- !u!1 &7684445122000850538
 GameObject:
   m_ObjectHideFlags: 0

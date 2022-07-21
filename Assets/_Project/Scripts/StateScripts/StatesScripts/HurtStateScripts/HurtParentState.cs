@@ -26,12 +26,10 @@ public class HurtParentState : State
 	{
 		base.Enter();
 		_audio.Sound(_hurtAttack.impactSound).Play();
-		GameObject effect = Instantiate(_hurtAttack.hurtEffect);
-		effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
 		if (!_playerMovement.IsInCorner)
 		{
 			_playerMovement.Knockback(new Vector2(
-				_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_hurtAttack.knockback, 0.0f), _hurtAttack.knockbackDuration);
+				_player.OtherPlayer.transform.localScale.x, 1.0f), new Vector2(_hurtAttack.knockback, _hurtAttack.bounce), _hurtAttack.knockbackDuration);
 		}
 		_player.OtherPlayerUI.IncreaseCombo();
 		if (_player.OtherPlayerUI.CurrentComboCount == 1)

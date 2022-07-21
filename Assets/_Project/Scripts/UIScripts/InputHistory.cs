@@ -39,7 +39,11 @@ public class InputHistory : MonoBehaviour
 
 	public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
-		if (inputDirectionEnum == InputDirectionEnum.None)
+		InputTimes.Add(Time.time - _startInputTime);
+		Inputs.Add(inputEnum);
+		Directions.Add(inputDirectionEnum);
+		_startInputTime = Time.time;
+		if (inputDirectionEnum == InputDirectionEnum.None && inputEnum == InputEnum.Direction)
 		{
 			return;
 		}
@@ -54,19 +58,16 @@ public class InputHistory : MonoBehaviour
 			{
 				if (PlayerController.InputDirection.y == -1.0f)
 				{
-					InputTimes.Add(Time.time - _startInputTime);
 					AddMainInput(InputEnum.Direction, InputDirectionEnum.Down);
 				}
 			}
 
 			if (_isNextInputSubItem && !_inputEnums.Contains(inputEnum))
 			{
-				InputTimes.Add(Time.time -_startInputTime);
 				AddSubInput(inputEnum, inputDirectionEnum);
 			}
 			else
 			{
-				InputTimes.Add(Time.time - _startInputTime);
 				AddMainInput(inputEnum, inputDirectionEnum);
 			}
 		}
@@ -101,7 +102,6 @@ public class InputHistory : MonoBehaviour
 			SetInputImageSprite(image, inputEnum, inputDirectionEnum);
 			_inputEnums.Add(inputEnum);
 		}
-		_startInputTime = Time.time;
 	}
 
 	private void AddMainInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
@@ -139,11 +139,7 @@ public class InputHistory : MonoBehaviour
 			Image image = inputHistoryImage.ActivateHistoryImage(inputEnum, true);
 			SetInputImageSprite(image, inputEnum, inputDirectionEnum);
 			_inputEnums.Add(inputEnum);
-
 		}
-		Inputs.Add(inputEnum);
-		Directions.Add(inputDirectionEnum);
-		_startInputTime = Time.time;
 		IncreaseCurrentInputImageIndex();
 		_inputBreakCoroutine = StartCoroutine(InputBreakCoroutine());
 		StartCoroutine(InputSubItemCoroutine());

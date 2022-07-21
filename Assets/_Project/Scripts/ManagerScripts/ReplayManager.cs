@@ -47,7 +47,7 @@ public class ReplayManager : MonoBehaviour
 			SceneSettings.ReplayMode = _isReplayMode;
 			SceneSettings.ReplayIndex = _replayIndex;
 		}
-		//_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
+		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
 		if (SceneSettings.ReplayMode)
 		{
 			SetReplay();
@@ -178,25 +178,25 @@ public class ReplayManager : MonoBehaviour
 		_playerOneController = GameManager.Instance.PlayerOne.GetComponent<BrainController>();
 		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
 		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-		StartCoroutine(ReplayCoroutine(replayCardData));
+		StartCoroutine(SkipIntroCoroutine(replayCardData));
+
 	}
 
-	IEnumerator ReplayCoroutine(ReplayCardData replayCardData)
+	IEnumerator SkipIntroCoroutine(ReplayCardData replayCardData)
 	{
 		yield return new WaitForSecondsRealtime(replayCardData.skip);
 		GameManager.Instance.SkipIntro();
-		yield return new WaitForSecondsRealtime(2.5f);
-		StartCoroutine(LoadReplayCoroutine(replayCardData.playerOneInputs, _playerOneInputBuffer, _playerOneController, 1.5f));
-		StartCoroutine(LoadReplayCoroutine(replayCardData.playerTwoInputs, _playerTwoInputBuffer, _playerTwoController, 1.45f));
+		StartCoroutine(LoadReplayCoroutine(replayCardData.playerOneInputs, _playerOneInputBuffer, _playerOneController));
+		StartCoroutine(LoadReplayCoroutine(replayCardData.playerTwoInputs, _playerTwoInputBuffer, _playerTwoController));
 	}
 
-	IEnumerator LoadReplayCoroutine(ReplayInput[] playerInputs, InputBuffer inputBuffer, BrainController controller, float t)
+
+	IEnumerator LoadReplayCoroutine(ReplayInput[] playerInputs, InputBuffer inputBuffer, BrainController controller)
 	{
+		yield return null;
 		for (int i = 0; i < playerInputs.Length; i++)
 		{
-			//yield return new WaitForSecondsRealtime(t);
-			yield return new WaitForSeconds(playerInputs[i].time);
-			if (controller == _playerOneController)
+			yield return new WaitForSecondsRealtime(playerInputs[i].time);
 			inputBuffer.AddInputBufferItem(playerInputs[i].input, playerInputs[i].direction);
 			switch (playerInputs[i].direction)
 			{

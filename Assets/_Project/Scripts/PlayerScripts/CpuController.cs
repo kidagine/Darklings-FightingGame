@@ -27,7 +27,7 @@ public class CpuController : BaseController
 			{
 				_reset = false;
 				Movement();
-				if (_distance <= 5.5f)
+				if (_distance <= 5f)
 				{
 					Attack();
 				}

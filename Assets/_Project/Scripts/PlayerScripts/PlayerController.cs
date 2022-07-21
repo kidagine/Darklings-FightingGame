@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
-	private bool _hasJumped;
 	private bool reset;
 	private bool k;
 	private bool j;

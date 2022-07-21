@@ -17,10 +17,10 @@ public class AirHurtState : HurtParentState
 	public override void Enter()
 	{
 		_playerAnimator.HurtAir(true);
+		GameObject effect = Instantiate(_hurtAttack.hurtEffect);
+		effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
 		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();
-		_playerMovement.Knockback(new Vector2(
-	_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_hurtAttack.knockback, 0.0f), _hurtAttack.knockbackDuration);
 	}
 
 	IEnumerator StunCoroutine(float hitStun)
