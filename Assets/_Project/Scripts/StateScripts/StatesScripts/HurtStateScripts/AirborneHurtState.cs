@@ -5,6 +5,7 @@ public class AirborneHurtState : HurtParentState
 {
 	private WallSplatState _wallSplatState;
 	private KnockdownState _knockdownState;
+	private GrabbedState _grabbedState;
 	private Coroutine _canCheckGroundCoroutine;
 	private bool _canCheckGround;
 
@@ -16,6 +17,7 @@ public class AirborneHurtState : HurtParentState
 		base.Awake();
 		_wallSplatState = GetComponent<WallSplatState>();
 		_knockdownState = GetComponent<KnockdownState>();
+		_grabbedState = GetComponent<GrabbedState>();
 	}
 
 	public override void Enter()
@@ -70,7 +72,7 @@ public class AirborneHurtState : HurtParentState
 
 	private void ToWallSplatState()
 	{
-		if (_playerMovement.IsInCorner && !WallSplat)
+		if (_playerMovement.OnWall() != Vector2.zero && !WallSplat)
 		{
 			_audio.Sound("Landed").Play();
 			_stateMachine.ChangeState(_wallSplatState);
@@ -81,6 +83,13 @@ public class AirborneHurtState : HurtParentState
 	{
 		this.Initialize(attack);
 		_stateMachine.ChangeState(this);
+		return true;
+	}
+
+
+	public override bool ToGrabbedState()
+	{
+		_stateMachine.ChangeState(_grabbedState);
 		return true;
 	}
 
