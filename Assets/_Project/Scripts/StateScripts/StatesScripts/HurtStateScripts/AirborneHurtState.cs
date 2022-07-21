@@ -24,6 +24,7 @@ public class AirborneHurtState : HurtParentState
 	{
 		_playerAnimator.HurtAir(true);
 		base.Enter();
+		_player.OtherPlayer.FreezeComboTimer();
 		if (WallSplat)
 		{
 			_player.Flip((int) -_player.transform.localScale.x);
@@ -98,7 +99,6 @@ public class AirborneHurtState : HurtParentState
 		base.Exit();
 		if (_canCheckGroundCoroutine != null)
 		{
-			_player.OtherPlayer.StopComboTimer();
 			StopCoroutine(_canCheckGroundCoroutine);
 		}
 		WallSplat = false;
