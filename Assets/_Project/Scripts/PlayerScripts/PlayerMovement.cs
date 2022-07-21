@@ -148,6 +148,20 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 	}
 
+	public Vector2 OnWall()
+	{
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 2.0f, _wallLayerMask);
+		if (hit.collider != null)
+		{
+			return new Vector2(hit.point.x - (0.4f * -transform.localScale.x), transform.localPosition.y);
+		}
+		else
+		{
+			return Vector2.zero;
+		}
+	}
+
+
 	public void ResetGravity()
 	{
 		_rigidbody.gravityScale = 2.0f;

@@ -28,6 +28,7 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _pauseSlider = default;
 	[SerializeField] private Slider _comboTimerSlider = default;
 	[SerializeField] private Image _comboTimerImage = default;
+	[SerializeField] private Image _comboTimerLock = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private PauseMenu _trainingPauseMenu = default;
 	[SerializeField] private PauseMenu _replayPauseMenu = default;
@@ -273,8 +274,14 @@ public class PlayerUI : MonoBehaviour
 
 	public void SetComboTimerActive(bool state)
 	{
+		_comboTimerLock.gameObject.SetActive(false);
 		_comboTimerSlider.transform.GetChild(0).gameObject.SetActive(state);
 		_comboTimerSlider.transform.GetChild(1).gameObject.SetActive(state);
+	}
+
+	public void SetComboTimerLock()
+	{
+		_comboTimerLock.gameObject.SetActive(true);
 	}
 
 	public void ResetLives()

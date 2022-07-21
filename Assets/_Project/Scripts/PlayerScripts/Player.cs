@@ -20,6 +20,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private PlayerStats _playerStats;
 	private BrainController _controller;
 	private Coroutine _comboTimerCoroutine;
+	private bool _comboTimerPaused;
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
 	public PlayerStateManager OtherPlayerStateManager { get; private set; }
 	public Player OtherPlayer { get; private set; }
@@ -229,6 +230,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			StopCoroutine(_comboTimerCoroutine);
 			_playerUI.SetComboTimerActive(false);
 			_playerUI.ResetCombo();
+			_comboTimerPaused = false;
+		}
+	}
+
+	public void FreezeComboTimer()
+	{
+		if (_comboTimerCoroutine != null)
+		{
+			_playerUI.SetComboTimerLock();
+			_comboTimerPaused = true;
 		}
 	}
 
@@ -239,10 +250,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		Color color = ComboTimerStarterTypes.GetComboTimerStarterColor(comboTimerStarter);
 		while (elapsedTime < waitTime)
 		{
-			float value = Mathf.Lerp(1.0f, 0.0f, elapsedTime / waitTime);
-			elapsedTime += Time.deltaTime;
-			_playerUI.SetComboTimer(value, color);
-			yield return null;
+			if (!_comboTimerPaused)
+			{
+				float value = Mathf.Lerp(1.0f, 0.0f, elapsedTime / waitTime);
+				elapsedTime += Time.deltaTime;
+				_playerUI.SetComboTimer(value, color);
+				yield return null;
+			}
+			else
+			{
+				yield return null;
+			}
 		}
 		OtherPlayer._playerStateManager.TryToIdleState();
 		_playerUI.SetComboTimerActive(false);

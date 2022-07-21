@@ -15,12 +15,15 @@ public class WallSplatState : State
 	public override void Enter()
 	{
 		base.Enter();
-		_playerAnimator.Knockdown();
+		_playerAnimator.WallSplat();
 		_player.SetHurtbox(false);
 		_playerMovement.ZeroGravity();
+		_playerMovement.StopAllCoroutines();
+		_player.transform.position = _playerMovement.OnWall();
+		_playerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
 		GameObject effect = Instantiate(_wallSplatPrefab);
 		effect.transform.localPosition = transform.position;
-		StartCoroutine(WallSplatStateCoroutine());
+		_wallSplatCoroutine = StartCoroutine(WallSplatStateCoroutine());
 	}
 
 	IEnumerator WallSplatStateCoroutine()
@@ -39,6 +42,11 @@ public class WallSplatState : State
 	{
 		base.UpdatePhysics();
 		_rigidbody.velocity = new Vector2(0.0f, 0.0f);
+	}
+
+	public override bool ToKnockdownState()
+	{
+		return false;
 	}
 
 	public override void Exit()
