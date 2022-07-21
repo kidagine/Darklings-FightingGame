@@ -238,6 +238,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (_comboTimerCoroutine != null)
 		{
+			_playerUI.SetComboTimerLock();
 			_comboTimerPaused = true;
 		}
 	}
