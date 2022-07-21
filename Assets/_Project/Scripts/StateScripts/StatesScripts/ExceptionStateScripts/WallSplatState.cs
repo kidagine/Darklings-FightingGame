@@ -15,7 +15,7 @@ public class WallSplatState : State
 	public override void Enter()
 	{
 		base.Enter();
-		_playerAnimator.Knockdown();
+		_playerAnimator.WallSplat();
 		_player.SetHurtbox(false);
 		_playerMovement.ZeroGravity();
 		GameObject effect = Instantiate(_wallSplatPrefab);

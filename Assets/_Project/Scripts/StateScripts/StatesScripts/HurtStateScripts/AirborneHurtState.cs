@@ -76,6 +76,14 @@ public class AirborneHurtState : HurtParentState
 		}
 	}
 
+	//public override bool ToAirborneHurtState(AttackSO attack)
+	//{
+	//	WallSplat = false;
+	//	this.Initialize(attack);
+	//	_stateMachine.ChangeState(this);
+	//	return true;
+	//}
+
 	public override void Exit()
 	{
 		base.Exit();
