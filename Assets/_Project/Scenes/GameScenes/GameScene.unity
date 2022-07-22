@@ -6514,16 +6514,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 0
-  _characterOne: 3
-  _characterTwo: 0
+  _characterOne: 0
+  _characterTwo: 2
   _assistOne: 0
   _assistTwo: 0
-  _controllerOne: 0
-  _controllerTwo: 1
+  _controllerOne: 1
+  _controllerTwo: 0
   _music: 1
   _playerOneSkin: 1
   _playerTwoSkin: 0
-  _isTrainingMode: 1
+  _isTrainingMode: 0
   _isOnlineMode: 0
   _1BitOn: 0
   _gameSpeed: 1
@@ -6998,6 +6998,10 @@ PrefabInstance:
     - target: {fileID: 8073473789829592550, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: _hitboxSize.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8073473789928578673, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Size.x
@@ -27146,7 +27150,7 @@ MonoBehaviour:
   _crossUpColor: {r: 0.8773585, g: 0.79303634, b: 0.15312389, a: 1}
   _guardBreakColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _reversalColor: {r: 0.8, g: 0.1254902, b: 0.1254902, a: 1}
-  _wallSplatColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _wallSplatColor: {r: 0.67058825, g: 0.18431373, b: 0.6392157, a: 1}
 --- !u!1 &1478722431
 GameObject:
   m_ObjectHideFlags: 0
@@ -35026,7 +35030,7 @@ MonoBehaviour:
   _crossUpColor: {r: 0.8784314, g: 0.7921569, b: 0.15294118, a: 1}
   _guardBreakColor: {r: 0.87843144, g: 0.79215693, b: 0.15294118, a: 1}
   _reversalColor: {r: 0.8000001, g: 0.1254902, b: 0.1254902, a: 1}
-  _wallSplatColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _wallSplatColor: {r: 0.6698113, g: 0.18563484, b: 0.63766956, a: 1}
 --- !u!114 &1806574644 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2913485976903899261, guid: 3129472ef778c844ca6a975934fa6bbe, type: 3}

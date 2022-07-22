@@ -18,6 +18,7 @@ public class IntroUI : MonoBehaviour
 
 	public void PlayDialogueAnimationEvent()
 	{
+		GameManager.Instance.IsDialogueRunning = true;
 		_playerOneDialogue.PlayDialogue();
 	}
 

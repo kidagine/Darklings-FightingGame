@@ -42,7 +42,6 @@ public class GrabbedState : State
 
 	public override bool ToAirborneHurtState(AttackSO attack)
 	{
-		Debug.Log("eex");
 		_airborneHurtState.Initialize(attack);
 		_stateMachine.ChangeState(_airborneHurtState);
 		return true;

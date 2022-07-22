@@ -184,8 +184,11 @@ public class ReplayManager : MonoBehaviour
 
 	IEnumerator SkipIntroCoroutine(ReplayCardData replayCardData)
 	{
-		yield return new WaitForSecondsRealtime(replayCardData.skip);
-		GameManager.Instance.SkipIntro();
+		yield return new WaitForSeconds(replayCardData.skip);
+		if (replayCardData.skip > 0)
+		{
+			GameManager.Instance.SkipIntro();
+		}
 		StartCoroutine(LoadReplayCoroutine(replayCardData.playerOneInputs, _playerOneInputBuffer, _playerOneController));
 		StartCoroutine(LoadReplayCoroutine(replayCardData.playerTwoInputs, _playerTwoInputBuffer, _playerTwoController));
 	}
@@ -306,11 +309,13 @@ public class ReplayManager : MonoBehaviour
 		_replayPrompts.SetActive(true);
 	}
 
+#if UNITY_EDITOR
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.CapsLock))
+		if (Input.GetKeyDown(KeyCode.CapsLock) && !SceneSettings.IsTrainingMode)
 		{
 			SaveReplay();
 		}
 	}
 }
+#endif
