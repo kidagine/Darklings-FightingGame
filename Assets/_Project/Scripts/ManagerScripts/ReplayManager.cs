@@ -21,7 +21,6 @@ public class ReplayManager : MonoBehaviour
 	private BrainController _playerTwoController;
 	private InputBuffer _playerOneInputBuffer;
 	private InputBuffer _playerTwoInputBuffer;
-	private readonly string _replayPath = "/_Project/Replays/";
 	private readonly int _replaysLimit = 100;
 	private string[] _replayFiles;
 	private readonly string _versionSplit = "Version:";
@@ -47,7 +46,7 @@ public class ReplayManager : MonoBehaviour
 			SceneSettings.ReplayMode = _isReplayMode;
 			SceneSettings.ReplayIndex = _replayIndex;
 		}
-		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
+		_replayFiles = Directory.GetFiles(Application.persistentDataPath, "*.txt", SearchOption.AllDirectories);
 		if (SceneSettings.ReplayMode)
 		{
 			SetReplay();
@@ -116,7 +115,7 @@ public class ReplayManager : MonoBehaviour
 				DeleteReplay();
 			}
 
-			string fileName = Application.dataPath + $@"{_replayPath}{filesAmount + 1}_{GameManager.Instance.PlayerOne.PlayerStats.name}_{GameManager.Instance.PlayerTwo.PlayerStats.name}.txt";
+			string fileName = Application.persistentDataPath + $@"/{filesAmount + 1}_{GameManager.Instance.PlayerOne.PlayerStats.name}_{GameManager.Instance.PlayerTwo.PlayerStats.name}.txt";
 			try
 			{
 				if (File.Exists(fileName))
@@ -329,5 +328,6 @@ public class ReplayManager : MonoBehaviour
 			SaveReplay();
 		}
 	}
-}
 #endif
+}
+

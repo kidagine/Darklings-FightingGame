@@ -25,6 +25,7 @@ public class AirborneHurtState : HurtParentState
 		_playerAnimator.HurtAir(true);
 		_rigidbody.velocity = Vector2.zero;
 		_player.OtherPlayer.FreezeComboTimer();
+		base.Enter();
 		if (WallSplat)
 		{
 			_player.Flip((int) -_player.transform.localScale.x);
@@ -38,7 +39,6 @@ public class AirborneHurtState : HurtParentState
 			_playerMovement.Knockback(new Vector2(
 			_player.OtherPlayer.transform.localScale.x, _hurtAttack.knockbackDirection.y), new Vector2(_hurtAttack.knockback, _hurtAttack.knockback), _hurtAttack.knockbackDuration);
 		}
-		base.Enter();
 		_player.SetAirPushBox(true);
 		CameraShake.Instance.Shake(_hurtAttack.cameraShaker.intensity, _hurtAttack.cameraShaker.timer);
 		_canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());
