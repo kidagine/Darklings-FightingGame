@@ -17,7 +17,6 @@ public class InputHistory : MonoBehaviour
 	private readonly List<InputHistoryImage> _inputHistoryImages = new();
 	private readonly List<InputEnum> _inputEnums = new();
 	private Coroutine _inputBreakCoroutine;
-	private float _startInputTime;
 	private int _currentInputImageIndex;
 	private int _previousInputImageIndex;
 	private bool _isNextInputBreak;
@@ -27,7 +26,7 @@ public class InputHistory : MonoBehaviour
 	public List<InputDirectionEnum> Directions { get; private set; } = new();
 	public List<float> InputTimes { get; private set; } = new();
 	public PlayerController PlayerController { get; set; }
-
+	public float StartInputTime { get; set; }
 
 	void Awake()
 	{
@@ -39,10 +38,9 @@ public class InputHistory : MonoBehaviour
 
 	public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
-		InputTimes.Add(Time.time - _startInputTime);
+		InputTimes.Add(Time.time - StartInputTime);
 		Inputs.Add(inputEnum);
 		Directions.Add(inputDirectionEnum);
-		_startInputTime = Time.time;
 		if (inputDirectionEnum == InputDirectionEnum.None && inputEnum == InputEnum.Direction)
 		{
 			return;

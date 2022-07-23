@@ -80,11 +80,11 @@ public class GameManager : MonoBehaviour
 	private bool _reverseReset;
 	private bool _hasSwitchedCharacters;
 	private bool _canCallSwitchCharacter = true;
-	private bool _isDialogueRunning;
 	private bool _finalRound;
 	private int _playerOneWins;
 	private int _playerTwoWins;
 
+	public bool IsDialogueRunning { get; set; }
 	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
 	public bool InfiniteHealth { get; set; }
@@ -332,7 +332,7 @@ public class GameManager : MonoBehaviour
 			}
 
 		}
-		if (_isDialogueRunning && !SceneSettings.ReplayMode)
+		if (IsDialogueRunning && !SceneSettings.ReplayMode)
 		{
 			if (Input.anyKeyDown)
 			{
@@ -348,7 +348,7 @@ public class GameManager : MonoBehaviour
 		_playerTwoDialogue.StopDialogue();
 		StartRound();
 		_introAnimator.SetBool("IsIntroRunning", false);
-		_isDialogueRunning = false;
+		IsDialogueRunning = false;
 	}
 
 	public void StartIntro()
@@ -357,7 +357,6 @@ public class GameManager : MonoBehaviour
 		{
 			_arcanaObjects[i].SetActive(false);
 		}
-		_isDialogueRunning = true;
 		_introUI.SetPlayerNames(_playerStats[SceneSettings.PlayerOne].characterName.ToString(), _playerStats[SceneSettings.PlayerTwo].characterName.ToString());
 			_playerOneDialogue.Initialize(true, _playerStats[SceneSettings.PlayerOne]._dialogue, _playerStats[SceneSettings.PlayerTwo].characterName);
 		_playerTwoDialogue.Initialize(false, _playerStats[SceneSettings.PlayerTwo]._dialogue, _playerStats[SceneSettings.PlayerOne].characterName);
@@ -545,7 +544,7 @@ public class GameManager : MonoBehaviour
 			ReplayManager.Instance.ShowReplayPrompts();
 		}
 		_timerMainAnimator.Rebind();
-		_isDialogueRunning = false;
+		IsDialogueRunning = false;
 		for (int i = 0; i < _arcanaObjects.Length; i++)
 		{
 			_arcanaObjects[i].SetActive(true);
@@ -617,6 +616,12 @@ public class GameManager : MonoBehaviour
 		_playerOneController.ActivateInput();
 		_playerTwoController.ActivateInput();
 		HasGameStarted = true;
+		_inputHistories[0].StartInputTime = Time.time;
+		_inputHistories[1].StartInputTime = Time.time;
+		if (SceneSettings.ReplayMode)
+		{
+			ReplayManager.Instance.StartLoadReplay();
+		}
 	}
 
 	public virtual void RoundOver(bool timeout)

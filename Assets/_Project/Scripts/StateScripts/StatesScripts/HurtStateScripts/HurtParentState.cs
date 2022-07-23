@@ -6,7 +6,6 @@ public class HurtParentState : State
 	protected DeathState _deathState;
 	protected AttackState _attackState;
 	protected AttackSO _hurtAttack;
-	private readonly float _damageDecay = 0.97f;
 	protected bool _skipEnter;
 
 	protected virtual void Awake()
@@ -43,7 +42,7 @@ public class HurtParentState : State
 				_player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
 			}
 		}
-		_player.Health -= CalculateDamage();
+		_player.Health -= _player.CalculateDamage(_hurtAttack);
 		_playerUI.SetHealth(_player.Health);
 		_playerUI.Damaged();
 		_playerMovement.ResetGravity();
@@ -53,23 +52,6 @@ public class HurtParentState : State
 		{
 			ToDeathState();
 		}
-	}
-
-	private float CalculateDamage()
-	{
-		int comboCount = _player.OtherPlayerUI.CurrentComboCount;
-		float calculatedDamage = _hurtAttack.damage / _playerStats.PlayerStatsSO.defense;
-		if (comboCount > 1)
-		{
-			float damageScale = 1.0f;
-			for (int i = 0; i < comboCount; i++)
-			{
-				damageScale *= _damageDecay;
-			}
-			calculatedDamage *= damageScale;
-		}
-		_player.OtherPlayer.SetResultAttack((int)calculatedDamage);
-		return (int)calculatedDamage;
 	}
 
 	private void ToDeathState()

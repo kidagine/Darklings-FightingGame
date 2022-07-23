@@ -33,6 +33,8 @@ public class PlayerController : BaseController
 					Heavy();
 					Arcane();
 					Assist();
+					DashForward();
+					DashBackward();
 					_pressedAction = false;
 				}
 				Pause();
@@ -232,6 +234,7 @@ public class PlayerController : BaseController
 			{
 				if (!j)
 				{
+					_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
 					j = true;
 					return true;
 				}
@@ -275,6 +278,7 @@ public class PlayerController : BaseController
 			{
 				if (!j2)
 				{
+					_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
 					j2 = true;
 					return true;
 				}

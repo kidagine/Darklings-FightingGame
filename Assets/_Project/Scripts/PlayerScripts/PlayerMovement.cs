@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void AddForce(int moveHorizontally)
 	{
-		float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 2.5f;
+		float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 3.5f;
 		int direction = 0;
 		if (moveHorizontally == 1)
 		{

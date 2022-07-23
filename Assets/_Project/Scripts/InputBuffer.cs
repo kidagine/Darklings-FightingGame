@@ -67,6 +67,14 @@ public class InputBuffer : MonoBehaviour
 		{
 			return _playerStateManager.TryToGrabState();
 		}
+		if (inputEnum == InputEnum.ForwardDash)
+		{
+			return _playerStateManager.TryToDashState(1);
+		}
+		if (inputEnum == InputEnum.BackDash)
+		{
+			return _playerStateManager.TryToDashState(-1);
+		}
 		if (inputEnum == InputEnum.Assist)
 		{
 			return _playerStateManager.TryToAssistCall();

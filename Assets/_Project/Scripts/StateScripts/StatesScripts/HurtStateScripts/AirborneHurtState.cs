@@ -22,8 +22,8 @@ public class AirborneHurtState : HurtParentState
 
 	public override void Enter()
 	{
+		_audio.Sound(_hurtAttack.impactSound).Play();
 		_playerAnimator.HurtAir(true);
-		base.Enter();
 		_rigidbody.velocity = Vector2.zero;
 		_player.OtherPlayer.FreezeComboTimer();
 		if (WallSplat)
@@ -42,6 +42,16 @@ public class AirborneHurtState : HurtParentState
 		_player.SetAirPushBox(true);
 		CameraShake.Instance.Shake(_hurtAttack.cameraShaker.intensity, _hurtAttack.cameraShaker.timer);
 		_canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());
+		_player.Health -= _player.CalculateDamage(_hurtAttack);
+		_playerUI.SetHealth(_player.Health);
+		_playerUI.Damaged();
+		_playerMovement.ResetGravity();
+		_player.RecallAssist();
+		GameManager.Instance.HitStop(_hurtAttack.hitstop);
+		if (_player.Health <= 0)
+		{
+			ToDeathState();
+		}
 	}
 
 	IEnumerator CanCheckGroundCoroutine()
@@ -55,6 +65,12 @@ public class AirborneHurtState : HurtParentState
 		base.UpdateLogic();
 		ToKnockdownState();
 		ToWallSplatState();
+	}
+
+	private void ToDeathState()
+	{
+		_player.OtherPlayer.StopComboTimer();
+		_stateMachine.ChangeState(_deathState);
 	}
 
 	public override void UpdatePhysics()

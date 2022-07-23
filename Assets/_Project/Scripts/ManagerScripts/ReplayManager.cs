@@ -21,7 +21,6 @@ public class ReplayManager : MonoBehaviour
 	private BrainController _playerTwoController;
 	private InputBuffer _playerOneInputBuffer;
 	private InputBuffer _playerTwoInputBuffer;
-	private readonly string _replayPath = "/_Project/Replays/";
 	private readonly int _replaysLimit = 100;
 	private string[] _replayFiles;
 	private readonly string _versionSplit = "Version:";
@@ -47,7 +46,7 @@ public class ReplayManager : MonoBehaviour
 			SceneSettings.ReplayMode = _isReplayMode;
 			SceneSettings.ReplayIndex = _replayIndex;
 		}
-		_replayFiles = Directory.GetFiles(Application.dataPath + $@"{_replayPath}", "*.txt", SearchOption.AllDirectories);
+		_replayFiles = Directory.GetFiles(Application.persistentDataPath, "*.txt", SearchOption.AllDirectories);
 		if (SceneSettings.ReplayMode)
 		{
 			SetReplay();
@@ -110,12 +109,13 @@ public class ReplayManager : MonoBehaviour
 	{
 		if (!SceneSettings.IsTrainingMode && _replayNotificationAnimator != null)
 		{
-			if (_replayFiles.Length == _replaysLimit)
+			int filesAmount = _replayFiles.Length;
+			if (filesAmount == _replaysLimit)
 			{
 				DeleteReplay();
 			}
 
-			string fileName = Application.dataPath + $@"{_replayPath}{_replayFiles.Length + 1}_{GameManager.Instance.PlayerOne.PlayerStats.name}_{GameManager.Instance.PlayerTwo.PlayerStats.name}.txt";
+			string fileName = Application.persistentDataPath + $@"/{filesAmount + 1}_{GameManager.Instance.PlayerOne.PlayerStats.name}_{GameManager.Instance.PlayerTwo.PlayerStats.name}.txt";
 			try
 			{
 				if (File.Exists(fileName))
@@ -179,24 +179,38 @@ public class ReplayManager : MonoBehaviour
 		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
 		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
 		StartCoroutine(SkipIntroCoroutine(replayCardData));
-
 	}
 
 	IEnumerator SkipIntroCoroutine(ReplayCardData replayCardData)
 	{
-		yield return new WaitForSecondsRealtime(replayCardData.skip);
-		GameManager.Instance.SkipIntro();
+		yield return new WaitForSeconds(replayCardData.skip);
+		if (replayCardData.skip > 0)
+		{
+			GameManager.Instance.SkipIntro();
+		}
+
+	}
+
+	public void StartLoadReplay()
+	{
+		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
 		StartCoroutine(LoadReplayCoroutine(replayCardData.playerOneInputs, _playerOneInputBuffer, _playerOneController));
 		StartCoroutine(LoadReplayCoroutine(replayCardData.playerTwoInputs, _playerTwoInputBuffer, _playerTwoController));
 	}
-
 
 	IEnumerator LoadReplayCoroutine(ReplayInput[] playerInputs, InputBuffer inputBuffer, BrainController controller)
 	{
 		yield return null;
 		for (int i = 0; i < playerInputs.Length; i++)
 		{
-			yield return new WaitForSecondsRealtime(playerInputs[i].time);
+			if (i == 0)
+			{
+				yield return new WaitForSeconds(playerInputs[i].time);
+			}
+			else
+			{
+				yield return new WaitForSeconds(playerInputs[i].time - playerInputs[i-1].time);
+			}
 			inputBuffer.AddInputBufferItem(playerInputs[i].input, playerInputs[i].direction);
 			switch (playerInputs[i].direction)
 			{
@@ -306,11 +320,14 @@ public class ReplayManager : MonoBehaviour
 		_replayPrompts.SetActive(true);
 	}
 
+#if UNITY_EDITOR
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.CapsLock))
+		if (Input.GetKeyDown(KeyCode.CapsLock) && !SceneSettings.IsTrainingMode)
 		{
 			SaveReplay();
 		}
 	}
+#endif
 }
+
