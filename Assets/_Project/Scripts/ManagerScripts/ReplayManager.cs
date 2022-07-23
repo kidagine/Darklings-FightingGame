@@ -110,12 +110,13 @@ public class ReplayManager : MonoBehaviour
 	{
 		if (!SceneSettings.IsTrainingMode && _replayNotificationAnimator != null)
 		{
-			if (_replayFiles.Length == _replaysLimit)
+			int filesAmount = _replayFiles.Length;
+			if (filesAmount == _replaysLimit)
 			{
 				DeleteReplay();
 			}
 
-			string fileName = Application.dataPath + $@"{_replayPath}{_replayFiles.Length + 1}_{GameManager.Instance.PlayerOne.PlayerStats.name}_{GameManager.Instance.PlayerTwo.PlayerStats.name}.txt";
+			string fileName = Application.dataPath + $@"{_replayPath}{filesAmount + 1}_{GameManager.Instance.PlayerOne.PlayerStats.name}_{GameManager.Instance.PlayerTwo.PlayerStats.name}.txt";
 			try
 			{
 				if (File.Exists(fileName))
