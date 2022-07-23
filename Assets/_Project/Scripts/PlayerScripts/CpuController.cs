@@ -182,6 +182,8 @@ public class CpuController : BaseController
 
 	public override bool DashForward()
 	{
+		return false;
+
 		return _dash;
 	}
 

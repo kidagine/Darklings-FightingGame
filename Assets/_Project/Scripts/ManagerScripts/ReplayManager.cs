@@ -179,7 +179,6 @@ public class ReplayManager : MonoBehaviour
 		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
 		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
 		StartCoroutine(SkipIntroCoroutine(replayCardData));
-
 	}
 
 	IEnumerator SkipIntroCoroutine(ReplayCardData replayCardData)
@@ -189,17 +188,29 @@ public class ReplayManager : MonoBehaviour
 		{
 			GameManager.Instance.SkipIntro();
 		}
+
+	}
+
+	public void StartLoadReplay()
+	{
+		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
 		StartCoroutine(LoadReplayCoroutine(replayCardData.playerOneInputs, _playerOneInputBuffer, _playerOneController));
 		StartCoroutine(LoadReplayCoroutine(replayCardData.playerTwoInputs, _playerTwoInputBuffer, _playerTwoController));
 	}
-
 
 	IEnumerator LoadReplayCoroutine(ReplayInput[] playerInputs, InputBuffer inputBuffer, BrainController controller)
 	{
 		yield return null;
 		for (int i = 0; i < playerInputs.Length; i++)
 		{
-			yield return new WaitForSecondsRealtime(playerInputs[i].time);
+			if (i == 0)
+			{
+				yield return new WaitForSeconds(playerInputs[i].time);
+			}
+			else
+			{
+				yield return new WaitForSeconds(playerInputs[i].time - playerInputs[i-1].time);
+			}
 			inputBuffer.AddInputBufferItem(playerInputs[i].input, playerInputs[i].direction);
 			switch (playerInputs[i].direction)
 			{

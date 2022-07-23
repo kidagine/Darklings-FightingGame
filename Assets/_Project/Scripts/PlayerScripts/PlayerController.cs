@@ -225,6 +225,8 @@ public class PlayerController : BaseController
 
 	public override bool DashForward()
 	{
+		return false;
+
 		float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
 		if (input == 1)
 		{
@@ -268,6 +270,8 @@ public class PlayerController : BaseController
 
 	public override bool DashBackward()
 	{
+		return false;
+
 		float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
 		if (input == -1)
 		{

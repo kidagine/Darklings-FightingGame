@@ -616,6 +616,12 @@ public class GameManager : MonoBehaviour
 		_playerOneController.ActivateInput();
 		_playerTwoController.ActivateInput();
 		HasGameStarted = true;
+		_inputHistories[0].StartInputTime = Time.time;
+		_inputHistories[1].StartInputTime = Time.time;
+		if (SceneSettings.ReplayMode)
+		{
+			ReplayManager.Instance.StartLoadReplay();
+		}
 	}
 
 	public virtual void RoundOver(bool timeout)
