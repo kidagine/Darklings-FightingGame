@@ -41,7 +41,6 @@ public class AirParentState : State
 		ToFallState();
 		ToJumpState();
 		ToJumpForwardState();
-		ToAirDashState();
 	}
 
 	public void ToFallState()
@@ -91,22 +90,15 @@ public class AirParentState : State
 			}
 		}
 	}
-
-	private void ToAirDashState()
+	public override bool ToDashState(int direction)
 	{
 		if (!_playerMovement.HasAirDashed)
 		{
-			if (_baseController.DashForward())
-			{
-				_airDashState.DashDirection = 1;
-				_stateMachine.ChangeState(_airDashState);
-			}
-			else if (_baseController.DashBackward())
-			{
-				_airDashState.DashDirection = -1;
-				_stateMachine.ChangeState(_airDashState);
-			}
+			_airDashState.DashDirection = direction;
+			_stateMachine.ChangeState(_airDashState);
+			return true;
 		}
+		return false;
 	}
 
 	public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)

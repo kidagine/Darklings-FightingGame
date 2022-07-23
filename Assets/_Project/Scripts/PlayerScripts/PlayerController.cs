@@ -33,6 +33,8 @@ public class PlayerController : BaseController
 					Heavy();
 					Arcane();
 					Assist();
+					DashForward();
+					DashBackward();
 					_pressedAction = false;
 				}
 				Pause();
@@ -225,8 +227,6 @@ public class PlayerController : BaseController
 
 	public override bool DashForward()
 	{
-		return false;
-
 		float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
 		if (input == 1)
 		{
@@ -234,6 +234,7 @@ public class PlayerController : BaseController
 			{
 				if (!j)
 				{
+					_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
 					j = true;
 					return true;
 				}
@@ -270,8 +271,6 @@ public class PlayerController : BaseController
 
 	public override bool DashBackward()
 	{
-		return false;
-
 		float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
 		if (input == -1)
 		{
@@ -279,6 +278,7 @@ public class PlayerController : BaseController
 			{
 				if (!j2)
 				{
+					_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
 					j2 = true;
 					return true;
 				}

@@ -23,7 +23,6 @@ public class IdleState : GroundParentState
 		ToWalkState();
 		ToCrouchState();
 		ToJumpState();
-		ToDashState();
 		_player.CheckFlip();
 	}
 
@@ -62,18 +61,11 @@ public class IdleState : GroundParentState
 		return true;
 	}
 
-	private void ToDashState()
+	public override bool ToDashState(int direction)
 	{
-		if (_baseController.DashForward())
-		{
-			_dashState.DashDirection = 1;
-			_stateMachine.ChangeState(_dashState);
-		}
-		else if (_baseController.DashBackward())
-		{
-			_dashState.DashDirection = -1;
-			_stateMachine.ChangeState(_dashState);
-		}
+		_dashState.DashDirection = direction;
+		_stateMachine.ChangeState(_dashState);
+		return true;
 	}
 
 	public override bool ToBlockState(AttackSO attack)

@@ -71,6 +71,11 @@ public class PlayerStateManager : StateMachine
 		return CurrentState.ToParryState();
 	}
 
+	public bool TryToDashState(int direction)
+	{
+		return CurrentState.ToDashState(direction);
+	}
+
 	public bool TryToThrowState()
 	{
 		return CurrentState.ToThrowState();

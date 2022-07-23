@@ -48,6 +48,7 @@ public class State : MonoBehaviour
     public virtual bool ToIdleState() { return false; }
     public virtual bool ToGrabState() { return false; }
     public virtual bool ToParryState() { return false; }
+    public virtual bool ToDashState(int direction) { return false; }
     public virtual bool ToThrowState() { return false; }
     public virtual bool ToKnockdownState() { return false; }
     public virtual bool ToKnockbackState() { return false; }
