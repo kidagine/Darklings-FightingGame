@@ -21,6 +21,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private BrainController _controller;
 	private Coroutine _comboTimerCoroutine;
 	private bool _comboTimerPaused;
+	private readonly float _damageDecay = 0.97f;
+
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
 	public PlayerStateManager OtherPlayerStateManager { get; private set; }
 	public Player OtherPlayer { get; private set; }
@@ -270,6 +272,24 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		_assist.Recall();
 	}
+
+	public float CalculateDamage(AttackSO hurtAttack)
+	{
+		int comboCount = OtherPlayerUI.CurrentComboCount;
+		float calculatedDamage = hurtAttack.damage / _playerStats.PlayerStatsSO.defense;
+		if (comboCount > 1)
+		{
+			float damageScale = 1.0f;
+			for (int i = 0; i < comboCount; i++)
+			{
+				damageScale *= _damageDecay;
+			}
+			calculatedDamage *= damageScale;
+		}
+		OtherPlayer.SetResultAttack((int)calculatedDamage);
+		return (int)calculatedDamage;
+	}
+
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
