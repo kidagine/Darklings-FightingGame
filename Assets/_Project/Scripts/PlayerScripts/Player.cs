@@ -295,7 +295,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
 		hurtbox.TakeDamage(CurrentAttack);
-		if (!CurrentAttack.isAirAttack && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
+		if (!CurrentAttack.isProjectile && !CurrentAttack.isArcana)
 		{
 			AttackState.CanSkipAttack = true;
 		}
