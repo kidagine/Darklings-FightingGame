@@ -288,12 +288,12 @@ public class TrainingMenu : BaseMenu
         switch (value)
         {
             case 0:
-                _inputHistoryOne.gameObject.SetActive(false);
-                _inputHistoryTwo.gameObject.SetActive(false);
+                _inputHistoryOne.transform.GetChild(0).gameObject.SetActive(false);
+                _inputHistoryTwo.transform.GetChild(0).gameObject.SetActive(false);
                 break;
             case 1:
-                _inputHistoryOne.gameObject.SetActive(true);
-                _inputHistoryTwo.gameObject.SetActive(true);
+                _inputHistoryOne.transform.GetChild(0).gameObject.SetActive(true);
+                _inputHistoryTwo.transform.GetChild(0).gameObject.SetActive(true);
                 break;
         }
     }

@@ -27,7 +27,7 @@ public class CpuController : BaseController
 			{
 				_reset = false;
 				Movement();
-				if (_distance <= 5f)
+				if (_distance <= 4f)
 				{
 					Attack();
 				}
@@ -122,7 +122,6 @@ public class CpuController : BaseController
 				}
 				else
 				{
-					_playerStateMachine.TryToGrabState();
 					_inputBuffer.AddInputBufferItem(InputEnum.Throw);
 				}
 				_attackTimer = Random.Range(0.15f, 0.35f);
@@ -180,7 +179,7 @@ public class CpuController : BaseController
 		return _jump;
 	}
 
-	public override bool DashForward()
+	public override bool Dash(int direction)
 	{
 		return _dash;
 	}

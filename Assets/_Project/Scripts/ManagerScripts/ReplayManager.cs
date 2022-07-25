@@ -320,6 +320,23 @@ public class ReplayManager : MonoBehaviour
 		_replayPrompts.SetActive(true);
 	}
 
+	public void ToggleReplayInputHistory()
+	{
+		GameObject playerOneInputHistory = _playerOneInputHistory.transform.GetChild(0).gameObject;
+		GameObject playerTwoInputHistory = _playerTwoInputHistory.transform.GetChild(0).gameObject;
+
+		if (playerOneInputHistory.activeSelf)
+		{
+			playerOneInputHistory.SetActive(false);
+			playerTwoInputHistory.SetActive(false);
+		}
+		else
+		{
+			playerOneInputHistory.SetActive(true);
+			playerTwoInputHistory.SetActive(true);
+		}
+	}
+
 #if UNITY_EDITOR
 	private void Update()
 	{

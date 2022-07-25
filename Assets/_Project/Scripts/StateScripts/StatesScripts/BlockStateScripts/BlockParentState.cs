@@ -39,6 +39,7 @@ public class BlockParentState : State
 			_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_blockAttack.knockback, 0.0f), _blockAttack.knockbackDuration);
 		GameObject effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);
 		effect.transform.localPosition = _blockAttack.hurtEffectPosition;
+		GameManager.Instance.HitStop(_blockAttack.hitstop);
 		if (_blockAttack.isArcana)
 		{
 			_player.Health -= _chipDamage;

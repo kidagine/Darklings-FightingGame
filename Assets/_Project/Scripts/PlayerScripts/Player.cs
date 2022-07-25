@@ -146,7 +146,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (AssistGauge < 1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
 		{
-			AssistGauge += Time.deltaTime / (11.0f - _assist.AssistStats.assistRecharge);
+			AssistGauge += Time.deltaTime / (9.0f - _assist.AssistStats.assistRecharge);
 			if (GameManager.Instance.InfiniteAssist)
 			{
 				AssistGauge = 1.0f;
