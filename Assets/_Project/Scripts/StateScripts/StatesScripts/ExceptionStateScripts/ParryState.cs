@@ -24,6 +24,7 @@ public class ParryState : State
 	{
 		base.Enter();
 		_audio.Sound("ParryStart").Play();
+		_player.CheckFlip();
 		_playerAnimator.Parry();
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
 	}
