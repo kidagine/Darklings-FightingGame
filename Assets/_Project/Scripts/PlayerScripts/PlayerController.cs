@@ -3,17 +3,13 @@ using UnityEngine;
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
-	private bool reset;
-	private bool dashPressed;
-	private bool j;
+	private int _lastDashDirection;
+	private bool _dashPressed;
 	private float _dashLastInputTime;
 	private float _dashTime = 0.3f;
-	private bool reset2;
-	private bool k2;
-	private bool j2;
+
 	private bool _pressedAction = false;
 	private bool _holdingParryTrigger = false;
-	private float _dashInputCooldown2;
 
 
 	void Update()
@@ -229,11 +225,11 @@ public class PlayerController : BaseController
 	public override bool Dash(int direction)
 	{
 		float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
-		if (input == direction && !dashPressed)
+		if (input == direction && !_dashPressed)
 		{
-			dashPressed = true;
+			_dashPressed = true;
 			float timeSinceLastPress = Time.time - _dashLastInputTime;
-			if (timeSinceLastPress <= _dashTime)
+			if (timeSinceLastPress <= _dashTime && direction == _lastDashDirection)
 			{
 				if (direction == 1)
 				{
@@ -245,11 +241,12 @@ public class PlayerController : BaseController
 				}
 				return true;
 			}
+			_lastDashDirection = direction;
 			_dashLastInputTime = Time.time;
 		}
 		else if (input == 0)
 		{
-			dashPressed = false;
+			_dashPressed = false;
 		}
 
 		return false;
