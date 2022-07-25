@@ -4,9 +4,10 @@ using UnityEngine;
 public class PlayerController : BaseController
 {
 	private bool reset;
-	private bool k;
+	private bool dashPressed;
 	private bool j;
-	private float _dashInputCooldown;
+	private float _dashLastInputTime;
+	private float _dashTime = 0.3f;
 	private bool reset2;
 	private bool k2;
 	private bool j2;
@@ -33,8 +34,8 @@ public class PlayerController : BaseController
 					Heavy();
 					Arcane();
 					Assist();
-					DashForward();
-					DashBackward();
+					Dash(1);
+					Dash(-1);
 					_pressedAction = false;
 				}
 				Pause();
@@ -225,91 +226,32 @@ public class PlayerController : BaseController
 		}
 	}
 
-	public override bool DashForward()
+	public override bool Dash(int direction)
 	{
 		float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
-		if (input == 1)
+		if (input == direction && !dashPressed)
 		{
-			if (_dashInputCooldown > 0 && k)
+			dashPressed = true;
+			float timeSinceLastPress = Time.time - _dashLastInputTime;
+			if (timeSinceLastPress <= _dashTime)
 			{
-				if (!j)
+				if (direction == 1)
 				{
 					_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
-					j = true;
-					return true;
 				}
-			}
-			else
-			{
-				_dashInputCooldown = 0.15f;
-				reset = true;
-			}
-		}
-		else if (Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal") == 0.0f && reset)
-		{
-			k = true;
-			if (j)
-			{
-				reset = false;
-				k = false;
-				j = false;
-			}
-		}
-
-		if (_dashInputCooldown > 0)
-		{
-			_dashInputCooldown -= 1 * Time.deltaTime;
-		}
-		else
-		{
-			reset = false;
-			k = false;
-			j = false;
-		}
-		return false;
-	}
-
-	public override bool DashBackward()
-	{
-		float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
-		if (input == -1)
-		{
-			if (_dashInputCooldown2 > 0 && k2)
-			{
-				if (!j2)
+				else
 				{
 					_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
-					j2 = true;
-					return true;
 				}
+				return true;
 			}
-			else
-			{
-				_dashInputCooldown2 = 0.15f;
-				reset2 = true;
-			}
+			_dashLastInputTime = Time.time;
 		}
-		else if (Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal") == 0.0f && reset2)
+		else if (input == 0)
 		{
-			k2 = true;
-			if (j2)
-			{
-				reset2 = false;
-				k2 = false;
-				j2 = false;
-			}
+			dashPressed = false;
 		}
 
-		if (_dashInputCooldown2 > 0)
-		{
-			_dashInputCooldown2 -= 1 * Time.deltaTime;
-		}
-		else
-		{
-			reset2 = false;
-			k2 = false;
-			j2 = false;
-		}
 		return false;
 	}
 }

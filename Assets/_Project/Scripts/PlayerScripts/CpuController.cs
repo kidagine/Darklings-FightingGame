@@ -179,7 +179,7 @@ public class CpuController : BaseController
 		return _jump;
 	}
 
-	public override bool DashForward()
+	public override bool Dash(int direction)
 	{
 		return _dash;
 	}
