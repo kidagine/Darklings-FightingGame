@@ -1,21 +1,22 @@
 Description:
-	This is an initial version of a parry(Called Blue Frenzy, this naming will make more sense in a later patch), during a succesful Blue Frenzy you gain half an arcana bar, useful against  projectiles or on unsafe moves.
-	You can now choose which direction to throw the opponent by holding the direction when throwing, useful for regaining corner advantage.
-	The command list menu shows all the arcana moves each character has and explains their properties.
-	The damage scaling is very simple currently, every consecutive hit will get the damage decreased by 0.97%.
-	There's currently two combo timers, the yellow one is the normal one which happens when you get a hit, the red one occurs only with heavy attacks and has a smaller combo window.
-	Changed bridge stage art to match the temple stage art, will probably continue to do this with the other stages. Art made by Melusaaste
-	Minor repositions of UI and minor visual changes for input history.
-	Minor bug fix for when selecting player controllers, and fixed a bug that would cause the opponent to drop slowly when hitting them in the air during their arcana move.
+	If the opponent collides with the wall after getting hit by arcana, they will bounce off allowing you to hit another arcaana or throw them.
+	This shadow/assist is used more for neutral as you can hide behind it and it has bigger projectile priority than the other shadows/assists.
+	Chip damage is caused when blocking arcana moves, it is always 250 damage. Chip damage cannot kill.
+	There is now projectile priority, if your projectile collides with another projectile that has higher, your projectile will explode, both projectiles will explode if they have the same priority.
+	Added initial replay system, a replay will be saved at the end of a match, you can find the replays under training in the replays menu. Note this is very experimental and a lot of replays can de-sync.
+	Buffed parries, they are now frame 1 start up and will push back your opponent, when parrying a parry you get 0.5 arcana, on normal hits its only 0.1 arcana.
+	When hitting an opponent middair hitstun wont be removed when grounded meaning that you can continue your combo.
+	Fixed command list videos not showing on Web version. Fixed parry framerate not showing. Fixed issues that could happen with some round over conditions.
 
 Version:
 	0.2.5
 
 Patch Notes:
-	Added replay mode.
+	Added wall splat.
 	Added C Shadow.
-	Buffed parries.
 	Added initial chip damage.
 	Added projectile priority.
+	Added replay mode.
+	Buffed parries.
 	Minor gameplay additions.
 	Minor bug fixes.
