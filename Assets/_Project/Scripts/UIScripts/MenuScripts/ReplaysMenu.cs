@@ -7,12 +7,13 @@ using UnityEngine.UI;
 
 public class ReplaysMenu : BaseMenu
 {
+	[SerializeField] private BaseMenu _replayIncompatibleMenu = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private RectTransform _replaysGroup = default;
 	[SerializeField] private GameObject _replayPrefab = default;
 	[SerializeField] private GameObject _noReplaysFound = default;
 	private readonly List<ReplayCard> _replayCards = new();
-	
+	private ReplayCard _currentReplayCard;
 
 	void Start()
 	{
@@ -43,8 +44,8 @@ public class ReplaysMenu : BaseMenu
 
 	public void LoadReplayMatch(int index)
 	{
-		ReplayCard replayCard = _replayCards[index];
-		if (replayCard.ReplayCardData.versionNumber.Trim() == ReplayManager.Instance.VersionNumber)
+		_currentReplayCard = _replayCards[index];
+		if (_currentReplayCard.ReplayCardData.versionNumber.Trim() == ReplayManager.Instance.VersionNumber)
 		{
 			ReplayManager.Instance.SetReplay();
 			SceneSettings.IsTrainingMode = false;
@@ -53,19 +54,20 @@ public class ReplaysMenu : BaseMenu
 		}
 		else
 		{
-			replayCard.GetComponent<Animator>().Rebind();
-			Debug.Log("Different version");
-			//TODO
+			_currentReplayCard.GetComponent<Animator>().Rebind();
+			_replayIncompatibleMenu.Show();
 		}
+	}
+
+	public void CloseIncompatible()
+	{
+		_currentReplayCard.GetComponent<Button>().Select();
 	}
 
 	void OnEnable()
 	{
 		_scrollView.anchoredPosition = Vector2.zero;
-		if (_replayCards.Count > 0)
-		{
-			_replayCards[0].GetComponent<Button>().Select();
-		}
+		StartCoroutine(SetUpScrollViewCoroutine());
 	}
 
 	IEnumerator SetUpScrollViewCoroutine()
@@ -73,5 +75,6 @@ public class ReplaysMenu : BaseMenu
 		yield return null;
 		_replaysGroup.anchoredPosition = new Vector2(0.0f, -(_replaysGroup.rect.height / 2.0f));
 		_scrollView.anchoredPosition = Vector2.zero;
+		_replayCards[0].GetComponent<Button>().Select();
 	}
 }
