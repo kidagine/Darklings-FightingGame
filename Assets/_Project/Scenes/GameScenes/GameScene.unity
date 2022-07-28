@@ -6663,15 +6663,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stage: 0
   _characterOne: 0
-  _characterTwo: 0
+  _characterTwo: 1
   _assistOne: 0
   _assistTwo: 0
-  _controllerOne: 3
+  _controllerOne: 0
   _controllerTwo: 1
   _music: 8
   _playerOneSkin: 0
-  _playerTwoSkin: 1
-  _isTrainingMode: 0
+  _playerTwoSkin: 0
+  _isTrainingMode: 1
   _isOnlineMode: 0
   _1BitOn: 0
   _gameSpeed: 1
@@ -7206,7 +7206,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578679, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: c0acca90970e15241b8dd1a134c692a0, type: 2}
+      objectReference: {fileID: 22100000, guid: 1c9a0abc7732ddd46a62d7382a86852c, type: 2}
     - target: {fileID: 8073473790702501984, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -15357,8 +15357,8 @@ MonoBehaviour:
   _replayNotificationAnimator: {fileID: 1059549328}
   _playerOneInputHistory: {fileID: 1607718335}
   _playerTwoInputHistory: {fileID: 446620529}
-  _isReplayMode: 1
-  _replayIndex: 0
+  _isReplayMode: 0
+  _replayIndex: 1
 --- !u!4 &856490119
 Transform:
   m_ObjectHideFlags: 0
@@ -46276,7 +46276,19 @@ MonoBehaviour:
     size: 4
   - prefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
     size: 4
+  - prefab: {fileID: 3294536446187043669, guid: 0b02975833814574abc4c70ad2fa705a, type: 3}
+    size: 12
+  - prefab: {fileID: 3294536446187043669, guid: bfd0b34a3d096244c826f6c579f4b47e, type: 3}
+    size: 7
+  - prefab: {fileID: 3782010356200484119, guid: 47b4915fae0034c45b98dedc650be9af, type: 3}
+    size: 7
+  - prefab: {fileID: 3782010356200484119, guid: a374f2b111c0d2e4a93c16e9a7eff5c5, type: 3}
+    size: 7
   - prefab: {fileID: 6697712921357175186, guid: 0d500f9f22d720e499108f837ea8316b, type: 3}
+    size: 4
+  - prefab: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
+    size: 4
+  - prefab: {fileID: 6697712921357175186, guid: 92f68937417bb0e40a74f3489b97fded, type: 3}
     size: 4
 --- !u!1 &5904807064592484296
 GameObject:

@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour, IHurtboxResponder
 	void Awake()
 	{
 		_rigidbody = GetComponent<Rigidbody2D>();
-		_hitbox.OnCollision += () => Destroy(gameObject);
+		_hitbox.OnCollision += () => gameObject.SetActive(false);
 	}
 
 	void Update()
@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour, IHurtboxResponder
 		}
 	}
 
-	void OnDestroy()
+	void OnDisable()
 	{
 		if (_hitbox.HitPoint != null)
 		{
