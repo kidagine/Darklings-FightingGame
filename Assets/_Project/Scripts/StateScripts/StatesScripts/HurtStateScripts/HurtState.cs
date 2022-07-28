@@ -1,3 +1,4 @@
+using Demonics.Manager;
 using System.Collections;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ public class HurtState : HurtParentState
 		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		if (!_skipEnter)
 		{
-			GameObject effect = Instantiate(_hurtAttack.hurtEffect);
+			GameObject effect = ObjectPoolingManager.Instance.Spawn(_hurtAttack.hurtEffect);
 			effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
 			base.Enter();
 		}

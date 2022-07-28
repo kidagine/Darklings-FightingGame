@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 186600171355987555}
   - component: {fileID: 186600171355987554}
   - component: {fileID: 186600171355987557}
-  - component: {fileID: 4173407533632221153}
   - component: {fileID: 5269644425815851113}
   - component: {fileID: 3044937809714068755}
+  - component: {fileID: 4260446690320151520}
   m_Layer: 0
   m_Name: SmackDown_effect
   m_TagString: Untagged
@@ -108,18 +108,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4173407533632221153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 186600171355987556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b84e46fd1d592c840a7adf1d4e50adb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5269644425815851113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,3 +133,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerShadowPrefab: {fileID: 8266339266402425017, guid: b5638136e48e55046817e86cb7734bf8, type: 3}
+--- !u!114 &4260446690320151520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186600171355987556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d5daa63efee6c4b95e1953de0e2d82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

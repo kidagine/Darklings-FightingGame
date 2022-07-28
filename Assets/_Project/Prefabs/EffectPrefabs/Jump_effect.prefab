@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 9041336035022670366}
   - component: {fileID: 9041336035022670367}
   - component: {fileID: 9041336035022670360}
-  - component: {fileID: 5045514741428140956}
   - component: {fileID: -2951490965923179341}
+  - component: {fileID: 6880573136802353289}
   m_Layer: 0
   m_Name: Jump_effect
   m_TagString: Untagged
@@ -107,18 +107,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5045514741428140956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9041336035022670361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b84e46fd1d592c840a7adf1d4e50adb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-2951490965923179341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,5 +117,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baaf2fda5785ef3419c32f6c8e9db2e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6880573136802353289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9041336035022670361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d5daa63efee6c4b95e1953de0e2d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

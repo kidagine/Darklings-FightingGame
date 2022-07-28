@@ -1,4 +1,5 @@
 using Cinemachine;
+using Demonics.Manager;
 using Demonics.Sounds;
 using Demonics.UI;
 using System.Collections;
@@ -718,7 +719,7 @@ public class GameManager : MonoBehaviour
 			PlayerTwo.ResetPlayer();
 			PlayerOne.ResetLives();
 			PlayerTwo.ResetLives();
-
+			ObjectPoolingManager.Instance.DisableAllObjects();
 			if (movementInput.y == 1.0f)
 			{
 				_reverseReset = !_reverseReset;
