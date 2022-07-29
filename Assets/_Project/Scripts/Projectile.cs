@@ -42,8 +42,13 @@ public class Projectile : MonoBehaviour, IHurtboxResponder
 			{
 				Instantiate(_dustPrefab, transform.position, Quaternion.identity);
 			}
-			_hitbox.OnCollision -= () => Destroy(gameObject);
+			_hitbox.OnCollision -= () => gameObject.SetActive(false);
 		}
+	}
+
+	public void SetSourceTransform(Transform sourceTransform)
+	{
+		_hitbox.SetSourceTransform(sourceTransform);
 	}
 
 	public bool TakeDamage(AttackSO attackSO)

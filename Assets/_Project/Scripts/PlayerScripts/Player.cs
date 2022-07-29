@@ -202,7 +202,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_assist.Attack();
 			DecreaseArcana();
-			CurrentAttack = _assist.AssistStats.attackSO;
+			//CurrentAttack = _assist.AssistStats.attackSO;
 			return true;
 		}
 		return false;
@@ -314,10 +314,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
 			hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
 			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, CurrentAttack.hitEffectRotation);
+			hitEffect.transform.localScale = new Vector2(-1, 1);
 			if (isProjectile)
 			{
 				hitEffect.transform.SetParent(null);
 				hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
+				hitEffect.GetComponent<Projectile>().SetSourceTransform(transform);
 				hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0.0f);
 				hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
 			}
