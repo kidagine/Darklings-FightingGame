@@ -16,6 +16,7 @@ public class WakeUpState : State
 		{
 			_player.MaxHealthStats();
 		}
+		_player.CheckFlip();
 		_playerAnimator.WakeUp();
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
 	}
