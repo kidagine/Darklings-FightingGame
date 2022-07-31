@@ -221,7 +221,6 @@ public class GameManager : MonoBehaviour
 		_inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
 		_cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
 		_cinemachineTargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
-		_musicMenu.ShowMusicMenu(SceneSettings.MusicName);
 	}
 
 	private void CheckInstance()
@@ -309,6 +308,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
+			_musicMenu.ShowMusicMenu(SceneSettings.MusicName);
 			_inputHistories[0].transform.GetChild(0).gameObject.SetActive(false);
 			_inputHistories[1].transform.GetChild(0).gameObject.SetActive(false);
 			_trainingPrompts.gameObject.SetActive(false);
