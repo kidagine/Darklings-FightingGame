@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private GameObject _networkCanvas = default;
 	[SerializeField] private GameObject[] _hearts = default;
 	[SerializeField] private GameObject _trainingPrompts = default;
+	[SerializeField] private MusicMenu _musicMenu = default;
 	[SerializeField] private InputHistory[] _inputHistories = default;
 	[SerializeField] private PlayerStatsSO[] _playerStats = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
@@ -144,7 +145,6 @@ public class GameManager : MonoBehaviour
 				_keyboardPrompts.SetActive(true);
 			}
 		}
-
 		GameObject playerOneObject = Instantiate(_playerLocal);
 		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
 		GameObject playerTwoObject = Instantiate(_playerLocal);
@@ -221,6 +221,7 @@ public class GameManager : MonoBehaviour
 		_inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
 		_cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
 		_cinemachineTargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
+		_musicMenu.ShowMusicMenu(SceneSettings.MusicName);
 	}
 
 	private void CheckInstance()
