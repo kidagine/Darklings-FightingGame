@@ -9,7 +9,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Assist _assist = default;
 	[SerializeField] private Pushbox _groundPushbox = default;
 	[SerializeField] private Pushbox _airPushbox = default;
-	[SerializeField] private GameObject _hurtbox = default;
+	[SerializeField] private Transform _hurtbox = default;
 	[SerializeField] protected Transform _effectsParent = default;
 	[SerializeField] private Transform _grabPoint = default;
 	[SerializeField] private Transform _cameraPoint = default;
@@ -403,7 +403,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void SetHurtbox(bool state)
 	{
-		_hurtbox.SetActive(state);
+		for (int i = 0; i < _hurtbox.childCount; i++)
+		{
+			_hurtbox.GetChild(i).gameObject.SetActive(state);
+		}
 	}
 
 	public void Pause(bool isPlayerOne)
