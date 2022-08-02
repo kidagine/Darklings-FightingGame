@@ -122,12 +122,12 @@ public class GameManager : MonoBehaviour
 			SceneSettings.MusicName = _music.ToString();
 			if (_isOnlineMode)
 			{
-				_networkCanvas.SetActive(true);
+				//_networkCanvas.SetActive(true);
 			}
 		}
 		else
 		{
-			_networkCanvas.SetActive(false);
+			//_networkCanvas.SetActive(false);
 			_isTrainingMode = SceneSettings.IsTrainingMode;
 		}
 		CheckSceneSettings();
