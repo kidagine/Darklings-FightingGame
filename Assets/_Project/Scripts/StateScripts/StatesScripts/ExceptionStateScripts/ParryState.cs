@@ -76,8 +76,16 @@ public class ParryState : State
 		effect.transform.localPosition = attack.hurtEffectPosition;
 		if (!attack.isProjectile)
 		{
-			_player.OtherPlayerMovement.Knockback(new Vector2(
-				_player.transform.localScale.x, 0.0f), new Vector2(_parryKnockback, 0.0f), 0.2f);
+			if (_player.OtherPlayerMovement.IsInCorner)
+			{
+				_playerMovement.Knockback(new Vector2(
+					_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_parryKnockback, 0.0f), 0.2f);
+			}
+			else
+			{
+				_player.OtherPlayerMovement.Knockback(new Vector2(
+					_player.transform.localScale.x, 0.0f), new Vector2(_parryKnockback, 0.0f), 0.2f);
+			}
 		}
 	}
 
