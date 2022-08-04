@@ -6,7 +6,8 @@ public class HurtParentState : State
 	protected DeathState _deathState;
 	protected AttackState _attackState;
 	protected AttackSO _hurtAttack;
-	private readonly float _damageDecay = 0.97f;
+	protected bool _skipEnter;
+
 	protected virtual void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
@@ -14,21 +15,20 @@ public class HurtParentState : State
 		_attackState = GetComponent<AttackState>();
 	}
 
-	public void Initialize(AttackSO hurtAttack)
+	public void Initialize(AttackSO hurtAttack, bool skipEnter = false)
 	{
 		_hurtAttack = hurtAttack;
+		_skipEnter = skipEnter;
 	}
 
 	public override void Enter()
 	{
 		base.Enter();
 		_audio.Sound(_hurtAttack.impactSound).Play();
-		GameObject effect = Instantiate(_hurtAttack.hurtEffect);
-		effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
 		if (!_playerMovement.IsInCorner)
 		{
 			_playerMovement.Knockback(new Vector2(
-				_player.OtherPlayer.transform.localScale.x, 0.0f), _hurtAttack.knockback, _hurtAttack.knockbackDuration);
+				_player.OtherPlayer.transform.localScale.x, 1.0f), new Vector2(_hurtAttack.knockback, _hurtAttack.bounce), _hurtAttack.knockbackDuration);
 		}
 		_player.OtherPlayerUI.IncreaseCombo();
 		if (_player.OtherPlayerUI.CurrentComboCount == 1)
@@ -42,7 +42,7 @@ public class HurtParentState : State
 				_player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
 			}
 		}
-		_player.Health -= CalculateDamage();
+		_player.Health -= _player.CalculateDamage(_hurtAttack);
 		_playerUI.SetHealth(_player.Health);
 		_playerUI.Damaged();
 		_playerMovement.ResetGravity();
@@ -52,23 +52,6 @@ public class HurtParentState : State
 		{
 			ToDeathState();
 		}
-	}
-
-	private float CalculateDamage()
-	{
-		int comboCount = _player.OtherPlayerUI.CurrentComboCount;
-		float calculatedDamage = _hurtAttack.damage / _playerStats.PlayerStatsSO.defense;
-		if (comboCount > 1)
-		{
-			float damageScale = 1.0f;
-			for (int i = 0; i < comboCount; i++)
-			{
-				damageScale *= _damageDecay;
-			}
-			calculatedDamage *= damageScale;
-		}
-		_player.OtherPlayer.SetResultAttack((int)calculatedDamage);
-		return (int)calculatedDamage;
 	}
 
 	private void ToDeathState()

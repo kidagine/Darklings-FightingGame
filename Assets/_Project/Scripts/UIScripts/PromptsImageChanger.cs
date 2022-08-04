@@ -23,6 +23,15 @@ public class PromptsImageChanger : MonoBehaviour
 
 	void OnEnable()
 	{
-		SetCorrectPromptSprite(_pauseMenu.PauseControllerType);
+		if (_pauseMenu.PauseControllerType != null)
+		{
+			SetCorrectPromptSprite(_pauseMenu.PauseControllerType);
+
+		}
+		else
+		{
+			string controller = GameManager.Instance.PlayerOne.GetComponent<BrainController>().ControllerInputName;
+			SetCorrectPromptSprite(controller);
+		}
 	}
 }

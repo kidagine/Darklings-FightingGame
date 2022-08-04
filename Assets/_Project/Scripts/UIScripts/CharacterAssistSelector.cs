@@ -103,7 +103,7 @@ public class CharacterAssistSelector : MonoBehaviour
                 _assistCount = assistStatsSO.Length - 1;
                 StartCoroutine(ResetInput());
             }
-            _playerOneColorNumber.text = $"Assist {AssistLetter}";
+            _playerOneColorNumber.text = $"Shadow {AssistLetter}";
 
             if (Input.GetButtonDown(_controllerInputName + "Confirm"))
             {

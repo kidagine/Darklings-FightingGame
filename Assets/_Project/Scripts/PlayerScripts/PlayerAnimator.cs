@@ -100,6 +100,11 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.Play("Grab");
 	}
 
+	public void WallSplat()
+	{
+		_animator.Play("WallSplat");
+	}
+
 	public void Throw()
 	{
 		_animator.Play("Throw");

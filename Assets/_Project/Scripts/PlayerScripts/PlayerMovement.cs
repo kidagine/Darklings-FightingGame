@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void AddForce(int moveHorizontally)
 	{
-		float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 2.5f;
+		float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 3.5f;
 		int direction = 0;
 		if (moveHorizontally == 1)
 		{
@@ -115,9 +115,9 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		IsGrounded = false;
 	}
 
-	public void Knockback(Vector2 knockbackDirection, float knockbackForce, float knockbackDuration)
+	public void Knockback(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
 	{
-		_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce, transform.position.y));
+		_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce.x, transform.position.y + knockbackForce.y));
 		StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
 	}
 
@@ -147,6 +147,20 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			IsInCorner = false;
 		}
 	}
+
+	public Vector2 OnWall()
+	{
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 2.0f, _wallLayerMask);
+		if (hit.collider != null)
+		{
+			return new Vector2(hit.point.x - (0.2f * -transform.localScale.x), transform.localPosition.y);
+		}
+		else
+		{
+			return Vector2.zero;
+		}
+	}
+
 
 	public void ResetGravity()
 	{

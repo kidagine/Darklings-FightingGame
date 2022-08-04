@@ -4,7 +4,14 @@ using UnityEngine;
 public class BlockAirState : BlockParentState
 {
 	[SerializeField] protected GameObject _groundedPrefab = default;
+	private BlockState _blockState;
 
+
+	protected override void Awake()
+	{
+		base.Awake();
+		_blockState = GetComponent<BlockState>();
+	}
 
 	public override void Enter()
 	{
@@ -19,22 +26,28 @@ public class BlockAirState : BlockParentState
 		ToFallState();
 	}
 
+	public override void UpdateLogic()
+	{
+		base.UpdateLogic();
+		ToBlockState();
+	}
+
 	private void ToFallState()
 	{
 		_playerAnimator.Jump();
 		_stateMachine.ChangeState(_fallState);
 	}
 
-	//public void ToBlockState()
-	//{
-	//	if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
-	//	{
-	//		Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
-	//		_audio.Sound("Landed").Play();
-	//		_blockState.Initialize(_blockAttack);
-	//		_stateMachine.ChangeState(_blockState);
-	//	}
-	//}
+	private void ToBlockState()
+	{
+		if (_playerMovement.IsGrounded)
+		{
+			Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
+			_audio.Sound("Landed").Play();
+			_blockState.Initialize(_blockAttack);
+			_stateMachine.ChangeState(_blockState);
+		}
+	}
 
 	public override void UpdatePhysics()
 	{

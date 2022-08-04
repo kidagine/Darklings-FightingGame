@@ -1,12 +1,16 @@
+using UnityEngine;
+
 public class GrabbedState : State
 {
 	private DeathState _deathState;
 	private KnockdownState _knockdownState;
+	private AirborneHurtState _airborneHurtState;
 
 	private void Awake()
 	{
 		_deathState = GetComponent<DeathState>();
 		_knockdownState = GetComponent<KnockdownState>();
+		_airborneHurtState = GetComponent<AirborneHurtState>();
 	}
 
 	public override void Enter()
@@ -33,6 +37,13 @@ public class GrabbedState : State
 			ToDeathState();
 		}
 		_stateMachine.ChangeState(_knockdownState);
+		return true;
+	}
+
+	public override bool ToAirborneHurtState(AttackSO attack)
+	{
+		_airborneHurtState.Initialize(attack);
+		_stateMachine.ChangeState(_airborneHurtState);
 		return true;
 	}
 

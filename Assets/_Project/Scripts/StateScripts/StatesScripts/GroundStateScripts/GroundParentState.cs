@@ -13,12 +13,14 @@ public class GroundParentState : State
 	protected ArcanaState _arcanaState;
 	protected GrabState _grabState;
 	protected HurtState _hurtState;
+	protected AirHurtState _airHurtState;
 	protected AirborneHurtState _airborneHurtState;
 	protected BlockState _blockState;
 	protected BlockLowState _blockLowState;
 	protected GrabbedState _grabbedState;
 	protected KnockbackState _knockbackState;
 	protected TauntState _tauntState;
+	protected GiveUpState _giveUpState;
 	protected ParryState _parryState;
 
 	protected virtual void Awake()
@@ -33,12 +35,14 @@ public class GroundParentState : State
 		_arcanaState = GetComponent<ArcanaState>();
 		_grabState = GetComponent<GrabState>();
 		_hurtState = GetComponent<HurtState>();
+		_airHurtState = GetComponent<AirHurtState>();
 		_airborneHurtState = GetComponent<AirborneHurtState>();
 		_blockState = GetComponent<BlockState>();
 		_blockLowState = GetComponent<BlockLowState>();
 		_grabbedState = GetComponent<GrabbedState>();
 		_knockbackState = GetComponent<KnockbackState>();
 		_tauntState = GetComponent<TauntState>();
+		_giveUpState = GetComponent<GiveUpState>();
 		_parryState = GetComponent<ParryState>();
 	}
 
@@ -82,8 +86,16 @@ public class GroundParentState : State
 
 	public override bool ToHurtState(AttackSO attack)
 	{
-		_hurtState.Initialize(attack);
-		_stateMachine.ChangeState(_hurtState);
+		if (attack.bounce > 0)
+		{
+			_airHurtState.Initialize(attack);
+			_stateMachine.ChangeState(_airHurtState);
+		}
+		else
+		{
+			_hurtState.Initialize(attack);
+			_stateMachine.ChangeState(_hurtState);
+		}
 		return true;
 	}
 
@@ -118,6 +130,12 @@ public class GroundParentState : State
 	public override bool ToTauntState()
 	{
 		_stateMachine.ChangeState(_tauntState);
+		return true;
+	}
+
+	public override bool ToGiveUpState()
+	{
+		_stateMachine.ChangeState(_giveUpState);
 		return true;
 	}
 

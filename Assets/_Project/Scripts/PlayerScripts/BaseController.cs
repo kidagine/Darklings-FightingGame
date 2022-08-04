@@ -22,8 +22,7 @@ public class BaseController : MonoBehaviour
     public virtual bool Crouch() { return false; }
     public virtual bool Jump() { return false; }
 
-    public virtual bool DashForward() { return false; }
-    public virtual bool DashBackward() { return false; }
+    public virtual bool Dash(int direction) { return false; }
 
     public virtual void ActivateInput()
     {

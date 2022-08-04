@@ -32,6 +32,11 @@ public class PlayerAnimationEvents : MonoBehaviour
 		_player.OtherPlayerStateManager.TryToKnockdownState();
 	}
 
+	public void ThrowArcanaEnd()
+	{
+		_player.OtherPlayerStateManager.TryToHurtState(_player.CurrentAttack);
+	}
+
 	public void CreateEffectAnimationEvent(int isProjectile)
 	{
 		_player.CreateEffect(Convert.ToBoolean(isProjectile));
@@ -85,6 +90,11 @@ public class PlayerAnimationEvents : MonoBehaviour
 		{
 			_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.ResultAttack);
 		}
+	}
+
+	public void SetFramedataParry()
+	{
+		_trainingMenu.FramedataValue(_player.IsPlayerOne, _player.PlayerStats.mParry);
 	}
 
 	public void AddForce(int moveHorizontally)

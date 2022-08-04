@@ -10,6 +10,7 @@ public class AttackSO : ScriptableObject
 	public float blockStun;
 	[Range(0.0f, 16.0f)]
 	public float knockback;
+	public float bounce;
 	public Vector2 knockbackDirection;
 	[Range(0.0f, 1.0f)]
 	public float knockbackDuration;

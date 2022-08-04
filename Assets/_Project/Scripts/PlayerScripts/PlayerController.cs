@@ -3,40 +3,45 @@ using UnityEngine;
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
-	private bool _hasJumped;
-	private bool reset;
-	private bool k;
-	private bool j;
-	private float _dashInputCooldown;
-	private bool reset2;
-	private bool k2;
-	private bool j2;
+	private int _lastDashDirection;
+	private bool _dashPressed;
+	private float _dashLastInputTime;
+	private float _dashTime = 0.3f;
+
 	private bool _pressedAction = false;
 	private bool _holdingParryTrigger = false;
-	private float _dashInputCooldown2;
 
 
 	void Update()
 	{
-		if (!string.IsNullOrEmpty(_brainController.ControllerInputName))
+		if (GameManager.Instance.HasGameStarted)
 		{
-			if (IsControllerEnabled)
+			if (!string.IsNullOrEmpty(_brainController.ControllerInputName) && !SceneSettings.ReplayMode)
 			{
-				Movement();
-				Jump();
-				Crouch();
-				Parry();
-				Throw();
-				Light();
-				Medium();
-				Heavy();
-				Arcane();
-				Assist();
-				_pressedAction = false;
+				if (IsControllerEnabled)
+				{
+					Movement();
+					Jump();
+					Crouch();
+					Parry();
+					Throw();
+					Light();
+					Medium();
+					Heavy();
+					Arcane();
+					Assist();
+					Dash(1);
+					Dash(-1);
+					_pressedAction = false;
+				}
+				Pause();
+				ResetRound();
+				SwitchCharacter();
 			}
-			Pause();
-			ResetRound();
-			SwitchCharacter();
+		}
+		else
+		{
+			InputDirection = Vector2.zero;
 		}
 	}
 
@@ -58,6 +63,10 @@ public class PlayerController : BaseController
 		if (InputDirection.y == -1.0f && _playerMovement.MovementInput.y != InputDirection.y)
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+		}
+		if (InputDirection == Vector2.zero && _playerMovement.MovementInput != InputDirection)
+		{
+			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.None);
 		}
 		_playerMovement.MovementInput = InputDirection;
 	}
@@ -213,89 +222,33 @@ public class PlayerController : BaseController
 		}
 	}
 
-	public override bool DashForward()
+	public override bool Dash(int direction)
 	{
 		float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
-		if (input == 1)
+		if (input == direction && !_dashPressed)
 		{
-			if (_dashInputCooldown > 0 && k)
+			_dashPressed = true;
+			float timeSinceLastPress = Time.time - _dashLastInputTime;
+			if (timeSinceLastPress <= _dashTime && direction == _lastDashDirection)
 			{
-				if (!j)
+				if (direction == 1)
 				{
-					j = true;
-					return true;
+					_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
 				}
-			}
-			else
-			{
-				_dashInputCooldown = 0.15f;
-				reset = true;
-			}
-		}
-		else if (Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal") == 0.0f && reset)
-		{
-			k = true;
-			if (j)
-			{
-				reset = false;
-				k = false;
-				j = false;
-			}
-		}
-
-		if (_dashInputCooldown > 0)
-		{
-			_dashInputCooldown -= 1 * Time.deltaTime;
-		}
-		else
-		{
-			reset = false;
-			k = false;
-			j = false;
-		}
-		return false;
-	}
-
-	public override bool DashBackward()
-	{
-		float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
-		if (input == -1)
-		{
-			if (_dashInputCooldown2 > 0 && k2)
-			{
-				if (!j2)
+				else
 				{
-					j2 = true;
-					return true;
+					_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
 				}
+				return true;
 			}
-			else
-			{
-				_dashInputCooldown2 = 0.15f;
-				reset2 = true;
-			}
+			_lastDashDirection = direction;
+			_dashLastInputTime = Time.time;
 		}
-		else if (Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal") == 0.0f && reset2)
+		else if (input == 0)
 		{
-			k2 = true;
-			if (j2)
-			{
-				reset2 = false;
-				k2 = false;
-				j2 = false;
-			}
+			_dashPressed = false;
 		}
 
-		if (_dashInputCooldown2 > 0)
-		{
-			_dashInputCooldown2 -= 1 * Time.deltaTime;
-		}
-		else
-		{
-			reset2 = false;
-			k2 = false;
-			j2 = false;
-		}
 		return false;
 	}
 }
