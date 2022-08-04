@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour, IHurtboxResponder
 	[SerializeField] private bool _isFixed = default;
 	private Rigidbody2D _rigidbody;
 	public int ProjectilePriority { get { return _projectilePriority; } private set { } }
+	public Transform SourceTransform { get; private set; }
 
 
 	public Vector2 Direction { get; set; }
@@ -48,6 +49,7 @@ public class Projectile : MonoBehaviour, IHurtboxResponder
 
 	public void SetSourceTransform(Transform sourceTransform)
 	{
+		SourceTransform = sourceTransform;
 		_hitbox.SetSourceTransform(sourceTransform);
 	}
 
@@ -60,16 +62,19 @@ public class Projectile : MonoBehaviour, IHurtboxResponder
 	{
 		if (collision.TryGetComponent(out Projectile projectile))
 		{
-			if (projectile.ProjectilePriority > ProjectilePriority)
+			if (projectile.SourceTransform != SourceTransform)
 			{
-				gameObject.SetActive(false);
-				Instantiate(_dustPrefab, transform.position, Quaternion.identity);
-			}
-			else if (projectile.ProjectilePriority == ProjectilePriority)
-			{
-				gameObject.SetActive(false);
-				projectile.gameObject.SetActive(false);
-				Instantiate(_dustPrefab, transform.position, Quaternion.identity);
+				if (projectile.ProjectilePriority > ProjectilePriority)
+				{
+					gameObject.SetActive(false);
+					Instantiate(_dustPrefab, transform.position, Quaternion.identity);
+				}
+				else if (projectile.ProjectilePriority == ProjectilePriority)
+				{
+					gameObject.SetActive(false);
+					projectile.gameObject.SetActive(false);
+					Instantiate(_dustPrefab, transform.position, Quaternion.identity);
+				}
 			}
 		}
 	}
