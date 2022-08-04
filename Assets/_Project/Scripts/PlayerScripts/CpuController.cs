@@ -70,12 +70,35 @@ public class CpuController : BaseController
 			int crouchRandom = Random.Range(0, 12);
 			int standingRandom = Random.Range(0, 4);
 			int dashRandom = Random.Range(0, 8);
-			_movementInputX = movementRandom switch
+			switch (movementRandom)
 			{
-				1 => 0.0f,
-				2 => transform.localScale.x * -1.0f,
-				_ => transform.localScale.x * 1.0f,
-			};
+				case 0:
+					_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.None);
+					_movementInputX = 0.0f;
+					break;
+				case > 0 and <= 4:
+					_movementInputX = transform.localScale.x * -1.0f;
+					if (_movementInputX == 1.0f)
+					{
+						_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+					}
+					else if (_movementInputX == -1.0f)
+					{
+						_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+					}
+					break;
+				case > 5:
+					_movementInputX = transform.localScale.x * 1.0f;
+					if (_movementInputX == 1.0f)
+					{
+						_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+					}
+					else if (_movementInputX == -1.0f)
+					{
+						_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+					}
+					break;
+			}
 			if (jumpRandom == 2)
 			{
 				_jump = true;
@@ -129,19 +152,6 @@ public class CpuController : BaseController
 		}
 	}
 
-	private InputDirectionEnum RandomInputDirection()
-	{
-		int attackRandom = Random.Range(0, 2);
-		if (attackRandom == 0)
-		{
-			return InputDirectionEnum.Down;
-		}
-		else
-		{
-			return InputDirectionEnum.None;
-		}
-	}
-
 	private void Specials()
 	{
 		if (IsControllerEnabled)
@@ -156,7 +166,7 @@ public class CpuController : BaseController
 				}
 				else if (arcanaRandom == 1)
 				{
-					_playerStateMachine.TryToArcanaState(RandomInputDirection());
+					_inputBuffer.AddInputBufferItem(InputEnum.Special);
 				}
 				_attackTimer = Random.Range(0.15f, 0.35f);
 				_arcanaTimer = Random.Range(0.4f, 0.85f);

@@ -337,6 +337,7 @@ public class ReplayManager : MonoBehaviour
 		}
 	}
 
+
 #if UNITY_EDITOR
 	private void Update()
 	{
