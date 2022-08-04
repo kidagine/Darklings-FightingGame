@@ -210,8 +210,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void SetResultAttack(int calculatedDamage)
 	{
-		ResultAttack = Instantiate(CurrentAttack);
-		ResultAttack.damage = calculatedDamage;
+		if (CurrentAttack != null)
+		{
+			ResultAttack = Instantiate(CurrentAttack);
+			ResultAttack.damage = calculatedDamage;
+		}
 	}
 
 	public void DecreaseArcana()
