@@ -5,16 +5,20 @@ public class AirHurtState : HurtParentState
 {
 	private Coroutine _stunCoroutine;
 	private FallState _fallState;
+	private HurtState _hurtState;
 
 	protected override void Awake()
 	{
 		base.Awake();
 		_fallState = GetComponent<FallState>();
+		_hurtState = GetComponent<HurtState>();
 	}
 
 	public override void Enter()
 	{
 		_playerAnimator.HurtAir(true);
+		GameObject effect = Instantiate(_hurtAttack.hurtEffect);
+		effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
 		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();
 	}
@@ -47,8 +51,8 @@ public class AirHurtState : HurtParentState
 	{
 		if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
 		{
-			_player.OtherPlayer.StopComboTimer();
-			_stateMachine.ChangeState(_fallState);
+			_hurtState.Initialize(_hurtAttack, true);
+			_stateMachine.ChangeState(_hurtState);
 		}
 	}
 

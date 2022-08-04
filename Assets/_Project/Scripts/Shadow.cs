@@ -30,4 +30,12 @@ public class Shadow : MonoBehaviour
 			Destroy(_shadow.root.gameObject);
 		}
 	}
+
+	private void OnDisable()
+	{
+		if (_shadowSpriteRenderer != null)
+		{
+			_shadow.root.gameObject.SetActive(false);
+		}
+	}
 }

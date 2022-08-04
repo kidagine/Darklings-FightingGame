@@ -28,8 +28,10 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _pauseSlider = default;
 	[SerializeField] private Slider _comboTimerSlider = default;
 	[SerializeField] private Image _comboTimerImage = default;
+	[SerializeField] private Image _comboTimerLock = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private PauseMenu _trainingPauseMenu = default;
+	[SerializeField] private PauseMenu _replayPauseMenu = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
 	[SerializeField] private Color _healthNormalColor = default;
 	[SerializeField] private Color _healthDamagedColor = default;
@@ -272,8 +274,14 @@ public class PlayerUI : MonoBehaviour
 
 	public void SetComboTimerActive(bool state)
 	{
+		_comboTimerLock.gameObject.SetActive(false);
 		_comboTimerSlider.transform.GetChild(0).gameObject.SetActive(state);
 		_comboTimerSlider.transform.GetChild(1).gameObject.SetActive(state);
+	}
+
+	public void SetComboTimerLock()
+	{
+		_comboTimerLock.gameObject.SetActive(true);
 	}
 
 	public void ResetLives()
@@ -327,6 +335,7 @@ public class PlayerUI : MonoBehaviour
 		Time.timeScale = 1.0f;
 		SceneSettings.SceneSettingsDecide = false;
 		SceneSettings.ChangeCharacter = false;
+		SceneSettings.ReplayMode = false;
 		SceneManager.LoadScene(1);
 	}
 
@@ -357,6 +366,7 @@ public class PlayerUI : MonoBehaviour
 		GameManager.Instance.PlayMusic();
 		_pauseMenu.Hide();
 		_trainingPauseMenu.Hide();
+		_replayPauseMenu.Hide();
 	}
 
 	public void IncreaseCombo()

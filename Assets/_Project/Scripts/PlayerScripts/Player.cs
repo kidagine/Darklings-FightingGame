@@ -1,3 +1,4 @@
+using Demonics.Manager;
 using System.Collections;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	[SerializeField] private Assist _assist = default;
 	[SerializeField] private Pushbox _groundPushbox = default;
 	[SerializeField] private Pushbox _airPushbox = default;
-	[SerializeField] private GameObject _hurtbox = default;
+	[SerializeField] private Transform _hurtbox = default;
 	[SerializeField] protected Transform _effectsParent = default;
 	[SerializeField] private Transform _grabPoint = default;
 	[SerializeField] private Transform _cameraPoint = default;
@@ -20,6 +21,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private PlayerStats _playerStats;
 	private BrainController _controller;
 	private Coroutine _comboTimerCoroutine;
+	private bool _comboTimerPaused;
+	private readonly float _damageDecay = 0.97f;
+
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
 	public PlayerStateManager OtherPlayerStateManager { get; private set; }
 	public Player OtherPlayer { get; private set; }
@@ -37,7 +41,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	public bool IsPlayerOne { get; set; }
 	public float AssistGauge { get; set; } = 1.0F;
 	public float Arcana { get; set; }
-	public float ArcaneSlowdown { get; set; } = 6.5f;
+	public float ArcaneSlowdown { get; set; } = 5.5f;
 	public bool CanShadowbreak { get; set; } = true;
 	public bool CanCancelAttack { get; set; }
 	public bool BlockingLow { get; set; }
@@ -143,7 +147,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	{
 		if (AssistGauge < 1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
 		{
-			AssistGauge += Time.deltaTime / (11.0f - _assist.AssistStats.assistRecharge);
+			AssistGauge += Time.deltaTime / (9.0f - _assist.AssistStats.assistRecharge);
 			if (GameManager.Instance.InfiniteAssist)
 			{
 				AssistGauge = 1.0f;
@@ -198,7 +202,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		{
 			_assist.Attack();
 			DecreaseArcana();
-			CurrentAttack = _assist.AssistStats.attackSO;
+			//CurrentAttack = _assist.AssistStats.attackSO;
 			return true;
 		}
 		return false;
@@ -206,8 +210,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void SetResultAttack(int calculatedDamage)
 	{
-		ResultAttack = Instantiate(CurrentAttack);
-		ResultAttack.damage = calculatedDamage;
+		if (CurrentAttack != null)
+		{
+			ResultAttack = Instantiate(CurrentAttack);
+			ResultAttack.damage = calculatedDamage;
+		}
 	}
 
 	public void DecreaseArcana()
@@ -229,6 +236,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			StopCoroutine(_comboTimerCoroutine);
 			_playerUI.SetComboTimerActive(false);
 			_playerUI.ResetCombo();
+			_comboTimerPaused = false;
+		}
+	}
+
+	public void FreezeComboTimer()
+	{
+		if (_comboTimerCoroutine != null)
+		{
+			_playerUI.SetComboTimerLock();
+			_comboTimerPaused = true;
 		}
 	}
 
@@ -239,10 +256,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		Color color = ComboTimerStarterTypes.GetComboTimerStarterColor(comboTimerStarter);
 		while (elapsedTime < waitTime)
 		{
-			float value = Mathf.Lerp(1.0f, 0.0f, elapsedTime / waitTime);
-			elapsedTime += Time.deltaTime;
-			_playerUI.SetComboTimer(value, color);
-			yield return null;
+			if (!_comboTimerPaused)
+			{
+				float value = Mathf.Lerp(1.0f, 0.0f, elapsedTime / waitTime);
+				elapsedTime += Time.deltaTime;
+				_playerUI.SetComboTimer(value, color);
+				yield return null;
+			}
+			else
+			{
+				yield return null;
+			}
 		}
 		OtherPlayer._playerStateManager.TryToIdleState();
 		_playerUI.SetComboTimerActive(false);
@@ -253,17 +277,35 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		_assist.Recall();
 	}
 
+	public float CalculateDamage(AttackSO hurtAttack)
+	{
+		int comboCount = OtherPlayerUI.CurrentComboCount;
+		float calculatedDamage = hurtAttack.damage / _playerStats.PlayerStatsSO.defense;
+		if (comboCount > 1)
+		{
+			float damageScale = 1.0f;
+			for (int i = 0; i < comboCount; i++)
+			{
+				damageScale *= _damageDecay;
+			}
+			calculatedDamage *= damageScale;
+		}
+		OtherPlayer.SetResultAttack((int)calculatedDamage);
+		return (int)calculatedDamage;
+	}
+
+
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
 		CurrentAttack.hurtEffectPosition = hit.point;
 		hurtbox.TakeDamage(CurrentAttack);
-		if (!CurrentAttack.isAirAttack && !CurrentAttack.isProjectile && !CurrentAttack.isArcana)
+		if (!CurrentAttack.isProjectile && !CurrentAttack.isArcana)
 		{
 			AttackState.CanSkipAttack = true;
 		}
 		if (OtherPlayerMovement.IsInCorner && !CurrentAttack.isProjectile)
 		{
-			_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), CurrentAttack.knockback, CurrentAttack.knockbackDuration);
+			_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), new Vector2(CurrentAttack.knockback, 0.0f), CurrentAttack.knockbackDuration);
 		}
 	}
 
@@ -272,13 +314,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 		if (CurrentAttack.hitEffect != null)
 		{
 			GameObject hitEffect;
-			hitEffect = Instantiate(CurrentAttack.hitEffect, _effectsParent);
+			hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
 			hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
 			hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, CurrentAttack.hitEffectRotation);
+			hitEffect.transform.localScale = new Vector2(-1, 1);
 			if (isProjectile)
 			{
 				hitEffect.transform.SetParent(null);
-				hitEffect.GetComponent<MoveInDirection>().Direction = new Vector2(transform.localScale.x, 0.0f);
+				hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
+				hitEffect.GetComponent<Projectile>().SetSourceTransform(transform);
+				hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0.0f);
 				hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
 			}
 		}
@@ -361,7 +406,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void SetHurtbox(bool state)
 	{
-		_hurtbox.SetActive(state);
+		for (int i = 0; i < _hurtbox.childCount; i++)
+		{
+			_hurtbox.GetChild(i).gameObject.SetActive(state);
+		}
 	}
 
 	public void Pause(bool isPlayerOne)

@@ -49,7 +49,6 @@ public class PatchNotesMenu : BaseMenu
 	void OnEnable()
 	{
 		_scrollView.anchoredPosition = Vector2.zero;
-
 	}
 
 	void Start()

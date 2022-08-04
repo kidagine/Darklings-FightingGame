@@ -23,12 +23,28 @@ public class PlayerComboSystem : MonoBehaviour
 		{
 			if (isAir)
 			{
-				return _playerStats.PlayerStatsSO.jL;
+				return GetJumpAttackType(inputEnum);
 			}
 			else
 			{
 				return GetStandingAttackType(inputEnum);
 			}
+		}
+	}
+
+	private AttackSO GetJumpAttackType(InputEnum inputEnum)
+	{
+		if (inputEnum == InputEnum.Light)
+		{
+			return _playerStats.PlayerStatsSO.jL;
+		}
+		else if (inputEnum == InputEnum.Medium)
+		{
+			return _playerStats.PlayerStatsSO.jM;
+		}
+		else
+		{
+			return _playerStats.PlayerStatsSO.jM;
 		}
 	}
 

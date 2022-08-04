@@ -1,6 +1,7 @@
 using Demonics.UI;
 using System;
 using System.Collections;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -130,7 +131,9 @@ public class CharacterMenu : BaseMenu
 			{
 				int randomPlayer = UnityEngine.Random.Range(0, _playerStatsArray.Length);
 				_playerStats = _playerStatsArray[randomPlayer];
-				_playerOneName.text = _playerStats.characterName.ToString();
+				string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+				Debug.Log(characterName);
+				_playerOneName.text = characterName;
 				_spriteLibraryOne.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
@@ -148,7 +151,8 @@ public class CharacterMenu : BaseMenu
 			{
 				int randomPlayer = UnityEngine.Random.Range(0, _playerStatsArray.Length);
 				_playerStats = _playerStatsArray[randomPlayer];
-				_playerTwoName.text = _playerStats.characterName.ToString();
+				string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+				_playerOneName.text = characterName; 
 				_spriteLibraryTwo.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
