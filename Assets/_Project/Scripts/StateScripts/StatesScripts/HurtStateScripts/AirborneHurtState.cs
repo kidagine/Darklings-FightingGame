@@ -6,6 +6,7 @@ public class AirborneHurtState : HurtParentState
 	private WallSplatState _wallSplatState;
 	private KnockdownState _knockdownState;
 	private GrabbedState _grabbedState;
+	private AirHurtState _airHurtState;
 	private Coroutine _canCheckGroundCoroutine;
 	private bool _canCheckGround;
 
@@ -18,6 +19,7 @@ public class AirborneHurtState : HurtParentState
 		_wallSplatState = GetComponent<WallSplatState>();
 		_knockdownState = GetComponent<KnockdownState>();
 		_grabbedState = GetComponent<GrabbedState>();
+		_airHurtState = GetComponent<AirHurtState>();
 	}
 
 	public override void Enter()
@@ -109,6 +111,13 @@ public class AirborneHurtState : HurtParentState
 	public override bool ToGrabbedState()
 	{
 		_stateMachine.ChangeState(_grabbedState);
+		return true;
+	}
+
+	public override bool ToHurtState(AttackSO attack)
+	{
+		_airHurtState.Initialize(attack);
+		_stateMachine.ChangeState(_airHurtState);
 		return true;
 	}
 
