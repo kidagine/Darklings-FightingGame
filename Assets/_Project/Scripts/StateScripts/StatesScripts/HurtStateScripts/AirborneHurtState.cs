@@ -24,6 +24,7 @@ public class AirborneHurtState : HurtParentState
 
 	public override void Enter()
 	{
+		_player.OtherPlayerUI.IncreaseCombo();
 		_audio.Sound(_hurtAttack.impactSound).Play();
 		_playerAnimator.HurtAir(true);
 		_rigidbody.velocity = Vector2.zero;
@@ -32,7 +33,8 @@ public class AirborneHurtState : HurtParentState
 		if (WallSplat)
 		{
 			_player.Flip((int) -_player.transform.localScale.x);
-			_rigidbody.AddForce(new Vector2(-_player.transform.localScale.x * 5, 12), ForceMode2D.Impulse);
+			_player.knockbackEvent.AddListener(()=>
+			_rigidbody.AddForce(new Vector2(-_player.transform.localScale.x * 5, 12), ForceMode2D.Impulse));
 		}
 		else
 		{

@@ -39,6 +39,16 @@ public class PlayerAnimator : MonoBehaviour
 		}
 	}
 
+	public void Pause()
+	{
+		_animator.speed = 0;
+	}
+
+	public void Resume()
+	{
+		_animator.speed = 1;
+	}
+
 	public void Walk()
 	{
 		_animator.Play("Walk");

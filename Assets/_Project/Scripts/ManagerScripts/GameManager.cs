@@ -864,8 +864,10 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator HitStopCoroutine(float hitstop)
 	{
-		Time.timeScale = 0.0f;
+		PlayerOne.EnterHitstop();
+		PlayerTwo.EnterHitstop();
 		yield return new WaitForSecondsRealtime(hitstop);
-		Time.timeScale = GameSpeed;
+		PlayerOne.ExitHitstop();
+		PlayerTwo.ExitHitstop();
 	}
 }

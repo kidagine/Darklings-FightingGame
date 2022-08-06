@@ -116,7 +116,10 @@ public class AttackState : State
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
 			{
-				_crouch = true;
+				if (_playerMovement.IsGrounded)
+				{
+					_crouch = true;
+				}
 			}
 			else
 			{
@@ -138,15 +141,28 @@ public class AttackState : State
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
 			{
-				_crouch = true;
+				if (_playerMovement.IsGrounded)
+				{
+					_crouch = true;
+				}
 			}
 			else
 			{
 				_crouch = false;
 			}
-			_arcanaState.Initialize(_crouch);
-			_stateMachine.ChangeState(_arcanaState);
-			return true;
+			if (_air && _player.CanAirArcana)
+			{
+				_player.CanAirArcana = false;
+				_arcanaState.Initialize(_crouch, _air);
+				_stateMachine.ChangeState(_arcanaState);
+				return true;
+			}
+			else
+			{
+				_arcanaState.Initialize(_crouch, _air);
+				_stateMachine.ChangeState(_arcanaState);
+				return true;
+			}
 		}
 		return false;
 	}

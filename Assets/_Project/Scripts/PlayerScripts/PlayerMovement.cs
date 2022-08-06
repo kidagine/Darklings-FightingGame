@@ -117,8 +117,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void Knockback(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
 	{
-		_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce.x, transform.position.y + knockbackForce.y));
-		StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
+		_player.knockbackEvent.AddListener(() =>
+		{
+			_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce.x, transform.position.y + knockbackForce.y));
+			StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
+		});
 	}
 
 	IEnumerator KnockbackCoroutine(Vector2 knockback, float knockbackDuration)

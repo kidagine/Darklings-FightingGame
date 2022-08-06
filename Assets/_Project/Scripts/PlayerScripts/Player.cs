@@ -1,6 +1,7 @@
 using Demonics.Manager;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 {
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Coroutine _comboTimerCoroutine;
 	private bool _comboTimerPaused;
 	private readonly float _damageDecay = 0.97f;
+	public UnityEvent knockbackEvent;
 
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
 	public PlayerStateManager OtherPlayerStateManager { get; private set; }
@@ -343,6 +345,25 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 		}
 		return _playerStateManager.TryToHurtState(attack);
+	}
+
+	public void EnterHitstop()
+	{
+		_playerMovement.SetRigidbodyKinematic(true);
+		_playerAnimator.Pause();
+	}
+
+	public void ExitHitstop()
+	{
+		_playerMovement.SetRigidbodyKinematic(false);
+		_playerAnimator.Resume();
+		knockbackEvent?.Invoke();
+		knockbackEvent.RemoveAllListeners();
+		if (_playerStateManager.CurrentState.stateName == "Attack" || _playerStateManager.CurrentState.stateName == "Arcana")
+		{
+			_playerMovement.TravelDistance(new Vector2(
+	CurrentAttack.travelDistance * transform.root.localScale.x, 0));
+		}
 	}
 
 	private bool CanBlock(AttackSO attack)
