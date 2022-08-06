@@ -3,6 +3,7 @@ using Demonics.Manager;
 using Demonics.Sounds;
 using Demonics.UI;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviour
 	private Coroutine _hitStopCoroutine;
 	private Sound _currentMusic;
 	private GameObject _currentStage;
+	private List<IHitstop> _hitstopList = new List<IHitstop>();
 	private Vector2 _cachedOneResetPosition;
 	private Vector2 _cachedTwoResetPosition;
 	private float _countdown;
@@ -850,6 +852,11 @@ public class GameManager : MonoBehaviour
 		_playerTwoController.ActiveController.enabled = true;
 	}
 
+	public void AddHitstop(IHitstop hitstop)
+	{
+		_hitstopList.Add(hitstop);
+	}
+
 	public void HitStop(float hitstop)
 	{
 		if (hitstop > 0.0f)
@@ -864,8 +871,15 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator HitStopCoroutine(float hitstop)
 	{
-		Time.timeScale = 0.0f;
+		for (int i = 0; i < _hitstopList.Count; i++)
+		{
+			_hitstopList[i].EnterHitstop();
+		}
 		yield return new WaitForSecondsRealtime(hitstop);
-		Time.timeScale = GameSpeed;
+		for (int i = 0; i < _hitstopList.Count; i++)
+		{
+			_hitstopList[i].ExitHitstop();
+		}
+		_hitstopList.Clear();
 	}
 }

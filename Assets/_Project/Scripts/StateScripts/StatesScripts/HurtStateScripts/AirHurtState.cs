@@ -6,16 +6,19 @@ public class AirHurtState : HurtParentState
 	private Coroutine _stunCoroutine;
 	private FallState _fallState;
 	private HurtState _hurtState;
+	private AirborneHurtState _airborneHurtState;
 
 	protected override void Awake()
 	{
 		base.Awake();
 		_fallState = GetComponent<FallState>();
 		_hurtState = GetComponent<HurtState>();
+		_airborneHurtState = GetComponent<AirborneHurtState>();
 	}
 
 	public override void Enter()
 	{
+		_player.CheckFlip();
 		_playerAnimator.HurtAir(true);
 		GameObject effect = Instantiate(_hurtAttack.hurtEffect);
 		effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
@@ -35,6 +38,12 @@ public class AirHurtState : HurtParentState
 		ToFallStateAfterGround();
 	}
 
+	public override bool ToAirborneHurtState(AttackSO attack)
+	{
+		_airborneHurtState.Initialize(attack);
+		_stateMachine.ChangeState(_airborneHurtState);
+		return true;
+	}
 
 	private void ToFallAfterStunState()
 	{

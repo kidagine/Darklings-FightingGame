@@ -6,6 +6,7 @@ public class AirborneHurtState : HurtParentState
 	private WallSplatState _wallSplatState;
 	private KnockdownState _knockdownState;
 	private GrabbedState _grabbedState;
+	private AirHurtState _airHurtState;
 	private Coroutine _canCheckGroundCoroutine;
 	private bool _canCheckGround;
 
@@ -18,10 +19,12 @@ public class AirborneHurtState : HurtParentState
 		_wallSplatState = GetComponent<WallSplatState>();
 		_knockdownState = GetComponent<KnockdownState>();
 		_grabbedState = GetComponent<GrabbedState>();
+		_airHurtState = GetComponent<AirHurtState>();
 	}
 
 	public override void Enter()
 	{
+		_player.OtherPlayerUI.IncreaseCombo();
 		_audio.Sound(_hurtAttack.impactSound).Play();
 		_playerAnimator.HurtAir(true);
 		_rigidbody.velocity = Vector2.zero;
@@ -30,7 +33,8 @@ public class AirborneHurtState : HurtParentState
 		if (WallSplat)
 		{
 			_player.Flip((int) -_player.transform.localScale.x);
-			_rigidbody.AddForce(new Vector2(-_player.transform.localScale.x * 5, 12), ForceMode2D.Impulse);
+			_player.knockbackEvent.AddListener(()=>
+			_rigidbody.AddForce(new Vector2(-_player.transform.localScale.x * 5, 12), ForceMode2D.Impulse));
 		}
 		else
 		{
@@ -109,6 +113,13 @@ public class AirborneHurtState : HurtParentState
 	public override bool ToGrabbedState()
 	{
 		_stateMachine.ChangeState(_grabbedState);
+		return true;
+	}
+
+	public override bool ToHurtState(AttackSO attack)
+	{
+		_airHurtState.Initialize(attack);
+		_stateMachine.ChangeState(_airHurtState);
 		return true;
 	}
 

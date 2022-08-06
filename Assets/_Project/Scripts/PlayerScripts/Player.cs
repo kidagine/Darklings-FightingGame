@@ -1,8 +1,9 @@
 using Demonics.Manager;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
+public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
 	[SerializeField] private PlayerStateManager _playerStateManager = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 	private Coroutine _comboTimerCoroutine;
 	private bool _comboTimerPaused;
 	private readonly float _damageDecay = 0.97f;
+	public UnityEvent knockbackEvent;
 
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
 	public PlayerStateManager OtherPlayerStateManager { get; private set; }
@@ -297,15 +299,23 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
 	{
+		if (!CurrentAttack.isProjectile)
+		{
+			GameManager.Instance.AddHitstop(this);
+		}
 		CurrentAttack.hurtEffectPosition = hit.point;
 		hurtbox.TakeDamage(CurrentAttack);
-		if (!CurrentAttack.isProjectile && !CurrentAttack.isArcana)
+		if (!CurrentAttack.isProjectile)
 		{
-			AttackState.CanSkipAttack = true;
-		}
-		if (OtherPlayerMovement.IsInCorner && !CurrentAttack.isProjectile)
-		{
-			_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), new Vector2(CurrentAttack.knockback, 0.0f), CurrentAttack.knockbackDuration);
+			if (!CurrentAttack.isArcana)
+			{
+				AttackState.CanSkipAttack = true;
+			}
+			if (OtherPlayerMovement.IsInCorner)
+			{
+				GameManager.Instance.AddHitstop(this);
+				_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), new Vector2(CurrentAttack.knockback, 0.0f), CurrentAttack.knockbackDuration);
+			}
 		}
 	}
 
@@ -331,6 +341,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 
 	public bool TakeDamage(AttackSO attack)
 	{
+		GameManager.Instance.AddHitstop(this);
 		if (attack.attackTypeEnum == AttackTypeEnum.Throw)
 		{
 			return _playerStateManager.TryToGrabbedState();
@@ -343,6 +354,25 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder
 			}
 		}
 		return _playerStateManager.TryToHurtState(attack);
+	}
+
+	public void EnterHitstop()
+	{
+		_playerMovement.SetRigidbodyKinematic(true);
+		_playerAnimator.Pause();
+	}
+
+	public void ExitHitstop()
+	{
+		_playerMovement.SetRigidbodyKinematic(false);
+		_playerAnimator.Resume();
+		knockbackEvent?.Invoke();
+		knockbackEvent.RemoveAllListeners();
+		if (_playerStateManager.CurrentState.stateName == "Attack" || _playerStateManager.CurrentState.stateName == "Arcana")
+		{
+			_playerMovement.TravelDistance(new Vector2(
+	CurrentAttack.travelDistance * transform.root.localScale.x, 0));
+		}
 	}
 
 	private bool CanBlock(AttackSO attack)
