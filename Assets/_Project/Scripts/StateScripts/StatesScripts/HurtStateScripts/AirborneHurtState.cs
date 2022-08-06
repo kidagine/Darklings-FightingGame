@@ -32,6 +32,7 @@ public class AirborneHurtState : HurtParentState
 		_player.SetHurtbox(true);
 		if (WallSplat)
 		{
+			GameManager.Instance.AddHitstop(_player);
 			_player.Flip((int) -_player.transform.localScale.x);
 			_player.knockbackEvent.AddListener(()=>
 			_rigidbody.AddForce(new Vector2(-_player.transform.localScale.x * 5, 12), ForceMode2D.Impulse));
