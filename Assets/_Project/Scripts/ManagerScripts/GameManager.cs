@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 	[Header("Data")]
 	[SerializeField] private Transform[] _spawnPositions = default;
 	[SerializeField] private IntroUI _introUI = default;
+	[SerializeField] private FadeHandler _fadeHandler = default;
 	[SerializeField] protected PlayerUI _playerOneUI = default;
 	[SerializeField] protected PlayerUI _playerTwoUI = default;
 	[SerializeField] private PlayerDialogue _playerOneDialogue = default;
@@ -712,90 +713,95 @@ public class GameManager : MonoBehaviour
 	{
 		if (_isTrainingMode)
 		{
-			HasGameStarted = true;
-			Time.timeScale = GameSpeed;
-			if (_roundOverTrainingCoroutine != null)
+			_fadeHandler.StartFadeTransition(true);
+			_fadeHandler.onFadeEnd.AddListener(() =>
 			{
-				StopCoroutine(_roundOverTrainingCoroutine);
-			}
-			PlayerOne.ResetPlayer();
-			PlayerTwo.ResetPlayer();
-			PlayerOne.ResetLives();
-			PlayerTwo.ResetLives();
-			ObjectPoolingManager.Instance.DisableAllObjects();
-			if (movementInput.y == 1.0f)
-			{
-				_reverseReset = !_reverseReset;
-				if (!_reverseReset)
+				HasGameStarted = true;
+				Time.timeScale = GameSpeed;
+				if (_roundOverTrainingCoroutine != null)
 				{
-					PlayerOne.transform.position = _cachedOneResetPosition;
-					PlayerTwo.transform.position = _cachedTwoResetPosition;
+					StopCoroutine(_roundOverTrainingCoroutine);
 				}
-				else
+				PlayerOne.ResetPlayer();
+				PlayerTwo.ResetPlayer();
+				PlayerOne.ResetLives();
+				PlayerTwo.ResetLives();
+				ObjectPoolingManager.Instance.DisableAllObjects();
+				if (movementInput.y == 1.0f)
 				{
-					PlayerTwo.transform.position = _cachedOneResetPosition;
-					PlayerOne.transform.position = _cachedTwoResetPosition;
+					_reverseReset = !_reverseReset;
+					if (!_reverseReset)
+					{
+						PlayerOne.transform.position = _cachedOneResetPosition;
+						PlayerTwo.transform.position = _cachedTwoResetPosition;
+					}
+					else
+					{
+						PlayerTwo.transform.position = _cachedOneResetPosition;
+						PlayerOne.transform.position = _cachedTwoResetPosition;
+					}
 				}
-			}
 
-			if (movementInput == Vector2.zero)
-			{
-				if (!_reverseReset)
+				if (movementInput == Vector2.zero)
 				{
-					PlayerOne.transform.position = _cachedOneResetPosition;
-					PlayerTwo.transform.position = _cachedTwoResetPosition;
+					if (!_reverseReset)
+					{
+						PlayerOne.transform.position = _cachedOneResetPosition;
+						PlayerTwo.transform.position = _cachedTwoResetPosition;
+					}
+					else
+					{
+						PlayerOne.transform.position = _cachedTwoResetPosition;
+						PlayerTwo.transform.position = _cachedOneResetPosition;
+					}
 				}
-				else
+				else if (movementInput.y == -1.0f)
 				{
-					PlayerOne.transform.position = _cachedTwoResetPosition;
-					PlayerTwo.transform.position = _cachedOneResetPosition;
+					if (!_reverseReset)
+					{
+						PlayerOne.transform.position = _spawnPositions[0].position;
+						PlayerTwo.transform.position = _spawnPositions[1].position;
+					}
+					else
+					{
+						PlayerTwo.transform.position = _spawnPositions[0].position;
+						PlayerOne.transform.position = _spawnPositions[1].position;
+					}
+					_cachedOneResetPosition = PlayerOne.transform.position;
+					_cachedTwoResetPosition = PlayerTwo.transform.position;
 				}
-			}
-			else if (movementInput.y == -1.0f)
-			{
-				if (!_reverseReset)
+				else if (movementInput.x == 1.0f)
 				{
-					PlayerOne.transform.position = _spawnPositions[0].position;
-					PlayerTwo.transform.position = _spawnPositions[1].position;
+					if (!_reverseReset)
+					{
+						PlayerOne.transform.position = new Vector2(_spawnPositions[0].position.x + 9, _spawnPositions[0].position.y);
+						PlayerTwo.transform.position = new Vector2(_spawnPositions[1].position.x + 6, _spawnPositions[1].position.y);
+					}
+					else
+					{
+						PlayerTwo.transform.position = new Vector2(_spawnPositions[0].position.x + 9, _spawnPositions[0].position.y);
+						PlayerOne.transform.position = new Vector2(_spawnPositions[1].position.x + 6, _spawnPositions[1].position.y);
+					}
+					_cachedOneResetPosition = PlayerOne.transform.position;
+					_cachedTwoResetPosition = PlayerTwo.transform.position;
 				}
-				else
+				else if (movementInput.x == -1.0f)
 				{
-					PlayerTwo.transform.position = _spawnPositions[0].position;
-					PlayerOne.transform.position = _spawnPositions[1].position;
+					if (!_reverseReset)
+					{
+						PlayerOne.transform.position = new Vector2(_spawnPositions[0].position.x - 6, _spawnPositions[0].position.y);
+						PlayerTwo.transform.position = new Vector2(_spawnPositions[1].position.x - 9, _spawnPositions[1].position.y);
+					}
+					else
+					{
+						PlayerTwo.transform.position = new Vector2(_spawnPositions[0].position.x - 6, _spawnPositions[0].position.y);
+						PlayerOne.transform.position = new Vector2(_spawnPositions[1].position.x - 9, _spawnPositions[1].position.y);
+					}
+					_cachedOneResetPosition = PlayerOne.transform.position;
+					_cachedTwoResetPosition = PlayerTwo.transform.position;
 				}
-				_cachedOneResetPosition = PlayerOne.transform.position;
-				_cachedTwoResetPosition = PlayerTwo.transform.position;
-			}
-			else if (movementInput.x == 1.0f)
-			{
-				if (!_reverseReset)
-				{
-					PlayerOne.transform.position = new Vector2(_spawnPositions[0].position.x + 9, _spawnPositions[0].position.y);
-					PlayerTwo.transform.position = new Vector2(_spawnPositions[1].position.x + 6, _spawnPositions[1].position.y);
-				}
-				else
-				{
-					PlayerTwo.transform.position = new Vector2(_spawnPositions[0].position.x + 9, _spawnPositions[0].position.y);
-					PlayerOne.transform.position = new Vector2(_spawnPositions[1].position.x + 6, _spawnPositions[1].position.y);
-				}
-				_cachedOneResetPosition = PlayerOne.transform.position;
-				_cachedTwoResetPosition = PlayerTwo.transform.position;
-			}
-			else if (movementInput.x == -1.0f)
-			{
-				if (!_reverseReset)
-				{
-					PlayerOne.transform.position = new Vector2(_spawnPositions[0].position.x - 6, _spawnPositions[0].position.y);
-					PlayerTwo.transform.position = new Vector2(_spawnPositions[1].position.x - 9, _spawnPositions[1].position.y);
-				}
-				else
-				{
-					PlayerTwo.transform.position = new Vector2(_spawnPositions[0].position.x - 6, _spawnPositions[0].position.y);
-					PlayerOne.transform.position = new Vector2(_spawnPositions[1].position.x - 9, _spawnPositions[1].position.y);
-				}
-				_cachedOneResetPosition = PlayerOne.transform.position;
-				_cachedTwoResetPosition = PlayerTwo.transform.position;
-			}
+				_fadeHandler.StartFadeTransition(false);
+			});
 		}
 	}
 

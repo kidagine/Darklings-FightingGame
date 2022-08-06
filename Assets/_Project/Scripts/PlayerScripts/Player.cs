@@ -182,11 +182,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	public void CheckFlip()
 	{
-		if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && transform.localScale.x != 1.0f)
+		if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && _keepFlip.localScale.x != 1.0f)
 		{
 			Flip(1);
 		}
-		else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner && transform.localScale.x != -1.0f)
+		else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner && _keepFlip.localScale.x != -1.0f)
 		{
 			Flip(-1);
 		}
@@ -195,7 +195,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	public void Flip(int xDirection)
 	{
 		transform.localScale = new Vector2(xDirection, transform.localScale.y);
-		_keepFlip.localScale = new Vector2(xDirection, transform.localScale.y);
+		_keepFlip.localScale = transform.localScale;
 	}
 
 	public bool AssistAction()
