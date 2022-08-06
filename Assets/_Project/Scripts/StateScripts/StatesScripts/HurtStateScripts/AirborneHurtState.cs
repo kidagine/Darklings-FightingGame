@@ -28,6 +28,10 @@ public class AirborneHurtState : HurtParentState
 		_audio.Sound(_hurtAttack.impactSound).Play();
 		_playerAnimator.HurtAir(true);
 		_rigidbody.velocity = Vector2.zero;
+		if (_player.OtherPlayerUI.CurrentComboCount == 1)
+		{
+			_player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
+		}
 		_player.OtherPlayer.FreezeComboTimer();
 		_player.SetHurtbox(true);
 		if (WallSplat)

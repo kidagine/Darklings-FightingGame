@@ -22,7 +22,8 @@ public class Projectile : MonoBehaviour, IHurtboxResponder, IHitstop
 	{
 		_rigidbody = GetComponent<Rigidbody2D>();
 		_animator = GetComponent<Animator>();	
-		_hitbox.OnCollision += () => GameManager.Instance.AddHitstop(this);
+		_hitbox.OnPlayerCollision += () => GameManager.Instance.AddHitstop(this);
+		_hitbox.OnGroundCollision += () => gameObject.SetActive(false);
 	}
 
 	void Update()
@@ -45,7 +46,8 @@ public class Projectile : MonoBehaviour, IHurtboxResponder, IHitstop
 			{
 				Instantiate(_dustPrefab, transform.position, Quaternion.identity);
 			}
-			_hitbox.OnCollision -= () => GameManager.Instance.AddHitstop(this);
+			_hitbox.OnPlayerCollision -= () => GameManager.Instance.AddHitstop(this);
+			_hitbox.OnGroundCollision -= () => gameObject.SetActive(false);
 		}
 	}
 
