@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour, IHurtboxResponder
+public class Projectile : MonoBehaviour, IHurtboxResponder, IHitstop
 {
 	[SerializeField] private Hitbox _hitbox = default;
 	[SerializeField] private GameObject _dustPrefab = default;
@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour, IHurtboxResponder
 	[SerializeField] private float _speed = 4.0f;
 	[SerializeField] private bool _isFixed = default;
 	private Rigidbody2D _rigidbody;
+	private Animator _animator;
 	public int ProjectilePriority { get { return _projectilePriority; } private set { } }
 	public Transform SourceTransform { get; private set; }
 
@@ -20,7 +21,8 @@ public class Projectile : MonoBehaviour, IHurtboxResponder
 	void Awake()
 	{
 		_rigidbody = GetComponent<Rigidbody2D>();
-		_hitbox.OnCollision += () => gameObject.SetActive(false);
+		_animator = GetComponent<Animator>();	
+		_hitbox.OnCollision += () => GameManager.Instance.AddHitstop(this);
 	}
 
 	void Update()
@@ -43,7 +45,7 @@ public class Projectile : MonoBehaviour, IHurtboxResponder
 			{
 				Instantiate(_dustPrefab, transform.position, Quaternion.identity);
 			}
-			_hitbox.OnCollision -= () => gameObject.SetActive(false);
+			_hitbox.OnCollision -= () => GameManager.Instance.AddHitstop(this);
 		}
 	}
 
@@ -77,5 +79,20 @@ public class Projectile : MonoBehaviour, IHurtboxResponder
 				}
 			}
 		}
+	}
+
+	public void EnterHitstop()
+	{
+		_animator.speed = 0;
+		_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+		_rigidbody.isKinematic = true;
+	}
+
+	public void ExitHitstop()
+	{
+		_animator.speed = 1;
+		_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+		_rigidbody.isKinematic = false;
+		gameObject.SetActive(false);
 	}
 }
