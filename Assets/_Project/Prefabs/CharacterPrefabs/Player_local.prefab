@@ -2002,6 +2002,7 @@ GameObject:
   - component: {fileID: 4618435349483342948}
   - component: {fileID: 4664395619888274278}
   - component: {fileID: 7611394710214668632}
+  - component: {fileID: 6591136354886088417}
   m_Layer: 10
   m_Name: Player_local
   m_TagString: Untagged
@@ -2075,6 +2076,9 @@ MonoBehaviour:
   _playerIcons:
   - {fileID: 7759221523502482170}
   - {fileID: 3488833446598643948}
+  knockbackEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8073473790702501987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2375,6 +2379,248 @@ MonoBehaviour:
       playOnAwake: 0
       playOneInstanceAtATime: 0
   _soundGroups3D: []
+--- !u!114 &6591136354886088417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073473790702501986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Light
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ed2eef9e-d066-4d30-abe9-b8bc36ac02e1
+    m_ActionName: Gameplay/Back[/XInputControllerWindows/buttonNorth,/Keyboard/anyKey]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Movement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7ca3a05e-cb40-4977-b9aa-f9c734e7db88
+    m_ActionName: Gameplay/Movement
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Jump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b1eb3744-7f4b-487a-baa2-ec13c0cdfd31
+    m_ActionName: Gameplay/Jump[/DualSenseGamepadHID/dpad/up]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Crouch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 30d3e40a-d824-41ed-b2e8-5c36c055a7c2
+    m_ActionName: Gameplay/Crouch[/DualSenseGamepadHID/dpad/down]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Dash
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1d93204d-0917-4a15-8fe3-c74a8fdba30a
+    m_ActionName: Gameplay/Dash
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Medium
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c347fc3c-1661-4579-94fb-716b8945b36b
+    m_ActionName: Gameplay/Medium[/DualSenseGamepadHID/buttonNorth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Heavy
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9ad06ff6-fd9b-4172-9064-386dc14dd5ff
+    m_ActionName: Gameplay/Heavy[/DualSenseGamepadHID/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Arcane
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 02a541b8-d727-422a-85c7-419debcd8b4b
+    m_ActionName: Gameplay/Arcane[/DualSenseGamepadHID/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Assist
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6de6d4b1-c14b-4371-b138-3d8e0bced557
+    m_ActionName: Gameplay/Assist[/DualSenseGamepadHID/leftTrigger]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Parry
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 18af1f13-b80c-4915-bb78-f82258c184df
+    m_ActionName: Gameplay/Parry
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Throw
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 40b9f47c-9919-436a-9a64-426a259ababf
+    m_ActionName: Gameplay/Throw
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 92f11cdb-0789-4607-98bf-dc6e42b1fe26
+    m_ActionName: UI/New action
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Reset
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6ffc13c4-2d89-440e-a2e2-b270dc49302c
+    m_ActionName: Training/Reset
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: Switch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9f62ee22-0b1e-413f-8582-f90db63322de
+    m_ActionName: Training/Switch[/DualSenseGamepadHID/rightStickPress]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &8073473791272386163
 GameObject:
   m_ObjectHideFlags: 0

@@ -6782,8 +6782,8 @@ MonoBehaviour:
   _characterTwo: 0
   _assistOne: 0
   _assistTwo: 0
-  _controllerOne: 0
-  _controllerTwo: 1
+  _controllerOne: 2
+  _controllerTwo: 3
   _music: 8
   _playerOneSkin: 0
   _playerTwoSkin: 0
@@ -7148,7 +7148,7 @@ PrefabInstance:
     - target: {fileID: 4586557407155603638, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_SpriteLibraryAsset
       value: 
-      objectReference: {fileID: 7108339969198208228, guid: 75786e7796e4552499fd4d9a23b17eb3, type: 3}
+      objectReference: {fileID: 7108339969198208228, guid: 7b8be8b8bea96684cbe091f2b82fa578, type: 3}
     - target: {fileID: 4879431347392356363, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Size.x
       value: 1.75
@@ -7180,6 +7180,14 @@ PrefabInstance:
     - target: {fileID: 5283855672978357420, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Offset.y
       value: 1.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591136354886088417, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591136354886088417, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7600070780512524519, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7280,7 +7288,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -229037654, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
+      objectReference: {fileID: -615675600, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -7325,6 +7333,14 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: d07b4c2442277164a847eaaa08ae9e05, type: 2}
+    - target: {fileID: 8073473790341886582, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+      propertyPath: m_Size.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8073473790341886582, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 8073473790702501984, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_RootOrder
       value: 12

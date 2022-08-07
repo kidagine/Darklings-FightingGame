@@ -11,7 +11,8 @@
                     "id": "67dd21de-f194-48f5-a58d-6e23dc9431ab",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Back",
@@ -19,7 +20,8 @@
                     "id": "ed9bc005-7d83-4115-8e7e-b74c782cf709",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Special",
@@ -27,7 +29,8 @@
                     "id": "b96a3d2e-e7a1-438a-ab2f-c59137486a97",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -94,200 +97,6 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Special",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Gameplay",
-            "id": "33df3f33-5790-40be-88ec-9ca134c4b697",
-            "actions": [
-                {
-                    "name": "Movement",
-                    "type": "Value",
-                    "id": "3987f77e-135b-4d98-941e-b44c0d1fe523",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "6a298cde-542e-40f4-bcfd-5bc626010169",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "Crouch",
-                    "type": "Button",
-                    "id": "89fe8953-f57a-4ccb-b4e8-5416d897bebb",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "Attack",
-                    "type": "Button",
-                    "id": "ed9512b8-604f-41f0-8cf1-32a8159feaec",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "AD",
-                    "id": "4f652e72-be10-497f-9fcc-299428172b64",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "left",
-                    "id": "8ae32b76-c991-469e-ab2e-1e4b6d4741af",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "dd07fef8-ce53-45d1-9356-2f4ef4e05058",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "DPad",
-                    "id": "c62ac1fa-0e80-46ac-b8c4-63a5a2131bb6",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Movement",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "left",
-                    "id": "7d1c4a05-de25-4fce-8655-953b0af763ca",
-                    "path": "<Gamepad>/dpad/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Xbox",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "f0fbaf39-f2b1-474a-83b6-6f6b79256e7c",
-                    "path": "<Gamepad>/dpad/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Xbox",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "1bb13a16-fae7-4d2c-8b39-74ba0c911cae",
-                    "path": "<Gamepad>/leftStick",
-                    "interactions": "",
-                    "processors": "StickDeadzone(min=0.15),NormalizeVector2",
-                    "groups": "Xbox",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d15103a3-bf9e-4487-9b09-cced4ddd48a3",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9a052867-fd8f-44d6-8ac5-5328df089ab9",
-                    "path": "<Gamepad>/dpad/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Xbox",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7a4893cc-81fb-469a-92c3-0c32f94ec8ba",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "41c34164-cdc0-4bbe-983a-373636bb601e",
-                    "path": "<Gamepad>/dpad/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Xbox",
-                    "action": "Crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f6f78ce9-3b64-41cf-b8c5-6388fcca0216",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "",
-                    "processors": "AxisDeadzone",
-                    "groups": "Xbox",
-                    "action": "Crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "452c3db4-9e36-49f3-90a8-7046fdf45b62",
-                    "path": "<Keyboard>/j",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c6a69e6d-e4c7-45cb-9674-ea5227114ce8",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Xbox",
-                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
