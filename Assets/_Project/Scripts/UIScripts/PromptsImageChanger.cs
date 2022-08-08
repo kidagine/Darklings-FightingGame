@@ -9,9 +9,15 @@ public class PromptsImageChanger : MonoBehaviour
 	[SerializeField] private PauseMenu _pauseMenu = default;
 
 
-	private void SetCorrectPromptSprite(string controller)
+	void Awake()
 	{
-		if (controller == ControllerTypeEnum.KeyboardOne.ToString() || controller == ControllerTypeEnum.KeyboardTwo.ToString())
+		InputManager.Instance.OnInputChange.AddListener(() => SetCorrectPromptSprite());
+	}
+
+	private void SetCorrectPromptSprite()
+	{
+		string inputScheme = InputManager.Instance.InputScheme;
+		if (inputScheme == "Keyboard")
 		{
 			_promptImage.sprite = _promptKeyboardSprite;
 		}
@@ -23,15 +29,6 @@ public class PromptsImageChanger : MonoBehaviour
 
 	void OnEnable()
 	{
-		if (_pauseMenu.PauseControllerType != null)
-		{
-			SetCorrectPromptSprite(_pauseMenu.PauseControllerType);
-
-		}
-		else
-		{
-			string controller = GameManager.Instance.PlayerOne.GetComponent<BrainController>().ControllerInputName;
-			SetCorrectPromptSprite(controller);
-		}
+		SetCorrectPromptSprite();
 	}
 }

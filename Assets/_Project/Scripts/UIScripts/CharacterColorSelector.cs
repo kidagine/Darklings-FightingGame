@@ -2,6 +2,7 @@ using Demonics.Sounds;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.InputSystem.InputAction;
 
 public class CharacterColorSelector : MonoBehaviour
 {
@@ -66,12 +67,11 @@ public class CharacterColorSelector : MonoBehaviour
 			}
 		}
 	}
-
-	private void Update()
+	public void Movement(CallbackContext callbackContext)
 	{
 		if (!_inputDeactivated && !_changeStageMenu.IsOpen)
 		{
-			_directionInput = new Vector2(Input.GetAxisRaw(_controllerInputName + "Horizontal"), 0.0f);
+			_directionInput = callbackContext.ReadValue<Vector2>();
 			if (_directionInput.x == 1.0f)
 			{
 				_audio.Sound("Pressed").Play();

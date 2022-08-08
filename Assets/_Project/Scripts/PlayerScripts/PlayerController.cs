@@ -5,9 +5,15 @@ using static UnityEngine.InputSystem.InputAction;
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
-	protected virtual void Movement()
+	void Start()
 	{
-		InputDirection = new(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
+		_playerInput.actions.actionMaps[(int)ActionSchemeTypes.Training].Enable();
+	}
+
+	//GAMEPLAY
+	public void Movement(CallbackContext callbackContext)
+	{
+		InputDirection = callbackContext.ReadValue<Vector2>();
 		if (InputDirection.x == 1.0f && _playerMovement.MovementInput.x != InputDirection.x)
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
@@ -30,10 +36,7 @@ public class PlayerController : BaseController
 		}
 		_playerMovement.MovementInput = InputDirection;
 	}
-	public void Movement(CallbackContext callbackContext)
-	{
-		InputDirection = callbackContext.ReadValue<Vector2>();
-	}
+
 	public override bool Jump()
 	{
 		if (InputDirection.y > 0.5f)
@@ -60,18 +63,22 @@ public class PlayerController : BaseController
 		}
 		return false;
 	}
+
 	public void Jump(CallbackContext callbackContext)
 	{
 		//_inputBuffer.AddInputBufferItem(InputEnum.Light);
 	}
+
 	public void Crouch(CallbackContext callbackContext)
 	{
 		//_inputBuffer.AddInputBufferItem(InputEnum.Light);
 	}
+
 	public void StandUp(CallbackContext callbackContext)
 	{
 		//_inputBuffer.AddInputBufferItem(InputEnum.Light);
 	}
+
 	public void Light(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
@@ -79,6 +86,7 @@ public class PlayerController : BaseController
 			_inputBuffer.AddInputBufferItem(InputEnum.Light);
 		}
 	}
+
 	public void Medium(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
@@ -86,6 +94,7 @@ public class PlayerController : BaseController
 			_inputBuffer.AddInputBufferItem(InputEnum.Medium);
 		}
 	}
+
 	public void Heavy(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
@@ -93,6 +102,7 @@ public class PlayerController : BaseController
 			_inputBuffer.AddInputBufferItem(InputEnum.Heavy);
 		}
 	}
+
 	public void Arcane(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
@@ -107,6 +117,7 @@ public class PlayerController : BaseController
 			_inputBuffer.AddInputBufferItem(InputEnum.Assist);
 		}
 	}
+
 	public void Throw(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
@@ -115,6 +126,7 @@ public class PlayerController : BaseController
 			_inputBuffer.AddInputBufferItem(InputEnum.Throw);
 		}
 	}
+
 	public void Parry(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
@@ -127,15 +139,22 @@ public class PlayerController : BaseController
 	{
 		if (callbackContext.performed)
 		{
-			_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+			if (InputDirection.x == 1)
+			{
+				_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+			}
+			else if (InputDirection.x == -1)
+			{
+				_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+			}
 		}
 	}
-
+	//TRAINING
 	public void Reset(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
 		{
-			GameManager.Instance.ResetRound(_playerMovement.MovementInput);
+			GameManager.Instance.ResetRound(InputDirection);
 		}
 	}
 
@@ -147,8 +166,11 @@ public class PlayerController : BaseController
 		}
 	}
 
-	public void Pause()
+	public void Pause(CallbackContext callbackContext)
 	{
-		_player.Pause(_brainController.IsPlayerOne);
+		if (callbackContext.performed)
+		{
+			_player.Pause(_brainController.IsPlayerOne);
+		}
 	}
 }

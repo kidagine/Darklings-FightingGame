@@ -72,53 +72,52 @@ public class PlayerCharacterSelector : MonoBehaviour
 
 	void Update()
 	{
-		if (!HasSelected)
-		{
-			if (!_inputDeactivated)
-			{
-				Debug.Log(SceneSettings.ControllerOne);
-				_directionInput = new Vector2(Input.GetAxisRaw(_controllerInputName + "Horizontal"), Input.GetAxisRaw(_controllerInputName + "Vertical"));
-				if (_directionInput.x == 1.0f)
-				{
-					if (_canGoRight)
-					{
-						_rectTransform.anchoredPosition += new Vector2(_moveDistance, 0.0f);
-						StartCoroutine(ResetInput());
-					}
-				}
-				if (_directionInput.x == -1.0f)
-				{
-					if (_canGoLeft)
-					{
-						_rectTransform.anchoredPosition += new Vector2(-_moveDistance, 0.0f);
-						StartCoroutine(ResetInput());
-					}
-				}
-				if (_directionInput.y == 1.0f)
-				{
-					if (_canGoUp)
-					{
-						_rectTransform.anchoredPosition += new Vector2(0.0f, _moveDistance);
-						StartCoroutine(ResetInput());
-					}
-				}
-				if (_directionInput.y == -1.0f)
-				{
-					if (_canGoDown)
-					{
-						_rectTransform.anchoredPosition += new Vector2(0.0f, -_moveDistance);
-						StartCoroutine(ResetInput());
-					}
-				}
-			}
-			if (Input.GetButtonDown(_controllerInputName + "Confirm") && !_wasClicked)
-			{
-				_wasClicked = true;
-				_audio.Sound("Pressed").Play();
-				_randomSpriteRenderer.gameObject.SetActive(false);
-				_characterMenu.SelectCharacterImage();
-			}
-		}
+		//if (!HasSelected)
+		//{
+		//	if (!_inputDeactivated)
+		//	{
+		//		_directionInput = new Vector2(Input.GetAxisRaw(_controllerInputName + "Horizontal"), Input.GetAxisRaw(_controllerInputName + "Vertical"));
+		//		if (_directionInput.x == 1.0f)
+		//		{
+		//			if (_canGoRight)
+		//			{
+		//				_rectTransform.anchoredPosition += new Vector2(_moveDistance, 0.0f);
+		//				StartCoroutine(ResetInput());
+		//			}
+		//		}
+		//		if (_directionInput.x == -1.0f)
+		//		{
+		//			if (_canGoLeft)
+		//			{
+		//				_rectTransform.anchoredPosition += new Vector2(-_moveDistance, 0.0f);
+		//				StartCoroutine(ResetInput());
+		//			}
+		//		}
+		//		if (_directionInput.y == 1.0f)
+		//		{
+		//			if (_canGoUp)
+		//			{
+		//				_rectTransform.anchoredPosition += new Vector2(0.0f, _moveDistance);
+		//				StartCoroutine(ResetInput());
+		//			}
+		//		}
+		//		if (_directionInput.y == -1.0f)
+		//		{
+		//			if (_canGoDown)
+		//			{
+		//				_rectTransform.anchoredPosition += new Vector2(0.0f, -_moveDistance);
+		//				StartCoroutine(ResetInput());
+		//			}
+		//		}
+		//	}
+		//	if (Input.GetButtonDown(_controllerInputName + "Confirm") && !_wasClicked)
+		//	{
+		//		_wasClicked = true;
+		//		_audio.Sound("Pressed").Play();
+		//		_randomSpriteRenderer.gameObject.SetActive(false);
+		//		_characterMenu.SelectCharacterImage();
+		//	}
+		//}
 	}
 
 	IEnumerator ResetInput()

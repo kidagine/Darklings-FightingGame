@@ -2,6 +2,7 @@ using Demonics.Sounds;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.InputSystem.InputAction;
 
 public class CharacterAssistSelector : MonoBehaviour
 {
@@ -69,12 +70,11 @@ public class CharacterAssistSelector : MonoBehaviour
             }
         }
     }
-
-    private void Update()
+    public void Movement(CallbackContext callbackContext)
     {
         if (!_inputDeactivated && !_changeStageMenu.IsOpen)
         {
-            _directionInput = new Vector2(Input.GetAxisRaw(_controllerInputName + "Horizontal"), 0.0f);
+            _directionInput = callbackContext.ReadValue<Vector2>(); 
             if (_directionInput.x == 1.0f && _assistCount < assistStatsSO.Length - 1)
             {
                 _audio.Sound("Pressed").Play();
@@ -96,7 +96,7 @@ public class CharacterAssistSelector : MonoBehaviour
                 _assistCount--;
                 StartCoroutine(ResetInput());
             }
-            else if (_directionInput.x == -1.0f && _assistCount <=  0)
+            else if (_directionInput.x == -1.0f && _assistCount <= 0)
             {
                 _audio.Sound("Pressed").Play();
                 AssistLetter = 'B';
@@ -125,6 +125,7 @@ public class CharacterAssistSelector : MonoBehaviour
             }
         }
     }
+
 
     IEnumerator ResetInput()
     {

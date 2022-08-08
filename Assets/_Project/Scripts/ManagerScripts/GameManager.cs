@@ -848,14 +848,14 @@ public class GameManager : MonoBehaviour
 
 	public void DisableAllInput()
 	{
-		_playerOneController.ActiveController.enabled = false;
-		_playerTwoController.ActiveController.enabled = false;
+		_playerOneController.ActiveController.SetEnable(false);
+		_playerTwoController.ActiveController.SetEnable(false);
 	}
 
 	public void EnableAllInput()
 	{
-		_playerOneController.ActiveController.enabled = true;
-		_playerTwoController.ActiveController.enabled = true;
+		_playerOneController.ActiveController.SetEnable(true);
+		_playerTwoController.ActiveController.SetEnable(true);
 	}
 
 	public void AddHitstop(IHitstop hitstop)
