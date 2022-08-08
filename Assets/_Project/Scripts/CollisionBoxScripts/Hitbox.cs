@@ -7,7 +7,8 @@ public class Hitbox : MonoBehaviour
 {
 	public Vector2 _hitboxSize = default;
 	public Vector2 _offset = default;
-	public Action OnCollision;
+	public Action OnGroundCollision;
+	public Action OnPlayerCollision;
 	[SerializeField] private bool _hitGround;
 	private Color _hitboxColor = Color.red;
 	private UnityEngine.LayerMask _hurtboxLayerMask;
@@ -59,11 +60,11 @@ public class Hitbox : MonoBehaviour
 						HitPoint = hit[i].transform;
 						if (_hitGround && hit[i].normal == Vector2.up)
 						{
-							OnCollision?.Invoke();
+							OnGroundCollision?.Invoke();
 						}
 						if (hit[i].collider.transform.TryGetComponent(out Hurtbox hurtbox))
 						{
-							OnCollision?.Invoke();
+							OnPlayerCollision?.Invoke();
 							_hitboxResponder.HitboxCollided(hit[i], hurtbox);
 						}
 						_hasHit = true;

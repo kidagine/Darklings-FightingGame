@@ -2,6 +2,7 @@ using Demonics.Sounds;
 using Demonics.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayersMenu : BaseMenu
 {
@@ -56,22 +57,6 @@ public class PlayersMenu : BaseMenu
 					break;
 			}
 		};
-	}
-
-	void Update()
-	{
-		if (Input.GetButtonDown("KeyboardOne" + "Confirm"))
-		{
-			ConfirmQuickAssign(0);
-		}
-		else if (Input.GetButtonDown("ControllerOne" + "Confirm"))
-		{
-			ConfirmQuickAssign(1);
-		}
-		else if (Input.GetButtonDown("ControllerTwo" + "Confirm"))
-		{
-			ConfirmQuickAssign(2);
-		}
 	}
 
 	public bool IsOnRight()
@@ -152,13 +137,13 @@ public class PlayersMenu : BaseMenu
 		}
 	}
 
-	public void ConfirmQuickAssign(int index)
+	public void ConfirmQuickAssign()
 	{
 		if (gameObject.activeSelf)
 		{
 			_audio.Sound("Selected").Play();
 			_cpuTextLeft.SetActive(false);
-			_playerIcons[index].anchoredPosition = new Vector2(_left, 275.0f);
+			_playerIcons[0].anchoredPosition = new Vector2(_left, 275.0f);
 		}
 	}
 

@@ -40,6 +40,13 @@ public class WalkState : GroundParentState
 		return true;
 	}
 
+	public override bool ToDashState(int direction)
+	{
+		_dashState.DashDirection = direction;
+		_stateMachine.ChangeState(_dashState);
+		return true;
+	}
+
 	private void ToJumpForwardState()
 	{
 		if (_baseController.Jump() && !_playerMovement.HasJumped)

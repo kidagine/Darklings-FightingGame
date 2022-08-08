@@ -75,6 +75,9 @@ public class ReplaysMenu : BaseMenu
 		yield return null;
 		_replaysGroup.anchoredPosition = new Vector2(0.0f, -(_replaysGroup.rect.height / 2.0f));
 		_scrollView.anchoredPosition = Vector2.zero;
-		_replayCards[0].GetComponent<Button>().Select();
+		if (_replayCards.Count > 0)
+		{
+			_replayCards[0].GetComponent<Button>().Select();
+		}
 	}
 }

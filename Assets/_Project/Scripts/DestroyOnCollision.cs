@@ -7,7 +7,7 @@ public class DestroyOnCollision : MonoBehaviour
 
 	void Start()
 	{
-		_hitbox.OnCollision += ()=> Destroy(gameObject);
+		_hitbox.OnGroundCollision += ()=> Destroy(gameObject);
 	}
 
 	void OnDestroy()
@@ -19,6 +19,6 @@ public class DestroyOnCollision : MonoBehaviour
 				Instantiate(_dustPrefab, transform.position, Quaternion.identity);
 			}
 		}
-		_hitbox.OnCollision -= ()=> Destroy(gameObject);
+		_hitbox.OnGroundCollision -= ()=> Destroy(gameObject);
 	}
 }

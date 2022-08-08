@@ -23,15 +23,12 @@ public class PatchNotesMenu : BaseMenu
 
 	void Update()
 	{
-		Scroll("KeyboardOne");
-		Scroll("KeyboardTwo");
-		Scroll("ControllerOne");
-		Scroll("ControllerTwo");
+		Scroll();
 	}
 
-	private void Scroll(string inputName)
+	private void Scroll()
 	{
-		float movement = (Input.GetAxisRaw(inputName + "Vertical") * Time.deltaTime * _scrollSpeed) * -1;
+		float movement = (InputManager.Instance.NavigationInput.y * Time.deltaTime * _scrollSpeed) * -1;
 		if (movement < 0 && _scrollView.anchoredPosition.y > 0 || movement > 0 && _scrollView.anchoredPosition.y <= bottomScrollLimit)
 		{
 			_scrollView.anchoredPosition += new Vector2(0.0f, movement);
