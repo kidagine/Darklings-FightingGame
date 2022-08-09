@@ -35,42 +35,7 @@ public class CharacterAssistSelector : MonoBehaviour
 
 	private void OnEnable()
 	{
-		if (_isPlayerOne)
-		{
-			if (SceneSettings.ControllerOne == "Cpu")
-			{
-				_controllerInputName = SceneSettings.ControllerTwo;
-			}
-			else
-			{
-				if (SceneSettings.ControllerOne == "KeyboardOne" || SceneSettings.ControllerOne == "KeyboardTwo")
-				{
-					_controllerInputName = "Keyboard";
-				}
-				else
-				{
-					_controllerInputName = SceneSettings.ControllerOne;
-				}
-			}
-		}
-		else
-		{
-			if (SceneSettings.ControllerTwo == "Cpu")
-			{
-				_controllerInputName = SceneSettings.ControllerOne;
-			}
-			else
-			{
-				if (SceneSettings.ControllerTwo == "KeyboardOne" || SceneSettings.ControllerTwo == "KeyboardTwo")
-				{
-					_controllerInputName = "Keyboard";
-				}
-				else
-				{
-					_controllerInputName = SceneSettings.ControllerTwo;
-				}
-			}
-		}
+
 	}
 
 	private void Update()

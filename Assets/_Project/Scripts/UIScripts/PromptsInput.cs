@@ -13,6 +13,7 @@ public class PromptsInput : MonoBehaviour
 
 	void OnEnable()
 	{
-		_inputManager.CurrentPrompts = this;
+		if (_inputManager != null)
+			_inputManager.CurrentPrompts = this;
 	}
 }

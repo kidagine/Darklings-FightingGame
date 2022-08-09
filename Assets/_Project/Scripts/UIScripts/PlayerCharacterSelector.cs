@@ -32,42 +32,6 @@ public class PlayerCharacterSelector : MonoBehaviour
 	private void OnEnable()
 	{
 		_rectTransform = GetComponent<RectTransform>();
-		if (_isPlayerOne)
-		{
-			if (SceneSettings.ControllerOne == "Cpu")
-			{
-				if (SceneSettings.ControllerTwo == "Cpu")
-				{
-					_controllerInputName = "Keyboard";
-				}
-				else
-				{
-					_controllerInputName = SceneSettings.ControllerTwo;
-				}
-			}
-			else
-			{
-				_controllerInputName = SceneSettings.ControllerOne;
-			}
-		}
-		else
-		{
-			if (SceneSettings.ControllerTwo == "Cpu")
-			{
-				if (SceneSettings.ControllerOne == "Cpu")
-				{
-					_controllerInputName = "Keyboard";
-				}
-				else
-				{
-					_controllerInputName = SceneSettings.ControllerOne;
-				}
-			}
-			else
-			{
-				_controllerInputName = SceneSettings.ControllerTwo;
-			}
-		}
 	}
 
 	void Update()

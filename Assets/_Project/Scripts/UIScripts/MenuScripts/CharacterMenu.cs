@@ -213,8 +213,8 @@ public class CharacterMenu : BaseMenu
 
 	public void ResetControllerInput()
 	{
-		SceneSettings.ControllerOne = "Cpu";
-		SceneSettings.ControllerTwo = "Cpu";
+		//SceneSettings.ControllerOne = "Cpu";
+		//SceneSettings.ControllerTwo = "Cpu";
 	}
 
 	private void OnDisable()

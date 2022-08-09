@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(CpuController))]
@@ -32,6 +33,7 @@ public class BrainController : MonoBehaviour
 
 	public void SetControllerToCpu()
 	{
+		GetComponent<PlayerInput>().enabled = false;
 		ActiveController = _cpuController;
 		_cpuActive = true;
 		_playerController.enabled = false;

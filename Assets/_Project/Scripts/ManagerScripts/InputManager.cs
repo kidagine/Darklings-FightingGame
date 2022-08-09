@@ -1,13 +1,11 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
 using static UnityEngine.InputSystem.InputAction;
 
 public class InputManager : MonoBehaviour
 {
 	[HideInInspector] public UnityEvent OnInputChange;
-	[HideInInspector] public UnityEvent OnDeviceChange;
 	[SerializeField] private PlayerInput _playerInput;
 
 	public PromptsInput CurrentPrompts { private get; set; }
@@ -18,15 +16,6 @@ public class InputManager : MonoBehaviour
 	public void InputChange(PlayerInput playerInput)
 	{
 		OnInputChange?.Invoke();
-	}
-
-	public void DeviceRegained(PlayerInput playerInput)
-	{
-		OnDeviceChange?.Invoke();
-	}
-	public void DeviceLost(PlayerInput playerInput)
-	{
-		OnDeviceChange?.Invoke();
 	}
 
 	public void Navigation(CallbackContext callbackContext)

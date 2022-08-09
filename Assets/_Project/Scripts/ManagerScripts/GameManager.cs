@@ -17,8 +17,10 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private CharacterTypeEnum _characterTwo = default;
 	[SerializeField] private AssistTypeEnum _assistOne = default;
 	[SerializeField] private AssistTypeEnum _assistTwo = default;
-	[SerializeField] private ControllerTypeEnum _controllerOne = default;
-	[SerializeField] private ControllerTypeEnum _controllerTwo = default;
+	[Range(-1, 3)]
+	[SerializeField] private int _controllerOne = default;
+	[Range(-1, 3)]
+	[SerializeField] private int _controllerTwo = default;
 	[SerializeField] private MusicTypeEnum _music = default;
 	[Range(0, 10)]
 	[SerializeField] private int _playerOneSkin = default;
@@ -54,7 +56,6 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected GameObject _playerNetcode = default;
 	[SerializeField] protected GameObject _infiniteTime = default;
 	[SerializeField] protected GameObject _winsImage = default;
-	[SerializeField] private GameObject _networkCanvas = default;
 	[SerializeField] private GameObject[] _hearts = default;
 	[SerializeField] private GameObject _trainingPrompts = default;
 	[SerializeField] private MusicMenu _musicMenu = default;
@@ -77,7 +78,7 @@ public class GameManager : MonoBehaviour
 	private Coroutine _hitStopCoroutine;
 	private Sound _currentMusic;
 	private GameObject _currentStage;
-	private List<IHitstop> _hitstopList = new List<IHitstop>();
+	private List<IHitstop> _hitstopList = new();
 	private Vector2 _cachedOneResetPosition;
 	private Vector2 _cachedTwoResetPosition;
 	private float _countdown;
@@ -112,8 +113,8 @@ public class GameManager : MonoBehaviour
 		CheckInstance();
 		if (!SceneSettings.SceneSettingsDecide)
 		{
-			SceneSettings.ControllerOne = _controllerOne.ToString();
-			SceneSettings.ControllerTwo = _controllerTwo.ToString();
+			SceneSettings.ControllerOne = _controllerOne;
+			SceneSettings.ControllerTwo = _controllerTwo;
 			SceneSettings.PlayerOne = (int)_characterOne;
 			SceneSettings.PlayerTwo = (int)_characterTwo;
 			SceneSettings.AssistOne = (int)_assistOne;
@@ -124,31 +125,13 @@ public class GameManager : MonoBehaviour
 			SceneSettings.IsTrainingMode = _isTrainingMode;
 			SceneSettings.Bit1 = _1BitOn;
 			SceneSettings.MusicName = _music.ToString();
-			if (_isOnlineMode)
-			{
-				//_networkCanvas.SetActive(true);
-			}
 		}
 		else
 		{
-			//_networkCanvas.SetActive(false);
 			_isTrainingMode = SceneSettings.IsTrainingMode;
 		}
 		CheckSceneSettings();
 
-		if (_isTrainingMode)
-		{
-			if (SceneSettings.ControllerOne == ControllerTypeEnum.ControllerOne.ToString())
-			{
-				_controllerPrompts.SetActive(true);
-				_keyboardPrompts.SetActive(false);
-			}
-			else
-			{
-				_controllerPrompts.SetActive(false);
-				_keyboardPrompts.SetActive(true);
-			}
-		}
 		GameObject playerOneObject = Instantiate(_playerLocal);
 		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
 		GameObject playerTwoObject = Instantiate(_playerLocal);
@@ -169,7 +152,7 @@ public class GameManager : MonoBehaviour
 		playerTwoObject.SetActive(true);
 		PlayerOne.transform.position = _spawnPositions[0].position;
 		PlayerTwo.transform.position = _spawnPositions[1].position;
-		if (SceneSettings.ControllerOne != ControllerTypeEnum.Cpu.ToString())
+		if (SceneSettings.ControllerOne != -1)
 		{
 			_playerOneController.SetControllerToPlayer();
 		}
@@ -177,7 +160,7 @@ public class GameManager : MonoBehaviour
 		{
 			_playerOneController.SetControllerToCpu();
 		}
-		if (SceneSettings.ControllerTwo != ControllerTypeEnum.Cpu.ToString())
+		if (SceneSettings.ControllerTwo != -1)
 		{
 			_playerTwoController.SetControllerToPlayer();
 		}
@@ -213,16 +196,28 @@ public class GameManager : MonoBehaviour
 		PlayerTwo.SetAssist(_assists[SceneSettings.AssistTwo]);
 		PlayerOne.SetOtherPlayer(PlayerTwo);
 		PlayerOne.IsPlayerOne = true;
-		_playerOneController.ControllerInputName = SceneSettings.ControllerOne;
+		_playerOneController.ControllerInputName = InputSystem.devices[SceneSettings.ControllerOne].displayName;
 		PlayerTwo.SetOtherPlayer(PlayerOne);
 		PlayerTwo.IsPlayerOne = false;
-		_playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
+		_playerTwoController.ControllerInputName = InputSystem.devices[SceneSettings.ControllerTwo].displayName;
 		PlayerOne.name = $"{_playerStats[SceneSettings.PlayerOne].name}({SceneSettings.ControllerOne})_player";
 		PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
 		PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
 		PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
-		PlayerOne.GetComponent<PlayerInput>().SwitchCurrentControlScheme("Keyboard", InputSystem.devices[0]);
-		PlayerTwo.GetComponent<PlayerInput>().SwitchCurrentControlScheme("Gamepad", InputSystem.devices[3]);
+		if (SceneSettings.ControllerOne <= 1)
+		{
+			_keyboardPrompts.SetActive(true);
+			_controllerPrompts.SetActive(false);
+		}
+		else
+		{
+			_keyboardPrompts.SetActive(false);
+			_controllerPrompts.SetActive(true);
+		}
+		if (SceneSettings.ControllerOne != -1)
+			PlayerOne.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
+		if (SceneSettings.ControllerTwo != -1)
+			PlayerTwo.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
 		_inputHistories[0].PlayerController = PlayerOne.GetComponent<PlayerController>();
 		_inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
 		_cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
@@ -689,8 +684,10 @@ public class GameManager : MonoBehaviour
 				_playerOneController.SetControllerToPlayer();
 				_playerTwoController.SetControllerToCpu();
 			}
-			_playerOneController.ControllerInputName = SceneSettings.ControllerOne;
-			_playerTwoController.ControllerInputName = SceneSettings.ControllerTwo;
+			if (SceneSettings.ControllerOne != -1)
+				PlayerOne.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
+			if (SceneSettings.ControllerTwo != -1)
+				PlayerTwo.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
 		}
 		else
 		{
@@ -704,9 +701,12 @@ public class GameManager : MonoBehaviour
 				_playerOneController.SetControllerToPlayer();
 				_playerTwoController.SetControllerToCpu();
 			}
-			_playerOneController.ControllerInputName = SceneSettings.ControllerTwo;
-			_playerTwoController.ControllerInputName = SceneSettings.ControllerOne;
+			if (SceneSettings.ControllerTwo != -1)
+				PlayerOne.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
+			if (SceneSettings.ControllerOne != -1)
+				PlayerTwo.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
 		}
+
 		_hasSwitchedCharacters = !_hasSwitchedCharacters;
 		yield return new WaitForSecondsRealtime(0.1f);
 		_canCallSwitchCharacter = true;
