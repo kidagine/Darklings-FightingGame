@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 public class PromptsInput : MonoBehaviour
 {
+	[SerializeField] private InputManager _inputManager = default;
 	public UnityEvent OnConfirm;
 	public UnityEvent OnBack;
 	public UnityEvent OnCoop;
@@ -12,6 +13,6 @@ public class PromptsInput : MonoBehaviour
 
 	void OnEnable()
 	{
-		InputManager.Instance.CurrentPrompts = this;
+		_inputManager.CurrentPrompts = this;
 	}
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PatchNotesMenu : BaseMenu
 {
+	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private BaseMenu[] _menues = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private RectTransform _patchNotes = default;
@@ -28,7 +29,7 @@ public class PatchNotesMenu : BaseMenu
 
 	private void Scroll()
 	{
-		float movement = (InputManager.Instance.NavigationInput.y * Time.deltaTime * _scrollSpeed) * -1;
+		float movement = (_inputManager.NavigationInput.y * Time.deltaTime * _scrollSpeed) * -1;
 		if (movement < 0 && _scrollView.anchoredPosition.y > 0 || movement > 0 && _scrollView.anchoredPosition.y <= bottomScrollLimit)
 		{
 			_scrollView.anchoredPosition += new Vector2(0.0f, movement);

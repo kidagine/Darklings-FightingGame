@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -220,6 +221,8 @@ public class GameManager : MonoBehaviour
 		PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
 		PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
 		PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
+		PlayerOne.GetComponent<PlayerInput>().SwitchCurrentControlScheme("Keyboard", InputSystem.devices[0]);
+		PlayerTwo.GetComponent<PlayerInput>().SwitchCurrentControlScheme("Gamepad", InputSystem.devices[3]);
 		_inputHistories[0].PlayerController = PlayerOne.GetComponent<PlayerController>();
 		_inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
 		_cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);

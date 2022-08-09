@@ -1,10 +1,11 @@
 using Demonics.Sounds;
 using UnityEngine;
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerIcon : MonoBehaviour
 {
+	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private PlayersMenu _playersMenu = default;
-	[SerializeField] private string _inputName = default;
 	private RectTransform _rectTransform;
 	private Audio _audio;
 	private readonly float _left = -375.0f;
@@ -21,14 +22,9 @@ public class PlayerIcon : MonoBehaviour
 		_originalPositionY = _rectTransform.anchoredPosition.y;
 	}
 
-	void Update()
+	public void Movement(CallbackContext callbackContext)
 	{
-		Movement(_inputName);
-	}
-
-	private void Movement(string inputName)
-	{
-		float movement = Input.GetAxisRaw(inputName + "Horizontal");
+		float movement = callbackContext.ReadValue<Vector2>().x;
 		if (movement != 0.0f)
 		{
 			if (!_isMovenentInUse)
@@ -79,10 +75,13 @@ public class PlayerIcon : MonoBehaviour
 
 	public void Center()
 	{
-		transform.GetChild(0).gameObject.SetActive(true);
-		transform.GetChild(1).gameObject.SetActive(true);
-		_playersMenu.CpuTextLeft.SetActive(true);
-		_playersMenu.CpuTextRight.SetActive(true);
-		_rectTransform.anchoredPosition = new Vector2(_center, _originalPositionY);
+		if (gameObject.activeSelf)
+		{
+			transform.GetChild(0).gameObject.SetActive(true);
+			transform.GetChild(1).gameObject.SetActive(true);
+			_playersMenu.CpuTextLeft.SetActive(true);
+			_playersMenu.CpuTextRight.SetActive(true);
+			_rectTransform.anchoredPosition = new Vector2(_center, _originalPositionY);
+		}
 	}
 }

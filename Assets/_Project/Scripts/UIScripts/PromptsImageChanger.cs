@@ -3,7 +3,8 @@ using UnityEngine.UI;
 
 public class PromptsImageChanger : MonoBehaviour
 {
-	[SerializeField] private Image _promptImage = default;
+	[SerializeField] private InputManager _inputManager = default;
+		[SerializeField] private Image _promptImage = default;
 	[SerializeField] private Sprite _promptKeyboardSprite = default;
 	[SerializeField] private Sprite _promptControllerSprite = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
@@ -11,12 +12,12 @@ public class PromptsImageChanger : MonoBehaviour
 
 	void Awake()
 	{
-		InputManager.Instance.OnInputChange.AddListener(() => SetCorrectPromptSprite());
+		_inputManager.OnInputChange.AddListener(() => SetCorrectPromptSprite());
 	}
 
 	private void SetCorrectPromptSprite()
 	{
-		string inputScheme = InputManager.Instance.InputScheme;
+		string inputScheme = _inputManager.InputScheme;
 		if (inputScheme == "Keyboard")
 		{
 			_promptImage.sprite = _promptKeyboardSprite;
