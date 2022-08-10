@@ -80,7 +80,7 @@ public class PlayerUI : MonoBehaviour
 				if (SceneSettings.NameOne == "")
 				{
 
-					if (SceneSettings.ControllerOne == "Cpu")
+					if (SceneSettings.ControllerOne == -1)
 					{
 						PlayerName = "Cpu 1";
 						_playerName.text = PlayerName;
@@ -102,7 +102,7 @@ public class PlayerUI : MonoBehaviour
 			{
 				if (SceneSettings.NameTwo == "")
 				{
-					if (SceneSettings.ControllerTwo == "Cpu")
+					if (SceneSettings.ControllerTwo == -1)
 					{
 						PlayerName = "Cpu 2";
 						_playerName.text = PlayerName;
@@ -125,7 +125,7 @@ public class PlayerUI : MonoBehaviour
 			{
 				SetPortrait(playerStats.portraits[SceneSettings.ColorOne]);
 			}
-			else 
+			else
 			{
 				SetPortrait(playerStats.portraits[SceneSettings.ColorTwo]);
 			}

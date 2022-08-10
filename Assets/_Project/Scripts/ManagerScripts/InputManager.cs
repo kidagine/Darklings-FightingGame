@@ -1,10 +1,9 @@
-using Demonics.Manager;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
-public class InputManager : Singleton<InputManager>
+public class InputManager : MonoBehaviour
 {
 	[HideInInspector] public UnityEvent OnInputChange;
 	[SerializeField] private PlayerInput _playerInput;

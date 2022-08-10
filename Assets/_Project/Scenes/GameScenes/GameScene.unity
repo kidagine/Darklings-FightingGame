@@ -325,6 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 760377693}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -5127,39 +5128,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f6edf85cd646454995d0f0d1519be8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _confirmUnityEvent:
+  _inputManager: {fileID: 0}
+  OnConfirm:
     m_PersistentCalls:
       m_Calls: []
-  _backUnityEvent:
+  OnBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 856490118}
-        m_TargetAssemblyTypeName: ReplayManager, Scripts
-        m_MethodName: Pause
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _mainSpecialUnityEvent:
+      m_Calls: []
+  OnCoop:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 856490118}
-        m_TargetAssemblyTypeName: ReplayManager, Scripts
-        m_MethodName: ToggleReplayInputHistory
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  OnStage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnControls:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &283294400
 GameObject:
   m_ObjectHideFlags: 0
@@ -6494,6 +6478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 1735258530}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -6778,11 +6763,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 0
-  _characterOne: 0
+  _characterOne: 1
   _characterTwo: 0
   _assistOne: 0
   _assistTwo: 0
-  _controllerOne: 2
+  _controllerOne: 0
   _controllerTwo: 3
   _music: 8
   _playerOneSkin: 0
@@ -6820,7 +6805,6 @@ MonoBehaviour:
   _playerNetcode: {fileID: 8073473790702501986, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
   _infiniteTime: {fileID: 2133406262}
   _winsImage: {fileID: 1594352878}
-  _networkCanvas: {fileID: 0}
   _hearts:
   - {fileID: 7813245562269781432}
   - {fileID: 8830145531776469847}
@@ -10917,6 +10901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 636207355}
   _promptKeyboardSprite: {fileID: -5744001084450905212, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 3574784117742261094, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -14945,13 +14930,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f6edf85cd646454995d0f0d1519be8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _confirmUnityEvent:
+  _inputManager: {fileID: 0}
+  OnConfirm:
     m_PersistentCalls:
       m_Calls: []
-  _backUnityEvent:
+  OnBack:
     m_PersistentCalls:
       m_Calls: []
-  _mainSpecialUnityEvent:
+  OnCoop:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnControls:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &839049831
@@ -16385,6 +16377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 812087157}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -16441,6 +16434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 547973123}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -16880,6 +16874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 972123861}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -17335,6 +17330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 988371117}
   _promptKeyboardSprite: {fileID: -5744001084450905212, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 3574784117742261094, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -17618,6 +17614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 997187837}
   _promptKeyboardSprite: {fileID: -5744001084450905212, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 3574784117742261094, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -20760,25 +20757,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f6edf85cd646454995d0f0d1519be8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _confirmUnityEvent:
+  _inputManager: {fileID: 0}
+  OnConfirm:
     m_PersistentCalls:
       m_Calls: []
-  _backUnityEvent:
+  OnBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 729468312}
-        m_TargetAssemblyTypeName: TrainingMenu, Scripts
-        m_MethodName: HideMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _mainSpecialUnityEvent:
+      m_Calls: []
+  OnCoop:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnControls:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1152085417
@@ -25833,6 +25825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 1434750810}
   _promptKeyboardSprite: {fileID: -5445187280585305228, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: -3181972328962128513, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -25888,6 +25881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 1440477652}
   _promptKeyboardSprite: {fileID: -5445187280585305228, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: -3181972328962128513, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -27347,13 +27341,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f6edf85cd646454995d0f0d1519be8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _confirmUnityEvent:
+  _inputManager: {fileID: 0}
+  OnConfirm:
     m_PersistentCalls:
       m_Calls: []
-  _backUnityEvent:
+  OnBack:
     m_PersistentCalls:
       m_Calls: []
-  _mainSpecialUnityEvent:
+  OnCoop:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnControls:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1483426536
@@ -30472,6 +30473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 1664848091}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -31787,25 +31789,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f6edf85cd646454995d0f0d1519be8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _confirmUnityEvent:
+  _inputManager: {fileID: 0}
+  OnConfirm:
     m_PersistentCalls:
       m_Calls: []
-  _backUnityEvent:
+  OnBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 784621987}
-        m_TargetAssemblyTypeName: CommandListMenu, Scripts
-        m_MethodName: Back
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _mainSpecialUnityEvent:
+      m_Calls: []
+  OnCoop:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnControls:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1001 &1658313037
@@ -32124,25 +32121,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f6edf85cd646454995d0f0d1519be8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _confirmUnityEvent:
+  _inputManager: {fileID: 0}
+  OnConfirm:
     m_PersistentCalls:
       m_Calls: []
-  _backUnityEvent:
+  OnBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 242059569}
-        m_TargetAssemblyTypeName: PauseMenu, Scripts
-        m_MethodName: ClosePause
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _mainSpecialUnityEvent:
+      m_Calls: []
+  OnCoop:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnControls:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1671021591
@@ -33902,6 +33894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 1304521463}
   _promptKeyboardSprite: {fileID: -509814621177710837, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: -6473074045361762652, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -35384,25 +35377,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f6edf85cd646454995d0f0d1519be8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _confirmUnityEvent:
+  _inputManager: {fileID: 0}
+  OnConfirm:
     m_PersistentCalls:
       m_Calls: []
-  _backUnityEvent:
+  OnBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1691356162}
-        m_TargetAssemblyTypeName: PauseMenu, Scripts
-        m_MethodName: ClosePause
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _mainSpecialUnityEvent:
+      m_Calls: []
+  OnCoop:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnControls:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1817988703
@@ -37427,6 +37415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 1925314875}
   _promptKeyboardSprite: {fileID: -5445187280585305228, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: -3181972328962128513, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -38765,6 +38754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 829998997}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -47842,6 +47832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 8185872015407278188}
   _promptKeyboardSprite: {fileID: -5445187280585305228, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: -3181972328962128513, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
@@ -48533,6 +48524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 0}
   _promptImage: {fileID: 8185872016612641274}
   _promptKeyboardSprite: {fileID: -5744001084450905212, guid: c026204bc7fb08d408029c1534099470, type: 3}
   _promptControllerSprite: {fileID: 3574784117742261094, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}

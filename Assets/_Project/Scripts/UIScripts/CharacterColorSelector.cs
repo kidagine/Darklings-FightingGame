@@ -6,6 +6,7 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class CharacterColorSelector : MonoBehaviour
 {
+	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private CharacterMenu _characterMenu = default;
 	[SerializeField] private TextMeshProUGUI _playerOneColorNumber = default;
 	[SerializeField] private TextMeshProUGUI _assistIndicatorText = default;
@@ -17,7 +18,7 @@ public class CharacterColorSelector : MonoBehaviour
 	private Vector2 _directionInput;
 	private string _controllerInputName;
 	private bool _inputDeactivated;
-
+	private bool _pressed;
 
 	public int ColorNumber { get; private set; }
 	public bool HasSelected { get; set; }
@@ -30,48 +31,19 @@ public class CharacterColorSelector : MonoBehaviour
 
 	private void OnEnable()
 	{
-		if (_isPlayerOne)
-		{
-			if (SceneSettings.ControllerOne == "Cpu")
-			{
-				_controllerInputName = SceneSettings.ControllerTwo;
-			}
-			else
-			{
-				if (SceneSettings.ControllerOne == "KeyboardOne" || SceneSettings.ControllerOne == "KeyboardTwo")
-				{
-					_controllerInputName = "Keyboard";
-				}
-				else
-				{
-					_controllerInputName = SceneSettings.ControllerOne;
-				}
-			}
-		}
-		else
-		{
-			if (SceneSettings.ControllerTwo == "Cpu")
-			{
-				_controllerInputName = SceneSettings.ControllerOne;
-			}
-			else
-			{
-				if (SceneSettings.ControllerTwo == "KeyboardOne" || SceneSettings.ControllerTwo == "KeyboardTwo")
-				{
-					_controllerInputName = "Keyboard";
-				}
-				else
-				{
-					_controllerInputName = SceneSettings.ControllerTwo;
-				}
-			}
-		}
+
 	}
-	public void Movement(CallbackContext callbackContext)
+
+	private void Update()
+	{
+		Movement();
+	}
+
+	public void Movement()
 	{
 		if (!_inputDeactivated && !_changeStageMenu.IsOpen)
 		{
-			_directionInput = callbackContext.ReadValue<Vector2>();
+			_directionInput = _inputManager.NavigationInput;
 			if (_directionInput.x == 1.0f)
 			{
 				_audio.Sound("Pressed").Play();
@@ -86,24 +58,28 @@ public class CharacterColorSelector : MonoBehaviour
 			}
 			ColorNumber = _playerAnimator.SetSpriteLibraryAsset(ColorNumber);
 			_playerOneColorNumber.text = $"Color {ColorNumber + 1}";
+		}
+	}
 
-			if (Input.GetButtonDown(_controllerInputName + "Confirm"))
+	public void Confirm()
+	{
+		if (!_pressed)
+		{
+			_pressed = true;
+			if (_isPlayerOne)
 			{
-				if (_isPlayerOne)
-				{
-					SceneSettings.ColorOne = ColorNumber;
-				}
-				else
-				{
-					SceneSettings.ColorTwo = ColorNumber;
-				}
-				_audio.Sound("Selected").Play();
-				_inputDeactivated = true;
-				_arrows.SetActive(false);
-				_characterMenu.SetCharacter(_isPlayerOne);
-				transform.GetChild(0).gameObject.SetActive(false);
-				_assistIndicatorText.gameObject.SetActive(false);
+				SceneSettings.ColorOne = ColorNumber;
 			}
+			else
+			{
+				SceneSettings.ColorTwo = ColorNumber;
+			}
+			_audio.Sound("Selected").Play();
+			_inputDeactivated = true;
+			_arrows.SetActive(false);
+			_characterMenu.SetCharacter(_isPlayerOne);
+			transform.GetChild(0).gameObject.SetActive(false);
+			_assistIndicatorText.gameObject.SetActive(false);
 		}
 	}
 

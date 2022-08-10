@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PromptsImageChanger : MonoBehaviour
 {
+	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private Image _promptImage = default;
 	[SerializeField] private Sprite _promptKeyboardSprite = default;
 	[SerializeField] private Sprite _promptControllerSprite = default;
@@ -11,24 +13,50 @@ public class PromptsImageChanger : MonoBehaviour
 
 	void Awake()
 	{
-		InputManager.Instance.OnInputChange.AddListener(() => SetCorrectPromptSprite());
+		if (_inputManager != null)
+		{
+			_inputManager.OnInputChange.AddListener(() => SetCorrectPromptSprite());
+		}
 	}
 
 	private void SetCorrectPromptSprite()
 	{
-		string inputScheme = InputManager.Instance.InputScheme;
-		if (inputScheme == "Keyboard")
+		if (_pauseMenu == null)
 		{
-			_promptImage.sprite = _promptKeyboardSprite;
+			string inputScheme = _inputManager.InputScheme;
+			if (inputScheme == "Keyboard")
+			{
+				_promptImage.sprite = _promptKeyboardSprite;
+			}
+			else
+			{
+				_promptImage.sprite = _promptControllerSprite;
+			}
 		}
 		else
 		{
-			_promptImage.sprite = _promptControllerSprite;
+			string inputScheme = _pauseMenu.PauseControllerType;
+			if (inputScheme == "Keyboard")
+			{
+				_promptImage.sprite = _promptKeyboardSprite;
+			}
+			else
+			{
+				_promptImage.sprite = _promptControllerSprite;
+			}
 		}
 	}
 
 	void OnEnable()
 	{
 		SetCorrectPromptSprite();
+	}
+
+	void OnDisable()
+	{
+		if (_inputManager != null)
+		{
+			_inputManager.OnInputChange.RemoveListener(() => SetCorrectPromptSprite());
+		}
 	}
 }
