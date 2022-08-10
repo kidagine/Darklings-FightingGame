@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(InputBuffer))]
@@ -135,6 +134,7 @@ public class PlayerController : BaseController
 			_inputBuffer.AddInputBufferItem(InputEnum.Parry);
 		}
 	}
+
 	public void Dash(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
@@ -147,6 +147,14 @@ public class PlayerController : BaseController
 			{
 				_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
 			}
+		}
+	}
+
+	public void Pause(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			_player.Pause(_brainController.IsPlayerOne);
 		}
 	}
 	//TRAINING
@@ -165,12 +173,60 @@ public class PlayerController : BaseController
 			GameManager.Instance.SwitchCharacters();
 		}
 	}
-
-	public void Pause(CallbackContext callbackContext)
+	//UI
+	public void Confirm(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
 		{
-			_player.Pause(_brainController.IsPlayerOne);
+			CurrentPrompts?.OnConfirm?.Invoke();
+		}
+	}
+
+	public void Back(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnBack?.Invoke();
+		}
+	}
+
+	public void Stage(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnStage?.Invoke();
+		}
+	}
+
+	public void Coop(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnCoop?.Invoke();
+		}
+	}
+
+	public void Controls(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnControls?.Invoke();
+		}
+	}
+
+	public void PageLeft(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnLeftPage?.Invoke();
+		}
+	}
+
+	public void PageRight(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnRightPage?.Invoke();
 		}
 	}
 }

@@ -3541,6 +3541,18 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 500
       objectReference: {fileID: 0}
+    - target: {fileID: 4703080449925156751, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449925156751, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449925156751, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 2
@@ -5142,6 +5154,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &283294400
@@ -6768,7 +6786,7 @@ MonoBehaviour:
   _assistOne: 0
   _assistTwo: 0
   _controllerOne: 0
-  _controllerTwo: 3
+  _controllerTwo: 0
   _music: 8
   _playerOneSkin: 0
   _playerTwoSkin: 0
@@ -14936,7 +14954,19 @@ MonoBehaviour:
       m_Calls: []
   OnBack:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 534647985}
+        m_TargetAssemblyTypeName: PauseMenu, Scripts
+        m_MethodName: ClosePause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnCoop:
     m_PersistentCalls:
       m_Calls: []
@@ -14944,6 +14974,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &839049831
@@ -20763,7 +20799,19 @@ MonoBehaviour:
       m_Calls: []
   OnBack:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 729468312}
+        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+        m_MethodName: OpenMenuHideCurrent
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 534647985}
+          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnCoop:
     m_PersistentCalls:
       m_Calls: []
@@ -20773,6 +20821,36 @@ MonoBehaviour:
   OnControls:
     m_PersistentCalls:
       m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 729468312}
+        m_TargetAssemblyTypeName: TrainingMenu, Scripts
+        m_MethodName: ChangePage
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnRightPage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 729468312}
+        m_TargetAssemblyTypeName: TrainingMenu, Scripts
+        m_MethodName: ChangePage
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1152085417
 GameObject:
   m_ObjectHideFlags: 0
@@ -27347,7 +27425,19 @@ MonoBehaviour:
       m_Calls: []
   OnBack:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 860885408}
+        m_TargetAssemblyTypeName: PauseMenu, Scripts
+        m_MethodName: ClosePause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnCoop:
     m_PersistentCalls:
       m_Calls: []
@@ -27355,6 +27445,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1483426536
@@ -31795,7 +31891,19 @@ MonoBehaviour:
       m_Calls: []
   OnBack:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 784621987}
+        m_TargetAssemblyTypeName: CommandListMenu, Scripts
+        m_MethodName: Back
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnCoop:
     m_PersistentCalls:
       m_Calls: []
@@ -31805,6 +31913,36 @@ MonoBehaviour:
   OnControls:
     m_PersistentCalls:
       m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 784621987}
+        m_TargetAssemblyTypeName: CommandListMenu, Scripts
+        m_MethodName: ChangePage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnRightPage:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 784621987}
+        m_TargetAssemblyTypeName: CommandListMenu, Scripts
+        m_MethodName: ChangePage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1658313037
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32135,6 +32273,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1671021591
@@ -35391,6 +35535,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1817988703

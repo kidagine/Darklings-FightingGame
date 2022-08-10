@@ -74,6 +74,8 @@ public class GameManager : MonoBehaviour
 	protected BrainController _playerTwoController;
 	private PlayerAnimator _playerOneAnimator;
 	private PlayerAnimator _playerTwoAnimator;
+	private PlayerInput _playerOneInput;
+	private PlayerInput _playerTwoInput;
 	private Coroutine _roundOverTrainingCoroutine;
 	private Coroutine _hitStopCoroutine;
 	private Sound _currentMusic;
@@ -100,6 +102,7 @@ public class GameManager : MonoBehaviour
 	public Player PlayerOne { get; private set; }
 	public Player PlayerTwo { get; private set; }
 	public static GameManager Instance { get; private set; }
+	public BaseController PausedController { get; set; }
 	public float GameSpeed { get; set; }
 
 
@@ -196,10 +199,24 @@ public class GameManager : MonoBehaviour
 		PlayerTwo.SetAssist(_assists[SceneSettings.AssistTwo]);
 		PlayerOne.SetOtherPlayer(PlayerTwo);
 		PlayerOne.IsPlayerOne = true;
-		_playerOneController.ControllerInputName = InputSystem.devices[SceneSettings.ControllerOne].displayName;
+		if (SceneSettings.ControllerOne != -1)
+		{
+			_playerOneController.ControllerInputName = InputSystem.devices[SceneSettings.ControllerOne].displayName;
+		}
+		else
+		{
+			_playerOneController.ControllerInputName = "Cpu";
+		}
 		PlayerTwo.SetOtherPlayer(PlayerOne);
 		PlayerTwo.IsPlayerOne = false;
-		_playerTwoController.ControllerInputName = InputSystem.devices[SceneSettings.ControllerTwo].displayName;
+		if (SceneSettings.ControllerTwo != -1)
+		{
+			_playerTwoController.ControllerInputName = InputSystem.devices[SceneSettings.ControllerTwo].displayName;
+		}
+		else
+		{
+			_playerTwoController.ControllerInputName = "Cpu";
+		}
 		PlayerOne.name = $"{_playerStats[SceneSettings.PlayerOne].name}({SceneSettings.ControllerOne})_player";
 		PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
 		PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
@@ -214,10 +231,12 @@ public class GameManager : MonoBehaviour
 			_keyboardPrompts.SetActive(false);
 			_controllerPrompts.SetActive(true);
 		}
+		_playerOneInput = PlayerOne.GetComponent<PlayerInput>();
+		_playerTwoInput = PlayerTwo.GetComponent<PlayerInput>();
 		if (SceneSettings.ControllerOne != -1)
-			PlayerOne.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
+			_playerOneInput.SwitchCurrentControlScheme("Keyboard", InputSystem.devices[SceneSettings.ControllerOne]);
 		if (SceneSettings.ControllerTwo != -1)
-			PlayerTwo.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
+			_playerTwoInput.SwitchCurrentControlScheme("KeyboardTwo", InputSystem.devices[SceneSettings.ControllerTwo]);
 		_inputHistories[0].PlayerController = PlayerOne.GetComponent<PlayerController>();
 		_inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
 		_cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
@@ -678,16 +697,20 @@ public class GameManager : MonoBehaviour
 			{
 				_playerOneController.SetControllerToCpu();
 				_playerTwoController.SetControllerToPlayer();
+				_playerOneInput.enabled = false;
+				_playerTwoInput.enabled = true;
 			}
 			else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
 			{
 				_playerOneController.SetControllerToPlayer();
 				_playerTwoController.SetControllerToCpu();
+				_playerOneInput.enabled = true;
+				_playerTwoInput.enabled = false;
 			}
-			if (SceneSettings.ControllerOne != -1)
-				PlayerOne.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
-			if (SceneSettings.ControllerTwo != -1)
-				PlayerTwo.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
+			if (SceneSettings.ControllerOne != -1 && _playerOneInput.enabled)
+				_playerOneInput.SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
+			if (SceneSettings.ControllerTwo != -1 && _playerTwoInput.enabled)
+				_playerTwoInput.SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
 		}
 		else
 		{
@@ -695,16 +718,20 @@ public class GameManager : MonoBehaviour
 			{
 				_playerOneController.SetControllerToCpu();
 				_playerTwoController.SetControllerToPlayer();
+				_playerOneInput.enabled = false;
+				_playerTwoInput.enabled = true;
 			}
 			else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
 			{
 				_playerOneController.SetControllerToPlayer();
 				_playerTwoController.SetControllerToCpu();
+				_playerOneInput.enabled = true;
+				_playerTwoInput.enabled = false;
 			}
-			if (SceneSettings.ControllerTwo != -1)
-				PlayerOne.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
-			if (SceneSettings.ControllerOne != -1)
-				PlayerTwo.GetComponent<PlayerInput>().SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
+			if (SceneSettings.ControllerTwo != -1 && _playerOneInput.enabled)
+				_playerOneInput.SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
+			if (SceneSettings.ControllerOne != -1 && _playerTwoInput.enabled)
+				_playerTwoInput.SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
 		}
 
 		_hasSwitchedCharacters = !_hasSwitchedCharacters;
@@ -851,14 +878,26 @@ public class GameManager : MonoBehaviour
 
 	public void DisableAllInput()
 	{
-		_playerOneController.ActiveController.SetEnable(false);
-		_playerTwoController.ActiveController.SetEnable(false);
+		if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+		{
+			_playerOneInput.SwitchCurrentActionMap("UI");
+		}
+		if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+		{
+			_playerTwoInput.SwitchCurrentActionMap("UI");
+		}
 	}
 
 	public void EnableAllInput()
 	{
-		_playerOneController.ActiveController.SetEnable(true);
-		_playerTwoController.ActiveController.SetEnable(true);
+		if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+		{
+			_playerOneInput.SwitchCurrentActionMap("Gameplay");
+		}
+		if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+		{
+			_playerTwoInput.SwitchCurrentActionMap("Gameplay");
+		}
 	}
 
 	public void AddHitstop(IHitstop hitstop)
