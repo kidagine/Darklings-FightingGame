@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -90,7 +91,6 @@ public class PlayerController : BaseController
 	{
 		if (callbackContext.performed)
 		{
-			Debug.Log("AAb");
 			_inputBuffer.AddInputBufferItem(InputEnum.Light);
 		}
 	}
@@ -148,28 +148,32 @@ public class PlayerController : BaseController
 	{
 		if (callbackContext.performed)
 		{
-			Debug.Log("ss");
 			if (!_dashPressed)
 			{
 				_dashPressed = true;
-				float timeSinceLastPress = Time.time - _dashLastInputTime;
-				if (timeSinceLastPress <= _dashTime && InputDirection.x == _lastDashDirection)
-				{
-					if (InputDirection.x == 1)
-					{
-						_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
-					}
-					else
-					{
-						_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
-					}
-				}
-				_lastDashDirection = (int)InputDirection.x;
+				_lastDashDirection = (int)callbackContext.ReadValue<Vector2>().x;
 				_dashLastInputTime = Time.time;
 			}
-			else if (InputDirection.x == 0)
+			else
 			{
-				_dashPressed = false;
+				float timeSinceLastPress = Time.time - _dashLastInputTime;
+				if (timeSinceLastPress <= _dashTime)
+				{
+					if (callbackContext.ReadValue<Vector2>().x == _lastDashDirection)
+					{
+						if (_lastDashDirection == 1)
+						{
+							_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+						}
+						else
+						{
+							_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+						}
+						_dashPressed = false;
+					}
+				}
+				_lastDashDirection = (int)callbackContext.ReadValue<Vector2>().x;
+				_dashLastInputTime = Time.time;
 			}
 		}
 	}

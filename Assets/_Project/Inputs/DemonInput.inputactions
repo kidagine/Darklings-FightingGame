@@ -52,12 +52,12 @@
                 },
                 {
                     "name": "Dash",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "1d93204d-0917-4a15-8fe3-c74a8fdba30a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Dpad",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Light",
@@ -259,92 +259,136 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "6fb31ff3-8cef-481a-8f95-55fd551db4b2",
-                    "path": "<Gamepad>/dpad/right",
+                    "name": "Dpad",
+                    "id": "ee2d5dd6-0aa1-4d01-aaaf-d8b1c8c9e5cd",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "",
                     "action": "Dash",
-                    "isComposite": false,
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "349031b5-1f3a-4e1d-af52-e6f4b1c2378d",
+                    "name": "Left",
+                    "id": "d0eeed6a-c534-4d89-a9a7-a7b41d7b4160",
                     "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Dash",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "42198c76-6b60-497f-8c61-a2dfdfa4e6e9",
-                    "path": "<Keyboard>/d",
+                    "name": "Right",
+                    "id": "d6f58e8e-d26a-4b6e-b861-1654efadd7de",
+                    "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "Gamepad",
                     "action": "Dash",
                     "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "LeftStick",
+                    "id": "55279c65-f5ef-4f3b-855a-6fca88a4811b",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "9d352734-567d-4377-b63b-d77ee71868dc",
-                    "path": "<Keyboard>/a",
+                    "name": "Left",
+                    "id": "b335044a-98d8-4c03-a7d4-80f5558b1603",
+                    "path": "<Gamepad>/leftStick/left",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "Gamepad",
                     "action": "Dash",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "b4c06909-cfdc-4e8b-81b7-2cdee2f06cd9",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardTwo",
-                    "action": "Dash",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "44a31ae5-bfdd-45cb-b3d6-6cb9cd7c7de6",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardTwo",
-                    "action": "Dash",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "63fe1f3d-1034-4c1b-9114-0c5d70a5571e",
+                    "name": "Right",
+                    "id": "3e604227-4533-4b6e-a29f-f958ac52106b",
                     "path": "<Gamepad>/leftStick/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Dash",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "0cd68076-2e5f-49c9-befa-b6e387530819",
-                    "path": "<Gamepad>/leftStick/left",
+                    "name": "AD",
+                    "id": "edc58fb2-b2cf-4388-8586-7734f8161a97",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Dash",
-                    "isComposite": false,
+                    "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "Left",
+                    "id": "1c868b9d-6fc7-4249-81c7-d7b6fd116879",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Right",
+                    "id": "25a4ce5c-cd84-4451-9e57-5e8c093b86e3",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "LeftRightArrows",
+                    "id": "8ad1dc32-7328-42b1-b2f0-6e757cef3abb",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Left",
+                    "id": "8fdad51c-eb29-4aef-90a5-baca7702c31d",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardTwo",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Right",
+                    "id": "535aebb8-75cf-4286-a50b-004d8a9894df",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardTwo",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "WASD",
