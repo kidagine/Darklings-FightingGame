@@ -45,6 +45,10 @@ public class InputHistory : MonoBehaviour
 		{
 			return;
 		}
+		if (inputEnum == InputEnum.BackDash || inputEnum == InputEnum.ForwardDash)
+		{
+			return;
+		}
 		if (_inputHistoryImages.Count > 0)
 		{
 			if (_inputBreakCoroutine != null)

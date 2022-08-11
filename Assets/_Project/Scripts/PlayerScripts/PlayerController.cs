@@ -1,9 +1,17 @@
 using UnityEngine;
+using UnityEngine.InputSystem.Interactions;
 using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
+	private int _lastDashDirection;
+	private bool _dashPressed;
+	private float _dashLastInputTime;
+	private float _dashTime = 0.3f;
+
+	private bool _pressedAction = false;
+	private bool _holdingParryTrigger = false; 
 	void Start()
 	{
 		_playerInput.actions.actionMaps[(int)ActionSchemeTypes.Training].Enable();
@@ -82,6 +90,7 @@ public class PlayerController : BaseController
 	{
 		if (callbackContext.performed)
 		{
+			Debug.Log("AAb");
 			_inputBuffer.AddInputBufferItem(InputEnum.Light);
 		}
 	}
@@ -139,13 +148,28 @@ public class PlayerController : BaseController
 	{
 		if (callbackContext.performed)
 		{
-			if (_playerMovement.MovementInput.x > 0)
+			Debug.Log("ss");
+			if (!_dashPressed)
 			{
-				_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+				_dashPressed = true;
+				float timeSinceLastPress = Time.time - _dashLastInputTime;
+				if (timeSinceLastPress <= _dashTime && InputDirection.x == _lastDashDirection)
+				{
+					if (InputDirection.x == 1)
+					{
+						_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+					}
+					else
+					{
+						_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+					}
+				}
+				_lastDashDirection = (int)InputDirection.x;
+				_dashLastInputTime = Time.time;
 			}
-			else if (_playerMovement.MovementInput.x < 0)
+			else if (InputDirection.x == 0)
 			{
-				_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+				_dashPressed = false;
 			}
 		}
 	}
