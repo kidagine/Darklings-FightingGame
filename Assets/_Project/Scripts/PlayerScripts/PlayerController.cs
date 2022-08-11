@@ -12,7 +12,7 @@ public class PlayerController : BaseController
 	//GAMEPLAY
 	public void Movement(CallbackContext callbackContext)
 	{
-		InputDirection = callbackContext.ReadValue<Vector2>();
+		InputDirection = new Vector2(Mathf.Round(callbackContext.ReadValue<Vector2>().x), Mathf.Round(callbackContext.ReadValue<Vector2>().y));
 		if (InputDirection.x == 1.0f && _playerMovement.MovementInput.x != InputDirection.x)
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
@@ -38,7 +38,7 @@ public class PlayerController : BaseController
 
 	public override bool Jump()
 	{
-		if (InputDirection.y > 0.5f)
+		if (InputDirection.y > 0.0f)
 		{
 			return true;
 		}
@@ -47,7 +47,7 @@ public class PlayerController : BaseController
 
 	public override bool Crouch()
 	{
-		if (InputDirection.y < -0.5f)
+		if (InputDirection.y < -0.0f)
 		{
 			return true;
 		}
@@ -139,11 +139,11 @@ public class PlayerController : BaseController
 	{
 		if (callbackContext.performed)
 		{
-			if (InputDirection.x == 1)
+			if (_playerMovement.MovementInput.x > 0)
 			{
 				_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
 			}
-			else if (InputDirection.x == -1)
+			else if (_playerMovement.MovementInput.x < 0)
 			{
 				_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
 			}
@@ -155,6 +155,10 @@ public class PlayerController : BaseController
 		if (callbackContext.performed)
 		{
 			_player.Pause(_brainController.IsPlayerOne);
+		}
+		if (callbackContext.canceled)
+		{
+			_player.UnPause();
 		}
 	}
 	//TRAINING
