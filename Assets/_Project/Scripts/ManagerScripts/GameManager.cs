@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected TextMeshProUGUI _winsText = default;
 	[SerializeField] protected GameObject _keyboardPrompts = default;
 	[SerializeField] protected GameObject _controllerPrompts = default;
+	[SerializeField] protected GameObject _xboxPrompts = default;
 	[SerializeField] protected GameObject[] _readyObjects = default;
 	[SerializeField] protected GameObject[] _arcanaObjects = default;
 	[SerializeField] protected GameObject _playerLocal = default;
@@ -221,22 +222,40 @@ public class GameManager : MonoBehaviour
 		PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
 		PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
 		PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
-		if (SceneSettings.ControllerOne <= 1)
+		string inputSchemeOne = InputSystem.devices[SceneSettings.ControllerOne].displayName;
+		string inputSchemeTwo= InputSystem.devices[SceneSettings.ControllerTwo].displayName;
+		if (inputSchemeOne.Contains("Keyboard"))
 		{
 			_keyboardPrompts.SetActive(true);
+			_xboxPrompts.SetActive(false);
+			_controllerPrompts.SetActive(false);
+		}
+		else if (inputSchemeOne.Contains("Xbox"))
+		{
+			_keyboardPrompts.SetActive(false);
+			_xboxPrompts.SetActive(true);
 			_controllerPrompts.SetActive(false);
 		}
 		else
 		{
 			_keyboardPrompts.SetActive(false);
+			_xboxPrompts.SetActive(false);
 			_controllerPrompts.SetActive(true);
 		}
 		_playerOneInput = PlayerOne.GetComponent<PlayerInput>();
 		_playerTwoInput = PlayerTwo.GetComponent<PlayerInput>();
-		if (SceneSettings.ControllerOne != -1)
+		if (inputSchemeOne.Contains("Keyboard") && inputSchemeTwo.Contains("Keyboard"))
+		{
 			_playerOneInput.SwitchCurrentControlScheme("Keyboard", InputSystem.devices[SceneSettings.ControllerOne]);
-		if (SceneSettings.ControllerTwo != -1)
 			_playerTwoInput.SwitchCurrentControlScheme("KeyboardTwo", InputSystem.devices[SceneSettings.ControllerTwo]);
+		}
+		else
+		{
+			if (SceneSettings.ControllerOne != -1)
+				_playerOneInput.SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
+			if (SceneSettings.ControllerTwo != -1)
+				_playerTwoInput.SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
+		}
 		_inputHistories[0].PlayerController = PlayerOne.GetComponent<PlayerController>();
 		_inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
 		_cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);

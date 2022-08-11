@@ -33,7 +33,6 @@ public class PlayersMenu : BaseMenu
 	{
 		InputSystem.onDeviceChange += UpdateVisiblePlayers;
 		UpdateVisiblePlayers(null, default);
-
 	}
 
 	private void UpdateVisiblePlayers(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
@@ -43,20 +42,37 @@ public class PlayersMenu : BaseMenu
 		{
 			_playerIcons[i].gameObject.SetActive(false);
 		}
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < InputSystem.devices.Count; i++)
 		{
-			if (InputSystem.devices.Count > i)
+			if (!InputSystem.devices[i].displayName.Contains("Mouse") && !InputSystem.devices[i].displayName.Contains("Touchscreen"))
 			{
-				if (!InputSystem.devices[i].displayName.Contains("Mouse"))
+				if (_playerIcons.Length >= i)
 				{
-					if (_playerIcons.Length >= i)
-					{
-						_playerIcons[_increment].gameObject.SetActive(true);
-						_playerIcons[_increment].GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = InputSystem.devices[i].displayName;
-						_increment++;
-					}
+					_playerIcons[_increment].gameObject.SetActive(true);
+					_playerIcons[_increment].GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = InputSystem.devices[i].displayName;
+					_increment++;
 				}
 			}
+		}
+	}
+
+	public void UpdateLeftRightCpu()
+	{
+		if (IsOnRight())
+		{
+			_cpuTextRight.SetActive(false);
+		}
+		else
+		{
+			_cpuTextRight.SetActive(true);
+		}
+		if (IsOnLeft())
+		{
+			_cpuTextLeft.SetActive(false);
+		}
+		else
+		{
+			_cpuTextLeft.SetActive(true);
 		}
 	}
 
@@ -66,7 +82,6 @@ public class PlayersMenu : BaseMenu
 		{
 			if (_playerIcons[i].anchoredPosition.x == _right)
 			{
-				_cpuTextRight.SetActive(false);
 				return true;
 			}
 		}
@@ -79,7 +94,6 @@ public class PlayersMenu : BaseMenu
 		{
 			if (_playerIcons[i].anchoredPosition.x == _left)
 			{
-				_cpuTextLeft.SetActive(false);
 				return true;
 			}
 		}
@@ -138,9 +152,34 @@ public class PlayersMenu : BaseMenu
 					_playerIcons[i].gameObject.SetActive(false);
 				}
 				_inputManager.gameObject.SetActive(true);
+				_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
 				_characterMenu.Show();
 			}
 		}
+	}
+
+	public bool ArePlayerIconsLeft()
+	{
+		for (int i = 0; i < _playerIcons.Length; i++)
+		{
+			if (_playerIcons[i].anchoredPosition.x != _left)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public bool ArePlayerIconsRight()
+	{
+		for (int i = 0; i < _playerIcons.Length; i++)
+		{
+			if (_playerIcons[i].anchoredPosition.x != _right)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void SetCurrentPlayerIcon(int index)
@@ -172,6 +211,7 @@ public class PlayersMenu : BaseMenu
 			_playerIcons[i].gameObject.SetActive(false);
 		}
 		_inputManager.gameObject.SetActive(true);
+		_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
 		_characterMenu.Show();
 	}
 
@@ -184,10 +224,10 @@ public class PlayersMenu : BaseMenu
 
 	private void OnEnable()
 	{
+		_inputManager.gameObject.SetActive(false);
 		for (int i = 0; i < _playerIcons.Length; i++)
 		{
 			_playerIcons[i].gameObject.SetActive(true);
-
 		}
 	}
 
@@ -200,6 +240,10 @@ public class PlayersMenu : BaseMenu
 				_playerIcons[i].gameObject.SetActive(false);
 			}
 			_inputManager.gameObject.SetActive(true);
+			if (PlayerIcon.CurrentInputDevice != null)
+			{
+				_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
+			}
 			if (SceneSettings.IsTrainingMode)
 			{
 				OpenMenuHideCurrent(_practiceMenu);

@@ -328,6 +328,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 760377693}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 0}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 242059569}
 --- !u!114 &9294221
@@ -6499,6 +6500,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 1735258530}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!1 &373757866
@@ -6813,6 +6815,7 @@ MonoBehaviour:
   _winsText: {fileID: 1879074090}
   _keyboardPrompts: {fileID: 1034454752}
   _controllerPrompts: {fileID: 1511651995}
+  _xboxPrompts: {fileID: 605610628}
   _readyObjects:
   - {fileID: 233819942}
   - {fileID: 738055907}
@@ -10132,6 +10135,110 @@ RectTransform:
   m_AnchoredPosition: {x: -138, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &605610628
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 605610629}
+  - component: {fileID: 605610632}
+  - component: {fileID: 605610631}
+  - component: {fileID: 605610630}
+  m_Layer: 5
+  m_Name: Xbox_group
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &605610629
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605610628}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1941717438}
+  m_Father: {fileID: 814143119}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 35}
+  m_SizeDelta: {x: 650, y: 70}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &605610630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605610628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 15
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 3
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 1
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &605610631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605610628}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &605610632
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605610628}
+  m_CullTransparentMesh: 1
 --- !u!1 &609062597
 GameObject:
   m_ObjectHideFlags: 0
@@ -10922,6 +11029,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 636207355}
   _promptKeyboardSprite: {fileID: -5744001084450905212, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: -9012255119607160025, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 3574784117742261094, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!114 &636207355
@@ -14255,6 +14363,7 @@ RectTransform:
   m_Children:
   - {fileID: 1034454753}
   - {fileID: 1511651996}
+  - {fileID: 605610629}
   m_Father: {fileID: 1256044254}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16416,6 +16525,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 812087157}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!1 &906155520
@@ -16473,6 +16583,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 547973123}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 0}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 242059569}
 --- !u!114 &906155523
@@ -16913,6 +17024,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 972123861}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 860885408}
 --- !u!1 &941243160
@@ -17369,6 +17481,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 988371117}
   _promptKeyboardSprite: {fileID: -5744001084450905212, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: -9012255119607160025, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 3574784117742261094, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!1 &989425630
@@ -17653,6 +17766,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 997187837}
   _promptKeyboardSprite: {fileID: -5744001084450905212, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: -9012255119607160025, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 3574784117742261094, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!1 &1001368599
@@ -25906,6 +26020,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 1434750810}
   _promptKeyboardSprite: {fileID: -5445187280585305228, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 2174891457464689724, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -3181972328962128513, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!1 &1440477649
@@ -25962,6 +26077,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 1440477652}
   _promptKeyboardSprite: {fileID: -5445187280585305228, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 2174891457464689724, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -3181972328962128513, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!114 &1440477652
@@ -30572,6 +30688,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 1664848091}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!114 &1621392099
@@ -34041,6 +34158,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 1304521463}
   _promptKeyboardSprite: {fileID: -509814621177710837, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 0}
   _promptControllerSprite: {fileID: -6473074045361762652, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 242059569}
 --- !u!114 &1733478527
@@ -37568,6 +37686,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 1925314875}
   _promptKeyboardSprite: {fileID: -5445187280585305228, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 2174891457464689724, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -3181972328962128513, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!1 &1936692392
@@ -37955,6 +38074,103 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1940522780}
+  m_CullTransparentMesh: 1
+--- !u!1 &1941717437
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1941717438}
+  - component: {fileID: 1941717441}
+  - component: {fileID: 1941717440}
+  - component: {fileID: 1941717439}
+  m_Layer: 5
+  m_Name: Prompt_image (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1941717438
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941717437}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 605610629}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 329.0625, y: -35}
+  m_SizeDelta: {x: 1256.25, y: 118.75}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1941717439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941717437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
+--- !u!114 &1941717440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941717437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 5d27b04489cb99f44aab33bf5727b544, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1941717441
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941717437}
   m_CullTransparentMesh: 1
 --- !u!1001 &1947471959
 PrefabInstance:
@@ -38907,6 +39123,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 829998997}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 0}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 1691356162}
 --- !u!114 &2027751178
@@ -47985,6 +48202,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 8185872015407278188}
   _promptKeyboardSprite: {fileID: -5445187280585305228, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 2174891457464689724, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -3181972328962128513, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!222 &8185872015622604570
@@ -48677,6 +48895,7 @@ MonoBehaviour:
   _inputManager: {fileID: 0}
   _promptImage: {fileID: 8185872016612641274}
   _promptKeyboardSprite: {fileID: -5744001084450905212, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: -9012255119607160025, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 3574784117742261094, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 534647985}
 --- !u!114 &8230492421516499355

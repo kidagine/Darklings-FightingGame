@@ -10,10 +10,9 @@ public class PromptsImageChanger : MonoBehaviour
 	[SerializeField] private Sprite _promptControllerSprite = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 
-
 	private void SetCorrectPromptSprite()
 	{
-		if (_pauseMenu == null)
+		if (_inputManager != null)
 		{
 			string inputScheme = _inputManager.InputScheme;
 			if (inputScheme.Contains("Keyboard"))
@@ -29,17 +28,37 @@ public class PromptsImageChanger : MonoBehaviour
 				_promptImage.sprite = _promptControllerSprite;
 			}
 		}
-		else
+		else if (_pauseMenu != null)
 		{
 			string inputScheme = _pauseMenu.PauseControllerType;
 			if (inputScheme.Contains("Keyboard"))
 			{
 				_promptImage.sprite = _promptKeyboardSprite;
 			}
+			else if (inputScheme.Contains("Xbox"))
+			{
+				_promptImage.sprite = _promptXboxSprite;
+			}
 			else
 			{
 				_promptImage.sprite = _promptControllerSprite;
 			}
+		}
+	}
+
+	public void SetPromptSpriteOnCommand(string inputScheme)
+	{
+		if (inputScheme.Contains("Keyboard"))
+		{
+			_promptImage.sprite = _promptKeyboardSprite;
+		}
+		else if (inputScheme.Contains("Xbox"))
+		{
+			_promptImage.sprite = _promptXboxSprite;
+		}
+		else
+		{
+			_promptImage.sprite = _promptControllerSprite;
 		}
 	}
 

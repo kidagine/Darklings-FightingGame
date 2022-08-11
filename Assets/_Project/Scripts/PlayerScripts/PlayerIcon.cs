@@ -7,22 +7,24 @@ public class PlayerIcon : MonoBehaviour
 {
 	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private PlayersMenu _playersMenu = default;
+	[SerializeField] private PromptsImageChanger[] _promptsImageChangers = default;
 	private RectTransform _rectTransform;
 	private Audio _audio;
+	private PlayerInput _playerInput;
 	private readonly float _left = -375.0f;
 	private readonly float _right = 375.0f;
 	private readonly float _center = 0.0f;
 	private bool _isMovenentInUse;
 	private float _originalPositionY;
-	private PlayerInput _playerInput;
+	public static InputDevice CurrentInputDevice;
+
 
 	private void Awake()
 	{
 		_audio = GetComponent<Audio>();
 		_rectTransform = GetComponent<RectTransform>();
-		_playerInput = GetComponent<PlayerInput>();	
+		_playerInput = GetComponent<PlayerInput>();
 		_originalPositionY = _rectTransform.anchoredPosition.y;
-		_playerInput.onActionTriggered += (e) => Debug.Log("AA");
 	}
 
 	public void Movement(CallbackContext callbackContext)
@@ -30,6 +32,11 @@ public class PlayerIcon : MonoBehaviour
 		float movement = callbackContext.ReadValue<Vector2>().x;
 		if (movement != 0.0f)
 		{
+			CurrentInputDevice = _playerInput.devices[0];
+			for (int i = 0; i < _promptsImageChangers.Length; i++)
+			{
+				_promptsImageChangers[i].SetPromptSpriteOnCommand(CurrentInputDevice.displayName);
+			}
 			if (!_isMovenentInUse)
 			{
 				_isMovenentInUse = true;
@@ -64,6 +71,7 @@ public class PlayerIcon : MonoBehaviour
 					}
 				}
 			}
+			_playersMenu.UpdateLeftRightCpu();
 		}
 		if (movement == 0.0f)
 		{
@@ -82,8 +90,6 @@ public class PlayerIcon : MonoBehaviour
 		{
 			transform.GetChild(0).gameObject.SetActive(true);
 			transform.GetChild(1).gameObject.SetActive(true);
-			_playersMenu.CpuTextLeft.SetActive(true);
-			_playersMenu.CpuTextRight.SetActive(true);
 			_rectTransform.anchoredPosition = new Vector2(_center, _originalPositionY);
 		}
 	}
