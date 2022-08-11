@@ -871,6 +871,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Rebind",
+                    "type": "Button",
+                    "id": "af544d57-8a92-4aa9-b7cc-8ae4239ac6d9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Controls",
                     "type": "Button",
                     "id": "08b4c165-be6b-4dd0-bdac-dec1d1d22e97",
@@ -956,19 +965,8 @@
                 },
                 {
                     "name": "",
-                    "id": "a3873ec8-dac6-4d6a-a24e-44f7c220dfe2",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Coop",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "bf96c5ca-4b5d-4861-beba-400c4cdc890b",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -979,7 +977,7 @@
                 {
                     "name": "",
                     "id": "2d11eb7a-ddcd-4975-85a9-3f339c56790b",
-                    "path": "<Keyboard>/r",
+                    "path": "<Keyboard>/t",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -1184,6 +1182,28 @@
                     "action": "Navigation",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "0ead989f-927a-4eac-8cb1-f5c7c657dcff",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Rebind",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eccea6d6-a7cc-4be0-a4ca-608c3196f91e",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Rebind",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

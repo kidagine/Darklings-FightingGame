@@ -33,6 +33,7 @@ public class PlayersMenu : BaseMenu
 	{
 		InputSystem.onDeviceChange += UpdateVisiblePlayers;
 		UpdateVisiblePlayers(null, default);
+
 	}
 
 	private void UpdateVisiblePlayers(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
@@ -130,12 +131,14 @@ public class PlayersMenu : BaseMenu
 				{
 					_characterMenu.EnablePlayerTwoSelector();
 				}
+				gameObject.SetActive(false);
 				for (int i = 0; i < _playerIcons.Length; i++)
 				{
 					_playerIcons[i].GetComponent<PlayerIcon>().Center();
+					_playerIcons[i].gameObject.SetActive(false);
 				}
+				_inputManager.gameObject.SetActive(true);
 				_characterMenu.Show();
-				gameObject.SetActive(false);
 			}
 		}
 	}
@@ -164,31 +167,47 @@ public class PlayersMenu : BaseMenu
 		SceneSettings.ControllerTwo = 0;
 		SceneSettings.ControllerOne = 0;
 		gameObject.SetActive(false);
+		for (int i = 0; i < _playerIcons.Length; i++)
+		{
+			_playerIcons[i].gameObject.SetActive(false);
+		}
+		_inputManager.gameObject.SetActive(true);
 		_characterMenu.Show();
-	}
-
-	private void OnEnable()
-	{
-		_inputManager.gameObject.SetActive(false);
 	}
 
 	void OnDisable()
 	{
-		_inputManager.gameObject.SetActive(true);
 		_cpuTextLeft.SetActive(true);
 		_cpuTextRight.SetActive(true);
 		InputSystem.onDeviceChange -= UpdateVisiblePlayers;
 	}
 
-	public void Back()
+	private void OnEnable()
 	{
-		if (SceneSettings.IsTrainingMode)
+		for (int i = 0; i < _playerIcons.Length; i++)
 		{
-			OpenMenuHideCurrent(_practiceMenu);
+			_playerIcons[i].gameObject.SetActive(true);
+
 		}
-		else
+	}
+
+	public void Back(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
 		{
-			OpenMenuHideCurrent(_versusMenu);
+			for (int i = 0; i < _playerIcons.Length; i++)
+			{
+				_playerIcons[i].gameObject.SetActive(false);
+			}
+			_inputManager.gameObject.SetActive(true);
+			if (SceneSettings.IsTrainingMode)
+			{
+				OpenMenuHideCurrent(_practiceMenu);
+			}
+			else
+			{
+				OpenMenuHideCurrent(_versusMenu);
+			}
 		}
 	}
 }

@@ -917,7 +917,7 @@ MonoBehaviour:
       - m_Target: {fileID: 394778459}
         m_TargetAssemblyTypeName: PlayersMenu, Scripts
         m_MethodName: Back
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -978,18 +978,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1856510696}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
     m_ActionId: c5304ba0-6504-401c-bd61-8f14d6105700
     m_ActionName: UI/Confirm[/DualSenseGamepadHID/buttonSouth,/Keyboard/enter]
   - m_PersistentCalls:
@@ -1024,6 +1012,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9f62ee22-0b1e-413f-8582-f90db63322de
     m_ActionName: Training/Switch[/DualSenseGamepadHID/rightStickPress,/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 56f265f2-7405-49f5-a24e-797a349e4ec8
+    m_ActionName: UI/LeftPage[/Keyboard/q,/DualSenseGamepadHID/leftShoulder,/XInputControllerWindows/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fcaf26ea-bc8c-43bc-b977-18e8763d90f3
+    m_ActionName: UI/RightPage[/Keyboard/e,/DualSenseGamepadHID/rightShoulder,/XInputControllerWindows/rightShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: af544d57-8a92-4aa9-b7cc-8ae4239ac6d9
+    m_ActionName: UI/Rebind[/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
@@ -1256,6 +1256,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &49358503
@@ -1591,7 +1597,7 @@ MonoBehaviour:
       - m_Target: {fileID: 394778459}
         m_TargetAssemblyTypeName: PlayersMenu, Scripts
         m_MethodName: Back
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1652,18 +1658,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1856510696}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
     m_ActionId: c5304ba0-6504-401c-bd61-8f14d6105700
     m_ActionName: UI/Confirm[/DualSenseGamepadHID/buttonSouth,/Keyboard/enter]
   - m_PersistentCalls:
@@ -1698,6 +1692,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9f62ee22-0b1e-413f-8582-f90db63322de
     m_ActionName: Training/Switch[/DualSenseGamepadHID/rightStickPress,/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 56f265f2-7405-49f5-a24e-797a349e4ec8
+    m_ActionName: UI/LeftPage[/Keyboard/q,/DualSenseGamepadHID/leftShoulder,/XInputControllerWindows/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fcaf26ea-bc8c-43bc-b977-18e8763d90f3
+    m_ActionName: UI/RightPage[/Keyboard/e,/DualSenseGamepadHID/rightShoulder,/XInputControllerWindows/rightShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: af544d57-8a92-4aa9-b7cc-8ae4239ac6d9
+    m_ActionName: UI/Rebind[/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
@@ -2216,6 +2222,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1001 &67027216
@@ -3180,6 +3192,141 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &116724796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 116724797}
+  - component: {fileID: 116724799}
+  - component: {fileID: 116724798}
+  m_Layer: 5
+  m_Name: Prompt_text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &116724797
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116724796}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 175464206}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 84.005, y: -25}
+  m_SizeDelta: {x: 168.01, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &116724798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116724796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Rebind
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
+  m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 28
+  m_fontSizeBase: 28
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 16
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &116724799
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116724796}
+  m_CullTransparentMesh: 1
 --- !u!1 &119897296
 GameObject:
   m_ObjectHideFlags: 0
@@ -4182,6 +4329,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 545380177}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1001 &154901677
@@ -5235,7 +5383,7 @@ MonoBehaviour:
       - m_Target: {fileID: 394778459}
         m_TargetAssemblyTypeName: PlayersMenu, Scripts
         m_MethodName: Back
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5296,18 +5444,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1856510696}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
     m_ActionId: c5304ba0-6504-401c-bd61-8f14d6105700
     m_ActionName: UI/Confirm[/DualSenseGamepadHID/buttonSouth,/Keyboard/enter]
   - m_PersistentCalls:
@@ -5342,6 +5478,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9f62ee22-0b1e-413f-8582-f90db63322de
     m_ActionName: Training/Switch[/DualSenseGamepadHID/rightStickPress,/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 56f265f2-7405-49f5-a24e-797a349e4ec8
+    m_ActionName: UI/LeftPage[/Keyboard/q,/DualSenseGamepadHID/leftShoulder,/XInputControllerWindows/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fcaf26ea-bc8c-43bc-b977-18e8763d90f3
+    m_ActionName: UI/RightPage[/Keyboard/e,/DualSenseGamepadHID/rightShoulder,/XInputControllerWindows/rightShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: af544d57-8a92-4aa9-b7cc-8ae4239ac6d9
+    m_ActionName: UI/Rebind[/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
@@ -5354,6 +5502,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1543490875}
     m_Modifications:
+    - target: {fileID: 1439075139381376838, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1439075139381376838, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_UpdateMode
       value: 2
@@ -5987,6 +6139,284 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 160, y: 160}
   m_EdgeRadius: 0
+--- !u!1 &175464205
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 175464206}
+  - component: {fileID: 175464210}
+  - component: {fileID: 175464209}
+  - component: {fileID: 175464208}
+  - component: {fileID: 175464207}
+  m_Layer: 5
+  m_Name: Main_prompt (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &175464206
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175464205}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 116724797}
+  - {fileID: 837752145}
+  m_Father: {fileID: 422592749}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1027.1532, y: -50}
+  m_SizeDelta: {x: 258.635, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &175464207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175464205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputManager: {fileID: 1856510700}
+  _promptImage: {fileID: 837752147}
+  _promptKeyboardSprite: {fileID: -509814621177710837, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 9109483287266272244, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
+  _promptControllerSprite: {fileID: -6473074045361762652, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
+  _pauseMenu: {fileID: 0}
+--- !u!82 &175464208
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175464205}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 478e3eccee1ceb14aad78d7ad468d63f, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &175464209
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175464205}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 69c0e9d71b7495143bf1e2736234db5c, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &175464210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175464205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 50
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 1
+  m_ChildScaleHeight: 1
+  m_ReverseArrangement: 0
 --- !u!1 &178705408
 GameObject:
   m_ObjectHideFlags: 0
@@ -6338,7 +6768,6 @@ GameObject:
   m_Component:
   - component: {fileID: 190914156}
   - component: {fileID: 190914157}
-  - component: {fileID: 190914158}
   m_Layer: 5
   m_Name: Main_prompt (3)
   m_TagString: Untagged
@@ -6394,23 +6823,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
---- !u!114 &190914158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 190914155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inputManager: {fileID: 1856510700}
-  _promptImage: {fileID: 449625896}
-  _promptKeyboardSprite: {fileID: -4950568931732653585, guid: c026204bc7fb08d408029c1534099470, type: 3}
-  _promptControllerSprite: {fileID: -7995350180213669037, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
-  _pauseMenu: {fileID: 0}
 --- !u!1 &205137886
 GameObject:
   m_ObjectHideFlags: 0
@@ -7778,6 +8190,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1012875779}
     m_Modifications:
+    - target: {fileID: 1439075139381376838, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1439075139381376838, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_UpdateMode
       value: 2
@@ -10662,6 +11078,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 175464206}
   - {fileID: 2117361148}
   - {fileID: 2065791088}
   m_Father: {fileID: 742601082}
@@ -10748,6 +11165,12 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &423550978
@@ -13194,6 +13617,12 @@ MonoBehaviour:
   OnControls:
     m_PersistentCalls:
       m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &496426271
 GameObject:
   m_ObjectHideFlags: 0
@@ -13858,6 +14287,12 @@ MonoBehaviour:
   OnControls:
     m_PersistentCalls:
       m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &527225408
 GameObject:
   m_ObjectHideFlags: 0
@@ -14280,6 +14715,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 1729465194}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &529678084
@@ -14751,6 +15187,12 @@ MonoBehaviour:
   OnControls:
     m_PersistentCalls:
       m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &543828430
 GameObject:
   m_ObjectHideFlags: 0
@@ -14868,6 +15310,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &545380174
@@ -16217,7 +16665,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -509814621177710837, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  m_Sprite: {fileID: -8463956533390792331, guid: c026204bc7fb08d408029c1534099470, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -16545,6 +16993,18 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1856510696}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1604873650}
         m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
@@ -16558,18 +17018,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 114763685}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1856510696}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -21880,6 +22328,103 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &837752144
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 837752145}
+  - component: {fileID: 837752148}
+  - component: {fileID: 837752147}
+  - component: {fileID: 837752146}
+  m_Layer: 5
+  m_Name: Prompt_image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &837752145
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837752144}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 175464206}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 238.3225, y: -25}
+  m_SizeDelta: {x: 81.25, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &837752146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837752144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
+--- !u!114 &837752147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837752144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -509814621177710837, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &837752148
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837752144}
+  m_CullTransparentMesh: 1
 --- !u!1 &838326609
 GameObject:
   m_ObjectHideFlags: 0
@@ -21969,8 +22514,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 609065421}
-  _promptKeyboardSprite: {fileID: -509814621177710837, guid: c026204bc7fb08d408029c1534099470, type: 3}
-  _promptControllerSprite: {fileID: -6473074045361762652, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
+  _promptKeyboardSprite: {fileID: -8463956533390792331, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: -5593861225720821720, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
+  _promptControllerSprite: {fileID: -8387777449244873123, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &839094571
 GameObject:
@@ -23469,7 +24015,6 @@ GameObject:
   m_Component:
   - component: {fileID: 941203419}
   - component: {fileID: 941203421}
-  - component: {fileID: 941203422}
   m_Layer: 5
   m_Name: Main_prompt (1)
   m_TagString: Untagged
@@ -23525,23 +24070,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
---- !u!114 &941203422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 941203418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inputManager: {fileID: 1856510700}
-  _promptImage: {fileID: 724207735}
-  _promptKeyboardSprite: {fileID: -509814621177710837, guid: c026204bc7fb08d408029c1534099470, type: 3}
-  _promptControllerSprite: {fileID: -6473074045361762652, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
-  _pauseMenu: {fileID: 0}
 --- !u!1 &942871484
 GameObject:
   m_ObjectHideFlags: 0
@@ -23741,6 +24269,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &949073487
@@ -24100,6 +24634,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 1908622023}
   _promptKeyboardSprite: {fileID: -4950568931732653585, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 8421731627895708876, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -7995350180213669037, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &967321514
@@ -24454,6 +24989,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 1876391572}
   _promptKeyboardSprite: {fileID: -4950568931732653585, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 8421731627895708876, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -7995350180213669037, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &993442528
@@ -24537,6 +25073,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 619626992}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &1004539558
@@ -25931,7 +26468,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1061335978}
   - component: {fileID: 1061335980}
-  - component: {fileID: 1061335981}
   m_Layer: 5
   m_Name: Main_prompt (2)
   m_TagString: Untagged
@@ -25987,23 +26523,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
---- !u!114 &1061335981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1061335977}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdaeedf29087211478eb80b584e08da1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inputManager: {fileID: 1856510700}
-  _promptImage: {fileID: 1274991455}
-  _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
-  _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
-  _pauseMenu: {fileID: 0}
 --- !u!1 &1064519923
 GameObject:
   m_ObjectHideFlags: 0
@@ -28349,6 +28868,18 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1856510701}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 114763685}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -28368,18 +28899,6 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 394778459}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 114763685}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -32318,6 +32837,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1350315424
@@ -40746,6 +41271,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 2039518033}
   _promptKeyboardSprite: {fileID: -4950568931732653585, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 8421731627895708876, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -7995350180213669037, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &1753292137
@@ -41040,6 +41566,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 732736316}
   _promptKeyboardSprite: {fileID: -4950568931732653585, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 8421731627895708876, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -7995350180213669037, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &1760969371
@@ -41172,6 +41699,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1767689704
 GameObject:
   m_ObjectHideFlags: 0
@@ -41582,6 +42115,12 @@ MonoBehaviour:
   OnControls:
     m_PersistentCalls:
       m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1773896095
 GameObject:
   m_ObjectHideFlags: 0
@@ -41663,6 +42202,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 1007176409}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &1776703712
@@ -42135,6 +42675,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1799494782
@@ -43476,6 +44022,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 229644519}
   _promptKeyboardSprite: {fileID: 727115179605130713, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 2663526778361868818, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 4448626068915914045, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &1848307819
@@ -44107,6 +44654,14 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 08b4c165-be6b-4dd0-bdac-dec1d1d22e97
     m_ActionName: UI/Controls[/Keyboard/r,/DualSenseGamepadHID/buttonNorth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 56f265f2-7405-49f5-a24e-797a349e4ec8
+    m_ActionName: UI/LeftPage[/Keyboard/q,/DualSenseGamepadHID/leftShoulder,/XInputControllerWindows/leftShoulder,/XInputControllerWindows1/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fcaf26ea-bc8c-43bc-b977-18e8763d90f3
+    m_ActionName: UI/RightPage[/Keyboard/e,/DualSenseGamepadHID/rightShoulder,/XInputControllerWindows/rightShoulder,/XInputControllerWindows1/rightShoulder]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
@@ -45038,6 +45593,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1888852433
@@ -46436,6 +46997,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 437487917}
   _promptKeyboardSprite: {fileID: -509814621177710837, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 9109483287266272244, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -6473074045361762652, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &1923295144
@@ -48066,6 +48628,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 1270773635}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &2003286518
@@ -48343,6 +48906,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 1680252595}
   _promptKeyboardSprite: {fileID: -1631367382516784511, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 7304773530685498108, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -3947104336119209660, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &2020921932
@@ -48620,6 +49184,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 321129399}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &2021865572
@@ -49921,11 +50486,11 @@ RectTransform:
   - {fileID: 2104155447}
   - {fileID: 1135132847}
   m_Father: {fileID: 422592749}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1670.3243, y: -50}
+  m_AnchoredPosition: {x: 1670.3246, y: -50}
   m_SizeDelta: {x: 399.135, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!82 &2065791089
@@ -50161,6 +50726,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 1135132849}
   _promptKeyboardSprite: {fileID: -4950568931732653585, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 8421731627895708876, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: -7995350180213669037, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &2069724569
@@ -50556,6 +51122,12 @@ MonoBehaviour:
   OnControls:
     m_PersistentCalls:
       m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2071093410
 GameObject:
   m_ObjectHideFlags: 0
@@ -50900,6 +51472,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnControls:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &2102236458
@@ -51404,6 +51982,12 @@ MonoBehaviour:
   OnControls:
     m_PersistentCalls:
       m_Calls: []
+  OnLeftPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2115057929
 GameObject:
   m_ObjectHideFlags: 0
@@ -51574,11 +52158,11 @@ RectTransform:
   - {fileID: 318695657}
   - {fileID: 1468381809}
   m_Father: {fileID: 422592749}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1322.395, y: -50}
+  m_AnchoredPosition: {x: 1322.3951, y: -50}
   m_SizeDelta: {x: 262.01, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!82 &2117361149
@@ -51814,6 +52398,7 @@ MonoBehaviour:
   _inputManager: {fileID: 1856510700}
   _promptImage: {fileID: 1468381811}
   _promptKeyboardSprite: {fileID: -3468524477417711073, guid: c026204bc7fb08d408029c1534099470, type: 3}
+  _promptXboxSprite: {fileID: 6019008833895482098, guid: f27dc7118d2c0d247a444a9a6449ae19, type: 3}
   _promptControllerSprite: {fileID: 5261977838446621982, guid: 14f736a7908163b42b3b9e4999d05b12, type: 3}
   _pauseMenu: {fileID: 0}
 --- !u!1 &2122793681

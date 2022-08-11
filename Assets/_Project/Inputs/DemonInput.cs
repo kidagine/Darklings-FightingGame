@@ -893,6 +893,15 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Rebind"",
+                    ""type"": ""Button"",
+                    ""id"": ""af544d57-8a92-4aa9-b7cc-8ae4239ac6d9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Controls"",
                     ""type"": ""Button"",
                     ""id"": ""08b4c165-be6b-4dd0-bdac-dec1d1d22e97"",
@@ -978,19 +987,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a3873ec8-dac6-4d6a-a24e-44f7c220dfe2"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Coop"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""bf96c5ca-4b5d-4861-beba-400c4cdc890b"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -1001,7 +999,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2d11eb7a-ddcd-4975-85a9-3f339c56790b"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""path"": ""<Keyboard>/t"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -1206,6 +1204,28 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0ead989f-927a-4eac-8cb1-f5c7c657dcff"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Rebind"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eccea6d6-a7cc-4be0-a4ca-608c3196f91e"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Rebind"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1348,6 +1368,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         m_UI_Confirm = m_UI.FindAction("Confirm", throwIfNotFound: true);
         m_UI_Coop = m_UI.FindAction("Coop", throwIfNotFound: true);
         m_UI_Stage = m_UI.FindAction("Stage", throwIfNotFound: true);
+        m_UI_Rebind = m_UI.FindAction("Rebind", throwIfNotFound: true);
         m_UI_Controls = m_UI.FindAction("Controls", throwIfNotFound: true);
         m_UI_LeftPage = m_UI.FindAction("LeftPage", throwIfNotFound: true);
         m_UI_RightPage = m_UI.FindAction("RightPage", throwIfNotFound: true);
@@ -1540,6 +1561,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Confirm;
     private readonly InputAction m_UI_Coop;
     private readonly InputAction m_UI_Stage;
+    private readonly InputAction m_UI_Rebind;
     private readonly InputAction m_UI_Controls;
     private readonly InputAction m_UI_LeftPage;
     private readonly InputAction m_UI_RightPage;
@@ -1552,6 +1574,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         public InputAction @Confirm => m_Wrapper.m_UI_Confirm;
         public InputAction @Coop => m_Wrapper.m_UI_Coop;
         public InputAction @Stage => m_Wrapper.m_UI_Stage;
+        public InputAction @Rebind => m_Wrapper.m_UI_Rebind;
         public InputAction @Controls => m_Wrapper.m_UI_Controls;
         public InputAction @LeftPage => m_Wrapper.m_UI_LeftPage;
         public InputAction @RightPage => m_Wrapper.m_UI_RightPage;
@@ -1579,6 +1602,9 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @Stage.started -= m_Wrapper.m_UIActionsCallbackInterface.OnStage;
                 @Stage.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnStage;
                 @Stage.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnStage;
+                @Rebind.started -= m_Wrapper.m_UIActionsCallbackInterface.OnRebind;
+                @Rebind.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnRebind;
+                @Rebind.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnRebind;
                 @Controls.started -= m_Wrapper.m_UIActionsCallbackInterface.OnControls;
                 @Controls.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnControls;
                 @Controls.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnControls;
@@ -1607,6 +1633,9 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @Stage.started += instance.OnStage;
                 @Stage.performed += instance.OnStage;
                 @Stage.canceled += instance.OnStage;
+                @Rebind.started += instance.OnRebind;
+                @Rebind.performed += instance.OnRebind;
+                @Rebind.canceled += instance.OnRebind;
                 @Controls.started += instance.OnControls;
                 @Controls.performed += instance.OnControls;
                 @Controls.canceled += instance.OnControls;
@@ -1710,6 +1739,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         void OnConfirm(InputAction.CallbackContext context);
         void OnCoop(InputAction.CallbackContext context);
         void OnStage(InputAction.CallbackContext context);
+        void OnRebind(InputAction.CallbackContext context);
         void OnControls(InputAction.CallbackContext context);
         void OnLeftPage(InputAction.CallbackContext context);
         void OnRightPage(InputAction.CallbackContext context);

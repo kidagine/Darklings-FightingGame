@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PromptsImageChanger : MonoBehaviour
@@ -7,26 +6,23 @@ public class PromptsImageChanger : MonoBehaviour
 	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private Image _promptImage = default;
 	[SerializeField] private Sprite _promptKeyboardSprite = default;
+	[SerializeField] private Sprite _promptXboxSprite = default;
 	[SerializeField] private Sprite _promptControllerSprite = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 
-
-	void Awake()
-	{
-		if (_inputManager != null)
-		{
-			_inputManager.OnInputChange.AddListener(() => SetCorrectPromptSprite());
-		}
-	}
 
 	private void SetCorrectPromptSprite()
 	{
 		if (_pauseMenu == null)
 		{
 			string inputScheme = _inputManager.InputScheme;
-			if (inputScheme == "Keyboard")
+			if (inputScheme.Contains("Keyboard"))
 			{
 				_promptImage.sprite = _promptKeyboardSprite;
+			}
+			else if (inputScheme.Contains("Xbox"))
+			{
+				_promptImage.sprite = _promptXboxSprite;
 			}
 			else
 			{
@@ -36,7 +32,7 @@ public class PromptsImageChanger : MonoBehaviour
 		else
 		{
 			string inputScheme = _pauseMenu.PauseControllerType;
-			if (inputScheme == "Keyboard")
+			if (inputScheme.Contains("Keyboard"))
 			{
 				_promptImage.sprite = _promptKeyboardSprite;
 			}
@@ -49,6 +45,10 @@ public class PromptsImageChanger : MonoBehaviour
 
 	void OnEnable()
 	{
+		if (_inputManager != null)
+		{
+			_inputManager.OnInputChange.AddListener(SetCorrectPromptSprite);
+		}
 		SetCorrectPromptSprite();
 	}
 
@@ -56,7 +56,7 @@ public class PromptsImageChanger : MonoBehaviour
 	{
 		if (_inputManager != null)
 		{
-			_inputManager.OnInputChange.RemoveListener(() => SetCorrectPromptSprite());
+			_inputManager.OnInputChange.RemoveListener(SetCorrectPromptSprite);
 		}
 	}
 }

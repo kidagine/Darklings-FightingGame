@@ -1,5 +1,6 @@
 using Demonics.Sounds;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerIcon : MonoBehaviour
@@ -13,13 +14,15 @@ public class PlayerIcon : MonoBehaviour
 	private readonly float _center = 0.0f;
 	private bool _isMovenentInUse;
 	private float _originalPositionY;
-
+	private PlayerInput _playerInput;
 
 	private void Awake()
 	{
 		_audio = GetComponent<Audio>();
 		_rectTransform = GetComponent<RectTransform>();
+		_playerInput = GetComponent<PlayerInput>();	
 		_originalPositionY = _rectTransform.anchoredPosition.y;
+		_playerInput.onActionTriggered += (e) => Debug.Log("AA");
 	}
 
 	public void Movement(CallbackContext callbackContext)
