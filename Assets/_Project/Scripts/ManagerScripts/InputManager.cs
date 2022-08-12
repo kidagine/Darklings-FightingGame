@@ -10,8 +10,8 @@ public class InputManager : MonoBehaviour
 
 	public PromptsInput CurrentPrompts { private get; set; }
 	public Vector2 NavigationInput { get; private set; }
-	public string InputScheme { get { return _playerInput.currentControlScheme; } set { } }
-
+	public string InputScheme { get { return _playerInput.devices[0].displayName; } set { } }
+	public PlayerInput PlayerInput { get { return _playerInput; } private set { } }
 
 	public void InputChange(PlayerInput playerInput)
 	{

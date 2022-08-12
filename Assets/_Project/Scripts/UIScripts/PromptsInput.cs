@@ -9,11 +9,19 @@ public class PromptsInput : MonoBehaviour
 	public UnityEvent OnCoop;
 	public UnityEvent OnStage;
 	public UnityEvent OnControls;
+	public UnityEvent OnLeftPage;
+	public UnityEvent OnRightPage;
 
 
 	void OnEnable()
 	{
 		if (_inputManager != null)
+		{
 			_inputManager.CurrentPrompts = this;
+		}
+		else
+		{
+			GameManager.Instance.PausedController.CurrentPrompts = this;
+		}
 	}
 }

@@ -1,10 +1,18 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
+	private int _lastDashDirection;
+	private bool _dashPressed;
+	private float _dashLastInputTime;
+	private float _dashTime = 0.3f;
+
+	private bool _pressedAction = false;
+	private bool _holdingParryTrigger = false; 
 	void Start()
 	{
 		_playerInput.actions.actionMaps[(int)ActionSchemeTypes.Training].Enable();
@@ -13,7 +21,7 @@ public class PlayerController : BaseController
 	//GAMEPLAY
 	public void Movement(CallbackContext callbackContext)
 	{
-		InputDirection = callbackContext.ReadValue<Vector2>();
+		InputDirection = new Vector2(Mathf.Round(callbackContext.ReadValue<Vector2>().x), Mathf.Round(callbackContext.ReadValue<Vector2>().y));
 		if (InputDirection.x == 1.0f && _playerMovement.MovementInput.x != InputDirection.x)
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
@@ -39,7 +47,7 @@ public class PlayerController : BaseController
 
 	public override bool Jump()
 	{
-		if (InputDirection.y > 0.5f)
+		if (InputDirection.y > 0.0f)
 		{
 			return true;
 		}
@@ -48,7 +56,7 @@ public class PlayerController : BaseController
 
 	public override bool Crouch()
 	{
-		if (InputDirection.y < -0.5f)
+		if (InputDirection.y < -0.0f)
 		{
 			return true;
 		}
@@ -135,18 +143,50 @@ public class PlayerController : BaseController
 			_inputBuffer.AddInputBufferItem(InputEnum.Parry);
 		}
 	}
+
 	public void Dash(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
 		{
-			if (InputDirection.x == 1)
+			if (!_dashPressed)
 			{
-				_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+				_dashPressed = true;
+				_lastDashDirection = (int)callbackContext.ReadValue<Vector2>().x;
+				_dashLastInputTime = Time.time;
 			}
-			else if (InputDirection.x == -1)
+			else
 			{
-				_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+				float timeSinceLastPress = Time.time - _dashLastInputTime;
+				if (timeSinceLastPress <= _dashTime)
+				{
+					if (callbackContext.ReadValue<Vector2>().x == _lastDashDirection)
+					{
+						if (_lastDashDirection == 1)
+						{
+							_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+						}
+						else
+						{
+							_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+						}
+						_dashPressed = false;
+					}
+				}
+				_lastDashDirection = (int)callbackContext.ReadValue<Vector2>().x;
+				_dashLastInputTime = Time.time;
 			}
+		}
+	}
+
+	public void Pause(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			_player.Pause(_brainController.IsPlayerOne);
+		}
+		if (callbackContext.canceled)
+		{
+			_player.UnPause();
 		}
 	}
 	//TRAINING
@@ -165,12 +205,60 @@ public class PlayerController : BaseController
 			GameManager.Instance.SwitchCharacters();
 		}
 	}
-
-	public void Pause(CallbackContext callbackContext)
+	//UI
+	public void Confirm(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
 		{
-			_player.Pause(_brainController.IsPlayerOne);
+			CurrentPrompts?.OnConfirm?.Invoke();
+		}
+	}
+
+	public void Back(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnBack?.Invoke();
+		}
+	}
+
+	public void Stage(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnStage?.Invoke();
+		}
+	}
+
+	public void Coop(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnCoop?.Invoke();
+		}
+	}
+
+	public void Controls(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnControls?.Invoke();
+		}
+	}
+
+	public void PageLeft(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnLeftPage?.Invoke();
+		}
+	}
+
+	public void PageRight(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnRightPage?.Invoke();
 		}
 	}
 }

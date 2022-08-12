@@ -12,6 +12,7 @@ public class BaseController : MonoBehaviour
     protected PlayerInput _playerInput;
     public Vector2 InputDirection { get; set; }
     public bool IsControllerEnabled { get; set; } = true;
+    public PromptsInput CurrentPrompts { get; set; }
 
     void Awake()
     {

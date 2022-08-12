@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public enum ControllerTypeEnum { KeyboardOne, KeyboardTwo, ControllerOne, ControllerTwo, Cpu };
+public enum ControllerTypeEnum { Keyboard, Xbox, Controller, Switch, Cpu };
 
 public class ContollerType : MonoBehaviour
 {

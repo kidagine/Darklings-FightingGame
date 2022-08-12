@@ -345,6 +345,7 @@ public class PlayerUI : MonoBehaviour
 		Time.timeScale = 0.0f;
 		GameManager.Instance.DisableAllInput();
 		GameManager.Instance.PauseMusic();
+		GameManager.Instance.PausedController = _controller.ActiveController;
 		_pauseMenu.PauseControllerType = _controller.ControllerInputName;
 		_pauseMenu.Show();
 	}
@@ -355,6 +356,7 @@ public class PlayerUI : MonoBehaviour
 		Time.timeScale = 0.0f;
 		GameManager.Instance.DisableAllInput();
 		GameManager.Instance.PauseMusic();
+		GameManager.Instance.PausedController = _controller.ActiveController;
 		_trainingPauseMenu.PauseControllerType = _controller.ControllerInputName;
 		_trainingPauseMenu.Show();
 	}

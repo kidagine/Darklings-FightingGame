@@ -16,9 +16,9 @@ public class ComboTimerStarterTypes : MonoBehaviour
 	{
 		return comboTimerStarter switch
 		{
-			ComboTimerStarterEnum.Blue => 3.5f,
-			ComboTimerStarterEnum.Yellow => 3.0f,
-			ComboTimerStarterEnum.Red => 2.5f,
+			ComboTimerStarterEnum.Blue => 4.5f,
+			ComboTimerStarterEnum.Yellow => 3.6f,
+			ComboTimerStarterEnum.Red => 2.8f,
 			_ => 0.0f,
 		};
 	}

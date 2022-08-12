@@ -29,23 +29,19 @@ public class CommandListMenu : BaseMenu
 		_playerTwo = GameManager.Instance.PlayerTwo;
 	}
 
-	void Update()
+	public void ChangePage()
 	{
-		if (Input.GetButtonDown(_currentPauseMenu.PauseControllerType + "UILeft")
-			|| Input.GetButtonDown(_currentPauseMenu.PauseControllerType + "UIRight"))
+		if (_playerOne == _currentlyDisplayedPlayer)
 		{
-			if (_playerOne == _currentlyDisplayedPlayer)
-			{
-				_currentlyDisplayedPlayer = _playerTwo;
-			}
-			else
-			{
-				_currentlyDisplayedPlayer = _playerOne;
-			}
-			SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
-			EventSystem.current.SetSelectedGameObject(null);
-			_startingOption.Select();
+			_currentlyDisplayedPlayer = _playerTwo;
 		}
+		else
+		{
+			_currentlyDisplayedPlayer = _playerOne;
+		}
+		SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
+		EventSystem.current.SetSelectedGameObject(null);
+		_startingOption.Select();
 	}
 
 	private void SetCommandListData(PlayerStatsSO playerStats)

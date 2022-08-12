@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PromptsImageChanger : MonoBehaviour
@@ -7,48 +6,68 @@ public class PromptsImageChanger : MonoBehaviour
 	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private Image _promptImage = default;
 	[SerializeField] private Sprite _promptKeyboardSprite = default;
+	[SerializeField] private Sprite _promptXboxSprite = default;
 	[SerializeField] private Sprite _promptControllerSprite = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 
-
-	void Awake()
+	private void SetCorrectPromptSprite()
 	{
 		if (_inputManager != null)
 		{
-			_inputManager.OnInputChange.AddListener(() => SetCorrectPromptSprite());
+			string inputScheme = _inputManager.InputScheme;
+			if (inputScheme.Contains("Keyboard"))
+			{
+				_promptImage.sprite = _promptKeyboardSprite;
+			}
+			else if (inputScheme.Contains("Xbox"))
+			{
+				_promptImage.sprite = _promptXboxSprite;
+			}
+			else
+			{
+				_promptImage.sprite = _promptControllerSprite;
+			}
+		}
+		else if (_pauseMenu != null)
+		{
+			string inputScheme = _pauseMenu.PauseControllerType;
+			if (inputScheme.Contains("Keyboard"))
+			{
+				_promptImage.sprite = _promptKeyboardSprite;
+			}
+			else if (inputScheme.Contains("Xbox"))
+			{
+				_promptImage.sprite = _promptXboxSprite;
+			}
+			else
+			{
+				_promptImage.sprite = _promptControllerSprite;
+			}
 		}
 	}
 
-	private void SetCorrectPromptSprite()
+	public void SetPromptSpriteOnCommand(string inputScheme)
 	{
-		if (_pauseMenu == null)
+		if (inputScheme.Contains("Keyboard"))
 		{
-			string inputScheme = _inputManager.InputScheme;
-			if (inputScheme == "Keyboard")
-			{
-				_promptImage.sprite = _promptKeyboardSprite;
-			}
-			else
-			{
-				_promptImage.sprite = _promptControllerSprite;
-			}
+			_promptImage.sprite = _promptKeyboardSprite;
+		}
+		else if (inputScheme.Contains("Xbox"))
+		{
+			_promptImage.sprite = _promptXboxSprite;
 		}
 		else
 		{
-			string inputScheme = _pauseMenu.PauseControllerType;
-			if (inputScheme == "Keyboard")
-			{
-				_promptImage.sprite = _promptKeyboardSprite;
-			}
-			else
-			{
-				_promptImage.sprite = _promptControllerSprite;
-			}
+			_promptImage.sprite = _promptControllerSprite;
 		}
 	}
 
 	void OnEnable()
 	{
+		if (_inputManager != null)
+		{
+			_inputManager.OnInputChange.AddListener(SetCorrectPromptSprite);
+		}
 		SetCorrectPromptSprite();
 	}
 
@@ -56,7 +75,7 @@ public class PromptsImageChanger : MonoBehaviour
 	{
 		if (_inputManager != null)
 		{
-			_inputManager.OnInputChange.RemoveListener(() => SetCorrectPromptSprite());
+			_inputManager.OnInputChange.RemoveListener(SetCorrectPromptSprite);
 		}
 	}
 }

@@ -30,9 +30,9 @@ public class TrainingMenu : BaseMenu
     private int _currentTrainingSubOptionIndex;
 
 
-    void Update()
+    public void ChangePage(bool left)
     {
-        if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UILeft"))
+        if (left)
         {
             if (_currentTrainingSubOptionIndex == 0)
             {
@@ -51,8 +51,9 @@ public class TrainingMenu : BaseMenu
             }
             _trainingSubOptions[_currentTrainingSubOptionIndex].Activate();
         }
-        if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UIRight"))
+        else
         {
+
             if (_currentTrainingSubOptionIndex == _trainingSubOptions.Length - 1)
             {
                 _currentTrainingSubOptionIndex = 0;
