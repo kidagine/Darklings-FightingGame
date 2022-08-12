@@ -152,7 +152,10 @@ public class PlayersMenu : BaseMenu
 					_playerIcons[i].gameObject.SetActive(false);
 				}
 				_inputManager.gameObject.SetActive(true);
-				_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
+				if (PlayerIcon.CurrentInputDevice != null)
+				{
+					_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
+				}
 				_characterMenu.Show();
 			}
 		}
@@ -211,7 +214,10 @@ public class PlayersMenu : BaseMenu
 			_playerIcons[i].gameObject.SetActive(false);
 		}
 		_inputManager.gameObject.SetActive(true);
-		_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
+		if (PlayerIcon.CurrentInputDevice != null)
+		{
+			_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
+		}
 		_characterMenu.Show();
 	}
 

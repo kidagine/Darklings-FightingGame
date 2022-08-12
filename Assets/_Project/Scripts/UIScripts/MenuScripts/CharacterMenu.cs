@@ -11,6 +11,7 @@ using UnityEngine.UI;
 
 public class CharacterMenu : BaseMenu
 {
+	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private SpriteRenderer _characterOneImage = default;
 	[SerializeField] private SpriteRenderer _characterTwoImage = default;
 	[SerializeField] private GameObject _assistOne = default;
@@ -34,6 +35,7 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private TextMeshProUGUI _arcanaTextTwo = default;
 	[SerializeField] private TextMeshProUGUI _speedTextTwo = default;
 	[SerializeField] private PlayerStatsSO[] _playerStatsArray = default;
+	[SerializeField] private RebindMenu[] _rebindMenues = default;
 	private PlayerStatsSO _playerStats;
 	private EventSystem _currentEventSystem;
 
@@ -206,8 +208,12 @@ public class CharacterMenu : BaseMenu
 		}
 		else
 		{
-			OpenMenuHideCurrent(otherMenu);
-			ResetControllerInput();
+			if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
+			{
+				_inputManager.gameObject.SetActive(false);
+				OpenMenuHideCurrent(otherMenu);
+				ResetControllerInput();
+			}
 		}
 	}
 
@@ -215,6 +221,18 @@ public class CharacterMenu : BaseMenu
 	{
 		//SceneSettings.ControllerOne = "Cpu";
 		//SceneSettings.ControllerTwo = "Cpu";
+	}
+
+	public void OpenRebind()
+	{
+		if (!FirstCharacterSelected)
+		{
+			_rebindMenues[0].Show();
+		}
+		else
+		{
+			_rebindMenues[1].Show();
+		}
 	}
 
 	private void OnDisable()
