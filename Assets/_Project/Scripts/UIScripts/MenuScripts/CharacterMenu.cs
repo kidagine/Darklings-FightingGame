@@ -225,13 +225,17 @@ public class CharacterMenu : BaseMenu
 
 	public void OpenRebind()
 	{
-		if (!FirstCharacterSelected)
+		if (!_changeStageMenu.IsOpen)
 		{
-			_rebindMenues[0].Show();
-		}
-		else
-		{
-			_rebindMenues[1].Show();
+			if (!FirstCharacterSelected)
+			{
+				_rebindMenues[0].Show();
+			}
+			else
+			{
+				_rebindMenues[1].Show();
+			}
+			_currentEventSystem.sendNavigationEvents = true;
 		}
 	}
 
@@ -239,6 +243,7 @@ public class CharacterMenu : BaseMenu
 	{
 		if (!SceneSettings.SceneSettingsDecide)
 		{
+			_currentEventSystem.SetSelectedGameObject(null); 
 			_currentEventSystem.sendNavigationEvents = true;
 			FirstCharacterSelected = false;
 			_hpTextOne.text = "";

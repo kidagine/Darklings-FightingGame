@@ -29,12 +29,6 @@ public class PlayersMenu : BaseMenu
 		_audio = GetComponent<Audio>();
 	}
 
-	void Start()
-	{
-		InputSystem.onDeviceChange += UpdateVisiblePlayers;
-		UpdateVisiblePlayers(null, default);
-	}
-
 	private void UpdateVisiblePlayers(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
 	{
 		_increment = 0;
@@ -152,10 +146,7 @@ public class PlayersMenu : BaseMenu
 					_playerIcons[i].gameObject.SetActive(false);
 				}
 				_inputManager.gameObject.SetActive(true);
-				if (PlayerIcon.CurrentInputDevice != null)
-				{
-					_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
-				}
+				_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
 				_characterMenu.Show();
 			}
 		}
@@ -198,6 +189,7 @@ public class PlayersMenu : BaseMenu
 			{
 				_audio.Sound("Selected").Play();
 				_cpuTextLeft.SetActive(false);
+				PlayerIcon.CurrentInputDevice = InputSystem.devices[_currentIconIndex];
 				_playerIcons[_currentIconIndex].anchoredPosition = new Vector2(_left, 275.0f);
 			}
 		}
@@ -214,10 +206,7 @@ public class PlayersMenu : BaseMenu
 			_playerIcons[i].gameObject.SetActive(false);
 		}
 		_inputManager.gameObject.SetActive(true);
-		if (PlayerIcon.CurrentInputDevice != null)
-		{
-			_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
-		}
+		_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
 		_characterMenu.Show();
 	}
 
@@ -231,10 +220,8 @@ public class PlayersMenu : BaseMenu
 	private void OnEnable()
 	{
 		_inputManager.gameObject.SetActive(false);
-		for (int i = 0; i < _playerIcons.Length; i++)
-		{
-			_playerIcons[i].gameObject.SetActive(true);
-		}
+		InputSystem.onDeviceChange += UpdateVisiblePlayers;
+		UpdateVisiblePlayers(null, default);
 	}
 
 	public void Back(CallbackContext callbackContext)

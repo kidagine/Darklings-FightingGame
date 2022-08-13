@@ -12,6 +12,7 @@ public class CharacterAssistSelector : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _assistIndicatorText = default;
 	[SerializeField] private Animator _assistAnimator = default;
 	[SerializeField] private ChangeStageMenu _changeStageMenu = default;
+	[SerializeField] private RebindMenu _rebindMenu = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _arrows = default;
 	[SerializeField] private AssistStatsSO[] assistStatsSO = default;
@@ -45,7 +46,7 @@ public class CharacterAssistSelector : MonoBehaviour
 
 	public void Movement()
 	{
-		if (!_inputDeactivated && !_changeStageMenu.IsOpen)
+		if (!_inputDeactivated && !_changeStageMenu.IsOpen && !_rebindMenu.gameObject.activeSelf)
 		{
 			_directionInput = _inputManager.NavigationInput; 
 			if (_directionInput.x == 1.0f && _assistCount < assistStatsSO.Length - 1)
@@ -82,7 +83,7 @@ public class CharacterAssistSelector : MonoBehaviour
 
 	public void Confirm()
 	{
-		if (!_pressed)
+		if (!_pressed && !_rebindMenu.gameObject.activeSelf)
 		{
 			_pressed = true;
 			if (_isPlayerOne)

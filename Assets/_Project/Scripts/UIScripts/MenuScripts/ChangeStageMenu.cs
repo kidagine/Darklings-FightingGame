@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ChangeStageMenu : MonoBehaviour
 {
+	[SerializeField] private RebindMenu _rebindOneMenu = default;
+	[SerializeField] private RebindMenu _rebindTwoMenu = default;
 	[SerializeField] private Selectable _initialSelectable = default;
 	[SerializeField] private GameObject _selectorTextPrefab = default;
 	[SerializeField] private Transform _stageSelectorValues = default;
@@ -58,7 +60,7 @@ public class ChangeStageMenu : MonoBehaviour
 
 	public void ChangeStageOpen()
 	{
-		if (!IsOpen)
+		if (!IsOpen && !_rebindOneMenu.gameObject.activeSelf && !_rebindTwoMenu.gameObject.activeSelf)
 		{
 			_previousSelectable = _currentEventSystem.currentSelectedGameObject.GetComponent<Selectable>();
 			_changeStageAnimator.Play("ChangeStageOpen");
@@ -86,7 +88,7 @@ public class ChangeStageMenu : MonoBehaviour
 			{
 				_previousSelectable.Select();
 			}
-			IsOpen = false;
+		   IsOpen = false;
 		}
 	}
 
