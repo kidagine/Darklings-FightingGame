@@ -62,7 +62,6 @@ public class RebindMenu : BaseMenu
 		_inputAction = _playerInput.actions.FindAction(rebindButton.ActionReference.action.id);
 		_eventSystem.sendNavigationEvents = false;
 		_eventSystem.SetSelectedGameObject(null);
-		Debug.Log(_inputAction.GetBindingDisplayString(1, InputBinding.DisplayStringOptions.DontUseShortDisplayNames));
 		_assignButtonImage.SetActive(true);
 		_rebindingOperation = _inputAction.PerformInteractiveRebinding()
 			.WithCancelingThrough("<Keyboard>/tab")

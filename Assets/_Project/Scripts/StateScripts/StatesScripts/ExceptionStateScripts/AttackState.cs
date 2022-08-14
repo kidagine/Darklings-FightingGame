@@ -78,7 +78,7 @@ public class AttackState : State
 		}
 	}
 
-	private void ToIdleState()
+	private new void ToIdleState()
 	{
 		if (_stateMachine.CurrentState == this)
 		{
