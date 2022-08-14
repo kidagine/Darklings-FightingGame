@@ -7,6 +7,7 @@ public class PromptsInput : MonoBehaviour
 	public UnityEvent OnConfirm;
 	public UnityEvent OnBack;
 	public UnityEvent OnCoop;
+	public UnityEvent OnRebind;
 	public UnityEvent OnStage;
 	public UnityEvent OnControls;
 	public UnityEvent OnLeftPage;

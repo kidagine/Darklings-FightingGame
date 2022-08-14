@@ -2472,7 +2472,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6371053321382070875}
         m_TargetAssemblyTypeName: PlayerController, Scripts
-        m_MethodName: Dash
+        m_MethodName: DashForward
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2708,6 +2708,26 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: fcaf26ea-bc8c-43bc-b977-18e8763d90f3
     m_ActionName: UI/RightPage[/Keyboard/e,/DualSenseGamepadHID/rightTrigger,/XInputControllerWindows/rightTrigger]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: af544d57-8a92-4aa9-b7cc-8ae4239ac6d9
+    m_ActionName: UI/Rebind[/DualSenseGamepadHID/buttonNorth,/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: DashBack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6fc0ed92-2154-48c8-bdf0-9b85261bc921
+    m_ActionName: Gameplay/DashBack[/DualSenseGamepadHID/dpad/left]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay

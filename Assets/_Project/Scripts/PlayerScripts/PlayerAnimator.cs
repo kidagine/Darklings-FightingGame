@@ -26,9 +26,9 @@ public class PlayerAnimator : MonoBehaviour
 		_animator.runtimeAnimatorController = _playerStats.PlayerStatsSO.runtimeAnimatorController;
 	}
 
-	void Update()
+	void LateUpdate()
 	{
-		if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
+		if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
 		{
 			OnCurrentAnimationFinished?.Invoke();
 			OnCurrentAnimationFinished.RemoveAllListeners();

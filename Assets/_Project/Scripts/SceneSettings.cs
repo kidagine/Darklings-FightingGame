@@ -1,8 +1,6 @@
-using UnityEngine.InputSystem;
-
 public class SceneSettings
 {
-	//Fight
+	//Fights
 	public static int StageIndex = 0;
 	public static string MusicName = "Random";
 	public static int ControllerOne = 0;

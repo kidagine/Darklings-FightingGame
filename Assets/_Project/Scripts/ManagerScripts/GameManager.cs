@@ -222,8 +222,16 @@ public class GameManager : MonoBehaviour
 		PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
 		PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
 		PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
-		string inputSchemeOne = InputSystem.devices[SceneSettings.ControllerOne].displayName;
-		string inputSchemeTwo= InputSystem.devices[SceneSettings.ControllerTwo].displayName;
+		string inputSchemeOne = "";
+		string inputSchemeTwo = "";
+		if (SceneSettings.ControllerOne != -1)
+		{
+			inputSchemeOne = InputSystem.devices[SceneSettings.ControllerOne].displayName;
+		}
+		if (SceneSettings.ControllerTwo != -1)
+		{
+			inputSchemeTwo = InputSystem.devices[SceneSettings.ControllerTwo].displayName;
+		}
 		if (inputSchemeOne.Contains("Keyboard"))
 		{
 			_keyboardPrompts.SetActive(true);

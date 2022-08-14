@@ -73,13 +73,22 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dash"",
-                    ""type"": ""Value"",
+                    ""name"": ""DashForward"",
+                    ""type"": ""Button"",
                     ""id"": ""1d93204d-0917-4a15-8fe3-c74a8fdba30a"",
-                    ""expectedControlType"": ""Dpad"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DashBack"",
+                    ""type"": ""Button"",
+                    ""id"": ""6fc0ed92-2154-48c8-bdf0-9b85261bc921"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Light"",
@@ -279,138 +288,6 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Dpad"",
-                    ""id"": ""ee2d5dd6-0aa1-4d01-aaaf-d8b1c8c9e5cd"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Left"",
-                    ""id"": ""d0eeed6a-c534-4d89-a9a7-a7b41d7b4160"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Right"",
-                    ""id"": ""d6f58e8e-d26a-4b6e-b861-1654efadd7de"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""LeftStick"",
-                    ""id"": ""55279c65-f5ef-4f3b-855a-6fca88a4811b"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": ""StickDeadzone"",
-                    ""groups"": """",
-                    ""action"": ""Dash"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Left"",
-                    ""id"": ""b335044a-98d8-4c03-a7d4-80f5558b1603"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Right"",
-                    ""id"": ""3e604227-4533-4b6e-a29f-f958ac52106b"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""AD"",
-                    ""id"": ""edc58fb2-b2cf-4388-8586-7734f8161a97"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Left"",
-                    ""id"": ""1c868b9d-6fc7-4249-81c7-d7b6fd116879"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Right"",
-                    ""id"": ""25a4ce5c-cd84-4451-9e57-5e8c093b86e3"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""LeftRightArrows"",
-                    ""id"": ""8ad1dc32-7328-42b1-b2f0-6e757cef3abb"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Left"",
-                    ""id"": ""8fdad51c-eb29-4aef-90a5-baca7702c31d"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardTwo"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Right"",
-                    ""id"": ""535aebb8-75cf-4286-a50b-004d8a9894df"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardTwo"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""WASD"",
@@ -871,6 +748,94 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KeyboardTwo"",
                     ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""66d648b2-3e3c-4159-a12d-6cfefaab7cdc"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""DashForward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""99d64bb4-1b4a-4213-8f90-770fe4ad0599"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""DashForward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d3495d6-85ea-4575-85db-4df134cf940a"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""DashForward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30580324-1c94-4ea9-a70b-5210a65368c8"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardTwo"",
+                    ""action"": ""DashForward"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2f657d85-4879-4bbe-a303-3b5449137d9a"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""DashBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e1205a3b-1274-4fc5-b3d4-dcba614e94d0"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""DashBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""31ef94cf-a013-4b43-b4b3-5c4d0c42e7ee"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""DashBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b1c7407f-ace2-40da-bbee-d5eec3232d97"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardTwo"",
+                    ""action"": ""DashBack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1387,7 +1352,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Crouch = m_Gameplay.FindAction("Crouch", throwIfNotFound: true);
-        m_Gameplay_Dash = m_Gameplay.FindAction("Dash", throwIfNotFound: true);
+        m_Gameplay_DashForward = m_Gameplay.FindAction("DashForward", throwIfNotFound: true);
+        m_Gameplay_DashBack = m_Gameplay.FindAction("DashBack", throwIfNotFound: true);
         m_Gameplay_Light = m_Gameplay.FindAction("Light", throwIfNotFound: true);
         m_Gameplay_Medium = m_Gameplay.FindAction("Medium", throwIfNotFound: true);
         m_Gameplay_Heavy = m_Gameplay.FindAction("Heavy", throwIfNotFound: true);
@@ -1473,7 +1439,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Movement;
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_Crouch;
-    private readonly InputAction m_Gameplay_Dash;
+    private readonly InputAction m_Gameplay_DashForward;
+    private readonly InputAction m_Gameplay_DashBack;
     private readonly InputAction m_Gameplay_Light;
     private readonly InputAction m_Gameplay_Medium;
     private readonly InputAction m_Gameplay_Heavy;
@@ -1489,7 +1456,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @Crouch => m_Wrapper.m_Gameplay_Crouch;
-        public InputAction @Dash => m_Wrapper.m_Gameplay_Dash;
+        public InputAction @DashForward => m_Wrapper.m_Gameplay_DashForward;
+        public InputAction @DashBack => m_Wrapper.m_Gameplay_DashBack;
         public InputAction @Light => m_Wrapper.m_Gameplay_Light;
         public InputAction @Medium => m_Wrapper.m_Gameplay_Medium;
         public InputAction @Heavy => m_Wrapper.m_Gameplay_Heavy;
@@ -1520,9 +1488,12 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @Crouch.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCrouch;
                 @Crouch.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCrouch;
                 @Crouch.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCrouch;
-                @Dash.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
-                @Dash.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
-                @Dash.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDash;
+                @DashForward.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDashForward;
+                @DashForward.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDashForward;
+                @DashForward.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDashForward;
+                @DashBack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDashBack;
+                @DashBack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDashBack;
+                @DashBack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDashBack;
                 @Light.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLight;
                 @Light.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLight;
                 @Light.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLight;
@@ -1560,9 +1531,12 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @Crouch.started += instance.OnCrouch;
                 @Crouch.performed += instance.OnCrouch;
                 @Crouch.canceled += instance.OnCrouch;
-                @Dash.started += instance.OnDash;
-                @Dash.performed += instance.OnDash;
-                @Dash.canceled += instance.OnDash;
+                @DashForward.started += instance.OnDashForward;
+                @DashForward.performed += instance.OnDashForward;
+                @DashForward.canceled += instance.OnDashForward;
+                @DashBack.started += instance.OnDashBack;
+                @DashBack.performed += instance.OnDashBack;
+                @DashBack.canceled += instance.OnDashBack;
                 @Light.started += instance.OnLight;
                 @Light.performed += instance.OnLight;
                 @Light.canceled += instance.OnLight;
@@ -1757,7 +1731,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
-        void OnDash(InputAction.CallbackContext context);
+        void OnDashForward(InputAction.CallbackContext context);
+        void OnDashBack(InputAction.CallbackContext context);
         void OnLight(InputAction.CallbackContext context);
         void OnMedium(InputAction.CallbackContext context);
         void OnHeavy(InputAction.CallbackContext context);

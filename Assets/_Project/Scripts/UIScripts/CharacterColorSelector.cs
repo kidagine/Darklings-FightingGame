@@ -11,6 +11,7 @@ public class CharacterColorSelector : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _playerOneColorNumber = default;
 	[SerializeField] private TextMeshProUGUI _assistIndicatorText = default;
 	[SerializeField] private ChangeStageMenu _changeStageMenu = default;
+	[SerializeField] private RebindMenu _rebindMenu = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private GameObject _arrows = default;
 	[SerializeField] private bool _isPlayerOne = default;
@@ -41,7 +42,7 @@ public class CharacterColorSelector : MonoBehaviour
 
 	public void Movement()
 	{
-		if (!_inputDeactivated && !_changeStageMenu.IsOpen)
+		if (!_inputDeactivated && !_changeStageMenu.IsOpen && !_rebindMenu.gameObject.activeSelf)
 		{
 			_directionInput = _inputManager.NavigationInput;
 			if (_directionInput.x == 1.0f)
@@ -63,7 +64,7 @@ public class CharacterColorSelector : MonoBehaviour
 
 	public void Confirm()
 	{
-		if (!_pressed)
+		if (!_pressed && !_rebindMenu.gameObject.activeSelf)
 		{
 			_pressed = true;
 			if (_isPlayerOne)

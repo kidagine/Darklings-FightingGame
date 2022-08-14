@@ -1,18 +1,16 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
 using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
-	private int _lastDashDirection;
-	private bool _dashPressed;
-	private float _dashLastInputTime;
+	private bool _dashForwardPressed;
+	private float _dashForwardLastInputTime;
+	private bool _dashBackPressed;
+	private float _dashBackLastInputTime;
 	private float _dashTime = 0.3f;
 
-	private bool _pressedAction = false;
-	private bool _holdingParryTrigger = false; 
+
 	void Start()
 	{
 		_playerInput.actions.actionMaps[(int)ActionSchemeTypes.Training].Enable();
@@ -144,36 +142,46 @@ public class PlayerController : BaseController
 		}
 	}
 
-	public void Dash(CallbackContext callbackContext)
+	public void DashForward(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
 		{
-			if (!_dashPressed)
+			if (!_dashForwardPressed)
 			{
-				_dashPressed = true;
-				_lastDashDirection = (int)callbackContext.ReadValue<Vector2>().x;
-				_dashLastInputTime = Time.time;
+				_dashForwardPressed = true;
+				_dashForwardLastInputTime = Time.time;
 			}
 			else
 			{
-				float timeSinceLastPress = Time.time - _dashLastInputTime;
+				float timeSinceLastPress = Time.time - _dashForwardLastInputTime;
 				if (timeSinceLastPress <= _dashTime)
 				{
-					if (callbackContext.ReadValue<Vector2>().x == _lastDashDirection)
-					{
-						if (_lastDashDirection == 1)
-						{
-							_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
-						}
-						else
-						{
-							_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
-						}
-						_dashPressed = false;
-					}
+					_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+					_dashForwardPressed = false;
 				}
-				_lastDashDirection = (int)callbackContext.ReadValue<Vector2>().x;
-				_dashLastInputTime = Time.time;
+				_dashForwardLastInputTime = Time.time;
+			}
+		}
+	}
+
+	public void DashBack(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			if (!_dashBackPressed)
+			{
+				_dashBackPressed = true;
+				_dashBackLastInputTime = Time.time;
+			}
+			else
+			{
+				float timeSinceLastPress = Time.time - _dashBackLastInputTime;
+				if (timeSinceLastPress <= _dashTime)
+				{
+					_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+					_dashBackPressed = false;
+				}
+				_dashBackLastInputTime = Time.time;
 			}
 		}
 	}

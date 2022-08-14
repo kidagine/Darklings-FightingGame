@@ -55,6 +55,15 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
+	public void Rebind(CallbackContext callbackContext)
+	{
+		if (callbackContext.performed)
+		{
+			CurrentPrompts?.OnRebind?.Invoke();
+		}
+	}
+
+
 	public void Controls(CallbackContext callbackContext)
 	{
 		if (callbackContext.performed)
