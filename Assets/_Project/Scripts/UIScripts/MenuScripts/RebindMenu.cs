@@ -1,5 +1,8 @@
 using Demonics.UI;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -20,6 +23,14 @@ public class RebindMenu : BaseMenu
 	private InputAction _inputAction;
 	private RebindingOperation _rebindingOperation;
 
+
+	void Awake()
+	{
+		if (File.Exists(Application.persistentDataPath + "/controlsOverrides.dat"))
+		{
+			LoadControlOverrides();
+		}
+	}
 
 	void Start()
 	{
@@ -63,11 +74,13 @@ public class RebindMenu : BaseMenu
 
 	private void RebindComplete(RebindButton rebindButton)
 	{
+		_rebindingOperation.Dispose();
 		_eventSystem.sendNavigationEvents = true;
 		_assignButtonImage.SetActive(false);
+		AddOverrideToDictionary(_inputAction.id, _inputAction.bindings[rebindButton.ControlBindingIndex].effectivePath, rebindButton.ControlBindingIndex);
 		rebindButton.UpdatePromptImage();
 		rebindButton.GetComponent<Button>().Select();
-		_rebindingOperation.Dispose();
+		SaveControlOverrides();
 	}
 
 	public void ResetRebindToDefault()
@@ -77,6 +90,51 @@ public class RebindMenu : BaseMenu
 			InputAction inputAction = _rebindButtons[i].ActionReference.action;
 			InputActionRebindingExtensions.RemoveAllBindingOverrides(inputAction);
 			_rebindButtons[i].UpdatePromptImage();
+		}
+	}
+
+	public Dictionary<string, string> OverridesDictionary = new Dictionary<string, string>();
+
+	private void AddOverrideToDictionary(Guid actionId, string path, int bindingIndex)
+	{
+		string key = string.Format("{0} : {1}", actionId.ToString(), bindingIndex);
+
+		if (OverridesDictionary.ContainsKey(key))
+		{
+			OverridesDictionary[key] = path;
+		}
+		else
+		{
+			OverridesDictionary.Add(key, path);
+		}
+	}
+
+	private void SaveControlOverrides()
+	{
+		FileStream file = new(Application.persistentDataPath + "/controlsOverrides.dat", FileMode.OpenOrCreate);
+		BinaryFormatter bf = new();
+		bf.Serialize(file, OverridesDictionary);
+		file.Close();
+	}
+
+	private void LoadControlOverrides()
+	{
+		if (!File.Exists(Application.persistentDataPath + "/controlsOverrides.dat"))
+		{
+			return;
+		}
+
+		FileStream file = new(Application.persistentDataPath + "/controlsOverrides.dat", FileMode.OpenOrCreate);
+		BinaryFormatter bf = new();
+		OverridesDictionary = bf.Deserialize(file) as Dictionary<string, string>;
+		file.Close();
+
+		foreach (var item in OverridesDictionary)
+		{
+			string[] split = item.Key.Split(new string[] { " : " }, StringSplitOptions.None);
+			Guid id = Guid.Parse(split[0]);
+			int index = int.Parse(split[1]);
+			_playerInput.actions.FindAction(id).ApplyBindingOverride(index, item.Value);
 		}
 	}
 }
