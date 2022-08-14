@@ -64,6 +64,8 @@ public class RebindMenu : BaseMenu
 		_eventSystem.SetSelectedGameObject(null);
 		_assignButtonImage.SetActive(true);
 		_rebindingOperation = _inputAction.PerformInteractiveRebinding()
+			.WithControlsExcluding("<Gamepad>/leftStick")
+			.WithControlsExcluding("<Gamepad>/rightStick")
 			.WithCancelingThrough("<Keyboard>/tab")
 			.WithCancelingThrough("<Gamepad>/start")
 			.OnCancel(operation => RebindComplete(rebindButton))

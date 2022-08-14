@@ -12,6 +12,9 @@ using UnityEngine.UI;
 public class CharacterMenu : BaseMenu
 {
 	[SerializeField] private InputManager _inputManager = default;
+	[SerializeField] private FadeHandler _fadeHandler = default;
+	[SerializeField] private GameObject _rebindOnePrompt = default;
+	[SerializeField] private GameObject _rebindTwoPrompt = default;
 	[SerializeField] private SpriteRenderer _characterOneImage = default;
 	[SerializeField] private SpriteRenderer _characterTwoImage = default;
 	[SerializeField] private GameObject _assistOne = default;
@@ -196,7 +199,9 @@ public class CharacterMenu : BaseMenu
 			{
 				SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
 			}
-			SceneManager.LoadScene(2);
+			_fadeHandler.onFadeEnd.AddListener(()=> SceneManager.LoadScene(2));
+			_fadeHandler.StartFadeTransition(true);
+			
 		}
 	}
 
@@ -227,11 +232,11 @@ public class CharacterMenu : BaseMenu
 	{
 		if (!_changeStageMenu.IsOpen)
 		{
-			if (!FirstCharacterSelected)
+			if (!FirstCharacterSelected && SceneSettings.ControllerOne >= 0)
 			{
 				_rebindMenues[0].Show();
 			}
-			else
+			else if (SceneSettings.ControllerTwo >= 0)
 			{
 				_rebindMenues[1].Show();
 			}
@@ -261,5 +266,6 @@ public class CharacterMenu : BaseMenu
 			_assistOneSpriteRenderer.enabled = false;
 			_assistTwoSpriteRenderer.enabled = false;
 		}
+		_fadeHandler.onFadeEnd.RemoveAllListeners();
 	}
 }
