@@ -15,7 +15,6 @@ public class PlayersMenu : BaseMenu
 	[SerializeField] private BaseMenu _versusMenu = default;
 	[SerializeField] private BaseMenu _practiceMenu = default;
 	private Audio _audio;
-	private int _currentIconIndex;
 	private int _increment;
 	private readonly float _left = -375.0f;
 	private readonly float _right = 375.0f;
@@ -94,61 +93,56 @@ public class PlayersMenu : BaseMenu
 		return false;
 	}
 
-	public void OpenOtherMenu(CallbackContext callbackContext)
+	public void OpenOtherMenu()
 	{
-		if (callbackContext.performed)
+		if (_playerIcons[0].anchoredPosition.x != _center || _playerIcons[1].anchoredPosition.x != _center || _playerIcons[2].anchoredPosition.x != _center)
 		{
-			if (_playerIcons[0].anchoredPosition.x != _center || _playerIcons[1].anchoredPosition.x != _center || _playerIcons[2].anchoredPosition.x != _center)
+			_audio.Sound("Pressed").Play();
+			if (_playerIcons[0].anchoredPosition.x == _right)
 			{
-				_audio.Sound("Pressed").Play();
-				if (_playerIcons[0].anchoredPosition.x == _right)
-				{
-					SceneSettings.ControllerTwo = 0;
-				}
-				else if (_playerIcons[1].anchoredPosition.x == _right)
-				{
-					SceneSettings.ControllerTwo = 2;
-				}
-				else if (_playerIcons[2].anchoredPosition.x == _right)
-				{
-					SceneSettings.ControllerTwo = 3;
-				}
-				else
-				{
-					SceneSettings.ControllerTwo = -1;
-				}
-				if (_playerIcons[0].anchoredPosition.x == _left)
-				{
-					SceneSettings.ControllerOne = 0;
-				}
-				else if (_playerIcons[1].anchoredPosition.x == _left)
-				{
-					SceneSettings.ControllerOne = 2;
-				}
-				else if (_playerIcons[2].anchoredPosition.x == _left)
-				{
-					SceneSettings.ControllerOne = 3;
-				}
-				else
-				{
-					SceneSettings.ControllerOne = -1;
-				}
-				if (_playerIcons[0].anchoredPosition.x != _center && _playerIcons[1].anchoredPosition.x != _center
-					|| _playerIcons[0].anchoredPosition.x != _center && _playerIcons[2].anchoredPosition.x != _center
-					|| _playerIcons[1].anchoredPosition.x != _center && _playerIcons[2].anchoredPosition.x != _center)
-				{
-					_characterMenu.EnablePlayerTwoSelector();
-				}
-				gameObject.SetActive(false);
-				for (int i = 0; i < _playerIcons.Length; i++)
-				{
-					_playerIcons[i].GetComponent<PlayerIcon>().Center();
-					_playerIcons[i].gameObject.SetActive(false);
-				}
-				_inputManager.gameObject.SetActive(true);
-				_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
-				_characterMenu.Show();
+				SceneSettings.ControllerTwo = 0;
 			}
+			else if (_playerIcons[1].anchoredPosition.x == _right)
+			{
+				SceneSettings.ControllerTwo = 2;
+			}
+			else if (_playerIcons[2].anchoredPosition.x == _right)
+			{
+				SceneSettings.ControllerTwo = 3;
+			}
+			else
+			{
+				SceneSettings.ControllerTwo = -1;
+			}
+			if (_playerIcons[0].anchoredPosition.x == _left)
+			{
+				SceneSettings.ControllerOne = 0;
+			}
+			else if (_playerIcons[1].anchoredPosition.x == _left)
+			{
+				SceneSettings.ControllerOne = 2;
+			}
+			else if (_playerIcons[2].anchoredPosition.x == _left)
+			{
+				SceneSettings.ControllerOne = 3;
+			}
+			else
+			{
+				SceneSettings.ControllerOne = -1;
+			}
+			if (_playerIcons[0].anchoredPosition.x != _center && _playerIcons[1].anchoredPosition.x != _center
+				|| _playerIcons[0].anchoredPosition.x != _center && _playerIcons[2].anchoredPosition.x != _center
+				|| _playerIcons[1].anchoredPosition.x != _center && _playerIcons[2].anchoredPosition.x != _center)
+			{
+				_characterMenu.EnablePlayerTwoSelector();
+			}
+			gameObject.SetActive(false);
+			for (int i = 0; i < _playerIcons.Length; i++)
+			{
+				_playerIcons[i].GetComponent<PlayerIcon>().Center();
+				_playerIcons[i].gameObject.SetActive(false);
+			}
+			_characterMenu.Show();
 		}
 	}
 
@@ -176,25 +170,6 @@ public class PlayersMenu : BaseMenu
 		return true;
 	}
 
-	public void SetCurrentPlayerIcon(int index)
-	{
-		_currentIconIndex = index;
-	}
-
-	public void ConfirmQuickAssign(CallbackContext callbackContext)
-	{
-		if (callbackContext.performed)
-		{
-			if (gameObject.activeSelf)
-			{
-				_audio.Sound("Selected").Play();
-				_cpuTextLeft.SetActive(false);
-				PlayerIcon.CurrentInputDevice = InputSystem.devices[_currentIconIndex];
-				_playerIcons[_currentIconIndex].anchoredPosition = new Vector2(_left, 275.0f);
-			}
-		}
-	}
-
 	public void OpenKeyboardCoOp()
 	{
 		_audio.Sound("Pressed").Play();
@@ -206,7 +181,6 @@ public class PlayersMenu : BaseMenu
 			_playerIcons[i].gameObject.SetActive(false);
 		}
 		_inputManager.gameObject.SetActive(true);
-		_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
 		_characterMenu.Show();
 	}
 
@@ -219,32 +193,24 @@ public class PlayersMenu : BaseMenu
 
 	private void OnEnable()
 	{
-		_inputManager.gameObject.SetActive(false);
 		InputSystem.onDeviceChange += UpdateVisiblePlayers;
 		UpdateVisiblePlayers(null, default);
 	}
 
-	public void Back(CallbackContext callbackContext)
+	public void Back()
 	{
-		if (callbackContext.performed)
+		for (int i = 0; i < _playerIcons.Length; i++)
 		{
-			for (int i = 0; i < _playerIcons.Length; i++)
-			{
-				_playerIcons[i].gameObject.SetActive(false);
-			}
-			_inputManager.gameObject.SetActive(true);
-			if (PlayerIcon.CurrentInputDevice != null)
-			{
-				_inputManager.PlayerInput.SwitchCurrentControlScheme(PlayerIcon.CurrentInputDevice);
-			}
-			if (SceneSettings.IsTrainingMode)
-			{
-				OpenMenuHideCurrent(_practiceMenu);
-			}
-			else
-			{
-				OpenMenuHideCurrent(_versusMenu);
-			}
+			_playerIcons[i].gameObject.SetActive(false);
+		}
+
+		if (SceneSettings.IsTrainingMode)
+		{
+			OpenMenuHideCurrent(_practiceMenu);
+		}
+		else
+		{
+			OpenMenuHideCurrent(_versusMenu);
 		}
 	}
 }

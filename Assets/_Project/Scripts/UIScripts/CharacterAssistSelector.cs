@@ -122,6 +122,7 @@ public class CharacterAssistSelector : MonoBehaviour
 		_inputDeactivated = false;
 		_arrows.SetActive(true);
 		_assistCount = 0;
+		_pressed = false;
 		transform.GetChild(0).gameObject.SetActive(true);
 		if (_assistAnimator != null)
 		{

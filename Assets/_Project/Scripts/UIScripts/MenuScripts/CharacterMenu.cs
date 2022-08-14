@@ -11,7 +11,6 @@ using UnityEngine.UI;
 
 public class CharacterMenu : BaseMenu
 {
-	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private FadeHandler _fadeHandler = default;
 	[SerializeField] private GameObject _rebindOnePrompt = default;
 	[SerializeField] private GameObject _rebindTwoPrompt = default;
@@ -137,7 +136,6 @@ public class CharacterMenu : BaseMenu
 				int randomPlayer = UnityEngine.Random.Range(0, _playerStatsArray.Length);
 				_playerStats = _playerStatsArray[randomPlayer];
 				string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-				Debug.Log(characterName);
 				_playerOneName.text = characterName;
 				_spriteLibraryOne.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
@@ -215,7 +213,6 @@ public class CharacterMenu : BaseMenu
 		{
 			if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
 			{
-				_inputManager.gameObject.SetActive(false);
 				OpenMenuHideCurrent(otherMenu);
 				ResetControllerInput();
 			}
@@ -258,10 +255,16 @@ public class CharacterMenu : BaseMenu
 			_arcanaTextTwo.text = "";
 			_speedTextTwo.text = "";
 			_playerOneName.text = "";
-			_characterOneImage.enabled = false;
-			_characterOneAnimator.runtimeAnimatorController = null;
-			_characterTwoImage.enabled = false;
-			_characterTwoAnimator.runtimeAnimatorController = null;
+			if (_characterOneImage != null)
+			{
+				_characterOneImage.enabled = false;
+				_characterOneAnimator.runtimeAnimatorController = null;
+			}
+			if (_characterTwoImage != null)
+			{
+				_characterTwoImage.enabled = false;
+				_characterTwoAnimator.runtimeAnimatorController = null;
+			}
 			_playerTwoName.text = "";
 			_assistOneSpriteRenderer.enabled = false;
 			_assistTwoSpriteRenderer.enabled = false;
