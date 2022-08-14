@@ -8,13 +8,15 @@ using static UnityEngine.InputSystem.InputActionRebindingExtensions;
 
 public class RebindMenu : BaseMenu
 {
+	[SerializeField] private EventSystem _eventSystem = default;
 	[SerializeField] private PlayerInput _playerInput = default;
 	[SerializeField] private Button _firstCharacterButton = default;
 	[SerializeField] private CharacterAssistSelector _characterAssistSelector = default;
 	[SerializeField] private CharacterColorSelector _characterColorSelector = default;
 	[SerializeField] private GameObject _assignButtonImage = default;
+	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private Transform _rebindContainer = default;
-	private List<RebindButton> _rebindButtons = new();
+	private readonly List<RebindButton> _rebindButtons = new();
 	private InputAction _inputAction;
 	private RebindingOperation _rebindingOperation;
 
@@ -30,6 +32,11 @@ public class RebindMenu : BaseMenu
 		}
 	}
 
+	void OnEnable()
+	{
+		_scrollView.anchoredPosition = Vector2.zero;
+	}
+
 	public void HideRebind()
 	{
 		Hide();
@@ -42,17 +49,21 @@ public class RebindMenu : BaseMenu
 	public void AssignButton(RebindButton rebindButton)
 	{
 		_inputAction = _playerInput.actions.FindAction(rebindButton.ActionReference.action.id);
-		EventSystem.current.sendNavigationEvents = false;
-		EventSystem.current.SetSelectedGameObject(null);
+		_eventSystem.sendNavigationEvents = false;
+		_eventSystem.SetSelectedGameObject(null);
 		Debug.Log(_inputAction.GetBindingDisplayString(1, InputBinding.DisplayStringOptions.DontUseShortDisplayNames));
 		_assignButtonImage.SetActive(true);
-		_rebindingOperation = _inputAction.PerformInteractiveRebinding().OnComplete(operation => RebindComplete(rebindButton));
+		_rebindingOperation = _inputAction.PerformInteractiveRebinding()
+			.WithCancelingThrough("<Keyboard>/tab")
+			.WithCancelingThrough("<Gamepad>/start")
+			.OnCancel(operation => RebindComplete(rebindButton))
+			.OnComplete(operation => RebindComplete(rebindButton));
 		_rebindingOperation.Start();
 	}
 
 	private void RebindComplete(RebindButton rebindButton)
 	{
-		EventSystem.current.sendNavigationEvents = true;
+		_eventSystem.sendNavigationEvents = true;
 		_assignButtonImage.SetActive(false);
 		rebindButton.UpdatePromptImage();
 		rebindButton.GetComponent<Button>().Select();

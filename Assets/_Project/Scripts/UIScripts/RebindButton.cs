@@ -9,6 +9,8 @@ public class RebindButton : BaseButton
 	[SerializeField] private DeviceConfigurator _deviceConfigurator = default;
 	[SerializeField] private Image _image = default;
 	[SerializeField] private PlayerInput _playerInput = default;
+	[Range(0, 3)]
+	[SerializeField] private int _controlsIndex = default;
 	public InputActionReference ActionReference { get { return _actionReference; } set { } }
 
 
@@ -20,7 +22,7 @@ public class RebindButton : BaseButton
 	public void UpdatePromptImage()
 	{
 		InputAction focusedInputAction = _playerInput.actions.FindAction(ActionReference.action.id);
-		int controlBindingIndex = focusedInputAction.GetBindingIndexForControl(focusedInputAction.controls[0]);
+		int controlBindingIndex = focusedInputAction.GetBindingIndexForControl(focusedInputAction.controls[_controlsIndex]);
 		string currentBindingInput = InputControlPath.ToHumanReadableString(focusedInputAction.bindings[controlBindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
 		_image.sprite = _deviceConfigurator.GetDeviceBindingIcon(_playerInput, currentBindingInput);
 	}
