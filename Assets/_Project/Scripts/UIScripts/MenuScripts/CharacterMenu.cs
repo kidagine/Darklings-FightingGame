@@ -5,12 +5,14 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
 public class CharacterMenu : BaseMenu
 {
+	[SerializeField] private PlayerInput _playerInput = default;
 	[SerializeField] private FadeHandler _fadeHandler = default;
 	[SerializeField] private GameObject _rebindOnePrompt = default;
 	[SerializeField] private GameObject _rebindTwoPrompt = default;
@@ -40,7 +42,7 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private RebindMenu[] _rebindMenues = default;
 	private PlayerStatsSO _playerStats;
 	private EventSystem _currentEventSystem;
-
+	private int _controllerIndex;
 	public bool FirstCharacterSelected { get; private set; }
 
 
@@ -117,7 +119,6 @@ public class CharacterMenu : BaseMenu
 				_speedTextTwo.text = "?";
 				_playerTwoName.text = "Random";
 			}
-
 			_characterTwoAnimator.runtimeAnimatorController = animatorController;
 		}
 	}
@@ -205,16 +206,19 @@ public class CharacterMenu : BaseMenu
 
 	public void GoBack(BaseMenu otherMenu)
 	{
-		if (_changeStageMenu.IsOpen)
+		if (UsedController(true))
 		{
-			_changeStageMenu.ChangeStageClose();
-		}
-		else
-		{
-			if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
+			if (_changeStageMenu.IsOpen)
 			{
-				OpenMenuHideCurrent(otherMenu);
-				ResetControllerInput();
+				_changeStageMenu.ChangeStageClose();
+			}
+			else
+			{
+				if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
+				{
+					OpenMenuHideCurrent(otherMenu);
+					ResetControllerInput();
+				}
 			}
 		}
 	}
@@ -227,18 +231,47 @@ public class CharacterMenu : BaseMenu
 
 	public void OpenRebind()
 	{
-		if (!_changeStageMenu.IsOpen)
+		if (UsedController(false))
 		{
-			if (!FirstCharacterSelected && SceneSettings.ControllerOne >= 0)
+			if (!_changeStageMenu.IsOpen)
 			{
-				_rebindMenues[0].Show();
+				if (!FirstCharacterSelected && SceneSettings.ControllerOne >= 0)
+				{
+					_rebindMenues[0].Show();
+				}
+				else if (SceneSettings.ControllerTwo >= 0)
+				{
+					_rebindMenues[1].Show();
+				}
+				_currentEventSystem.sendNavigationEvents = true;
 			}
-			else if (SceneSettings.ControllerTwo >= 0)
-			{
-				_rebindMenues[1].Show();
-			}
-			_currentEventSystem.sendNavigationEvents = true;
 		}
+	}
+
+	private bool UsedController(bool cpuFullControl)
+	{
+		if (!FirstCharacterSelected)
+		{
+			_controllerIndex = SceneSettings.ControllerOne;
+		}
+		else
+		{
+			_controllerIndex = SceneSettings.ControllerTwo;
+		}
+
+		if (_controllerIndex < 0)
+		{
+			if (cpuFullControl)
+			{
+				return true;
+			}
+			return false;
+		}
+		if (InputSystem.devices[_controllerIndex].displayName == _playerInput.devices[0].displayName)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	private void OnDisable()
