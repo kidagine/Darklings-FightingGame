@@ -1,5 +1,6 @@
 using Demonics.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -76,12 +77,18 @@ public class RebindMenu : BaseMenu
 	private void RebindComplete(RebindButton rebindButton)
 	{
 		_rebindingOperation.Dispose();
-		_eventSystem.sendNavigationEvents = true;
 		_assignButtonImage.SetActive(false);
 		AddOverrideToDictionary(_inputAction.id, _inputAction.bindings[rebindButton.ControlBindingIndex].effectivePath, rebindButton.ControlBindingIndex);
+		StartCoroutine(RebindCompleteCoroutine(rebindButton));
+		SaveControlOverrides();
+	}
+
+	IEnumerator RebindCompleteCoroutine(RebindButton rebindButton)
+	{
+		yield return null;
+		_eventSystem.sendNavigationEvents = true;
 		rebindButton.UpdatePromptImage();
 		rebindButton.GetComponent<Button>().Select();
-		SaveControlOverrides();
 	}
 
 	public void ResetRebindToDefault()
@@ -91,10 +98,13 @@ public class RebindMenu : BaseMenu
 			InputAction inputAction = _rebindButtons[i].ActionReference.action;
 			InputActionRebindingExtensions.RemoveAllBindingOverrides(inputAction);
 			_rebindButtons[i].UpdatePromptImage();
+			Debug.Log(_rebindButtons[i].ControlBindingIndex);
+			AddOverrideToDictionary(_inputAction.id, _inputAction.bindings[_rebindButtons[i].ControlBindingIndex].effectivePath, _rebindButtons[i].ControlBindingIndex);
 		}
+		SaveControlOverrides();
 	}
 
-	public Dictionary<string, string> OverridesDictionary = new Dictionary<string, string>();
+	public Dictionary<string, string> OverridesDictionary = new();
 
 	private void AddOverrideToDictionary(Guid actionId, string path, int bindingIndex)
 	{
