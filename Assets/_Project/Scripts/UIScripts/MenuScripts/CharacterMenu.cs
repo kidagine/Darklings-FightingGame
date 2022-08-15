@@ -5,13 +5,17 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
 public class CharacterMenu : BaseMenu
 {
-	[SerializeField] private InputManager _inputManager = default;
+	[SerializeField] private PlayerInput _playerInput = default;
+	[SerializeField] private FadeHandler _fadeHandler = default;
+	[SerializeField] private GameObject _rebindOnePrompt = default;
+	[SerializeField] private GameObject _rebindTwoPrompt = default;
 	[SerializeField] private SpriteRenderer _characterOneImage = default;
 	[SerializeField] private SpriteRenderer _characterTwoImage = default;
 	[SerializeField] private GameObject _assistOne = default;
@@ -38,7 +42,7 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private RebindMenu[] _rebindMenues = default;
 	private PlayerStatsSO _playerStats;
 	private EventSystem _currentEventSystem;
-
+	private int _controllerIndex;
 	public bool FirstCharacterSelected { get; private set; }
 
 
@@ -115,7 +119,6 @@ public class CharacterMenu : BaseMenu
 				_speedTextTwo.text = "?";
 				_playerTwoName.text = "Random";
 			}
-
 			_characterTwoAnimator.runtimeAnimatorController = animatorController;
 		}
 	}
@@ -134,7 +137,6 @@ public class CharacterMenu : BaseMenu
 				int randomPlayer = UnityEngine.Random.Range(0, _playerStatsArray.Length);
 				_playerStats = _playerStatsArray[randomPlayer];
 				string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-				Debug.Log(characterName);
 				_playerOneName.text = characterName;
 				_spriteLibraryOne.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
@@ -196,23 +198,27 @@ public class CharacterMenu : BaseMenu
 			{
 				SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
 			}
-			SceneManager.LoadScene(2);
+			_fadeHandler.onFadeEnd.AddListener(()=> SceneManager.LoadScene(2));
+			_fadeHandler.StartFadeTransition(true);
+			
 		}
 	}
 
 	public void GoBack(BaseMenu otherMenu)
 	{
-		if (_changeStageMenu.IsOpen)
+		if (UsedController(true))
 		{
-			_changeStageMenu.ChangeStageClose();
-		}
-		else
-		{
-			if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
+			if (_changeStageMenu.IsOpen)
 			{
-				_inputManager.gameObject.SetActive(false);
-				OpenMenuHideCurrent(otherMenu);
-				ResetControllerInput();
+				_changeStageMenu.ChangeStageClose();
+			}
+			else
+			{
+				if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
+				{
+					OpenMenuHideCurrent(otherMenu);
+					ResetControllerInput();
+				}
 			}
 		}
 	}
@@ -225,18 +231,47 @@ public class CharacterMenu : BaseMenu
 
 	public void OpenRebind()
 	{
-		if (!_changeStageMenu.IsOpen)
+		if (UsedController(false))
 		{
-			if (!FirstCharacterSelected)
+			if (!_changeStageMenu.IsOpen)
 			{
-				_rebindMenues[0].Show();
+				if (!FirstCharacterSelected && SceneSettings.ControllerOne >= 0)
+				{
+					_rebindMenues[0].Show();
+				}
+				else if (SceneSettings.ControllerTwo >= 0)
+				{
+					_rebindMenues[1].Show();
+				}
+				_currentEventSystem.sendNavigationEvents = true;
 			}
-			else
-			{
-				_rebindMenues[1].Show();
-			}
-			_currentEventSystem.sendNavigationEvents = true;
 		}
+	}
+
+	private bool UsedController(bool cpuFullControl)
+	{
+		if (!FirstCharacterSelected)
+		{
+			_controllerIndex = SceneSettings.ControllerOne;
+		}
+		else
+		{
+			_controllerIndex = SceneSettings.ControllerTwo;
+		}
+
+		if (_controllerIndex < 0)
+		{
+			if (cpuFullControl)
+			{
+				return true;
+			}
+			return false;
+		}
+		if (InputSystem.devices[_controllerIndex].displayName == _playerInput.devices[0].displayName)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	private void OnDisable()
@@ -253,13 +288,20 @@ public class CharacterMenu : BaseMenu
 			_arcanaTextTwo.text = "";
 			_speedTextTwo.text = "";
 			_playerOneName.text = "";
-			_characterOneImage.enabled = false;
-			_characterOneAnimator.runtimeAnimatorController = null;
-			_characterTwoImage.enabled = false;
-			_characterTwoAnimator.runtimeAnimatorController = null;
+			if (_characterOneImage != null)
+			{
+				_characterOneImage.enabled = false;
+				_characterOneAnimator.runtimeAnimatorController = null;
+			}
+			if (_characterTwoImage != null)
+			{
+				_characterTwoImage.enabled = false;
+				_characterTwoAnimator.runtimeAnimatorController = null;
+			}
 			_playerTwoName.text = "";
 			_assistOneSpriteRenderer.enabled = false;
 			_assistTwoSpriteRenderer.enabled = false;
 		}
+		_fadeHandler.onFadeEnd.RemoveAllListeners();
 	}
 }

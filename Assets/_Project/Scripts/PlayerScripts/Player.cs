@@ -236,10 +236,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		if (_comboTimerCoroutine != null)
 		{
 			StopCoroutine(_comboTimerCoroutine);
-			_playerUI.SetComboTimerActive(false);
-			_playerUI.ResetCombo();
-			_comboTimerPaused = false;
 		}
+		_playerUI.SetComboTimerActive(false);
+		_playerUI.ResetCombo();
+		_comboTimerPaused = false;
 	}
 
 	public void FreezeComboTimer()

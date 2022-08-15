@@ -11,7 +11,7 @@ public class RebindButton : BaseButton
 	[SerializeField] private PlayerInput _playerInput = default;
 	[Range(0, 3)]
 	[SerializeField] private int _controlsIndex = default;
-	public InputActionReference ActionReference { get { return _actionReference; } set { } }
+	public InputActionReference ActionReference { get { return _actionReference; } private set { } }
 	public int ControlBindingIndex { get; private set; }
 
 

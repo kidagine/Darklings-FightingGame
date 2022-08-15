@@ -98,6 +98,7 @@ public class CharacterColorSelector : MonoBehaviour
 		ColorNumber = 0;
 		_inputDeactivated = false;
 		_arrows.SetActive(true);
+		_pressed = false;
 		transform.GetChild(0).gameObject.SetActive(true);
 		gameObject.SetActive(false);
 		_assistIndicatorText.gameObject.SetActive(true);
