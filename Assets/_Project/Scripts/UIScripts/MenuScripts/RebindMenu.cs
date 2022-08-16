@@ -69,9 +69,17 @@ public class RebindMenu : BaseMenu
 			.WithControlsExcluding("<Gamepad>/rightStick")
 			.WithCancelingThrough("<Keyboard>/tab")
 			.WithCancelingThrough("<Gamepad>/start")
-			.OnCancel(operation => RebindComplete(rebindButton))
+			.OnCancel(operation => RebindCancelled(rebindButton))
 			.OnComplete(operation => RebindComplete(rebindButton));
 		_rebindingOperation.Start();
+	}
+
+	private void RebindCancelled(RebindButton rebindButton)
+	{
+		Debug.Log("A");
+		_rebindingOperation.Dispose();
+		_assignButtonImage.SetActive(false);
+		StartCoroutine(RebindCompleteCoroutine(rebindButton));
 	}
 
 	private void RebindComplete(RebindButton rebindButton)
