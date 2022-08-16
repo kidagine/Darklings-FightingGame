@@ -1,6 +1,6 @@
 public class SceneSettings
 {
-	//Fights
+	//Fight
 	public static int StageIndex = 0;
 	public static string MusicName = "Random";
 	public static int ControllerOne = 0;

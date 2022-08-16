@@ -80,25 +80,18 @@ public class RebindMenu : BaseMenu
 		_eventSystem.SetSelectedGameObject(null);
 		_assignButtonImage.SetActive(true);
 		_inputAction = rebindButton.ActionReference.action;
-
-		if (rebindButton.CompositeIndex > 0)
+		int index = rebindButton.CompositeIndex;
+		if (_deviceText.text == "Controller")
 		{
-			_rebindingOperation = _inputAction.PerformInteractiveRebinding(rebindButton.CompositeIndex)
-				.WithControlsHavingToMatchPath(_controlMatch)
-				.WithCancelingThrough(_controlCancel)
-				.OnMatchWaitForAnother(0.1f)
-				.OnCancel(operation => RebindCancelled(rebindButton))
-				.OnComplete(operation => RebindComplete(rebindButton));
+			if (index != -1)
+				index += 5;
 		}
-		else
-		{
-			_rebindingOperation = _inputAction.PerformInteractiveRebinding()
-				.WithControlsHavingToMatchPath(_controlMatch)
-				.WithCancelingThrough(_controlCancel)
-				.OnMatchWaitForAnother(0.1f)
-				.OnCancel(operation => RebindCancelled(rebindButton))
-				.OnComplete(operation => RebindComplete(rebindButton));
-		}
+		_rebindingOperation = _inputAction.PerformInteractiveRebinding(index)
+			.WithControlsHavingToMatchPath(_controlMatch)
+			.WithCancelingThrough(_controlCancel)
+			.OnMatchWaitForAnother(0.1f)
+			.OnCancel(operation => RebindCancelled(rebindButton))
+			.OnComplete(operation => RebindComplete(rebindButton));
 		_rebindingOperation.Start();
 	}
 
@@ -128,11 +121,14 @@ public class RebindMenu : BaseMenu
 
 	public void ResetRebindToDefault()
 	{
-		for (int i = 0; i < _rebindButtons.Count; i++)
+		if (_playerInput.devices[0].displayName.Contains(_deviceText.text))
 		{
-			InputAction inputAction = _rebindButtons[i].ActionReference.action;
-			InputActionRebindingExtensions.RemoveAllBindingOverrides(inputAction);
-			_rebindButtons[i].UpdatePromptImage();
+			for (int i = 0; i < _rebindButtons.Count; i++)
+			{
+				InputAction inputAction = _rebindButtons[i].ActionReference.action;
+				InputActionRebindingExtensions.RemoveAllBindingOverrides(inputAction);
+				_rebindButtons[i].UpdatePromptImage();
+			}
 		}
 	}
 
