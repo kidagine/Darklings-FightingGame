@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -13,6 +14,7 @@ using static UnityEngine.InputSystem.InputActionRebindingExtensions;
 public class RebindMenu : BaseMenu
 {
 	[SerializeField] private EventSystem _eventSystem = default;
+	[SerializeField] private TextMeshProUGUI _deviceText = default;
 	[SerializeField] private PlayerInput _playerInput = default;
 	[SerializeField] private Button _firstCharacterButton = default;
 	[SerializeField] private CharacterAssistSelector _characterAssistSelector = default;
@@ -23,13 +25,15 @@ public class RebindMenu : BaseMenu
 	private readonly List<RebindButton> _rebindButtons = new();
 	private InputAction _inputAction;
 	private RebindingOperation _rebindingOperation;
+	private string _controlMatch;
+	private string _controlCancel;
 
 
 	void Awake()
 	{
 		if (File.Exists(Application.persistentDataPath + "/controlsOverrides.dat"))
 		{
-			LoadControlOverrides();
+			//LoadControlOverrides();
 		}
 	}
 
@@ -46,6 +50,18 @@ public class RebindMenu : BaseMenu
 
 	void OnEnable()
 	{
+		if (_playerInput.devices[0].displayName.Contains("Keyboard"))
+		{
+			_deviceText.text = "Keyboard";
+			_controlMatch = "<Keyboard>";
+			_controlCancel = "<Keyboard>/tab";
+		}
+		else
+		{
+			_deviceText.text = "Controller";
+			_controlMatch = "<Gamepad>";
+			_controlCancel = "<Gamepad>/start";
+		}
 		_scrollView.anchoredPosition = Vector2.zero;
 	}
 
@@ -60,23 +76,35 @@ public class RebindMenu : BaseMenu
 
 	public void AssignButton(RebindButton rebindButton)
 	{
-		_inputAction = _playerInput.actions.FindAction(rebindButton.ActionReference.action.id);
 		_eventSystem.sendNavigationEvents = false;
 		_eventSystem.SetSelectedGameObject(null);
 		_assignButtonImage.SetActive(true);
-		_rebindingOperation = _inputAction.PerformInteractiveRebinding()
-			.WithControlsExcluding("<Gamepad>/leftStick")
-			.WithControlsExcluding("<Gamepad>/rightStick")
-			.WithCancelingThrough("<Keyboard>/tab")
-			.WithCancelingThrough("<Gamepad>/start")
-			.OnCancel(operation => RebindCancelled(rebindButton))
-			.OnComplete(operation => RebindComplete(rebindButton));
+		_inputAction = rebindButton.ActionReference.action;
+
+		if (rebindButton.CompositeIndex > 0)
+		{
+			_rebindingOperation = _inputAction.PerformInteractiveRebinding(rebindButton.CompositeIndex)
+				.WithControlsHavingToMatchPath(_controlMatch)
+				.WithCancelingThrough(_controlCancel)
+				.OnMatchWaitForAnother(0.1f)
+				.OnCancel(operation => RebindCancelled(rebindButton))
+				.OnComplete(operation => RebindComplete(rebindButton));
+		}
+		else
+		{
+			_rebindingOperation = _inputAction.PerformInteractiveRebinding()
+				.WithControlsHavingToMatchPath(_controlMatch)
+				.WithCancelingThrough(_controlCancel)
+				.OnMatchWaitForAnother(0.1f)
+				.OnCancel(operation => RebindCancelled(rebindButton))
+				.OnComplete(operation => RebindComplete(rebindButton));
+		}
 		_rebindingOperation.Start();
 	}
 
 	private void RebindCancelled(RebindButton rebindButton)
 	{
-		Debug.Log("A");
+		Debug.Log("cancel");
 		_rebindingOperation.Dispose();
 		_assignButtonImage.SetActive(false);
 		StartCoroutine(RebindCompleteCoroutine(rebindButton));
@@ -84,16 +112,15 @@ public class RebindMenu : BaseMenu
 
 	private void RebindComplete(RebindButton rebindButton)
 	{
+		Debug.Log("complete");
 		_rebindingOperation.Dispose();
 		_assignButtonImage.SetActive(false);
-		AddOverrideToDictionary(_inputAction.id, _inputAction.bindings[rebindButton.ControlBindingIndex].effectivePath, rebindButton.ControlBindingIndex);
 		StartCoroutine(RebindCompleteCoroutine(rebindButton));
-		SaveControlOverrides();
 	}
 
 	IEnumerator RebindCompleteCoroutine(RebindButton rebindButton)
 	{
-		yield return null;
+		yield return new WaitForSeconds(0.1f);
 		_eventSystem.sendNavigationEvents = true;
 		rebindButton.UpdatePromptImage();
 		rebindButton.GetComponent<Button>().Select();
@@ -106,10 +133,7 @@ public class RebindMenu : BaseMenu
 			InputAction inputAction = _rebindButtons[i].ActionReference.action;
 			InputActionRebindingExtensions.RemoveAllBindingOverrides(inputAction);
 			_rebindButtons[i].UpdatePromptImage();
-			Debug.Log(_rebindButtons[i].ControlBindingIndex);
-			AddOverrideToDictionary(_inputAction.id, _inputAction.bindings[_rebindButtons[i].ControlBindingIndex].effectivePath, _rebindButtons[i].ControlBindingIndex);
 		}
-		SaveControlOverrides();
 	}
 
 	public Dictionary<string, string> OverridesDictionary = new();
