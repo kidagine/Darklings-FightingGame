@@ -37,7 +37,7 @@ public class PlayersMenu : BaseMenu
 		}
 		for (int i = 0; i < InputSystem.devices.Count; i++)
 		{
-			Debug.Log(InputSystem.devices[i].path);
+			Printer.Log(InputSystem.devices[i].deviceId);
 			if (!InputSystem.devices[i].displayName.Contains("Mouse") && !InputSystem.devices[i].displayName.Contains("Touchscreen"))
 			{
 				if (_playerIcons.Length >= i)
