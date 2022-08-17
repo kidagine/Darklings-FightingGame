@@ -33,7 +33,7 @@ public class RebindMenu : BaseMenu
 	{
 		if (File.Exists(Application.persistentDataPath + "/controlsOverrides.dat"))
 		{
-			//LoadControlOverrides();
+			LoadControlOverrides();
 		}
 	}
 
@@ -81,12 +81,7 @@ public class RebindMenu : BaseMenu
 		_assignButtonImage.SetActive(true);
 		_inputAction = rebindButton.ActionReference.action;
 		int index = rebindButton.CompositeIndex;
-		if (_deviceText.text == "Controller")
-		{
-			if (index != -1)
-				index += 5;
-		}
-		_rebindingOperation = _inputAction.PerformInteractiveRebinding(index)
+		_rebindingOperation = _inputAction.PerformInteractiveRebinding(rebindButton.ControlBindingIndex)
 			.WithControlsHavingToMatchPath(_controlMatch)
 			.WithCancelingThrough(_controlCancel)
 			.OnMatchWaitForAnother(0.1f)
@@ -108,6 +103,8 @@ public class RebindMenu : BaseMenu
 		Debug.Log("complete");
 		_rebindingOperation.Dispose();
 		_assignButtonImage.SetActive(false);
+		AddOverrideToDictionary(_inputAction.id, _inputAction.bindings[rebindButton.ControlBindingIndex].effectivePath, rebindButton.ControlBindingIndex);
+		SaveControlOverrides();
 		StartCoroutine(RebindCompleteCoroutine(rebindButton));
 	}
 
@@ -127,8 +124,10 @@ public class RebindMenu : BaseMenu
 			{
 				InputAction inputAction = _rebindButtons[i].ActionReference.action;
 				InputActionRebindingExtensions.RemoveAllBindingOverrides(inputAction);
+				AddOverrideToDictionary(inputAction.id, inputAction.bindings[_rebindButtons[i].ControlBindingIndex].effectivePath, _rebindButtons[i].ControlBindingIndex);
 				_rebindButtons[i].UpdatePromptImage();
 			}
+			SaveControlOverrides();
 		}
 	}
 

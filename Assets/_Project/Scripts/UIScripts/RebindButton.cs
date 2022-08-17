@@ -21,14 +21,35 @@ public class RebindButton : BaseButton
 
 	void OnEnable()
 	{
+		if (_playerInput.devices[0].displayName.Contains("Keyboard"))
+		{
+			if (CompositeIndex == 0)
+			{
+				ControlBindingIndex = 1;
+			}
+			else
+			{
+				ControlBindingIndex = CompositeIndex + 5;
+			}
+		}
+		else
+		{
+			if (CompositeIndex == 0)
+			{
+				ControlBindingIndex = 0;
+			}
+			else
+			{
+				ControlBindingIndex = CompositeIndex;
+			}
+		}
 		UpdatePromptImage();
 	}
 
 	public void UpdatePromptImage()
 	{
-		InputAction focusedInputAction = _playerInput.actions.FindAction(ActionReference.action.id);
-		ControlBindingIndex = focusedInputAction.GetBindingIndexForControl(focusedInputAction.controls[_controlsIndex]);
-		string currentBindingInput = InputControlPath.ToHumanReadableString(focusedInputAction.bindings[ControlBindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+		InputAction inputAction = _actionReference.action;
+		string currentBindingInput = InputControlPath.ToHumanReadableString(inputAction.bindings[ControlBindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
 		_image.sprite = _deviceConfigurator.GetDeviceBindingIcon(_playerInput, currentBindingInput);
 	}
 }
