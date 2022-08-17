@@ -11,8 +11,12 @@ public class RebindButton : BaseButton
 	[SerializeField] private PlayerInput _playerInput = default;
 	[Range(0, 3)]
 	[SerializeField] private int _controlsIndex = default;
+	[Range(-1, 4)]
+	[SerializeField] private int _compositeIndex = -1;
+
 	public InputActionReference ActionReference { get { return _actionReference; } private set { } }
 	public int ControlBindingIndex { get; private set; }
+	public int CompositeIndex { get { return _compositeIndex; } private set { } }
 
 
 	void OnEnable()
