@@ -735,9 +735,14 @@ public class GameManager : MonoBehaviour
 				_playerTwoInput.enabled = false;
 			}
 			if (SceneSettings.ControllerOne != -1 && _playerOneInput.enabled)
+			{
+				Debug.Log("2");
 				_playerOneInput.SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
+			}
 			if (SceneSettings.ControllerTwo != -1 && _playerTwoInput.enabled)
+			{
 				_playerTwoInput.SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
+			}
 		}
 		else
 		{
@@ -756,9 +761,14 @@ public class GameManager : MonoBehaviour
 				_playerTwoInput.enabled = false;
 			}
 			if (SceneSettings.ControllerTwo != -1 && _playerOneInput.enabled)
+			{
+				Debug.Log("1");
 				_playerOneInput.SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerTwo]);
+			}
 			if (SceneSettings.ControllerOne != -1 && _playerTwoInput.enabled)
+			{
 				_playerTwoInput.SwitchCurrentControlScheme(InputSystem.devices[SceneSettings.ControllerOne]);
+			}
 		}
 
 		_hasSwitchedCharacters = !_hasSwitchedCharacters;
