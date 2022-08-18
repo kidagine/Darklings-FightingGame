@@ -24,7 +24,7 @@ public class RebindMenu : BaseMenu
 	[SerializeField] private Transform _rebindContainer = default;
 	[SerializeField] private bool _secondPlayer = default;
 	private readonly List<RebindButton> _rebindButtons = new();
-	private readonly string _controlRebindKey = "keyboardRebinds";
+	private readonly string _controlRebindKey = "rebinds";
 	private InputAction _inputAction;
 	private InputDevice _inputDevice;
 	private RebindingOperation _rebindingOperation;

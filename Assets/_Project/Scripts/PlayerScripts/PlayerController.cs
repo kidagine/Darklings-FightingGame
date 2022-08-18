@@ -5,7 +5,7 @@ using static UnityEngine.InputSystem.InputAction;
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
-	private readonly string _controlRebindKey = "keyboardRebinds";
+	private readonly string _controlRebindKey = "rebinds";
 	private bool _dashForwardPressed;
 	private float _dashForwardLastInputTime;
 	private bool _dashBackPressed;
