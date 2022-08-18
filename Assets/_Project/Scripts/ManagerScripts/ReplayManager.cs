@@ -68,8 +68,6 @@ public class ReplayManager : MonoBehaviour
 		SceneSettings.StageIndex = replayCardData.stage;
 		SceneSettings.MusicName = replayCardData.musicName;
 		SceneSettings.Bit1 = replayCardData.bit1;
-		SceneSettings.ControllerOne = 0;
-		SceneSettings.ControllerTwo = 0;
 		SceneSettings.ReplayMode = true;
 	}
 

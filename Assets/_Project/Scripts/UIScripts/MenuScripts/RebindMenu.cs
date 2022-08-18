@@ -22,8 +22,11 @@ public class RebindMenu : BaseMenu
 	[SerializeField] private GameObject _assignButtonImage = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private Transform _rebindContainer = default;
+	[SerializeField] private bool _secondPlayer = default;
 	private readonly List<RebindButton> _rebindButtons = new();
+	private readonly string _controlRebindKey = "keyboardRebinds";
 	private InputAction _inputAction;
+	private InputDevice _inputDevice;
 	private RebindingOperation _rebindingOperation;
 	private string _controlMatch;
 	private string _controlCancel;
@@ -31,10 +34,8 @@ public class RebindMenu : BaseMenu
 
 	void Awake()
 	{
-		if (File.Exists(Application.persistentDataPath + "/controlsOverrides.dat"))
-		{
-			LoadControlOverrides();
-		}
+		string rebinds = PlayerPrefs.GetString(_controlRebindKey);
+		_playerInput.actions.LoadBindingOverridesFromJson(rebinds);
 	}
 
 	void Start()
@@ -44,13 +45,22 @@ public class RebindMenu : BaseMenu
 			if (_rebindContainer.GetChild(i).TryGetComponent(out RebindButton rebindButton))
 			{
 				_rebindButtons.Add(rebindButton);
+				rebindButton.UpdatePromptImage();
 			}
 		}
 	}
 
 	void OnEnable()
 	{
-		if (_playerInput.devices[0].displayName.Contains("Keyboard"))
+		if (!_secondPlayer)
+		{
+			_inputDevice = SceneSettings.ControllerOne;
+		}
+		else
+		{
+			_inputDevice = SceneSettings.ControllerTwo;
+		}
+		if (_inputDevice.displayName.Contains("Keyboard"))
 		{
 			_deviceText.text = "Keyboard";
 			_controlMatch = "<Keyboard>";
@@ -103,8 +113,8 @@ public class RebindMenu : BaseMenu
 		Debug.Log("complete");
 		_rebindingOperation.Dispose();
 		_assignButtonImage.SetActive(false);
-		AddOverrideToDictionary(_inputAction.id, _inputAction.bindings[rebindButton.ControlBindingIndex].effectivePath, rebindButton.ControlBindingIndex);
-		SaveControlOverrides();
+		string rebinds = _playerInput.actions.SaveBindingOverridesAsJson();
+		PlayerPrefs.SetString(_controlRebindKey, rebinds);
 		StartCoroutine(RebindCompleteCoroutine(rebindButton));
 	}
 
@@ -124,55 +134,10 @@ public class RebindMenu : BaseMenu
 			{
 				InputAction inputAction = _rebindButtons[i].ActionReference.action;
 				InputActionRebindingExtensions.RemoveAllBindingOverrides(inputAction);
-				AddOverrideToDictionary(inputAction.id, inputAction.bindings[_rebindButtons[i].ControlBindingIndex].effectivePath, _rebindButtons[i].ControlBindingIndex);
 				_rebindButtons[i].UpdatePromptImage();
 			}
-			SaveControlOverrides();
-		}
-	}
-
-	public Dictionary<string, string> OverridesDictionary = new();
-
-	private void AddOverrideToDictionary(Guid actionId, string path, int bindingIndex)
-	{
-		string key = string.Format("{0} : {1}", actionId.ToString(), bindingIndex);
-
-		if (OverridesDictionary.ContainsKey(key))
-		{
-			OverridesDictionary[key] = path;
-		}
-		else
-		{
-			OverridesDictionary.Add(key, path);
-		}
-	}
-
-	private void SaveControlOverrides()
-	{
-		FileStream file = new(Application.persistentDataPath + "/controlsOverrides.dat", FileMode.OpenOrCreate);
-		BinaryFormatter bf = new();
-		bf.Serialize(file, OverridesDictionary);
-		file.Close();
-	}
-
-	private void LoadControlOverrides()
-	{
-		if (!File.Exists(Application.persistentDataPath + "/controlsOverrides.dat"))
-		{
-			return;
-		}
-
-		FileStream file = new(Application.persistentDataPath + "/controlsOverrides.dat", FileMode.OpenOrCreate);
-		BinaryFormatter bf = new();
-		OverridesDictionary = bf.Deserialize(file) as Dictionary<string, string>;
-		file.Close();
-
-		foreach (var item in OverridesDictionary)
-		{
-			string[] split = item.Key.Split(new string[] { " : " }, StringSplitOptions.None);
-			Guid id = Guid.Parse(split[0]);
-			int index = int.Parse(split[1]);
-			_playerInput.actions.FindAction(id).ApplyBindingOverride(index, item.Value);
+			string rebinds = _playerInput.actions.SaveBindingOverridesAsJson();
+			PlayerPrefs.SetString(_controlRebindKey, rebinds);
 		}
 	}
 }

@@ -81,7 +81,7 @@ public class PlayerUI : MonoBehaviour
 				if (SceneSettings.NameOne == "")
 				{
 
-					if (SceneSettings.ControllerOne == -1)
+					if (SceneSettings.ControllerOne == null)
 					{
 						PlayerName = "Cpu 1";
 						_playerName.text = PlayerName;
@@ -103,7 +103,7 @@ public class PlayerUI : MonoBehaviour
 			{
 				if (SceneSettings.NameTwo == "")
 				{
-					if (SceneSettings.ControllerTwo == -1)
+					if (SceneSettings.ControllerTwo == null)
 					{
 						PlayerName = "Cpu 2";
 						_playerName.text = PlayerName;

@@ -235,11 +235,11 @@ public class CharacterMenu : BaseMenu
 		{
 			if (!_changeStageMenu.IsOpen)
 			{
-				if (!FirstCharacterSelected && SceneSettings.ControllerOne >= 0)
+				if (!FirstCharacterSelected && SceneSettings.ControllerOne != null)
 				{
 					_rebindMenues[0].Show();
 				}
-				else if (SceneSettings.ControllerTwo >= 0)
+				else if (SceneSettings.ControllerTwo != null)
 				{
 					_rebindMenues[1].Show();
 				}
@@ -250,13 +250,14 @@ public class CharacterMenu : BaseMenu
 
 	private bool UsedController(bool cpuFullControl)
 	{
+		InputDevice device;
 		if (!FirstCharacterSelected)
 		{
-			_controllerIndex = SceneSettings.ControllerOne;
+			device = SceneSettings.ControllerOne;
 		}
 		else
 		{
-			_controllerIndex = SceneSettings.ControllerTwo;
+			device = SceneSettings.ControllerTwo;
 		}
 
 		if (_controllerIndex < 0)
@@ -267,7 +268,7 @@ public class CharacterMenu : BaseMenu
 			}
 			return false;
 		}
-		if (InputSystem.devices[_controllerIndex].displayName == _playerInput.devices[0].displayName)
+		if (device == _playerInput.devices[0])
 		{
 			return true;
 		}

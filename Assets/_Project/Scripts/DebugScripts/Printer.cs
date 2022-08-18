@@ -6,18 +6,21 @@ public static class Printer
 
 	public static void Log(object message)
 	{
-		_debugMenu.Log(message);
+		if (_debugMenu != null)
+			_debugMenu.Log(message);
 	}
 
 	public static void LogWarning(object message)
 	{
-		_debugMenu.Log(message);
+		if (_debugMenu != null)
+			_debugMenu.Log(message);
 
 	}
 
 	public static void LogError(object message)
 	{
-		_debugMenu.Log(message);
+		if (_debugMenu != null)
+			_debugMenu.Log(message);
 	}
 
 	public static void SetLoaded(DebugMenu debugMenu)

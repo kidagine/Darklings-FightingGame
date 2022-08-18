@@ -6,7 +6,6 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerIcon : MonoBehaviour
 {
-	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private PlayersMenu _playersMenu = default;
 	[SerializeField] private PlayerInput _playerInput = default;
 	[SerializeField] private PromptsImageChanger[] _promptsImageChangers = default;
@@ -18,7 +17,7 @@ public class PlayerIcon : MonoBehaviour
 	private readonly float _center = 0.0f;
 	private bool _isMovenentInUse;
 	private float _originalPositionY;
-	private int _deviceId;
+	public PlayerInput PlayerInput { get { return _playerInput; } private set { } }
 
 
 	private void Awake()
@@ -33,11 +32,18 @@ public class PlayerIcon : MonoBehaviour
 		if (_playerInput.devices.Count > 0)
 		{
 			gameObject.SetActive(true);
-			_controllerText.text = _playerInput.devices[0].displayName;
+			if (_playerInput.devices[0].displayName == "Keyboard")
+			{
+				_controllerText.text = "Keyboard";
+			}
+			else
+			{
+				_controllerText.text = "Controller";
+			}
 		}
 		else
 		{
-			gameObject.SetActive(false);
+			//gameObject.SetActive(false);
 		}
 	}
 

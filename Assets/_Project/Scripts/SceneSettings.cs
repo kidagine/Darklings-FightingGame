@@ -1,10 +1,12 @@
+using UnityEngine.InputSystem;
+
 public class SceneSettings
 {
 	//Fight
 	public static int StageIndex = 0;
 	public static string MusicName = "Random";
-	public static int ControllerOne = 0;
-	public static int ControllerTwo = 0;
+	public static InputDevice ControllerOne;
+	public static InputDevice ControllerTwo;
 	public static string ControllerOneScheme = "Keyboard";
 	public static string ControllerTwoScheme = "Keyboard";
 	public static int PlayerOne = 0;

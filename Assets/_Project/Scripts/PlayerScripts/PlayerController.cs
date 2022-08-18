@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
+	private readonly string _controlRebindKey = "keyboardRebinds";
 	private bool _dashForwardPressed;
 	private float _dashForwardLastInputTime;
 	private bool _dashBackPressed;
@@ -13,6 +15,8 @@ public class PlayerController : BaseController
 
 	void Start()
 	{
+		string rebinds = PlayerPrefs.GetString(_controlRebindKey);
+		_playerInput.actions.LoadBindingOverridesFromJson(rebinds);
 		_playerInput.actions.actionMaps[(int)ActionSchemeTypes.Training].Enable();
 	}
 
