@@ -6,6 +6,7 @@ public class PatchNotesMenu : BaseMenu
 {
 	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private BaseMenu[] _menues = default;
+	[SerializeField] private PromptsInput[]  _prompts = default;
 	[SerializeField] private RectTransform _scrollView = default;
 	[SerializeField] private RectTransform _patchNotes = default;
 	private readonly int _scrollSpeed = 350;
@@ -14,6 +15,7 @@ public class PatchNotesMenu : BaseMenu
 
 	public void Back()
 	{
+		_inputManager.CurrentPrompts = _prompts[_previousMenuIndex];
 		OpenMenuHideCurrent(_menues[_previousMenuIndex]);
 	}
 
