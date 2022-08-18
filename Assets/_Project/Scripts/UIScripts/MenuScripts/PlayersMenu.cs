@@ -15,8 +15,6 @@ public class PlayersMenu : BaseMenu
 	[SerializeField] private BaseMenu _versusMenu = default;
 	[SerializeField] private BaseMenu _practiceMenu = default;
 	private Audio _audio;
-	private PlayerInput _playerInput;
-	private int _increment;
 	private readonly float _left = -375.0f;
 	private readonly float _right = 375.0f;
 	private readonly float _center = 0.0f;
@@ -27,25 +25,13 @@ public class PlayersMenu : BaseMenu
 	void Awake()
 	{
 		_audio = GetComponent<Audio>();
-		_playerInput = _inputManager.GetComponent<PlayerInput>();
 	}
 
 	private void UpdateVisiblePlayers(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
 	{
-		_increment = 1;
-		for (int i = _increment; i < _playerIcons.Length; i++)
+		for (int i = 0; i < _playerIcons.Length; i++)
 		{
-			_playerIcons[i].gameObject.SetActive(false);
-		}
-		for (int i = 0; i < _playerInput.devices.Count; i++)
-		{
-			if (_increment < 3)
-			{
-				string controller = Input.GetJoystickNames()[i];
-				int deviceId = _playerInput.devices[0].deviceId;
-				_playerIcons[_increment].GetComponent<PlayerIcon>().SetController(ControllerType.ToControllerType(controller), _increment, deviceId);
-				_increment++;
-			}
+			_playerIcons[i].GetComponent<PlayerIcon>().SetController();
 		}
 	}
 

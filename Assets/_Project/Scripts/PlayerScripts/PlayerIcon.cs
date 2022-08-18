@@ -8,12 +8,11 @@ public class PlayerIcon : MonoBehaviour
 {
 	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private PlayersMenu _playersMenu = default;
+	[SerializeField] private PlayerInput _playerInput = default;
 	[SerializeField] private PromptsImageChanger[] _promptsImageChangers = default;
 	[SerializeField] private TextMeshProUGUI _controllerText = default;
-	[SerializeField] private ControllerTypeEnum _controller = default;
 	private RectTransform _rectTransform;
 	private Audio _audio;
-	private PlayerInput _playerInput;
 	private readonly float _left = -375.0f;
 	private readonly float _right = 375.0f;
 	private readonly float _center = 0.0f;
@@ -26,28 +25,27 @@ public class PlayerIcon : MonoBehaviour
 	{
 		_audio = GetComponent<Audio>();
 		_rectTransform = GetComponent<RectTransform>();
-		_playerInput = _inputManager.GetComponent<PlayerInput>();
 		_originalPositionY = _rectTransform.anchoredPosition.y;
 	}
 
-	private void Update()
+	public void SetController()
 	{
-		Movement();
-	}
-
-	public void SetController(ControllerTypeEnum controller, int index, int deviceId)
-	{
-		_deviceId = deviceId;
-		_controller = controller;
-		_controllerText.text = controller.ToString() + " " + ++index;
-		gameObject.SetActive(true);
-	}
-
-	public void Movement()
-	{
-		if (_playerInput.devices[0].deviceId == _deviceId)
+		if (_playerInput.devices.Count > 0)
 		{
-			float movement = _inputManager.NavigationInput.x;
+			gameObject.SetActive(true);
+			_controllerText.text = _playerInput.devices[0].displayName;
+		}
+		else
+		{
+			gameObject.SetActive(false);
+		}
+	}
+
+	public void Movement(CallbackContext callbackContext)
+	{
+		if (gameObject.activeInHierarchy)
+		{
+			float movement = callbackContext.ReadValue<Vector2>().x;
 			if (movement != 0.0f)
 			{
 				if (!_isMovenentInUse)
@@ -93,11 +91,11 @@ public class PlayerIcon : MonoBehaviour
 		}
 	}
 
-	public void OpenOtherMenu()
+	public void OpenOtherMenu(CallbackContext callbackContext)
 	{
-		if (gameObject.activeSelf)
+		if (gameObject.activeInHierarchy)
 		{
-			if (_playerInput.devices[0].deviceId == _deviceId)
+			if (callbackContext.performed)
 			{
 				if (_rectTransform.anchoredPosition.x == _left || _rectTransform.anchoredPosition.x == _right)
 				{
@@ -107,11 +105,11 @@ public class PlayerIcon : MonoBehaviour
 		}
 	}
 
-	public void ConfirmQuickAssign()
+	public void ConfirmQuickAssign(CallbackContext callbackContext)
 	{
-		if (gameObject.activeSelf && !_playersMenu.IsOnLeft())
+		if (gameObject.activeInHierarchy && !_playersMenu.IsOnLeft())
 		{
-			if (_playerInput.devices[0].deviceId == _deviceId)
+			if (callbackContext.performed)
 			{
 				_audio.Sound("Selected").Play();
 				_rectTransform.anchoredPosition = new Vector2(_left, 275.0f);

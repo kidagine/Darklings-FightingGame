@@ -12029,7 +12029,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3511341869314771207, guid: 8aa8fda4640778c4fbdf8f40862194de, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3511341869314771211, guid: 8aa8fda4640778c4fbdf8f40862194de, type: 3}
       propertyPath: _index
@@ -12039,6 +12039,10 @@ PrefabInstance:
       propertyPath: _controller
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3511341869314771211, guid: 8aa8fda4640778c4fbdf8f40862194de, type: 3}
+      propertyPath: _playerInput
+      value: 
+      objectReference: {fileID: 1230883628}
     - target: {fileID: 3511341869314771211, guid: 8aa8fda4640778c4fbdf8f40862194de, type: 3}
       propertyPath: _playersMenu
       value: 
@@ -13288,6 +13292,176 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f81bee506c64ba1449431742dccedc90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &530059096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530059089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 18af1f13-b80c-4915-bb78-f82258c184df
+    m_ActionName: Gameplay/Parry[/DualSenseGamepadHID/rightTrigger,/XInputControllerWindows/rightTrigger,/Keyboard/p,/DualSenseGamepadHID/buttonEast,/XInputControllerWindows/buttonEast,/DualSenseGamepadHID/buttonSouth,/XInputControllerWindows/buttonSouth,/Keyboard/l,/Keyboard/i,/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 40b9f47c-9919-436a-9a64-426a259ababf
+    m_ActionName: Gameplay/Throw[/DualSenseGamepadHID/rightShoulder,/XInputControllerWindows/rightShoulder,/Keyboard/o,/DualSenseGamepadHID/buttonWest,/XInputControllerWindows/buttonWest,/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/j,/Keyboard/k,/Keyboard/y]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7ca3a05e-cb40-4977-b9aa-f9c734e7db88
+    m_ActionName: Gameplay/Movement[/DualSenseGamepadHID/dpad/up,/XInputControllerWindows/dpad/up,/DualSenseGamepadHID/dpad/down,/XInputControllerWindows/dpad/down,/DualSenseGamepadHID/dpad/left,/XInputControllerWindows/dpad/left,/DualSenseGamepadHID/dpad/right,/XInputControllerWindows/dpad/right,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow,/DualSenseGamepadHID/leftStick,/XInputControllerWindows/leftStick]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b1eb3744-7f4b-487a-baa2-ec13c0cdfd31
+    m_ActionName: Gameplay/Jump[/DualSenseGamepadHID/dpad/up,/XInputControllerWindows/dpad/up,/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 30d3e40a-d824-41ed-b2e8-5c36c055a7c2
+    m_ActionName: Gameplay/Crouch[/DualSenseGamepadHID/dpad/down,/XInputControllerWindows/dpad/down,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1d93204d-0917-4a15-8fe3-c74a8fdba30a
+    m_ActionName: Gameplay/DashForward[/DualSenseGamepadHID/dpad/right,/XInputControllerWindows/dpad/right,/Keyboard/d,/DualSenseGamepadHID/leftStick/right,/XInputControllerWindows/leftStick/right,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6fc0ed92-2154-48c8-bdf0-9b85261bc921
+    m_ActionName: Gameplay/DashBack[/DualSenseGamepadHID/dpad/left,/XInputControllerWindows/dpad/left,/Keyboard/a,/DualSenseGamepadHID/leftStick/left,/XInputControllerWindows/leftStick/left,/Keyboard/leftArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ed2eef9e-d066-4d30-abe9-b8bc36ac02e1
+    m_ActionName: Gameplay/Light[/DualSenseGamepadHID/buttonWest,/XInputControllerWindows/buttonWest,/Keyboard/j,/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c347fc3c-1661-4579-94fb-716b8945b36b
+    m_ActionName: Gameplay/Medium[/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/k,/Keyboard/g]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9ad06ff6-fd9b-4172-9064-386dc14dd5ff
+    m_ActionName: Gameplay/Heavy[/DualSenseGamepadHID/buttonEast,/XInputControllerWindows/buttonEast,/Keyboard/l,/Keyboard/h]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 02a541b8-d727-422a-85c7-419debcd8b4b
+    m_ActionName: Gameplay/Arcane[/DualSenseGamepadHID/buttonSouth,/XInputControllerWindows/buttonSouth,/Keyboard/i,/Keyboard/t]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6de6d4b1-c14b-4371-b138-3d8e0bced557
+    m_ActionName: Gameplay/Assist[/DualSenseGamepadHID/leftShoulder,/XInputControllerWindows/leftShoulder,/Keyboard/u,/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f4947723-c898-461a-b001-204d805e4b71
+    m_ActionName: Gameplay/Pause[/DualSenseGamepadHID/start,/XInputControllerWindows/start,/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 530059092}
+        m_TargetAssemblyTypeName: PlayerIcon, Scripts
+        m_MethodName: Movement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cd821023-ba3e-44d5-9ffb-685131824606
+    m_ActionName: UI/Navigation[/DualSenseGamepadHID/leftStick,/XInputControllerWindows/leftStick,/DualSenseGamepadHID/dpad,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 92f11cdb-0789-4607-98bf-dc6e42b1fe26
+    m_ActionName: UI/Back[/DualSenseGamepadHID/buttonEast,/XInputControllerWindows/buttonEast,/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 530059092}
+        m_TargetAssemblyTypeName: PlayerIcon, Scripts
+        m_MethodName: OpenOtherMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 530059092}
+        m_TargetAssemblyTypeName: PlayerIcon, Scripts
+        m_MethodName: ConfirmQuickAssign
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c5304ba0-6504-401c-bd61-8f14d6105700
+    m_ActionName: UI/Confirm[/DualSenseGamepadHID/buttonSouth,/XInputControllerWindows/buttonSouth,/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fde9ba07-b08f-4cad-86e5-0309a8b9d144
+    m_ActionName: UI/Coop[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 12bddde7-28e6-47f6-bc15-3f1469858166
+    m_ActionName: UI/Stage[/DualSenseGamepadHID/start,/XInputControllerWindows/start,/Keyboard/t]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: af544d57-8a92-4aa9-b7cc-8ae4239ac6d9
+    m_ActionName: UI/Rebind[/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 08b4c165-be6b-4dd0-bdac-dec1d1d22e97
+    m_ActionName: UI/Controls[/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 56f265f2-7405-49f5-a24e-797a349e4ec8
+    m_ActionName: UI/LeftPage[/DualSenseGamepadHID/leftShoulder,/XInputControllerWindows/leftShoulder,/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fcaf26ea-bc8c-43bc-b977-18e8763d90f3
+    m_ActionName: UI/RightPage[/DualSenseGamepadHID/rightShoulder,/XInputControllerWindows/rightShoulder,/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e5ae027c-8b1f-4578-a9d7-e2139900728a
+    m_ActionName: UI/NavigationUp[/DualSenseGamepadHID/dpad/up,/XInputControllerWindows/dpad/up,/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d4f82386-2084-489e-85f5-48d644e2f706
+    m_ActionName: UI/NavigationDown[/DualSenseGamepadHID/dpad/down,/XInputControllerWindows/dpad/down,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6ffc13c4-2d89-440e-a2e2-b270dc49302c
+    m_ActionName: Training/Reset[/DualSenseGamepadHID/select,/XInputControllerWindows/select,/Keyboard/1,/DualSenseGamepadHID/touchpadButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9f62ee22-0b1e-413f-8582-f90db63322de
+    m_ActionName: Training/Switch[/DualSenseGamepadHID/rightStickPress,/XInputControllerWindows/rightStickPress,/Keyboard/2]
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: UI
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &533416231
 GameObject:
   m_ObjectHideFlags: 0
@@ -13617,7 +13791,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3511341869314771207, guid: 8aa8fda4640778c4fbdf8f40862194de, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3511341869314771211, guid: 8aa8fda4640778c4fbdf8f40862194de, type: 3}
       propertyPath: _index
@@ -13627,6 +13801,10 @@ PrefabInstance:
       propertyPath: _controller
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3511341869314771211, guid: 8aa8fda4640778c4fbdf8f40862194de, type: 3}
+      propertyPath: _playerInput
+      value: 
+      objectReference: {fileID: 530059096}
     - target: {fileID: 3511341869314771211, guid: 8aa8fda4640778c4fbdf8f40862194de, type: 3}
       propertyPath: _playersMenu
       value: 
@@ -28252,6 +28430,176 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f81bee506c64ba1449431742dccedc90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1230883628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230883624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 18af1f13-b80c-4915-bb78-f82258c184df
+    m_ActionName: Gameplay/Parry[/DualSenseGamepadHID/rightTrigger,/XInputControllerWindows/rightTrigger,/Keyboard/p,/DualSenseGamepadHID/buttonEast,/XInputControllerWindows/buttonEast,/DualSenseGamepadHID/buttonSouth,/XInputControllerWindows/buttonSouth,/Keyboard/l,/Keyboard/i,/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 40b9f47c-9919-436a-9a64-426a259ababf
+    m_ActionName: Gameplay/Throw[/DualSenseGamepadHID/rightShoulder,/XInputControllerWindows/rightShoulder,/Keyboard/o,/DualSenseGamepadHID/buttonWest,/XInputControllerWindows/buttonWest,/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/j,/Keyboard/k,/Keyboard/y]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7ca3a05e-cb40-4977-b9aa-f9c734e7db88
+    m_ActionName: Gameplay/Movement[/DualSenseGamepadHID/dpad/up,/XInputControllerWindows/dpad/up,/DualSenseGamepadHID/dpad/down,/XInputControllerWindows/dpad/down,/DualSenseGamepadHID/dpad/left,/XInputControllerWindows/dpad/left,/DualSenseGamepadHID/dpad/right,/XInputControllerWindows/dpad/right,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow,/DualSenseGamepadHID/leftStick,/XInputControllerWindows/leftStick]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b1eb3744-7f4b-487a-baa2-ec13c0cdfd31
+    m_ActionName: Gameplay/Jump[/DualSenseGamepadHID/dpad/up,/XInputControllerWindows/dpad/up,/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 30d3e40a-d824-41ed-b2e8-5c36c055a7c2
+    m_ActionName: Gameplay/Crouch[/DualSenseGamepadHID/dpad/down,/XInputControllerWindows/dpad/down,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1d93204d-0917-4a15-8fe3-c74a8fdba30a
+    m_ActionName: Gameplay/DashForward[/DualSenseGamepadHID/dpad/right,/XInputControllerWindows/dpad/right,/Keyboard/d,/DualSenseGamepadHID/leftStick/right,/XInputControllerWindows/leftStick/right,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6fc0ed92-2154-48c8-bdf0-9b85261bc921
+    m_ActionName: Gameplay/DashBack[/DualSenseGamepadHID/dpad/left,/XInputControllerWindows/dpad/left,/Keyboard/a,/DualSenseGamepadHID/leftStick/left,/XInputControllerWindows/leftStick/left,/Keyboard/leftArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ed2eef9e-d066-4d30-abe9-b8bc36ac02e1
+    m_ActionName: Gameplay/Light[/DualSenseGamepadHID/buttonWest,/XInputControllerWindows/buttonWest,/Keyboard/j,/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c347fc3c-1661-4579-94fb-716b8945b36b
+    m_ActionName: Gameplay/Medium[/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/k,/Keyboard/g]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9ad06ff6-fd9b-4172-9064-386dc14dd5ff
+    m_ActionName: Gameplay/Heavy[/DualSenseGamepadHID/buttonEast,/XInputControllerWindows/buttonEast,/Keyboard/l,/Keyboard/h]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 02a541b8-d727-422a-85c7-419debcd8b4b
+    m_ActionName: Gameplay/Arcane[/DualSenseGamepadHID/buttonSouth,/XInputControllerWindows/buttonSouth,/Keyboard/i,/Keyboard/t]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6de6d4b1-c14b-4371-b138-3d8e0bced557
+    m_ActionName: Gameplay/Assist[/DualSenseGamepadHID/leftShoulder,/XInputControllerWindows/leftShoulder,/Keyboard/u,/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f4947723-c898-461a-b001-204d805e4b71
+    m_ActionName: Gameplay/Pause[/DualSenseGamepadHID/start,/XInputControllerWindows/start,/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1230883627}
+        m_TargetAssemblyTypeName: PlayerIcon, Scripts
+        m_MethodName: Movement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: cd821023-ba3e-44d5-9ffb-685131824606
+    m_ActionName: UI/Navigation[/DualSenseGamepadHID/leftStick,/XInputControllerWindows/leftStick,/DualSenseGamepadHID/dpad,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 92f11cdb-0789-4607-98bf-dc6e42b1fe26
+    m_ActionName: UI/Back[/DualSenseGamepadHID/buttonEast,/XInputControllerWindows/buttonEast,/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1230883627}
+        m_TargetAssemblyTypeName: PlayerIcon, Scripts
+        m_MethodName: OpenOtherMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1230883627}
+        m_TargetAssemblyTypeName: PlayerIcon, Scripts
+        m_MethodName: ConfirmQuickAssign
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c5304ba0-6504-401c-bd61-8f14d6105700
+    m_ActionName: UI/Confirm[/DualSenseGamepadHID/buttonSouth,/XInputControllerWindows/buttonSouth,/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fde9ba07-b08f-4cad-86e5-0309a8b9d144
+    m_ActionName: UI/Coop[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 12bddde7-28e6-47f6-bc15-3f1469858166
+    m_ActionName: UI/Stage[/DualSenseGamepadHID/start,/XInputControllerWindows/start,/Keyboard/t]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: af544d57-8a92-4aa9-b7cc-8ae4239ac6d9
+    m_ActionName: UI/Rebind[/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 08b4c165-be6b-4dd0-bdac-dec1d1d22e97
+    m_ActionName: UI/Controls[/DualSenseGamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth,/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 56f265f2-7405-49f5-a24e-797a349e4ec8
+    m_ActionName: UI/LeftPage[/DualSenseGamepadHID/leftShoulder,/XInputControllerWindows/leftShoulder,/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fcaf26ea-bc8c-43bc-b977-18e8763d90f3
+    m_ActionName: UI/RightPage[/DualSenseGamepadHID/rightShoulder,/XInputControllerWindows/rightShoulder,/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e5ae027c-8b1f-4578-a9d7-e2139900728a
+    m_ActionName: UI/NavigationUp[/DualSenseGamepadHID/dpad/up,/XInputControllerWindows/dpad/up,/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d4f82386-2084-489e-85f5-48d644e2f706
+    m_ActionName: UI/NavigationDown[/DualSenseGamepadHID/dpad/down,/XInputControllerWindows/dpad/down,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6ffc13c4-2d89-440e-a2e2-b270dc49302c
+    m_ActionName: Training/Reset[/DualSenseGamepadHID/select,/XInputControllerWindows/select,/Keyboard/1,/DualSenseGamepadHID/touchpadButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9f62ee22-0b1e-413f-8582-f90db63322de
+    m_ActionName: Training/Switch[/DualSenseGamepadHID/rightStickPress,/XInputControllerWindows/rightStickPress,/Keyboard/2]
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: UI
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1236495182
 GameObject:
   m_ObjectHideFlags: 0
@@ -43438,6 +43786,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1124985193}
+        m_TargetAssemblyTypeName: PlayerIcon, Scripts
+        m_MethodName: Movement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: cd821023-ba3e-44d5-9ffb-685131824606
     m_ActionName: UI/Navigation[/DualSenseGamepadHID/leftStick,/DualSenseGamepadHID/dpad,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
@@ -43461,6 +43821,30 @@ MonoBehaviour:
       - m_Target: {fileID: 1856510700}
         m_TargetAssemblyTypeName: InputManager, Scripts
         m_MethodName: Confirm
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1124985193}
+        m_TargetAssemblyTypeName: PlayerIcon, Scripts
+        m_MethodName: OpenOtherMenu
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1124985193}
+        m_TargetAssemblyTypeName: PlayerIcon, Scripts
+        m_MethodName: ConfirmQuickAssign
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -43556,6 +43940,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 6fc0ed92-2154-48c8-bdf0-9b85261bc921
     m_ActionName: Gameplay/DashBack[/DualSenseGamepadHID/dpad/left,/Keyboard/a,/DualSenseGamepadHID/leftStick/left,/Keyboard/leftArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e5ae027c-8b1f-4578-a9d7-e2139900728a
+    m_ActionName: UI/NavigationUp[/DualSenseGamepadHID/dpad/up,/XInputControllerWindows/dpad/up,/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d4f82386-2084-489e-85f5-48d644e2f706
+    m_ActionName: UI/NavigationDown[/DualSenseGamepadHID/dpad/down,/XInputControllerWindows/dpad/down,/Keyboard/s]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
@@ -50715,63 +51107,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!1001 &2395945031804703317
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_RootOrder
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570953, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2395945032070570959, guid: 51e401150711c474194e02286b6e1500, type: 3}
-      propertyPath: m_Name
-      value: Main_debugLoader
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 51e401150711c474194e02286b6e1500, type: 3}
 --- !u!1001 &3511341869433633011
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50875,6 +51210,10 @@ PrefabInstance:
       propertyPath: _index
       value: Keyboard
       objectReference: {fileID: 0}
+    - target: {fileID: 3511341869314771211, guid: 8aa8fda4640778c4fbdf8f40862194de, type: 3}
+      propertyPath: _playerInput
+      value: 
+      objectReference: {fileID: 1856510701}
     - target: {fileID: 3511341869314771211, guid: 8aa8fda4640778c4fbdf8f40862194de, type: 3}
       propertyPath: _playersMenu
       value: 
