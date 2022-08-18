@@ -1,65 +1,28 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PromptsImageChanger : MonoBehaviour
 {
+	[SerializeField] private InputActionReference _actionReference = default;
+	[SerializeField] private DeviceConfigurator _deviceConfigurator = default;
 	[SerializeField] private InputManager _inputManager = default;
-	[SerializeField] private Image _promptImage = default;
-	[SerializeField] private Sprite _promptKeyboardSprite = default;
-	[SerializeField] private Sprite _promptXboxSprite = default;
-	[SerializeField] private Sprite _promptControllerSprite = default;
-	[SerializeField] private PauseMenu _pauseMenu = default;
+	private PlayerInput _playerInput;
+	private Image _image;
+
 
 	private void SetCorrectPromptSprite()
 	{
-		if (_inputManager != null)
-		{
-			string inputScheme = _inputManager.InputScheme;
-			if (inputScheme.Contains("Keyboard"))
-			{
-				_promptImage.sprite = _promptKeyboardSprite;
-			}
-			else if (inputScheme.Contains("Xbox"))
-			{
-				_promptImage.sprite = _promptXboxSprite;
-			}
-			else
-			{
-				_promptImage.sprite = _promptControllerSprite;
-			}
-		}
-		else if (_pauseMenu != null)
-		{
-			string inputScheme = _pauseMenu.PauseControllerType;
-			if (inputScheme.Contains("Keyboard"))
-			{
-				_promptImage.sprite = _promptKeyboardSprite;
-			}
-			else if (inputScheme.Contains("Xbox"))
-			{
-				_promptImage.sprite = _promptXboxSprite;
-			}
-			else
-			{
-				_promptImage.sprite = _promptControllerSprite;
-			}
-		}
+		InputAction inputAction = _actionReference.action;
+		int controlBindingIndex = inputAction.GetBindingIndexForControl(inputAction.controls[0]);
+		string currentBindingInput = InputControlPath.ToHumanReadableString(inputAction.bindings[controlBindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+		_image.sprite = _deviceConfigurator.GetDeviceBindingIcon(_playerInput, currentBindingInput);
 	}
 
-	public void SetPromptSpriteOnCommand(string inputScheme)
+	void Awake()
 	{
-		if (inputScheme.Contains("Keyboard"))
-		{
-			_promptImage.sprite = _promptKeyboardSprite;
-		}
-		else if (inputScheme.Contains("Xbox"))
-		{
-			_promptImage.sprite = _promptXboxSprite;
-		}
-		else
-		{
-			_promptImage.sprite = _promptControllerSprite;
-		}
+		_playerInput = _inputManager.GetComponent<PlayerInput>();
+		_image = transform.GetChild(1).GetComponent<Image>();
 	}
 
 	void OnEnable()

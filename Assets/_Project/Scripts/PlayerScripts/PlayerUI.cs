@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -346,7 +347,8 @@ public class PlayerUI : MonoBehaviour
 		GameManager.Instance.DisableAllInput();
 		GameManager.Instance.PauseMusic();
 		GameManager.Instance.PausedController = _controller.ActiveController;
-		_pauseMenu.PauseControllerType = _controller.ControllerInputName;
+		_pauseMenu.PlayerInput = _controller.GetComponent<PlayerInput>();
+		Debug.Log(_pauseMenu.PlayerInput);
 		_pauseMenu.Show();
 	}
 
@@ -357,7 +359,7 @@ public class PlayerUI : MonoBehaviour
 		GameManager.Instance.DisableAllInput();
 		GameManager.Instance.PauseMusic();
 		GameManager.Instance.PausedController = _controller.ActiveController;
-		_trainingPauseMenu.PauseControllerType = _controller.ControllerInputName;
+		_trainingPauseMenu.PlayerInput = _controller.GetComponent<PlayerInput>();
 		_trainingPauseMenu.Show();
 	}
 

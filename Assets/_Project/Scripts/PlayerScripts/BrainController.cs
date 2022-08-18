@@ -13,6 +13,7 @@ public class BrainController : MonoBehaviour
 	public bool IsPlayerOne { get; set; }
 	public string ControllerInputName { get; set; }
 	public BaseController ActiveController { get; private set; }
+	public InputDevice InputDevice { get; set; }
 
 
 	void Awake()

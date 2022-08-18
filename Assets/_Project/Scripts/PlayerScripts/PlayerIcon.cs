@@ -1,4 +1,5 @@
 using Demonics.Sounds;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
@@ -8,7 +9,8 @@ public class PlayerIcon : MonoBehaviour
 	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private PlayersMenu _playersMenu = default;
 	[SerializeField] private PromptsImageChanger[] _promptsImageChangers = default;
-	[SerializeField] private int _index = default;
+	[SerializeField] private TextMeshProUGUI _controllerText = default;
+	[SerializeField] private ControllerTypeEnum _controller = default;
 	private RectTransform _rectTransform;
 	private Audio _audio;
 	private PlayerInput _playerInput;
@@ -17,6 +19,7 @@ public class PlayerIcon : MonoBehaviour
 	private readonly float _center = 0.0f;
 	private bool _isMovenentInUse;
 	private float _originalPositionY;
+	private int _deviceId;
 
 
 	private void Awake()
@@ -32,9 +35,17 @@ public class PlayerIcon : MonoBehaviour
 		Movement();
 	}
 
+	public void SetController(ControllerTypeEnum controller, int index, int deviceId)
+	{
+		_deviceId = deviceId;
+		_controller = controller;
+		_controllerText.text = controller.ToString() + " " + ++index;
+		gameObject.SetActive(true);
+	}
+
 	public void Movement()
 	{
-		if (InputSystem.devices[_index].displayName == _playerInput.devices[0].displayName)
+		if (_playerInput.devices[0].deviceId == _deviceId)
 		{
 			float movement = _inputManager.NavigationInput.x;
 			if (movement != 0.0f)
@@ -86,7 +97,7 @@ public class PlayerIcon : MonoBehaviour
 	{
 		if (gameObject.activeSelf)
 		{
-			if (InputSystem.devices[_index].displayName == _playerInput.devices[0].displayName)
+			if (_playerInput.devices[0].deviceId == _deviceId)
 			{
 				if (_rectTransform.anchoredPosition.x == _left || _rectTransform.anchoredPosition.x == _right)
 				{
@@ -100,7 +111,7 @@ public class PlayerIcon : MonoBehaviour
 	{
 		if (gameObject.activeSelf && !_playersMenu.IsOnLeft())
 		{
-			if (InputSystem.devices[_index].displayName == _playerInput.devices[0].displayName)
+			if (_playerInput.devices[0].deviceId == _deviceId)
 			{
 				_audio.Sound("Selected").Play();
 				_rectTransform.anchoredPosition = new Vector2(_left, 275.0f);
