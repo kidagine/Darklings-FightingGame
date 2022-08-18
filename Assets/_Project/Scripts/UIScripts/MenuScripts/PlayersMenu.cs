@@ -167,10 +167,6 @@ public class PlayersMenu : BaseMenu
 		SceneSettings.ControllerTwo = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 		SceneSettings.ControllerOne = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 		gameObject.SetActive(false);
-		for (int i = 0; i < _playerIcons.Length; i++)
-		{
-			_playerIcons[i].gameObject.SetActive(false);
-		}
 		_characterMenu.Show();
 	}
 
@@ -189,11 +185,6 @@ public class PlayersMenu : BaseMenu
 
 	public void Back()
 	{
-		for (int i = 0; i < _playerIcons.Length; i++)
-		{
-			_playerIcons[i].gameObject.SetActive(false);
-		}
-
 		if (SceneSettings.IsTrainingMode)
 		{
 			OpenMenuHideCurrent(_practiceMenu);

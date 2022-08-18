@@ -29,9 +29,9 @@ public class PlayerIcon : MonoBehaviour
 
 	public void SetController()
 	{
+		gameObject.SetActive(true);
 		if (_playerInput.devices.Count > 0)
 		{
-			gameObject.SetActive(true);
 			if (_playerInput.devices[0].displayName == "Keyboard")
 			{
 				_controllerText.text = "Keyboard";
@@ -43,7 +43,7 @@ public class PlayerIcon : MonoBehaviour
 		}
 		else
 		{
-			//gameObject.SetActive(false);
+			gameObject.SetActive(false);
 		}
 	}
 
