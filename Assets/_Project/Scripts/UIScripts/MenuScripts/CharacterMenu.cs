@@ -42,7 +42,6 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private RebindMenu[] _rebindMenues = default;
 	private PlayerStatsSO _playerStats;
 	private EventSystem _currentEventSystem;
-	private int _controllerIndex;
 	public bool FirstCharacterSelected { get; private set; }
 
 
@@ -92,6 +91,7 @@ public class CharacterMenu : BaseMenu
 		}
 		else
 		{
+			UsedController();
 			_playerTwoName.enabled = true;
 			if (animatorController.name == "RandomSelectAnimator")
 			{
@@ -206,19 +206,16 @@ public class CharacterMenu : BaseMenu
 
 	public void GoBack(BaseMenu otherMenu)
 	{
-		if (UsedController(true))
+		if (_changeStageMenu.IsOpen)
 		{
-			if (_changeStageMenu.IsOpen)
+			_changeStageMenu.ChangeStageClose();
+		}
+		else
+		{
+			if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
 			{
-				_changeStageMenu.ChangeStageClose();
-			}
-			else
-			{
-				if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
-				{
-					OpenMenuHideCurrent(otherMenu);
-					ResetControllerInput();
-				}
+				OpenMenuHideCurrent(otherMenu);
+				ResetControllerInput();
 			}
 		}
 	}
@@ -231,7 +228,7 @@ public class CharacterMenu : BaseMenu
 
 	public void OpenRebind()
 	{
-		if (UsedController(false))
+		if (UsedController())
 		{
 			if (!_changeStageMenu.IsOpen)
 			{
@@ -248,7 +245,7 @@ public class CharacterMenu : BaseMenu
 		}
 	}
 
-	private bool UsedController(bool cpuFullControl)
+	private bool UsedController()
 	{
 		InputDevice device;
 		if (!FirstCharacterSelected)
@@ -259,19 +256,12 @@ public class CharacterMenu : BaseMenu
 		{
 			device = SceneSettings.ControllerTwo;
 		}
-
-		if (_controllerIndex < 0)
-		{
-			if (cpuFullControl)
-			{
-				return true;
-			}
-			return false;
-		}
 		if (device == _playerInput.devices[0])
 		{
+			_rebindOnePrompt.SetActive(true);
 			return true;
 		}
+		_rebindOnePrompt.SetActive(false);
 		return false;
 	}
 
