@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private PlayerStats _playerStats;
 	private Player _player;
 	private Audio _audio;
+	private Vector2 _velocity;
+	private float _speed;
 	private bool _onTopOfPlayer;
 	public bool HasJumped { get; set; }
 	public bool HasDoubleJumped { get; set; }
@@ -115,6 +117,12 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		IsGrounded = false;
 	}
 
+	public void KnockbackNow(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
+	{
+		_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce.x, transform.position.y + knockbackForce.y));
+		StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
+	}
+
 	public void Knockback(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
 	{
 		_player.knockbackEvent.AddListener(() =>
@@ -184,6 +192,20 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		}
 	}
 
+	public void EnterHitstop()
+	{
+		_velocity = _rigidbody.velocity;
+		_speed = _rigidbody.angularVelocity;
+		_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+		_rigidbody.velocity = Vector2.zero;
+	}
+	public void ExitHitstop()
+	{
+		_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+		_rigidbody.velocity = _velocity;
+		_rigidbody.angularVelocity = _speed;
+		_rigidbody.WakeUp();
+	}
 	public void SetRigidbodyKinematic(bool state)
 	{
 		if (state)

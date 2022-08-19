@@ -17,7 +17,7 @@ public class ShadowbreakState : State
 	public override void Enter()
 	{
 		base.Enter();
-		_player.DecreaseArcana();
+		_player.DecreaseArcana(1.0f);
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToFallState);
 		_playerAnimator.Shadowbreak();
 		_audio.Sound("Shadowbreak").Play();
@@ -54,6 +54,7 @@ public class ShadowbreakState : State
 	public override void Exit()
 	{
 		base.Exit();
+		_player.OtherPlayer.StopComboTimer();
 		_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
 	}
 }
