@@ -152,7 +152,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Light"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -185,7 +185,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Medium"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -218,7 +218,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Heavy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -251,7 +251,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -273,7 +273,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -288,6 +288,61 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Dpad"",
+                    ""id"": ""459205cf-6981-4e70-9c3b-6e547a8909ab"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""951615d1-47d6-4b0e-80df-60b36b344e01"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""5fd935d3-c417-4386-bba7-6efa387cf3df"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b01490dd-fe59-4405-94ac-3c5809f254e4"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""4bfda28d-e192-487b-ba85-eb90f52af71a"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""WASD"",
@@ -340,61 +395,6 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Dpad"",
-                    ""id"": ""459205cf-6981-4e70-9c3b-6e547a8909ab"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""951615d1-47d6-4b0e-80df-60b36b344e01"",
-                    ""path"": ""<Gamepad>/dpad/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""5fd935d3-c417-4386-bba7-6efa387cf3df"",
-                    ""path"": ""<Gamepad>/dpad/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""b01490dd-fe59-4405-94ac-3c5809f254e4"",
-                    ""path"": ""<Gamepad>/dpad/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""4bfda28d-e192-487b-ba85-eb90f52af71a"",
-                    ""path"": ""<Gamepad>/dpad/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -460,7 +460,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": ""NormalizeVector2,StickDeadzone"",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -471,7 +471,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Arcane"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -504,7 +504,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Assist"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -537,7 +537,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -559,7 +559,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Parry"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -658,7 +658,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Throw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -757,7 +757,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""DashForward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -779,7 +779,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""DashForward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -801,7 +801,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""DashBack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -823,7 +823,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""DashBack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -925,6 +925,24 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigationUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""e5ae027c-8b1f-4578-a9d7-e2139900728a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigationDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4f82386-2084-489e-85f5-48d644e2f706"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -934,7 +952,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -956,7 +974,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Confirm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -989,7 +1007,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Stage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1011,7 +1029,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": ""ScaleVector2,StickDeadzone"",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1022,7 +1040,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/dpad"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1084,6 +1102,17 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""7165084d-8e40-4596-9e52-c49f1d6b4cb8"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""Controls"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""34f06157-8998-4c39-9615-c28e7d48b9b8"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
@@ -1095,12 +1124,12 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7165084d-8e40-4596-9e52-c49f1d6b4cb8"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""id"": ""c4bc9aa9-1faa-47e5-ab78-5ad4ca2a0c0e"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Controls"",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""LeftPage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1117,12 +1146,12 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c4bc9aa9-1faa-47e5-ab78-5ad4ca2a0c0e"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""id"": ""e9c42f46-9c61-44d9-b85e-4bf39e3817dd"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""LeftPage"",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""RightPage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1133,17 +1162,6 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""RightPage"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e9c42f46-9c61-44d9-b85e-4bf39e3817dd"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
                     ""action"": ""RightPage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1209,7 +1227,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Rebind"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1222,6 +1240,50 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Rebind"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a05d7505-4298-4992-87e1-3bbfe4267846"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""NavigationUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ed630c2-c140-4eba-acb0-8a606889ab1f"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""NavigationUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f2f76b5-7d60-4ac2-a4a8-20905f25d0ad"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""NavigationDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8922eb28-217d-405e-84c9-b879f9307321"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""NavigationDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1257,7 +1319,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/select"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Reset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1275,11 +1337,11 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7052181a-9009-47e1-934a-4f32d40ef68f"",
+                    ""id"": ""99be3b16-83dd-4394-9799-3ce72b8ee357"",
                     ""path"": ""<DualShockGamepad>/touchpadButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Reset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1290,7 +1352,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Gamepad"",
+                    ""groups"": ""Xbox"",
                     ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1311,8 +1373,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": [
         {
-            ""name"": ""Gamepad"",
-            ""bindingGroup"": ""Gamepad"",
+            ""name"": ""Xbox"",
+            ""bindingGroup"": ""Xbox"",
             ""devices"": [
                 {
                     ""devicePath"": ""<Gamepad>"",
@@ -1371,6 +1433,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         m_UI_Controls = m_UI.FindAction("Controls", throwIfNotFound: true);
         m_UI_LeftPage = m_UI.FindAction("LeftPage", throwIfNotFound: true);
         m_UI_RightPage = m_UI.FindAction("RightPage", throwIfNotFound: true);
+        m_UI_NavigationUp = m_UI.FindAction("NavigationUp", throwIfNotFound: true);
+        m_UI_NavigationDown = m_UI.FindAction("NavigationDown", throwIfNotFound: true);
         // Training
         m_Training = asset.FindActionMap("Training", throwIfNotFound: true);
         m_Training_Reset = m_Training.FindAction("Reset", throwIfNotFound: true);
@@ -1572,6 +1636,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Controls;
     private readonly InputAction m_UI_LeftPage;
     private readonly InputAction m_UI_RightPage;
+    private readonly InputAction m_UI_NavigationUp;
+    private readonly InputAction m_UI_NavigationDown;
     public struct UIActions
     {
         private @DemonInput m_Wrapper;
@@ -1585,6 +1651,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         public InputAction @Controls => m_Wrapper.m_UI_Controls;
         public InputAction @LeftPage => m_Wrapper.m_UI_LeftPage;
         public InputAction @RightPage => m_Wrapper.m_UI_RightPage;
+        public InputAction @NavigationUp => m_Wrapper.m_UI_NavigationUp;
+        public InputAction @NavigationDown => m_Wrapper.m_UI_NavigationDown;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1621,6 +1689,12 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @RightPage.started -= m_Wrapper.m_UIActionsCallbackInterface.OnRightPage;
                 @RightPage.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnRightPage;
                 @RightPage.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnRightPage;
+                @NavigationUp.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationUp;
+                @NavigationUp.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationUp;
+                @NavigationUp.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationUp;
+                @NavigationDown.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationDown;
+                @NavigationDown.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationDown;
+                @NavigationDown.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationDown;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1652,6 +1726,12 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @RightPage.started += instance.OnRightPage;
                 @RightPage.performed += instance.OnRightPage;
                 @RightPage.canceled += instance.OnRightPage;
+                @NavigationUp.started += instance.OnNavigationUp;
+                @NavigationUp.performed += instance.OnNavigationUp;
+                @NavigationUp.canceled += instance.OnNavigationUp;
+                @NavigationDown.started += instance.OnNavigationDown;
+                @NavigationDown.performed += instance.OnNavigationDown;
+                @NavigationDown.canceled += instance.OnNavigationDown;
             }
         }
     }
@@ -1697,13 +1777,13 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         }
     }
     public TrainingActions @Training => new TrainingActions(this);
-    private int m_GamepadSchemeIndex = -1;
-    public InputControlScheme GamepadScheme
+    private int m_XboxSchemeIndex = -1;
+    public InputControlScheme XboxScheme
     {
         get
         {
-            if (m_GamepadSchemeIndex == -1) m_GamepadSchemeIndex = asset.FindControlSchemeIndex("Gamepad");
-            return asset.controlSchemes[m_GamepadSchemeIndex];
+            if (m_XboxSchemeIndex == -1) m_XboxSchemeIndex = asset.FindControlSchemeIndex("Xbox");
+            return asset.controlSchemes[m_XboxSchemeIndex];
         }
     }
     private int m_KeyboardSchemeIndex = -1;
@@ -1751,6 +1831,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         void OnControls(InputAction.CallbackContext context);
         void OnLeftPage(InputAction.CallbackContext context);
         void OnRightPage(InputAction.CallbackContext context);
+        void OnNavigationUp(InputAction.CallbackContext context);
+        void OnNavigationDown(InputAction.CallbackContext context);
     }
     public interface ITrainingActions
     {

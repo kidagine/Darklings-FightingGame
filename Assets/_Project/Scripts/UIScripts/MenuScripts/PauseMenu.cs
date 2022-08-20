@@ -1,14 +1,15 @@
 using Demonics.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : BaseMenu
 {
 	[SerializeField] private PlayerUI _playerUI = default;
 	[SerializeField] private TextMeshProUGUI _whoPaused = default;
-	public string PauseControllerType { get; set; }
 	public bool PlayerOnePaused { get; private set; }
+	public PlayerInput PlayerInput { get; set; }
 
 	public void ClosePause()
 	{

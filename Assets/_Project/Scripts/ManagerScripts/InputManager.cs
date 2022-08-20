@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour
 	[HideInInspector] public UnityEvent OnInputChange;
 	[SerializeField] private PlayerInput _playerInput;
 
-	public PromptsInput CurrentPrompts { private get; set; }
+	public PromptsInput CurrentPrompts { get; set; }
 	public Vector2 NavigationInput { get; private set; }
 	public string InputScheme { get { return _playerInput.devices[0].displayName; } set { } }
 	public PlayerInput PlayerInput { get { return _playerInput; } private set { } }

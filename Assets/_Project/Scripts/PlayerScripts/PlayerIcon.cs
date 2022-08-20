@@ -1,42 +1,57 @@
 using Demonics.Sounds;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerIcon : MonoBehaviour
 {
-	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private PlayersMenu _playersMenu = default;
+	[SerializeField] private PlayerInput _playerInput = default;
 	[SerializeField] private PromptsImageChanger[] _promptsImageChangers = default;
-	[SerializeField] private int _index = default;
+	[SerializeField] private TextMeshProUGUI _controllerText = default;
 	private RectTransform _rectTransform;
 	private Audio _audio;
-	private PlayerInput _playerInput;
 	private readonly float _left = -375.0f;
 	private readonly float _right = 375.0f;
 	private readonly float _center = 0.0f;
 	private bool _isMovenentInUse;
 	private float _originalPositionY;
+	public PlayerInput PlayerInput { get { return _playerInput; } private set { } }
 
 
 	private void Awake()
 	{
 		_audio = GetComponent<Audio>();
 		_rectTransform = GetComponent<RectTransform>();
-		_playerInput = _inputManager.GetComponent<PlayerInput>();
 		_originalPositionY = _rectTransform.anchoredPosition.y;
 	}
 
-	private void Update()
+	public void SetController()
 	{
-		Movement();
+		gameObject.SetActive(true);
+		if (_playerInput.devices.Count > 0)
+		{
+			if (_playerInput.devices[0].displayName == "Keyboard")
+			{
+				_controllerText.text = "Keyboard";
+			}
+			else
+			{
+				_controllerText.text = "Controller";
+			}
+		}
+		else
+		{
+			gameObject.SetActive(false);
+		}
 	}
 
-	public void Movement()
+	public void Movement(CallbackContext callbackContext)
 	{
-		if (InputSystem.devices[_index].displayName == _playerInput.devices[0].displayName)
+		if (gameObject.activeInHierarchy)
 		{
-			float movement = _inputManager.NavigationInput.x;
+			float movement = callbackContext.ReadValue<Vector2>().x;
 			if (movement != 0.0f)
 			{
 				if (!_isMovenentInUse)
@@ -82,11 +97,11 @@ public class PlayerIcon : MonoBehaviour
 		}
 	}
 
-	public void OpenOtherMenu()
+	public void OpenOtherMenu(CallbackContext callbackContext)
 	{
-		if (gameObject.activeSelf)
+		if (gameObject.activeInHierarchy)
 		{
-			if (InputSystem.devices[_index].displayName == _playerInput.devices[0].displayName)
+			if (callbackContext.performed)
 			{
 				if (_rectTransform.anchoredPosition.x == _left || _rectTransform.anchoredPosition.x == _right)
 				{
@@ -96,11 +111,11 @@ public class PlayerIcon : MonoBehaviour
 		}
 	}
 
-	public void ConfirmQuickAssign()
+	public void ConfirmQuickAssign(CallbackContext callbackContext)
 	{
-		if (gameObject.activeSelf && !_playersMenu.IsOnLeft())
+		if (gameObject.activeInHierarchy && !_playersMenu.IsOnLeft())
 		{
-			if (InputSystem.devices[_index].displayName == _playerInput.devices[0].displayName)
+			if (callbackContext.performed)
 			{
 				_audio.Sound("Selected").Play();
 				_rectTransform.anchoredPosition = new Vector2(_left, 275.0f);

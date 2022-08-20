@@ -3,11 +3,9 @@ using Demonics.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.InputSystem.InputAction;
 
 public class PlayersMenu : BaseMenu
 {
-	[SerializeField] private InputManager _inputManager = default;
 	[SerializeField] private CharacterMenu _characterMenu = default;
 	[SerializeField] private RectTransform[] _playerIcons = default;
 	[SerializeField] private GameObject _cpuTextRight = default;
@@ -15,7 +13,6 @@ public class PlayersMenu : BaseMenu
 	[SerializeField] private BaseMenu _versusMenu = default;
 	[SerializeField] private BaseMenu _practiceMenu = default;
 	private Audio _audio;
-	private int _increment;
 	private readonly float _left = -375.0f;
 	private readonly float _right = 375.0f;
 	private readonly float _center = 0.0f;
@@ -30,22 +27,9 @@ public class PlayersMenu : BaseMenu
 
 	private void UpdateVisiblePlayers(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
 	{
-		_increment = 0;
 		for (int i = 0; i < _playerIcons.Length; i++)
 		{
-			_playerIcons[i].gameObject.SetActive(false);
-		}
-		for (int i = 0; i < InputSystem.devices.Count; i++)
-		{
-			if (!InputSystem.devices[i].displayName.Contains("Mouse") && !InputSystem.devices[i].displayName.Contains("Touchscreen"))
-			{
-				if (_playerIcons.Length >= i)
-				{
-					_playerIcons[_increment].gameObject.SetActive(true);
-					_playerIcons[_increment].GetChild(3).GetChild(0).GetComponent<TextMeshProUGUI>().text = InputSystem.devices[i].displayName;
-					_increment++;
-				}
-			}
+			_playerIcons[i].GetComponent<PlayerIcon>().SetController();
 		}
 	}
 
@@ -100,35 +84,41 @@ public class PlayersMenu : BaseMenu
 			_audio.Sound("Pressed").Play();
 			if (_playerIcons[0].anchoredPosition.x == _right)
 			{
-				SceneSettings.ControllerTwo = 0;
+				SceneSettings.ControllerTwoScheme = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerTwo = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else if (_playerIcons[1].anchoredPosition.x == _right)
 			{
-				SceneSettings.ControllerTwo = 2;
+				SceneSettings.ControllerTwoScheme = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerTwo = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else if (_playerIcons[2].anchoredPosition.x == _right)
 			{
-				SceneSettings.ControllerTwo = 3;
+				SceneSettings.ControllerTwoScheme = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerTwo = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else
 			{
-				SceneSettings.ControllerTwo = -1;
+				SceneSettings.ControllerTwo = null;
 			}
 			if (_playerIcons[0].anchoredPosition.x == _left)
 			{
-				SceneSettings.ControllerOne = 0;
+				SceneSettings.ControllerOneScheme = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerOne = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else if (_playerIcons[1].anchoredPosition.x == _left)
 			{
-				SceneSettings.ControllerOne = 2;
+				SceneSettings.ControllerOneScheme = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerOne = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else if (_playerIcons[2].anchoredPosition.x == _left)
 			{
-				SceneSettings.ControllerOne = 3;
+				SceneSettings.ControllerOneScheme = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerOne = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else
 			{
-				SceneSettings.ControllerOne = -1;
+				SceneSettings.ControllerOne = null;
 			}
 			if (_playerIcons[0].anchoredPosition.x != _center && _playerIcons[1].anchoredPosition.x != _center
 				|| _playerIcons[0].anchoredPosition.x != _center && _playerIcons[2].anchoredPosition.x != _center
@@ -173,14 +163,9 @@ public class PlayersMenu : BaseMenu
 	public void OpenKeyboardCoOp()
 	{
 		_audio.Sound("Pressed").Play();
-		SceneSettings.ControllerTwo = 0;
-		SceneSettings.ControllerOne = 0;
+		SceneSettings.ControllerTwo = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
+		SceneSettings.ControllerOne = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 		gameObject.SetActive(false);
-		for (int i = 0; i < _playerIcons.Length; i++)
-		{
-			_playerIcons[i].gameObject.SetActive(false);
-		}
-		_inputManager.gameObject.SetActive(true);
 		_characterMenu.Show();
 	}
 
@@ -199,11 +184,6 @@ public class PlayersMenu : BaseMenu
 
 	public void Back()
 	{
-		for (int i = 0; i < _playerIcons.Length; i++)
-		{
-			_playerIcons[i].gameObject.SetActive(false);
-		}
-
 		if (SceneSettings.IsTrainingMode)
 		{
 			OpenMenuHideCurrent(_practiceMenu);

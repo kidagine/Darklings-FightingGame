@@ -5,6 +5,7 @@ public class HurtParentState : State
 	protected IdleState _idleState;
 	protected DeathState _deathState;
 	protected AttackState _attackState;
+	protected ShadowbreakState _shadowbreakState;
 	protected AttackSO _hurtAttack;
 	protected bool _skipEnter;
 
@@ -13,6 +14,7 @@ public class HurtParentState : State
 		_idleState = GetComponent<IdleState>();
 		_deathState = GetComponent<DeathState>();
 		_attackState = GetComponent<AttackState>();
+		_shadowbreakState = GetComponent<ShadowbreakState>();
 	}
 
 	public void Initialize(AttackSO hurtAttack, bool skipEnter = false)
@@ -59,6 +61,17 @@ public class HurtParentState : State
 		_player.OtherPlayer.StopComboTimer();
 		_stateMachine.ChangeState(_deathState);
 	}
+
+	public override bool AssistCall()
+	{
+		if (_player.AssistGauge >= 1.0f)
+		{
+			_stateMachine.ChangeState(_shadowbreakState);
+			return true;
+		}
+		return false;
+	}
+
 
 	public override void Exit()
 	{

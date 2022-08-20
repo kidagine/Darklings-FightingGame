@@ -20,7 +20,7 @@ public class KnockbackState : State
 	{
 		_playerAnimator.HurtAir(true);
 		base.Enter();
-		_playerMovement.Knockback(new Vector2(
+		_playerMovement.KnockbackNow(new Vector2(
 			_player.OtherPlayer.transform.localScale.x, _knockbackDirectionY), new Vector2(_knockbackForce, _knockbackForce), _knockbackDuration);
 		CameraShake.Instance.Shake(1, 1);
 		_canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());

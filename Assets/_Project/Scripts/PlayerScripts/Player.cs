@@ -200,10 +200,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	public bool AssistAction()
 	{
-		if (AssistGauge >= 1.0f && GameManager.Instance.HasGameStarted)
+		if (AssistGauge >= 0.5f && GameManager.Instance.HasGameStarted)
 		{
 			_assist.Attack();
-			DecreaseArcana();
+			DecreaseArcana(0.5f);
 			//CurrentAttack = _assist.AssistStats.attackSO;
 			return true;
 		}
@@ -219,9 +219,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		}
 	}
 
-	public void DecreaseArcana()
+	public void DecreaseArcana(float value)
 	{
-		AssistGauge--;
+		AssistGauge -= value;
 		_playerUI.SetAssist(AssistGauge);
 	}
 
@@ -358,13 +358,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	public void EnterHitstop()
 	{
-		_playerMovement.SetRigidbodyKinematic(true);
+		_playerMovement.EnterHitstop();
 		_playerAnimator.Pause();
 	}
 
 	public void ExitHitstop()
 	{
-		_playerMovement.SetRigidbodyKinematic(false);
+		_playerMovement.ExitHitstop();
 		_playerAnimator.Resume();
 		knockbackEvent?.Invoke();
 		knockbackEvent.RemoveAllListeners();
