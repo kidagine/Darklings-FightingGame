@@ -365,7 +365,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			_musicMenu.ShowMusicMenu(SceneSettings.MusicName);
+			_musicMenu.ShowMusicMenu(_currentMusic.name);
 			_inputHistories[0].transform.GetChild(0).gameObject.SetActive(false);
 			_inputHistories[1].transform.GetChild(0).gameObject.SetActive(false);
 			_trainingPrompts.gameObject.SetActive(false);
