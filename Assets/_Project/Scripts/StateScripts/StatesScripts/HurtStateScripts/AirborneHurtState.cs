@@ -49,7 +49,6 @@ public class AirborneHurtState : HurtParentState
 			_playerMovement.Knockback(new Vector2(
 			_player.OtherPlayer.transform.localScale.x, _hurtAttack.knockbackDirection.y), new Vector2(_hurtAttack.knockback, _hurtAttack.knockback), _hurtAttack.knockbackDuration);
 		}
-		_player.SetAirPushBox(true);
 		CameraShake.Instance.Shake(_hurtAttack.cameraShaker.intensity, _hurtAttack.cameraShaker.timer);
 		_canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());
 		_player.Health -= _player.CalculateDamage(_hurtAttack);
@@ -63,7 +62,10 @@ public class AirborneHurtState : HurtParentState
 			ToDeathState();
 		}
 	}
-
+	public override bool AssistCall()
+	{
+		return false;
+	}
 	IEnumerator CanCheckGroundCoroutine()
 	{
 		yield return new WaitForSeconds(0.1f);
@@ -87,6 +89,7 @@ public class AirborneHurtState : HurtParentState
 	{
 		base.UpdatePhysics();
 		_rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y);
+		_playerMovement.CheckForPlayer();
 	}
 
 	private new void ToKnockdownState()
@@ -137,6 +140,5 @@ public class AirborneHurtState : HurtParentState
 		}
 		WallSplat = false;
 		_canCheckGround = false;
-		_player.SetAirPushBox(false);
 	}
 }

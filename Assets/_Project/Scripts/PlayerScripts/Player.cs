@@ -9,7 +9,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private Assist _assist = default;
 	[SerializeField] private Pushbox _groundPushbox = default;
-	[SerializeField] private Pushbox _airPushbox = default;
 	[SerializeField] private Transform _hurtbox = default;
 	[SerializeField] protected Transform _effectsParent = default;
 	[SerializeField] private Transform _grabPoint = default;
@@ -24,7 +23,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	private Coroutine _comboTimerCoroutine;
 	private bool _comboTimerPaused;
 	private readonly float _damageDecay = 0.97f;
-	public UnityEvent knockbackEvent;
+	[HideInInspector] public UnityEvent knockbackEvent;
 
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
 	public PlayerStateManager OtherPlayerStateManager { get; private set; }
@@ -184,11 +183,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	{
 		if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && _keepFlip.localScale.x != 1.0f)
 		{
-			Flip(1);
+			if (!OtherPlayerMovement.IsInCorner)
+			{
+				Flip(1);
+			}
 		}
 		else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner && _keepFlip.localScale.x != -1.0f)
 		{
-			Flip(-1);
+			if (!OtherPlayerMovement.IsInCorner)
+			{
+				Flip(-1);
+			}
 		}
 	}
 
@@ -426,12 +431,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	public void SetPushboxTrigger(bool state)
 	{
 		_groundPushbox.SetIsTrigger(state);
-	}
-
-	public void SetAirPushBox(bool state)
-	{
-		SetPushboxTrigger(state);
-		_airPushbox.gameObject.SetActive(state);
 	}
 
 	public void SetHurtbox(bool state)

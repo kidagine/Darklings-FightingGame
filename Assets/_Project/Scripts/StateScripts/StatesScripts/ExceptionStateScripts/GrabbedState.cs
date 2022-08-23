@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class GrabbedState : State
 {
 	private DeathState _deathState;
