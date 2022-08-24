@@ -92,16 +92,17 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
 		if (_rigidbody.velocity.y < 0)
 		{
-			if (!IsInCorner)
+			//PUSH BY PLAYER DIFFERENCE AMOUNT INSTEAD
+			if (!_player.OtherPlayerMovement.IsInCorner || IsInCorner)
 			{
 				if (transform.localScale.x > 0.0f)
 				{
-					transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y - 0.1f);
+					//transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y - 0.1f);
 					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + 0.5f, _player.OtherPlayer.transform.position.y);
 				}
 				else if (transform.localScale.x < 0.0f)
 				{
-					transform.position = new Vector2(transform.position.x + 0.15f, transform.position.y - 0.1f);
+					//transform.position = new Vector2(transform.position.x + 0.15f, transform.position.y - 0.1f);
 					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - 0.5f, _player.OtherPlayer.transform.position.y);
 				}
 			}
@@ -109,11 +110,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			{
 				if (transform.position.x > 0)
 				{
-					transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y - 0.3f);
+					transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y);
 				}
 				else if (transform.position.x < 0)
 				{
-					transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y - 0.3f);
+					transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y);
 				}
 			}
 		}
