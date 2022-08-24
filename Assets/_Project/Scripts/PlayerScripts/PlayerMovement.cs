@@ -80,7 +80,8 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 				{
 					if (hit.collider.transform.root.TryGetComponent(out Player player))
 					{
-						GroundedPoint(hit.point.normalized);
+
+						GroundedPoint(hit.normal.normalized);
 					}
 				}
 			}
@@ -90,31 +91,31 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void GroundedPoint(Vector2 point)
 	{
-		if (_rigidbody.velocity.y < 0)
+		if (_rigidbody.velocity.y < 0 && point.y == 1)
 		{
+			float difference = Mathf.Abs(_player.transform.position.x - _player.OtherPlayer.transform.position.x);
+			float pushDistance = (1.35f - difference) + 0.1f;
 			//PUSH BY PLAYER DIFFERENCE AMOUNT INSTEAD
 			if (!_player.OtherPlayerMovement.IsInCorner || IsInCorner)
 			{
 				if (transform.localScale.x > 0.0f)
 				{
-					//transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y - 0.1f);
-					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + 0.5f, _player.OtherPlayer.transform.position.y);
+					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + pushDistance, _player.OtherPlayer.transform.position.y);
 				}
 				else if (transform.localScale.x < 0.0f)
 				{
-					//transform.position = new Vector2(transform.position.x + 0.15f, transform.position.y - 0.1f);
-					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - 0.5f, _player.OtherPlayer.transform.position.y);
+					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - pushDistance, _player.OtherPlayer.transform.position.y);
 				}
 			}
 			else
 			{
 				if (transform.position.x > 0)
 				{
-					transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y);
+					transform.position = new Vector2(transform.position.x - pushDistance, transform.position.y);
 				}
 				else if (transform.position.x < 0)
 				{
-					transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y);
+					transform.position = new Vector2(transform.position.x + pushDistance, transform.position.y);
 				}
 			}
 		}
