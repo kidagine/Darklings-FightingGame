@@ -53,11 +53,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
 		if (_rigidbody.velocity.y < 0)
 		{
-			_rigidbody.velocity += (4 - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+			_rigidbody.velocity += 3 * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
 		}
 		else if (_rigidbody.velocity.y > 0)
 		{
-			_rigidbody.velocity += (3 - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+			_rigidbody.velocity += 2 * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
 		}
 	}
 
@@ -96,12 +96,12 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			{
 				if (transform.localScale.x > 0.0f)
 				{
-					transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y - 0.3f);
+					transform.position = new Vector2(transform.position.x - 0.15f, transform.position.y - 0.1f);
 					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + 0.5f, _player.OtherPlayer.transform.position.y);
 				}
 				else if (transform.localScale.x < 0.0f)
 				{
-					transform.position = new Vector2(transform.position.x + 0.15f, transform.position.y - 0.3f);
+					transform.position = new Vector2(transform.position.x + 0.15f, transform.position.y - 0.1f);
 					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - 0.5f, _player.OtherPlayer.transform.position.y);
 				}
 			}
