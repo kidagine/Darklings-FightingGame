@@ -32,7 +32,6 @@ public class AirParentState : State
 	public override void Enter()
 	{
 		base.Enter();
-		_player.SetAirPushBox(true);
 	}
 
 	public override void UpdateLogic()
@@ -41,6 +40,7 @@ public class AirParentState : State
 		ToFallState();
 		ToJumpState();
 		ToJumpForwardState();
+		_playerMovement.CheckForPlayer();
 	}
 
 	public void ToFallState()

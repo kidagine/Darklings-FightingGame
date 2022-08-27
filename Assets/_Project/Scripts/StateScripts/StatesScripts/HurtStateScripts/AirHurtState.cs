@@ -36,8 +36,8 @@ public class AirHurtState : HurtParentState
 	{
 		base.UpdateLogic();
 		ToFallStateAfterGround();
+		_playerMovement.CheckForPlayer();
 	}
-
 	public override bool ToAirborneHurtState(AttackSO attack)
 	{
 		_airborneHurtState.Initialize(attack);

@@ -10,7 +10,6 @@ public class IdleState : GroundParentState
 			_player.MaxHealthStats();
 		}
 		_playerAnimator.Idle();
-		_player.SetAirPushBox(false);
 		_player.SetPushboxTrigger(false);
 		_playerMovement.HasAirDashed = false;
 		_playerMovement.HasDoubleJumped = false;

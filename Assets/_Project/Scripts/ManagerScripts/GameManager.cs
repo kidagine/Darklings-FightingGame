@@ -260,6 +260,8 @@ public class GameManager : MonoBehaviour
 		_playerTwoInput = PlayerTwo.GetComponent<PlayerInput>();
 		if (inputSchemeOne.Contains("Keyboard") && inputSchemeTwo.Contains("Keyboard"))
 		{
+			SceneSettings.ControllerOneScheme = "Keyboard";
+			SceneSettings.ControllerTwoScheme = "KeyboardTwo";
 			_playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
 			_playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
 		}

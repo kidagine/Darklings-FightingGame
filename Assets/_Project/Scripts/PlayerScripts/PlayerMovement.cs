@@ -5,13 +5,13 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour, IPushboxResponder
 {
 	[SerializeField] private LayerMask _wallLayerMask = default;
+	[SerializeField] private LayerMask _playerLayerMask = default;
 	private Rigidbody2D _rigidbody;
 	private PlayerStats _playerStats;
 	private Player _player;
 	private Audio _audio;
 	private Vector2 _velocity;
 	private float _speed;
-	private bool _onTopOfPlayer;
 	public bool HasJumped { get; set; }
 	public bool HasDoubleJumped { get; set; }
 	public bool HasAirDashed { get; set; }
@@ -53,11 +53,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
 		if (_rigidbody.velocity.y < 0)
 		{
-			_rigidbody.velocity += (4 - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+			_rigidbody.velocity += 3 * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
 		}
 		else if (_rigidbody.velocity.y > 0)
 		{
-			_rigidbody.velocity += (3 - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+			_rigidbody.velocity += 2 * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
 		}
 	}
 
@@ -67,23 +67,56 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_rigidbody.AddForce(new Vector2(travelDistance.x * 3.0f, travelDistance.y * 3.0f), ForceMode2D.Impulse);
 	}
 
-	public void GroundedPoint(Transform other, float point)
+	public void CheckForPlayer()
 	{
-		if (_rigidbody.velocity.y < 0.0f)
+		float space = 0.675f;
+		for (int i = 0; i < 3; i++)
 		{
-			float pushForceX = 8.0f;
-			float pushForceY = -4.0f;
-			if (_player.OtherPlayerMovement.IsInCorner && transform.localScale.x > 0.0f)
+			Debug.DrawRay(new Vector2(transform.position.x + space, transform.position.y), Vector2.down, Color.green);
+			RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x + space, transform.position.y), Vector2.down, 0.6f, _playerLayerMask);
+			if (hit.collider != null)
 			{
-				_onTopOfPlayer = true;
-				_rigidbody.velocity = Vector2.zero;
-				_rigidbody.AddForce(new Vector2(-pushForceX, pushForceY), ForceMode2D.Impulse);
+				if (hit.collider.transform.root != transform.root)
+				{
+					if (hit.collider.transform.root.TryGetComponent(out Player player))
+					{
+
+						GroundedPoint(hit.normal.normalized);
+					}
+				}
 			}
-			else if (_player.OtherPlayerMovement.IsInCorner && transform.localScale.x < 0.0f)
+			space -= 0.675f;
+		}
+	}
+
+	public void GroundedPoint(Vector2 point)
+	{
+		if (_rigidbody.velocity.y < 0 && point.y == 1)
+		{
+			float difference = Mathf.Abs(_player.transform.position.x - _player.OtherPlayer.transform.position.x);
+			float pushDistance = (1.35f - difference) + 0.1f;
+			//PUSH BY PLAYER DIFFERENCE AMOUNT INSTEAD
+			if (!_player.OtherPlayerMovement.IsInCorner || IsInCorner)
 			{
-				_onTopOfPlayer = true;
-				_rigidbody.velocity = Vector2.zero;
-				_rigidbody.AddForce(new Vector2(pushForceX, pushForceY), ForceMode2D.Impulse);
+				if (transform.localScale.x > 0.0f)
+				{
+					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + pushDistance, _player.OtherPlayer.transform.position.y);
+				}
+				else if (transform.localScale.x < 0.0f)
+				{
+					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - pushDistance, _player.OtherPlayer.transform.position.y);
+				}
+			}
+			else
+			{
+				if (transform.position.x > 0)
+				{
+					transform.position = new Vector2(transform.position.x - pushDistance, transform.position.y);
+				}
+				else if (transform.position.x < 0)
+				{
+					transform.position = new Vector2(transform.position.x + pushDistance, transform.position.y);
+				}
 			}
 		}
 	}
@@ -97,14 +130,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			direction = (int)transform.localScale.x * -1;
 		}
 		_rigidbody.AddForce(new Vector2(Mathf.Round(direction) * (jumpForce / 2.5f), jumpForce + 1.0f), ForceMode2D.Impulse);
-	}
-
-	public void GroundedPointExit()
-	{
-		if (_onTopOfPlayer)
-		{
-			_onTopOfPlayer = false;
-		}
 	}
 
 	public void OnGrounded()
