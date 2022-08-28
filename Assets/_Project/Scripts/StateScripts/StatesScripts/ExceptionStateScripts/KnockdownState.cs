@@ -49,6 +49,7 @@ public class KnockdownState : State
 	{
 		base.UpdatePhysics();
 		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
+		_playerMovement.CheckForPlayer();
 	}
 
 	public override void Exit()
