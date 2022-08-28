@@ -42,13 +42,26 @@ public class ArcanaState : State
 		_player.Arcana--;
 		_playerUI.DecreaseArcana();
 		_playerUI.SetArcana(_player.Arcana);
-		_playerMovement.TravelDistance(new Vector2(
-				_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0.0f));
+
 	}
 
 	public override void UpdateLogic()
 	{
 		base.UpdateLogic();
+	}
+
+	public override void UpdatePhysics()
+	{
+		if (_player.CurrentAttack.travelDistance == 0.0f)
+		{
+			base.UpdatePhysics();
+			_rigidbody.velocity = Vector2.zero;
+		}
+		else
+		{
+			_playerMovement.TravelDistance(new Vector2(
+		_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0.0f));
+		}
 	}
 
 	private void ArcanaEnd()
@@ -117,15 +130,5 @@ public class ArcanaState : State
 	{
 		_stateMachine.ChangeState(_arcanaThrowState);
 		return true;
-	}
-
-
-	public override void UpdatePhysics()
-	{
-		if (_player.CurrentAttack.travelDistance == 0.0f)
-		{
-			base.UpdatePhysics();
-			_rigidbody.velocity = Vector2.zero;
-		}
 	}
 }

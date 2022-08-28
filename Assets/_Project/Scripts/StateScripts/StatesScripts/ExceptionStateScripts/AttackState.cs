@@ -54,8 +54,6 @@ public class AttackState : State
 			{
 				_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
 			}
-			_playerMovement.TravelDistance(new Vector2(
-				_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDirection.y));
 		}
 		else
 		{
@@ -71,8 +69,17 @@ public class AttackState : State
 
 	public override void UpdatePhysics()
 	{
-		//_playerMovement.CheckForPlayer();
+		if (!_air)
+		{
+			_playerMovement.TravelDistance(new Vector2(
+			_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDirection.y));
+		}
+		else
+		{
+			_playerMovement.CheckForPlayer();
+		}
 	}
+
 	private void ToFallStateOnGround()
 	{
 		if (_air && _playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)

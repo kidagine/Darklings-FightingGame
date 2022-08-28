@@ -11,8 +11,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private Player _player;
 	private Audio _audio;
 	private Vector2 _velocity;
-	private float _speed;
-	private Vector2 _vel;
 	public bool HasJumped { get; set; }
 	public bool HasDoubleJumped { get; set; }
 	public bool HasAirDashed { get; set; }
@@ -99,12 +97,21 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			{
 				if (transform.localScale.x > 0.0f)
 				{
+					if (_rigidbody.velocity.x > 0.0f)
+					{
+						transform.position = new Vector2(transform.position.x - pushDistance / 2, transform.position.y);
+					}
 					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + pushDistance, _player.OtherPlayer.transform.position.y);
 				}
 				else if (transform.localScale.x < 0.0f)
 				{
+					if (_rigidbody.velocity.x > 0.0f)
+					{
+						transform.position = new Vector2(transform.position.x + pushDistance / 2, transform.position.y);
+					}
 					_player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - pushDistance, _player.OtherPlayer.transform.position.y);
 				}
+				_rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
 			}
 			else
 			{
@@ -224,7 +231,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			Debug.Log(_velocity);
 		}
 		_velocity = _rigidbody.velocity;
-		_speed = _rigidbody.angularVelocity;
 		_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll; 
 
 	}
@@ -232,8 +238,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	{
 		_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
 		_rigidbody.velocity = _velocity;
-		_rigidbody.angularVelocity = _speed;
-		_rigidbody.WakeUp();
 	}
 
 	public void SetRigidbodyKinematic(bool state)
