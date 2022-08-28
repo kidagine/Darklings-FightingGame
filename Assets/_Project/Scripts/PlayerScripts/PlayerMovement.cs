@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private Audio _audio;
 	private Vector2 _velocity;
 	private float _speed;
+	private Vector2 _vel;
 	public bool HasJumped { get; set; }
 	public bool HasDoubleJumped { get; set; }
 	public bool HasAirDashed { get; set; }
@@ -63,13 +64,12 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void TravelDistance(Vector2 travelDistance)
 	{
-		_rigidbody.velocity = Vector2.zero;
-		_rigidbody.AddForce(new Vector2(travelDistance.x * 3.0f, travelDistance.y * 3.0f), ForceMode2D.Impulse);
+		_rigidbody.velocity = (travelDistance * 15.0f) / 5.0f;
 	}
 
 	public void CheckForPlayer()
 	{
-		float space = 0.675f;
+		float space = 0.685f;
 		for (int i = 0; i < 3; i++)
 		{
 			Debug.DrawRay(new Vector2(transform.position.x + space, transform.position.y), Vector2.down, Color.green);
@@ -80,22 +80,21 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 				{
 					if (hit.collider.transform.root.TryGetComponent(out Player player))
 					{
-
-						GroundedPoint(hit.normal.normalized);
+						float pushboxSizeX = hit.collider.GetComponent<BoxCollider2D>().size.x;
+						GroundedPoint(hit.normal.normalized, pushboxSizeX);
 					}
 				}
 			}
-			space -= 0.675f;
+			space -= 0.685f;
 		}
 	}
 
-	public void GroundedPoint(Vector2 point)
+	public void GroundedPoint(Vector2 point, float pushboxSizeX)
 	{
 		if (_rigidbody.velocity.y < 0 && point.y == 1)
 		{
 			float difference = Mathf.Abs(_player.transform.position.x - _player.OtherPlayer.transform.position.x);
-			float pushDistance = (1.35f - difference) + 0.1f;
-			//PUSH BY PLAYER DIFFERENCE AMOUNT INSTEAD
+			float pushDistance = (pushboxSizeX - difference) + 0.1f;
 			if (!_player.OtherPlayerMovement.IsInCorner || IsInCorner)
 			{
 				if (transform.localScale.x > 0.0f)
@@ -156,6 +155,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
 		});
 	}
+
 
 	IEnumerator KnockbackCoroutine(Vector2 knockback, float knockbackDuration)
 	{
@@ -219,10 +219,14 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void EnterHitstop()
 	{
+		if (transform.name.Contains("Tobi"))
+		{
+			Debug.Log(_velocity);
+		}
 		_velocity = _rigidbody.velocity;
 		_speed = _rigidbody.angularVelocity;
-		_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-		_rigidbody.velocity = Vector2.zero;
+		_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll; 
+
 	}
 	public void ExitHitstop()
 	{
@@ -231,6 +235,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_rigidbody.angularVelocity = _speed;
 		_rigidbody.WakeUp();
 	}
+
 	public void SetRigidbodyKinematic(bool state)
 	{
 		if (state)

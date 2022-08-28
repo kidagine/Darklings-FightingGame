@@ -373,11 +373,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		_playerAnimator.Resume();
 		knockbackEvent?.Invoke();
 		knockbackEvent.RemoveAllListeners();
-		if (_playerStateManager.CurrentState.stateName == "Attack" || _playerStateManager.CurrentState.stateName == "Arcana")
-		{
-			_playerMovement.TravelDistance(new Vector2(
-	CurrentAttack.travelDistance * transform.root.localScale.x, 0));
-		}
 	}
 
 	private bool CanBlock(AttackSO attack)
