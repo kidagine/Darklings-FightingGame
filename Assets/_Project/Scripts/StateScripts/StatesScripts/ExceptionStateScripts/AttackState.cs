@@ -69,6 +69,10 @@ public class AttackState : State
 		ToFallStateOnGround();
 	}
 
+	public override void UpdatePhysics()
+	{
+		//_playerMovement.CheckForPlayer();
+	}
 	private void ToFallStateOnGround()
 	{
 		if (_air && _playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
@@ -205,15 +209,6 @@ public class AttackState : State
 	{
 		_stateMachine.ChangeState(_knockbackState);
 		return true;
-	}
-
-	public override void UpdatePhysics()
-	{
-		//if (!_air)
-		//{
-		//	base.UpdatePhysics();
-		//	_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
-		//}
 	}
 
 	public override void Exit()
