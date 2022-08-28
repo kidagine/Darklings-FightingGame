@@ -226,10 +226,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void EnterHitstop()
 	{
-		if (transform.name.Contains("Tobi"))
-		{
-			Debug.Log(_velocity);
-		}
 		_velocity = _rigidbody.velocity;
 		_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll; 
 

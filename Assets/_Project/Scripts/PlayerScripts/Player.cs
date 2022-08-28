@@ -306,7 +306,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	{
 		if (!CurrentAttack.isProjectile)
 		{
-			GameManager.Instance.AddHitstop(this);
+			if (!CurrentAttack.isArcana || CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
+			{
+				GameManager.Instance.AddHitstop(this);
+			}
 		}
 		CurrentAttack.hurtEffectPosition = hit.point;
 		hurtbox.TakeDamage(CurrentAttack);
@@ -318,8 +321,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 			}
 			if (OtherPlayerMovement.IsInCorner)
 			{
-				GameManager.Instance.AddHitstop(this);
-				_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), new Vector2(CurrentAttack.knockback, 0.0f), CurrentAttack.knockbackDuration);
+				if (!CurrentAttack.isArcana || CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
+				{
+					_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), new Vector2(CurrentAttack.knockback, 0.0f), CurrentAttack.knockbackDuration);
+				}
 			}
 		}
 	}
