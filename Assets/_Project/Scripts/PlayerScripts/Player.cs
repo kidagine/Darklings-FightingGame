@@ -306,7 +306,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	{
 		if (!CurrentAttack.isProjectile)
 		{
-			GameManager.Instance.AddHitstop(this);
+			if (!CurrentAttack.isArcana || CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
+			{
+				GameManager.Instance.AddHitstop(this);
+			}
 		}
 		CurrentAttack.hurtEffectPosition = hit.point;
 		hurtbox.TakeDamage(CurrentAttack);
@@ -318,8 +321,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 			}
 			if (OtherPlayerMovement.IsInCorner)
 			{
-				GameManager.Instance.AddHitstop(this);
-				_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), new Vector2(CurrentAttack.knockback, 0.0f), CurrentAttack.knockbackDuration);
+				if (!CurrentAttack.isArcana || CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
+				{
+					_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), new Vector2(CurrentAttack.knockback, 0.0f), CurrentAttack.knockbackDuration);
+				}
 			}
 		}
 	}
@@ -373,11 +378,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		_playerAnimator.Resume();
 		knockbackEvent?.Invoke();
 		knockbackEvent.RemoveAllListeners();
-		if (_playerStateManager.CurrentState.stateName == "Attack" || _playerStateManager.CurrentState.stateName == "Arcana")
-		{
-			_playerMovement.TravelDistance(new Vector2(
-	CurrentAttack.travelDistance * transform.root.localScale.x, 0));
-		}
 	}
 
 	private bool CanBlock(AttackSO attack)

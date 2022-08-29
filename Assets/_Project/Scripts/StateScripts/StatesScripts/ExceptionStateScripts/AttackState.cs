@@ -54,20 +54,30 @@ public class AttackState : State
 			{
 				_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
 			}
-			_playerMovement.TravelDistance(new Vector2(
-				_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDirection.y));
 		}
 		else
 		{
 			_playerAnimator.OnCurrentAnimationFinished.AddListener(ToFallState);
 		}
-		_inputBuffer.CheckInputBuffer();
 	}
 
 	public override void UpdateLogic()
 	{
 		base.UpdateLogic();
 		ToFallStateOnGround();
+	}
+
+	public override void UpdatePhysics()
+	{
+		if (!_air)
+		{
+			_playerMovement.TravelDistance(new Vector2(
+			_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDirection.y));
+		}
+		else
+		{
+			_playerMovement.CheckForPlayer();
+		}
 	}
 
 	private void ToFallStateOnGround()
@@ -206,15 +216,6 @@ public class AttackState : State
 	{
 		_stateMachine.ChangeState(_knockbackState);
 		return true;
-	}
-
-	public override void UpdatePhysics()
-	{
-		//if (!_air)
-		//{
-		//	base.UpdatePhysics();
-		//	_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
-		//}
 	}
 
 	public override void Exit()

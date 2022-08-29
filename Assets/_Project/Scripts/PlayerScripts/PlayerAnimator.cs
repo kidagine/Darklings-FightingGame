@@ -4,6 +4,7 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerAnimator : MonoBehaviour
 {
+	[SerializeField] private Player _player = default;
 	[SerializeField] private PlayerStats _playerStats = default;
 	[SerializeField] private InputBuffer _inputBuffer = null;
 	private Animator _animator;
