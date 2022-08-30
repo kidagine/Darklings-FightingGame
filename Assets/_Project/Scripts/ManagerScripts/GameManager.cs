@@ -966,6 +966,18 @@ public class GameManager : MonoBehaviour
 		_hitstopList.Add(hitstop);
 	}
 
+	public void SuperFreeze()
+	{
+		StartCoroutine(SuperFreezeCoroutine());
+	}
+	IEnumerator SuperFreezeCoroutine()
+	{
+		Time.timeScale = 0.0f;
+		yield return new WaitForSecondsRealtime(0.3f);
+		Time.timeScale = 0.5f;
+		yield return new WaitForSecondsRealtime(0.8f);
+		Time.timeScale = 1f;
+	}
 	public void HitStop(float hitstop)
 	{
 		if (hitstop > 0.0f)

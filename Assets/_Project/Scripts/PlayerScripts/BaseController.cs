@@ -12,7 +12,6 @@ public class BaseController : MonoBehaviour
     protected PlayerInput _playerInput;
     public Vector2 InputDirection { get; set; }
     public bool IsControllerEnabled { get; set; } = true;
-    public PromptsInput CurrentPrompts { get; set; }
 
     void Awake()
     {
@@ -22,7 +21,8 @@ public class BaseController : MonoBehaviour
         _inputBuffer = GetComponent<InputBuffer>();
         _playerInput = GetComponent<PlayerInput>();
     }
-    public virtual bool StandUp() { return false; }
+
+	public virtual bool StandUp() { return false; }
     public virtual bool Crouch() { return false; }
     public virtual bool Jump() { return false; }
 

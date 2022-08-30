@@ -9,7 +9,7 @@ public class DeathState : State
 		_player.SetHurtbox(false);
 		_player.SetPushboxTrigger(true);
 		GameManager.Instance.RoundOver(false);
-		GameManager.Instance.HitStop(0.35f);
+		GameManager.Instance.SuperFreeze();
 	}
 
 	public override void UpdatePhysics()
