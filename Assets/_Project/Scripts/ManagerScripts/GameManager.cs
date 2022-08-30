@@ -925,26 +925,39 @@ public class GameManager : MonoBehaviour
 
 	public void DisableAllInput()
 	{
-		if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+		if (_playerOneInput.enabled)
 		{
-			_playerOneInput.SwitchCurrentActionMap("UI");
+			if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+			{
+				_playerOneInput.SwitchCurrentActionMap("UI");
+			}
 		}
-		if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+
+		if (_playerTwoInput.enabled)
 		{
-			Debug.Log(_playerTwoController.ControllerInputName);
-			_playerTwoInput.SwitchCurrentActionMap("UI");
+			if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+			{
+				_playerTwoInput.SwitchCurrentActionMap("UI");
+			}
 		}
 	}
 
 	public void EnableAllInput()
 	{
-		if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+		if (_playerOneInput.enabled)
 		{
-			_playerOneInput.SwitchCurrentActionMap("Gameplay");
+			if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+			{
+				_playerOneInput.SwitchCurrentActionMap("Gameplay");
+			}
 		}
-		if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+
+		if (_playerTwoInput.enabled)
 		{
-			_playerTwoInput.SwitchCurrentActionMap("Gameplay");
+			if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+			{
+				_playerTwoInput.SwitchCurrentActionMap("Gameplay");
+			}
 		}
 	}
 

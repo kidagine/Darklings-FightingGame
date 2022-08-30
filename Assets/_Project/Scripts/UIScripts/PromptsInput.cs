@@ -22,7 +22,7 @@ public class PromptsInput : MonoBehaviour
 		}
 		else
 		{
-			GameManager.Instance.PausedController.CurrentPrompts = this;
+			GameManager.Instance.PlayerOne.GetComponent<BaseController>().CurrentPrompts = this;
 		}
 	}
 }
