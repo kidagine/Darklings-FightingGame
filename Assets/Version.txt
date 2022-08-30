@@ -1,24 +1,24 @@
 Description:
-	If the opponent collides with the wall after getting hit by arcana, they will bounce off allowing you to hit another arcana or throw them.
-	This shadow/assist is used more for neutral as you can hide behind it and it has bigger projectile priority than the other shadows/assists.
-	All characters now have jumping mediums, in general they are slower than jumping lights but do more damage and hitstun.	
-	Chip damage is caused when blocking arcana moves, it is always 250 damage. Chip damage cannot kill.
-	There is now projectile priority, if your projectile collides with another projectile that has higher priority, your projectile will explode, both projectiles will explode if they have the same priority.
-	Added initial replay system, a replay will be saved at the end of a match, you can find the replays under training in the replays menu. Note this is very experimental and a lot of replays can de-sync.
-	Buffed parries, they are now frame 1 start up and will push back your opponent, when parrying a parry you get 0.5 arcana, on normal hits its only 0.1 arcana.
-	When hitting an opponent middair hitstun wont be removed when grounded meaning that you can continue your combo.
-	Fixed command list videos not showing on Web version. Fixed parry framedata not showing. Fixed issues that could happen with some round over conditions.
+	You can now rebind every gameplay button, this is done when selecting characters by pressing the rebind prompt.
+	Prompts will change to reflect the controller that you are using(This is more limited in the WebGL version).
+	More types of controllers should work now for both versions.	
+	The shadow bar is now divided in half, you only need half shadow bar to use a shadow, and full bar for shadowbreak.
+	Hitstop now is applied only to the two objects that are hitting, instead of freezing the whole scene.
+	Increased combo timer, yellow timer from 3.0 seconds -> 3.8 seconds, red timer from 2.5 seconds -> 3.0 seconds.
+	You can now use shadowbreak while getting hit as well.
+	Added simple fade transitions between some parts.
+	Fixed several movement collision issues and a visual glitch with the p1 and p2 icons.
 
 Version:
 	0.2.6
 
 Patch Notes:
-	Added wall splat.
-	Added C Shadow.
-	Added jumping mediums.
-	Added initial chip damage.
-	Added projectile priority.
-	Added replay mode.
-	Buffed parries.
+	Added button remapping.
+	Added dynamic prompts.
+	Improved input compatibility.
+	Changes to shadow bar.
+	Improved hitstop.
+	Increase combo timer.
+	Changes for shadowbreak.
 	Minor gameplay additions.
 	Minor bug fixes.
