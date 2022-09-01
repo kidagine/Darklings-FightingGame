@@ -330,7 +330,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 			}
 			if (OtherPlayerMovement.IsInCorner)
 			{
-				if (!CurrentAttack.isArcana || CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
+				if (!CurrentAttack.isArcana && CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
 				{
 					_playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), new Vector2(CurrentAttack.knockback, 0.0f), CurrentAttack.knockbackDuration);
 				}
