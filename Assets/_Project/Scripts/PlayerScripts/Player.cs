@@ -94,6 +94,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		player.transform.localScale = new Vector2(-1.0f, 1.0f);
 	}
 
+	public bool HasGrabbed()
+	{
+		if (_grabPoint.childCount == 0)
+		{
+			return false;
+		}
+		return true;
+	}
+
 	public void ResetPlayer()
 	{
 		RecallAssist();

@@ -551,7 +551,8 @@ public class GameManager : MonoBehaviour
 			}
 			else
 			{
-				StartRound();
+				_fadeHandler.StartFadeTransition(true);
+				_fadeHandler.onFadeEnd.AddListener(() => StartRound());
 			}
 		}
 		else if (playerTwoWon)
@@ -564,7 +565,8 @@ public class GameManager : MonoBehaviour
 			}
 			else
 			{
-				StartRound();
+				_fadeHandler.StartFadeTransition(true);
+				_fadeHandler.onFadeEnd.AddListener(() => StartRound());
 			}
 		}
 		else
@@ -575,7 +577,8 @@ public class GameManager : MonoBehaviour
 			}
 			else
 			{
-				StartRound();
+				_fadeHandler.StartFadeTransition(true);
+				_fadeHandler.onFadeEnd.AddListener(() => StartRound());
 			}
 		}
 	}
@@ -600,6 +603,7 @@ public class GameManager : MonoBehaviour
 
 	public virtual void StartRound()
 	{
+		_fadeHandler.StartFadeTransition(false);
 		if (SceneSettings.ReplayMode)
 		{
 			ReplayManager.Instance.ShowReplayPrompts();

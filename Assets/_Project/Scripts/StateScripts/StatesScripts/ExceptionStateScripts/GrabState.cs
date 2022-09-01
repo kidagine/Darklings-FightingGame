@@ -42,6 +42,10 @@ public class GrabState : State
 
 	public override bool ToHurtState(AttackSO attack)
 	{
+		if (_player.HasGrabbed())
+		{
+			_player.OtherPlayerStateManager.TryToKnockdownState();
+		}
 		_hurtState.Initialize(attack);
 		_stateMachine.ChangeState(_hurtState);
 		return true;

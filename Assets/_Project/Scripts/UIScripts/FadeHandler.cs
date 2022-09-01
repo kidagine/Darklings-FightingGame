@@ -9,7 +9,7 @@ public class FadeHandler : MonoBehaviour
 	[SerializeField] private Image _fadeImage = default;
 	[Header("Fading")]
 	[Range(0f, 5f)]
-	[SerializeField] private float _fadeDuration = 1.0f;
+	[SerializeField] private float _fadeDuration = 1.2f;
 	[Range(0f, 5f)]
 	private Coroutine _fadeTransitionCoroutine;
 	[HideInInspector] public UnityEvent onFadeEnd;
