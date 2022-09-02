@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	private Player _player;
 	private Audio _audio;
 	private Vector2 _velocity;
+	private Coroutine _knockbackCoroutine;
 	public bool HasJumped { get; set; }
 	public bool HasDoubleJumped { get; set; }
 	public bool HasAirDashed { get; set; }
@@ -62,7 +63,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void TravelDistance(Vector2 travelDistance)
 	{
-		_rigidbody.velocity = (travelDistance * 15.0f) / 5.0f;
+		_rigidbody.velocity = travelDistance * 3.0f;
 	}
 
 	public void CheckForPlayer()
@@ -150,19 +151,24 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void KnockbackNow(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
 	{
-		_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce.x, transform.position.y + knockbackForce.y));
-		StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
+		_knockbackCoroutine = StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
 	}
 
 	public void Knockback(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
 	{
 		_player.knockbackEvent.AddListener(() =>
 		{
-			_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce.x, transform.position.y + knockbackForce.y));
-			StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
+			_knockbackCoroutine = StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
 		});
 	}
 
+	public void StopKnockback()
+	{
+		if (_knockbackCoroutine != null)
+		{
+			StopCoroutine(_knockbackCoroutine);
+		}
+	}
 
 	IEnumerator KnockbackCoroutine(Vector2 knockback, float knockbackDuration)
 	{
@@ -203,7 +209,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 			return Vector2.zero;
 		}
 	}
-
 
 	public void ResetGravity()
 	{

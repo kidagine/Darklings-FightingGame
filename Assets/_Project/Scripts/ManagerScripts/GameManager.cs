@@ -551,7 +551,8 @@ public class GameManager : MonoBehaviour
 			}
 			else
 			{
-				StartRound();
+				_fadeHandler.StartFadeTransition(true);
+				_fadeHandler.onFadeEnd.AddListener(() => StartRound());
 			}
 		}
 		else if (playerTwoWon)
@@ -564,7 +565,8 @@ public class GameManager : MonoBehaviour
 			}
 			else
 			{
-				StartRound();
+				_fadeHandler.StartFadeTransition(true);
+				_fadeHandler.onFadeEnd.AddListener(() => StartRound());
 			}
 		}
 		else
@@ -575,7 +577,8 @@ public class GameManager : MonoBehaviour
 			}
 			else
 			{
-				StartRound();
+				_fadeHandler.StartFadeTransition(true);
+				_fadeHandler.onFadeEnd.AddListener(() => StartRound());
 			}
 		}
 	}
@@ -600,6 +603,7 @@ public class GameManager : MonoBehaviour
 
 	public virtual void StartRound()
 	{
+		_fadeHandler.StartFadeTransition(false);
 		if (SceneSettings.ReplayMode)
 		{
 			ReplayManager.Instance.ShowReplayPrompts();
@@ -925,26 +929,39 @@ public class GameManager : MonoBehaviour
 
 	public void DisableAllInput()
 	{
-		if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+		if (_playerOneInput.enabled)
 		{
-			_playerOneInput.SwitchCurrentActionMap("UI");
+			if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+			{
+				_playerOneInput.SwitchCurrentActionMap("UI");
+			}
 		}
-		if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+
+		if (_playerTwoInput.enabled)
 		{
-			Debug.Log(_playerTwoController.ControllerInputName);
-			_playerTwoInput.SwitchCurrentActionMap("UI");
+			if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+			{
+				_playerTwoInput.SwitchCurrentActionMap("UI");
+			}
 		}
 	}
 
 	public void EnableAllInput()
 	{
-		if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+		if (_playerOneInput.enabled)
 		{
-			_playerOneInput.SwitchCurrentActionMap("Gameplay");
+			if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+			{
+				_playerOneInput.SwitchCurrentActionMap("Gameplay");
+			}
 		}
-		if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+
+		if (_playerTwoInput.enabled)
 		{
-			_playerTwoInput.SwitchCurrentActionMap("Gameplay");
+			if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+			{
+				_playerTwoInput.SwitchCurrentActionMap("Gameplay");
+			}
 		}
 	}
 
@@ -953,6 +970,18 @@ public class GameManager : MonoBehaviour
 		_hitstopList.Add(hitstop);
 	}
 
+	public void SuperFreeze()
+	{
+		StartCoroutine(SuperFreezeCoroutine());
+	}
+	IEnumerator SuperFreezeCoroutine()
+	{
+		Time.timeScale = 0.0f;
+		yield return new WaitForSecondsRealtime(0.3f);
+		Time.timeScale = 0.5f;
+		yield return new WaitForSecondsRealtime(1.0f);
+		Time.timeScale = 1f;
+	}
 	public void HitStop(float hitstop)
 	{
 		if (hitstop > 0.0f)

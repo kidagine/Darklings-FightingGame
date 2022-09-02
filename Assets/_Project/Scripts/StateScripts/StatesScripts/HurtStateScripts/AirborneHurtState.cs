@@ -33,6 +33,7 @@ public class AirborneHurtState : HurtParentState
 			_player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
 		}
 		_player.OtherPlayer.FreezeComboTimer();
+		_player.SetPushboxTrigger(true);
 		_player.SetHurtbox(true);
 		if (WallSplat)
 		{
@@ -88,7 +89,7 @@ public class AirborneHurtState : HurtParentState
 	{
 		base.UpdatePhysics();
 		_rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y);
-		_playerMovement.CheckForPlayer();
+		//_playerMovement.CheckForPlayer();
 	}
 
 	private new void ToKnockdownState()
@@ -137,6 +138,7 @@ public class AirborneHurtState : HurtParentState
 		{
 			StopCoroutine(_canCheckGroundCoroutine);
 		}
+		_player.SetPushboxTrigger(false);
 		WallSplat = false;
 		_canCheckGround = false;
 	}

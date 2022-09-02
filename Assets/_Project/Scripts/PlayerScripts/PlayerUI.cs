@@ -348,7 +348,6 @@ public class PlayerUI : MonoBehaviour
 		GameManager.Instance.PauseMusic();
 		GameManager.Instance.PausedController = _controller.ActiveController;
 		_pauseMenu.PlayerInput = _controller.GetComponent<PlayerInput>();
-		Debug.Log(_pauseMenu.PlayerInput);
 		_pauseMenu.Show();
 	}
 

@@ -5,6 +5,7 @@ using static UnityEngine.InputSystem.InputAction;
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
+	public PromptsInput CurrentPrompts { get; set; }
 	private readonly string _controlRebindKey = "rebinds";
 	private bool _dashForwardPressed;
 	private float _dashForwardLastInputTime;

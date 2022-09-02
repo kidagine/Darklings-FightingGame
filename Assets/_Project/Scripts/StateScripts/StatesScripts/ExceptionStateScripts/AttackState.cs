@@ -48,7 +48,14 @@ public class AttackState : State
 			_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
 			if (_baseController.Crouch())
 			{
-				_playerAnimator.OnCurrentAnimationFinished.AddListener(ToCrouchState);
+				if (_player.CurrentAttack.isAirAttack)
+				{
+					_playerAnimator.OnCurrentAnimationFinished.AddListener(ToFallState);
+				}
+				else
+				{
+					_playerAnimator.OnCurrentAnimationFinished.AddListener(ToCrouchState);
+				}
 			}
 			else
 			{
@@ -72,7 +79,7 @@ public class AttackState : State
 		if (!_air)
 		{
 			_playerMovement.TravelDistance(new Vector2(
-			_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDirection.y));
+			_player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDistance * _player.CurrentAttack.travelDirection.y));
 		}
 		else
 		{
@@ -134,6 +141,10 @@ public class AttackState : State
 			else
 			{
 				_crouch = false;
+			}
+			if (_player.CurrentAttack.isAirAttack)
+			{
+				_air = true;
 			}
 			Initialize(inputEnum, _crouch, _air);
 			_stateMachine.ChangeState(this);

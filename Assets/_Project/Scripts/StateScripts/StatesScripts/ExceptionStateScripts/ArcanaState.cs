@@ -32,6 +32,7 @@ public class ArcanaState : State
 	public override void Enter()
 	{
 		base.Enter();
+		_playerMovement.StopKnockback();
 		if (_playerComboSystem.GetArcana(_crouch, _air).reversal)
 		{
 			_playerUI.DisplayNotification(NotificationTypeEnum.Reversal);

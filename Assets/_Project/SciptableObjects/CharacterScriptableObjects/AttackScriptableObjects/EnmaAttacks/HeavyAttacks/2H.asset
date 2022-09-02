@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc38aa9bd105964ea227944394dc39b, type: 3}
   m_Name: 2H
   m_EditorClassIdentifier: 
-  travelDistance: 1
-  travelDirection: {x: 0, y: 4.5}
+  travelDistance: 1.5
+  travelDirection: {x: 0, y: 1}
   hitStun: 0.5
   blockStun: 0
   knockback: 1.5
+  bounce: 0
   knockbackDirection: {x: 0, y: -0.2}
   knockbackDuration: 0.1
   attackTypeEnum: 2
   hitstop: 0.15
-  damage: 550
-  isAirAttack: 0
+  damage: 500
+  isAirAttack: 1
   isProjectile: 0
   isArcana: 0
   causesKnockdown: 0
@@ -32,9 +33,9 @@ MonoBehaviour:
   hitEffectPosition: {x: 1.5, y: 2.8}
   hitEffectRotation: 50
   hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
-  hurtEffectPosition: {x: 1.0806094, y: -0.78331053}
+  hurtEffectPosition: {x: -10.472799, y: -2.2909827}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 0}
-  startUpFrames: 9
-  activeFrames: 8
-  recoveryFrames: 24
+  startUpFrames: 7
+  activeFrames: 5
+  recoveryFrames: 7

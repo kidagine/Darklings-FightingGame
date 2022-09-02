@@ -11,6 +11,7 @@ public class ReplayManager : MonoBehaviour
 	[SerializeField] private PauseMenu _replayPauseMenu = default;
 	[SerializeField] private TextAsset _versionTextAsset = default;
 	[SerializeField] private GameObject _replayPrompts = default;
+	[SerializeField] private GameObject _replayInput = default;
 	[SerializeField] private Animator _replayNotificationAnimator = default;
 	[SerializeField] private InputHistory _playerOneInputHistory = default;
 	[SerializeField] private InputHistory _playerTwoInputHistory = default;
@@ -68,6 +69,8 @@ public class ReplayManager : MonoBehaviour
 		SceneSettings.StageIndex = replayCardData.stage;
 		SceneSettings.MusicName = replayCardData.musicName;
 		SceneSettings.Bit1 = replayCardData.bit1;
+		SceneSettings.ControllerOne = InputSystem.devices[0];
+		SceneSettings.ControllerTwo = InputSystem.devices[0];
 		SceneSettings.ReplayMode = true;
 	}
 
@@ -176,6 +179,8 @@ public class ReplayManager : MonoBehaviour
 		SceneSettings.ReplayMode = true;
 		_playerOneController = GameManager.Instance.PlayerOne.GetComponent<BrainController>();
 		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
+		GameManager.Instance.PlayerOne.GetComponent<PlayerInput>().enabled = false;
+		GameManager.Instance.PlayerTwo.GetComponent<PlayerInput>().enabled = false;
 		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
 		StartCoroutine(SkipIntroCoroutine(replayCardData));
 	}
@@ -316,6 +321,7 @@ public class ReplayManager : MonoBehaviour
 
 	public void ShowReplayPrompts()
 	{
+		_replayInput.SetActive(true);
 		_replayPrompts.SetActive(true);
 	}
 
