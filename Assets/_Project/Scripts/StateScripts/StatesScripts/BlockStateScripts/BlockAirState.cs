@@ -44,7 +44,7 @@ public class BlockAirState : BlockParentState
 		{
 			Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
 			_audio.Sound("Landed").Play();
-			_blockState.Initialize(_blockAttack);
+			_blockState.Initialize(_blockAttack, true);
 			_stateMachine.ChangeState(_blockState);
 		}
 	}

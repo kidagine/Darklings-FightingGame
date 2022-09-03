@@ -6917,16 +6917,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 0
-  _characterOne: 3
-  _characterTwo: 2
+  _characterOne: 1
+  _characterTwo: 1
   _assistOne: 0
   _assistTwo: 0
-  _controllerOne: 2
-  _controllerOneType: 1
+  _controllerOne: 0
+  _controllerOneType: 0
   _controllerTwo: 0
   _controllerTwoType: 0
   _music: 0
-  _playerOneSkin: 0
+  _playerOneSkin: 4
   _playerTwoSkin: 0
   _isTrainingMode: 1
   _isOnlineMode: 0
@@ -7395,6 +7395,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8073473789829592545, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8073473789829592545, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -7429,7 +7433,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -229037654, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
+      objectReference: {fileID: 2042357002, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
     - target: {fileID: 8073473789928578676, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -7473,7 +7477,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578679, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: c0acca90970e15241b8dd1a134c692a0, type: 2}
+      objectReference: {fileID: 22100000, guid: 7c05a2f8ad7d54d468c47b3141a06f56, type: 2}
     - target: {fileID: 8073473790341886582, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Size.y
       value: 1.5
