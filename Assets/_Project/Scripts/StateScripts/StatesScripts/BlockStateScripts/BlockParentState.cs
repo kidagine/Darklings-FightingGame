@@ -14,9 +14,11 @@ public class BlockParentState : State
 	protected AttackSO _blockAttack;
 	protected Coroutine _blockCoroutine;
 	private readonly float _chipDamage = 250;
+	private bool _skip;
 
-	public void Initialize(AttackSO attack)
+	public void Initialize(AttackSO attack, bool skip = false)
 	{
+		_skip = skip;
 		_blockAttack = attack;
 	}
 
@@ -37,9 +39,13 @@ public class BlockParentState : State
 		_audio.Sound("Block").Play();
 		_playerMovement.Knockback(new Vector2(
 			_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_blockAttack.knockback, 0.0f), _blockAttack.knockbackDuration);
-		GameObject effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);
-		effect.transform.localPosition = _blockAttack.hurtEffectPosition;
-		GameManager.Instance.HitStop(_blockAttack.hitstop);
+
+		if (!_skip)
+		{
+			GameObject effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);
+			effect.transform.localPosition = _blockAttack.hurtEffectPosition;
+			GameManager.Instance.HitStop(_blockAttack.hitstop);
+		}
 		if (_blockAttack.isArcana)
 		{
 			_player.Health -= _chipDamage;

@@ -126,7 +126,11 @@ public class PlayerStateManager : StateMachine
 
 	public bool TryToGrabbedState()
 	{
-		return CurrentState.ToGrabbedState();
+		if (_player.OtherPlayerStateManager.CurrentState is not HurtParentState)
+		{
+			return CurrentState.ToGrabbedState();
+		}
+		return false;
 	}
 
 	public bool TryToBlockState(AttackSO attack)
