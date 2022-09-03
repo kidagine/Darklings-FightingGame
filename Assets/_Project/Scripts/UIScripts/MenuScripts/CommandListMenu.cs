@@ -15,13 +15,12 @@ public class CommandListMenu : BaseMenu
 	[SerializeField] private GameObject _knockdownImage = default;
 	[SerializeField] private GameObject _reversalImage = default;
 	[SerializeField] private GameObject _projectileImage = default;
-	private PauseMenu _currentPauseMenu;
 	private readonly string _baseUrl = "https://kidagine.github.io/Darklings-CommandListVideos/";
-
 	private Player _playerOne;
 	private Player _playerTwo;
 	private Player _currentlyDisplayedPlayer;
 
+	public PauseMenu CurrentPauseMenu { get; private set; }
 
 	void Awake()
 	{
@@ -90,7 +89,7 @@ public class CommandListMenu : BaseMenu
 
 	public void Back()
 	{
-		_currentPauseMenu.Show();
+		CurrentPauseMenu.Show();
 		Hide();
 	}
 
@@ -98,11 +97,11 @@ public class CommandListMenu : BaseMenu
 	{
 		if (GameManager.Instance.IsTrainingMode)
 		{
-			_currentPauseMenu = _pauseTrainingMenu;
+			CurrentPauseMenu = _pauseTrainingMenu;
 		}
 		else
 		{
-			_currentPauseMenu = _pauseMenu;
+			CurrentPauseMenu = _pauseMenu;
 		}
 		if (_pauseMenu.PlayerOnePaused)
 		{

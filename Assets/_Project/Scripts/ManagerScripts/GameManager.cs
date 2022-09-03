@@ -104,6 +104,7 @@ public class GameManager : MonoBehaviour
 	public bool InfiniteAssist { get; set; }
 	public Player PlayerOne { get; private set; }
 	public Player PlayerTwo { get; private set; }
+	public PauseMenu PauseMenu { get; set; }
 	public static GameManager Instance { get; private set; }
 	public BaseController PausedController { get; set; }
 	public float GameSpeed { get; set; }
