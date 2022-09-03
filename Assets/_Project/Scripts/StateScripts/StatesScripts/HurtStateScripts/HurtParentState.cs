@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HurtParentState : State
@@ -26,11 +27,6 @@ public class HurtParentState : State
 	public override void Enter()
 	{
 		base.Enter();
-		if (_player.HasGrabbed())
-		{
-			_player.OtherPlayerStateManager.TryToKnockdownState();
-		}
-
 		_audio.Sound(_hurtAttack.impactSound).Play();
 		if (!_playerMovement.IsInCorner)
 		{
