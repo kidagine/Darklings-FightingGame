@@ -35,6 +35,7 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private PauseMenu _replayPauseMenu = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
 	[SerializeField] private Color _healthNormalColor = default;
+	[SerializeField] private Color _healthLimitColor = default;
 	[SerializeField] private Color _healthDamagedColor = default;
 	[Header("1BitVisuals")]
 	[SerializeField] private Image _healthImage = default;
@@ -51,6 +52,7 @@ public class PlayerUI : MonoBehaviour
 	private Animator _animator;
 	private BrainController _controller;
 	private RectTransform _comboGroup;
+	private Color _healthCurrentColor;
 	private float _currentEndDamageValue;
 	private int _currentLifeIndex;
 	private bool _hasComboEnded;
@@ -72,6 +74,8 @@ public class PlayerUI : MonoBehaviour
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
 	{
+		_healthCurrentColor = _healthNormalColor;
+		_healthImage.color = _healthCurrentColor;
 		_playerIcons = playerIcons;
 		_controller = controller;
 		if (!_initializedStats)
@@ -195,6 +199,11 @@ public class PlayerUI : MonoBehaviour
 
 	public void SetHealth(float value)
 	{
+		if (value <= 3000)
+		{
+			_healthCurrentColor = _healthLimitColor;
+		}
+		_healthImage.color = _healthCurrentColor;
 		_healthSlider.value = value;
 	}
 
@@ -222,7 +231,7 @@ public class PlayerUI : MonoBehaviour
 		_healthImage.color = _healthDamagedColor;
 		_portraitImage.color = _healthDamagedColor;
 		yield return new WaitForSeconds(0.005f);
-		_healthImage.color = _healthNormalColor;
+		_healthImage.color = _healthCurrentColor;
 		_portraitImage.color = Color.white;
 	}
 

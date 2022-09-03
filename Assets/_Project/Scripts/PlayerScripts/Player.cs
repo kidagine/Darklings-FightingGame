@@ -450,6 +450,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		}
 	}
 
+	public bool IsInDemonLimit()
+	{
+		if (Health <= 3000)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	public void Pause(bool isPlayerOne)
 	{
 		if (GameManager.Instance.IsTrainingMode)
