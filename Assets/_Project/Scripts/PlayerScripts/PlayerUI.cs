@@ -15,6 +15,7 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
 	[SerializeField] private Image _portraitImage = default;
+	[SerializeField] private Image _assistBorder = default;
 	[SerializeField] private Notification _notification = default;
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
@@ -30,6 +31,11 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _comboTimerSlider = default;
 	[SerializeField] private Image _comboTimerImage = default;
 	[SerializeField] private Image _comboTimerLock = default;
+	[SerializeField] private Image _borderHealth = default;
+	[SerializeField] private Image _borderPortrait = default;
+	[SerializeField] private Sprite _assistEmpty = default;
+	[SerializeField] private Sprite _assistHalf = default;
+	[SerializeField] private Sprite _assistFull = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private PauseMenu _trainingPauseMenu = default;
 	[SerializeField] private PauseMenu _replayPauseMenu = default;
@@ -74,6 +80,8 @@ public class PlayerUI : MonoBehaviour
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
 	{
+		_borderHealth.color = Color.white;
+		_borderPortrait.color = Color.white;
 		_healthCurrentColor = _healthNormalColor;
 		_healthImage.color = _healthCurrentColor;
 		_playerIcons = playerIcons;
@@ -194,6 +202,18 @@ public class PlayerUI : MonoBehaviour
 
 	public void SetAssist(float value)
 	{
+		if (value >= 1.0f)
+		{
+			_assistBorder.sprite = _assistFull;
+		}
+		else if(value >= 0.5f)
+		{
+			_assistBorder.sprite = _assistHalf;
+		}
+		else
+		{
+			_assistBorder.sprite = _assistEmpty;
+		}
 		_assistSlider.value = value;
 	}
 
@@ -201,6 +221,8 @@ public class PlayerUI : MonoBehaviour
 	{
 		if (value <= 3000)
 		{
+			_borderHealth.color = Color.red;
+			_borderPortrait.color = Color.red;
 			_healthCurrentColor = _healthLimitColor;
 		}
 		_healthImage.color = _healthCurrentColor;

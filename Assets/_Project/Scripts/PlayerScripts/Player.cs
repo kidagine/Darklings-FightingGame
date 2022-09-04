@@ -229,8 +229,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		if (CurrentAttack != null)
 		{
 			ResultAttack = Instantiate(CurrentAttack);
-			ResultAttack.damage = calculatedDamage;
+			ResultAttack.damage = (int)(calculatedDamage * DemonLimitMultiplier());
 		}
+	}
+
+	public float DemonLimitMultiplier()
+	{
+		if (Health < 3000)
+		{
+			return 1.3f;
+		}
+		return 1.0f;
 	}
 
 	public void DecreaseArcana(float value)

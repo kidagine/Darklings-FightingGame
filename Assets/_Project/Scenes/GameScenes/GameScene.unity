@@ -4263,7 +4263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6886792, g: 0.1323912, b: 0.22630979, a: 1}
+  m_Color: {r: 0.8862746, g: 0.15294118, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6681,10 +6681,10 @@ MonoBehaviour:
   _characterTwo: 0
   _assistOne: 0
   _assistTwo: 0
-  _controllerOne: 2
-  _controllerOneType: 1
-  _controllerTwo: 0
-  _controllerTwoType: 0
+  _controllerOne: 0
+  _controllerOneType: 0
+  _controllerTwo: -1
+  _controllerTwoType: 5
   _music: 0
   _playerOneSkin: 0
   _playerTwoSkin: 0
@@ -29315,7 +29315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6886792, g: 0.1323912, b: 0.22630979, a: 1}
+  m_Color: {r: 0.8862746, g: 0.15294118, b: 0.17254902, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -40114,6 +40114,7 @@ MonoBehaviour:
   _arcanaSlider: {fileID: 758689717}
   _assistSlider: {fileID: 1649658741392449492}
   _portraitImage: {fileID: 2706891383219481458}
+  _assistBorder: {fileID: 1649658743141343871}
   _notification: {fileID: 1801963769}
   _characterName: {fileID: 47249490813894668}
   _playerName: {fileID: 1649658742357715702}
@@ -40129,12 +40130,17 @@ MonoBehaviour:
   _comboTimerSlider: {fileID: 819544975}
   _comboTimerImage: {fileID: 847617688}
   _comboTimerLock: {fileID: 278483341}
+  _borderHealth: {fileID: 1749494935}
+  _borderPortrait: {fileID: 7267779156320968564}
+  _assistEmpty: {fileID: 21300000, guid: 9f4c5506de2368e478459bc79f308ebd, type: 3}
+  _assistHalf: {fileID: 21300000, guid: 4ca1f64f32de83841b02071a362ba4ca, type: 3}
+  _assistFull: {fileID: 21300000, guid: 795155caa37857749bd5556c07525de5, type: 3}
   _pauseMenu: {fileID: 860885408}
   _trainingPauseMenu: {fileID: 534647985}
   _replayPauseMenu: {fileID: 242059569}
   _trainingMenu: {fileID: 729468312}
   _healthNormalColor: {r: 0.21176471, g: 0.81960785, b: 0.2901961, a: 1}
-  _healthLimitColor: {r: 0.5294118, g: 0.81960785, b: 0.21176471, a: 1}
+  _healthLimitColor: {r: 0.7647059, g: 0.81960785, b: 0.21176471, a: 1}
   _healthDamagedColor: {r: 0.96862745, g: 0.007843138, b: 0.12156863, a: 1}
   _healthImage: {fileID: 47249489669798708}
   _arcanaImage: {fileID: 2113286081}
@@ -40494,6 +40500,7 @@ MonoBehaviour:
   _arcanaSlider: {fileID: 22157827}
   _assistSlider: {fileID: 1613125947}
   _portraitImage: {fileID: 3707602403402067357}
+  _assistBorder: {fileID: 150496400}
   _notification: {fileID: 1477386510}
   _characterName: {fileID: 1604159752364951267}
   _playerName: {fileID: 1001368601}
@@ -40509,12 +40516,17 @@ MonoBehaviour:
   _comboTimerSlider: {fileID: 829023908}
   _comboTimerImage: {fileID: 692156024}
   _comboTimerLock: {fileID: 1874024885}
+  _borderHealth: {fileID: 2048904581}
+  _borderPortrait: {fileID: 8230492421516499355}
+  _assistEmpty: {fileID: 21300000, guid: 9f4c5506de2368e478459bc79f308ebd, type: 3}
+  _assistHalf: {fileID: 21300000, guid: 4ca1f64f32de83841b02071a362ba4ca, type: 3}
+  _assistFull: {fileID: 21300000, guid: 795155caa37857749bd5556c07525de5, type: 3}
   _pauseMenu: {fileID: 860885408}
   _trainingPauseMenu: {fileID: 534647985}
   _replayPauseMenu: {fileID: 242059569}
   _trainingMenu: {fileID: 729468312}
   _healthNormalColor: {r: 0.21176471, g: 0.81960785, b: 0.2901961, a: 1}
-  _healthLimitColor: {r: 0.5294118, g: 0.81960785, b: 0.21176471, a: 1}
+  _healthLimitColor: {r: 0.7647059, g: 0.81960785, b: 0.21176471, a: 1}
   _healthDamagedColor: {r: 0.96862745, g: 0.007843138, b: 0.12156863, a: 1}
   _healthImage: {fileID: 1604159753374727643}
   _arcanaImage: {fileID: 1282009096}
@@ -42524,7 +42536,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9f4c5506de2368e478459bc79f308ebd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4ca1f64f32de83841b02071a362ba4ca, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
