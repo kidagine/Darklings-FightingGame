@@ -12,7 +12,7 @@ public class RunState : GroundParentState
         base.Enter();
         _playerAnimator.Run();
         _audio.Sound("Run").Play();
-        _playerMovement.MovementSpeed = _playerStats.PlayerStatsSO.runSpeed;
+        _playerMovement.MovementSpeed = _playerStats.PlayerStatsSO.SpeedRun;
         _runCoroutine = StartCoroutine(RunCoroutine());
     }
 

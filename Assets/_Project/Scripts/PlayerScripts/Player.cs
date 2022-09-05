@@ -168,12 +168,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	private void ArcanaCharge()
 	{
-		if (Arcana < _playerStats.PlayerStatsSO.maxArcana && GameManager.Instance.HasGameStarted)
+		if (Arcana < _playerStats.PlayerStatsSO.Arcana && GameManager.Instance.HasGameStarted)
 		{
 			Arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.PlayerStatsSO.arcanaRecharge);
 			if (GameManager.Instance.InfiniteArcana)
 			{
-				Arcana = _playerStats.PlayerStatsSO.maxArcana;
+				Arcana = _playerStats.PlayerStatsSO.Arcana;
 			}
 			_playerUI.SetArcana(Arcana);
 		}
@@ -181,7 +181,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	public void ArcanaGain(float arcana)
 	{
-		if (Arcana < _playerStats.PlayerStatsSO.maxArcana && GameManager.Instance.HasGameStarted)
+		if (Arcana < _playerStats.PlayerStatsSO.Arcana && GameManager.Instance.HasGameStarted)
 		{
 			Arcana += arcana;
 			_playerUI.SetArcana(Arcana);
@@ -305,7 +305,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	public float CalculateDamage(AttackSO hurtAttack)
 	{
 		int comboCount = OtherPlayerUI.CurrentComboCount;
-		float calculatedDamage = hurtAttack.damage / _playerStats.PlayerStatsSO.defense;
+		float calculatedDamage = hurtAttack.damage / _playerStats.PlayerStatsSO.Defense;
 		if (comboCount > 1)
 		{
 			float damageScale = 1.0f;

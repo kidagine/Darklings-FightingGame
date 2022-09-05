@@ -20,6 +20,8 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private SpriteRenderer _characterTwoImage = default;
 	[SerializeField] private GameObject _assistOne = default;
 	[SerializeField] private GameObject _assistTwo = default;
+	[SerializeField] private GameObject _iconsOne = default;
+	[SerializeField] private GameObject _iconsTwo = default;
 	[SerializeField] private SpriteRenderer _assistOneSpriteRenderer = default;
 	[SerializeField] private SpriteRenderer _assistTwoSpriteRenderer = default;
 	[SerializeField] private Animator _characterOneAnimator = default;
@@ -68,12 +70,13 @@ public class CharacterMenu : BaseMenu
 			_characterOneImage.enabled = true;
 			if (!isRandomizer)
 			{
-				_playerOneName.text = playerStats.characterName.ToString();
+				_iconsOne.gameObject.SetActive(true);
+				_playerOneName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 				_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = playerStats;
-				_hpTextOne.text = string.Format("{0:0.00}", _playerStats.defense);
-				_arcanaTextOne.text = _playerStats.maxArcana.ToString();
-				_speedTextOne.text = _playerStats.runSpeed.ToString();
+				_hpTextOne.text = string.Format("{0:0.00}", _playerStats.Defense);
+				_arcanaTextOne.text = _playerStats.Arcana.ToString();
+				_speedTextOne.text = _playerStats.SpeedRun.ToString();
 			}
 			else
 			{
@@ -82,11 +85,6 @@ public class CharacterMenu : BaseMenu
 				_speedTextOne.text = "?";
 				_playerOneName.text = "Random";
 			}
-			if (isRandomizer)
-			{
-
-			}
-
 			_characterOneAnimator.runtimeAnimatorController = animatorController;
 		}
 		else
@@ -105,12 +103,13 @@ public class CharacterMenu : BaseMenu
 			_characterTwoImage.enabled = true;
 			if (!isRandomizer)
 			{
+				_iconsTwo.gameObject.SetActive(true);
 				_playerTwoName.text = playerStats.characterName.ToString();
 				_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = playerStats;
-				_hpTextTwo.text = string.Format("{0:0.00}", _playerStats.defense);
-				_arcanaTextTwo.text = _playerStats.maxArcana.ToString();
-				_speedTextTwo.text = _playerStats.runSpeed.ToString();
+				_hpTextTwo.text = string.Format("{0:0.00}", _playerStats.Defense);
+				_arcanaTextTwo.text = _playerStats.Arcana.ToString();
+				_speedTextTwo.text = _playerStats.SpeedRun.ToString();
 			}
 			else
 			{
@@ -142,9 +141,9 @@ public class CharacterMenu : BaseMenu
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
-			_hpTextOne.text = string.Format("{0:0.00}", _playerStats.defense);
-			_arcanaTextOne.text = _playerStats.maxArcana.ToString();
-			_speedTextOne.text = _playerStats.runSpeed.ToString();
+			_hpTextOne.text = string.Format("{0:0.00}", _playerStats.Defense);
+			_arcanaTextOne.text = _playerStats.Arcana.ToString();
+			_speedTextOne.text = _playerStats.SpeedRun.ToString();
 			SceneSettings.PlayerOne = _playerStats.characterIndex;
 		}
 		else
@@ -161,9 +160,9 @@ public class CharacterMenu : BaseMenu
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
-			_hpTextTwo.text = string.Format("{0:0.00}", _playerStats.defense);
-			_arcanaTextTwo.text = _playerStats.maxArcana.ToString();
-			_speedTextTwo.text = _playerStats.runSpeed.ToString();
+			_hpTextTwo.text = string.Format("{0:0.00}", _playerStats.Defense);
+			_arcanaTextTwo.text = _playerStats.Arcana.ToString();
+			_speedTextTwo.text = _playerStats.SpeedRun.ToString();
 			SceneSettings.PlayerTwo = _playerStats.characterIndex;
 		}
 	}
@@ -269,6 +268,8 @@ public class CharacterMenu : BaseMenu
 	{
 		if (!SceneSettings.SceneSettingsDecide)
 		{
+			_iconsOne.gameObject.SetActive(false);
+			_iconsTwo.gameObject.SetActive(false);
 			_currentEventSystem.SetSelectedGameObject(null); 
 			_currentEventSystem.sendNavigationEvents = true;
 			FirstCharacterSelected = false;

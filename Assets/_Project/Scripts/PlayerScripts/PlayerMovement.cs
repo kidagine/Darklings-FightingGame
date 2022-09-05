@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	void Start()
 	{
-		MovementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
+		MovementSpeed = _playerStats.PlayerStatsSO.SpeedWalk;
 	}
 
 	void Update()
@@ -222,10 +222,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void ResetToWalkSpeed()
 	{
-		if (MovementSpeed == _playerStats.PlayerStatsSO.runSpeed)
+		if (MovementSpeed == _playerStats.PlayerStatsSO.SpeedRun)
 		{
 			_audio.Sound("Run").Stop();
-			MovementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
+			MovementSpeed = _playerStats.PlayerStatsSO.SpeedWalk;
 		}
 	}
 

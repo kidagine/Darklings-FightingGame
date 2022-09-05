@@ -6,7 +6,7 @@ public class WalkState : GroundParentState
 	{
 		base.Enter();
 		_playerAnimator.Walk();
-		_playerMovement.MovementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
+		_playerMovement.MovementSpeed = _playerStats.PlayerStatsSO.SpeedWalk;
 	}
 
 	public override void UpdateLogic()
