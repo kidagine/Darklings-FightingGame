@@ -16,8 +16,6 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private FadeHandler _fadeHandler = default;
 	[SerializeField] private GameObject _rebindOnePrompt = default;
 	[SerializeField] private GameObject _rebindTwoPrompt = default;
-	[SerializeField] private SpriteRenderer _characterOneImage = default;
-	[SerializeField] private SpriteRenderer _characterTwoImage = default;
 	[SerializeField] private GameObject _assistOne = default;
 	[SerializeField] private GameObject _assistTwo = default;
 	[SerializeField] private GameObject _iconsOne = default;
@@ -28,8 +26,8 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private Animator _characterTwoAnimator = default;
 	[SerializeField] private ChangeStageMenu _changeStageMenu = default;
 	[SerializeField] private Button _firstCharacterButton = default;
-	[SerializeField] private PlayerAnimator _playerAnimatorOne = default;
-	[SerializeField] private PlayerAnimator _playerAnimatorTwo = default;
+	[SerializeField] private PlayerUIRender _playerUIRenderOne = default;
+	[SerializeField] private PlayerUIRender _playerUIRenderTwo = default;
 	[SerializeField] private SpriteLibrary _spriteLibraryOne = default;
 	[SerializeField] private SpriteLibrary _spriteLibraryTwo = default;
 	[SerializeField] private TextMeshProUGUI _playerOneName = default;
@@ -62,18 +60,12 @@ public class CharacterMenu : BaseMenu
 		if (!FirstCharacterSelected)
 		{
 			_playerOneName.enabled = true;
-			if (animatorController.name == "RandomSelectAnimator")
-			{
-				_characterTwoImage.flipX = false;
-				_playerOneName.enabled = false;
-			}
-			_characterOneImage.enabled = true;
 			if (!isRandomizer)
 			{
 				_iconsOne.gameObject.SetActive(true);
 				_playerOneName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 				_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
-				_playerAnimatorOne.PlayerStats.PlayerStatsSO = playerStats;
+				_playerUIRenderOne.PlayerStats = playerStats;
 				_hpTextOne.text = $"LV{_playerStats.defenseLevel}";
 				_arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
 				_speedTextOne.text = $"LV{_playerStats.speedLevel}";
@@ -91,22 +83,12 @@ public class CharacterMenu : BaseMenu
 		{
 			UsedController();
 			_playerTwoName.enabled = true;
-			if (animatorController.name == "RandomSelectAnimator")
-			{
-				_characterTwoImage.flipX = false;
-				_playerTwoName.enabled = false;
-			}
-			else
-			{
-				_characterTwoImage.flipX = true;
-			}
-			_characterTwoImage.enabled = true;
 			if (!isRandomizer)
 			{
 				_iconsTwo.gameObject.SetActive(true);
 				_playerTwoName.text = playerStats.characterName.ToString();
 				_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
-				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = playerStats;
+				_playerUIRenderTwo.PlayerStats = playerStats;
 				_hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
 				_arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
 				_speedTextTwo.text = $"LV{_playerStats.speedLevel}";
@@ -138,7 +120,7 @@ public class CharacterMenu : BaseMenu
 				string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 				_playerOneName.text = characterName;
 				_spriteLibraryOne.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
-				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
+				_playerUIRenderOne.PlayerStats = _playerStats;
 				_characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
 			_hpTextOne.text = $"LV{_playerStats.defenseLevel}";
@@ -157,7 +139,7 @@ public class CharacterMenu : BaseMenu
 				string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 				_playerOneName.text = characterName; 
 				_spriteLibraryTwo.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
-				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = _playerStats;
+				_playerUIRenderTwo.PlayerStats = _playerStats;
 				_characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
 			_hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
@@ -171,11 +153,11 @@ public class CharacterMenu : BaseMenu
 	{
 		if (isPlayerOne)
 		{
-			_playerAnimatorOne.Taunt();
+			//_playerUIRenderOne.Taunt();
 		}
 		else
 		{
-			_playerAnimatorTwo.Taunt();
+			//_playerUIRenderTwo.Taunt();
 		}
 		StartCoroutine(TauntEndCoroutine());
 	}
@@ -280,16 +262,6 @@ public class CharacterMenu : BaseMenu
 			_arcanaTextTwo.text = "";
 			_speedTextTwo.text = "";
 			_playerOneName.text = "";
-			if (_characterOneImage != null)
-			{
-				_characterOneImage.enabled = false;
-				_characterOneAnimator.runtimeAnimatorController = null;
-			}
-			if (_characterTwoImage != null)
-			{
-				_characterTwoImage.enabled = false;
-				_characterTwoAnimator.runtimeAnimatorController = null;
-			}
 			_playerTwoName.text = "";
 			_assistOneSpriteRenderer.enabled = false;
 			_assistTwoSpriteRenderer.enabled = false;

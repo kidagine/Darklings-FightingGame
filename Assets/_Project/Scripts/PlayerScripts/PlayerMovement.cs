@@ -7,7 +7,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	[SerializeField] private LayerMask _wallLayerMask = default;
 	[SerializeField] private LayerMask _playerLayerMask = default;
 	private Rigidbody2D _rigidbody;
-	private PlayerStats _playerStats;
 	private Player _player;
 	private Audio _audio;
 	private Vector2 _velocity;
@@ -24,14 +23,13 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	void Awake()
 	{
 		_player = GetComponent<Player>();
-		_playerStats = GetComponent<PlayerStats>();
 		_rigidbody = GetComponent<Rigidbody2D>();
 		_audio = GetComponent<Audio>();
 	}
 
 	void Start()
 	{
-		MovementSpeed = _playerStats.PlayerStatsSO.SpeedWalk;
+		MovementSpeed = _player.playerStats.SpeedWalk;
 	}
 
 	void Update()
@@ -130,7 +128,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void AddForce(int moveHorizontally)
 	{
-		float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 3.5f;
+		float jumpForce = _player.playerStats.jumpForce - 3.5f;
 		int direction = 0;
 		if (moveHorizontally == 1)
 		{
@@ -222,10 +220,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void ResetToWalkSpeed()
 	{
-		if (MovementSpeed == _playerStats.PlayerStatsSO.SpeedRun)
+		if (MovementSpeed == _player.playerStats.SpeedRun)
 		{
 			_audio.Sound("Run").Stop();
-			MovementSpeed = _playerStats.PlayerStatsSO.SpeedWalk;
+			MovementSpeed = _player.playerStats.SpeedWalk;
 		}
 	}
 

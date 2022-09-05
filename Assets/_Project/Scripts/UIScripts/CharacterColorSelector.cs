@@ -2,7 +2,6 @@ using Demonics.Sounds;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.InputSystem.InputAction;
 
 public class CharacterColorSelector : MonoBehaviour
 {
@@ -12,12 +11,11 @@ public class CharacterColorSelector : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _assistIndicatorText = default;
 	[SerializeField] private ChangeStageMenu _changeStageMenu = default;
 	[SerializeField] private RebindMenu _rebindMenu = default;
-	[SerializeField] private PlayerAnimator _playerAnimator = default;
+	[SerializeField] private PlayerUIRender _playerUIRender = default;
 	[SerializeField] private GameObject _arrows = default;
 	[SerializeField] private bool _isPlayerOne = default;
 	private Audio _audio;
 	private Vector2 _directionInput;
-	private string _controllerInputName;
 	private bool _inputDeactivated;
 	private bool _pressed;
 
@@ -57,7 +55,7 @@ public class CharacterColorSelector : MonoBehaviour
 				ColorNumber--;
 				StartCoroutine(ResetInput());
 			}
-			ColorNumber = _playerAnimator.SetSpriteLibraryAsset(ColorNumber);
+			ColorNumber = _playerUIRender.SetSpriteLibraryAsset(ColorNumber);
 			_playerOneColorNumber.text = $"Color {ColorNumber + 1}";
 		}
 	}
@@ -94,7 +92,7 @@ public class CharacterColorSelector : MonoBehaviour
 
 	private void OnDisable()
 	{
-		_playerAnimator.SetSpriteLibraryAsset(0);
+		_playerUIRender.SetSpriteLibraryAsset(0);
 		ColorNumber = 0;
 		_inputDeactivated = false;
 		_arrows.SetActive(true);

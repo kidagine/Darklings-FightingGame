@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class LoadingHandler : MonoBehaviour
 {
-	[SerializeField] private PlayerStats _characterOne = default;
-	[SerializeField] private PlayerStats _characterTwo = default;
 	[SerializeField] private TextMeshProUGUI _characterOneName = default;
 	[SerializeField] private TextMeshProUGUI _characterTwoName = default;
 	[SerializeField] private TextMeshProUGUI _stageName = default;
@@ -24,10 +22,6 @@ public class LoadingHandler : MonoBehaviour
 	private void SetPlayersInfo()
 	{
 		_stages[SceneSettings.StageIndex].SetActive(true);
-		_characterOne.PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
-		_characterTwo.PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
-		_characterOne.GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorOne);
-		_characterTwo.GetComponent<PlayerAnimator>().SetSpriteLibraryAsset(SceneSettings.ColorTwo);
 		_characterOneName.text = _playerStats[SceneSettings.PlayerOne].characterName.ToString();
 		_characterTwoName.text = _playerStats[SceneSettings.PlayerTwo].characterName.ToString();
 		_stageName.text = _stages[SceneSettings.StageIndex].name.Substring(0, _stages[SceneSettings.StageIndex].name.IndexOf("_"));

@@ -125,7 +125,7 @@ public class AttackState : State
 		{
 			return false;
 		}
-		if (inputEnum == InputEnum.Medium && _crouch && _player.CurrentAttack == _playerStats.PlayerStatsSO.m2M)
+		if (inputEnum == InputEnum.Medium && _crouch && _player.CurrentAttack == _player.playerStats.m2M)
 		{
 			return false;
 		}

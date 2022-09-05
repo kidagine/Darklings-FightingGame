@@ -10,7 +10,6 @@ public class State : MonoBehaviour
     protected Player _player;
     protected PlayerMovement _playerMovement;
     protected PlayerUI _playerUI;
-    protected PlayerStats _playerStats;
     protected BaseController _baseController;
     protected BrainController _brainController;
     protected PlayerComboSystem _playerComboSystem;
@@ -19,7 +18,7 @@ public class State : MonoBehaviour
 
 
     public void Initialize(StateMachine stateMachine, Rigidbody2D rigidbody, PlayerAnimator playerAnimator, Player player, PlayerMovement playerMovement,
-        PlayerUI playerUI, PlayerStats playerStats, PlayerComboSystem playerComboSystem, InputBuffer inputBuffer, Audio audio)
+        PlayerUI playerUI, PlayerComboSystem playerComboSystem, InputBuffer inputBuffer, Audio audio)
     {
         _stateMachine = stateMachine;
         _rigidbody = rigidbody;
@@ -27,7 +26,6 @@ public class State : MonoBehaviour
         _player = player;
         _playerMovement = playerMovement;
         _playerUI = playerUI;
-        _playerStats = playerStats;
         _playerComboSystem = playerComboSystem;
         _inputBuffer = inputBuffer;
         _audio = audio;

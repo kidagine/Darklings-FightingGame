@@ -36,7 +36,7 @@ public class AirDashState : State
             dashEffect.localScale = new Vector2(-1.0f, transform.root.localScale.y);
             dashEffect.position = new Vector2(dashEffect.position.x + 1.0f, dashEffect.position.y);
         }
-        _rigidbody.velocity = new Vector2(DashDirection, 0.0f) * _playerStats.PlayerStatsSO.dashForce;
+        _rigidbody.velocity = new Vector2(DashDirection, 0.0f) * _player.playerStats.dashForce;
         _playerMovement.ZeroGravity();
         _dashCoroutine = StartCoroutine(DashCoroutine());
     }
@@ -74,7 +74,7 @@ public class AirDashState : State
 
     public void ToJumpState()
     {
-        if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped && _dashCoroutine == null)
+        if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _dashCoroutine == null)
         {
             if (_baseController.InputDirection.x == 0.0f)
             {
@@ -94,7 +94,7 @@ public class AirDashState : State
 
     public void ToJumpForwardState()
     {
-        if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped && _dashCoroutine == null)
+        if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _dashCoroutine == null)
         {
             if (_baseController.InputDirection.x != 0.0f)
             {

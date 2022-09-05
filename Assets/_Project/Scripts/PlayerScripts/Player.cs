@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
+	public PlayerStatsSO playerStats;
 	[SerializeField] private PlayerStateManager _playerStateManager = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private Assist _assist = default;
@@ -18,7 +19,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	protected PlayerUI _playerUI;
 	private PlayerMovement _playerMovement;
 	protected PlayerComboSystem _playerComboSystem;
-	private PlayerStats _playerStats;
 	private BrainController _controller;
 	private Coroutine _comboTimerCoroutine;
 	private bool _comboTimerPaused;
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	public Player OtherPlayer { get; private set; }
 	public PlayerMovement OtherPlayerMovement { get; private set; }
 	public PlayerUI OtherPlayerUI { get; private set; }
-	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } set { } }
+	public PlayerStatsSO PlayerStats { get { return playerStats; } set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
 	public AttackSO ResultAttack { get; set; }
@@ -55,7 +55,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
 		_playerComboSystem = GetComponent<PlayerComboSystem>();
-		_playerStats = GetComponent<PlayerStats>();
 	}
 
 	public void SetController()
@@ -136,14 +135,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	public void MaxHealthStats()
 	{
-		Health = _playerStats.PlayerStatsSO.maxHealth;
+		Health = playerStats.maxHealth;
 		_playerUI.MaxHealth(Health);
 	}
 
 	private void InitializeStats()
 	{
-		_playerUI.InitializeUI(_playerStats.PlayerStatsSO, _controller, _playerIcons);
-		Health = _playerStats.PlayerStatsSO.maxHealth;
+		_playerUI.InitializeUI(playerStats, _controller, _playerIcons);
+		Health = playerStats.maxHealth;
 		_playerUI.SetHealth(Health);
 	}
 
@@ -168,12 +167,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	private void ArcanaCharge()
 	{
-		if (Arcana < _playerStats.PlayerStatsSO.Arcana && GameManager.Instance.HasGameStarted)
+		if (Arcana < playerStats.Arcana && GameManager.Instance.HasGameStarted)
 		{
-			Arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.PlayerStatsSO.arcanaRecharge);
+			Arcana += Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge);
 			if (GameManager.Instance.InfiniteArcana)
 			{
-				Arcana = _playerStats.PlayerStatsSO.Arcana;
+				Arcana = playerStats.Arcana;
 			}
 			_playerUI.SetArcana(Arcana);
 		}
@@ -181,7 +180,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	public void ArcanaGain(float arcana)
 	{
-		if (Arcana < _playerStats.PlayerStatsSO.Arcana && GameManager.Instance.HasGameStarted)
+		if (Arcana < playerStats.Arcana && GameManager.Instance.HasGameStarted)
 		{
 			Arcana += arcana;
 			_playerUI.SetArcana(Arcana);
@@ -305,7 +304,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	public float CalculateDamage(AttackSO hurtAttack)
 	{
 		int comboCount = OtherPlayerUI.CurrentComboCount;
-		float calculatedDamage = hurtAttack.damage / _playerStats.PlayerStatsSO.Defense;
+		float calculatedDamage = hurtAttack.damage / playerStats.Defense;
 		if (comboCount > 1)
 		{
 			float damageScale = 1.0f;

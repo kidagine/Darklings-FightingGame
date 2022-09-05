@@ -10,7 +10,7 @@ public class JumpState : AirParentState
 		_audio.Sound("Jump").Play();
 		_playerAnimator.Jump(true);
 		_rigidbody.velocity = Vector2.zero;
-		_rigidbody.AddForce(new Vector2(0.0f, _playerStats.PlayerStatsSO.jumpForce), ForceMode2D.Impulse);
+		_rigidbody.AddForce(new Vector2(0.0f, _player.playerStats.jumpForce), ForceMode2D.Impulse);
 		StartCoroutine(PushboxCoroutine());
 	}
 

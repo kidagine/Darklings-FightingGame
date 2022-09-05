@@ -891,7 +891,6 @@ MonoBehaviour:
   _player: {fileID: 8073473790702501988}
   _playerMovement: {fileID: 8073473790702501987}
   _playerAnimator: {fileID: 8073473789928578677}
-  _playerStats: {fileID: 4618435349483342948}
   _brainController: {fileID: 8743540751678485471}
   _playerComboSystem: {fileID: 8073473790702501994}
   _inputBuffer: {fileID: 4664395619888274278}
@@ -1538,7 +1537,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 8073473790702501988}
-  _playerStats: {fileID: 4618435349483342948}
   _inputBuffer: {fileID: 4664395619888274278}
   OnCurrentAnimationFinished:
     m_PersistentCalls:
@@ -1829,7 +1827,6 @@ GameObject:
   - component: {fileID: 7171796573308583996}
   - component: {fileID: 6371053321382070875}
   - component: {fileID: 8743540751678485471}
-  - component: {fileID: 4618435349483342948}
   - component: {fileID: 4664395619888274278}
   - component: {fileID: 7611394710214668632}
   - component: {fileID: 6591136354886088417}
@@ -1893,6 +1890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69f186f0a13a149a6086016aa99b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 0}
   _playerStateManager: {fileID: 8168889133440061290}
   _playerAnimator: {fileID: 8073473789928578677}
   _assist: {fileID: 8780121904732240358}
@@ -1978,19 +1976,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerStateManager: {fileID: 8168889133440061290}
---- !u!114 &4618435349483342948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8073473790702501986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61034cc42f4411b4fb34b343e39bcf90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerStatsSO: {fileID: 11400000, guid: 52e598ed7f0b55d4f8b68d93f8df619c, type: 2}
 --- !u!114 &4664395619888274278
 MonoBehaviour:
   m_ObjectHideFlags: 0

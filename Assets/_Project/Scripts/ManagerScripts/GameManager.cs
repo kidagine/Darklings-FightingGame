@@ -148,9 +148,9 @@ public class GameManager : MonoBehaviour
 		CheckSceneSettings();
 
 		GameObject playerOneObject = Instantiate(_playerLocal);
-		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
+		playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];
 		GameObject playerTwoObject = Instantiate(_playerLocal);
-		playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
+		playerTwoObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerTwo];
 		InitializePlayers(playerOneObject, playerTwoObject);
 	}
 

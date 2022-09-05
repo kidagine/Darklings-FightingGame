@@ -53,7 +53,7 @@ public class AirParentState : State
 
 	public void ToJumpState()
 	{
-		if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped)
+		if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped)
 		{
 			if (_baseController.InputDirection.x == 0.0f)
 			{
@@ -73,7 +73,7 @@ public class AirParentState : State
 
 	public void ToJumpForwardState()
 	{
-		if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped)
+		if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped)
 		{
 			if (_baseController.InputDirection.x != 0.0f)
 			{

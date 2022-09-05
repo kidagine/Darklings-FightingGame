@@ -9,7 +9,6 @@ public class PlayerStateManager : StateMachine
 	[SerializeField] private Player _player = default;
 	[SerializeField] private PlayerMovement _playerMovement = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
-	[SerializeField] private PlayerStats _playerStats = default;
 	[SerializeField] private BrainController _brainController = default;
 	[SerializeField] private PlayerComboSystem _playerComboSystem = default;
 	[SerializeField] private InputBuffer _inputBuffer = default;
@@ -28,7 +27,7 @@ public class PlayerStateManager : StateMachine
 		foreach (State state in GetComponents<State>())
 		{
 			state.Initialize(
-			this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerStats, _playerComboSystem, _inputBuffer, _audio
+			this, _rigidbody, _playerAnimator, _player, _playerMovement, _playerUI, _playerComboSystem, _inputBuffer, _audio
 			);
 			state.SetController(_brainController);
 		}

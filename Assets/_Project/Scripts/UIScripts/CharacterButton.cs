@@ -7,7 +7,6 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     [SerializeField] private RuntimeAnimatorController _characterAnimatorController = default;
 	[SerializeField] private PlayerStatsSO _playerStatsSO = default;
     [SerializeField] private CharacterMenu _characterMenu = default;
-    [SerializeField] private GameObject _randomSpriteRenderer = default;
     [SerializeField] private GameObject _firstPlayerSelector = default;
     [SerializeField] private GameObject _secondPlayerSelector = default;
 	[SerializeField] private bool _isRandomizer = default;
@@ -51,7 +50,6 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     public void Click()
     {
         _audio.Sound("Pressed").Play();
-        _randomSpriteRenderer.gameObject.SetActive(false);
         _characterMenu.SelectCharacterImage();
     }
 
