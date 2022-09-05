@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,11 +26,21 @@ public class LoadingHandler : MonoBehaviour
 		_playerUIRenderOne.PlayerStats = _playerStats[SceneSettings.PlayerOne];
 		_playerUIRenderTwo.PlayerStats = _playerStats[SceneSettings.PlayerTwo];
 		_playerUIRenderOne.SetSpriteLibraryAsset(SceneSettings.ColorOne);
-		_playerUIRenderTwo.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
+		if (SceneSettings.ColorTwo == SceneSettings.ColorOne && _playerUIRenderOne.PlayerStats.characterName == _playerUIRenderTwo.PlayerStats.characterName)
+		{
+			if (SceneSettings.ColorOne == 3)
+			{
+				_playerUIRenderTwo.SetSpriteLibraryAsset(0);
+			}
+			else
+			{
+				_playerUIRenderTwo.SetSpriteLibraryAsset(SceneSettings.ColorTwo + 1);
+			}
+		}
 		int stageColorIndex = SceneSettings.Bit1 ? 1 : 0;
 		_stages[SceneSettings.StageIndex].transform.GetChild(stageColorIndex).gameObject.SetActive(true);
-		_characterOneName.text = _playerStats[SceneSettings.PlayerOne].characterName.ToString();
-		_characterTwoName.text = _playerStats[SceneSettings.PlayerTwo].characterName.ToString();
+		_characterOneName.text = Regex.Replace(_playerStats[SceneSettings.PlayerOne].characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+		_characterTwoName.text = Regex.Replace(_playerStats[SceneSettings.PlayerTwo].characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 		_stageName.text = _stages[SceneSettings.StageIndex].name.Substring(0, _stages[SceneSettings.StageIndex].name.IndexOf("_"));
 	}
 
