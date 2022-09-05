@@ -20,8 +20,8 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private GameObject _assistTwo = default;
 	[SerializeField] private GameObject _iconsOne = default;
 	[SerializeField] private GameObject _iconsTwo = default;
-	[SerializeField] private SpriteRenderer _assistOneSpriteRenderer = default;
-	[SerializeField] private SpriteRenderer _assistTwoSpriteRenderer = default;
+	[SerializeField] private PlayerUIRender _assistOneUIRenderer = default;
+	[SerializeField] private PlayerUIRender _assistTwoUIRenderer = default;
 	[SerializeField] private Animator _characterOneAnimator = default;
 	[SerializeField] private Animator _characterTwoAnimator = default;
 	[SerializeField] private ChangeStageMenu _changeStageMenu = default;
@@ -50,10 +50,6 @@ public class CharacterMenu : BaseMenu
 		_currentEventSystem = EventSystem.current;
 	}
 
-	public void EnablePlayerTwoSelector()
-	{
-	}
-
 	public void SetCharacterImage(RuntimeAnimatorController animatorController, PlayerStatsSO playerStats, bool isRandomizer)
 	{
 		_playerStats = playerStats;
@@ -62,6 +58,7 @@ public class CharacterMenu : BaseMenu
 			_playerOneName.enabled = true;
 			if (!isRandomizer)
 			{
+				_playerUIRenderOne.gameObject.SetActive(true);
 				_iconsOne.gameObject.SetActive(true);
 				_playerOneName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 				_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
@@ -85,6 +82,7 @@ public class CharacterMenu : BaseMenu
 			_playerTwoName.enabled = true;
 			if (!isRandomizer)
 			{
+				_playerUIRenderTwo.gameObject.SetActive(true);
 				_iconsTwo.gameObject.SetActive(true);
 				_playerTwoName.text = playerStats.characterName.ToString();
 				_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
@@ -111,7 +109,7 @@ public class CharacterMenu : BaseMenu
 		_playerTwoName.enabled = true;
 		if (!FirstCharacterSelected)
 		{
-			_assistOneSpriteRenderer.enabled = true;
+			_assistOneUIRenderer.gameObject.SetActive(true);
 			_assistOne.SetActive(true);
 			if (_playerStats == null)
 			{
@@ -130,7 +128,7 @@ public class CharacterMenu : BaseMenu
 		}
 		else
 		{
-			_assistTwoSpriteRenderer.enabled = true;
+			_assistTwoUIRenderer.gameObject.SetActive(true);
 			_assistTwo.SetActive(true);
 			if (_playerStats == null)
 			{
@@ -153,11 +151,11 @@ public class CharacterMenu : BaseMenu
 	{
 		if (isPlayerOne)
 		{
-			//_playerUIRenderOne.Taunt();
+			_playerUIRenderOne.Taunt();
 		}
 		else
 		{
-			//_playerUIRenderTwo.Taunt();
+			_playerUIRenderTwo.Taunt();
 		}
 		StartCoroutine(TauntEndCoroutine());
 	}
@@ -263,8 +261,8 @@ public class CharacterMenu : BaseMenu
 			_speedTextTwo.text = "";
 			_playerOneName.text = "";
 			_playerTwoName.text = "";
-			_assistOneSpriteRenderer.enabled = false;
-			_assistTwoSpriteRenderer.enabled = false;
+			_assistOneUIRenderer.gameObject.SetActive(false);
+			_assistTwoUIRenderer.gameObject.SetActive(false);
 		}
 		_fadeHandler.onFadeEnd.RemoveAllListeners();
 	}

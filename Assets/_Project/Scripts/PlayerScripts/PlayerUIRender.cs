@@ -6,11 +6,12 @@ public class PlayerUIRender : MonoBehaviour
 {
 	[SerializeField] private SpriteRenderer _spriteRenderer = default;
 	[SerializeField] private SpriteLibrary _spriteLibrary = default;
+	[SerializeField] private Animator _animator = default;
 	private Image _image;
 
 	public PlayerStatsSO PlayerStats { get; set; }
 
-	private void Awake()
+	void Awake()
 	{
 		_image = GetComponent<Image>();
 	}
@@ -19,6 +20,12 @@ public class PlayerUIRender : MonoBehaviour
 	{
 		_image.sprite = _spriteRenderer.sprite;
 	}
+
+	public void Taunt()
+	{
+		_animator.Play("Taunt", -1, 0f);
+	}
+
 	public int SetSpriteLibraryAsset(int skinNumber)
 	{
 		if (skinNumber > PlayerStats.spriteLibraryAssets.Length - 1)
@@ -34,5 +41,10 @@ public class PlayerUIRender : MonoBehaviour
 			_spriteLibrary.spriteLibraryAsset = PlayerStats.spriteLibraryAssets[skinNumber];
 		}
 		return skinNumber;
+	}
+
+	void OnDisable()
+	{
+		gameObject.SetActive(false);
 	}
 }

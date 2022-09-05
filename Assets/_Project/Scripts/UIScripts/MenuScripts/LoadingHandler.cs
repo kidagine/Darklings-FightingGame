@@ -5,10 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class LoadingHandler : MonoBehaviour
 {
+	[SerializeField] private PlayerUIRender _playerUIRenderOne = default;
+	[SerializeField] private PlayerUIRender _playerUIRenderTwo = default;
 	[SerializeField] private TextMeshProUGUI _characterOneName = default;
 	[SerializeField] private TextMeshProUGUI _characterTwoName = default;
 	[SerializeField] private TextMeshProUGUI _stageName = default;
-	[SerializeField] private TextMeshProUGUI _loadingProgressText = default;
 	[SerializeField] private PlayerStatsSO[] _playerStats = default;
 	[SerializeField] private GameObject[] _stages = default;
 
@@ -21,7 +22,12 @@ public class LoadingHandler : MonoBehaviour
 
 	private void SetPlayersInfo()
 	{
-		_stages[SceneSettings.StageIndex].SetActive(true);
+		_playerUIRenderOne.PlayerStats = _playerStats[SceneSettings.PlayerOne];
+		_playerUIRenderTwo.PlayerStats = _playerStats[SceneSettings.PlayerTwo];
+		_playerUIRenderOne.SetSpriteLibraryAsset(SceneSettings.ColorOne);
+		_playerUIRenderTwo.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
+		int stageColorIndex = SceneSettings.Bit1 ? 1 : 0;
+		_stages[SceneSettings.StageIndex].transform.GetChild(stageColorIndex).gameObject.SetActive(true);
 		_characterOneName.text = _playerStats[SceneSettings.PlayerOne].characterName.ToString();
 		_characterTwoName.text = _playerStats[SceneSettings.PlayerTwo].characterName.ToString();
 		_stageName.text = _stages[SceneSettings.StageIndex].name.Substring(0, _stages[SceneSettings.StageIndex].name.IndexOf("_"));
@@ -35,14 +41,8 @@ public class LoadingHandler : MonoBehaviour
 		{
 			if (loadingOperation.progress >= 0.9f)
 			{
-				_loadingProgressText.text =  "99%";
-				yield return new WaitForSeconds(3.0f);
-				_loadingProgressText.text = "100%";
+				yield return new WaitForSeconds(2.5f);
 				loadingOperation.allowSceneActivation = true;
-			}
-			else
-			{
-				_loadingProgressText.text = Mathf.Floor(loadingOperation.progress * 100) + "%";
 			}
 			yield return null;
 		}
