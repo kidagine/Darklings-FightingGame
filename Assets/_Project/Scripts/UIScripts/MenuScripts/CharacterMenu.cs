@@ -74,9 +74,9 @@ public class CharacterMenu : BaseMenu
 				_playerOneName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 				_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = playerStats;
-				_hpTextOne.text = string.Format("{0:0.00}", _playerStats.Defense);
-				_arcanaTextOne.text = _playerStats.Arcana.ToString();
-				_speedTextOne.text = _playerStats.SpeedRun.ToString();
+				_hpTextOne.text = $"LV{_playerStats.defenseLevel}";
+				_arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
+				_speedTextOne.text = $"LV{_playerStats.speedLevel}";
 			}
 			else
 			{
@@ -107,9 +107,9 @@ public class CharacterMenu : BaseMenu
 				_playerTwoName.text = playerStats.characterName.ToString();
 				_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = playerStats;
-				_hpTextTwo.text = string.Format("{0:0.00}", _playerStats.Defense);
-				_arcanaTextTwo.text = _playerStats.Arcana.ToString();
-				_speedTextTwo.text = _playerStats.SpeedRun.ToString();
+				_hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
+				_arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
+				_speedTextTwo.text = $"LV{_playerStats.speedLevel}";
 			}
 			else
 			{
@@ -141,9 +141,9 @@ public class CharacterMenu : BaseMenu
 				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
-			_hpTextOne.text = string.Format("{0:0.00}", _playerStats.Defense);
-			_arcanaTextOne.text = _playerStats.Arcana.ToString();
-			_speedTextOne.text = _playerStats.SpeedRun.ToString();
+			_hpTextOne.text = $"LV{_playerStats.defenseLevel}";
+			_arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
+			_speedTextOne.text = $"LV{_playerStats.speedLevel}";
 			SceneSettings.PlayerOne = _playerStats.characterIndex;
 		}
 		else
@@ -160,9 +160,9 @@ public class CharacterMenu : BaseMenu
 				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = _playerStats;
 				_characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
-			_hpTextTwo.text = string.Format("{0:0.00}", _playerStats.Defense);
-			_arcanaTextTwo.text = _playerStats.Arcana.ToString();
-			_speedTextTwo.text = _playerStats.SpeedRun.ToString();
+			_hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
+			_arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
+			_speedTextTwo.text = $"LV{_playerStats.speedLevel}";
 			SceneSettings.PlayerTwo = _playerStats.characterIndex;
 		}
 	}
