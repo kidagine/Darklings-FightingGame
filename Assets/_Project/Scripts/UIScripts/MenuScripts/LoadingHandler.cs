@@ -25,18 +25,10 @@ public class LoadingHandler : MonoBehaviour
 	{
 		_playerUIRenderOne.PlayerStats = _playerStats[SceneSettings.PlayerOne];
 		_playerUIRenderTwo.PlayerStats = _playerStats[SceneSettings.PlayerTwo];
+		_playerUIRenderOne.SetAnimationController();
+		_playerUIRenderTwo.SetAnimationController();
 		_playerUIRenderOne.SetSpriteLibraryAsset(SceneSettings.ColorOne);
-		if (SceneSettings.ColorTwo == SceneSettings.ColorOne && _playerUIRenderOne.PlayerStats.characterName == _playerUIRenderTwo.PlayerStats.characterName)
-		{
-			if (SceneSettings.ColorOne == 3)
-			{
-				_playerUIRenderTwo.SetSpriteLibraryAsset(0);
-			}
-			else
-			{
-				_playerUIRenderTwo.SetSpriteLibraryAsset(SceneSettings.ColorTwo + 1);
-			}
-		}
+		_playerUIRenderTwo.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
 		int stageColorIndex = SceneSettings.Bit1 ? 1 : 0;
 		_stages[SceneSettings.StageIndex].transform.GetChild(stageColorIndex).gameObject.SetActive(true);
 		_characterOneName.text = Regex.Replace(_playerStats[SceneSettings.PlayerOne].characterName.ToString(), "([a-z])([A-Z])", "$1 $2");

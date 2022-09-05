@@ -25,6 +25,11 @@ public class PlayerUIRender : MonoBehaviour
 	{
 		_animator.Play("Taunt", -1, 0f);
 	}
+	
+	public void SetAnimationController()
+	{
+		_animator.runtimeAnimatorController = PlayerStats.runtimeAnimatorController;
+	}
 
 	public int SetSpriteLibraryAsset(int skinNumber)
 	{
