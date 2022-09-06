@@ -45,7 +45,7 @@ public class HurtParentState : State
 				_player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
 			}
 		}
-		_player.Health -= _player.CalculateDamage(_hurtAttack) * _player.DemonLimitMultiplier();
+		_player.Health -= _player.CalculateDamage(_hurtAttack);
 		_playerUI.SetHealth(_player.Health);
 		_playerUI.Damaged();
 		_playerMovement.ResetGravity();

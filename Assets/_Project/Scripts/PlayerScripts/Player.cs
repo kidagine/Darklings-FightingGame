@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
-	public PlayerStatsSO playerStats;
 	[SerializeField] private PlayerStateManager _playerStateManager = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private Assist _assist = default;
@@ -18,6 +17,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	[SerializeField] private GameObject[] _playerIcons = default;
 	protected PlayerUI _playerUI;
 	private PlayerMovement _playerMovement;
+	[HideInInspector] public PlayerStatsSO playerStats;
 	protected PlayerComboSystem _playerComboSystem;
 	private BrainController _controller;
 	private Coroutine _comboTimerCoroutine;
@@ -228,7 +228,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		if (CurrentAttack != null)
 		{
 			ResultAttack = Instantiate(CurrentAttack);
-			ResultAttack.damage = (int)(calculatedDamage * DemonLimitMultiplier());
+			ResultAttack.damage = calculatedDamage;
 		}
 	}
 
@@ -236,7 +236,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	{
 		if (Health < 3000)
 		{
-			return 1.3f;
+			return 1.2f;
 		}
 		return 1.0f;
 	}
@@ -304,7 +304,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	public float CalculateDamage(AttackSO hurtAttack)
 	{
 		int comboCount = OtherPlayerUI.CurrentComboCount;
-		float calculatedDamage = hurtAttack.damage / playerStats.Defense;
+		float calculatedDamage = (hurtAttack.damage / playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
 		if (comboCount > 1)
 		{
 			float damageScale = 1.0f;
@@ -314,8 +314,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 			}
 			calculatedDamage *= damageScale;
 		}
-		OtherPlayer.SetResultAttack((int)calculatedDamage);
-		return (int)calculatedDamage;
+		OtherPlayer.SetResultAttack(Mathf.RoundToInt(calculatedDamage));
+		return calculatedDamage;
 	}
 
 
@@ -456,15 +456,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		{
 			_hurtbox.GetChild(i).gameObject.SetActive(state);
 		}
-	}
-
-	public bool IsInDemonLimit()
-	{
-		if (Health <= 3000)
-		{
-			return true;
-		}
-		return false;
 	}
 
 	public void Pause(bool isPlayerOne)
