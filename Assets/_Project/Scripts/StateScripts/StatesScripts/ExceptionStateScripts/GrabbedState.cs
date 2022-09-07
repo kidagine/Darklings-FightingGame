@@ -1,4 +1,5 @@
 using Demonics.Manager;
+using System.Collections;
 using UnityEngine;
 
 public class GrabbedState : State
@@ -8,6 +9,8 @@ public class GrabbedState : State
 	private KnockdownState _knockdownState;
 	private AirborneHurtState _airborneHurtState;
 	private KnockbackState _knockbackState;
+	private bool _canTechThrow;
+
 
 	private void Awake()
 	{
@@ -26,6 +29,7 @@ public class GrabbedState : State
 		_playerMovement.SetRigidbodyKinematic(true);
 		_player.OtherPlayer.SetToGrabPoint(_player);
 		_player.OtherPlayerStateManager.TryToThrowState();
+		StartCoroutine(CanTechThrowCoroutine());
 	}
 
 	public override bool ToKnockdownState()
@@ -46,10 +50,21 @@ public class GrabbedState : State
 
 	public override bool ToGrabState()
 	{
-		ObjectPoolingManager.Instance.Spawn(_techThrowPrefab,new Vector2(transform.position.x, transform.position.y + 1.0f));
-		_stateMachine.ChangeState(_knockbackState);
-		_player.OtherPlayerStateManager.TryToKnockbackState();
-		return true;
+		if (_canTechThrow && !_player.OtherPlayer.CurrentAttack.isArcana)
+		{
+			ObjectPoolingManager.Instance.Spawn(_techThrowPrefab, new Vector2(transform.position.x, transform.position.y + 1.0f));
+			_stateMachine.ChangeState(_knockbackState);
+			_player.OtherPlayerStateManager.TryToKnockbackState();
+			return true;
+		}
+		return false;
+	}
+
+	IEnumerator CanTechThrowCoroutine()
+	{
+		_canTechThrow = true;
+		yield return new WaitForSecondsRealtime(0.1f);
+		_canTechThrow = false;
 	}
 
 	public override bool ToAirborneHurtState(AttackSO attack)
