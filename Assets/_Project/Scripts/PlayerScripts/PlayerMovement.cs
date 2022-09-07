@@ -218,6 +218,11 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		_rigidbody.gravityScale = 0.0f;
 	}
 
+	public void TechThrow()
+	{
+
+	}
+
 	public void ResetToWalkSpeed()
 	{
 		if (MovementSpeed == _player.playerStats.SpeedRun)

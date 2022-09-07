@@ -1,14 +1,20 @@
+using Demonics.Manager;
+using UnityEngine;
+
 public class GrabbedState : State
 {
+	[SerializeField] private GameObject _techThrowPrefab = default;
 	private DeathState _deathState;
 	private KnockdownState _knockdownState;
 	private AirborneHurtState _airborneHurtState;
+	private KnockbackState _knockbackState;
 
 	private void Awake()
 	{
 		_deathState = GetComponent<DeathState>();
 		_knockdownState = GetComponent<KnockdownState>();
 		_airborneHurtState = GetComponent<AirborneHurtState>();
+		_knockbackState = GetComponent<KnockbackState>();
 	}
 
 	public override void Enter()
@@ -38,6 +44,14 @@ public class GrabbedState : State
 		return true;
 	}
 
+	public override bool ToGrabState()
+	{
+		ObjectPoolingManager.Instance.Spawn(_techThrowPrefab,new Vector2(transform.position.x, transform.position.y + 1.0f));
+		_stateMachine.ChangeState(_knockbackState);
+		_player.OtherPlayerStateManager.TryToKnockbackState();
+		return true;
+	}
+
 	public override bool ToAirborneHurtState(AttackSO attack)
 	{
 		_airborneHurtState.Initialize(attack);
@@ -53,6 +67,7 @@ public class GrabbedState : State
 	public override void Exit()
 	{
 		base.Exit();
+		_player.transform.rotation = Quaternion.identity;
 		_playerMovement.SetRigidbodyKinematic(false);
 		_player.SetPushboxTrigger(false);
 		_playerAnimator.SetSpriteOrder(0);

@@ -1278,6 +1278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Grabbed
+  _techThrowPrefab: {fileID: 6697712921357175186, guid: 5537d3994a7d8604aa2e02d73330b6da, type: 3}
 --- !u!114 &4867772287099482726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1890,7 +1891,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69f186f0a13a149a6086016aa99b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 0}
   _playerStateManager: {fileID: 8168889133440061290}
   _playerAnimator: {fileID: 8073473789928578677}
   _assist: {fileID: 8780121904732240358}
@@ -1903,6 +1903,7 @@ MonoBehaviour:
   _playerIcons:
   - {fileID: 7759221523502482170}
   - {fileID: 3488833446598643948}
+  playerStats: {fileID: 0}
   knockbackEvent:
     m_PersistentCalls:
       m_Calls: []

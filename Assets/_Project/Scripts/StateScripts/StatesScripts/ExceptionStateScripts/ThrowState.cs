@@ -4,10 +4,12 @@ using UnityEngine;
 public class ThrowState : State
 {
 	private IdleState _idleState;
+	private KnockbackState _knockbackState;
 
 	private void Awake()
 	{
 		_idleState = GetComponent<IdleState>();
+		_knockbackState = GetComponent<KnockbackState>();
 	}
 
 	public override void Enter()
@@ -31,6 +33,13 @@ public class ThrowState : State
 	private void ToIdleState()
 	{
 		_stateMachine.ChangeState(_idleState);
+	}
+
+	public override bool ToKnockbackState()
+	{
+		_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
+		_stateMachine.ChangeState(_knockbackState);
+		return true;
 	}
 
 	public override void UpdatePhysics()
