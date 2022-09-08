@@ -108,6 +108,7 @@ public class GroundParentState : State
 
 	public override bool ToGrabbedState()
 	{
+		_grabbedState.Initialize(true);
 		_stateMachine.ChangeState(_grabbedState);
 		return true;
 	}

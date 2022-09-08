@@ -20,6 +20,11 @@ public class GrabbedState : State
 		_knockbackState = GetComponent<KnockbackState>();
 	}
 
+	public void Initialize(bool canTechThrow)
+	{
+		_canTechThrow = canTechThrow;
+	}
+
 	public override void Enter()
 	{
 		base.Enter();
@@ -53,6 +58,7 @@ public class GrabbedState : State
 		if (_canTechThrow && !_player.OtherPlayer.CurrentAttack.isArcana)
 		{
 			ObjectPoolingManager.Instance.Spawn(_techThrowPrefab, new Vector2(transform.position.x, transform.position.y + 1.0f));
+			_playerUI.DisplayNotification(NotificationTypeEnum.ThrowBreak);
 			_stateMachine.ChangeState(_knockbackState);
 			_player.OtherPlayerStateManager.TryToKnockbackState();
 			return true;
@@ -62,7 +68,6 @@ public class GrabbedState : State
 
 	IEnumerator CanTechThrowCoroutine()
 	{
-		_canTechThrow = true;
 		yield return new WaitForSecondsRealtime(0.1f);
 		_canTechThrow = false;
 	}
