@@ -162,6 +162,7 @@ public class PlayerController : BaseController
 				if (timeSinceLastPress <= _dashTime)
 				{
 					_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+					_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
 					_dashForwardPressed = false;
 				}
 				_dashForwardLastInputTime = Time.time;

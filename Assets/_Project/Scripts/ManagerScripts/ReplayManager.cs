@@ -136,7 +136,7 @@ public class ReplayManager : MonoBehaviour
 					$"\nPlayer Two:\n{SceneSettings.PlayerTwo}, {SceneSettings.ColorTwo}, {SceneSettings.AssistTwo}");
 				fileStream.Write(playerTwo, 0, playerTwo.Length);
 				byte[] stage = new UTF8Encoding(true).GetBytes(
-					$"\nStage:\n{SceneSettings.StageIndex}, {SceneSettings.MusicName}, {SceneSettings.Bit1}");
+					$"\nStage:\n{SceneSettings.StageIndex}, {GameManager.Instance.CurrentMusic.name}, {SceneSettings.Bit1}");
 				fileStream.Write(stage, 0, stage.Length);
 				string playerOneInputsHistory = "";
 				for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)

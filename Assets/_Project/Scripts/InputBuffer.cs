@@ -9,7 +9,6 @@ public class InputBuffer : MonoBehaviour
 	private bool _isExecuting;
 	private InputDirectionEnum _lastInputDirection;
 
-
 	void Update()
 	{
 		if (_inputBuffer.Count > 0)
@@ -29,6 +28,7 @@ public class InputBuffer : MonoBehaviour
 
 	public void AddInputBufferItem(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
+		Debug.Log(inputEnum +","+ inputDirectionEnum);
 		_inputHistory.AddInput(inputEnum, inputDirectionEnum);
 		InputBufferItem inputBufferItem = new(Time.time);
 		_inputBuffer.Enqueue(inputBufferItem);

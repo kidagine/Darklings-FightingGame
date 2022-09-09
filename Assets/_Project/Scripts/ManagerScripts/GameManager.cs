@@ -81,7 +81,6 @@ public class GameManager : MonoBehaviour
 	private PlayerInput _playerTwoInput;
 	private Coroutine _roundOverTrainingCoroutine;
 	private Coroutine _hitStopCoroutine;
-	private Sound _currentMusic;
 	private GameObject _currentStage;
 	private List<IHitstop> _hitstopList = new();
 	private Vector2 _cachedOneResetPosition;
@@ -95,7 +94,7 @@ public class GameManager : MonoBehaviour
 	private bool _finalRound;
 	private int _playerOneWins;
 	private int _playerTwoWins;
-
+	public Sound CurrentMusic { get; private set; }
 	public bool IsDialogueRunning { get; set; }
 	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
@@ -350,12 +349,12 @@ public class GameManager : MonoBehaviour
 	{
 		if (SceneSettings.MusicName == "Random")
 		{
-			_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+			CurrentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
 		}
 		else
 		{
-			_currentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
-			_currentMusic.Play();
+			CurrentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
+			CurrentMusic.Play();
 		}
 		if (_isTrainingMode)
 		{
@@ -374,7 +373,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			_musicMenu.ShowMusicMenu(_currentMusic.name);
+			_musicMenu.ShowMusicMenu(CurrentMusic.name);
 			_inputHistories[0].transform.GetChild(0).gameObject.SetActive(false);
 			_inputHistories[1].transform.GetChild(0).gameObject.SetActive(false);
 			_trainingPrompts.gameObject.SetActive(false);
@@ -912,27 +911,27 @@ public class GameManager : MonoBehaviour
 		_matchOverMenu.Hide();
 		PlayerOne.ResetLives();
 		PlayerTwo.ResetLives();
-		_currentMusic.Stop();
+		CurrentMusic.Stop();
 		if (SceneSettings.MusicName == "Random")
 		{
-			_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+			CurrentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
 		}
 		else
 		{
-			_currentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
-			_currentMusic.Play();
+			CurrentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
+			CurrentMusic.Play();
 		}
 		StartRound();
 	}
 
 	public void PauseMusic()
 	{
-		_currentMusic.Pause();
+		CurrentMusic.Pause();
 	}
 
 	public void PlayMusic()
 	{
-		_currentMusic.Play();
+		CurrentMusic.Play();
 	}
 
 	public void LoadScene(int index)
