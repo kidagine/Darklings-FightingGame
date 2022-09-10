@@ -28,7 +28,6 @@ public class InputBuffer : MonoBehaviour
 
 	public void AddInputBufferItem(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
-		Debug.Log(inputEnum +","+ inputDirectionEnum);
 		_inputHistory.AddInput(inputEnum, inputDirectionEnum);
 		InputBufferItem inputBufferItem = new(Time.time);
 		_inputBuffer.Enqueue(inputBufferItem);

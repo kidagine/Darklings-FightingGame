@@ -32,13 +32,9 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 		MovementSpeed = _player.playerStats.SpeedWalk;
 	}
 
-	void Update()
-	{
-		CheckIsInCorner();
-	}
-
 	void FixedUpdate()
 	{
+		CheckIsInCorner();
 		JumpControl();
 	}
 
@@ -216,11 +212,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	public void ZeroGravity()
 	{
 		_rigidbody.gravityScale = 0.0f;
-	}
-
-	public void TechThrow()
-	{
-
 	}
 
 	public void ResetToWalkSpeed()

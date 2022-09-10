@@ -15,14 +15,15 @@ public class StateMachine : MonoBehaviour
 
     void Update()
     {
-        if (CurrentState != null)
-        {
-            CurrentState.UpdateLogic();
-        }
+
     }
 
     void FixedUpdate()
     {
+        if (CurrentState != null)
+        {
+            CurrentState.UpdateLogic();
+        }
         if (CurrentState != null)
         {
             CurrentState.UpdatePhysics();

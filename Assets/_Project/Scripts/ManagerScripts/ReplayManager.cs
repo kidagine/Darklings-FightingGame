@@ -35,7 +35,7 @@ public class ReplayManager : MonoBehaviour
 	private readonly string _playerTwoInputsSplit = "Player Two Inputs:";
 
 	public string VersionNumber { get; private set; }
-	public float Skip { get; set; }
+	public int Skip { get; set; }
 	public int ReplayFilesAmount { get { return _replayFiles.Length; } private set { } }
 	public static ReplayManager Instance { get; private set; }
 
@@ -181,27 +181,64 @@ public class ReplayManager : MonoBehaviour
 		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
 		GameManager.Instance.PlayerOne.GetComponent<PlayerInput>().enabled = false;
 		GameManager.Instance.PlayerTwo.GetComponent<PlayerInput>().enabled = false;
-		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-		StartCoroutine(SkipIntroCoroutine(replayCardData));
+		replayCardData = GetReplayData(SceneSettings.ReplayIndex);
+		s = true;
 	}
 
-	IEnumerator SkipIntroCoroutine(ReplayCardData replayCardData)
-	{
-		yield return new WaitForSeconds(replayCardData.skip);
-		if (replayCardData.skip > 0)
-		{
-			GameManager.Instance.SkipIntro();
-		}
-
-	}
+	private ReplayCardData replayCardData;
+	bool t;
+	bool s;
+	private int i;
 
 	public void StartLoadReplay()
 	{
-		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
+		replayCardData = GetReplayData(SceneSettings.ReplayIndex);
 		StartCoroutine(LoadReplayCoroutine(replayCardData.playerOneInputs, _playerOneInputBuffer, _playerOneController));
 		StartCoroutine(LoadReplayCoroutine(replayCardData.playerTwoInputs, _playerTwoInputBuffer, _playerTwoController));
+		t = true;
 	}
+	private void FixedUpdate()
+	{
+		if (s)
+		{
+			if (DemonicsPhysics.Frame >= replayCardData.skip)
+			{
+				GameManager.Instance.SkipIntro();
+				s = false;
+			}
+		}
+		if (t)
+		{
+			if (i < replayCardData.playerOneInputs.Length)
+			{
+				if (DemonicsPhysics.Frame >= replayCardData.playerOneInputs[i].time)
+				{
+					_playerOneInputBuffer.AddInputBufferItem(replayCardData.playerOneInputs[i].input, replayCardData.playerOneInputs[i].direction);
+					switch (replayCardData.playerOneInputs[i].direction)
+					{
+						case InputDirectionEnum.None:
+							_playerOneController.ActiveController.InputDirection = new Vector2(0, 0);
+							break;
+						case InputDirectionEnum.Up:
+							_playerOneController.ActiveController.InputDirection = new Vector2(_playerOneController.ActiveController.InputDirection.x, 1);
+							break;
+						case InputDirectionEnum.Down:
+							_playerOneController.ActiveController.InputDirection = new Vector2(_playerOneController.ActiveController.InputDirection.x, -1);
+							break;
+						case InputDirectionEnum.Left:
+							_playerOneController.ActiveController.InputDirection = new Vector2(-1, _playerOneController.ActiveController.InputDirection.y);
+							break;
+						case InputDirectionEnum.Right:
+							_playerOneController.ActiveController.InputDirection = new Vector2(1, _playerOneController.ActiveController.InputDirection.y);
+							break;
+					}
+					i++;
+				}
+			}
 
+		}
+
+	}
 	IEnumerator LoadReplayCoroutine(ReplayInput[] playerInputs, InputBuffer inputBuffer, BrainController controller)
 	{
 		yield return null;
@@ -273,7 +310,7 @@ public class ReplayManager : MonoBehaviour
 			for (int i = 0; i < playerOneInputInfo.Length; i++)
 			{
 				string[] playerInput = playerOneInputInfo[i].Split(',');
-				replayOneInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = float.Parse(playerInput[2]) });
+				replayOneInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = int.Parse(playerInput[2]) });
 			}
 		}
 		List<ReplayInput> replayTwoInputs = new();
@@ -282,7 +319,7 @@ public class ReplayManager : MonoBehaviour
 			for (int i = 0; i < playerTwoInputInfo.Length; i++)
 			{
 				string[] playerInput = playerTwoInputInfo[i].Split(',');
-				replayTwoInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = float.Parse(playerInput[2]) });
+				replayTwoInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = int.Parse(playerInput[2]) });
 			}
 
 		}

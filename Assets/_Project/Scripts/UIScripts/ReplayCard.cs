@@ -50,5 +50,5 @@ public struct ReplayInput
 {
 	public InputEnum input;
 	public InputDirectionEnum direction;
-	public float time;
+	public int time;
 }

@@ -108,14 +108,11 @@ public class GameManager : MonoBehaviour
 	public BaseController PausedController { get; set; }
 	public float GameSpeed { get; set; }
 
-
 	void Awake()
 	{
 		_startSkipTime = Time.time;
 		HasGameStarted = false;
 		GameSpeed = _gameSpeed;
-		Application.targetFrameRate = 60;
-		QualitySettings.vSyncCount = 1;
 		CheckInstance();
 		if (!SceneSettings.SceneSettingsDecide)
 		{
@@ -403,7 +400,7 @@ public class GameManager : MonoBehaviour
 		{
 			if (Input.anyKeyDown)
 			{
-				ReplayManager.Instance.Skip = Time.time - _startSkipTime;
+				ReplayManager.Instance.Skip = DemonicsPhysics.Frame;
 				SkipIntro();
 			}
 		}
@@ -603,7 +600,10 @@ public class GameManager : MonoBehaviour
 		{
 			_matchOverMenu.Show();
 		}
-		ReplayManager.Instance.SaveReplay();
+		if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
+		{
+			ReplayManager.Instance.SaveReplay();
+		}
 		Time.timeScale = 0.0f;
 	}
 
@@ -1021,3 +1021,5 @@ public class GameManager : MonoBehaviour
 		_hitstopList.Clear();
 	}
 }
+
+

@@ -146,7 +146,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		_playerUI.SetHealth(Health);
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		ArcanaCharge();
 		AssistCharge();
