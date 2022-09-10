@@ -5,6 +5,8 @@ public class ThrowState : State
 {
 	private IdleState _idleState;
 	private KnockbackState _knockbackState;
+	private bool _flip;
+
 
 	private void Awake()
 	{
@@ -12,22 +14,21 @@ public class ThrowState : State
 		_knockbackState = GetComponent<KnockbackState>();
 	}
 
+	public void Initialize(bool flip)
+	{
+		_flip = flip;
+	}
+
 	public override void Enter()
 	{
 		base.Enter();
-		CheckThrowDirection();
-		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
-		_playerAnimator.OnCurrentAnimationFinished.AddListener(() => { _player.OtherPlayerStateManager.TryToKnockdownState(); });
-		_playerAnimator.Throw();
-	}
-
-	private void CheckThrowDirection()
-	{
-		if (_baseController.InputDirection.x == -1 && transform.root.localScale.x == 1
-			|| _baseController.InputDirection.x == 1 && transform.root.localScale.x == -1)
+		if (_flip)
 		{
 			_player.Flip((int)transform.root.localScale.x * -1);
 		}
+		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
+		_playerAnimator.OnCurrentAnimationFinished.AddListener(() => { _player.OtherPlayerStateManager.TryToKnockdownState(); });
+		_playerAnimator.Throw();
 	}
 
 	private void ToIdleState()
