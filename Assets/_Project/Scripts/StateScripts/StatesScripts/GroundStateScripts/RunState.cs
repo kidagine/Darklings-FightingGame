@@ -35,7 +35,7 @@ public class RunState : GroundParentState
 
     private void ToIdleState()
     {
-        if (_baseController.InputDirection.x == 0.0f)
+        if (_baseController.InputDirection.x == 0)
         {
             _stateMachine.ChangeState(_idleState);
         }
@@ -43,10 +43,10 @@ public class RunState : GroundParentState
 
     private void ToJumpForwardState()
     {
-        if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+        if (_baseController.InputDirection.y > 0 && !_playerMovement.HasJumped)
         {
             _playerMovement.HasJumped = true;
-            if (_baseController.InputDirection.x != 0.0f)
+            if (_baseController.InputDirection.x != 0)
             {
                 _stateMachine.ChangeState(_jumpForwardState);
             }
@@ -55,7 +55,7 @@ public class RunState : GroundParentState
                 _stateMachine.ChangeState(_jumpState);
             }
         }
-        else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+        else if (_baseController.InputDirection.y <= 0 && _playerMovement.HasJumped)
         {
             _playerMovement.HasJumped = false;
         }

@@ -15,7 +15,7 @@ public class JumpForwardState : AirParentState
 		_playerAnimator.JumpForward(true);
 		_playerMovement.ResetToWalkSpeed();
 		_jumpX = _baseController.InputDirection.x * (_player.playerStats.jumpForce / 2.5f);
-		_jumpY = _player.playerStats.jumpForce + 1.0f;
+		_jumpY = _player.playerStats.jumpForce + 1;
 		_stopJumpCoroutine = StartCoroutine(Stop());
 	}
 

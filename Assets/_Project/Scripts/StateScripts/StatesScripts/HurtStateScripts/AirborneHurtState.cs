@@ -89,7 +89,6 @@ public class AirborneHurtState : HurtParentState
 	{
 		base.UpdatePhysics();
 		_rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y);
-		//_playerMovement.CheckForPlayer();
 	}
 
 	private new void ToKnockdownState()

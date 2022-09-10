@@ -57,7 +57,7 @@ public class GrabbedState : State
 	{
 		if (_canTechThrow && !_player.OtherPlayer.CurrentAttack.isArcana)
 		{
-			ObjectPoolingManager.Instance.Spawn(_techThrowPrefab, new Vector2(transform.position.x, transform.position.y + 1.0f));
+			ObjectPoolingManager.Instance.Spawn(_techThrowPrefab, new Vector2(transform.position.x, transform.position.y + 1));
 			_playerUI.DisplayNotification(NotificationTypeEnum.ThrowBreak);
 			_stateMachine.ChangeState(_knockbackState);
 			_player.OtherPlayerStateManager.TryToKnockbackState();

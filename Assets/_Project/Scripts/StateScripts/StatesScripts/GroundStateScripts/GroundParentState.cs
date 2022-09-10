@@ -62,7 +62,7 @@ public class GroundParentState : State
 
 	public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
-		if (_player.Arcana >= 1.0f)
+		if (_player.Arcana >= 1)
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
 			{
@@ -115,8 +115,8 @@ public class GroundParentState : State
 
 	public override bool ToKnockbackState()
 	{
-		if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f
-			   || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
+		if (transform.localScale.x == 1 && _playerMovement.MovementInput.x < 0
+			   || transform.localScale.x == -1 && _playerMovement.MovementInput.x > 0)
 		{
 			_stateMachine.ChangeState(_blockState);
 			return false;

@@ -15,8 +15,8 @@ public class PlayerStatsSO : ScriptableObject
 	public int defenseLevel;
 	public int arcanaLevel;
 	public int speedLevel;
-	public float jumpForce = 2;
-	public float dashForce = 5;
+	public int jumpForce = 2;
+	public int dashForce = 5;
 	public bool canDoubleJump = true;
 	public float arcanaRecharge = 1;
 	[Header("Moves")]
@@ -33,7 +33,7 @@ public class PlayerStatsSO : ScriptableObject
 	public ArcanaSO m5Arcana;
 	public ArcanaSO m2Arcana;
 	public ArcanaSO jArcana;
-	[HideInInspector] public float maxHealth = 10000f;
+	[HideInInspector] public int maxHealth = 10000;
 
 	public int Arcana { get { return arcanaLevel; } set { } }
 	public float Defense { get { return (defenseLevel - 1) * 0.05f + 0.95f; } set { } }

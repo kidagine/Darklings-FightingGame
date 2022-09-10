@@ -38,7 +38,7 @@ public class BlockParentState : State
 		base.Enter();
 		_audio.Sound("Block").Play();
 		_playerMovement.Knockback(new Vector2(
-			_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_blockAttack.knockback, 0.0f), _blockAttack.knockbackDuration);
+			_player.OtherPlayer.transform.localScale.x, 0), new Vector2(_blockAttack.knockback, 0), _blockAttack.knockbackDuration);
 
 		if (!_skip)
 		{
@@ -65,7 +65,7 @@ public class BlockParentState : State
 
 	public override bool AssistCall()
 	{
-		if (_player.AssistGauge >= 1.0f)
+		if (_player.AssistGauge >= 1)
 		{
 			_stateMachine.ChangeState(_shadowbreakState);
 			return true;

@@ -27,7 +27,7 @@ public class IdleState : GroundParentState
 
 	private void ToWalkState()
 	{
-		if (_baseController.InputDirection.x != 0.0f)
+		if (_baseController.InputDirection.x != 0)
 		{
 			_stateMachine.ChangeState(_walkState);
 		}

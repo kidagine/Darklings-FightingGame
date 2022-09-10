@@ -23,8 +23,8 @@ public class ThrowState : State
 
 	private void CheckThrowDirection()
 	{
-		if (_baseController.InputDirection.x == -1.0f && transform.root.localScale.x == 1.0f
-			|| _baseController.InputDirection.x == 1.0f && transform.root.localScale.x == -1.0f)
+		if (_baseController.InputDirection.x == -1 && transform.root.localScale.x == 1
+			|| _baseController.InputDirection.x == 1 && transform.root.localScale.x == -1)
 		{
 			_player.Flip((int)transform.root.localScale.x * -1);
 		}

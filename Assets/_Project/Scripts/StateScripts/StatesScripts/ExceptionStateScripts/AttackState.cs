@@ -89,7 +89,7 @@ public class AttackState : State
 
 	private void ToFallStateOnGround()
 	{
-		if (_air && _playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
+		if (_air && _playerMovement.IsGrounded && _rigidbody.velocity.y <= 0)
 		{
 			_stateMachine.ChangeState(_fallState);
 		}
@@ -158,7 +158,7 @@ public class AttackState : State
 
 	public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
-		if (_player.Arcana >= 1.0f && CanSkipAttack)
+		if (_player.Arcana >= 1 && CanSkipAttack)
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
 			{
