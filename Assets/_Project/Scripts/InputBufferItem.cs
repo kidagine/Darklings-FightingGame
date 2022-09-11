@@ -1,21 +1,22 @@
+using FixMath.NET;
 using System;
 using UnityEngine;
 
 public class InputBufferItem
 {
-    private readonly float _timeBeforeActionsExpire = 0.29f;
-    private readonly float _timestamp;
+    private readonly Fix64 _timeBeforeActionsExpire = (Fix64)0.29f;
+    private readonly Fix64 _timestamp;
 
     public Func<bool> Execute;
 
-    public InputBufferItem(float timestamp)
+    public InputBufferItem(Fix64 timestamp)
     {
         _timestamp = timestamp;
     }
 
     public bool CheckIfValid()
     {
-        if (_timestamp + _timeBeforeActionsExpire >= Time.time)
+        if (_timestamp + _timeBeforeActionsExpire >= (Fix64)Time.time)
         {
             return true;
         }

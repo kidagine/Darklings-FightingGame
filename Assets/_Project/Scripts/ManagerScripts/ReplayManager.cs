@@ -193,8 +193,6 @@ public class ReplayManager : MonoBehaviour
 	public void StartLoadReplay()
 	{
 		replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-		StartCoroutine(LoadReplayCoroutine(replayCardData.playerOneInputs, _playerOneInputBuffer, _playerOneController));
-		StartCoroutine(LoadReplayCoroutine(replayCardData.playerTwoInputs, _playerTwoInputBuffer, _playerTwoController));
 		t = true;
 	}
 	private void FixedUpdate()
@@ -209,70 +207,39 @@ public class ReplayManager : MonoBehaviour
 		}
 		if (t)
 		{
-			if (i < replayCardData.playerOneInputs.Length)
-			{
-				if (DemonicsPhysics.Frame == replayCardData.playerOneInputs[i].time)
-				{
-					_playerOneInputBuffer.AddInputBufferItem(replayCardData.playerOneInputs[i].input, replayCardData.playerOneInputs[i].direction);
-					if (replayCardData.playerOneInputs[i].input == InputEnum.Direction)
-					{
-						switch (replayCardData.playerOneInputs[i].direction)
-						{
-							case InputDirectionEnum.None:
-								_playerOneController.ActiveController.InputDirection = Vector2Int.zero;
-								break;
-							case InputDirectionEnum.Up:
-								_playerOneController.ActiveController.InputDirection = new Vector2Int(_playerOneController.ActiveController.InputDirection.x, 1);
-								break;
-							case InputDirectionEnum.Down:
-								_playerOneController.ActiveController.InputDirection = new Vector2Int(_playerOneController.ActiveController.InputDirection.x, -1);
-								break;
-							case InputDirectionEnum.Left:
-								_playerOneController.ActiveController.InputDirection = new Vector2Int(-1, _playerOneController.ActiveController.InputDirection.y);
-								break;
-							case InputDirectionEnum.Right:
-								_playerOneController.ActiveController.InputDirection = new Vector2Int(1, _playerOneController.ActiveController.InputDirection.y);
-								break;
-						}
-					}
-					i++;
-				}
-			}
-
+			NextReplayAction();
 		}
-
 	}
-	IEnumerator LoadReplayCoroutine(ReplayInput[] playerInputs, InputBuffer inputBuffer, BrainController controller)
+	private void NextReplayAction()
 	{
-		yield return null;
-		for (int i = 0; i < playerInputs.Length; i++)
+		if (i < replayCardData.playerOneInputs.Length)
 		{
-			if (i == 0)
+			if (DemonicsPhysics.Frame == replayCardData.playerOneInputs[i].time)
 			{
-				yield return new WaitForSeconds(playerInputs[i].time);
-			}
-			else
-			{
-				yield return new WaitForSeconds(playerInputs[i].time - playerInputs[i-1].time);
-			}
-			inputBuffer.AddInputBufferItem(playerInputs[i].input, playerInputs[i].direction);
-			switch (playerInputs[i].direction)
-			{
-				case InputDirectionEnum.None:
-					controller.ActiveController.InputDirection = Vector2Int.zero;
-					break;
-				case InputDirectionEnum.Up:
-					controller.ActiveController.InputDirection = new Vector2Int(controller.ActiveController.InputDirection.x, 1);
-					break;
-				case InputDirectionEnum.Down:
-					controller.ActiveController.InputDirection = new Vector2Int(controller.ActiveController.InputDirection.x, -1);
-					break;
-				case InputDirectionEnum.Left:
-					controller.ActiveController.InputDirection = new Vector2Int(-1, controller.ActiveController.InputDirection.y);
-					break;
-				case InputDirectionEnum.Right:
-					controller.ActiveController.InputDirection = new Vector2Int(1, controller.ActiveController.InputDirection.y);
-					break;
+				_playerOneInputBuffer.AddInputBufferItem(replayCardData.playerOneInputs[i].input, replayCardData.playerOneInputs[i].direction);
+				if (replayCardData.playerOneInputs[i].input == InputEnum.Direction)
+				{
+					switch (replayCardData.playerOneInputs[i].direction)
+					{
+						case InputDirectionEnum.None:
+							_playerOneController.ActiveController.InputDirection = Vector2Int.zero;
+							break;
+						case InputDirectionEnum.Up:
+							_playerOneController.ActiveController.InputDirection = new Vector2Int(_playerOneController.ActiveController.InputDirection.x, 1);
+							break;
+						case InputDirectionEnum.Down:
+							_playerOneController.ActiveController.InputDirection = new Vector2Int(_playerOneController.ActiveController.InputDirection.x, -1);
+							break;
+						case InputDirectionEnum.Left:
+							_playerOneController.ActiveController.InputDirection = new Vector2Int(-1, _playerOneController.ActiveController.InputDirection.y);
+							break;
+						case InputDirectionEnum.Right:
+							_playerOneController.ActiveController.InputDirection = new Vector2Int(1, _playerOneController.ActiveController.InputDirection.y);
+							break;
+					}
+				}
+				i++;
+				NextReplayAction();
 			}
 		}
 	}

@@ -6,7 +6,6 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
-	[SerializeField] private Fix64 d = default;
 	[SerializeField] private PlayerStateManager _playerStateManager = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private Assist _assist = default;
@@ -219,7 +218,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		{
 			_assist.Attack();
 			DecreaseArcana(0.5f);
-			//CurrentAttack = _assist.AssistStats.attackSO;
 			return true;
 		}
 		return false;
@@ -306,7 +304,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	public int CalculateDamage(AttackSO hurtAttack)
 	{
 		int comboCount = OtherPlayerUI.CurrentComboCount;
-		float calculatedDamage = (hurtAttack.damage / playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
+		Fix64 calculatedDamage = (Fix64)((hurtAttack.damage / playerStats.Defense) * OtherPlayer.DemonLimitMultiplier());
 		if (comboCount > 1)
 		{
 			Fix64 damageScale = (Fix64)1;
@@ -314,9 +312,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 			{
 				damageScale *= _damageDecay;
 			}
-			calculatedDamage *= (float)damageScale;
+			calculatedDamage *= damageScale;
 		}
-		int calculatedIntDamage = Mathf.RoundToInt(calculatedDamage);
+		int calculatedIntDamage = (int)Fix64.Round(calculatedDamage);
 		OtherPlayer.SetResultAttack(calculatedIntDamage);
 		return calculatedIntDamage;
 	}

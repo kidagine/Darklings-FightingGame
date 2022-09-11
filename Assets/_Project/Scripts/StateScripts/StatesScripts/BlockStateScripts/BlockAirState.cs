@@ -4,7 +4,6 @@ public class BlockAirState : BlockParentState
 {
 	[SerializeField] protected GameObject _groundedPrefab = default;
 	private BlockState _blockState;
-	private int _blockFrame;
 
 
 	protected override void Awake()
