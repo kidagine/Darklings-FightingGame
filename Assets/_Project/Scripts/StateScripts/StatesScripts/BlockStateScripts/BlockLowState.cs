@@ -1,7 +1,5 @@
 public class BlockLowState : BlockParentState
 {
-    private int _blockFrame;
-
     public override void Enter()
     {
         base.Enter();

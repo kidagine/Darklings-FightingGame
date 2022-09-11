@@ -8,10 +8,10 @@ public class PlayerController : BaseController
 	public PromptsInput CurrentPrompts { get; set; }
 	private readonly string _controlRebindKey = "rebinds";
 	private bool _dashForwardPressed;
-	private float _dashForwardLastInputTime;
 	private bool _dashBackPressed;
-	private float _dashBackLastInputTime;
-	private float _dashTime = 0.3f;
+	private int _dashForwardLastInputTime;
+	private int _dashBackLastInputTime;
+	private readonly int _dashTime = 12;
 
 
 	void Start()
@@ -154,18 +154,18 @@ public class PlayerController : BaseController
 			if (!_dashForwardPressed)
 			{
 				_dashForwardPressed = true;
-				_dashForwardLastInputTime = Time.time;
+				_dashForwardLastInputTime = DemonicsPhysics.Frame;
 			}
 			else
 			{
-				float timeSinceLastPress = Time.time - _dashForwardLastInputTime;
+				int timeSinceLastPress = DemonicsPhysics.Frame - _dashForwardLastInputTime;
 				if (timeSinceLastPress <= _dashTime)
 				{
 					_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
 					_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
 					_dashForwardPressed = false;
 				}
-				_dashForwardLastInputTime = Time.time;
+				_dashForwardLastInputTime = DemonicsPhysics.Frame;
 			}
 		}
 	}
@@ -177,17 +177,17 @@ public class PlayerController : BaseController
 			if (!_dashBackPressed)
 			{
 				_dashBackPressed = true;
-				_dashBackLastInputTime = Time.time;
+				_dashBackLastInputTime = DemonicsPhysics.Frame;
 			}
 			else
 			{
-				float timeSinceLastPress = Time.time - _dashBackLastInputTime;
+				int timeSinceLastPress = DemonicsPhysics.Frame - _dashBackLastInputTime;
 				if (timeSinceLastPress <= _dashTime)
 				{
 					_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
 					_dashBackPressed = false;
 				}
-				_dashBackLastInputTime = Time.time;
+				_dashBackLastInputTime = DemonicsPhysics.Frame;
 			}
 		}
 	}

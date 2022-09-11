@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class HurtParentState : State
@@ -9,6 +8,7 @@ public class HurtParentState : State
 	protected ShadowbreakState _shadowbreakState;
 	protected AttackSO _hurtAttack;
 	protected bool _skipEnter;
+	protected int _hurtFrame;
 
 	protected virtual void Awake()
 	{
@@ -78,5 +78,6 @@ public class HurtParentState : State
 	{
 		base.Exit();
 		_playerUI.UpdateHealthDamaged();
+		_hurtFrame = 0;
 	}
 }

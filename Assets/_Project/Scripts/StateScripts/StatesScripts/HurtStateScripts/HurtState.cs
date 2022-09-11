@@ -1,5 +1,4 @@
 using Demonics.Manager;
-using System.Collections;
 using UnityEngine;
 
 public class HurtState : HurtParentState
@@ -7,7 +6,6 @@ public class HurtState : HurtParentState
 	private HurtState _hurtState;
 	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
-	private int _hurtFrame;
 
 	protected override void Awake()
 	{

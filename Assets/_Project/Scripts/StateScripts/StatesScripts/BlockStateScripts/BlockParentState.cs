@@ -12,9 +12,9 @@ public class BlockParentState : State
 	protected ShadowbreakState _shadowbreakState;
 	protected HurtState _hurtState;
 	protected AttackSO _blockAttack;
-	protected Coroutine _blockCoroutine;
 	private readonly int _chipDamage = 250;
 	private bool _skip;
+	protected int _blockFrame;
 
 	public void Initialize(AttackSO attack, bool skip = false)
 	{
@@ -100,9 +100,6 @@ public class BlockParentState : State
 	public override void Exit()
 	{
 		base.Exit();
-		if (_blockCoroutine != null)
-		{
-			StopCoroutine(_blockCoroutine);
-		}
+		_blockFrame = 0;
 	}
 }

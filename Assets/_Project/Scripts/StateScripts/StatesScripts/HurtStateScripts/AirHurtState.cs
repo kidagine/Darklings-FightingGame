@@ -5,7 +5,6 @@ public class AirHurtState : HurtParentState
 	private FallState _fallState;
 	private HurtState _hurtState;
 	private AirborneHurtState _airborneHurtState;
-	private int _hurtFrame;
 
 	protected override void Awake()
 	{
