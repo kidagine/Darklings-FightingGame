@@ -116,9 +116,9 @@ public class ParryState : State
 		return true;
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
+		base.UpdateLogic();
 		_rigidbody.velocity = Vector2.zero;
 	}
 

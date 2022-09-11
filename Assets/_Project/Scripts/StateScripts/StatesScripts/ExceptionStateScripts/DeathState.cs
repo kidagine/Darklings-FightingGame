@@ -12,9 +12,9 @@ public class DeathState : State
 		GameManager.Instance.SuperFreeze();
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
+		base.UpdateLogic();
 		if (_playerMovement.IsGrounded)
 		{
 			_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);

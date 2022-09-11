@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class HurtState : HurtParentState
 {
-	private Coroutine _stunCoroutine;
 	private HurtState _hurtState;
 	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
+	private int _hurtFrame;
 
 	protected override void Awake()
 	{
@@ -21,25 +21,11 @@ public class HurtState : HurtParentState
 	{
 		_player.CheckFlip();
 		_playerAnimator.Hurt(true);
-		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		if (!_skipEnter)
 		{
 			GameObject effect = ObjectPoolingManager.Instance.Spawn(_hurtAttack.hurtEffect);
 			effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
 			base.Enter();
-		}
-	}
-
-	IEnumerator StunCoroutine(float hitStun)
-	{
-		yield return new WaitForSeconds(hitStun);
-		if (_brainController.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
-		{
-			ToAttackState();
-		}
-		else
-		{
-			ToIdleState();
 		}
 	}
 
@@ -57,10 +43,22 @@ public class HurtState : HurtParentState
 		_stateMachine.ChangeState(_attackState);
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
+		base.UpdateLogic();
 		_rigidbody.velocity = Vector2.zero;
+		_hurtFrame++;
+		if (_hurtFrame == _hurtAttack.hitStun)
+		{
+			if (_brainController.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+			{
+				ToAttackState();
+			}
+			else
+			{
+				ToIdleState();
+			}
+		}
 	}
 
 	public override bool ToHurtState(AttackSO attack)
@@ -81,14 +79,5 @@ public class HurtState : HurtParentState
 	{
 		_stateMachine.ChangeState(_grabbedState);
 		return true;
-	}
-
-	public override void Exit()
-	{
-		base.Exit();
-		if (_stunCoroutine != null)
-		{
-			StopCoroutine(_stunCoroutine);
-		}
 	}
 }

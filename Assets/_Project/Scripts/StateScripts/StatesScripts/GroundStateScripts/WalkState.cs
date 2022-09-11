@@ -16,6 +16,7 @@ public class WalkState : GroundParentState
 		ToCrouchState();
 		ToJumpForwardState();
 		_player.CheckFlip();
+		_rigidbody.velocity = new Vector2(_baseController.InputDirection.x * _playerMovement.MovementSpeed, _rigidbody.velocity.y);
 	}
 
 	private void ToIdleState()
@@ -72,11 +73,5 @@ public class WalkState : GroundParentState
 		_blockState.Initialize(attack);
 		_stateMachine.ChangeState(_blockState);
 		return true;
-	}
-
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(_baseController.InputDirection.x * _playerMovement.MovementSpeed, _rigidbody.velocity.y);
 	}
 }

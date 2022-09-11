@@ -45,9 +45,9 @@ public class ShadowbreakState : State
 		return true;
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
+		base.UpdateLogic();
 		_rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
 	}
 

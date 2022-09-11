@@ -45,9 +45,9 @@ public class KnockdownState : State
 		_stateMachine.ChangeState(_deathState);
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
+		base.UpdateLogic();
 		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
 		_playerMovement.CheckForPlayer();
 	}

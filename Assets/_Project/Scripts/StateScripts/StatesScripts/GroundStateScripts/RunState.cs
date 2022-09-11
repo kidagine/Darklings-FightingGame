@@ -31,6 +31,7 @@ public class RunState : GroundParentState
         base.UpdateLogic();
         ToIdleState();
         ToJumpForwardState();
+        _rigidbody.velocity = new Vector2(transform.root.localScale.x * _playerMovement.MovementSpeed, _rigidbody.velocity.y);
     }
 
     private void ToIdleState()
@@ -59,12 +60,6 @@ public class RunState : GroundParentState
         {
             _playerMovement.HasJumped = false;
         }
-    }
-
-    public override void UpdatePhysics()
-    {
-        base.UpdatePhysics();
-        _rigidbody.velocity = new Vector2(transform.root.localScale.x * _playerMovement.MovementSpeed, _rigidbody.velocity.y);
     }
 
     public override void Exit()

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class AirParentState : State
 {
-	[SerializeField] protected GameObject _jumpPrefab = default;
 	[SerializeField] protected GameObject _groundedPrefab = default;
 	protected FallState _fallState;
 	protected JumpState _jumpState;

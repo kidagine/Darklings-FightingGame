@@ -24,10 +24,6 @@ public class StateMachine : MonoBehaviour
         {
             CurrentState.UpdateLogic();
         }
-        if (CurrentState != null)
-        {
-            CurrentState.UpdatePhysics();
-        }
     }
 
     public virtual void ChangeState(State newState)

@@ -11,6 +11,7 @@ public class DashState : State
     private HurtState _hurtState;
     private AirborneHurtState _airborneHurtState;
     private Coroutine _dashCoroutine;
+    private int _dashFrame;
 
     public int DashDirection { get; set; }
 
@@ -75,11 +76,6 @@ public class DashState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-    }
-
-    public override void UpdatePhysics()
-    {
-        base.UpdatePhysics();
         _player.CheckFlip();
     }
 

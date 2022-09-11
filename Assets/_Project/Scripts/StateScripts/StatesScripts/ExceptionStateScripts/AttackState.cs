@@ -72,10 +72,6 @@ public class AttackState : State
 	{
 		base.UpdateLogic();
 		ToFallStateOnGround();
-	}
-
-	public override void UpdatePhysics()
-	{
 		if (!_air)
 		{
 			_playerMovement.TravelDistance(new Vector2(

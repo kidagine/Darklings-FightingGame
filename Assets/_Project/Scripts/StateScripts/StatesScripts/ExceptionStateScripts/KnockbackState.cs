@@ -36,11 +36,6 @@ public class KnockbackState : State
 	{
 		base.UpdateLogic();
 		ToKnockdownState();
-	}
-
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
 		_rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
 	}
 

@@ -77,18 +77,13 @@ public class AirborneHurtState : HurtParentState
 		base.UpdateLogic();
 		ToKnockdownState();
 		ToWallSplatState();
+		_rigidbody.velocity = _rigidbody.velocity;
 	}
 
 	private void ToDeathState()
 	{
 		_player.OtherPlayer.StopComboTimer();
 		_stateMachine.ChangeState(_deathState);
-	}
-
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y);
 	}
 
 	private new void ToKnockdownState()

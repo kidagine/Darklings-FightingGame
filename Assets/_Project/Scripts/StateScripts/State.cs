@@ -39,7 +39,6 @@ public class State : MonoBehaviour
 
     public virtual void Enter() { }
     public virtual void UpdateLogic() { }
-    public virtual void UpdatePhysics() { }
     public virtual void Exit() { }
     public virtual bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum) { return false; }
     public virtual bool ToArcanaState(InputDirectionEnum inputDirectionEnum) { return false; }

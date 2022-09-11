@@ -47,11 +47,11 @@ public class ArcanaState : State
 				_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0));
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
 		if (_player.CurrentAttack.travelDistance == 0)
 		{
-			base.UpdatePhysics();
+			base.UpdateLogic();
 			_rigidbody.velocity = Vector2.zero;
 		}
 		else if (!_playerComboSystem.GetArcana(_crouch, _air).reversal)

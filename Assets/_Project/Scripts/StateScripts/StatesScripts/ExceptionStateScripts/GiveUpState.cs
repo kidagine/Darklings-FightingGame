@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class GiveUpState : State
@@ -10,9 +9,9 @@ public class GiveUpState : State
 		_playerAnimator.Knockdown();
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
+		base.UpdateLogic();
 		_rigidbody.velocity = Vector2.zero;
 	}
 }

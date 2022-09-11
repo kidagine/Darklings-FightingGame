@@ -1,19 +1,21 @@
-using System.Collections;
-using UnityEngine;
-
 public class BlockLowState : BlockParentState
 {
+    private int _blockFrame;
+
     public override void Enter()
     {
         base.Enter();
         _playerAnimator.BlockLow();
-        _blockCoroutine = StartCoroutine(BlockCoroutine(_blockAttack.hitStun));
     }
 
-    IEnumerator BlockCoroutine(float blockStun)
+    public override void UpdateLogic()
     {
-        yield return new WaitForSeconds(blockStun);
-        ToCrouchState();
+        base.UpdateLogic();
+        _blockFrame++;
+        if (_blockFrame == _blockAttack.hitStun)
+        {
+            ToCrouchState();
+        }
     }
 
     private void ToCrouchState()

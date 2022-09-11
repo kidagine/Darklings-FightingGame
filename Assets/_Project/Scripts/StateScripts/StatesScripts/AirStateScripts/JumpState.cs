@@ -1,8 +1,8 @@
-using System.Collections;
 using UnityEngine;
 
 public class JumpState : AirParentState
 {
+	[SerializeField] protected GameObject _jumpPrefab = default;
 	private int _pushboxFrame;
 	public override void Enter()
 	{
@@ -15,9 +15,9 @@ public class JumpState : AirParentState
 		_player.SetPushboxTrigger(true);
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
+		base.UpdateLogic();
 		_pushboxFrame++;
 		if (_pushboxFrame == 2)
 		{
