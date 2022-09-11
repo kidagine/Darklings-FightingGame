@@ -30,7 +30,7 @@ public class AttackSO : ScriptableObject
 	public Vector2 hitEffectPosition;
 	public float hitEffectRotation;
 	public GameObject hurtEffect;
-	public Vector2 hurtEffectPosition;
+	[HideInInspector] public Vector2 hurtEffectPosition;
 	public float hurtEffectRotation;
 	public CameraShakerSO cameraShaker;
 	[Header("Framedata")]

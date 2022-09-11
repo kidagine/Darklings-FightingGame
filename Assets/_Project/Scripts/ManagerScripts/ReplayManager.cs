@@ -219,19 +219,19 @@ public class ReplayManager : MonoBehaviour
 						switch (replayCardData.playerOneInputs[i].direction)
 						{
 							case InputDirectionEnum.None:
-								_playerOneController.ActiveController.InputDirection = new Vector2(0, 0);
+								_playerOneController.ActiveController.InputDirection = Vector2Int.zero;
 								break;
 							case InputDirectionEnum.Up:
-								_playerOneController.ActiveController.InputDirection = new Vector2(_playerOneController.ActiveController.InputDirection.x, 1);
+								_playerOneController.ActiveController.InputDirection = new Vector2Int(_playerOneController.ActiveController.InputDirection.x, 1);
 								break;
 							case InputDirectionEnum.Down:
-								_playerOneController.ActiveController.InputDirection = new Vector2(_playerOneController.ActiveController.InputDirection.x, -1);
+								_playerOneController.ActiveController.InputDirection = new Vector2Int(_playerOneController.ActiveController.InputDirection.x, -1);
 								break;
 							case InputDirectionEnum.Left:
-								_playerOneController.ActiveController.InputDirection = new Vector2(-1, _playerOneController.ActiveController.InputDirection.y);
+								_playerOneController.ActiveController.InputDirection = new Vector2Int(-1, _playerOneController.ActiveController.InputDirection.y);
 								break;
 							case InputDirectionEnum.Right:
-								_playerOneController.ActiveController.InputDirection = new Vector2(1, _playerOneController.ActiveController.InputDirection.y);
+								_playerOneController.ActiveController.InputDirection = new Vector2Int(1, _playerOneController.ActiveController.InputDirection.y);
 								break;
 						}
 					}
@@ -259,19 +259,19 @@ public class ReplayManager : MonoBehaviour
 			switch (playerInputs[i].direction)
 			{
 				case InputDirectionEnum.None:
-					controller.ActiveController.InputDirection = new Vector2(0, 0);
+					controller.ActiveController.InputDirection = Vector2Int.zero;
 					break;
 				case InputDirectionEnum.Up:
-					controller.ActiveController.InputDirection = new Vector2(controller.ActiveController.InputDirection.x, 1);
+					controller.ActiveController.InputDirection = new Vector2Int(controller.ActiveController.InputDirection.x, 1);
 					break;
 				case InputDirectionEnum.Down:
-					controller.ActiveController.InputDirection = new Vector2(controller.ActiveController.InputDirection.x, -1);
+					controller.ActiveController.InputDirection = new Vector2Int(controller.ActiveController.InputDirection.x, -1);
 					break;
 				case InputDirectionEnum.Left:
-					controller.ActiveController.InputDirection = new Vector2(-1, controller.ActiveController.InputDirection.y);
+					controller.ActiveController.InputDirection = new Vector2Int(-1, controller.ActiveController.InputDirection.y);
 					break;
 				case InputDirectionEnum.Right:
-					controller.ActiveController.InputDirection = new Vector2(1, controller.ActiveController.InputDirection.y);
+					controller.ActiveController.InputDirection = new Vector2Int(1, controller.ActiveController.InputDirection.y);
 					break;
 			}
 		}

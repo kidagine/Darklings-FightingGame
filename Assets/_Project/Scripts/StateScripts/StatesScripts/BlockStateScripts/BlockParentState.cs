@@ -13,7 +13,7 @@ public class BlockParentState : State
 	protected HurtState _hurtState;
 	protected AttackSO _blockAttack;
 	protected Coroutine _blockCoroutine;
-	private readonly float _chipDamage = 250;
+	private readonly int _chipDamage = 250;
 	private bool _skip;
 
 	public void Initialize(AttackSO attack, bool skip = false)

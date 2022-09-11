@@ -24,7 +24,7 @@ public class PlayerController : BaseController
 	//GAMEPLAY
 	public void Movement(CallbackContext callbackContext)
 	{
-		InputDirection = new Vector2(Mathf.Round(callbackContext.ReadValue<Vector2>().x), Mathf.Round(callbackContext.ReadValue<Vector2>().y));
+		InputDirection = new Vector2Int(Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().x), Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().y));
 		if (InputDirection.x == 1.0f && _playerMovement.MovementInput.x != InputDirection.x)
 		{
 			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);

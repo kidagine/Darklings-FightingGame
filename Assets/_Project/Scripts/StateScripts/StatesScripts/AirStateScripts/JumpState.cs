@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class JumpState : AirParentState
 {
+	private int _pushboxFrame;
 	public override void Enter()
 	{
 		base.Enter();
@@ -11,14 +12,17 @@ public class JumpState : AirParentState
 		_playerAnimator.Jump(true);
 		_rigidbody.velocity = Vector2.zero;
 		_rigidbody.AddForce(new Vector2(0, _player.playerStats.jumpForce), ForceMode2D.Impulse);
-		StartCoroutine(PushboxCoroutine());
+		_player.SetPushboxTrigger(true);
 	}
 
-	IEnumerator PushboxCoroutine()
+	public override void UpdatePhysics()
 	{
-		_player.SetPushboxTrigger(true);
-		yield return new WaitForSeconds(0.2f);
-		_player.SetPushboxTrigger(false);
+		base.UpdatePhysics();
+		_pushboxFrame++;
+		if (_pushboxFrame == 2)
+		{
+			_player.SetPushboxTrigger(false);
+		}
 	}
 
 	public override void Exit()

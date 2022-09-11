@@ -1,10 +1,12 @@
 using Demonics.Manager;
+using FixMath.NET;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
+	[SerializeField] private Fix64 d = default;
 	[SerializeField] private PlayerStateManager _playerStateManager = default;
 	[SerializeField] private PlayerAnimator _playerAnimator = default;
 	[SerializeField] private Assist _assist = default;
@@ -22,7 +24,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	private BrainController _controller;
 	private Coroutine _comboTimerCoroutine;
 	private bool _comboTimerPaused;
-	private readonly float _damageDecay = 0.97f;
+	private readonly Fix64 _damageDecay = (Fix64)0.97f;
 	[HideInInspector] public UnityEvent knockbackEvent;
 
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
@@ -36,7 +38,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	public AttackSO ResultAttack { get; set; }
 	public Transform CameraPoint { get { return _cameraPoint; } private set { } }
 	public bool CanAirArcana { get; set; }
-	public float Health { get; set; }
+	public int Health { get; set; }
 	public int Lives { get; set; } = 2;
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
@@ -301,21 +303,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		_assist.Recall();
 	}
 
-	public float CalculateDamage(AttackSO hurtAttack)
+	public int CalculateDamage(AttackSO hurtAttack)
 	{
 		int comboCount = OtherPlayerUI.CurrentComboCount;
 		float calculatedDamage = (hurtAttack.damage / playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
 		if (comboCount > 1)
 		{
-			float damageScale = 1.0f;
+			Fix64 damageScale = (Fix64)1;
 			for (int i = 0; i < comboCount; i++)
 			{
 				damageScale *= _damageDecay;
 			}
-			calculatedDamage *= damageScale;
+			calculatedDamage *= (float)damageScale;
 		}
-		OtherPlayer.SetResultAttack(Mathf.RoundToInt(calculatedDamage));
-		return calculatedDamage;
+		int calculatedIntDamage = Mathf.RoundToInt(calculatedDamage);
+		OtherPlayer.SetResultAttack(calculatedIntDamage);
+		return calculatedIntDamage;
 	}
 
 
@@ -328,7 +331,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 				GameManager.Instance.AddHitstop(this);
 			}
 		}
-		CurrentAttack.hurtEffectPosition = hit.point;
+		CurrentAttack.hurtEffectPosition = new Vector2((float)(Fix64)hit.point.x, (float)(Fix64)hit.point.y);
 		hurtbox.TakeDamage(CurrentAttack);
 		if (!CurrentAttack.isProjectile)
 		{
