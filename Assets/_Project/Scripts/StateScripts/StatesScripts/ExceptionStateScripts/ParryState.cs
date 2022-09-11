@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class ParryState : State
@@ -64,11 +65,11 @@ public class ParryState : State
 		_audio.Sound("Parry").Play();
 		if (attack.isArcana)
 		{
-			_player.ArcanaGain(0.5f);
+			_player.ArcanaGain((Fix64)0.5f);
 		}
 		else
 		{
-			_player.ArcanaGain(0.1f);
+			_player.ArcanaGain((Fix64)0.1f);
 		}
 		_parried = true;
 		GameManager.Instance.HitStop(0.15f);

@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class AirParentState : State
@@ -109,7 +110,7 @@ public class AirParentState : State
 
 	public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
-		if (_player.Arcana >= 1.0f && _playerComboSystem.GetArcana(isAir:true) != null)
+		if (_player.ArcanaGauge >= (Fix64)1 && _playerComboSystem.GetArcana(isAir:true) != null)
 		{
 			if (_player.CanAirArcana)
 			{

@@ -41,9 +41,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	public int Lives { get; set; } = 2;
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
-	public float AssistGauge { get; set; } = 1.0F;
-	public float Arcana { get; set; }
-	public float ArcaneSlowdown { get; set; } = 5.5f;
+	public Fix64 AssistGauge { get; set; } = (Fix64)1;
+	public Fix64 ArcanaGauge { get; set; }
+	public int ArcaneSlowdown { get; set; } = 5;
 	public bool CanShadowbreak { get; set; } = true;
 	public bool CanCancelAttack { get; set; }
 	public bool BlockingLow { get; set; }
@@ -110,19 +110,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		transform.rotation = Quaternion.identity;
 		_effectsParent.gameObject.SetActive(true);
 		SetHurtbox(true);
-		AssistGauge = 1.0f;
+		AssistGauge = (Fix64)1;
 		transform.SetParent(null);
 		if (!GameManager.Instance.InfiniteArcana)
 		{
-			Arcana = 0.0f;
+			ArcanaGauge = (Fix64)0;
 		}
 		StopAllCoroutines();
 		StopComboTimer();
 		_playerMovement.StopAllCoroutines();
 		_playerMovement.ResetMovement();
 		_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
-		_playerUI.SetArcana(Arcana);
-		_playerUI.SetAssist(AssistGauge);
+		_playerUI.SetArcana((float)ArcanaGauge);
+		_playerUI.SetAssist((float)AssistGauge);
 		_playerUI.ResetHealthDamaged();
 		InitializeStats();
 		_playerUI.ShowPlayerIcon();
@@ -155,36 +155,36 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	private void AssistCharge()
 	{
-		if (AssistGauge < 1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
+		if (AssistGauge < (Fix64)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
 		{
-			AssistGauge += Time.deltaTime / (9.0f - _assist.AssistStats.assistRecharge);
+			AssistGauge += (Fix64)(Time.deltaTime / (9.0f - _assist.AssistStats.assistRecharge));
 			if (GameManager.Instance.InfiniteAssist)
 			{
-				AssistGauge = 1.0f;
+				AssistGauge = (Fix64)1.0f;
 			}
-			_playerUI.SetAssist(AssistGauge);
+			_playerUI.SetAssist((float)AssistGauge);
 		}
 	}
 
 	private void ArcanaCharge()
 	{
-		if (Arcana < playerStats.Arcana && GameManager.Instance.HasGameStarted)
+		if (ArcanaGauge < (Fix64)playerStats.Arcana && GameManager.Instance.HasGameStarted)
 		{
-			Arcana += Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge);
+			ArcanaGauge += (Fix64)(Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge));
 			if (GameManager.Instance.InfiniteArcana)
 			{
-				Arcana = playerStats.Arcana;
+				ArcanaGauge = (Fix64)playerStats.Arcana;
 			}
-			_playerUI.SetArcana(Arcana);
+			_playerUI.SetArcana((float)ArcanaGauge);
 		}
 	}
 
-	public void ArcanaGain(float arcana)
+	public void ArcanaGain(Fix64 arcana)
 	{
-		if (Arcana < playerStats.Arcana && GameManager.Instance.HasGameStarted)
+		if (ArcanaGauge < (Fix64)playerStats.Arcana && GameManager.Instance.HasGameStarted)
 		{
-			Arcana += arcana;
-			_playerUI.SetArcana(Arcana);
+			ArcanaGauge += arcana;
+			_playerUI.SetArcana((float)ArcanaGauge);
 		}
 	}
 
@@ -214,10 +214,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	public bool AssistAction()
 	{
-		if (AssistGauge >= 0.5f && GameManager.Instance.HasGameStarted)
+		if (AssistGauge >= (Fix64)0.5f && GameManager.Instance.HasGameStarted)
 		{
 			_assist.Attack();
-			DecreaseArcana(0.5f);
+			DecreaseArcana((Fix64)0.5f);
 			return true;
 		}
 		return false;
@@ -241,10 +241,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		return 1.0f;
 	}
 
-	public void DecreaseArcana(float value)
+	public void DecreaseArcana(Fix64 value)
 	{
 		AssistGauge -= value;
-		_playerUI.SetAssist(AssistGauge);
+		_playerUI.SetAssist((float)AssistGauge);
 	}
 
 	public void StartComboTimer(ComboTimerStarterEnum comboTimerStarter)

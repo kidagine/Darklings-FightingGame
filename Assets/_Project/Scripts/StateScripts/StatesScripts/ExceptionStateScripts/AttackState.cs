@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class AttackState : State
@@ -154,7 +155,7 @@ public class AttackState : State
 
 	public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
-		if (_player.Arcana >= 1 && CanSkipAttack)
+		if (_player.ArcanaGauge >= (Fix64)1 && CanSkipAttack)
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
 			{
