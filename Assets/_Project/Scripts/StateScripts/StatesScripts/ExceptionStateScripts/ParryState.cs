@@ -72,7 +72,7 @@ public class ParryState : State
 			_player.ArcanaGain((Fix64)0.1f);
 		}
 		_parried = true;
-		GameManager.Instance.HitStop(0.15f);
+		GameManager.Instance.HitStop(5);
 		GameObject effect = Instantiate(_parryEffect);
 		effect.transform.localPosition = attack.hurtEffectPosition;
 		if (!attack.isProjectile)

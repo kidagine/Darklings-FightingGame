@@ -406,6 +406,7 @@ public class GameManager : MonoBehaviour
 				SkipIntro();
 			}
 		}
+		RunHitStop();
 	}
 
 	public void SkipIntro()
@@ -429,6 +430,134 @@ public class GameManager : MonoBehaviour
 		_introAnimator.SetBool("IsIntroRunning", true);
 	}
 
+	
+
+	private void MatchOver()
+	{
+		_finalRound = false;
+		_winnerNameText.text = "";
+		_readyText.text = "";
+		_currentRound = 1;
+		if (SceneSettings.ReplayMode)
+		{
+			_matchOverReplayMenu.Show();
+		}
+		else
+		{
+			_matchOverMenu.Show();
+		}
+		if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
+		{
+			ReplayManager.Instance.SaveReplay();
+		}
+		Time.timeScale = 0.0f;
+	}
+
+	public virtual void StartRound()
+	{
+		_fadeHandler.StartFadeTransition(false);
+		if (SceneSettings.ReplayMode)
+		{
+			ReplayManager.Instance.ShowReplayPrompts();
+		}
+		_timerMainAnimator.Rebind();
+		IsDialogueRunning = false;
+		for (int i = 0; i < _arcanaObjects.Length; i++)
+		{
+			_arcanaObjects[i].SetActive(true);
+		}
+		_countdown = _countdownTime;
+		_countdownText.text = Mathf.Round(_countdown).ToString();
+		PlayerOne.ResetPlayer();
+		PlayerTwo.ResetPlayer();
+		PlayerOne.transform.position = _spawnPositions[0].position;
+		PlayerTwo.transform.position = _spawnPositions[1].position;
+		PlayerOne.StopComboTimer();
+		PlayerTwo.StopComboTimer();
+		PlayerOne.PlayerStateManager.TryToTauntState();
+		PlayerTwo.PlayerStateManager.TryToTauntState();
+		StartCoroutine(ReadyCoroutine());
+	}
+
+	private void StartTrainingRound()
+	{
+		PlayerOne.ResetPlayer();
+		PlayerTwo.ResetPlayer();
+		PlayerOne.ResetLives();
+		PlayerTwo.ResetLives();
+		_playerOneUI.FadeIn();
+		_playerTwoUI.FadeIn();
+		_timerAnimator.SetTrigger("FadeIn");
+		_infiniteTime.SetActive(true);
+		PlayerOne.transform.position = _spawnPositions[0].position;
+		PlayerTwo.transform.position = _spawnPositions[1].position;
+		HasGameStarted = true;
+	}
+
+	IEnumerator ReadyCoroutine()
+	{
+		Time.timeScale = GameSpeed;
+		yield return new WaitForSeconds(0.5f);
+		_uiAudio.Sound("TextSound").Play();
+		_readyAnimator.SetTrigger("Show");
+		if (_currentRound == 4)
+		{
+			_finalRound = true;
+		}
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(true);
+		}
+		if (_finalRound)
+		{
+			_readyText.text = $"Final Round";
+		}
+		else
+		{
+			_readyText.text = $"Round {_currentRound}";
+		}
+		yield return new WaitForSeconds(1.0f);
+		_readyAnimator.SetTrigger("Show");
+		_uiAudio.Sound("TextSound").Play();
+		_readyText.text = "Fight!";
+		_countdownText.gameObject.SetActive(true);
+		_playerOneUI.FadeIn();
+		_playerTwoUI.FadeIn();
+		_timerAnimator.SetTrigger("FadeIn");
+		yield return new WaitForSeconds(1.0f);
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(false);
+		}
+		_readyText.text = "";
+		_playerOneController.ActivateInput();
+		_playerTwoController.ActivateInput();
+		HasGameStarted = true;
+		if (_currentRound == 1)
+		{
+			_inputHistories[0].StartInputTime = Time.time;
+			_inputHistories[1].StartInputTime = Time.time;
+			if (SceneSettings.ReplayMode)
+			{
+				ReplayManager.Instance.StartLoadReplay();
+			}
+		}
+	}
+
+	public virtual void RoundOver(bool timeout)
+	{
+		if (HasGameStarted)
+		{
+			if (_isTrainingMode)
+			{
+				_roundOverTrainingCoroutine = StartCoroutine(RoundOverTrainingCoroutine());
+			}
+			else
+			{
+				StartCoroutine(RoundOverCoroutine(timeout));
+			}
+		}
+	}
 	IEnumerator RoundOverCoroutine(bool timeout)
 	{
 		HasGameStarted = false;
@@ -587,134 +716,6 @@ public class GameManager : MonoBehaviour
 			}
 		}
 	}
-
-	private void MatchOver()
-	{
-		_finalRound = false;
-		_winnerNameText.text = "";
-		_readyText.text = "";
-		_currentRound = 1;
-		if (SceneSettings.ReplayMode)
-		{
-			_matchOverReplayMenu.Show();
-		}
-		else
-		{
-			_matchOverMenu.Show();
-		}
-		if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
-		{
-			ReplayManager.Instance.SaveReplay();
-		}
-		Time.timeScale = 0.0f;
-	}
-
-	public virtual void StartRound()
-	{
-		_fadeHandler.StartFadeTransition(false);
-		if (SceneSettings.ReplayMode)
-		{
-			ReplayManager.Instance.ShowReplayPrompts();
-		}
-		_timerMainAnimator.Rebind();
-		IsDialogueRunning = false;
-		for (int i = 0; i < _arcanaObjects.Length; i++)
-		{
-			_arcanaObjects[i].SetActive(true);
-		}
-		_countdown = _countdownTime;
-		_countdownText.text = Mathf.Round(_countdown).ToString();
-		PlayerOne.ResetPlayer();
-		PlayerTwo.ResetPlayer();
-		PlayerOne.transform.position = _spawnPositions[0].position;
-		PlayerTwo.transform.position = _spawnPositions[1].position;
-		PlayerOne.StopComboTimer();
-		PlayerTwo.StopComboTimer();
-		PlayerOne.PlayerStateManager.TryToTauntState();
-		PlayerTwo.PlayerStateManager.TryToTauntState();
-		StartCoroutine(ReadyCoroutine());
-	}
-
-	private void StartTrainingRound()
-	{
-		PlayerOne.ResetPlayer();
-		PlayerTwo.ResetPlayer();
-		PlayerOne.ResetLives();
-		PlayerTwo.ResetLives();
-		_playerOneUI.FadeIn();
-		_playerTwoUI.FadeIn();
-		_timerAnimator.SetTrigger("FadeIn");
-		_infiniteTime.SetActive(true);
-		PlayerOne.transform.position = _spawnPositions[0].position;
-		PlayerTwo.transform.position = _spawnPositions[1].position;
-		HasGameStarted = true;
-	}
-
-	IEnumerator ReadyCoroutine()
-	{
-		Time.timeScale = GameSpeed;
-		yield return new WaitForSeconds(0.5f);
-		_uiAudio.Sound("TextSound").Play();
-		_readyAnimator.SetTrigger("Show");
-		if (_currentRound == 4)
-		{
-			_finalRound = true;
-		}
-		for (int i = 0; i < _readyObjects.Length; i++)
-		{
-			_readyObjects[i].SetActive(true);
-		}
-		if (_finalRound)
-		{
-			_readyText.text = $"Final Round";
-		}
-		else
-		{
-			_readyText.text = $"Round {_currentRound}";
-		}
-		yield return new WaitForSeconds(1.0f);
-		_readyAnimator.SetTrigger("Show");
-		_uiAudio.Sound("TextSound").Play();
-		_readyText.text = "Fight!";
-		_countdownText.gameObject.SetActive(true);
-		_playerOneUI.FadeIn();
-		_playerTwoUI.FadeIn();
-		_timerAnimator.SetTrigger("FadeIn");
-		yield return new WaitForSeconds(1.0f);
-		for (int i = 0; i < _readyObjects.Length; i++)
-		{
-			_readyObjects[i].SetActive(false);
-		}
-		_readyText.text = "";
-		_playerOneController.ActivateInput();
-		_playerTwoController.ActivateInput();
-		HasGameStarted = true;
-		if (_currentRound == 1)
-		{
-			_inputHistories[0].StartInputTime = Time.time;
-			_inputHistories[1].StartInputTime = Time.time;
-			if (SceneSettings.ReplayMode)
-			{
-				ReplayManager.Instance.StartLoadReplay();
-			}
-		}
-	}
-
-	public virtual void RoundOver(bool timeout)
-	{
-		if (HasGameStarted)
-		{
-			if (_isTrainingMode)
-			{
-				_roundOverTrainingCoroutine = StartCoroutine(RoundOverTrainingCoroutine());
-			}
-			else
-			{
-				StartCoroutine(RoundOverCoroutine(timeout));
-			}
-		}
-	}
-
 	IEnumerator RoundOverTrainingCoroutine()
 	{
 		HasGameStarted = false;
@@ -997,30 +998,40 @@ public class GameManager : MonoBehaviour
 		yield return new WaitForSecondsRealtime(1.0f);
 		Time.timeScale = 1f;
 	}
-	public void HitStop(float hitstop)
+
+
+	private int _hitstopFrame;
+	private int _hitstop;
+
+	public void HitStop(int hitstop)
 	{
 		if (hitstop > 0.0f)
 		{
-			if (_hitStopCoroutine != null)
+			_hitstopFrame = 0;
+			for (int i = 0; i < _hitstopList.Count; i++)
 			{
-				StopCoroutine(_hitStopCoroutine);
+				_hitstopList[i].EnterHitstop();
 			}
-			_hitStopCoroutine = StartCoroutine(HitStopCoroutine(hitstop));
+			_hitstop = hitstop;
 		}
 	}
 
-	IEnumerator HitStopCoroutine(float hitstop)
+	private void RunHitStop()
 	{
-		for (int i = 0; i < _hitstopList.Count; i++)
+		if (_hitstop > 0)
 		{
-			_hitstopList[i].EnterHitstop();
+			_hitstopFrame++;
+			if (_hitstopFrame == _hitstop)
+			{
+				_hitstopFrame = 0;
+				_hitstop = 0; 
+				for (int i = 0; i < _hitstopList.Count; i++)
+				{
+					_hitstopList[i].ExitHitstop();
+				}
+				_hitstopList.Clear();
+			}
 		}
-		yield return new WaitForSecondsRealtime(hitstop);
-		for (int i = 0; i < _hitstopList.Count; i++)
-		{
-			_hitstopList[i].ExitHitstop();
-		}
-		_hitstopList.Clear();
 	}
 }
 

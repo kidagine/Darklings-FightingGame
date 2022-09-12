@@ -56,7 +56,7 @@ public class AirborneHurtState : HurtParentState
 		_playerUI.Damaged();
 		_playerMovement.ResetGravity();
 		_player.RecallAssist();
-		GameManager.Instance.HitStop(_hurtAttack.hitstop);
+		GameManager.Instance.HitStop(5);
 		if (_player.Health <= 0)
 		{
 			ToDeathState();

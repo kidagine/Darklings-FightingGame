@@ -19,7 +19,7 @@ public class DebugGameplayMenu : MonoBehaviour
 		int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
 		string versionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
 
-		_versionText.text = "Ver: " + versionNumber;
+		_versionText.text = "Ver:" + versionNumber;
 #endif
 	}
 #if UNITY_EDITOR

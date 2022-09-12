@@ -14,8 +14,8 @@ public class AttackSO : ScriptableObject
 	[Range(0.0f, 1.0f)]
 	public float knockbackDuration;
 	public AttackTypeEnum attackTypeEnum;
-	[Range(0.0f, 1.0f)]
-	public float hitstop;
+	[Range(0, 50)]
+	public int hitstop;
 	public int damage;
 	public bool isAirAttack;
 	public bool isProjectile;
