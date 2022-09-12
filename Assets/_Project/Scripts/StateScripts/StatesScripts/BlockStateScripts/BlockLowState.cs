@@ -9,8 +9,7 @@ public class BlockLowState : BlockParentState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _blockFrame++;
-        if (_blockFrame == _blockAttack.hitStun)
+        if (DemonicsPhysics.WaitFrames(ref _blockFrame))
         {
             ToCrouchState();
         }

@@ -23,8 +23,7 @@ public class BlockAirState : BlockParentState
 		base.UpdateLogic();
 		ToBlockState();
 		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y / 1.05f);
-		_blockFrame++;
-		if (_blockFrame == _blockAttack.hitStun)
+		if (DemonicsPhysics.WaitFrames(ref _blockFrame))
 		{
 			ToFallState();
 		}

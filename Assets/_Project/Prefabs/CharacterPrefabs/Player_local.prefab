@@ -1830,7 +1830,6 @@ GameObject:
   - component: {fileID: 4664395619888274278}
   - component: {fileID: 7611394710214668632}
   - component: {fileID: 6591136354886088417}
-  - component: {fileID: 1478855647286407505}
   m_Layer: 10
   m_Name: Player_local
   m_TagString: Untagged
@@ -1872,7 +1871,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 2
   m_Material: {fileID: 6200000, guid: 93bce4df195738747956615c3d5b45a6, type: 2}
   m_Interpolate: 0
@@ -2559,21 +2558,6 @@ MonoBehaviour:
   m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &1478855647286407505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8073473790702501986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28ba2b97b9134654fb2d9b49ee3fc1a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shapes: []
-  isStatic: 0
-  doSmoothing: 1
 --- !u!1 &8073473791272386163
 GameObject:
   m_ObjectHideFlags: 0

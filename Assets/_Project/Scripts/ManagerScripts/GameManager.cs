@@ -999,15 +999,12 @@ public class GameManager : MonoBehaviour
 		Time.timeScale = 1f;
 	}
 
-
-	private int _hitstopFrame;
 	private int _hitstop;
 
 	public void HitStop(int hitstop)
 	{
 		if (hitstop > 0.0f)
 		{
-			_hitstopFrame = 0;
 			for (int i = 0; i < _hitstopList.Count; i++)
 			{
 				_hitstopList[i].EnterHitstop();
@@ -1020,10 +1017,8 @@ public class GameManager : MonoBehaviour
 	{
 		if (_hitstop > 0)
 		{
-			_hitstopFrame++;
-			if (_hitstopFrame == _hitstop)
+			if (DemonicsPhysics.WaitFrames(ref _hitstop))
 			{
-				_hitstopFrame = 0;
 				_hitstop = 0; 
 				for (int i = 0; i < _hitstopList.Count; i++)
 				{

@@ -29,6 +29,7 @@ public class HurtParentState : State
 	{
 		base.Enter();
 		_audio.Sound(_hurtAttack.impactSound).Play();
+		_hurtFrame = _hurtAttack.hitStun;
 		if (!_playerMovement.IsInCorner)
 		{
 			_playerMovement.Knockback(new Vector2(
@@ -79,6 +80,5 @@ public class HurtParentState : State
 	{
 		base.Exit();
 		_playerUI.UpdateHealthDamaged();
-		_hurtFrame = 0;
 	}
 }

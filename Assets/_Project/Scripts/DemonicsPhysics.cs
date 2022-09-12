@@ -27,4 +27,14 @@ public class DemonicsPhysics : MonoBehaviour
 	{
 		Frame++;
 	}
+
+	public static bool WaitFrames(ref int frames)
+	{
+		frames--;
+		if (frames <= 0)
+		{
+			return true;
+		}
+		return false;
+	}
 }

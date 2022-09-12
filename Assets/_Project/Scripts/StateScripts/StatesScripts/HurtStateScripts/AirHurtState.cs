@@ -29,8 +29,7 @@ public class AirHurtState : HurtParentState
 		ToFallStateAfterGround();
 		_playerMovement.CheckForPlayer();
 		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
-		_hurtFrame++;
-		if (_hurtFrame == _hurtAttack.hitStun)
+		if (DemonicsPhysics.WaitFrames(ref _hurtFrame))
 		{
 			ToFallAfterStunState();
 		}

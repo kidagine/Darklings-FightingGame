@@ -38,6 +38,7 @@ public class BlockParentState : State
 	{
 		base.Enter();
 		_audio.Sound("Block").Play();
+		_blockFrame = _blockAttack.hitStun;
 		_playerMovement.Knockback(new Vector2(
 			_player.OtherPlayer.transform.localScale.x, 0), new Vector2(_blockAttack.knockback, 0), _blockAttack.knockbackDuration);
 
@@ -96,11 +97,5 @@ public class BlockParentState : State
 	{
 		base.UpdateLogic();
 		_rigidbody.velocity = Vector2.zero;
-	}
-
-	public override void Exit()
-	{
-		base.Exit();
-		_blockFrame = 0;
 	}
 }

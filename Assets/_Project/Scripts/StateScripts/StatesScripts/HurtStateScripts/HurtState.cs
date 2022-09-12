@@ -45,8 +45,7 @@ public class HurtState : HurtParentState
 	{
 		base.UpdateLogic();
 		_rigidbody.velocity = Vector2.zero;
-		_hurtFrame++;
-		if (_hurtFrame == _hurtAttack.hitStun)
+		if (DemonicsPhysics.WaitFrames(ref _hurtFrame))
 		{
 			if (_brainController.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
 			{
