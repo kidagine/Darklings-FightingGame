@@ -109,7 +109,7 @@ public class ReplayManager : MonoBehaviour
 
 	public void SaveReplay()
 	{
-		if (!SceneSettings.IsTrainingMode && _replayNotificationAnimator != null)
+		if (!SceneSettings.IsTrainingMode && !SceneSettings.ReplayMode && _replayNotificationAnimator != null)
 		{
 			int filesAmount = _replayFiles.Length;
 			if (filesAmount == _replaysLimit)
@@ -203,6 +203,7 @@ public class ReplayManager : MonoBehaviour
 			{
 				GameManager.Instance.SkipIntro();
 				s = false;
+				t = true;
 			}
 		}
 		if (t)
@@ -214,7 +215,8 @@ public class ReplayManager : MonoBehaviour
 	{
 		if (i < replayCardData.playerOneInputs.Length)
 		{
-			if (DemonicsPhysics.Frame == replayCardData.playerOneInputs[i].time)
+			Debug.Log(DemonicsPhysics.Frame + "|" + replayCardData.playerOneInputs[i].time);
+			if (DemonicsPhysics.Frame >= replayCardData.playerOneInputs[i].time)
 			{
 				_playerOneInputBuffer.AddInputBufferItem(replayCardData.playerOneInputs[i].input, replayCardData.playerOneInputs[i].direction);
 				if (replayCardData.playerOneInputs[i].input == InputEnum.Direction)

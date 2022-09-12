@@ -7,7 +7,6 @@ public class InputBuffer : MonoBehaviour
 	[SerializeField] private PlayerStateManager _playerStateManager = default;
 	private readonly Queue<InputBufferItem> _inputBuffer = new();
 	private InputHistory _inputHistory;
-	private bool _isExecuting;
 	private InputDirectionEnum _lastInputDirection;
 
 	void Update()
@@ -41,19 +40,21 @@ public class InputBuffer : MonoBehaviour
 		{
 			inputBufferItem.Execute += () => { _lastInputDirection = inputDirectionEnum; return true; };
 		}
+	}
+
+	private void FixedUpdate()
+	{
 		CheckInputBuffer();
 	}
 
 	public void CheckInputBuffer()
 	{
-		if (_inputBuffer.Count > 0 && !_isExecuting)
+		if (_inputBuffer.Count > 0)
 		{
-			_isExecuting = true;
 			if (_inputBuffer.Peek().Execute.Invoke())
 			{
 				_inputBuffer.Dequeue();
 			}
-			_isExecuting = false;
 		}
 	}
 

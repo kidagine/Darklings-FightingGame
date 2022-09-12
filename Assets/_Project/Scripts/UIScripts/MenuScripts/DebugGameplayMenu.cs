@@ -6,6 +6,7 @@ public class DebugGameplayMenu : MonoBehaviour
 	[SerializeField] private TextAsset _versionTextAsset = default;
 	[SerializeField] private TextMeshProUGUI _versionText = default;
 	[SerializeField] private TextMeshProUGUI _fpsText = default;
+	[SerializeField] private TextMeshProUGUI _frameText = default;
 	private readonly string _versionSplit = "Version:";
 	private readonly string _patchNotesSplit = "Patch Notes:";
 	private int _fpsFrame;
@@ -21,12 +22,14 @@ public class DebugGameplayMenu : MonoBehaviour
 		_versionText.text = "Ver: " + versionNumber;
 #endif
 	}
+#if UNITY_EDITOR
 	private void Update()
 	{
 		if (_fpsFrame == 4)
 		{
 			_fpsText.text = "FPS: " + Mathf.FloorToInt(1f / Time.deltaTime);
 		}
+		_frameText.text = "Frame: " + DemonicsPhysics.Frame;
 	}
 	private void FixedUpdate()
 	{
@@ -36,4 +39,5 @@ public class DebugGameplayMenu : MonoBehaviour
 			_fpsFrame = 0;
 		}
 	}
+#endif
 }

@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 	[Range(1, 10)]
 	[SerializeField] private int _gameSpeed = 1;
 	[Range(10, 300)]
-	[SerializeField] private float _countdownTime = 99.0f;
+	[SerializeField] private int _countdownTime = 99;
 	[Header("Data")]
 	[SerializeField] private Transform[] _spawnPositions = default;
 	[SerializeField] private IntroUI _introUI = default;
@@ -85,8 +85,8 @@ public class GameManager : MonoBehaviour
 	private List<IHitstop> _hitstopList = new();
 	private Vector2 _cachedOneResetPosition;
 	private Vector2 _cachedTwoResetPosition;
-	private float _countdown;
-	private float _startSkipTime;
+	private int _countdown;
+	private int _countdownFrames = 60;
 	private int _currentRound = 1;
 	private bool _reverseReset;
 	private bool _hasSwitchedCharacters;
@@ -110,7 +110,6 @@ public class GameManager : MonoBehaviour
 
 	void Awake()
 	{
-		_startSkipTime = Time.time;
 		HasGameStarted = false;
 		GameSpeed = _gameSpeed;
 		CheckInstance();
@@ -378,23 +377,26 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		if (HasGameStarted && !_isTrainingMode)
 		{
-			_countdown -= Time.deltaTime;
-			_countdownText.text = Mathf.Round(_countdown).ToString();
-
-			if (_countdown <= 0.0f)
+			_countdownFrames--;
+			if (_countdownFrames == 0)
 			{
-				_timerMainAnimator.Rebind();
-				RoundOver(true);
+				_countdownFrames = 60;
+				_countdown -= 1;
+				_countdownText.text = Mathf.Round(_countdown).ToString();
+				if (_countdown <= 0)
+				{
+					_timerMainAnimator.Rebind();
+					RoundOver(true);
+				}
+				else if (_countdown <= 10)
+				{
+					_timerMainAnimator.SetTrigger("TimerLow");
+				}
 			}
-			else if (_countdown <= 10.5f)
-			{
-				_timerMainAnimator.SetTrigger("TimerLow");
-			}
-
 		}
 		if (IsDialogueRunning && !SceneSettings.ReplayMode)
 		{
