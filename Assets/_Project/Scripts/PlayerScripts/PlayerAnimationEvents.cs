@@ -106,4 +106,9 @@ public class PlayerAnimationEvents : MonoBehaviour
 	{
 		CameraShake.Instance.Shake(cameraShaker.intensity, cameraShaker.timer);
 	}
+
+	public void Test()
+	{
+		Debug.Log(DemonicsPhysics.Frame);
+	}
 }

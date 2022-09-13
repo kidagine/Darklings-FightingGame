@@ -6,8 +6,7 @@ public class AttackSO : ScriptableObject
 	[Header("Main")]
 	public float travelDistance;
 	public Vector2 travelDirection;
-	public float hitStun;
-	public float blockStun;
+	public int hitStun;
 	[Range(0.0f, 16.0f)]
 	public float knockback;
 	public float bounce;
@@ -15,8 +14,8 @@ public class AttackSO : ScriptableObject
 	[Range(0.0f, 1.0f)]
 	public float knockbackDuration;
 	public AttackTypeEnum attackTypeEnum;
-	[Range(0.0f, 1.0f)]
-	public float hitstop;
+	[Range(0, 50)]
+	public int hitstop;
 	public int damage;
 	public bool isAirAttack;
 	public bool isProjectile;
@@ -30,7 +29,7 @@ public class AttackSO : ScriptableObject
 	public Vector2 hitEffectPosition;
 	public float hitEffectRotation;
 	public GameObject hurtEffect;
-	public Vector2 hurtEffectPosition;
+	[HideInInspector] public Vector2 hurtEffectPosition;
 	public float hurtEffectRotation;
 	public CameraShakerSO cameraShaker;
 	[Header("Framedata")]

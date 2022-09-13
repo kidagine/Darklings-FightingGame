@@ -38,7 +38,7 @@ public class InputHistory : MonoBehaviour
 
 	public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
 	{
-		InputTimes.Add(Time.time - StartInputTime);
+		InputTimes.Add(DemonicsPhysics.Frame);
 		Inputs.Add(inputEnum);
 		Directions.Add(inputDirectionEnum);
 		if (inputDirectionEnum == InputDirectionEnum.None && inputEnum == InputEnum.Direction)

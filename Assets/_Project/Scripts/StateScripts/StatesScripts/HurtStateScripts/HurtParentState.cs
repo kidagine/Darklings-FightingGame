@@ -1,4 +1,4 @@
-using System.Collections;
+using FixMath.NET;
 using UnityEngine;
 
 public class HurtParentState : State
@@ -9,6 +9,7 @@ public class HurtParentState : State
 	protected ShadowbreakState _shadowbreakState;
 	protected AttackSO _hurtAttack;
 	protected bool _skipEnter;
+	protected int _hurtFrame;
 
 	protected virtual void Awake()
 	{
@@ -28,6 +29,7 @@ public class HurtParentState : State
 	{
 		base.Enter();
 		_audio.Sound(_hurtAttack.impactSound).Play();
+		_hurtFrame = _hurtAttack.hitStun;
 		if (!_playerMovement.IsInCorner)
 		{
 			_playerMovement.Knockback(new Vector2(
@@ -65,7 +67,7 @@ public class HurtParentState : State
 
 	public override bool AssistCall()
 	{
-		if (_player.AssistGauge >= 1.0f)
+		if (_player.AssistGauge >= (Fix64)1)
 		{
 			_stateMachine.ChangeState(_shadowbreakState);
 			return true;

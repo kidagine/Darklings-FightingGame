@@ -1,4 +1,5 @@
 using Demonics.Manager;
+using FixMath.NET;
 using UnityEngine;
 
 public class BlockParentState : State
@@ -12,9 +13,9 @@ public class BlockParentState : State
 	protected ShadowbreakState _shadowbreakState;
 	protected HurtState _hurtState;
 	protected AttackSO _blockAttack;
-	protected Coroutine _blockCoroutine;
-	private readonly float _chipDamage = 250;
+	private readonly int _chipDamage = 250;
 	private bool _skip;
+	protected int _blockFrame;
 
 	public void Initialize(AttackSO attack, bool skip = false)
 	{
@@ -37,8 +38,9 @@ public class BlockParentState : State
 	{
 		base.Enter();
 		_audio.Sound("Block").Play();
+		_blockFrame = _blockAttack.hitStun;
 		_playerMovement.Knockback(new Vector2(
-			_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_blockAttack.knockback, 0.0f), _blockAttack.knockbackDuration);
+			_player.OtherPlayer.transform.localScale.x, 0), new Vector2(_blockAttack.knockback, 0), _blockAttack.knockbackDuration);
 
 		if (!_skip)
 		{
@@ -65,7 +67,7 @@ public class BlockParentState : State
 
 	public override bool AssistCall()
 	{
-		if (_player.AssistGauge >= 1.0f)
+		if (_player.AssistGauge >= (Fix64)1)
 		{
 			_stateMachine.ChangeState(_shadowbreakState);
 			return true;
@@ -86,22 +88,14 @@ public class BlockParentState : State
 
 	public override bool ToGrabbedState()
 	{
+		_grabbedState.Initialize(true);
 		_stateMachine.ChangeState(_grabbedState);
 		return true;
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
+		base.UpdateLogic();
 		_rigidbody.velocity = Vector2.zero;
-	}
-
-	public override void Exit()
-	{
-		base.Exit();
-		if (_blockCoroutine != null)
-		{
-			StopCoroutine(_blockCoroutine);
-		}
 	}
 }

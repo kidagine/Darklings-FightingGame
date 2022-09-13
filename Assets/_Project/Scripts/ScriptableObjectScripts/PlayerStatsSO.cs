@@ -11,16 +11,13 @@ public class PlayerStatsSO : ScriptableObject
 	public RuntimeAnimatorController runtimeAnimatorController;
 	public DialogueSO _dialogue;
 	public CharacterTypeEnum characterName;
-	public float maxHealth = 10000f;
-	public float defense = 1.0f;
-	[Header("Movement")]
-	public float walkSpeed = 3;
-	public float runSpeed = 5;
-	public float jumpForce = 2;
-	public float dashForce = 5;
+	[Header("Stats")]
+	public int defenseLevel;
+	public int arcanaLevel;
+	public int speedLevel;
+	public int jumpForce = 2;
+	public int dashForce = 5;
 	public bool canDoubleJump = true;
-	[Header("Arcana")]
-	public float maxArcana = 2;
 	public float arcanaRecharge = 1;
 	[Header("Moves")]
 	public AttackSO m2L;
@@ -36,4 +33,11 @@ public class PlayerStatsSO : ScriptableObject
 	public ArcanaSO m5Arcana;
 	public ArcanaSO m2Arcana;
 	public ArcanaSO jArcana;
+	[HideInInspector] public int maxHealth = 10000;
+
+	public int Arcana { get { return arcanaLevel; } set { } }
+	public float Defense { get { return (defenseLevel - 1) * 0.05f + 0.95f; } set { } }
+	public int SpeedWalk { get { return (speedLevel - 1) * 1 + 2; } set { } }
+	public int SpeedRun { get { return (speedLevel - 1) * 1+ 7; } set { } }
+
 }

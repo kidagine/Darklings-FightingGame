@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class BlockAirState : BlockParentState
@@ -17,19 +16,17 @@ public class BlockAirState : BlockParentState
 	{
 		base.Enter();
 		_playerAnimator.BlockAir();
-		_blockCoroutine = StartCoroutine(BlockCoroutine(_blockAttack.hitStun));
-	}
-
-	IEnumerator BlockCoroutine(float blockStun)
-	{
-		yield return new WaitForSeconds(blockStun);
-		ToFallState();
 	}
 
 	public override void UpdateLogic()
 	{
 		base.UpdateLogic();
 		ToBlockState();
+		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y / 1.05f);
+		if (DemonicsPhysics.WaitFrames(ref _blockFrame))
+		{
+			ToFallState();
+		}
 	}
 
 	private void ToFallState()
@@ -47,10 +44,5 @@ public class BlockAirState : BlockParentState
 			_blockState.Initialize(_blockAttack, true);
 			_stateMachine.ChangeState(_blockState);
 		}
-	}
-
-	public override void UpdatePhysics()
-	{
-		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y / 1.05f);
 	}
 }

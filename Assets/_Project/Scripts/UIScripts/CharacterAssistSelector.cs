@@ -2,7 +2,6 @@ using Demonics.Sounds;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.InputSystem.InputAction;
 
 public class CharacterAssistSelector : MonoBehaviour
 {
@@ -13,13 +12,12 @@ public class CharacterAssistSelector : MonoBehaviour
 	[SerializeField] private Animator _assistAnimator = default;
 	[SerializeField] private ChangeStageMenu _changeStageMenu = default;
 	[SerializeField] private RebindMenu _rebindMenu = default;
-	[SerializeField] private PlayerAnimator _playerAnimator = default;
+	[SerializeField] private PlayerUIRender _playerUIRender = default;
 	[SerializeField] private GameObject _arrows = default;
 	[SerializeField] private AssistStatsSO[] assistStatsSO = default;
 	[SerializeField] private bool _isPlayerOne = default;
 	private Audio _audio;
 	private Vector2 _directionInput;
-	private string _controllerInputName;
 	private int _assistCount;
 	private bool _inputDeactivated;
 	private bool _pressed;
@@ -32,11 +30,6 @@ public class CharacterAssistSelector : MonoBehaviour
 	void Awake()
 	{
 		_audio = GetComponent<Audio>();
-	}
-
-	private void OnEnable()
-	{
-
 	}
 
 	private void Update()
@@ -116,7 +109,7 @@ public class CharacterAssistSelector : MonoBehaviour
 	private void OnDisable()
 	{
 		gameObject.SetActive(false);
-		_playerAnimator.SetSpriteLibraryAsset(0);
+		_playerUIRender.SetSpriteLibraryAsset(0);
 		AssistLetter = 'A';
 		_assistIndicatorText.text = "";
 		_inputDeactivated = false;

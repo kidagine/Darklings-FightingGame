@@ -36,6 +36,11 @@ public class GrabState : State
 
 	public override bool ToThrowState()
 	{
+		if (_baseController.InputDirection.x == -1 && transform.root.localScale.x == 1
+|| _baseController.InputDirection.x == 1 && transform.root.localScale.x == -1)
+		{
+			_throwState.Initialize(true);
+		}
 		_stateMachine.ChangeState(_throwState);
 		return true;
 	}
@@ -56,13 +61,14 @@ public class GrabState : State
 
 	public override bool ToGrabbedState()
 	{
+		_grabbedState.Initialize(true);
 		_stateMachine.ChangeState(_grabbedState);
 		return true;
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
+		base.UpdateLogic();
 		_rigidbody.velocity = Vector2.zero;
 	}
 }

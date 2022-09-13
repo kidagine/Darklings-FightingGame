@@ -38,10 +38,10 @@ public class WallSplatState : State
 		_stateMachine.ChangeState(_airborneHurtState);
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(0.0f, 0.0f);
+		base.UpdateLogic();
+		_rigidbody.velocity = Vector2.zero;
 	}
 
 	public override bool ToKnockdownState()

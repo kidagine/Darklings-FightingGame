@@ -1,4 +1,3 @@
-using Demonics.Sounds;
 using System.Collections;
 using System.Text.RegularExpressions;
 using TMPro;
@@ -15,6 +14,7 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _arcanaSlider = default;
 	[SerializeField] private Slider _assistSlider = default;
 	[SerializeField] private Image _portraitImage = default;
+	[SerializeField] private Image _assistBorder = default;
 	[SerializeField] private Notification _notification = default;
 	[SerializeField] private TextMeshProUGUI _characterName = default;
 	[SerializeField] private TextMeshProUGUI _playerName = default;
@@ -30,11 +30,17 @@ public class PlayerUI : MonoBehaviour
 	[SerializeField] private Slider _comboTimerSlider = default;
 	[SerializeField] private Image _comboTimerImage = default;
 	[SerializeField] private Image _comboTimerLock = default;
+	[SerializeField] private Image _borderHealth = default;
+	[SerializeField] private Image _borderPortrait = default;
+	[SerializeField] private Sprite _assistEmpty = default;
+	[SerializeField] private Sprite _assistHalf = default;
+	[SerializeField] private Sprite _assistFull = default;
 	[SerializeField] private PauseMenu _pauseMenu = default;
 	[SerializeField] private PauseMenu _trainingPauseMenu = default;
 	[SerializeField] private PauseMenu _replayPauseMenu = default;
 	[SerializeField] private TrainingMenu _trainingMenu = default;
 	[SerializeField] private Color _healthNormalColor = default;
+	[SerializeField] private Color _healthLimitColor = default;
 	[SerializeField] private Color _healthDamagedColor = default;
 	[Header("1BitVisuals")]
 	[SerializeField] private Image _healthImage = default;
@@ -51,6 +57,7 @@ public class PlayerUI : MonoBehaviour
 	private Animator _animator;
 	private BrainController _controller;
 	private RectTransform _comboGroup;
+	private Color _healthCurrentColor;
 	private float _currentEndDamageValue;
 	private int _currentLifeIndex;
 	private bool _hasComboEnded;
@@ -72,6 +79,10 @@ public class PlayerUI : MonoBehaviour
 
 	public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
 	{
+		_borderHealth.color = Color.white;
+		_borderPortrait.color = Color.white;
+		_healthCurrentColor = _healthNormalColor;
+		_healthImage.color = _healthCurrentColor;
 		_playerIcons = playerIcons;
 		_controller = controller;
 		if (!_initializedStats)
@@ -131,7 +142,7 @@ public class PlayerUI : MonoBehaviour
 				SetPortrait(playerStats.portraits[SceneSettings.ColorTwo]);
 			}
 			SetMaxHealth(playerStats.maxHealth);
-			SetMaxArcana(playerStats.maxArcana);
+			SetMaxArcana(playerStats.Arcana);
 			_initializedStats = true;
 		}
 	}
@@ -190,11 +201,30 @@ public class PlayerUI : MonoBehaviour
 
 	public void SetAssist(float value)
 	{
+		if (value >= 1.0f)
+		{
+			_assistBorder.sprite = _assistFull;
+		}
+		else if(value >= 0.5f)
+		{
+			_assistBorder.sprite = _assistHalf;
+		}
+		else
+		{
+			_assistBorder.sprite = _assistEmpty;
+		}
 		_assistSlider.value = value;
 	}
 
 	public void SetHealth(float value)
 	{
+		if (value <= 3000)
+		{
+			_borderHealth.color = Color.red;
+			_borderPortrait.color = Color.red;
+			_healthCurrentColor = _healthLimitColor;
+		}
+		_healthImage.color = _healthCurrentColor;
 		_healthSlider.value = value;
 	}
 
@@ -222,7 +252,7 @@ public class PlayerUI : MonoBehaviour
 		_healthImage.color = _healthDamagedColor;
 		_portraitImage.color = _healthDamagedColor;
 		yield return new WaitForSeconds(0.005f);
-		_healthImage.color = _healthNormalColor;
+		_healthImage.color = _healthCurrentColor;
 		_portraitImage.color = Color.white;
 	}
 

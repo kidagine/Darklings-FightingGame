@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 	[Range(1, 10)]
 	[SerializeField] private int _gameSpeed = 1;
 	[Range(10, 300)]
-	[SerializeField] private float _countdownTime = 99.0f;
+	[SerializeField] private int _countdownTime = 99;
 	[Header("Data")]
 	[SerializeField] private Transform[] _spawnPositions = default;
 	[SerializeField] private IntroUI _introUI = default;
@@ -81,13 +81,12 @@ public class GameManager : MonoBehaviour
 	private PlayerInput _playerTwoInput;
 	private Coroutine _roundOverTrainingCoroutine;
 	private Coroutine _hitStopCoroutine;
-	private Sound _currentMusic;
 	private GameObject _currentStage;
 	private List<IHitstop> _hitstopList = new();
 	private Vector2 _cachedOneResetPosition;
 	private Vector2 _cachedTwoResetPosition;
-	private float _countdown;
-	private float _startSkipTime;
+	private int _countdown;
+	private int _countdownFrames = 60;
 	private int _currentRound = 1;
 	private bool _reverseReset;
 	private bool _hasSwitchedCharacters;
@@ -95,7 +94,7 @@ public class GameManager : MonoBehaviour
 	private bool _finalRound;
 	private int _playerOneWins;
 	private int _playerTwoWins;
-
+	public Sound CurrentMusic { get; private set; }
 	public bool IsDialogueRunning { get; set; }
 	public bool HasGameStarted { get; set; }
 	public bool IsTrainingMode { get { return _isTrainingMode; } set { } }
@@ -109,14 +108,10 @@ public class GameManager : MonoBehaviour
 	public BaseController PausedController { get; set; }
 	public float GameSpeed { get; set; }
 
-
 	void Awake()
 	{
-		_startSkipTime = Time.time;
 		HasGameStarted = false;
 		GameSpeed = _gameSpeed;
-		Application.targetFrameRate = 60;
-		QualitySettings.vSyncCount = 1;
 		CheckInstance();
 		if (!SceneSettings.SceneSettingsDecide)
 		{
@@ -148,9 +143,9 @@ public class GameManager : MonoBehaviour
 		CheckSceneSettings();
 
 		GameObject playerOneObject = Instantiate(_playerLocal);
-		playerOneObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerOne];
+		playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];
 		GameObject playerTwoObject = Instantiate(_playerLocal);
-		playerTwoObject.GetComponent<PlayerStats>().PlayerStatsSO = _playerStats[SceneSettings.PlayerTwo];
+		playerTwoObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerTwo];
 		InitializePlayers(playerOneObject, playerTwoObject);
 	}
 
@@ -350,12 +345,12 @@ public class GameManager : MonoBehaviour
 	{
 		if (SceneSettings.MusicName == "Random")
 		{
-			_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+			CurrentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
 		}
 		else
 		{
-			_currentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
-			_currentMusic.Play();
+			CurrentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
+			CurrentMusic.Play();
 		}
 		if (_isTrainingMode)
 		{
@@ -374,7 +369,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			_musicMenu.ShowMusicMenu(_currentMusic.name);
+			_musicMenu.ShowMusicMenu(CurrentMusic.name);
 			_inputHistories[0].transform.GetChild(0).gameObject.SetActive(false);
 			_inputHistories[1].transform.GetChild(0).gameObject.SetActive(false);
 			_trainingPrompts.gameObject.SetActive(false);
@@ -382,32 +377,36 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		if (HasGameStarted && !_isTrainingMode)
 		{
-			_countdown -= Time.deltaTime;
-			_countdownText.text = Mathf.Round(_countdown).ToString();
-
-			if (_countdown <= 0.0f)
+			_countdownFrames--;
+			if (_countdownFrames == 0)
 			{
-				_timerMainAnimator.Rebind();
-				RoundOver(true);
+				_countdownFrames = 60;
+				_countdown -= 1;
+				_countdownText.text = Mathf.Round(_countdown).ToString();
+				if (_countdown <= 0)
+				{
+					_timerMainAnimator.Rebind();
+					RoundOver(true);
+				}
+				else if (_countdown <= 10)
+				{
+					_timerMainAnimator.SetTrigger("TimerLow");
+				}
 			}
-			else if (_countdown <= 10.5f)
-			{
-				_timerMainAnimator.SetTrigger("TimerLow");
-			}
-
 		}
 		if (IsDialogueRunning && !SceneSettings.ReplayMode)
 		{
 			if (Input.anyKeyDown)
 			{
-				ReplayManager.Instance.Skip = Time.time - _startSkipTime;
+				ReplayManager.Instance.Skip = DemonicsPhysics.Frame;
 				SkipIntro();
 			}
 		}
+		RunHitStop();
 	}
 
 	public void SkipIntro()
@@ -431,6 +430,134 @@ public class GameManager : MonoBehaviour
 		_introAnimator.SetBool("IsIntroRunning", true);
 	}
 
+	
+
+	private void MatchOver()
+	{
+		_finalRound = false;
+		_winnerNameText.text = "";
+		_readyText.text = "";
+		_currentRound = 1;
+		if (SceneSettings.ReplayMode)
+		{
+			_matchOverReplayMenu.Show();
+		}
+		else
+		{
+			_matchOverMenu.Show();
+		}
+		if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
+		{
+			ReplayManager.Instance.SaveReplay();
+		}
+		Time.timeScale = 0.0f;
+	}
+
+	public virtual void StartRound()
+	{
+		_fadeHandler.StartFadeTransition(false);
+		if (SceneSettings.ReplayMode)
+		{
+			ReplayManager.Instance.ShowReplayPrompts();
+		}
+		_timerMainAnimator.Rebind();
+		IsDialogueRunning = false;
+		for (int i = 0; i < _arcanaObjects.Length; i++)
+		{
+			_arcanaObjects[i].SetActive(true);
+		}
+		_countdown = _countdownTime;
+		_countdownText.text = Mathf.Round(_countdown).ToString();
+		PlayerOne.ResetPlayer();
+		PlayerTwo.ResetPlayer();
+		PlayerOne.transform.position = _spawnPositions[0].position;
+		PlayerTwo.transform.position = _spawnPositions[1].position;
+		PlayerOne.StopComboTimer();
+		PlayerTwo.StopComboTimer();
+		PlayerOne.PlayerStateManager.TryToTauntState();
+		PlayerTwo.PlayerStateManager.TryToTauntState();
+		StartCoroutine(ReadyCoroutine());
+	}
+
+	private void StartTrainingRound()
+	{
+		PlayerOne.ResetPlayer();
+		PlayerTwo.ResetPlayer();
+		PlayerOne.ResetLives();
+		PlayerTwo.ResetLives();
+		_playerOneUI.FadeIn();
+		_playerTwoUI.FadeIn();
+		_timerAnimator.SetTrigger("FadeIn");
+		_infiniteTime.SetActive(true);
+		PlayerOne.transform.position = _spawnPositions[0].position;
+		PlayerTwo.transform.position = _spawnPositions[1].position;
+		HasGameStarted = true;
+	}
+
+	IEnumerator ReadyCoroutine()
+	{
+		Time.timeScale = GameSpeed;
+		yield return new WaitForSeconds(0.5f);
+		_uiAudio.Sound("TextSound").Play();
+		_readyAnimator.SetTrigger("Show");
+		if (_currentRound == 4)
+		{
+			_finalRound = true;
+		}
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(true);
+		}
+		if (_finalRound)
+		{
+			_readyText.text = $"Final Round";
+		}
+		else
+		{
+			_readyText.text = $"Round {_currentRound}";
+		}
+		yield return new WaitForSeconds(1.0f);
+		_readyAnimator.SetTrigger("Show");
+		_uiAudio.Sound("TextSound").Play();
+		_readyText.text = "Fight!";
+		_countdownText.gameObject.SetActive(true);
+		_playerOneUI.FadeIn();
+		_playerTwoUI.FadeIn();
+		_timerAnimator.SetTrigger("FadeIn");
+		yield return new WaitForSeconds(1.0f);
+		for (int i = 0; i < _readyObjects.Length; i++)
+		{
+			_readyObjects[i].SetActive(false);
+		}
+		_readyText.text = "";
+		_playerOneController.ActivateInput();
+		_playerTwoController.ActivateInput();
+		HasGameStarted = true;
+		if (_currentRound == 1)
+		{
+			_inputHistories[0].StartInputTime = Time.time;
+			_inputHistories[1].StartInputTime = Time.time;
+			if (SceneSettings.ReplayMode)
+			{
+				ReplayManager.Instance.StartLoadReplay();
+			}
+		}
+	}
+
+	public virtual void RoundOver(bool timeout)
+	{
+		if (HasGameStarted)
+		{
+			if (_isTrainingMode)
+			{
+				_roundOverTrainingCoroutine = StartCoroutine(RoundOverTrainingCoroutine());
+			}
+			else
+			{
+				StartCoroutine(RoundOverCoroutine(timeout));
+			}
+		}
+	}
 	IEnumerator RoundOverCoroutine(bool timeout)
 	{
 		HasGameStarted = false;
@@ -589,131 +716,6 @@ public class GameManager : MonoBehaviour
 			}
 		}
 	}
-
-	private void MatchOver()
-	{
-		_finalRound = false;
-		_winnerNameText.text = "";
-		_readyText.text = "";
-		_currentRound = 1;
-		if (SceneSettings.ReplayMode)
-		{
-			_matchOverReplayMenu.Show();
-		}
-		else
-		{
-			_matchOverMenu.Show();
-		}
-		ReplayManager.Instance.SaveReplay();
-		Time.timeScale = 0.0f;
-	}
-
-	public virtual void StartRound()
-	{
-		_fadeHandler.StartFadeTransition(false);
-		if (SceneSettings.ReplayMode)
-		{
-			ReplayManager.Instance.ShowReplayPrompts();
-		}
-		_timerMainAnimator.Rebind();
-		IsDialogueRunning = false;
-		for (int i = 0; i < _arcanaObjects.Length; i++)
-		{
-			_arcanaObjects[i].SetActive(true);
-		}
-		_countdown = _countdownTime;
-		_countdownText.text = Mathf.Round(_countdown).ToString();
-		PlayerOne.ResetPlayer();
-		PlayerTwo.ResetPlayer();
-		PlayerOne.transform.position = _spawnPositions[0].position;
-		PlayerTwo.transform.position = _spawnPositions[1].position;
-		PlayerOne.StopComboTimer();
-		PlayerTwo.StopComboTimer();
-		PlayerOne.PlayerStateManager.TryToTauntState();
-		PlayerTwo.PlayerStateManager.TryToTauntState();
-		StartCoroutine(ReadyCoroutine());
-	}
-
-	private void StartTrainingRound()
-	{
-		PlayerOne.ResetPlayer();
-		PlayerTwo.ResetPlayer();
-		PlayerOne.ResetLives();
-		PlayerTwo.ResetLives();
-		_playerOneUI.FadeIn();
-		_playerTwoUI.FadeIn();
-		_timerAnimator.SetTrigger("FadeIn");
-		_infiniteTime.SetActive(true);
-		PlayerOne.transform.position = _spawnPositions[0].position;
-		PlayerTwo.transform.position = _spawnPositions[1].position;
-		HasGameStarted = true;
-	}
-
-	IEnumerator ReadyCoroutine()
-	{
-		Time.timeScale = GameSpeed;
-		yield return new WaitForSeconds(0.5f);
-		_uiAudio.Sound("TextSound").Play();
-		_readyAnimator.SetTrigger("Show");
-		if (_currentRound == 4)
-		{
-			_finalRound = true;
-		}
-		for (int i = 0; i < _readyObjects.Length; i++)
-		{
-			_readyObjects[i].SetActive(true);
-		}
-		if (_finalRound)
-		{
-			_readyText.text = $"Final Round";
-		}
-		else
-		{
-			_readyText.text = $"Round {_currentRound}";
-		}
-		yield return new WaitForSeconds(1.0f);
-		_readyAnimator.SetTrigger("Show");
-		_uiAudio.Sound("TextSound").Play();
-		_readyText.text = "Fight!";
-		_countdownText.gameObject.SetActive(true);
-		_playerOneUI.FadeIn();
-		_playerTwoUI.FadeIn();
-		_timerAnimator.SetTrigger("FadeIn");
-		yield return new WaitForSeconds(1.0f);
-		for (int i = 0; i < _readyObjects.Length; i++)
-		{
-			_readyObjects[i].SetActive(false);
-		}
-		_readyText.text = "";
-		_playerOneController.ActivateInput();
-		_playerTwoController.ActivateInput();
-		HasGameStarted = true;
-		if (_currentRound == 1)
-		{
-			_inputHistories[0].StartInputTime = Time.time;
-			_inputHistories[1].StartInputTime = Time.time;
-			if (SceneSettings.ReplayMode)
-			{
-				ReplayManager.Instance.StartLoadReplay();
-			}
-		}
-	}
-
-	public virtual void RoundOver(bool timeout)
-	{
-		if (HasGameStarted)
-		{
-			if (_isTrainingMode)
-			{
-				_roundOverTrainingCoroutine = StartCoroutine(RoundOverTrainingCoroutine());
-			}
-			else
-			{
-				StartCoroutine(RoundOverCoroutine(timeout));
-			}
-		}
-	}
-
 	IEnumerator RoundOverTrainingCoroutine()
 	{
 		HasGameStarted = false;
@@ -912,27 +914,27 @@ public class GameManager : MonoBehaviour
 		_matchOverMenu.Hide();
 		PlayerOne.ResetLives();
 		PlayerTwo.ResetLives();
-		_currentMusic.Stop();
+		CurrentMusic.Stop();
 		if (SceneSettings.MusicName == "Random")
 		{
-			_currentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
+			CurrentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
 		}
 		else
 		{
-			_currentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
-			_currentMusic.Play();
+			CurrentMusic = _musicAudio.SoundGroup("Music").Sound(SceneSettings.MusicName);
+			CurrentMusic.Play();
 		}
 		StartRound();
 	}
 
 	public void PauseMusic()
 	{
-		_currentMusic.Pause();
+		CurrentMusic.Pause();
 	}
 
 	public void PlayMusic()
 	{
-		_currentMusic.Play();
+		CurrentMusic.Play();
 	}
 
 	public void LoadScene(int index)
@@ -996,29 +998,36 @@ public class GameManager : MonoBehaviour
 		yield return new WaitForSecondsRealtime(1.0f);
 		Time.timeScale = 1f;
 	}
-	public void HitStop(float hitstop)
+
+	private int _hitstop;
+
+	public void HitStop(int hitstop)
 	{
 		if (hitstop > 0.0f)
 		{
-			if (_hitStopCoroutine != null)
+			for (int i = 0; i < _hitstopList.Count; i++)
 			{
-				StopCoroutine(_hitStopCoroutine);
+				_hitstopList[i].EnterHitstop();
 			}
-			_hitStopCoroutine = StartCoroutine(HitStopCoroutine(hitstop));
+			_hitstop = hitstop;
 		}
 	}
 
-	IEnumerator HitStopCoroutine(float hitstop)
+	private void RunHitStop()
 	{
-		for (int i = 0; i < _hitstopList.Count; i++)
+		if (_hitstop > 0)
 		{
-			_hitstopList[i].EnterHitstop();
+			if (DemonicsPhysics.WaitFrames(ref _hitstop))
+			{
+				_hitstop = 0; 
+				for (int i = 0; i < _hitstopList.Count; i++)
+				{
+					_hitstopList[i].ExitHitstop();
+				}
+				_hitstopList.Clear();
+			}
 		}
-		yield return new WaitForSecondsRealtime(hitstop);
-		for (int i = 0; i < _hitstopList.Count; i++)
-		{
-			_hitstopList[i].ExitHitstop();
-		}
-		_hitstopList.Clear();
 	}
 }
+
+

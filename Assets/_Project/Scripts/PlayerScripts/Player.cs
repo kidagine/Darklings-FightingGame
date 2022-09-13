@@ -1,4 +1,5 @@
 using Demonics.Manager;
+using FixMath.NET;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,12 +18,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	[SerializeField] private GameObject[] _playerIcons = default;
 	protected PlayerUI _playerUI;
 	private PlayerMovement _playerMovement;
+	[HideInInspector] public PlayerStatsSO playerStats;
 	protected PlayerComboSystem _playerComboSystem;
-	private PlayerStats _playerStats;
 	private BrainController _controller;
 	private Coroutine _comboTimerCoroutine;
 	private bool _comboTimerPaused;
-	private readonly float _damageDecay = 0.97f;
+	private readonly Fix64 _damageDecay = (Fix64)0.97f;
 	[HideInInspector] public UnityEvent knockbackEvent;
 
 	public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
@@ -30,19 +31,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	public Player OtherPlayer { get; private set; }
 	public PlayerMovement OtherPlayerMovement { get; private set; }
 	public PlayerUI OtherPlayerUI { get; private set; }
-	public PlayerStatsSO PlayerStats { get { return _playerStats.PlayerStatsSO; } set { } }
+	public PlayerStatsSO PlayerStats { get { return playerStats; } set { } }
 	public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
 	public AttackSO CurrentAttack { get; set; }
 	public AttackSO ResultAttack { get; set; }
 	public Transform CameraPoint { get { return _cameraPoint; } private set { } }
 	public bool CanAirArcana { get; set; }
-	public float Health { get; set; }
+	public int Health { get; set; }
 	public int Lives { get; set; } = 2;
 	public bool IsAttacking { get; set; }
 	public bool IsPlayerOne { get; set; }
-	public float AssistGauge { get; set; } = 1.0F;
-	public float Arcana { get; set; }
-	public float ArcaneSlowdown { get; set; } = 5.5f;
+	public Fix64 AssistGauge { get; set; } = (Fix64)1;
+	public Fix64 ArcanaGauge { get; set; }
+	public int ArcaneSlowdown { get; set; } = 5;
 	public bool CanShadowbreak { get; set; } = true;
 	public bool CanCancelAttack { get; set; }
 	public bool BlockingLow { get; set; }
@@ -55,7 +56,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 	{
 		_playerMovement = GetComponent<PlayerMovement>();
 		_playerComboSystem = GetComponent<PlayerComboSystem>();
-		_playerStats = GetComponent<PlayerStats>();
 	}
 
 	public void SetController()
@@ -110,19 +110,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		transform.rotation = Quaternion.identity;
 		_effectsParent.gameObject.SetActive(true);
 		SetHurtbox(true);
-		AssistGauge = 1.0f;
+		AssistGauge = (Fix64)1;
 		transform.SetParent(null);
 		if (!GameManager.Instance.InfiniteArcana)
 		{
-			Arcana = 0.0f;
+			ArcanaGauge = (Fix64)0;
 		}
 		StopAllCoroutines();
 		StopComboTimer();
 		_playerMovement.StopAllCoroutines();
 		_playerMovement.ResetMovement();
 		_playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
-		_playerUI.SetArcana(Arcana);
-		_playerUI.SetAssist(AssistGauge);
+		_playerUI.SetArcana((float)ArcanaGauge);
+		_playerUI.SetAssist((float)AssistGauge);
 		_playerUI.ResetHealthDamaged();
 		InitializeStats();
 		_playerUI.ShowPlayerIcon();
@@ -136,18 +136,18 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	public void MaxHealthStats()
 	{
-		Health = _playerStats.PlayerStatsSO.maxHealth;
+		Health = playerStats.maxHealth;
 		_playerUI.MaxHealth(Health);
 	}
 
 	private void InitializeStats()
 	{
-		_playerUI.InitializeUI(_playerStats.PlayerStatsSO, _controller, _playerIcons);
-		Health = _playerStats.PlayerStatsSO.maxHealth;
+		_playerUI.InitializeUI(playerStats, _controller, _playerIcons);
+		Health = playerStats.maxHealth;
 		_playerUI.SetHealth(Health);
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		ArcanaCharge();
 		AssistCharge();
@@ -155,36 +155,36 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	private void AssistCharge()
 	{
-		if (AssistGauge < 1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
+		if (AssistGauge < (Fix64)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
 		{
-			AssistGauge += Time.deltaTime / (9.0f - _assist.AssistStats.assistRecharge);
+			AssistGauge += (Fix64)(Time.deltaTime / (9.0f - _assist.AssistStats.assistRecharge));
 			if (GameManager.Instance.InfiniteAssist)
 			{
-				AssistGauge = 1.0f;
+				AssistGauge = (Fix64)1.0f;
 			}
-			_playerUI.SetAssist(AssistGauge);
+			_playerUI.SetAssist((float)AssistGauge);
 		}
 	}
 
 	private void ArcanaCharge()
 	{
-		if (Arcana < _playerStats.PlayerStatsSO.maxArcana && GameManager.Instance.HasGameStarted)
+		if (ArcanaGauge < (Fix64)playerStats.Arcana && GameManager.Instance.HasGameStarted)
 		{
-			Arcana += Time.deltaTime / (ArcaneSlowdown - _playerStats.PlayerStatsSO.arcanaRecharge);
+			ArcanaGauge += (Fix64)(Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge));
 			if (GameManager.Instance.InfiniteArcana)
 			{
-				Arcana = _playerStats.PlayerStatsSO.maxArcana;
+				ArcanaGauge = (Fix64)playerStats.Arcana;
 			}
-			_playerUI.SetArcana(Arcana);
+			_playerUI.SetArcana((float)ArcanaGauge);
 		}
 	}
 
-	public void ArcanaGain(float arcana)
+	public void ArcanaGain(Fix64 arcana)
 	{
-		if (Arcana < _playerStats.PlayerStatsSO.maxArcana && GameManager.Instance.HasGameStarted)
+		if (ArcanaGauge < (Fix64)playerStats.Arcana && GameManager.Instance.HasGameStarted)
 		{
-			Arcana += arcana;
-			_playerUI.SetArcana(Arcana);
+			ArcanaGauge += arcana;
+			_playerUI.SetArcana((float)ArcanaGauge);
 		}
 	}
 
@@ -214,11 +214,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
 	public bool AssistAction()
 	{
-		if (AssistGauge >= 0.5f && GameManager.Instance.HasGameStarted)
+		if (AssistGauge >= (Fix64)0.5f && GameManager.Instance.HasGameStarted)
 		{
 			_assist.Attack();
-			DecreaseArcana(0.5f);
-			//CurrentAttack = _assist.AssistStats.attackSO;
+			DecreaseArcana((Fix64)0.5f);
 			return true;
 		}
 		return false;
@@ -233,10 +232,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		}
 	}
 
-	public void DecreaseArcana(float value)
+	public float DemonLimitMultiplier()
+	{
+		if (Health < 3000)
+		{
+			return 1.2f;
+		}
+		return 1.0f;
+	}
+
+	public void DecreaseArcana(Fix64 value)
 	{
 		AssistGauge -= value;
-		_playerUI.SetAssist(AssistGauge);
+		_playerUI.SetAssist((float)AssistGauge);
 	}
 
 	public void StartComboTimer(ComboTimerStarterEnum comboTimerStarter)
@@ -293,21 +301,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 		_assist.Recall();
 	}
 
-	public float CalculateDamage(AttackSO hurtAttack)
+	public int CalculateDamage(AttackSO hurtAttack)
 	{
 		int comboCount = OtherPlayerUI.CurrentComboCount;
-		float calculatedDamage = hurtAttack.damage / _playerStats.PlayerStatsSO.defense;
+		Fix64 calculatedDamage = (Fix64)((hurtAttack.damage / playerStats.Defense) * OtherPlayer.DemonLimitMultiplier());
 		if (comboCount > 1)
 		{
-			float damageScale = 1.0f;
+			Fix64 damageScale = (Fix64)1;
 			for (int i = 0; i < comboCount; i++)
 			{
 				damageScale *= _damageDecay;
 			}
 			calculatedDamage *= damageScale;
 		}
-		OtherPlayer.SetResultAttack((int)calculatedDamage);
-		return (int)calculatedDamage;
+		int calculatedIntDamage = (int)Fix64.Round(calculatedDamage);
+		OtherPlayer.SetResultAttack(calculatedIntDamage);
+		return calculatedIntDamage;
 	}
 
 
@@ -320,7 +329,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 				GameManager.Instance.AddHitstop(this);
 			}
 		}
-		CurrentAttack.hurtEffectPosition = hit.point;
+		CurrentAttack.hurtEffectPosition = new Vector2((float)(Fix64)hit.point.x, (float)(Fix64)hit.point.y);
 		hurtbox.TakeDamage(CurrentAttack);
 		if (!CurrentAttack.isProjectile)
 		{

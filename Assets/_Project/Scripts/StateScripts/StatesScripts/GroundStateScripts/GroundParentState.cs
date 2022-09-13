@@ -1,4 +1,5 @@
 
+using FixMath.NET;
 using UnityEngine;
 
 public class GroundParentState : State
@@ -62,7 +63,7 @@ public class GroundParentState : State
 
 	public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
-		if (_player.Arcana >= 1.0f)
+		if (_player.ArcanaGauge >= (Fix64)1)
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
 			{
@@ -108,14 +109,15 @@ public class GroundParentState : State
 
 	public override bool ToGrabbedState()
 	{
+		_grabbedState.Initialize(true);
 		_stateMachine.ChangeState(_grabbedState);
 		return true;
 	}
 
 	public override bool ToKnockbackState()
 	{
-		if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f
-			   || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
+		if (transform.localScale.x == 1 && _playerMovement.MovementInput.x < 0
+			   || transform.localScale.x == -1 && _playerMovement.MovementInput.x > 0)
 		{
 			_stateMachine.ChangeState(_blockState);
 			return false;

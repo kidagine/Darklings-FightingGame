@@ -1,9 +1,7 @@
-using System.Collections;
 using UnityEngine;
 
 public class AirHurtState : HurtParentState
 {
-	private Coroutine _stunCoroutine;
 	private FallState _fallState;
 	private HurtState _hurtState;
 	private AirborneHurtState _airborneHurtState;
@@ -22,14 +20,7 @@ public class AirHurtState : HurtParentState
 		_playerAnimator.HurtAir(true);
 		GameObject effect = Instantiate(_hurtAttack.hurtEffect);
 		effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
-		_stunCoroutine = StartCoroutine(StunCoroutine(_hurtAttack.hitStun));
 		base.Enter();
-	}
-
-	IEnumerator StunCoroutine(float hitStun)
-	{
-		yield return new WaitForSeconds(hitStun);
-		ToFallAfterStunState();
 	}
 
 	public override void UpdateLogic()
@@ -37,6 +28,11 @@ public class AirHurtState : HurtParentState
 		base.UpdateLogic();
 		ToFallStateAfterGround();
 		_playerMovement.CheckForPlayer();
+		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
+		if (DemonicsPhysics.WaitFrames(ref _hurtFrame))
+		{
+			ToFallAfterStunState();
+		}
 	}
 	public override bool ToAirborneHurtState(AttackSO attack)
 	{
@@ -65,25 +61,10 @@ public class AirHurtState : HurtParentState
 		}
 	}
 
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
-	}
-
 	public override bool ToHurtState(AttackSO attack)
 	{
 		this.Initialize(attack);
 		_stateMachine.ChangeState(this);
 		return true;
-	}
-
-	public override void Exit()
-	{
-		base.Exit();
-		if (_stunCoroutine != null)
-		{
-			StopCoroutine(_stunCoroutine);
-		}
 	}
 }

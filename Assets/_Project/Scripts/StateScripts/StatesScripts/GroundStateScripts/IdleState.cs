@@ -23,11 +23,12 @@ public class IdleState : GroundParentState
 		ToCrouchState();
 		ToJumpState();
 		_player.CheckFlip();
+		_rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
 	}
 
 	private void ToWalkState()
 	{
-		if (_baseController.InputDirection.x != 0.0f)
+		if (_baseController.InputDirection.x != 0)
 		{
 			_stateMachine.ChangeState(_walkState);
 		}
@@ -72,11 +73,5 @@ public class IdleState : GroundParentState
 		_blockState.Initialize(attack);
 		_stateMachine.ChangeState(_blockState);
 		return true;
-	}
-
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
 	}
 }

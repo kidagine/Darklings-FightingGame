@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class AttackState : State
@@ -72,10 +73,6 @@ public class AttackState : State
 	{
 		base.UpdateLogic();
 		ToFallStateOnGround();
-	}
-
-	public override void UpdatePhysics()
-	{
 		if (!_air)
 		{
 			_playerMovement.TravelDistance(new Vector2(
@@ -89,7 +86,7 @@ public class AttackState : State
 
 	private void ToFallStateOnGround()
 	{
-		if (_air && _playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
+		if (_air && _playerMovement.IsGrounded && _rigidbody.velocity.y <= 0)
 		{
 			_stateMachine.ChangeState(_fallState);
 		}
@@ -125,7 +122,7 @@ public class AttackState : State
 		{
 			return false;
 		}
-		if (inputEnum == InputEnum.Medium && _crouch && _player.CurrentAttack == _playerStats.PlayerStatsSO.m2M)
+		if (inputEnum == InputEnum.Medium && _crouch && _player.CurrentAttack == _player.playerStats.m2M)
 		{
 			return false;
 		}
@@ -158,7 +155,7 @@ public class AttackState : State
 
 	public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
-		if (_player.Arcana >= 1.0f && CanSkipAttack)
+		if (_player.ArcanaGauge >= (Fix64)1 && CanSkipAttack)
 		{
 			if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
 			{

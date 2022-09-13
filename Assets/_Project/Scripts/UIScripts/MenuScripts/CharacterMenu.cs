@@ -16,18 +16,18 @@ public class CharacterMenu : BaseMenu
 	[SerializeField] private FadeHandler _fadeHandler = default;
 	[SerializeField] private GameObject _rebindOnePrompt = default;
 	[SerializeField] private GameObject _rebindTwoPrompt = default;
-	[SerializeField] private SpriteRenderer _characterOneImage = default;
-	[SerializeField] private SpriteRenderer _characterTwoImage = default;
 	[SerializeField] private GameObject _assistOne = default;
 	[SerializeField] private GameObject _assistTwo = default;
-	[SerializeField] private SpriteRenderer _assistOneSpriteRenderer = default;
-	[SerializeField] private SpriteRenderer _assistTwoSpriteRenderer = default;
+	[SerializeField] private GameObject _iconsOne = default;
+	[SerializeField] private GameObject _iconsTwo = default;
+	[SerializeField] private PlayerUIRender _assistOneUIRenderer = default;
+	[SerializeField] private PlayerUIRender _assistTwoUIRenderer = default;
 	[SerializeField] private Animator _characterOneAnimator = default;
 	[SerializeField] private Animator _characterTwoAnimator = default;
 	[SerializeField] private ChangeStageMenu _changeStageMenu = default;
 	[SerializeField] private Button _firstCharacterButton = default;
-	[SerializeField] private PlayerAnimator _playerAnimatorOne = default;
-	[SerializeField] private PlayerAnimator _playerAnimatorTwo = default;
+	[SerializeField] private PlayerUIRender _playerUIRenderOne = default;
+	[SerializeField] private PlayerUIRender _playerUIRenderTwo = default;
 	[SerializeField] private SpriteLibrary _spriteLibraryOne = default;
 	[SerializeField] private SpriteLibrary _spriteLibraryTwo = default;
 	[SerializeField] private TextMeshProUGUI _playerOneName = default;
@@ -50,30 +50,22 @@ public class CharacterMenu : BaseMenu
 		_currentEventSystem = EventSystem.current;
 	}
 
-	public void EnablePlayerTwoSelector()
-	{
-	}
-
 	public void SetCharacterImage(RuntimeAnimatorController animatorController, PlayerStatsSO playerStats, bool isRandomizer)
 	{
 		_playerStats = playerStats;
 		if (!FirstCharacterSelected)
 		{
 			_playerOneName.enabled = true;
-			if (animatorController.name == "RandomSelectAnimator")
-			{
-				_characterTwoImage.flipX = false;
-				_playerOneName.enabled = false;
-			}
-			_characterOneImage.enabled = true;
 			if (!isRandomizer)
 			{
-				_playerOneName.text = playerStats.characterName.ToString();
+				_playerUIRenderOne.gameObject.SetActive(true);
+				_iconsOne.gameObject.SetActive(true);
+				_playerOneName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 				_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
-				_playerAnimatorOne.PlayerStats.PlayerStatsSO = playerStats;
-				_hpTextOne.text = string.Format("{0:0.00}", _playerStats.defense);
-				_arcanaTextOne.text = _playerStats.maxArcana.ToString();
-				_speedTextOne.text = _playerStats.runSpeed.ToString();
+				_playerUIRenderOne.PlayerStats = playerStats;
+				_hpTextOne.text = $"LV{_playerStats.defenseLevel}";
+				_arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
+				_speedTextOne.text = $"LV{_playerStats.speedLevel}";
 			}
 			else
 			{
@@ -82,35 +74,22 @@ public class CharacterMenu : BaseMenu
 				_speedTextOne.text = "?";
 				_playerOneName.text = "Random";
 			}
-			if (isRandomizer)
-			{
-
-			}
-
 			_characterOneAnimator.runtimeAnimatorController = animatorController;
 		}
 		else
 		{
 			UsedController();
 			_playerTwoName.enabled = true;
-			if (animatorController.name == "RandomSelectAnimator")
-			{
-				_characterTwoImage.flipX = false;
-				_playerTwoName.enabled = false;
-			}
-			else
-			{
-				_characterTwoImage.flipX = true;
-			}
-			_characterTwoImage.enabled = true;
 			if (!isRandomizer)
 			{
+				_playerUIRenderTwo.gameObject.SetActive(true);
+				_iconsTwo.gameObject.SetActive(true);
 				_playerTwoName.text = playerStats.characterName.ToString();
 				_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
-				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = playerStats;
-				_hpTextTwo.text = string.Format("{0:0.00}", _playerStats.defense);
-				_arcanaTextTwo.text = _playerStats.maxArcana.ToString();
-				_speedTextTwo.text = _playerStats.runSpeed.ToString();
+				_playerUIRenderTwo.PlayerStats = playerStats;
+				_hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
+				_arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
+				_speedTextTwo.text = $"LV{_playerStats.speedLevel}";
 			}
 			else
 			{
@@ -130,7 +109,7 @@ public class CharacterMenu : BaseMenu
 		_playerTwoName.enabled = true;
 		if (!FirstCharacterSelected)
 		{
-			_assistOneSpriteRenderer.enabled = true;
+			_assistOneUIRenderer.gameObject.SetActive(true);
 			_assistOne.SetActive(true);
 			if (_playerStats == null)
 			{
@@ -139,17 +118,17 @@ public class CharacterMenu : BaseMenu
 				string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 				_playerOneName.text = characterName;
 				_spriteLibraryOne.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
-				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
+				_playerUIRenderOne.PlayerStats = _playerStats;
 				_characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
-			_hpTextOne.text = string.Format("{0:0.00}", _playerStats.defense);
-			_arcanaTextOne.text = _playerStats.maxArcana.ToString();
-			_speedTextOne.text = _playerStats.runSpeed.ToString();
+			_hpTextOne.text = $"LV{_playerStats.defenseLevel}";
+			_arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
+			_speedTextOne.text = $"LV{_playerStats.speedLevel}";
 			SceneSettings.PlayerOne = _playerStats.characterIndex;
 		}
 		else
 		{
-			_assistTwoSpriteRenderer.enabled = true;
+			_assistTwoUIRenderer.gameObject.SetActive(true);
 			_assistTwo.SetActive(true);
 			if (_playerStats == null)
 			{
@@ -158,12 +137,12 @@ public class CharacterMenu : BaseMenu
 				string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
 				_playerOneName.text = characterName; 
 				_spriteLibraryTwo.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
-				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = _playerStats;
+				_playerUIRenderTwo.PlayerStats = _playerStats;
 				_characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
 			}
-			_hpTextTwo.text = string.Format("{0:0.00}", _playerStats.defense);
-			_arcanaTextTwo.text = _playerStats.maxArcana.ToString();
-			_speedTextTwo.text = _playerStats.runSpeed.ToString();
+			_hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
+			_arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
+			_speedTextTwo.text = $"LV{_playerStats.speedLevel}";
 			SceneSettings.PlayerTwo = _playerStats.characterIndex;
 		}
 	}
@@ -172,11 +151,11 @@ public class CharacterMenu : BaseMenu
 	{
 		if (isPlayerOne)
 		{
-			_playerAnimatorOne.Taunt();
+			_playerUIRenderOne.Taunt();
 		}
 		else
 		{
-			_playerAnimatorTwo.Taunt();
+			_playerUIRenderTwo.Taunt();
 		}
 		StartCoroutine(TauntEndCoroutine());
 	}
@@ -269,6 +248,8 @@ public class CharacterMenu : BaseMenu
 	{
 		if (!SceneSettings.SceneSettingsDecide)
 		{
+			_iconsOne.gameObject.SetActive(false);
+			_iconsTwo.gameObject.SetActive(false);
 			_currentEventSystem.SetSelectedGameObject(null); 
 			_currentEventSystem.sendNavigationEvents = true;
 			FirstCharacterSelected = false;
@@ -279,19 +260,9 @@ public class CharacterMenu : BaseMenu
 			_arcanaTextTwo.text = "";
 			_speedTextTwo.text = "";
 			_playerOneName.text = "";
-			if (_characterOneImage != null)
-			{
-				_characterOneImage.enabled = false;
-				_characterOneAnimator.runtimeAnimatorController = null;
-			}
-			if (_characterTwoImage != null)
-			{
-				_characterTwoImage.enabled = false;
-				_characterTwoAnimator.runtimeAnimatorController = null;
-			}
 			_playerTwoName.text = "";
-			_assistOneSpriteRenderer.enabled = false;
-			_assistTwoSpriteRenderer.enabled = false;
+			_assistOneUIRenderer.gameObject.SetActive(false);
+			_assistTwoUIRenderer.gameObject.SetActive(false);
 		}
 		_fadeHandler.onFadeEnd.RemoveAllListeners();
 	}

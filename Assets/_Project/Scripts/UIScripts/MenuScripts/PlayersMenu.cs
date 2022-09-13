@@ -120,12 +120,6 @@ public class PlayersMenu : BaseMenu
 			{
 				SceneSettings.ControllerOne = null;
 			}
-			if (_playerIcons[0].anchoredPosition.x != _center && _playerIcons[1].anchoredPosition.x != _center
-				|| _playerIcons[0].anchoredPosition.x != _center && _playerIcons[2].anchoredPosition.x != _center
-				|| _playerIcons[1].anchoredPosition.x != _center && _playerIcons[2].anchoredPosition.x != _center)
-			{
-				_characterMenu.EnablePlayerTwoSelector();
-			}
 			gameObject.SetActive(false);
 			for (int i = 0; i < _playerIcons.Length; i++)
 			{

@@ -35,7 +35,7 @@ public class ReplayManager : MonoBehaviour
 	private readonly string _playerTwoInputsSplit = "Player Two Inputs:";
 
 	public string VersionNumber { get; private set; }
-	public float Skip { get; set; }
+	public int Skip { get; set; }
 	public int ReplayFilesAmount { get { return _replayFiles.Length; } private set { } }
 	public static ReplayManager Instance { get; private set; }
 
@@ -109,7 +109,7 @@ public class ReplayManager : MonoBehaviour
 
 	public void SaveReplay()
 	{
-		if (!SceneSettings.IsTrainingMode && _replayNotificationAnimator != null)
+		if (!SceneSettings.IsTrainingMode && !SceneSettings.ReplayMode && _replayNotificationAnimator != null)
 		{
 			int filesAmount = _replayFiles.Length;
 			if (filesAmount == _replaysLimit)
@@ -136,7 +136,7 @@ public class ReplayManager : MonoBehaviour
 					$"\nPlayer Two:\n{SceneSettings.PlayerTwo}, {SceneSettings.ColorTwo}, {SceneSettings.AssistTwo}");
 				fileStream.Write(playerTwo, 0, playerTwo.Length);
 				byte[] stage = new UTF8Encoding(true).GetBytes(
-					$"\nStage:\n{SceneSettings.StageIndex}, {SceneSettings.MusicName}, {SceneSettings.Bit1}");
+					$"\nStage:\n{SceneSettings.StageIndex}, {GameManager.Instance.CurrentMusic.name}, {SceneSettings.Bit1}");
 				fileStream.Write(stage, 0, stage.Length);
 				string playerOneInputsHistory = "";
 				for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
@@ -181,58 +181,67 @@ public class ReplayManager : MonoBehaviour
 		_playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
 		GameManager.Instance.PlayerOne.GetComponent<PlayerInput>().enabled = false;
 		GameManager.Instance.PlayerTwo.GetComponent<PlayerInput>().enabled = false;
-		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-		StartCoroutine(SkipIntroCoroutine(replayCardData));
+		replayCardData = GetReplayData(SceneSettings.ReplayIndex);
+		s = true;
 	}
 
-	IEnumerator SkipIntroCoroutine(ReplayCardData replayCardData)
-	{
-		yield return new WaitForSeconds(replayCardData.skip);
-		if (replayCardData.skip > 0)
-		{
-			GameManager.Instance.SkipIntro();
-		}
-
-	}
+	private ReplayCardData replayCardData;
+	bool t;
+	bool s;
+	private int i;
 
 	public void StartLoadReplay()
 	{
-		ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-		StartCoroutine(LoadReplayCoroutine(replayCardData.playerOneInputs, _playerOneInputBuffer, _playerOneController));
-		StartCoroutine(LoadReplayCoroutine(replayCardData.playerTwoInputs, _playerTwoInputBuffer, _playerTwoController));
+		replayCardData = GetReplayData(SceneSettings.ReplayIndex);
+		t = true;
 	}
-
-	IEnumerator LoadReplayCoroutine(ReplayInput[] playerInputs, InputBuffer inputBuffer, BrainController controller)
+	private void FixedUpdate()
 	{
-		yield return null;
-		for (int i = 0; i < playerInputs.Length; i++)
+		if (s)
 		{
-			if (i == 0)
+			if (DemonicsPhysics.Frame == replayCardData.skip)
 			{
-				yield return new WaitForSeconds(playerInputs[i].time);
+				GameManager.Instance.SkipIntro();
+				s = false;
+				t = true;
 			}
-			else
+		}
+		if (t)
+		{
+			NextReplayAction();
+		}
+	}
+	private void NextReplayAction()
+	{
+		if (i < replayCardData.playerOneInputs.Length)
+		{
+			Debug.Log(DemonicsPhysics.Frame + "|" + replayCardData.playerOneInputs[i].time);
+			if (DemonicsPhysics.Frame >= replayCardData.playerOneInputs[i].time)
 			{
-				yield return new WaitForSeconds(playerInputs[i].time - playerInputs[i-1].time);
-			}
-			inputBuffer.AddInputBufferItem(playerInputs[i].input, playerInputs[i].direction);
-			switch (playerInputs[i].direction)
-			{
-				case InputDirectionEnum.None:
-					controller.ActiveController.InputDirection = new Vector2(0, 0);
-					break;
-				case InputDirectionEnum.Up:
-					controller.ActiveController.InputDirection = new Vector2(controller.ActiveController.InputDirection.x, 1);
-					break;
-				case InputDirectionEnum.Down:
-					controller.ActiveController.InputDirection = new Vector2(controller.ActiveController.InputDirection.x, -1);
-					break;
-				case InputDirectionEnum.Left:
-					controller.ActiveController.InputDirection = new Vector2(-1, controller.ActiveController.InputDirection.y);
-					break;
-				case InputDirectionEnum.Right:
-					controller.ActiveController.InputDirection = new Vector2(1, controller.ActiveController.InputDirection.y);
-					break;
+				_playerOneInputBuffer.AddInputBufferItem(replayCardData.playerOneInputs[i].input, replayCardData.playerOneInputs[i].direction);
+				if (replayCardData.playerOneInputs[i].input == InputEnum.Direction)
+				{
+					switch (replayCardData.playerOneInputs[i].direction)
+					{
+						case InputDirectionEnum.None:
+							_playerOneController.ActiveController.InputDirection = Vector2Int.zero;
+							break;
+						case InputDirectionEnum.Up:
+							_playerOneController.ActiveController.InputDirection = new Vector2Int(_playerOneController.ActiveController.InputDirection.x, 1);
+							break;
+						case InputDirectionEnum.Down:
+							_playerOneController.ActiveController.InputDirection = new Vector2Int(_playerOneController.ActiveController.InputDirection.x, -1);
+							break;
+						case InputDirectionEnum.Left:
+							_playerOneController.ActiveController.InputDirection = new Vector2Int(-1, _playerOneController.ActiveController.InputDirection.y);
+							break;
+						case InputDirectionEnum.Right:
+							_playerOneController.ActiveController.InputDirection = new Vector2Int(1, _playerOneController.ActiveController.InputDirection.y);
+							break;
+					}
+				}
+				i++;
+				NextReplayAction();
 			}
 		}
 	}
@@ -273,7 +282,7 @@ public class ReplayManager : MonoBehaviour
 			for (int i = 0; i < playerOneInputInfo.Length; i++)
 			{
 				string[] playerInput = playerOneInputInfo[i].Split(',');
-				replayOneInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = float.Parse(playerInput[2]) });
+				replayOneInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = int.Parse(playerInput[2]) });
 			}
 		}
 		List<ReplayInput> replayTwoInputs = new();
@@ -282,7 +291,7 @@ public class ReplayManager : MonoBehaviour
 			for (int i = 0; i < playerTwoInputInfo.Length; i++)
 			{
 				string[] playerInput = playerTwoInputInfo[i].Split(',');
-				replayTwoInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = float.Parse(playerInput[2]) });
+				replayTwoInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = int.Parse(playerInput[2]) });
 			}
 
 		}

@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class ShadowbreakState : State
@@ -17,7 +18,7 @@ public class ShadowbreakState : State
 	public override void Enter()
 	{
 		base.Enter();
-		_player.DecreaseArcana(1.0f);
+		_player.DecreaseArcana((Fix64)1);
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ToFallState);
 		_playerAnimator.Shadowbreak();
 		_audio.Sound("Shadowbreak").Play();
@@ -45,10 +46,10 @@ public class ShadowbreakState : State
 		return true;
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
+		base.UpdateLogic();
+		_rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
 	}
 
 	public override void Exit()

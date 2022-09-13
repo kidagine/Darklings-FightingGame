@@ -5,7 +5,6 @@ using UnityEngine.U2D.Animation;
 public class PlayerAnimator : MonoBehaviour
 {
 	[SerializeField] private Player _player = default;
-	[SerializeField] private PlayerStats _playerStats = default;
 	[SerializeField] private InputBuffer _inputBuffer = null;
 	private Animator _animator;
 	private SpriteLibrary _spriteLibrary;
@@ -13,7 +12,7 @@ public class PlayerAnimator : MonoBehaviour
 
 	[HideInInspector] public UnityEvent OnCurrentAnimationFinished;
 	
-	public PlayerStats PlayerStats { get { return _playerStats; } private set { } }
+	public PlayerStatsSO PlayerStats { get { return _player.playerStats; } set { } }
 
 	void Awake()
 	{
@@ -24,7 +23,7 @@ public class PlayerAnimator : MonoBehaviour
 
 	void Start()
 	{
-		_animator.runtimeAnimatorController = _playerStats.PlayerStatsSO.runtimeAnimatorController;
+		_animator.runtimeAnimatorController = _player.playerStats.runtimeAnimatorController;
 	}
 
 	void LateUpdate()
@@ -211,17 +210,17 @@ public class PlayerAnimator : MonoBehaviour
 
 	public int SetSpriteLibraryAsset(int skinNumber)
 	{
-		if (skinNumber > PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1)
+		if (skinNumber > PlayerStats.spriteLibraryAssets.Length - 1)
 		{
 			skinNumber = 0;
 		}
 		else if (skinNumber < 0)
 		{
-			skinNumber = PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1;
+			skinNumber = PlayerStats.spriteLibraryAssets.Length - 1;
 		}
 		if (_spriteLibrary != null)
 		{
-			_spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
+			_spriteLibrary.spriteLibraryAsset = PlayerStats.spriteLibraryAssets[skinNumber];
 		}
 		return skinNumber;
 	}

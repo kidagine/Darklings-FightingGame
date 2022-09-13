@@ -891,7 +891,6 @@ MonoBehaviour:
   _player: {fileID: 8073473790702501988}
   _playerMovement: {fileID: 8073473790702501987}
   _playerAnimator: {fileID: 8073473789928578677}
-  _playerStats: {fileID: 4618435349483342948}
   _brainController: {fileID: 8743540751678485471}
   _playerComboSystem: {fileID: 8073473790702501994}
   _inputBuffer: {fileID: 4664395619888274278}
@@ -949,8 +948,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Jump
-  _jumpPrefab: {fileID: 9041336035022670361, guid: ad15da3df396bae498f8ee45fe235ca4, type: 3}
   _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
+  _jumpPrefab: {fileID: 9041336035022670361, guid: ad15da3df396bae498f8ee45fe235ca4, type: 3}
 --- !u!114 &2365649983913104540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -964,8 +963,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: JumpForward
-  _jumpPrefab: {fileID: 9041336035022670361, guid: ad15da3df396bae498f8ee45fe235ca4, type: 3}
   _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
+  _jumpPrefab: {fileID: 9041336035022670361, guid: ad15da3df396bae498f8ee45fe235ca4, type: 3}
 --- !u!114 &7987624201467657255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -979,7 +978,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Fall
-  _jumpPrefab: {fileID: 0}
   _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
 --- !u!114 &6918343820534729796
 MonoBehaviour:
@@ -1279,6 +1277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Grabbed
+  _techThrowPrefab: {fileID: 6697712921357175186, guid: 5537d3994a7d8604aa2e02d73330b6da, type: 3}
 --- !u!114 &4867772287099482726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1538,7 +1537,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 8073473790702501988}
-  _playerStats: {fileID: 4618435349483342948}
   _inputBuffer: {fileID: 4664395619888274278}
   OnCurrentAnimationFinished:
     m_PersistentCalls:
@@ -1829,7 +1827,6 @@ GameObject:
   - component: {fileID: 7171796573308583996}
   - component: {fileID: 6371053321382070875}
   - component: {fileID: 8743540751678485471}
-  - component: {fileID: 4618435349483342948}
   - component: {fileID: 4664395619888274278}
   - component: {fileID: 7611394710214668632}
   - component: {fileID: 6591136354886088417}
@@ -1874,10 +1871,10 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 2
   m_Material: {fileID: 6200000, guid: 93bce4df195738747956615c3d5b45a6, type: 2}
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -1905,6 +1902,7 @@ MonoBehaviour:
   _playerIcons:
   - {fileID: 7759221523502482170}
   - {fileID: 3488833446598643948}
+  playerStats: {fileID: 0}
   knockbackEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -1978,19 +1976,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerStateManager: {fileID: 8168889133440061290}
---- !u!114 &4618435349483342948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8073473790702501986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61034cc42f4411b4fb34b343e39bcf90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerStatsSO: {fileID: 11400000, guid: 52e598ed7f0b55d4f8b68d93f8df619c, type: 2}
 --- !u!114 &4664395619888274278
 MonoBehaviour:
   m_ObjectHideFlags: 0

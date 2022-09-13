@@ -6,7 +6,7 @@ public class WalkState : GroundParentState
 	{
 		base.Enter();
 		_playerAnimator.Walk();
-		_playerMovement.MovementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
+		_playerMovement.MovementSpeed = _player.playerStats.SpeedWalk;
 	}
 
 	public override void UpdateLogic()
@@ -16,6 +16,7 @@ public class WalkState : GroundParentState
 		ToCrouchState();
 		ToJumpForwardState();
 		_player.CheckFlip();
+		_rigidbody.velocity = new Vector2(_baseController.InputDirection.x * _playerMovement.MovementSpeed, _rigidbody.velocity.y);
 	}
 
 	private void ToIdleState()
@@ -52,7 +53,7 @@ public class WalkState : GroundParentState
 		if (_baseController.Jump() && !_playerMovement.HasJumped)
 		{
 			_playerMovement.HasJumped = true;
-			if (_baseController.InputDirection.x != 0.0f)
+			if (_baseController.InputDirection.x != 0)
 			{
 				_stateMachine.ChangeState(_jumpForwardState);
 			}
@@ -72,11 +73,5 @@ public class WalkState : GroundParentState
 		_blockState.Initialize(attack);
 		_stateMachine.ChangeState(_blockState);
 		return true;
-	}
-
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(_baseController.InputDirection.x * _playerMovement.MovementSpeed, _rigidbody.velocity.y);
 	}
 }

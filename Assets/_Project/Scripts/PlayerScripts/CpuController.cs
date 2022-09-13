@@ -4,7 +4,7 @@ public class CpuController : BaseController
 {
 	[SerializeField] private PlayerStateManager _playerStateMachine = default;
 	private Transform _otherPlayer;
-	private float _movementInputX;
+	private int _movementInputX;
 	private float _distance;
 	private float _arcanaTimer;
 	private float _attackTimer;
@@ -38,14 +38,14 @@ public class CpuController : BaseController
 				if (!_reset)
 				{
 					_reset = true;
-					InputDirection = Vector2.zero;
+					InputDirection = Vector2Int.zero;
 					_playerStateMachine.ResetToInitialState();
 				}
 			}
 		}
 		else
 		{
-			InputDirection = Vector2.zero;
+			InputDirection = Vector2Int.zero;
 		}
 	}
 
@@ -74,10 +74,10 @@ public class CpuController : BaseController
 			{
 				case 0:
 					_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.None);
-					_movementInputX = 0.0f;
+					_movementInputX = 0;
 					break;
 				case > 0 and <= 4:
-					_movementInputX = transform.localScale.x * -1.0f;
+					_movementInputX = (int)(transform.localScale.x * -1);
 					if (_movementInputX == 1.0f)
 					{
 						_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
@@ -88,7 +88,7 @@ public class CpuController : BaseController
 					}
 					break;
 				case > 5:
-					_movementInputX = transform.localScale.x * 1.0f;
+					_movementInputX = (int)(transform.localScale.x * 1);
 					if (_movementInputX == 1.0f)
 					{
 						_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
@@ -102,7 +102,7 @@ public class CpuController : BaseController
 			if (jumpRandom == 2)
 			{
 				_jump = true;
-				_movementInputX = transform.localScale.x * 1.0f;
+				_movementInputX = (int)(transform.localScale.x * 1.0f);
 				_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
 			}
 			if (crouchRandom == 2)
@@ -118,7 +118,7 @@ public class CpuController : BaseController
 			{
 				_dash = true;
 			}
-			InputDirection = new Vector2(_movementInputX, 0.0f);
+			InputDirection = new Vector2Int(_movementInputX, 0);
 			_movementTimer = Random.Range(0.2f, 0.35f);
 		}
 	}

@@ -7,7 +7,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	[SerializeField] private LayerMask _wallLayerMask = default;
 	[SerializeField] private LayerMask _playerLayerMask = default;
 	private Rigidbody2D _rigidbody;
-	private PlayerStats _playerStats;
 	private Player _player;
 	private Audio _audio;
 	private Vector2 _velocity;
@@ -15,7 +14,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	public bool HasJumped { get; set; }
 	public bool HasDoubleJumped { get; set; }
 	public bool HasAirDashed { get; set; }
-	public float MovementSpeed { get; set; }
+	public int MovementSpeed { get; set; }
 	public Vector2 MovementInput { get; set; }
 	public bool IsGrounded { get; set; } = true;
 	public bool CanDoubleJump { get; set; } = true;
@@ -24,23 +23,18 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 	void Awake()
 	{
 		_player = GetComponent<Player>();
-		_playerStats = GetComponent<PlayerStats>();
 		_rigidbody = GetComponent<Rigidbody2D>();
 		_audio = GetComponent<Audio>();
 	}
 
 	void Start()
 	{
-		MovementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
-	}
-
-	void Update()
-	{
-		CheckIsInCorner();
+		MovementSpeed = _player.playerStats.SpeedWalk;
 	}
 
 	void FixedUpdate()
 	{
+		CheckIsInCorner();
 		JumpControl();
 	}
 
@@ -130,7 +124,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void AddForce(int moveHorizontally)
 	{
-		float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 3.5f;
+		float jumpForce = _player.playerStats.jumpForce - 3.5f;
 		int direction = 0;
 		if (moveHorizontally == 1)
 		{
@@ -222,10 +216,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
 	public void ResetToWalkSpeed()
 	{
-		if (MovementSpeed == _playerStats.PlayerStatsSO.runSpeed)
+		if (MovementSpeed == _player.playerStats.SpeedRun)
 		{
 			_audio.Sound("Run").Stop();
-			MovementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
+			MovementSpeed = _player.playerStats.SpeedWalk;
 		}
 	}
 

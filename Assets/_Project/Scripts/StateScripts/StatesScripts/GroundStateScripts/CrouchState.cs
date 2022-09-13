@@ -13,6 +13,7 @@ public class CrouchState : GroundParentState
         base.UpdateLogic();
         ToIdleState();
         _player.CheckFlip();
+        _rigidbody.velocity = Vector2.zero;
     }
 
     private void ToIdleState()
@@ -34,11 +35,5 @@ public class CrouchState : GroundParentState
         _blockLowState.Initialize(attack);
         _stateMachine.ChangeState(_blockLowState);
         return true;
-    }
-
-    public override void UpdatePhysics()
-    {
-        base.UpdatePhysics();
-        _rigidbody.velocity = Vector2.zero;
     }
 }

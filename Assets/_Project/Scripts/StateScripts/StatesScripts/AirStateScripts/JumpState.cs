@@ -1,8 +1,9 @@
-using System.Collections;
 using UnityEngine;
 
 public class JumpState : AirParentState
 {
+	[SerializeField] protected GameObject _jumpPrefab = default;
+	private int _pushboxFrame;
 	public override void Enter()
 	{
 		base.Enter();
@@ -10,15 +11,18 @@ public class JumpState : AirParentState
 		_audio.Sound("Jump").Play();
 		_playerAnimator.Jump(true);
 		_rigidbody.velocity = Vector2.zero;
-		_rigidbody.AddForce(new Vector2(0.0f, _playerStats.PlayerStatsSO.jumpForce), ForceMode2D.Impulse);
-		StartCoroutine(PushboxCoroutine());
+		_rigidbody.AddForce(new Vector2(0, _player.playerStats.jumpForce), ForceMode2D.Impulse);
+		_player.SetPushboxTrigger(true);
 	}
 
-	IEnumerator PushboxCoroutine()
+	public override void UpdateLogic()
 	{
-		_player.SetPushboxTrigger(true);
-		yield return new WaitForSeconds(0.2f);
-		_player.SetPushboxTrigger(false);
+		base.UpdateLogic();
+		_pushboxFrame++;
+		if (_pushboxFrame == 2)
+		{
+			_player.SetPushboxTrigger(false);
+		}
 	}
 
 	public override void Exit()

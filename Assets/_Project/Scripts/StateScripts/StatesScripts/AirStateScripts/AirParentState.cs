@@ -1,8 +1,8 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class AirParentState : State
 {
-	[SerializeField] protected GameObject _jumpPrefab = default;
 	[SerializeField] protected GameObject _groundedPrefab = default;
 	protected FallState _fallState;
 	protected JumpState _jumpState;
@@ -45,7 +45,7 @@ public class AirParentState : State
 
 	public void ToFallState()
 	{
-		if (_rigidbody.velocity.y <= 0.0f)
+		if (_rigidbody.velocity.y < 0.0f)
 		{
 			_stateMachine.ChangeState(_fallState);
 		}
@@ -53,7 +53,7 @@ public class AirParentState : State
 
 	public void ToJumpState()
 	{
-		if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped)
+		if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped)
 		{
 			if (_baseController.InputDirection.x == 0.0f)
 			{
@@ -73,7 +73,7 @@ public class AirParentState : State
 
 	public void ToJumpForwardState()
 	{
-		if (_playerStats.PlayerStatsSO.canDoubleJump && !_playerMovement.HasDoubleJumped)
+		if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped)
 		{
 			if (_baseController.InputDirection.x != 0.0f)
 			{
@@ -110,7 +110,7 @@ public class AirParentState : State
 
 	public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
 	{
-		if (_player.Arcana >= 1.0f && _playerComboSystem.GetArcana(isAir:true) != null)
+		if (_player.ArcanaGauge >= (Fix64)1 && _playerComboSystem.GetArcana(isAir:true) != null)
 		{
 			if (_player.CanAirArcana)
 			{

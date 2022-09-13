@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class PlayerComboSystem : MonoBehaviour
 {
-	private PlayerStats _playerStats;
+	private Player _player;
 
 	void Awake()
 	{
-		_playerStats = GetComponent<PlayerStats>();
+		_player = GetComponent<Player>();
 	}
 
 	public AttackSO GetComboAttack(InputEnum inputEnum, bool isCrouching, bool isAir)
 	{
 		if (inputEnum == InputEnum.Throw)
 		{
-			return _playerStats.PlayerStatsSO.mThrow;
+			return _player.playerStats.mThrow;
 		}
 		if (isCrouching)
 		{
@@ -36,15 +36,15 @@ public class PlayerComboSystem : MonoBehaviour
 	{
 		if (inputEnum == InputEnum.Light)
 		{
-			return _playerStats.PlayerStatsSO.jL;
+			return _player.playerStats.jL;
 		}
 		else if (inputEnum == InputEnum.Medium)
 		{
-			return _playerStats.PlayerStatsSO.jM;
+			return _player.playerStats.jM;
 		}
 		else
 		{
-			return _playerStats.PlayerStatsSO.jM;
+			return _player.playerStats.jM;
 		}
 	}
 
@@ -52,15 +52,15 @@ public class PlayerComboSystem : MonoBehaviour
 	{
 		if (inputEnum == InputEnum.Light)
 		{
-			return _playerStats.PlayerStatsSO.m2L;
+			return _player.playerStats.m2L;
 		}
 		else if (inputEnum == InputEnum.Medium)
 		{
-			return _playerStats.PlayerStatsSO.m2M;
+			return _player.playerStats.m2M;
 		}
 		else
 		{
-			return _playerStats.PlayerStatsSO.m2H;
+			return _player.playerStats.m2H;
 		}
 	}
 
@@ -68,33 +68,33 @@ public class PlayerComboSystem : MonoBehaviour
 	{
 		if (inputEnum == InputEnum.Light)
 		{
-			return _playerStats.PlayerStatsSO.m5L;
+			return _player.playerStats.m5L;
 		}
 		else if (inputEnum == InputEnum.Medium)
 		{
-			return _playerStats.PlayerStatsSO.m5M;
+			return _player.playerStats.m5M;
 		}
 		else
 		{
-			return _playerStats.PlayerStatsSO.m5H;
+			return _player.playerStats.m5H;
 		}
 	}
 
 	public AttackSO GetThrow()
 	{
-		return _playerStats.PlayerStatsSO.mThrow;
+		return _player.playerStats.mThrow;
 	}
 
 	public ArcanaSO GetArcana(bool isCrouching = false, bool isAir = false)
 	{
 		if (isAir)
 		{
-			return _playerStats.PlayerStatsSO.jArcana;
+			return _player.playerStats.jArcana;
 		}
 		if (isCrouching)
 		{
-			return _playerStats.PlayerStatsSO.m2Arcana;
+			return _player.playerStats.m2Arcana;
 		}
-		return _playerStats.PlayerStatsSO.m5Arcana;
+		return _player.playerStats.m5Arcana;
 	}
 }

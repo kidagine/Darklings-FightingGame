@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class ParryState : State
@@ -8,7 +9,7 @@ public class ParryState : State
 	private AirborneHurtState _airborneHurtState;
 	private GrabbedState _grabbedState;
 	private BlockState _blockState;
-	private readonly float _parryKnockback = 2.5f;
+	private readonly int _parryKnockback = 2;
 	private bool _parried;
 
 	private void Awake()
@@ -64,14 +65,14 @@ public class ParryState : State
 		_audio.Sound("Parry").Play();
 		if (attack.isArcana)
 		{
-			_player.ArcanaGain(0.5f);
+			_player.ArcanaGain((Fix64)0.5f);
 		}
 		else
 		{
-			_player.ArcanaGain(0.1f);
+			_player.ArcanaGain((Fix64)0.1f);
 		}
 		_parried = true;
-		GameManager.Instance.HitStop(0.15f);
+		GameManager.Instance.HitStop(5);
 		GameObject effect = Instantiate(_parryEffect);
 		effect.transform.localPosition = attack.hurtEffectPosition;
 		if (!attack.isProjectile)
@@ -79,12 +80,12 @@ public class ParryState : State
 			if (_player.OtherPlayerMovement.IsInCorner)
 			{
 				_playerMovement.Knockback(new Vector2(
-					_player.OtherPlayer.transform.localScale.x, 0.0f), new Vector2(_parryKnockback, 0.0f), 0.2f);
+					_player.OtherPlayer.transform.localScale.x, 0), new Vector2(_parryKnockback, 0), 0.2f);
 			}
 			else
 			{
 				_player.OtherPlayerMovement.Knockback(new Vector2(
-					_player.transform.localScale.x, 0.0f), new Vector2(_parryKnockback, 0.0f), 0.2f);
+					_player.transform.localScale.x, 0), new Vector2(_parryKnockback, 0), 0.2f);
 			}
 		}
 	}
@@ -116,9 +117,9 @@ public class ParryState : State
 		return true;
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		base.UpdatePhysics();
+		base.UpdateLogic();
 		_rigidbody.velocity = Vector2.zero;
 	}
 

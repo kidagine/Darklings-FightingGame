@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class ArcanaState : State
@@ -40,24 +41,24 @@ public class ArcanaState : State
 		_playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
 		_player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
 		_playerAnimator.Arcana(_player.CurrentAttack.name);
-		_player.Arcana--;
+		_player.ArcanaGauge -= (Fix64)1;
 		_playerUI.DecreaseArcana();
-		_playerUI.SetArcana(_player.Arcana);
+		_playerUI.SetArcana((float)_player.ArcanaGauge);
 		_playerMovement.TravelDistance(new Vector2(
-				_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0.0f));
+				_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0));
 	}
 
-	public override void UpdatePhysics()
+	public override void UpdateLogic()
 	{
-		if (_player.CurrentAttack.travelDistance == 0.0f)
+		if (_player.CurrentAttack.travelDistance == 0)
 		{
-			base.UpdatePhysics();
+			base.UpdateLogic();
 			_rigidbody.velocity = Vector2.zero;
 		}
 		else if (!_playerComboSystem.GetArcana(_crouch, _air).reversal)
 		{
 			_playerMovement.TravelDistance(new Vector2(
-				_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0.0f));
+				_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0));
 		}
 	}
 

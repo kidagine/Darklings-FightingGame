@@ -23,6 +23,7 @@ public class Projectile : MonoBehaviour, IHurtboxResponder, IHitstop
 		_rigidbody = GetComponent<Rigidbody2D>();
 		_animator = GetComponent<Animator>();	
 		_hitbox.OnPlayerCollision += () => GameManager.Instance.AddHitstop(this);
+		_hitbox.OnPlayerCollision += () => gameObject.SetActive(false);
 		_hitbox.OnGroundCollision += () => gameObject.SetActive(false);
 	}
 

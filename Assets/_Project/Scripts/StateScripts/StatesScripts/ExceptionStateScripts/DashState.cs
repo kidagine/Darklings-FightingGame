@@ -11,6 +11,7 @@ public class DashState : State
     private HurtState _hurtState;
     private AirborneHurtState _airborneHurtState;
     private Coroutine _dashCoroutine;
+    private int _dashFrame;
 
     public int DashDirection { get; set; }
 
@@ -28,17 +29,17 @@ public class DashState : State
         _playerAnimator.Dash();
         _audio.Sound("Dash").Play();
         Transform dashEffect = ObjectPoolingManager.Instance.Spawn(_dashPrefab, transform.root.position).transform;
-        if (DashDirection > 0.0f)
+        if (DashDirection > 0)
         {
-            dashEffect.localScale = new Vector2(1.0f, transform.localScale.y);
-            dashEffect.position = new Vector2(dashEffect.position.x - 1.0f, dashEffect.position.y);
+            dashEffect.localScale = new Vector2(1, transform.localScale.y);
+            dashEffect.position = new Vector2(dashEffect.position.x - 1, dashEffect.position.y);
         }
         else
         {
-            dashEffect.localScale = new Vector2(-1.0f, transform.localScale.y);
-            dashEffect.position = new Vector2(dashEffect.position.x + 1.0f, dashEffect.position.y);
+            dashEffect.localScale = new Vector2(-1, transform.localScale.y);
+            dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
         }
-        _rigidbody.velocity = new Vector2(DashDirection, 0.0f) * _playerStats.PlayerStatsSO.dashForce;
+        _rigidbody.velocity = new Vector2(DashDirection, 0) * _player.playerStats.dashForce;
         _playerMovement.ZeroGravity();
         _dashCoroutine = StartCoroutine(DashCoroutine());
     }
@@ -55,7 +56,7 @@ public class DashState : State
         _playerMovement.ResetGravity();
         ToIdleState();
         _inputBuffer.CheckInputBuffer();
-        if (_baseController.InputDirection.x * transform.root.localScale.x > 0.0f)
+        if (_baseController.InputDirection.x * transform.root.localScale.x > 0)
         {
             ToRunState();
         }
@@ -75,11 +76,6 @@ public class DashState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-    }
-
-    public override void UpdatePhysics()
-    {
-        base.UpdatePhysics();
         _player.CheckFlip();
     }
 
