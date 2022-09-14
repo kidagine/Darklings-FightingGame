@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerGhost : MonoBehaviour
 {
 	[SerializeField] private float _ghostTime = default;
-	private SpriteRenderer _spriteRenderer = default;
+	private SpriteRenderer _spriteRenderer;
 
 
 	private void Awake()
