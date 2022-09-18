@@ -51,6 +51,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool BlockingMiddair { get; set; }
     public bool Parrying { get; set; }
 
+    public bool CanSkipAttack { get; set; }
 
     void Awake()
     {
@@ -320,7 +321,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     }
 
 
-    public void HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
+    public bool HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
     {
         if (!CurrentAttack.isProjectile)
         {
@@ -330,12 +331,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             }
         }
         CurrentAttack.hurtEffectPosition = new Vector2((float)(Fix64)hit.point.x, (float)(Fix64)hit.point.y);
-        hurtbox.TakeDamage(CurrentAttack);
         if (!CurrentAttack.isProjectile)
         {
             if (!CurrentAttack.isArcana)
             {
-                AttackState.CanSkipAttack = true;
+                CanSkipAttack = true;
             }
             if (OtherPlayerMovement.IsInCorner)
             {
@@ -345,6 +345,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 }
             }
         }
+        return hurtbox.TakeDamage(CurrentAttack);
     }
 
     public virtual void CreateEffect(bool isProjectile = false)
@@ -380,6 +381,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             {
                 return _playerStateManager.TryToHurtState(attack);
             }
+            return false;
         }
         return _playerStateManager.TryToHurtState(attack);
     }
