@@ -12,22 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
   m_Name: jArcana
   m_EditorClassIdentifier: 
+  damage: 750
+  attackTypeEnum: 2
+  hitStun: 25
   travelDistance: 0.0001
   travelDirection: {x: -55, y: 55}
-  hitStun: 25
   knockback: 2.7
-  bounce: 0
   knockbackDirection: {x: 0, y: 1}
   knockbackDuration: 0.172
-  attackTypeEnum: 2
-  hitstop: 15
-  damage: 750
   isAirAttack: 0
   isProjectile: 0
   isArcana: 1
   causesKnockdown: 1
   attackSound: Hit
   impactSound: Impact5
+  hitstop: 16
   hitEffect: {fileID: 186600171355987556, guid: 547867d1b46bb89428c594bb21fd73a8, type: 3}
   hitEffectPosition: {x: 4, y: 0.1}
   hitEffectRotation: 0
