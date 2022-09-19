@@ -972,6 +972,7 @@ public class GameManager : MonoBehaviour
 
     public void StartMatch()
     {
+        Time.timeScale = 1;
         if (SceneSettings.RandomStage)
         {
             _currentStage.SetActive(false);
