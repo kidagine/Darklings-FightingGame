@@ -45,12 +45,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public Fix64 ArcanaGauge { get; set; }
     public int ArcaneSlowdown { get; set; } = 5;
     public bool CanShadowbreak { get; set; } = true;
-    public bool CanCancelAttack { get; set; }
     public bool BlockingLow { get; set; }
     public bool BlockingHigh { get; set; }
     public bool BlockingMiddair { get; set; }
     public bool Parrying { get; set; }
-
     public bool CanSkipAttack { get; set; }
 
     void Awake()

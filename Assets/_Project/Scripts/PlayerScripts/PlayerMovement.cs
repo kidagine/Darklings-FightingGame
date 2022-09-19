@@ -230,16 +230,22 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void EnterHitstop()
     {
-        IsInHitstop = true;
-        _velocity = _rigidbody.velocity;
-        _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        if (!IsInHitstop)
+        {
+            IsInHitstop = true;
+            _velocity = _rigidbody.velocity;
+            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
     }
 
     public void ExitHitstop()
     {
-        IsInHitstop = false;
-        _rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-        _rigidbody.velocity = _velocity;
+        if (IsInHitstop)
+        {
+            IsInHitstop = false;
+            _rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
+            _rigidbody.velocity = _velocity;
+        }
     }
 
     public void SetRigidbodyKinematic(bool state)

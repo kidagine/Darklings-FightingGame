@@ -11,6 +11,7 @@ public class AttackSO : ScriptableObject
     public Vector2 travelDirection;
     [Range(0.0f, 16.0f)]
     public float knockback;
+    public Vector2 knockbackForce;
     public Vector2 knockbackDirection;
     [Range(0.0f, 1.0f)]
     public float knockbackDuration;

@@ -5,6 +5,8 @@ public class AttackState : State
 {
     private IdleState _idleState;
     private CrouchState _crouchState;
+    private JumpState _jumpState;
+    private JumpForwardState _jumpForwardState;
     private FallState _fallState;
     private HurtState _hurtState;
     private AirHurtState _airHurtState;
@@ -21,6 +23,8 @@ public class AttackState : State
         _idleState = GetComponent<IdleState>();
         _crouchState = GetComponent<CrouchState>();
         _fallState = GetComponent<FallState>();
+        _jumpState = GetComponent<JumpState>();
+        _jumpForwardState = GetComponent<JumpForwardState>();
         _hurtState = GetComponent<HurtState>();
         _airHurtState = GetComponent<AirHurtState>();
         _airborneHurtState = GetComponent<AirborneHurtState>();
@@ -72,6 +76,8 @@ public class AttackState : State
     {
         base.UpdateLogic();
         ToFallStateOnGround();
+        ToJumpState();
+        ToJumpForwardState();
         if (!_air)
         {
             _playerMovement.TravelDistance(new Vector2(
@@ -198,6 +204,56 @@ public class AttackState : State
             _stateMachine.ChangeState(_airHurtState);
         }
         return true;
+    }
+
+    private void ToJumpState()
+    {
+        if (_air)
+        {
+            if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _player.CanSkipAttack)
+            {
+                if (_baseController.InputDirection.x == 0.0f)
+                {
+                    if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+                    {
+                        _playerMovement.ExitHitstop();
+                        _playerMovement.HasDoubleJumped = true;
+                        _playerMovement.HasJumped = true;
+                        _jumpState.Initialize(true);
+                        _stateMachine.ChangeState(_jumpState);
+                    }
+                    else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+                    {
+                        _playerMovement.HasJumped = false;
+                    }
+                }
+            }
+        }
+    }
+
+    public void ToJumpForwardState()
+    {
+        if (_air)
+        {
+            if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _player.CanSkipAttack)
+            {
+                if (_baseController.InputDirection.x != 0.0f)
+                {
+                    if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+                    {
+                        _playerMovement.ExitHitstop();
+                        _playerMovement.HasDoubleJumped = true;
+                        _playerMovement.HasJumped = true;
+                        _jumpState.Initialize(true);
+                        _stateMachine.ChangeState(_jumpState);
+                    }
+                    else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+                    {
+                        _playerMovement.HasJumped = false;
+                    }
+                }
+            }
+        }
     }
 
     public override bool ToAirborneHurtState(AttackSO attack)
