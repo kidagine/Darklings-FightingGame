@@ -26,7 +26,6 @@ public class InputHistory : MonoBehaviour
 	public List<InputDirectionEnum> Directions { get; private set; } = new();
 	public List<float> InputTimes { get; private set; } = new();
 	public PlayerController PlayerController { get; set; }
-	public float StartInputTime { get; set; }
 
 	void Awake()
 	{

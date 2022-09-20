@@ -12,27 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
   m_Name: 5Arcana
   m_EditorClassIdentifier: 
+  damage: 700
+  attackTypeEnum: 2
+  hitStun: 32
   travelDistance: 0
   travelDirection: {x: 0, y: 0}
-  hitStun: 32
   knockback: 3
-  bounce: 0
   knockbackDirection: {x: 0, y: 0.5}
   knockbackDuration: 0.172
-  attackTypeEnum: 2
-  hitstop: 13
-  damage: 700
   isAirAttack: 0
   isProjectile: 1
   isArcana: 1
   causesKnockdown: 1
   attackSound: Hit
   impactSound: Impact5
+  hitstop: 13
   hitEffect: {fileID: 186600171355987556, guid: 547867d1b46bb89428c594bb21fd73a8, type: 3}
   hitEffectPosition: {x: 4, y: 0.1}
   hitEffectRotation: 0
   hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
-  hurtEffectPosition: {x: 1.0066898, y: -3.5675}
+  hurtEffectPosition: {x: 11.042736, y: -3.3825002}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}
   startUpFrames: 10
