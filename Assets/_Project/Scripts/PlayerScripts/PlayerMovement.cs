@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void TravelDistance(Vector2 travelDistance)
     {
-        _rigidbody.velocity = travelDistance * 3.0f;
+        _rigidbody.velocity = travelDistance * 3;
     }
 
     public void CheckForPlayer()

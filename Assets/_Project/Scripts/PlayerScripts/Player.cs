@@ -50,7 +50,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool BlockingMiddair { get; set; }
     public bool Parrying { get; set; }
     public bool CanSkipAttack { get; set; }
-
     void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
