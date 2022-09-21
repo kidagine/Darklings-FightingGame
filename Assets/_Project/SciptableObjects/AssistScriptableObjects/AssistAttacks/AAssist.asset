@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: AAssist
   m_EditorClassIdentifier: 
   damage: 300
-  attackTypeEnum: 1
+  attackTypeEnum: 2
   hitStun: 33
   travelDistance: 0
   travelDirection: {x: 0, y: 0}
   knockback: 0.3
+  knockbackForce: {x: 0, y: 0}
   knockbackDirection: {x: 1, y: 0}
   knockbackDuration: 0
   isAirAttack: 0
@@ -31,7 +32,7 @@ MonoBehaviour:
   hitEffectPosition: {x: 1, y: 1}
   hitEffectRotation: -35
   hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
-  hurtEffectPosition: {x: -1.3503616, y: -3.0924945}
+  hurtEffectPosition: {x: 8.850764, y: -1.830668}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 0}
   startUpFrames: 11
