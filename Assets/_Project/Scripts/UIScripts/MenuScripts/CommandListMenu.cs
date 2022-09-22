@@ -6,111 +6,132 @@ using UnityEngine.Video;
 
 public class CommandListMenu : BaseMenu
 {
-	[SerializeField] private TextMeshProUGUI _characterText = default;
-	[SerializeField] private TextMeshProUGUI _descriptionText = default;
-	[SerializeField] private VideoPlayer _showcaseVideo = default;
-	[SerializeField] private PauseMenu _pauseMenu = default;
-	[SerializeField] private PauseMenu _pauseTrainingMenu = default;
-	[SerializeField] private CommandListButton[] _commandListButtons = default;
-	[SerializeField] private GameObject _knockdownImage = default;
-	[SerializeField] private GameObject _reversalImage = default;
-	[SerializeField] private GameObject _projectileImage = default;
-	private readonly string _baseUrl = "https://kidagine.github.io/Darklings-CommandListVideos/";
-	private Player _playerOne;
-	private Player _playerTwo;
-	private Player _currentlyDisplayedPlayer;
+    [SerializeField] private TextMeshProUGUI _characterText = default;
+    [SerializeField] private TextMeshProUGUI _descriptionText = default;
+    [SerializeField] private VideoPlayer _showcaseVideo = default;
+    [SerializeField] private PauseMenu _pauseMenu = default;
+    [SerializeField] private PauseMenu _pauseTrainingMenu = default;
+    [SerializeField] private CommandFramedata _commandFramedata = default;
+    [SerializeField] private CommandListButton[] _commandListButtons = default;
+    [SerializeField] private GameObject _knockdownImage = default;
+    [SerializeField] private GameObject _reversalImage = default;
+    [SerializeField] private GameObject _projectileImage = default;
+    [SerializeField] private GameObject _videoMenu = default;
+    [SerializeField] private GameObject _framedataMenu = default;
 
-	public PauseMenu CurrentPauseMenu { get; private set; }
+    private readonly string _baseUrl = "https://kidagine.github.io/Darklings-CommandListVideos/";
+    private Player _playerOne;
+    private Player _playerTwo;
+    private Player _currentlyDisplayedPlayer;
 
-	void Awake()
-	{
-		_playerOne = GameManager.Instance.PlayerOne;
-		_playerTwo = GameManager.Instance.PlayerTwo;
-	}
+    public PauseMenu CurrentPauseMenu { get; private set; }
 
-	public void ChangePage()
-	{
-		if (_playerOne == _currentlyDisplayedPlayer)
-		{
-			_currentlyDisplayedPlayer = _playerTwo;
-		}
-		else
-		{
-			_currentlyDisplayedPlayer = _playerOne;
-		}
-		SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
-		EventSystem.current.SetSelectedGameObject(null);
-		_startingOption.Select();
-	}
+    void Awake()
+    {
+        _playerOne = GameManager.Instance.PlayerOne;
+        _playerTwo = GameManager.Instance.PlayerTwo;
+    }
 
-	private void SetCommandListData(PlayerStatsSO playerStats)
-	{
-		_characterText.text = playerStats.characterName.ToString();
-		_commandListButtons[0].SetData(playerStats.m5Arcana);
-		_commandListButtons[1].SetData(playerStats.m2Arcana);
-		if (playerStats.jArcana != null)
-		{
-			_commandListButtons[2].SetData(playerStats.jArcana);
-			_commandListButtons[2].gameObject.SetActive(true);
-		}
-		else
-		{
-			_commandListButtons[2].gameObject.SetActive(false);
-		}
-	}
+    public void ChangePage()
+    {
+        if (_playerOne == _currentlyDisplayedPlayer)
+        {
+            _currentlyDisplayedPlayer = _playerTwo;
+        }
+        else
+        {
+            _currentlyDisplayedPlayer = _playerOne;
+        }
+        SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
+        EventSystem.current.SetSelectedGameObject(null);
+        _startingOption.Select();
+    }
 
-	public void SetCommandListShowcase(ArcanaSO command)
-	{
-		_descriptionText.text = command.arcanaDescription;
+    private void SetCommandListData(PlayerStatsSO playerStats)
+    {
+        _characterText.text = playerStats.characterName.ToString();
+        _commandListButtons[0].SetData(playerStats.m5Arcana);
+        _commandListButtons[1].SetData(playerStats.m2Arcana);
+        if (playerStats.jArcana != null)
+        {
+            _commandListButtons[2].SetData(playerStats.jArcana);
+            _commandListButtons[2].gameObject.SetActive(true);
+        }
+        else
+        {
+            _commandListButtons[2].gameObject.SetActive(false);
+        }
+    }
+
+    public void SetCommandListShowcase(ArcanaSO command)
+    {
+        _descriptionText.text = command.arcanaDescription;
 #if UNITY_STANDALONE_WIN
 		_showcaseVideo.clip = command.arcanaVideo;
 #endif
 #if UNITY_WEBGL
-		_showcaseVideo.url = _baseUrl + command.arcanaVideo.name + ".mp4";
+        _showcaseVideo.url = _baseUrl + command.arcanaVideo.name + ".mp4";
 #endif
-		_showcaseVideo.Stop();
-		_showcaseVideo.Play();
-		_reversalImage.SetActive(false);
-		_knockdownImage.SetActive(false);
-		_projectileImage.SetActive(false);
-		if (command.reversal)
-		{
-			_reversalImage.SetActive(true);
-		}
-		if (command.causesKnockdown)
-		{
-			_knockdownImage.SetActive(true);
-		}
-		if (command.isProjectile)
-		{
-			_projectileImage.SetActive(true);
-		}
-	}
+        _showcaseVideo.Stop();
+        _showcaseVideo.Play();
+        _reversalImage.SetActive(false);
+        _knockdownImage.SetActive(false);
+        _projectileImage.SetActive(false);
+        if (command.reversal)
+        {
+            _reversalImage.SetActive(true);
+        }
+        if (command.causesKnockdown)
+        {
+            _knockdownImage.SetActive(true);
+        }
+        if (command.isProjectile)
+        {
+            _projectileImage.SetActive(true);
+        }
+        _commandFramedata.SetFramedata(command);
+    }
 
-	public void Back()
-	{
-		CurrentPauseMenu.Show();
-		Hide();
-	}
+    public void ToggleFramedata()
+    {
+        if (_videoMenu.activeSelf)
+        {
+            _videoMenu.SetActive(false);
+            _framedataMenu.SetActive(true);
+        }
+        else
+        {
+            _videoMenu.SetActive(true);
+            _framedataMenu.SetActive(false);
+            _showcaseVideo.Stop();
+            _showcaseVideo.Play();
+        }
+    }
 
-	private void OnEnable()
-	{
-		if (GameManager.Instance.IsTrainingMode)
-		{
-			CurrentPauseMenu = _pauseTrainingMenu;
-		}
-		else
-		{
-			CurrentPauseMenu = _pauseMenu;
-		}
-		if (_pauseMenu.PlayerOnePaused)
-		{
-			_currentlyDisplayedPlayer = _playerOne;
-		}
-		else
-		{
-			_currentlyDisplayedPlayer = _playerTwo;
-		}
-		SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
-	}
+    public void Back()
+    {
+        CurrentPauseMenu.Show();
+        Hide();
+    }
+
+    private void OnEnable()
+    {
+        if (GameManager.Instance.IsTrainingMode)
+        {
+            CurrentPauseMenu = _pauseTrainingMenu;
+        }
+        else
+        {
+            CurrentPauseMenu = _pauseMenu;
+        }
+        if (_pauseMenu.PlayerOnePaused)
+        {
+            _currentlyDisplayedPlayer = _playerOne;
+        }
+        else
+        {
+            _currentlyDisplayedPlayer = _playerTwo;
+        }
+        SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
+    }
 }
