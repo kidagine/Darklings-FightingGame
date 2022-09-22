@@ -260,6 +260,14 @@ public class PlayerController : BaseController
         }
     }
 
+    public void ToggleFramedata(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnToggleFramedata?.Invoke();
+        }
+    }
+
     public void PageLeft(CallbackContext callbackContext)
     {
         if (callbackContext.performed)

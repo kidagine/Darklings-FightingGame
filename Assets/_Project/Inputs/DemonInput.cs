@@ -943,6 +943,15 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleFramedata"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad302711-aaaf-4ef8-a9f5-a439a4b42746"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1286,6 +1295,28 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""action"": ""NavigationDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a040f85-407d-4744-8bfc-0ebffb53b484"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""ToggleFramedata"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26bb8aae-48e9-4830-ae8a-b154662cdb78"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ToggleFramedata"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1435,6 +1466,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         m_UI_RightPage = m_UI.FindAction("RightPage", throwIfNotFound: true);
         m_UI_NavigationUp = m_UI.FindAction("NavigationUp", throwIfNotFound: true);
         m_UI_NavigationDown = m_UI.FindAction("NavigationDown", throwIfNotFound: true);
+        m_UI_ToggleFramedata = m_UI.FindAction("ToggleFramedata", throwIfNotFound: true);
         // Training
         m_Training = asset.FindActionMap("Training", throwIfNotFound: true);
         m_Training_Reset = m_Training.FindAction("Reset", throwIfNotFound: true);
@@ -1638,6 +1670,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_RightPage;
     private readonly InputAction m_UI_NavigationUp;
     private readonly InputAction m_UI_NavigationDown;
+    private readonly InputAction m_UI_ToggleFramedata;
     public struct UIActions
     {
         private @DemonInput m_Wrapper;
@@ -1653,6 +1686,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         public InputAction @RightPage => m_Wrapper.m_UI_RightPage;
         public InputAction @NavigationUp => m_Wrapper.m_UI_NavigationUp;
         public InputAction @NavigationDown => m_Wrapper.m_UI_NavigationDown;
+        public InputAction @ToggleFramedata => m_Wrapper.m_UI_ToggleFramedata;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1695,6 +1729,9 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @NavigationDown.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationDown;
                 @NavigationDown.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationDown;
                 @NavigationDown.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationDown;
+                @ToggleFramedata.started -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleFramedata;
+                @ToggleFramedata.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleFramedata;
+                @ToggleFramedata.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleFramedata;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1732,6 +1769,9 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @NavigationDown.started += instance.OnNavigationDown;
                 @NavigationDown.performed += instance.OnNavigationDown;
                 @NavigationDown.canceled += instance.OnNavigationDown;
+                @ToggleFramedata.started += instance.OnToggleFramedata;
+                @ToggleFramedata.performed += instance.OnToggleFramedata;
+                @ToggleFramedata.canceled += instance.OnToggleFramedata;
             }
         }
     }
@@ -1833,6 +1873,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         void OnRightPage(InputAction.CallbackContext context);
         void OnNavigationUp(InputAction.CallbackContext context);
         void OnNavigationDown(InputAction.CallbackContext context);
+        void OnToggleFramedata(InputAction.CallbackContext context);
     }
     public interface ITrainingActions
     {

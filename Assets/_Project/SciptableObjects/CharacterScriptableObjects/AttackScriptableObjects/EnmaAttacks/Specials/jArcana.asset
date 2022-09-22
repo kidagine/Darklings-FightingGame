@@ -12,17 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
   m_Name: jArcana
   m_EditorClassIdentifier: 
-  damage: 750
+  damage: 625
   attackTypeEnum: 2
   hitStun: 35
   travelDistance: 0
   travelDirection: {x: 0, y: 0}
   knockback: 2.5
+  knockbackForce: {x: 0, y: 0}
   knockbackDirection: {x: 0, y: 0.9}
   knockbackDuration: 0.2
   isAirAttack: 0
   isProjectile: 1
   isArcana: 1
+  jumpCancelable: 0
   causesKnockdown: 1
   attackSound: Hit
   impactSound: Impact5
@@ -34,9 +36,9 @@ MonoBehaviour:
   hurtEffectPosition: {x: 2.4846992, y: -2.4900002}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: b6c04c6f8b446df4e996a2b115e6f0bf, type: 2}
-  startUpFrames: 18
-  activeFrames: 19
-  recoveryFrames: 5
+  startUpFrames: 9
+  activeFrames: 10
+  recoveryFrames: 13
   airOk: 1
   reversal: 0
   arcanaName: Deadly Shock

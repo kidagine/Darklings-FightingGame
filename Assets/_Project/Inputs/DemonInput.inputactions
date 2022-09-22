@@ -921,6 +921,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleFramedata",
+                    "type": "Button",
+                    "id": "ad302711-aaaf-4ef8-a9f5-a439a4b42746",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1262,6 +1271,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "NavigationDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a040f85-407d-4744-8bfc-0ebffb53b484",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox",
+                    "action": "ToggleFramedata",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "26bb8aae-48e9-4830-ae8a-b154662cdb78",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ToggleFramedata",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
