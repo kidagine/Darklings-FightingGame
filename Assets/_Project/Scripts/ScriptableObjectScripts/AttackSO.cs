@@ -7,6 +7,7 @@ public class AttackSO : ScriptableObject
     public int damage;
     public AttackTypeEnum attackTypeEnum;
     public int hitStun;
+    public int blockStun;
     public float travelDistance;
     public Vector2 travelDirection;
     [Range(0.0f, 16.0f)]
@@ -40,5 +41,5 @@ public class AttackSO : ScriptableObject
     public int activeFrames;
     public int recoveryFrames;
     public int hitAdv { get { return hitStun - recoveryFrames; } private set { } }
-    public int blockAdv { get { return hitStun - recoveryFrames; } private set { } }
+    public int blockAdv { get { return blockStun - recoveryFrames; } private set { } }
 }

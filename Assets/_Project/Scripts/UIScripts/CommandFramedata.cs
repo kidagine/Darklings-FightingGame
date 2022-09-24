@@ -17,7 +17,7 @@ public class CommandFramedata : MonoBehaviour
     {
         _moveType.text = command.attackTypeEnum.ToString();
         _damage.text = command.damage.ToString();
-        _chipDamage.text = "200";
+        _chipDamage.text = "250";
         _startUp.text = command.startUpFrames.ToString();
         _active.text = command.activeFrames.ToString();
         _recovery.text = command.recoveryFrames.ToString();

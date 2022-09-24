@@ -1839,7 +1839,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &109848243
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7508,14 +7508,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 0
-  _characterOne: 4
+  _characterOne: 0
   _characterTwo: 0
   _assistOne: 0
   _assistTwo: 0
   _controllerOne: 0
   _controllerOneType: 0
-  _controllerTwo: 0
-  _controllerTwoType: 0
+  _controllerTwo: -1
+  _controllerTwoType: 5
   _music: 0
   _playerOneSkin: 0
   _playerTwoSkin: 0
@@ -8089,7 +8089,7 @@ PrefabInstance:
     - target: {fileID: 8073473789928578679, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: c0acca90970e15241b8dd1a134c692a0, type: 2}
+      objectReference: {fileID: 9100000, guid: d07b4c2442277164a847eaaa08ae9e05, type: 2}
     - target: {fileID: 8073473790341886582, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
       propertyPath: m_Size.y
       value: 1.5
@@ -17004,7 +17004,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &859527711
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24078,7 +24078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1278359700
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42532,7 +42532,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 200
+  m_text: 250
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
