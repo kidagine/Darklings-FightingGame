@@ -264,7 +264,6 @@ public class GameManager : MonoBehaviour
             SceneSettings.ControllerOneScheme = "Keyboard";
             SceneSettings.ControllerTwoScheme = "KeyboardTwo";
             _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
-            Debug.Log(_playerTwoController.InputDevice);
             _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
         }
         else

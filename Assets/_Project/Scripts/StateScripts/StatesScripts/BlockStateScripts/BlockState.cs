@@ -1,11 +1,7 @@
-using UnityEngine;
-
 public class BlockState : BlockParentState
 {
     public override void Enter()
     {
-        Debug.Log(_player.IsPlayerOne + "|" + DemonicsPhysics.Frame);
-
         base.Enter();
         _playerAnimator.Block();
     }
