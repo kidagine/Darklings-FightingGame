@@ -110,6 +110,8 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
+#if UNITY_EDITOR
         if (InputSystem.devices.Count > 1)
         {
             if (InputSystem.devices[1].name == "Mouse")
@@ -117,10 +119,7 @@ public class GameManager : MonoBehaviour
                 InputSystem.RemoveDevice(InputSystem.devices[1]);
             }
         }
-        if (InputSystem.devices.Count == 1)
-        {
-            keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
-        }
+#endif
 
         HasGameStarted = false;
         GameSpeed = _gameSpeed;
@@ -153,7 +152,6 @@ public class GameManager : MonoBehaviour
             _isTrainingMode = SceneSettings.IsTrainingMode;
         }
         CheckSceneSettings();
-
         GameObject playerOneObject = Instantiate(_playerLocal);
         playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];
         GameObject playerTwoObject = Instantiate(_playerLocal);
@@ -1109,10 +1107,12 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    private void OnApplicationQuit()
+    private void OnDisable()
     {
-        InputSystem.RemoveDevice(keyboardTwo);
+        if (keyboardTwo != null)
+        {
+            InputSystem.RemoveDevice(keyboardTwo);
+        }
     }
 }
 
