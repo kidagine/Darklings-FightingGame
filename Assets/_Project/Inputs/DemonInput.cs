@@ -1002,7 +1002,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1d983952-e574-41ca-b53e-d72edc831f08"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""path"": ""<Keyboard>/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",

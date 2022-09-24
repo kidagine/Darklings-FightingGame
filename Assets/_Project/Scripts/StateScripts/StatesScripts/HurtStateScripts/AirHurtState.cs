@@ -16,6 +16,7 @@ public class AirHurtState : HurtParentState
 
     public override void Enter()
     {
+        _player.OtherPlayer.UnfreezeComboTimer();
         _player.CheckFlip();
         _playerAnimator.HurtAir(true);
         GameObject effect = Instantiate(_hurtAttack.hurtEffect);
@@ -27,6 +28,7 @@ public class AirHurtState : HurtParentState
     {
         base.UpdateLogic();
         ToFallStateAfterGround();
+        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         _playerMovement.CheckForPlayer();
         if (DemonicsPhysics.WaitFrames(ref _hurtFrame))
         {

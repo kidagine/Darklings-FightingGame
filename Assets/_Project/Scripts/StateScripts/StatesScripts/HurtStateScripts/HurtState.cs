@@ -17,6 +17,7 @@ public class HurtState : HurtParentState
 
     public override void Enter()
     {
+        _player.OtherPlayer.UnfreezeComboTimer();
         _player.CheckFlip();
         _playerAnimator.Hurt(true);
         _hurtFrame = _hurtAttack.hitStun;
