@@ -265,8 +265,12 @@ public class AttackState : State
 
     public override bool ToGrabbedState()
     {
-        _stateMachine.ChangeState(_grabbedState);
-        return true;
+        if (_playerMovement.IsGrounded)
+        {
+            _stateMachine.ChangeState(_grabbedState);
+            return true;
+        }
+        return false;
     }
 
     public override bool AssistCall()
