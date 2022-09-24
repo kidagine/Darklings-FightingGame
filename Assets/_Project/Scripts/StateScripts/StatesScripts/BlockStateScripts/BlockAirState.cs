@@ -21,7 +21,7 @@ public class BlockAirState : BlockParentState
     public override void UpdateLogic()
     {
         ToBlockState();
-        _rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y / 1.05f);
+        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y / 1.05f);
         if (DemonicsPhysics.WaitFrames(ref _blockFrame))
         {
             ToFallState();

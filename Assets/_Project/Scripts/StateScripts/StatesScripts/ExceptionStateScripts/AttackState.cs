@@ -43,7 +43,6 @@ public class AttackState : State
     public override void Enter()
     {
         base.Enter();
-        Debug.Log(_player.IsPlayerOne + "|" + DemonicsPhysics.Frame);
         _player.CheckFlip();
         _audio.Sound("Hit").Play();
         _player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
@@ -193,7 +192,6 @@ public class AttackState : State
 
     public override bool ToHurtState(AttackSO attack)
     {
-        Debug.Log(_player.IsPlayerOne + "|" + DemonicsPhysics.Frame);
         _player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
         if (_playerMovement.IsGrounded)
         {
