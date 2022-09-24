@@ -106,9 +106,22 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public BaseController PausedController { get; set; }
     public float GameSpeed { get; set; }
+    private Keyboard keyboardTwo;
 
     void Awake()
     {
+        if (InputSystem.devices.Count > 1)
+        {
+            if (InputSystem.devices[1].name == "Mouse")
+            {
+                InputSystem.RemoveDevice(InputSystem.devices[1]);
+            }
+        }
+        if (InputSystem.devices.Count == 1)
+        {
+            keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
+        }
+
         HasGameStarted = false;
         GameSpeed = _gameSpeed;
         CheckInstance();
@@ -259,7 +272,7 @@ public class GameManager : MonoBehaviour
         }
         _playerOneInput = PlayerOne.GetComponent<PlayerInput>();
         _playerTwoInput = PlayerTwo.GetComponent<PlayerInput>();
-        if (inputSchemeOne.Contains("Keyboard") && inputSchemeTwo.Contains("Keyboard"))
+        if (SceneSettings.ControllerOneScheme == "Keyboard" && SceneSettings.ControllerTwoScheme == "Keyboard")
         {
             SceneSettings.ControllerOneScheme = "Keyboard";
             SceneSettings.ControllerTwoScheme = "KeyboardTwo";
@@ -1095,6 +1108,11 @@ public class GameManager : MonoBehaviour
                 _hitstopList.Clear();
             }
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        InputSystem.RemoveDevice(keyboardTwo);
     }
 }
 
