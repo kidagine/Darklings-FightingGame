@@ -264,10 +264,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void FreezeComboTimer()
     {
-        if (_comboTimerCoroutine != null)
+        if (_comboTimerCoroutine != null && !_comboTimerPaused)
         {
-            _playerUI.SetComboTimerLock();
+            _playerUI.SetComboTimerLock(true);
             _comboTimerPaused = true;
+        }
+    }
+
+    public void UnfreezeComboTimer()
+    {
+        if (_comboTimerCoroutine != null && _comboTimerPaused)
+        {
+            _playerUI.SetComboTimerLock(false);
+            _comboTimerPaused = false;
         }
     }
 

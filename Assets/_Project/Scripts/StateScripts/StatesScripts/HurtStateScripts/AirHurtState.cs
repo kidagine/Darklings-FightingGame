@@ -16,6 +16,7 @@ public class AirHurtState : HurtParentState
 
     public override void Enter()
     {
+        _player.OtherPlayer.UnfreezeComboTimer();
         _player.CheckFlip();
         _playerAnimator.HurtAir(true);
         GameObject effect = Instantiate(_hurtAttack.hurtEffect);
