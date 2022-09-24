@@ -399,6 +399,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     private bool CanBlock(AttackSO attack)
     {
+        if (_playerStateManager.CurrentState is BlockParentState)
+        {
+            return true;
+        }
         if (attack.attackTypeEnum == AttackTypeEnum.Break)
         {
             if (BlockingLeftOrRight())

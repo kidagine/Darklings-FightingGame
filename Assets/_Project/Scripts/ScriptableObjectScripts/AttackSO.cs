@@ -39,4 +39,6 @@ public class AttackSO : ScriptableObject
     public int startUpFrames;
     public int activeFrames;
     public int recoveryFrames;
+    public int hitAdv { get { return hitStun - recoveryFrames; } private set { } }
+    public int blockAdv { get { return hitStun - recoveryFrames; } private set { } }
 }
