@@ -11,6 +11,7 @@ public class CommandListMenu : BaseMenu
     [SerializeField] private VideoPlayer _showcaseVideo = default;
     [SerializeField] private PauseMenu _pauseMenu = default;
     [SerializeField] private PauseMenu _pauseTrainingMenu = default;
+    [SerializeField] private RectTransform _content = default;
     [SerializeField] private CommandFramedata _commandFramedata = default;
     [SerializeField] private CommandListButton[] _commandListButtons = default;
     [SerializeField] private GameObject _toggleFramedataPrompt = default;
@@ -46,6 +47,7 @@ public class CommandListMenu : BaseMenu
         SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
         EventSystem.current.SetSelectedGameObject(null);
         _startingOption.Select();
+        _content.anchoredPosition = Vector2.zero;
     }
 
     private void SetCommandListData(PlayerStatsSO playerStats)
@@ -60,6 +62,9 @@ public class CommandListMenu : BaseMenu
         }
         else
         {
+            _commandListButtons[0].GetComponent<BaseButton>()._scrollUpAmount = 1900;
+            _commandListButtons[10].GetComponent<BaseButton>()._scrollDownAmount = -1900;
+            _commandListButtons[1].GetComponent<BaseButton>()._scrollDownAmount = 300;
             _commandListButtons[2].gameObject.SetActive(false);
         }
         _commandListButtons[3].SetData(playerStats.m5L);
@@ -136,6 +141,7 @@ public class CommandListMenu : BaseMenu
 
     private void OnEnable()
     {
+        _content.anchoredPosition = Vector2.zero;
         if (GameManager.Instance.IsTrainingMode)
         {
             CurrentPauseMenu = _pauseTrainingMenu;
