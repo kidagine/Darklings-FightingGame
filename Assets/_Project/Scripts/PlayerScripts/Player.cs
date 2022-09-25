@@ -406,6 +406,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         knockbackEvent.RemoveAllListeners();
     }
 
+    public bool IsInHitstop()
+    {
+        return _playerMovement.IsInHitstop;
+    }
+
     private bool CanBlock(AttackSO attack)
     {
         if (_playerStateManager.CurrentState is BlockParentState)

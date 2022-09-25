@@ -106,9 +106,21 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public BaseController PausedController { get; set; }
     public float GameSpeed { get; set; }
+    private Keyboard keyboardTwo;
 
     void Awake()
     {
+        keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
+#if UNITY_EDITOR
+        if (InputSystem.devices.Count > 1)
+        {
+            if (InputSystem.devices[1].name == "Mouse")
+            {
+                InputSystem.RemoveDevice(InputSystem.devices[1]);
+            }
+        }
+#endif
+
         HasGameStarted = false;
         GameSpeed = _gameSpeed;
         CheckInstance();
@@ -140,7 +152,6 @@ public class GameManager : MonoBehaviour
             _isTrainingMode = SceneSettings.IsTrainingMode;
         }
         CheckSceneSettings();
-
         GameObject playerOneObject = Instantiate(_playerLocal);
         playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];
         GameObject playerTwoObject = Instantiate(_playerLocal);
@@ -259,7 +270,7 @@ public class GameManager : MonoBehaviour
         }
         _playerOneInput = PlayerOne.GetComponent<PlayerInput>();
         _playerTwoInput = PlayerTwo.GetComponent<PlayerInput>();
-        if (inputSchemeOne.Contains("Keyboard") && inputSchemeTwo.Contains("Keyboard"))
+        if (SceneSettings.ControllerOneScheme == "Keyboard" && SceneSettings.ControllerTwoScheme == "Keyboard")
         {
             SceneSettings.ControllerOneScheme = "Keyboard";
             SceneSettings.ControllerTwoScheme = "KeyboardTwo";
@@ -1053,6 +1064,7 @@ public class GameManager : MonoBehaviour
     public void AddHitstop(IHitstop hitstop)
     {
         _hitstopList.Add(hitstop);
+
     }
 
     public void SuperFreeze()
@@ -1075,7 +1087,10 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < _hitstopList.Count; i++)
             {
-                _hitstopList[i].EnterHitstop();
+                if (!_hitstopList[i].IsInHitstop())
+                {
+                    _hitstopList[i].EnterHitstop();
+                }
             }
             _hitstop = hitstop;
         }
@@ -1085,7 +1100,7 @@ public class GameManager : MonoBehaviour
     {
         if (_hitstop > 0)
         {
-            if (DemonicsPhysics.WaitFrames(ref _hitstop))
+            if (DemonicsPhysics.WaitFramesOnce(ref _hitstop))
             {
                 _hitstop = 0;
                 for (int i = 0; i < _hitstopList.Count; i++)
@@ -1094,6 +1109,14 @@ public class GameManager : MonoBehaviour
                 }
                 _hitstopList.Clear();
             }
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (keyboardTwo != null)
+        {
+            InputSystem.RemoveDevice(keyboardTwo);
         }
     }
 }
