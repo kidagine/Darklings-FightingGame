@@ -15,14 +15,17 @@ MonoBehaviour:
   damage: 300
   attackTypeEnum: 1
   hitStun: 27
+  blockStun: 0
   travelDistance: 0
   travelDirection: {x: 0, y: 0}
   knockback: 0.6
+  knockbackForce: {x: 0, y: 0}
   knockbackDirection: {x: 0, y: 0}
   knockbackDuration: 0.036
   isAirAttack: 1
   isProjectile: 0
   isArcana: 0
+  jumpCancelable: 0
   causesKnockdown: 0
   attackSound: Hit
   impactSound: Impact5
@@ -37,3 +40,6 @@ MonoBehaviour:
   startUpFrames: 7
   activeFrames: 5
   recoveryFrames: 8
+  moveName: 
+  moveDescription: 
+  moveVideo: {fileID: 0}

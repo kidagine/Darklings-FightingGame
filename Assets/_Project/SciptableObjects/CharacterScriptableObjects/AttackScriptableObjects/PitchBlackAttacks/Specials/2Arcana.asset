@@ -15,14 +15,17 @@ MonoBehaviour:
   damage: 650
   attackTypeEnum: 2
   hitStun: 30
+  blockStun: 0
   travelDistance: -1
   travelDirection: {x: 0, y: 5}
   knockback: 2.7
+  knockbackForce: {x: 0, y: 0}
   knockbackDirection: {x: 0, y: 0.7}
   knockbackDuration: 0.172
   isAirAttack: 0
   isProjectile: 0
   isArcana: 1
+  jumpCancelable: 0
   causesKnockdown: 1
   attackSound: Hit
   impactSound: Impact5
@@ -37,9 +40,9 @@ MonoBehaviour:
   startUpFrames: 1
   activeFrames: 23
   recoveryFrames: 10
+  moveName: Null Cut
+  moveDescription: Reversal move kicking the opponent and jump backwards to gain
+    distance for zoning.
+  moveVideo: {fileID: 32900000, guid: 7c68810c113b5b3449b72747a7856482, type: 3}
   airOk: 0
   reversal: 1
-  arcanaName: Null Cut
-  arcanaDescription: Reversal move kicking the opponent and jump backwards to gain
-    distance for zoning.
-  arcanaVideo: {fileID: 32900000, guid: 7c68810c113b5b3449b72747a7856482, type: 3}

@@ -12,22 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
   m_Name: jArcana
   m_EditorClassIdentifier: 
+  damage: 500
+  attackTypeEnum: 2
+  hitStun: 32
+  blockStun: 0
   travelDistance: 0
   travelDirection: {x: 0, y: 0}
-  hitStun: 32
   knockback: 1.2
-  bounce: 0
+  knockbackForce: {x: 0, y: 0}
   knockbackDirection: {x: 0, y: 0.9}
   knockbackDuration: 0.101
-  attackTypeEnum: 2
-  hitstop: 11
-  damage: 500
   isAirAttack: 0
   isProjectile: 1
   isArcana: 1
+  jumpCancelable: 0
   causesKnockdown: 1
   attackSound: Hit
   impactSound: Impact5
+  hitstop: 11
   hitEffect: {fileID: 3294536446187043669, guid: ccfee90485797b448ba49f2fa458ca34, type: 3}
   hitEffectPosition: {x: 2.5, y: 1.7}
   hitEffectRotation: 0
@@ -38,9 +40,9 @@ MonoBehaviour:
   startUpFrames: 18
   activeFrames: 19
   recoveryFrames: 5
+  moveName: Void Beam
+  moveDescription: Quick beam projectile that causes knockdown, good for zoning the
+    opponent.
+  moveVideo: {fileID: 32900000, guid: e78cbca02797c2742ab04b26a71697e5, type: 3}
   airOk: 1
   reversal: 0
-  arcanaName: Void Beam
-  arcanaDescription: Quick beam projectile that causes knockdown, good for zoning
-    the opponent.
-  arcanaVideo: {fileID: 32900000, guid: e78cbca02797c2742ab04b26a71697e5, type: 3}

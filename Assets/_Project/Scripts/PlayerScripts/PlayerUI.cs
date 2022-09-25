@@ -251,7 +251,7 @@ public class PlayerUI : MonoBehaviour
     {
         _healthImage.color = _healthDamagedColor;
         _portraitImage.color = _healthDamagedColor;
-        yield return new WaitForSeconds(0.005f);
+        yield return new WaitForSecondsRealtime(0.04f);
         _healthImage.color = _healthCurrentColor;
         _portraitImage.color = Color.white;
     }

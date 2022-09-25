@@ -15,14 +15,17 @@ MonoBehaviour:
   damage: 800
   attackTypeEnum: 5
   hitStun: 30
+  blockStun: 0
   travelDistance: 2.75
   travelDirection: {x: 0, y: 0}
   knockback: 2.75
+  knockbackForce: {x: 0, y: 0}
   knockbackDirection: {x: 0, y: 1}
   knockbackDuration: 0.172
   isAirAttack: 0
   isProjectile: 0
   isArcana: 1
+  jumpCancelable: 0
   causesKnockdown: 1
   attackSound: Hit
   impactSound: Impact5
@@ -37,9 +40,9 @@ MonoBehaviour:
   startUpFrames: 5
   activeFrames: 25
   recoveryFrames: 16
+  moveName: Hell Dive
+  moveDescription: Runs forward and grabs the opponent slamming them to the ground
+    causing knockdown, works well as a combo ender.
+  moveVideo: {fileID: 32900000, guid: 477c745577263024a9ec78d028c3bb02, type: 3}
   airOk: 0
   reversal: 0
-  arcanaName: Hell Dive
-  arcanaDescription: Runs forward and grabs the opponent slamming them to the ground
-    causing knockdown, works well as a combo ender.
-  arcanaVideo: {fileID: 32900000, guid: 477c745577263024a9ec78d028c3bb02, type: 3}

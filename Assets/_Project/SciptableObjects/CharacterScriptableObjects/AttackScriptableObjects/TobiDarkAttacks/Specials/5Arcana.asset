@@ -15,14 +15,17 @@ MonoBehaviour:
   damage: 700
   attackTypeEnum: 2
   hitStun: 32
+  blockStun: 0
   travelDistance: 0
   travelDirection: {x: 0, y: 0}
   knockback: 3
+  knockbackForce: {x: 0, y: 0}
   knockbackDirection: {x: 0, y: 0.5}
   knockbackDuration: 0.172
   isAirAttack: 0
   isProjectile: 1
   isArcana: 1
+  jumpCancelable: 0
   causesKnockdown: 1
   attackSound: Hit
   impactSound: Impact5
@@ -37,9 +40,8 @@ MonoBehaviour:
   startUpFrames: 10
   activeFrames: 20
   recoveryFrames: 25
+  moveName: Dark Quake
+  moveDescription: 
+  moveVideo: {fileID: 32900000, guid: dcc076ebbe253394f905a0e8bd1390d1, type: 3}
   airOk: 0
   reversal: 0
-  arcanaName: Dark Quake
-  arcanaDescription: Slamming on the ground causing a quake that can hit the opponent
-    and cause knockdown.
-  arcanaVideo: {fileID: 32900000, guid: dcc076ebbe253394f905a0e8bd1390d1, type: 3}

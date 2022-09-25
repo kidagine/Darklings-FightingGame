@@ -13,6 +13,7 @@ public class CommandListMenu : BaseMenu
     [SerializeField] private PauseMenu _pauseTrainingMenu = default;
     [SerializeField] private CommandFramedata _commandFramedata = default;
     [SerializeField] private CommandListButton[] _commandListButtons = default;
+    [SerializeField] private GameObject _toggleFramedataPrompt = default;
     [SerializeField] private GameObject _knockdownImage = default;
     [SerializeField] private GameObject _reversalImage = default;
     [SerializeField] private GameObject _projectileImage = default;
@@ -61,16 +62,25 @@ public class CommandListMenu : BaseMenu
         {
             _commandListButtons[2].gameObject.SetActive(false);
         }
+        _commandListButtons[3].SetData(playerStats.m5L);
+        _commandListButtons[4].SetData(playerStats.m2L);
+        _commandListButtons[5].SetData(playerStats.jL);
+        _commandListButtons[6].SetData(playerStats.m5M);
+        _commandListButtons[7].SetData(playerStats.m2M);
+        _commandListButtons[8].SetData(playerStats.jM);
+        _commandListButtons[9].SetData(playerStats.m5H);
+        _commandListButtons[10].SetData(playerStats.m2H);
+        _commandListButtons[11].SetData(playerStats.jL);
     }
 
     public void SetCommandListShowcase(ArcanaSO command)
     {
-        _descriptionText.text = command.arcanaDescription;
+        _descriptionText.text = command.moveDescription;
 #if UNITY_STANDALONE_WIN
-		_showcaseVideo.clip = command.arcanaVideo;
+        _showcaseVideo.clip = command.moveVideo;
 #endif
 #if UNITY_WEBGL
-        _showcaseVideo.url = _baseUrl + command.arcanaVideo.name + ".mp4";
+        _showcaseVideo.url = _baseUrl + command.moveVideo.name + ".mp4";
 #endif
         _showcaseVideo.Stop();
         _showcaseVideo.Play();
@@ -90,22 +100,32 @@ public class CommandListMenu : BaseMenu
             _projectileImage.SetActive(true);
         }
         _commandFramedata.SetFramedata(command);
+        _toggleFramedataPrompt.SetActive(true);
+    }
+
+    public void SetCommandListShowcase(AttackSO command)
+    {
+        _videoMenu.SetActive(false);
+        _framedataMenu.SetActive(true);
+        _commandFramedata.SetFramedata(command);
+        _toggleFramedataPrompt.SetActive(false);
     }
 
     public void ToggleFramedata()
     {
-        if (_videoMenu.activeSelf)
-        {
-            _videoMenu.SetActive(false);
-            _framedataMenu.SetActive(true);
-        }
-        else
-        {
-            _videoMenu.SetActive(true);
-            _framedataMenu.SetActive(false);
-            _showcaseVideo.Stop();
-            _showcaseVideo.Play();
-        }
+        if (_toggleFramedataPrompt.activeSelf)
+            if (_videoMenu.activeSelf)
+            {
+                _videoMenu.SetActive(false);
+                _framedataMenu.SetActive(true);
+            }
+            else
+            {
+                _videoMenu.SetActive(true);
+                _framedataMenu.SetActive(false);
+                _showcaseVideo.Stop();
+                _showcaseVideo.Play();
+            }
     }
 
     public void Back()
