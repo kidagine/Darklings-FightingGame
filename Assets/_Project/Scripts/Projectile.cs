@@ -107,6 +107,11 @@ public class Projectile : MonoBehaviour, IHurtboxResponder, IHitstop
             StartCoroutine(DisableCoroutine());
     }
 
+    public bool IsInHitstop()
+    {
+        return _rigidbody.isKinematic;
+    }
+
     IEnumerator DisableCoroutine()
     {
         _speed = 0;

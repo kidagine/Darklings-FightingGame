@@ -1064,6 +1064,7 @@ public class GameManager : MonoBehaviour
     public void AddHitstop(IHitstop hitstop)
     {
         _hitstopList.Add(hitstop);
+
     }
 
     public void SuperFreeze()
@@ -1086,7 +1087,10 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < _hitstopList.Count; i++)
             {
-                _hitstopList[i].EnterHitstop();
+                if (!_hitstopList[i].IsInHitstop())
+                {
+                    _hitstopList[i].EnterHitstop();
+                }
             }
             _hitstop = hitstop;
         }
@@ -1096,7 +1100,7 @@ public class GameManager : MonoBehaviour
     {
         if (_hitstop > 0)
         {
-            if (DemonicsPhysics.WaitFrames(ref _hitstop))
+            if (DemonicsPhysics.WaitFramesOnce(ref _hitstop))
             {
                 _hitstop = 0;
                 for (int i = 0; i < _hitstopList.Count; i++)
@@ -1107,6 +1111,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     private void OnDisable()
     {
         if (keyboardTwo != null)
