@@ -111,7 +111,6 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
-#if UNITY_EDITOR
         if (InputSystem.devices.Count > 1)
         {
             if (InputSystem.devices[1].name == "Mouse")
@@ -119,7 +118,6 @@ public class GameManager : MonoBehaviour
                 InputSystem.RemoveDevice(InputSystem.devices[1]);
             }
         }
-#endif
 
         HasGameStarted = false;
         GameSpeed = _gameSpeed;
@@ -270,7 +268,8 @@ public class GameManager : MonoBehaviour
         }
         _playerOneInput = PlayerOne.GetComponent<PlayerInput>();
         _playerTwoInput = PlayerTwo.GetComponent<PlayerInput>();
-        if (SceneSettings.ControllerOneScheme == "Keyboard" && SceneSettings.ControllerTwoScheme == "Keyboard")
+        if (SceneSettings.ControllerOneScheme == "Keyboard" && SceneSettings.ControllerTwoScheme == "Keyboard"
+        && _playerOneController.ControllerInputName == "Keyboard" && _playerTwoController.ControllerInputName == "Keyboard")
         {
             SceneSettings.ControllerOneScheme = "Keyboard";
             SceneSettings.ControllerTwoScheme = "KeyboardTwo";
