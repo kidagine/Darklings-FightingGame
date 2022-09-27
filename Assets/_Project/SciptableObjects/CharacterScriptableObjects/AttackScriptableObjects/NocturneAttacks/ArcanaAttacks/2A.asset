@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
-  m_Name: jArcana
+  m_Name: 2A
   m_EditorClassIdentifier: 
-  damage: 750
+  damage: 600
   attackTypeEnum: 2
-  hitStun: 25
-  blockStun: 0
-  travelDistance: 0.0001
-  travelDirection: {x: -55, y: 55}
-  knockback: 2.7
+  hitStun: 30
+  blockStun: 8
+  travelDistance: 1
+  travelDirection: {x: 0, y: 5}
+  knockback: 3
   knockbackForce: {x: 0, y: 0}
   knockbackDirection: {x: 0, y: 1}
   knockbackDuration: 0.172
@@ -34,14 +34,14 @@ MonoBehaviour:
   hitEffectPosition: {x: 4, y: 0.1}
   hitEffectRotation: 0
   hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
-  hurtEffectPosition: {x: -8.589094, y: -0.59381264}
+  hurtEffectPosition: {x: -7.51759, y: -3.1350002}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}
-  startUpFrames: 10
-  activeFrames: 20
-  recoveryFrames: 25
-  moveName: Dark Uppercut
-  moveDescription: Executes an uppercut in a vertical direction in a very fast motion.
-  moveVideo: {fileID: 32900000, guid: 81629217236dc9d478631809766be105, type: 3}
-  airOk: 1
+  startUpFrames: 1
+  activeFrames: 15
+  recoveryFrames: 8
+  moveName: Spirit Strike
+  moveDescription: Reversal move with very heigh vertical distance reach.
+  moveVideo: {fileID: 32900000, guid: 03cf6bb398083f5408752a1f2cfb56b5, type: 3}
+  airOk: 0
   reversal: 1
