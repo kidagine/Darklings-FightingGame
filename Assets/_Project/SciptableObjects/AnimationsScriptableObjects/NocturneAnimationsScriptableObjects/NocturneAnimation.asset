@@ -1,0 +1,233 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fef5d734c2535434db640f24531e601e, type: 3}
+  m_Name: NocturneAnimation
+  m_EditorClassIdentifier: 
+  spriteAtlas:
+  - {fileID: 4343727234628468602, guid: 5d287a3ea5c51bc44a759d0efceda5cd, type: 2}
+  - {fileID: 4343727234628468602, guid: 914e9b37d2673154dbe5fae1b377d78d, type: 2}
+  - {fileID: 4343727234628468602, guid: 9bac60615b6da9e458b2622e2c9a40ba, type: 2}
+  - {fileID: 4343727234628468602, guid: a417c18e6d29ed54aa31aa6c689a36bb, type: 2}
+  animationCelsGroup:
+  - celName: Idle
+    loop: 1
+    animationCel:
+    - frames: 10
+      sprite: {fileID: -1124390550, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: -1190814948, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: 207074607, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: -696878310, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: Walk
+    loop: 1
+    animationCel:
+    - frames: 10
+      sprite: {fileID: 668662718, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: -628821731, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: 17494914, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: 600434941, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: 1891426199, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: Crouch
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: -1754197329, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: Jump
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: -332714530, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: 56918684, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: 945619634, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: JumpForward
+    loop: 0
+    animationCel:
+    - frames: 5
+      sprite: {fileID: 1083615396, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 5
+      sprite: {fileID: 797909222, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 5
+      sprite: {fileID: -1439834007, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 5
+      sprite: {fileID: 56918684, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 5
+      sprite: {fileID: 945619634, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: Dash
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: 600434941, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: Run
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: 673759966, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: Block
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: 1403226959, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: BlockLow
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: 766528377, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: BlockAir
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: 80837720, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: Hurt
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: -1828528913, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: HurtAir
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: -670656692, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: Taunt
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: -1647857594, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: -1670356945, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: 517024144, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: -1670356945, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: -1647857594, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: Knockdown
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: 399332309, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: 1168574196, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: 2105018808, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: -823542745, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: WakeUp
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: -823542745, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: -654236651, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: Wallsplat
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: -823542745, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+  - celName: 5L
+    loop: 0
+    animationCel:
+    - frames: 10
+      sprite: {fileID: -1182664401, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []
+    - frames: 10
+      sprite: {fileID: 1048141560, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 1
+      hurtboxes:
+      - size: {x: 0, y: 0}
+        offset: {x: 0, y: 0}
+    - frames: 10
+      sprite: {fileID: -1182664401, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      active: 0
+      hurtboxes: []

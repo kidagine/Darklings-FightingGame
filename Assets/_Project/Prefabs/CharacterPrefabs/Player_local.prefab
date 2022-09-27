@@ -1538,6 +1538,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 8073473790702501988}
   _inputBuffer: {fileID: 4664395619888274278}
+  _animation: {fileID: 11400000, guid: c57bc744493459f4e8da98859fba2649, type: 2}
   OnCurrentAnimationFinished:
     m_PersistentCalls:
       m_Calls: []
@@ -1616,7 +1617,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8073473789928578673}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 22100000, guid: 1c9a0abc7732ddd46a62d7382a86852c, type: 2}
   m_CullingMode: 0
@@ -1895,6 +1896,7 @@ MonoBehaviour:
   _assist: {fileID: 8780121904732240358}
   _groundPushbox: {fileID: 516655848589572334}
   _hurtbox: {fileID: 8073473791272386160}
+  _hitbox: {fileID: 8073473789829592545}
   _effectsParent: {fileID: 2017372758765848807}
   _grabPoint: {fileID: 7600070780512524519}
   _cameraPoint: {fileID: 3775412804825945539}
