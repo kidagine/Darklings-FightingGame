@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Hitbox : MonoBehaviour
 {
-    public Vector2 _hitboxSize = default;
-    public Vector2 _offset = default;
     public Action OnGroundCollision;
     public Action OnPlayerCollision;
     [SerializeField] private bool _hitGround;
@@ -17,6 +15,9 @@ public class Hitbox : MonoBehaviour
     [HideInInspector] public bool _hasHit;
     public Transform HitPoint { get; private set; }
     public bool HitConfirm { get; private set; }
+    public Vector2Int Size { get; private set; }
+    public Vector2Int Offset { get; private set; }
+
     void Awake()
     {
         _sourceTransform = transform.root;
@@ -44,11 +45,17 @@ public class Hitbox : MonoBehaviour
     {
         _hitboxResponder = hitboxResponder.GetComponent<IHitboxResponder>();
     }
-
-    void Update()
+    int b;
+    public void SetHitbox(AnimationBox hitbox)
     {
-        Vector2 hitboxPosition = new(transform.position.x + (_offset.x * transform.root.localScale.x), transform.position.y + (_offset.y * transform.root.localScale.y));
-        RaycastHit2D[] hit = Physics2D.BoxCastAll(hitboxPosition, _hitboxSize, 0.0f, Vector2.zero, 0.0f, _hurtboxLayerMask);
+        Size = hitbox.size;
+        Offset = hitbox.offset;
+    }
+
+    void FixedUpdate()
+    {
+        Vector2 hitboxPosition = new(transform.position.x + (Offset.x * transform.root.localScale.x), transform.position.y + (Offset.y * transform.root.localScale.y));
+        RaycastHit2D[] hit = Physics2D.BoxCastAll(hitboxPosition, Size, 0.0f, Vector2.zero, 0.0f, _hurtboxLayerMask);
         if (hit.Length > 0)
         {
             for (int i = 0; i < hit.Length; i++)
@@ -88,12 +95,12 @@ public class Hitbox : MonoBehaviour
     private void OnDrawGizmos()
     {
         _hitboxColor.a = 0.6f;
-        Vector2 hitboxPosition = new(transform.position.x + (_offset.x * transform.root.localScale.x), transform.position.y + (_offset.y * transform.root.localScale.y));
+        Vector2 hitboxPosition = new(transform.position.x + (Offset.x * transform.root.localScale.x), transform.position.y + (Offset.y * transform.root.localScale.y));
         Gizmos.color = _hitboxColor;
         Gizmos.matrix = Matrix4x4.TRS(hitboxPosition, transform.rotation, Vector2.one);
 
-        Gizmos.DrawWireCube(Vector3.zero, new Vector3(_hitboxSize.x, _hitboxSize.y, 1.0f));
-        Gizmos.DrawWireCube(Vector3.zero, new Vector3(_hitboxSize.x * 1.01f, _hitboxSize.y * 1.01f, 1.0f));
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(Size.x, Size.y, 1.0f));
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(Size.x * 1.01f, Size.y * 1.01f, 1.0f));
     }
 #endif
 }

@@ -7,7 +7,6 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Player _player = default;
     [SerializeField] private InputBuffer _inputBuffer = null;
     [SerializeField] private AnimationSO _animation = default;
-    private Animator _animator;
     private SpriteLibrary _spriteLibrary;
     private SpriteRenderer _spriteRenderer;
     private int _frame;
@@ -22,14 +21,8 @@ public class PlayerAnimator : MonoBehaviour
 
     void Awake()
     {
-        _animator = GetComponent<Animator>();
         _spriteLibrary = GetComponent<SpriteLibrary>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
-    void Start()
-    {
-        _animator.runtimeAnimatorController = _player.playerStats.runtimeAnimatorController;
     }
 
     void FixedUpdate()
@@ -39,7 +32,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private void PlayAnimation()
     {
-        if (!_isPaused)
+        if (!_isPaused && !frozen)
         {
             if (_frame == _animation.GetCel(_group, _cel).frames)
             {
@@ -64,8 +57,8 @@ public class PlayerAnimator : MonoBehaviour
     {
         if (_animation.GetCel(_group, _cel).active)
         {
-            _player.SetHitbox(true);
-            //_animation.GetCel(_group, _cel).hurtboxes[0];
+            _player.SetHitbox(true, _animation.GetCel(_group, _cel).hitboxes[0]);
+            _player.CreateEffect(false);
         }
         else
         {
@@ -94,18 +87,19 @@ public class PlayerAnimator : MonoBehaviour
         _frame = 0;
         _cel = 0;
         _group = _animation.GetGroupId(name);
-        _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
         _isPaused = false;
+        CheckAnimationBoxes();
+        _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
     }
-
+    bool frozen;
     public void Pause()
     {
-        _animator.speed = 0;
+        frozen = true;
     }
 
     public void Resume()
     {
-        _animator.speed = 1;
+        frozen = false;
     }
 
     public void Walk()
@@ -173,12 +167,12 @@ public class PlayerAnimator : MonoBehaviour
         SetAnimation("ArcanaThrow");
     }
 
-    public void Hurt(bool reset = false)
+    public void Hurt()
     {
         SetAnimation("Hurt");
     }
 
-    public void HurtAir(bool reset = false)
+    public void HurtAir()
     {
         SetAnimation("HurtAir");
     }

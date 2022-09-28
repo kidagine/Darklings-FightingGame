@@ -11,7 +11,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [SerializeField] private Assist _assist = default;
     [SerializeField] private Pushbox _groundPushbox = default;
     [SerializeField] private Transform _hurtbox = default;
-    [SerializeField] private Transform _hitbox = default;
+    [SerializeField] private Hitbox _hitbox = default;
     [SerializeField] protected Transform _effectsParent = default;
     [SerializeField] private Transform _grabPoint = default;
     [SerializeField] private Transform _cameraPoint = default;
@@ -477,12 +477,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
-    public void SetHitbox(bool state)
+    public void SetHitbox(bool state, AnimationBox hitbox = default)
     {
-        for (int i = 0; i < _hitbox.childCount; i++)
-        {
-            _hitbox.gameObject.SetActive(state);
-        }
+        _hitbox.gameObject.SetActive(state);
+        _hitbox.SetHitbox(hitbox);
     }
 
     public void Pause(bool isPlayerOne)

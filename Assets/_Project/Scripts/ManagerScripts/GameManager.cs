@@ -1075,7 +1075,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0.0f;
         yield return new WaitForSecondsRealtime(0.3f);
         Time.timeScale = 0.5f;
-        yield return new WaitForSecondsRealtime(1.0f);
+        yield return new WaitForSecondsRealtime(1);
         Time.timeScale = 1f;
     }
 

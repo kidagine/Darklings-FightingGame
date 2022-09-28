@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Video;
 
 [CreateAssetMenu(fileName = "Arcana", menuName = "Scriptable Objects/Arcana", order = 2)]
 public class ArcanaSO : AttackSO

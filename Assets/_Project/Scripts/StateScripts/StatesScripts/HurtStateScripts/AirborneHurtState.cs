@@ -26,7 +26,7 @@ public class AirborneHurtState : HurtParentState
     {
         _player.OtherPlayerUI.IncreaseCombo();
         _audio.Sound(_hurtAttack.impactSound).Play();
-        _playerAnimator.HurtAir(true);
+        _playerAnimator.HurtAir();
         _rigidbody.velocity = Vector2.zero;
         if (_player.OtherPlayerUI.CurrentComboCount == 1)
         {

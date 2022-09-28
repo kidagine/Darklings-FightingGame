@@ -19,7 +19,7 @@ public class HurtState : HurtParentState
     {
         _player.OtherPlayer.UnfreezeComboTimer();
         _player.CheckFlip();
-        _playerAnimator.Hurt(true);
+        _playerAnimator.Hurt();
         _hurtFrame = _hurtAttack.hitStun;
         if (!_skipEnter)
         {
@@ -47,15 +47,18 @@ public class HurtState : HurtParentState
     {
         base.UpdateLogic();
         _rigidbody.velocity = Vector2.zero;
-        if (DemonicsPhysics.WaitFrames(ref _hurtFrame))
+        if (!_player.IsInHitstop())
         {
-            if (_brainController.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+            if (DemonicsPhysics.WaitFrames(ref _hurtFrame))
             {
-                ToAttackState();
-            }
-            else
-            {
-                ToIdleState();
+                if (_brainController.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+                {
+                    ToAttackState();
+                }
+                else
+                {
+                    ToIdleState();
+                }
             }
         }
     }

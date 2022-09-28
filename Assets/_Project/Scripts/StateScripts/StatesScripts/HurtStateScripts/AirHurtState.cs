@@ -18,7 +18,7 @@ public class AirHurtState : HurtParentState
     {
         _player.OtherPlayer.UnfreezeComboTimer();
         _player.CheckFlip();
-        _playerAnimator.HurtAir(true);
+        _playerAnimator.HurtAir();
         GameObject effect = Instantiate(_hurtAttack.hurtEffect);
         effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
         base.Enter();

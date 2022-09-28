@@ -49,7 +49,7 @@ public struct AnimationCel
     public int frames;
     public Sprite sprite;
     public bool active;
-    public AnimationBox[] hurtboxes;
+    public AnimationBox[] hitboxes;
     //hurtboxes array
 }
 
