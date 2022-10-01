@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CharacterEditor : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class CharacterEditor : MonoBehaviour
     [SerializeField] private TMP_Dropdown _spriteDropdown = default;
     [SerializeField] private TMP_Dropdown _skinDropdown = default;
     [SerializeField] private Toggle _loopToggle = default;
+    [SerializeField] private Toggle _boxesToggle = default;
     [SerializeField] private Button _playButton = default;
     [SerializeField] private SpriteRenderer _characterSpriteRenderer = default;
     private AnimationSO[] _animations;
@@ -23,6 +25,7 @@ public class CharacterEditor : MonoBehaviour
         _animations = Resources.LoadAll<AnimationSO>("");
         _characterDropdown.ClearOptions();
         _spriteDropdown.ClearOptions();
+        _skinDropdown.ClearOptions();
         for (int i = 0; i < _animations.Length; i++)
         {
             _characterDropOptions.Add(_animations[i].name);
@@ -31,10 +34,11 @@ public class CharacterEditor : MonoBehaviour
         {
             _spriteDropdownOptions.Add(_animations[0].animationCelsGroup[i].celName);
         }
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < _animations[0].spriteAtlas.Length; i++)
         {
             _skinDropdownOptions.Add(i.ToString());
         }
+        _skinDropdown.AddOptions(_skinDropdownOptions);
         _spriteDropdown.AddOptions(_spriteDropdownOptions);
         _characterDropdown.AddOptions(_characterDropOptions);
         SetFrames();
@@ -42,6 +46,13 @@ public class CharacterEditor : MonoBehaviour
         {
             AnimationEnded();
             _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
+            _skinDropdown.ClearOptions();
+            _skinDropdownOptions.Clear();
+            for (int i = 0; i < _animations[_characterDropdown.value].spriteAtlas.Length; i++)
+            {
+                _skinDropdownOptions.Add(i.ToString());
+            }
+            _skinDropdown.AddOptions(_skinDropdownOptions);
         });
         _spriteDropdown.onValueChanged.AddListener(delegate
         {
@@ -56,9 +67,14 @@ public class CharacterEditor : MonoBehaviour
                 _isPaused = false;
             }
         });
+        _boxesToggle.onValueChanged.AddListener(delegate
+        {
+            TrainingSettings.ShowHitboxes = !TrainingSettings.ShowHitboxes;
+        });
         _playButton.onClick.AddListener(delegate
         {
             _isPlayOn = !_isPlayOn;
+            _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
         });
     }
 
@@ -134,5 +150,29 @@ public class CharacterEditor : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void SetFrameDuration(int cel, int duration)
+    {
+        _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[cel].frames = duration;
+        AnimationEnded();
+    }
+
+    public void GoToFrame(int cel)
+    {
+        _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, cel);
+        _isPlayOn = false;
+        _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
+    }
+
+    public void AddFrame()
+    {
+        //_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.
+    }
+
+    public void LoadFightScene()
+    {
+        SceneSettings.PlayerOne = 0;
+        SceneManager.LoadScene(3);
     }
 }

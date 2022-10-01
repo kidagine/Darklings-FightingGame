@@ -7,35 +7,40 @@ public class Hurtbox : MonoBehaviour
     [SerializeField] private GameObject _hurtboxResponderObject = default;
     private IHurtboxResponder _hurtboxResponder;
 
-	public Color HurtboxColor { get; private set; } = Color.green;
+    public Color HurtboxColor { get; private set; } = Color.green;
 
 
     void Awake()
-	{
-        _hurtboxResponder = _hurtboxResponderObject.GetComponent<IHurtboxResponder>();
+    {
+        if (_hurtboxResponderObject != null)
+            _hurtboxResponder = _hurtboxResponderObject.GetComponent<IHurtboxResponder>();
     }
 
-	private void Update()
-	{
-        if (_hurtboxResponder.BlockingLow)
+    private void Update()
+    {
+        if (_hurtboxResponderObject != null)
         {
-            HurtboxColor = new Color(0.0f, 0.45f, 0.45f, 1.0f);
+            if (_hurtboxResponder.BlockingLow)
+            {
+                HurtboxColor = new Color(0.0f, 0.45f, 0.45f, 1.0f);
+            }
+            else if (_hurtboxResponder.BlockingHigh)
+            {
+                HurtboxColor = Color.cyan;
+            }
+            else if (_hurtboxResponder.BlockingMiddair)
+            {
+                HurtboxColor = new Color(0.65f, 0.18f, 0.18f, 1.0f);
+            }
+            else
+            {
+                HurtboxColor = Color.green;
+            }
         }
-        else if (_hurtboxResponder.BlockingHigh)
-        {
-            HurtboxColor = Color.cyan;
-        }
-        else if (_hurtboxResponder.BlockingMiddair)
-        {
-            HurtboxColor = new Color(0.65f, 0.18f, 0.18f, 1.0f);
-        }
-        else
-        {
-            HurtboxColor = Color.green;
-        }
+
     }
 
-	public bool TakeDamage(AttackSO attackSO)
+    public bool TakeDamage(AttackSO attackSO)
     {
         return _hurtboxResponder.TakeDamage(attackSO);
     }
