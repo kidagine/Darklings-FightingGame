@@ -50,7 +50,7 @@ public struct AnimationCel
     public Sprite sprite;
     public bool active;
     public AnimationBox[] hitboxes;
-    //hurtboxes array
+    public AnimationBox[] hurtboxes;
 }
 
 [Serializable]
