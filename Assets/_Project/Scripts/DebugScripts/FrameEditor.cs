@@ -37,6 +37,13 @@ public class FrameEditor : MonoBehaviour
 
     private void ClickFrame()
     {
-        _characterEditor.GoToFrame(transform.GetSiblingIndex());
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            _characterEditor.DeleteFrame(transform.GetSiblingIndex());
+        }
+        else
+        {
+            _characterEditor.GoToFrame(transform.GetSiblingIndex());
+        }
     }
 }

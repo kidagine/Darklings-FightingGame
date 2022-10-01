@@ -37,7 +37,7 @@ public class PlayerAnimator : MonoBehaviour
             if (_frame == _animation.GetCel(_group, _cel).frames)
             {
                 _cel++;
-                if (_cel > _animation.GetGroup(_group).animationCel.Length - 1)
+                if (_cel > _animation.GetGroup(_group).animationCel.Count - 1)
                 {
                     AnimationEnded();
                     if (!_animation.GetGroup(_group).loop)
@@ -55,7 +55,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private void CheckAnimationBoxes()
     {
-        if (_animation.GetCel(_group, _cel).active)
+        if (_animation.GetCel(_group, _cel).hitboxes.Length > 0)
         {
             _player.SetHitbox(true, _animation.GetCel(_group, _cel).hitboxes[0]);
             _player.CreateEffect(false);

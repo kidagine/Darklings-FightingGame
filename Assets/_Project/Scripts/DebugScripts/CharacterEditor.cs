@@ -82,7 +82,6 @@ public class CharacterEditor : MonoBehaviour
 
     private int _frame;
     private int _cel;
-    private int _skin;
     private bool _isPaused;
     private bool _isPlayOn = true;
     void FixedUpdate()
@@ -92,7 +91,7 @@ public class CharacterEditor : MonoBehaviour
             if (_frame == _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).frames)
             {
                 _cel++;
-                if (_cel > _animations[_characterDropdown.value].GetGroup(_spriteDropdown.value).animationCel.Length - 1)
+                if (_cel > _animations[_characterDropdown.value].GetGroup(_spriteDropdown.value).animationCel.Count - 1)
                 {
                     AnimationEnded();
                     if (!_animations[_characterDropdown.value].GetGroup(_spriteDropdown.value).loop)
@@ -116,26 +115,40 @@ public class CharacterEditor : MonoBehaviour
         _cel = 0;
     }
 
+    private void CheckAnimationBoxes()
+    {
+        // if (_animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes.Length > 0)
+        // {
+        //     _player.SetHitbox(true, _animation.GetCel(_group, _cel).hitboxes[0]);
+        //     _player.CreateEffect(false);
+        // }
+        // else
+        // {
+        //     _player.SetHitbox(false);
+        // }
+    }
+
+
     private void SetFrames()
     {
         for (int i = 0; i < _frames.Length; i++)
         {
             _frames[i].gameObject.SetActive(false);
         }
-        for (int i = 0; i < _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Length; i++)
+        for (int i = 0; i < _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Count; i++)
         {
             _frames[i].gameObject.SetActive(true);
             _frames[i].SetDuration(_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].frames);
-            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].active)
+            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].hitboxes.Length > 0)
             {
                 _frames[i].SetImage(Color.red);
             }
             else
             {
                 bool isPriorFrameActive = false;
-                for (int j = 0; j < _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Length; j++)
+                for (int j = 0; j < _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Count; j++)
                 {
-                    if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[j].active && j < i)
+                    if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[j].hitboxes.Length > 0 && j < i)
                     {
                         isPriorFrameActive = true;
                     }
@@ -165,9 +178,21 @@ public class CharacterEditor : MonoBehaviour
         _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
     }
 
+    public void DeleteFrame(int cel)
+    {
+        AnimationCel animationCel = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[cel];
+        _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Remove(animationCel);
+        SetFrames();
+        AnimationEnded();
+    }
+
     public void AddFrame()
     {
-        //_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.
+        AnimationCel animationCel = new AnimationCel();
+        animationCel.sprite = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Count - 1].sprite;
+        animationCel.frames = 1;
+        _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Add(animationCel);
+        SetFrames();
     }
 
     public void LoadFightScene()

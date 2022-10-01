@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 [CreateAssetMenu(fileName = "AnimationSO", menuName = "Darklings-FightingGame/AnimationSO", order = 0)]
@@ -40,15 +41,14 @@ public struct AnimationCelsGroup
 {
     public string celName;
     public bool loop;
-    public AnimationCel[] animationCel;
+    public List<AnimationCel> animationCel;
 }
 
 [Serializable]
-public struct AnimationCel
+public class AnimationCel
 {
     public int frames;
     public Sprite sprite;
-    public bool active;
     public AnimationBox[] hitboxes;
     public AnimationBox[] hurtboxes;
 }

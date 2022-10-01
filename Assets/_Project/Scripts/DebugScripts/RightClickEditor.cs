@@ -12,7 +12,7 @@ public class RightClickEditor : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonUp(1))
         {
             if (_canvas.activeSelf)
             {
