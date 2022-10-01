@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CharacterEditor : MonoBehaviour
 {
-    [SerializeField] private GameObject[] _frames = default;
+    [SerializeField] private FrameEditor[] _frames = default;
     [SerializeField] private TMP_Dropdown _characterDropdown = default;
     [SerializeField] private TMP_Dropdown _spriteDropdown = default;
     [SerializeField] private TMP_Dropdown _skinDropdown = default;
@@ -37,6 +37,7 @@ public class CharacterEditor : MonoBehaviour
         }
         _spriteDropdown.AddOptions(_spriteDropdownOptions);
         _characterDropdown.AddOptions(_characterDropOptions);
+        SetFrames();
         _characterDropdown.onValueChanged.AddListener(delegate
         {
             AnimationEnded();
@@ -45,14 +46,7 @@ public class CharacterEditor : MonoBehaviour
         _spriteDropdown.onValueChanged.AddListener(delegate
         {
             AnimationEnded();
-            for (int i = 0; i < _frames.Length; i++)
-            {
-                _frames[i].SetActive(false);
-            }
-            for (int i = 0; i < _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Length; i++)
-            {
-                _frames[i].SetActive(true);
-            }
+            SetFrames();
             _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
         });
         _loopToggle.onValueChanged.AddListener(delegate
@@ -104,5 +98,41 @@ public class CharacterEditor : MonoBehaviour
         }
         _frame = 0;
         _cel = 0;
+    }
+
+    private void SetFrames()
+    {
+        for (int i = 0; i < _frames.Length; i++)
+        {
+            _frames[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Length; i++)
+        {
+            _frames[i].gameObject.SetActive(true);
+            _frames[i].SetDuration(_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].frames);
+            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].active)
+            {
+                _frames[i].SetImage(Color.red);
+            }
+            else
+            {
+                bool isPriorFrameActive = false;
+                for (int j = 0; j < _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Length; j++)
+                {
+                    if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[j].active && j < i)
+                    {
+                        isPriorFrameActive = true;
+                    }
+                }
+                if (!isPriorFrameActive)
+                {
+                    _frames[i].SetImage(Color.green);
+                }
+                else
+                {
+                    _frames[i].SetImage(Color.blue);
+                }
+            }
+        }
     }
 }
