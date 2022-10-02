@@ -4,6 +4,7 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerAnimator : MonoBehaviour
 {
+    [SerializeField] private PlayerCollisionBoxes _playerCollisionBoxes = default;
     [SerializeField] private Player _player = default;
     [SerializeField] private InputBuffer _inputBuffer = null;
     [SerializeField] private AnimationSO _animation = default;
@@ -55,15 +56,8 @@ public class PlayerAnimator : MonoBehaviour
 
     private void CheckAnimationBoxes()
     {
-        if (_animation.GetCel(_group, _cel).hitboxes.Length > 0)
-        {
-            _player.SetHitbox(true, _animation.GetCel(_group, _cel).hitboxes[0]);
-            _player.CreateEffect(false);
-        }
-        else
-        {
-            _player.SetHitbox(false);
-        }
+        _playerCollisionBoxes.SetHurtboxes(_animation.GetCel(_group, _cel).hurtboxes.ToArray());
+        _playerCollisionBoxes.SetHitboxes(_animation.GetCel(_group, _cel).hitboxes.ToArray());
     }
 
     private void AnimationEnded()

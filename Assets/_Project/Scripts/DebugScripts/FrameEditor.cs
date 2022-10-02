@@ -5,8 +5,10 @@ public class FrameEditor : MonoBehaviour
 {
     [SerializeField] private CharacterEditor _characterEditor = default;
     [SerializeField] private Image _frameImage = default;
+    [SerializeField] private Image _frameSelectedImage = default;
     [SerializeField] private Button _frameButton = default;
     [SerializeField] private TMP_InputField _durationInputField = default;
+    private static FrameEditor previousFrameEditor;
 
 
     void Awake()
@@ -33,6 +35,21 @@ public class FrameEditor : MonoBehaviour
             duration = 1;
         }
         _characterEditor.SetFrameDuration(transform.GetSiblingIndex(), duration);
+    }
+
+    public void EnableFrameSelected()
+    {
+        if (previousFrameEditor != null)
+        {
+            previousFrameEditor.DisableFrameSelected();
+        }
+        previousFrameEditor = this;
+        _frameSelectedImage.enabled = true;
+    }
+
+    public void DisableFrameSelected()
+    {
+        _frameSelectedImage.enabled = false;
     }
 
     private void ClickFrame()

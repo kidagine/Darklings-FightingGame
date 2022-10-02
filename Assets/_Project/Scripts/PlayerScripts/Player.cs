@@ -477,12 +477,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
-    public void SetHitbox(bool state, AnimationBox hitbox = default)
-    {
-        _hitbox.gameObject.SetActive(state);
-        _hitbox.SetHitbox(hitbox);
-    }
-
     public void Pause(bool isPlayerOne)
     {
         if (GameManager.Instance.IsTrainingMode)

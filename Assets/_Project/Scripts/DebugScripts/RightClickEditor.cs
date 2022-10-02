@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class RightClickEditor : MonoBehaviour
 {
+    [SerializeField] private CharacterEditor _characterEditor = default;
     [SerializeField] private GameObject _rightClickWindow = default;
     [SerializeField] private GameObject _canvas = default;
-    [SerializeField] private GameObject _hitboxPrefab = default;
-    [SerializeField] private GameObject _hurtboxPrefab = default;
-    [SerializeField] private Transform _hitboxGroup = default;
-    [SerializeField] private Transform _hurtboxGroup = default;
+    private AnimationSO[] _animations;
 
 
     void Update()
@@ -28,11 +26,13 @@ public class RightClickEditor : MonoBehaviour
 
     public void CreateHurtbox()
     {
-        Instantiate(_hurtboxPrefab, _hurtboxGroup);
+        _characterEditor.CreateHurtbox();
+        _canvas.SetActive(false);
     }
 
     public void CreateHitbox()
     {
-        Instantiate(_hitboxPrefab, _hitboxGroup);
+        _characterEditor.CreateHitbox();
+        _canvas.SetActive(false);
     }
 }

@@ -527,7 +527,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &718939811085223568
 Transform:
   m_ObjectHideFlags: 0
@@ -1290,6 +1290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f363ecc522b1c47b74b2c581a99535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerCollisionBoxes: {fileID: 3247643240904518811}
   _player: {fileID: 8073473790702501988}
   _inputBuffer: {fileID: 4664395619888274278}
   _animation: {fileID: 11400000, guid: c57bc744493459f4e8da98859fba2649, type: 2}
@@ -1533,6 +1534,7 @@ GameObject:
   - component: {fileID: 7171796573308583996}
   - component: {fileID: 6371053321382070875}
   - component: {fileID: 8743540751678485471}
+  - component: {fileID: 3247643240904518811}
   - component: {fileID: 4664395619888274278}
   - component: {fileID: 7611394710214668632}
   - component: {fileID: 6591136354886088417}
@@ -1683,6 +1685,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerStateManager: {fileID: 8168889133440061290}
+--- !u!114 &3247643240904518811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073473790702501986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 763f8940ef33da941ba41b1dfe6dc052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hurtboxesGroup: {fileID: 8073473791272386160}
+  _hitboxesGroup: {fileID: 8073473790437601078}
 --- !u!114 &4664395619888274278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2364,7 +2380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &820118829063845508
 Transform:
   m_ObjectHideFlags: 0
@@ -2799,6 +2815,10 @@ PrefabInstance:
     - target: {fileID: 3820304870352819294, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
       propertyPath: m_Name
       value: Main_hurtbox
+      objectReference: {fileID: 0}
+    - target: {fileID: 3820304870352819294, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}

@@ -49,13 +49,13 @@ public class AnimationCel
 {
     public int frames;
     public Sprite sprite;
-    public AnimationBox[] hitboxes;
-    public AnimationBox[] hurtboxes;
+    public List<AnimationBox> hitboxes;
+    public List<AnimationBox> hurtboxes;
 }
 
 [Serializable]
-public struct AnimationBox
+public class AnimationBox
 {
-    public Vector2Int size;
-    public Vector2Int offset;
+    public Vector2 size;
+    public Vector2 offset;
 }

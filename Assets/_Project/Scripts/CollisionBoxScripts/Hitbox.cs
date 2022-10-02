@@ -15,8 +15,8 @@ public class Hitbox : MonoBehaviour
     [HideInInspector] public bool _hasHit;
     public Transform HitPoint { get; private set; }
     public bool HitConfirm { get; private set; }
-    public Vector2Int Size { get; private set; }
-    public Vector2Int Offset { get; private set; }
+    public Vector2 Size { get; private set; }
+    public Vector2 Offset { get; private set; }
 
     void Awake()
     {
@@ -45,11 +45,10 @@ public class Hitbox : MonoBehaviour
     {
         _hitboxResponder = hitboxResponder.GetComponent<IHitboxResponder>();
     }
-    int b;
-    public void SetHitbox(AnimationBox hitbox)
+    public void SetBox(Vector2 size, Vector2 offset)
     {
-        Size = hitbox.size;
-        Offset = hitbox.offset;
+        Size = size;
+        Offset = offset;
     }
 
     void FixedUpdate()

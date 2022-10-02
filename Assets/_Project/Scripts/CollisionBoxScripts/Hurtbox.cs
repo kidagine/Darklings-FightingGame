@@ -37,7 +37,12 @@ public class Hurtbox : MonoBehaviour
                 HurtboxColor = Color.green;
             }
         }
+    }
 
+    public void SetBox(Vector2 size, Vector2 offset)
+    {
+        _boxCollider.size = size;
+        _boxCollider.offset = offset;
     }
 
     public bool TakeDamage(AttackSO attackSO)
