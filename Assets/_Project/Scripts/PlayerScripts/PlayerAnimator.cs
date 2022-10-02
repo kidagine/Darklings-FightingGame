@@ -4,11 +4,17 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerAnimator : MonoBehaviour
 {
+    [SerializeField] private PlayerCollisionBoxes _playerCollisionBoxes = default;
     [SerializeField] private Player _player = default;
     [SerializeField] private InputBuffer _inputBuffer = null;
-    private Animator _animator;
+    [SerializeField] private AnimationSO _animation = default;
     private SpriteLibrary _spriteLibrary;
     private SpriteRenderer _spriteRenderer;
+    private int _frame;
+    private int _cel;
+    private int _group;
+    private int _skin;
+    private bool _isPaused;
 
     [HideInInspector] public UnityEvent OnCurrentAnimationFinished;
 
@@ -16,191 +22,197 @@ public class PlayerAnimator : MonoBehaviour
 
     void Awake()
     {
-        _animator = GetComponent<Animator>();
         _spriteLibrary = GetComponent<SpriteLibrary>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    void Start()
+    void FixedUpdate()
     {
-        _animator.runtimeAnimatorController = _player.playerStats.runtimeAnimatorController;
+        PlayAnimation();
     }
 
-    void LateUpdate()
+    private void PlayAnimation()
     {
-        if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        if (!_isPaused && !frozen)
         {
-            OnCurrentAnimationFinished?.Invoke();
-            OnCurrentAnimationFinished.RemoveAllListeners();
-            if (_inputBuffer != null)
+            if (_frame == _animation.GetCel(_group, _cel).frames)
             {
-                _inputBuffer.CheckInputBuffer();
+                _cel++;
+                if (_cel > _animation.GetGroup(_group).animationCel.Count - 1)
+                {
+                    AnimationEnded();
+                    if (!_animation.GetGroup(_group).loop)
+                    {
+                        return;
+                    }
+                }
+                CheckAnimationBoxes();
+                _frame = 0;
             }
+            _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
+            _frame++;
         }
     }
 
+    private void CheckAnimationBoxes()
+    {
+        _playerCollisionBoxes.SetHurtboxes(_animation.GetCel(_group, _cel).hurtboxes.ToArray());
+        _playerCollisionBoxes.SetHitboxes(_animation.GetCel(_group, _cel).hitboxes.ToArray());
+    }
+
+    private void AnimationEnded()
+    {
+        if (!_animation.GetGroup(_group).loop)
+        {
+            _isPaused = true;
+        }
+        _frame = 0;
+        _cel = 0;
+        OnCurrentAnimationFinished?.Invoke();
+        OnCurrentAnimationFinished.RemoveAllListeners();
+        if (_inputBuffer != null)
+        {
+            _inputBuffer.CheckInputBuffer();
+        }
+    }
+
+    private void SetAnimation(string name)
+    {
+        _frame = 0;
+        _cel = 0;
+        _group = _animation.GetGroupId(name);
+        _isPaused = false;
+        CheckAnimationBoxes();
+        _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
+    }
+    bool frozen;
     public void Pause()
     {
-        _animator.speed = 0;
+        frozen = true;
     }
 
     public void Resume()
     {
-        _animator.speed = 1;
+        frozen = false;
     }
 
     public void Walk()
     {
-        _animator.Play("Walk");
+        SetAnimation("Walk");
     }
 
     public void Idle()
     {
-        _animator.Play("Idle");
+        SetAnimation("Idle");
     }
 
     public void Crouch()
     {
-        _animator.Play("Crouch");
+        SetAnimation("Crouch");
     }
 
     public void Jump(bool reset = false)
     {
-        if (reset)
-        {
-            _animator.Play("Jump", -1, 0f);
-        }
-        else
-        {
-            _animator.Play("Jump");
-        }
+        SetAnimation("Jump");
     }
 
     public void JumpForward(bool reset = false)
     {
-        if (reset)
-        {
-            _animator.Play("JumpForward", -1, 0f);
-        }
-        else
-        {
-            _animator.Play("JumpForward");
-        }
+        SetAnimation("JumpForward");
     }
 
     public void Attack(string attackType, bool reset = false)
     {
-        if (reset)
-        {
-            _animator.Play(attackType, -1, 0f);
-        }
-        else
-        {
-            _animator.Play(attackType);
-        }
+        SetAnimation(attackType);
     }
 
     public void Shadowbreak()
     {
-        _animator.Play("Shadowbreak");
+        SetAnimation("Shadowbreak");
     }
 
     public void Grab()
     {
-        _animator.Play("Grab");
+        SetAnimation("Grab");
     }
 
     public void WallSplat()
     {
-        _animator.Play("WallSplat");
+        SetAnimation("WallSplat");
     }
 
     public void Throw()
     {
-        _animator.Play("Throw");
+        SetAnimation("Throw");
     }
 
     public void Parry()
     {
-        _animator.Play("Parry", -1, 0f);
+        SetAnimation("Parry");
     }
 
     public void Arcana(string arcanaType)
     {
-        _animator.Play(arcanaType, -1, 0f);
+        SetAnimation(arcanaType);
     }
 
     public void ArcanaThrow()
     {
-        _animator.Play("ArcanaThrow");
+        SetAnimation("ArcanaThrow");
     }
 
-    public void Hurt(bool reset = false)
+    public void Hurt()
     {
-        if (reset)
-        {
-            _animator.Play("Hurt", -1, 0f);
-        }
-        else
-        {
-            _animator.Play("Hurt");
-        }
+        SetAnimation("Hurt");
     }
 
-    public void HurtAir(bool reset = false)
+    public void HurtAir()
     {
-        if (reset)
-        {
-            _animator.Play("HurtAir", -1, 0f);
-        }
-        else
-        {
-            _animator.Play("HurtAir");
-        }
+        SetAnimation("HurtAir");
     }
 
     public void Block()
     {
-        _animator.Play("Block");
+        SetAnimation("Block");
     }
 
     public void BlockLow()
     {
-        _animator.Play("BlockLow");
+        SetAnimation("BlockLow");
     }
     public void BlockAir()
     {
-        _animator.Play("BlockAir");
+        SetAnimation("BlockAir");
     }
 
     public void Dash()
     {
-        _animator.Play("Dash");
+        SetAnimation("Dash");
     }
 
     public void AirDash()
     {
-        _animator.Play("Jump");
+        SetAnimation("Jump");
     }
 
     public void Run()
     {
-        _animator.Play("Run");
+        SetAnimation("Run");
     }
 
     public void Taunt()
     {
-        _animator.Play("Taunt", -1, 0f);
+        SetAnimation("Taunt");
     }
 
     public void Knockdown()
     {
-        _animator.Play("Knockdown");
+        SetAnimation("Knockdown");
     }
 
     public void WakeUp()
     {
-        _animator.Play("WakeUp");
+        SetAnimation("WakeUp");
     }
 
     public Sprite GetCurrentSprite()
@@ -212,7 +224,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         if (skinNumber > PlayerStats.spriteLibraryAssets.Length - 1)
         {
-            skinNumber = 0;
+            _skin = 0;
         }
         else if (skinNumber < 0)
         {
@@ -222,6 +234,7 @@ public class PlayerAnimator : MonoBehaviour
         {
             _spriteLibrary.spriteLibraryAsset = PlayerStats.spriteLibraryAssets[skinNumber];
         }
+        _skin = skinNumber;
         return skinNumber;
     }
 

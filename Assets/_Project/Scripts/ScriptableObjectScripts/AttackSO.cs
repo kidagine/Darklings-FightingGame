@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Video;
 
 [CreateAssetMenu(fileName = "Attack", menuName = "Scriptable Objects/Attack", order = 2)]
 public class AttackSO : ScriptableObject
@@ -42,4 +43,9 @@ public class AttackSO : ScriptableObject
     public int recoveryFrames;
     public int hitAdv { get { return hitStun - recoveryFrames; } private set { } }
     public int blockAdv { get { return blockStun - recoveryFrames; } private set { } }
+    [Header("Information")]
+    public string moveName;
+    [TextArea(5, 7)]
+    public string moveDescription;
+    public VideoClip moveVideo;
 }

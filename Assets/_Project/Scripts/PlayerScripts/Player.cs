@@ -11,6 +11,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [SerializeField] private Assist _assist = default;
     [SerializeField] private Pushbox _groundPushbox = default;
     [SerializeField] private Transform _hurtbox = default;
+    [SerializeField] private Hitbox _hitbox = default;
     [SerializeField] protected Transform _effectsParent = default;
     [SerializeField] private Transform _grabPoint = default;
     [SerializeField] private Transform _cameraPoint = default;
