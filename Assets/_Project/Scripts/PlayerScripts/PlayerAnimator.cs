@@ -1,3 +1,4 @@
+using Demonics.Sounds;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.U2D.Animation;
@@ -6,8 +7,10 @@ public class PlayerAnimator : MonoBehaviour
 {
     [SerializeField] private PlayerCollisionBoxes _playerCollisionBoxes = default;
     [SerializeField] private Player _player = default;
+    [SerializeField] private PlayerMovement _playerMovement = default;
     [SerializeField] private InputBuffer _inputBuffer = null;
     [SerializeField] private AnimationSO _animation = default;
+    [SerializeField] private Audio _audio = default;
     private SpriteLibrary _spriteLibrary;
     private SpriteRenderer _spriteRenderer;
     private int _frame;
@@ -46,11 +49,37 @@ public class PlayerAnimator : MonoBehaviour
                         return;
                     }
                 }
+                CheckEvents();
                 CheckAnimationBoxes();
                 _frame = 0;
             }
             _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
             _frame++;
+        }
+    }
+
+    private void CheckEvents()
+    {
+        if (_animation.GetCel(_group, _cel).hitboxes.Count > 0)
+        {
+            if (_player.CurrentAttack.isProjectile)
+            {
+                _player.CreateEffect(true);
+            }
+        }
+        if (_animation.GetCel(_group, _cel).animationEvent.jump)
+        {
+            _playerMovement.AddForce(3);
+        }
+        if (_animation.GetCel(_group, _cel).animationEvent.footstep)
+        {
+            _audio.SoundGroup("Footsteps").PlayInRandom();
+        }
+        if (_animation.GetCel(_group, _cel).animationEvent.throwEnd)
+        {
+            _audio.Sound("Impact6").Play();
+            CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake.intensity, _animation.GetGroup(_group).cameraShake.timer);
+            _player.OtherPlayerStateManager.TryToKnockdownState();
         }
     }
 
@@ -83,6 +112,7 @@ public class PlayerAnimator : MonoBehaviour
         _group = _animation.GetGroupId(name);
         _isPaused = false;
         CheckAnimationBoxes();
+        CheckEvents();
         _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
     }
     bool frozen;

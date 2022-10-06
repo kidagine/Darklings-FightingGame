@@ -71,6 +71,7 @@ public class CharacterEditor : MonoBehaviour
             UpdateBoxesFields();
             CheckAnimationBoxes();
             _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
+            _frames[_cel].EnableFrameSelected();
         });
         _boxesDropdown.onValueChanged.AddListener(delegate
         {
@@ -117,6 +118,8 @@ public class CharacterEditor : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.A) && Input.GetKey(KeyCode.LeftShift))
         {
+            _isPlayOn = false;
+            _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
             _cel--;
             if (_cel < 0)
             {
@@ -126,6 +129,8 @@ public class CharacterEditor : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))
         {
+            _isPlayOn = false;
+            _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
             _cel++;
             if (_cel > _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Count - 1)
             {
@@ -135,12 +140,15 @@ public class CharacterEditor : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
-            Debug.Log("A");
-            _spriteDropdown.value = 5;
+            _isPlayOn = false;
+            _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
+            _spriteDropdown.value = _spriteDropdown.value - 1;
         }
         if (Input.GetKeyDown(KeyCode.S) && Input.GetKey(KeyCode.LeftShift))
         {
-            _spriteDropdown.value = 5;
+            _isPlayOn = false;
+            _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
+            _spriteDropdown.value = _spriteDropdown.value + 1;
         }
     }
 

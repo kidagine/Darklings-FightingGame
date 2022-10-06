@@ -94,7 +94,6 @@ public class AirborneHurtState : HurtParentState
     {
         if (_playerMovement.IsGrounded && _canCheckGround)
         {
-            _audio.Sound("Landed").Play();
             _stateMachine.ChangeState(_knockdownState);
         }
     }

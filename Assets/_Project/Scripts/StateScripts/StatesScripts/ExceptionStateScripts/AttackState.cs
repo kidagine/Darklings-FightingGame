@@ -44,8 +44,8 @@ public class AttackState : State
     {
         base.Enter();
         _player.CheckFlip();
-        _audio.Sound("Hit").Play();
         _player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
+        _audio.Sound(_player.CurrentAttack.attackSound).Play();
         _playerAnimator.Attack(_player.CurrentAttack.name, true);
         if (!_air)
         {

@@ -41,6 +41,7 @@ public struct AnimationCelsGroup
 {
     public string celName;
     public bool loop;
+    public CameraShakerSO cameraShake;
     public List<AnimationCel> animationCel;
 }
 
@@ -49,8 +50,17 @@ public class AnimationCel
 {
     public int frames;
     public Sprite sprite;
+    public AnimationEvent animationEvent;
     public List<AnimationBox> hitboxes;
     public List<AnimationBox> hurtboxes;
+}
+
+[Serializable]
+public class AnimationEvent
+{
+    public bool jump;
+    public bool footstep;
+    public bool throwEnd;
 }
 
 [Serializable]
