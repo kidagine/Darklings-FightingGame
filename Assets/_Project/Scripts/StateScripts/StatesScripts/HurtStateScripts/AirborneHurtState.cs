@@ -102,7 +102,6 @@ public class AirborneHurtState : HurtParentState
     {
         if (_playerMovement.OnWall() != Vector2.zero && !WallSplat)
         {
-            _audio.Sound("Landed").Play();
             _stateMachine.ChangeState(_wallSplatState);
         }
     }

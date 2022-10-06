@@ -1290,15 +1290,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f363ecc522b1c47b74b2c581a99535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animation: {fileID: 11400000, guid: c57bc744493459f4e8da98859fba2649, type: 2}
+  OnCurrentAnimationFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _playerCollisionBoxes: {fileID: 3247643240904518811}
   _player: {fileID: 8073473790702501988}
   _playerMovement: {fileID: 8073473790702501987}
   _inputBuffer: {fileID: 4664395619888274278}
-  _animation: {fileID: 11400000, guid: c57bc744493459f4e8da98859fba2649, type: 2}
   _audio: {fileID: 7611394710214668632}
-  OnCurrentAnimationFinished:
-    m_PersistentCalls:
-      m_Calls: []
+  _grabPoint: {fileID: 7600070780512524519}
 --- !u!114 &8073473789928578682
 MonoBehaviour:
   m_ObjectHideFlags: 0

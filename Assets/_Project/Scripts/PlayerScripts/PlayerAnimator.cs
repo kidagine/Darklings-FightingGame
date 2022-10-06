@@ -1,65 +1,21 @@
 using Demonics.Sounds;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.U2D.Animation;
 
-public class PlayerAnimator : MonoBehaviour
+public class PlayerAnimator : DemonicsAnimator
 {
     [SerializeField] private PlayerCollisionBoxes _playerCollisionBoxes = default;
     [SerializeField] private Player _player = default;
     [SerializeField] private PlayerMovement _playerMovement = default;
     [SerializeField] private InputBuffer _inputBuffer = null;
-    [SerializeField] private AnimationSO _animation = default;
     [SerializeField] private Audio _audio = default;
-    private SpriteLibrary _spriteLibrary;
-    private SpriteRenderer _spriteRenderer;
-    private int _frame;
-    private int _cel;
-    private int _group;
-    private int _skin;
-    private bool _isPaused;
-
-    [HideInInspector] public UnityEvent OnCurrentAnimationFinished;
+    [SerializeField] private Transform _grabPoint = default;
 
     public PlayerStatsSO PlayerStats { get { return _player.playerStats; } set { } }
 
-    void Awake()
-    {
-        _spriteLibrary = GetComponent<SpriteLibrary>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-    }
 
-    void FixedUpdate()
+    protected override void CheckEvents()
     {
-        PlayAnimation();
-    }
-
-    private void PlayAnimation()
-    {
-        if (!_isPaused && !frozen)
-        {
-            if (_frame == _animation.GetCel(_group, _cel).frames)
-            {
-                _cel++;
-                if (_cel > _animation.GetGroup(_group).animationCel.Count - 1)
-                {
-                    AnimationEnded();
-                    if (!_animation.GetGroup(_group).loop)
-                    {
-                        return;
-                    }
-                }
-                CheckEvents();
-                CheckAnimationBoxes();
-                _frame = 0;
-            }
-            _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
-            _frame++;
-        }
-    }
-
-    private void CheckEvents()
-    {
+        base.CheckEvents();
         if (_animation.GetCel(_group, _cel).hitboxes.Count > 0)
         {
             if (_player.CurrentAttack.isProjectile)
@@ -67,63 +23,42 @@ public class PlayerAnimator : MonoBehaviour
                 _player.CreateEffect(true);
             }
         }
-        if (_animation.GetCel(_group, _cel).animationEvent.jump)
+        if (GetEvent().jump)
         {
             _playerMovement.AddForce(3);
         }
-        if (_animation.GetCel(_group, _cel).animationEvent.footstep)
+        if (GetEvent().footstep)
         {
             _audio.SoundGroup("Footsteps").PlayInRandom();
         }
-        if (_animation.GetCel(_group, _cel).animationEvent.throwEnd)
+        if (GetEvent().grabPoint != Vector2.zero)
+        {
+            _grabPoint.localPosition = GetEvent().grabPoint;
+            _grabPoint.localRotation = Quaternion.Euler(0, 0, 0);
+        }
+        if (GetEvent().throwEnd)
         {
             _audio.Sound("Impact6").Play();
             CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake.intensity, _animation.GetGroup(_group).cameraShake.timer);
             _player.OtherPlayerStateManager.TryToKnockdownState();
         }
+        _player.Parrying = GetEvent().parry;
     }
 
-    private void CheckAnimationBoxes()
+    protected override void CheckAnimationBoxes()
     {
-        _playerCollisionBoxes.SetHurtboxes(_animation.GetCel(_group, _cel).hurtboxes.ToArray());
-        _playerCollisionBoxes.SetHitboxes(_animation.GetCel(_group, _cel).hitboxes.ToArray());
+        base.CheckAnimationBoxes();
+        _playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
+        _playerCollisionBoxes.SetHitboxes(GetHitboxes());
     }
 
-    private void AnimationEnded()
+    protected override void AnimationEnded()
     {
-        if (!_animation.GetGroup(_group).loop)
-        {
-            _isPaused = true;
-        }
-        _frame = 0;
-        _cel = 0;
-        OnCurrentAnimationFinished?.Invoke();
-        OnCurrentAnimationFinished.RemoveAllListeners();
+        base.AnimationEnded();
         if (_inputBuffer != null)
         {
             _inputBuffer.CheckInputBuffer();
         }
-    }
-
-    private void SetAnimation(string name)
-    {
-        _frame = 0;
-        _cel = 0;
-        _group = _animation.GetGroupId(name);
-        _isPaused = false;
-        CheckAnimationBoxes();
-        CheckEvents();
-        _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
-    }
-    bool frozen;
-    public void Pause()
-    {
-        frozen = true;
-    }
-
-    public void Resume()
-    {
-        frozen = false;
     }
 
     public void Walk()
@@ -259,10 +194,6 @@ public class PlayerAnimator : MonoBehaviour
         else if (skinNumber < 0)
         {
             skinNumber = PlayerStats.spriteLibraryAssets.Length - 1;
-        }
-        if (_spriteLibrary != null)
-        {
-            _spriteLibrary.spriteLibraryAsset = PlayerStats.spriteLibraryAssets[skinNumber];
         }
         _skin = skinNumber;
         return skinNumber;
