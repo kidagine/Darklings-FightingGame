@@ -55,13 +55,21 @@ public class CharacterEditor : MonoBehaviour
             AnimationEnded();
             UpdateBoxesFields();
             CheckAnimationBoxes();
+            SetFrames();
             _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
             _skinDropdown.ClearOptions();
+            _spriteDropdown.ClearOptions();
             _skinDropdownOptions.Clear();
+            _spriteDropdownOptions.Clear();
             for (int i = 0; i < _animations[_characterDropdown.value].spriteAtlas.Length; i++)
             {
                 _skinDropdownOptions.Add(i.ToString());
             }
+            for (int i = 0; i < _animations[_characterDropdown.value].animationCelsGroup.Length; i++)
+            {
+                _spriteDropdownOptions.Add(_animations[_characterDropdown.value].animationCelsGroup[i].celName);
+            }
+            _spriteDropdown.AddOptions(_spriteDropdownOptions);
             _skinDropdown.AddOptions(_skinDropdownOptions);
         });
         _spriteDropdown.onValueChanged.AddListener(delegate
@@ -173,9 +181,9 @@ public class CharacterEditor : MonoBehaviour
                     }
                 }
                 CheckAnimationBoxes();
-                _frames[_cel].EnableFrameSelected();
                 _frame = 0;
             }
+            _frames[_cel].EnableFrameSelected();
             _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
             _frame++;
         }
@@ -272,16 +280,17 @@ public class CharacterEditor : MonoBehaviour
         {
             _frames[i].gameObject.SetActive(true);
             _frames[i].SetDuration(_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].frames);
-            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].hitboxes.Count > 0)
+            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].hitboxes?.Count > 0)
             {
                 _frames[i].SetImage(Color.red);
+
             }
             else
             {
                 bool isPriorFrameActive = false;
                 for (int j = 0; j < _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Count; j++)
                 {
-                    if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[j].hitboxes.Count > 0 && j < i)
+                    if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[j].hitboxes?.Count > 0 && j < i)
                     {
                         isPriorFrameActive = true;
                     }
@@ -364,6 +373,7 @@ public class CharacterEditor : MonoBehaviour
         hitbox.size = new Vector2(1, 1);
         _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes.Add(hitbox);
         CheckAnimationBoxes();
+        SetFrames();
     }
 
     public void LoadFightScene()

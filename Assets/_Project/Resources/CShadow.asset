@@ -24,9 +24,12 @@ MonoBehaviour:
         jump: 0
         footstep: 0
         parry: 0
+        invisibile: 0
         throwEnd: 0
         grabPoint: {x: 0, y: 0}
-      hitboxes: []
+      hitboxes:
+      - size: {x: 1, y: 1}
+        offset: {x: 0, y: 0}
       hurtboxes: []
     - frames: 50
       sprite: {fileID: -863339808, guid: 8b5a0132735139b419d3d538b9733106, type: 3}
@@ -34,6 +37,20 @@ MonoBehaviour:
         jump: 0
         footstep: 0
         parry: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes:
+      - size: {x: 1, y: 1}
+        offset: {x: 0, y: 0}
+      hurtboxes: []
+    - frames: 5
+      sprite: {fileID: 797208600, guid: 8b5a0132735139b419d3d538b9733106, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        invisibile: 0
         throwEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes: []
