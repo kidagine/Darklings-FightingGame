@@ -31,6 +31,7 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
 
     void OnEnable()
     {
+        OnCurrentAnimationFinished.AddListener(() => gameObject.SetActive(false));
         SetAnimation("Idle");
         _speed = _originalSpeed;
     }
@@ -60,11 +61,11 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
         }
     }
 
-    protected override void CheckEvents()
+    protected override void CheckAnimationBoxes()
     {
-        if (GetEvent().disable)
+        if (GetHitboxes().Length > 0)
         {
-            gameObject.SetActive(false);
+            _hitbox.SetBox(GetHitboxes()[0].size, GetHitboxes()[0].offset);
         }
     }
 

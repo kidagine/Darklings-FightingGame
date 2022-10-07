@@ -68,7 +68,7 @@ public class AnimationEvent
     public bool jump;
     public bool footstep;
     public bool parry;
-    public bool disable;
+    public bool invisibile;
     public bool throwEnd;
     public Vector2 grabPoint;
 }

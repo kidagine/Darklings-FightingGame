@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 417637499252091369}
   - component: {fileID: 3046493706580312876}
-  - component: {fileID: 5712224424194318137}
   - component: {fileID: 2632546348691414582}
   - component: {fileID: 3552182111618313448}
   - component: {fileID: 6748714475635321310}
@@ -85,32 +84,12 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.75, y: 1.75}
+  m_Size: {x: 0.875, y: 0.875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &5712224424194318137
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3294536446187043669}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 35b0aed457345ba43ba0d8e93efd08e1, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!50 &2632546348691414582
 Rigidbody2D:
   serializedVersion: 4
@@ -169,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9e352103e513444b9d3658785a5d0c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animation: {fileID: 0}
+  _animation: {fileID: 11400000, guid: 948ba8675c9263e48a2a7c5a97bdb86d, type: 2}
   _spriteRenderer: {fileID: 0}
   OnCurrentAnimationFinished:
     m_PersistentCalls:
@@ -197,7 +176,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.75, y: 1.75}
-    newSize: {x: 1.75, y: 1.75}
+    newSize: {x: 0.875, y: 0.875}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0

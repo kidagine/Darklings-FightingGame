@@ -13,6 +13,11 @@ public class PlayerAnimator : DemonicsAnimator
     public PlayerStatsSO PlayerStats { get { return _player.playerStats; } set { } }
 
 
+    private void Start()
+    {
+        _animation = _player.playerStats._animation;
+    }
+
     protected override void CheckEvents()
     {
         base.CheckEvents();
@@ -43,6 +48,7 @@ public class PlayerAnimator : DemonicsAnimator
             _player.OtherPlayerStateManager.TryToKnockdownState();
         }
         _player.Parrying = GetEvent().parry;
+        _player.Invinsible = GetEvent().invisibile;
     }
 
     protected override void CheckAnimationBoxes()
