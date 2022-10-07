@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour, IHurtboxResponder, IHitstop
+public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
 {
     [SerializeField] private Hitbox _hitbox = default;
     [SerializeField] private GameObject _dustPrefab = default;
@@ -9,7 +9,6 @@ public class Projectile : MonoBehaviour, IHurtboxResponder, IHitstop
     [SerializeField] private float _speed = 4.0f;
     [SerializeField] private bool _isFixed = default;
     private Rigidbody2D _rigidbody;
-    private Animator _animator;
     private float _originalSpeed;
     public int ProjectilePriority { get { return _projectilePriority; } private set { } }
     public Transform SourceTransform { get; private set; }
@@ -20,14 +19,20 @@ public class Projectile : MonoBehaviour, IHurtboxResponder, IHitstop
     public bool BlockingHigh { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public bool BlockingMiddair { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _originalSpeed = _speed;
         _rigidbody = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
         _hitbox.OnPlayerCollision += () => GameManager.Instance.AddHitstop(this);
         _hitbox.OnPlayerCollision += () => ExitHitstop();
         _hitbox.OnGroundCollision += () => gameObject.SetActive(false);
+    }
+
+    void OnEnable()
+    {
+        SetAnimation("Idle");
+        _speed = _originalSpeed;
     }
 
     void Update()
@@ -54,9 +59,13 @@ public class Projectile : MonoBehaviour, IHurtboxResponder, IHitstop
             _hitbox.OnGroundCollision -= () => gameObject.SetActive(false);
         }
     }
-    void OnEnable()
+
+    protected override void CheckEvents()
     {
-        _speed = _originalSpeed;
+        if (GetEvent().disable)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public void SetSourceTransform(Transform sourceTransform)
@@ -93,14 +102,14 @@ public class Projectile : MonoBehaviour, IHurtboxResponder, IHitstop
 
     public void EnterHitstop()
     {
-        _animator.speed = 0;
+        Pause();
         _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         _rigidbody.isKinematic = true;
     }
 
     public void ExitHitstop()
     {
-        _animator.speed = 1;
+        Resume();
         _rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
         _rigidbody.isKinematic = false;
         if (gameObject.activeSelf)

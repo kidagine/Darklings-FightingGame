@@ -4,7 +4,7 @@ using UnityEngine.Events;
 public class DemonicsAnimator : MonoBehaviour
 {
     [SerializeField] protected AnimationSO _animation = default;
-    protected SpriteRenderer _spriteRenderer;
+    [SerializeField] protected SpriteRenderer _spriteRenderer = default;
     private int _frame;
     protected int _cel;
     protected int _group;
@@ -12,7 +12,6 @@ public class DemonicsAnimator : MonoBehaviour
     protected bool _isPaused;
     protected bool _frozen;
     [HideInInspector] public UnityEvent OnCurrentAnimationFinished;
-
 
     protected virtual void Awake()
     {
@@ -24,15 +23,18 @@ public class DemonicsAnimator : MonoBehaviour
         PlayAnimation();
     }
 
-    protected void SetAnimation(string name)
+    public void SetAnimation(string name)
     {
-        _frame = 0;
-        _cel = 0;
-        _group = _animation.GetGroupId(name);
-        _isPaused = false;
-        CheckAnimationBoxes();
-        CheckEvents();
-        _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
+        if (_animation != null)
+        {
+            _frame = 0;
+            _cel = 0;
+            _group = _animation.GetGroupId(name);
+            _isPaused = false;
+            CheckAnimationBoxes();
+            CheckEvents();
+            _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
+        }
     }
 
     private void PlayAnimation()

@@ -10,7 +10,14 @@ public class AnimationSO : ScriptableObject
 
     public Sprite GetSprite(int skin, int group, int cel)
     {
-        return spriteAtlas[skin].GetSprite(animationCelsGroup[group].animationCel[cel].sprite.name);
+        if (spriteAtlas.Length > 0)
+        {
+            return spriteAtlas[skin].GetSprite(animationCelsGroup[group].animationCel[cel].sprite.name);
+        }
+        else
+        {
+            return animationCelsGroup[group].animationCel[cel].sprite;
+        }
     }
 
     public AnimationCelsGroup GetGroup(int group)
@@ -61,6 +68,7 @@ public class AnimationEvent
     public bool jump;
     public bool footstep;
     public bool parry;
+    public bool disable;
     public bool throwEnd;
     public Vector2 grabPoint;
 }
