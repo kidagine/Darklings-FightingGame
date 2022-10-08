@@ -87,6 +87,10 @@ public class CharacterEditor : MonoBehaviour
         {
             UpdateBoxesFields();
         });
+        _typeDropdown.onValueChanged.AddListener(delegate
+        {
+            UpdateBoxesFields();
+        });
         _loopToggle.onValueChanged.AddListener(delegate
         {
             if (_loopToggle.isOn)
@@ -203,90 +207,74 @@ public class CharacterEditor : MonoBehaviour
 
     public void UpdateAnimationBoxSizeX(string value)
     {
-        if (!dontAffect)
+        float valueFixed = 0;
+        if (float.TryParse(value, out valueFixed))
         {
-            float valueFixed = 0;
-            if (float.TryParse(value, out valueFixed))
+            if (_typeDropdown.value == 0)
             {
-                if (_typeDropdown.value == 0)
+                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].size.x = float.Parse(value);
+            }
+            else
+            {
+                if (_animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes.Count > 0)
                 {
-                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].size.x = float.Parse(value);
+                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.x = float.Parse(value);
                 }
                 else
                 {
-                    if (_animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes.Count > 0)
-                    {
-                        _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.x = float.Parse(value);
-                    }
-                    else
-                    {
-                        _characterDropdown.value = 0;
-                    }
+                    _characterDropdown.value = 0;
                 }
-                CheckAnimationBoxes();
             }
+            CheckAnimationBoxes();
         }
-        dontAffect = false;
     }
     public void UpdateAnimationBoxSizeY(string value)
     {
-        if (!dontAffect)
+        float valueFixed = 0;
+        if (float.TryParse(value, out valueFixed))
         {
-            float valueFixed = 0;
-            if (float.TryParse(value, out valueFixed))
+            if (_typeDropdown.value == 0)
             {
-                if (_typeDropdown.value == 0)
-                {
-                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].size.y = float.Parse(value);
-                }
-                else
-                {
-                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.y = float.Parse(value);
-                }
-                CheckAnimationBoxes();
+                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].size.y = float.Parse(value);
             }
+            else
+            {
+                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.y = float.Parse(value);
+            }
+            CheckAnimationBoxes();
         }
-        dontAffect = false;
     }
     public void UpdateAnimationBoxOffsetX(string value)
     {
-        if (!dontAffect)
+        float valueFixed = 0;
+        if (float.TryParse(value, out valueFixed))
         {
-            float valueFixed = 0;
-            if (float.TryParse(value, out valueFixed))
+            if (_typeDropdown.value == 0)
             {
-                if (_typeDropdown.value == 0)
-                {
-                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].offset.x = valueFixed;
-                }
-                else
-                {
-                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].offset.x = valueFixed;
-                }
-                CheckAnimationBoxes();
+                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].offset.x = valueFixed;
             }
+            else
+            {
+                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].offset.x = valueFixed;
+            }
+            CheckAnimationBoxes();
         }
-        dontAffect = false;
     }
     public void UpdateAnimationBoxOffsetY(string value)
     {
-        if (!dontAffect)
+        float valueFixed = 0;
+        if (float.TryParse(value, out valueFixed))
         {
-            float valueFixed = 0;
-            if (float.TryParse(value, out valueFixed))
+            if (_typeDropdown.value == 0)
             {
-                if (_typeDropdown.value == 0)
-                {
-                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].offset.y = float.Parse(value);
-                }
-                else
-                {
-                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].offset.y = float.Parse(value);
-                }
-                CheckAnimationBoxes();
+                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].offset.y = float.Parse(value);
             }
+            else
+            {
+                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].offset.y = float.Parse(value);
+            }
+            CheckAnimationBoxes();
         }
-        dontAffect = false;
     }
     private void CheckAnimationBoxes()
     {
@@ -334,12 +322,25 @@ public class CharacterEditor : MonoBehaviour
 
     private void UpdateBoxesFields()
     {
-        if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes.Count > 0)
+        if (_typeDropdown.value == 0)
         {
-            _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[_boxesDropdown.value].size.x.ToString();
-            _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[_boxesDropdown.value].size.y.ToString();
-            _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[_boxesDropdown.value].offset.x.ToString();
-            _offsetYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[_boxesDropdown.value].offset.y.ToString();
+            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes.Count > 0)
+            {
+                _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].size.x.ToString();
+                _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].size.y.ToString();
+                _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.x.ToString();
+                _offsetYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.y.ToString();
+            }
+        }
+        else
+        {
+            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes.Count > 0)
+            {
+                _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].size.x.ToString();
+                _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].size.y.ToString();
+                _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.x.ToString();
+                _offsetYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.y.ToString();
+            }
         }
     }
 
@@ -365,29 +366,7 @@ public class CharacterEditor : MonoBehaviour
         _frames[_cel].EnableFrameSelected();
         _boxesDropdown.AddOptions(_boxesDropdownOptions);
         UpdateBoxesFields();
-        if (_typeDropdown.value == 0)
-        {
-            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes.Count > 0)
-            {
-                _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].size.x.ToString();
-                _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].size.y.ToString();
-                _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.x.ToString();
-                _offsetYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.y.ToString();
-            }
-        }
-        else
-        {
-            Debug.Log("A");
-            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes.Count > 0)
-            {
-                _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].size.x.ToString();
-                _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].size.y.ToString();
-                _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.x.ToString();
-                _offsetYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.y.ToString();
-            }
-        }
     }
-    private bool dontAffect;
 
     public void DeleteFrame(int cel)
     {
