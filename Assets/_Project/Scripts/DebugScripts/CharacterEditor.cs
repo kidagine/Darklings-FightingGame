@@ -52,6 +52,7 @@ public class CharacterEditor : MonoBehaviour
         SetFrames();
         _characterDropdown.onValueChanged.AddListener(delegate
         {
+            _typeDropdown.value = 0;
             AnimationEnded();
             UpdateBoxesFields();
             CheckAnimationBoxes();
@@ -74,6 +75,7 @@ public class CharacterEditor : MonoBehaviour
         });
         _spriteDropdown.onValueChanged.AddListener(delegate
         {
+            _typeDropdown.value = 0;
             AnimationEnded();
             SetFrames();
             UpdateBoxesFields();
@@ -201,67 +203,90 @@ public class CharacterEditor : MonoBehaviour
 
     public void UpdateAnimationBoxSizeX(string value)
     {
-        float valueFixed = 0;
-        if (float.TryParse(value, out valueFixed))
+        if (!dontAffect)
         {
-            if (_typeDropdown.value == 0)
+            float valueFixed = 0;
+            if (float.TryParse(value, out valueFixed))
             {
-                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].size.x = float.Parse(value);
+                if (_typeDropdown.value == 0)
+                {
+                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].size.x = float.Parse(value);
+                }
+                else
+                {
+                    if (_animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes.Count > 0)
+                    {
+                        _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.x = float.Parse(value);
+                    }
+                    else
+                    {
+                        _characterDropdown.value = 0;
+                    }
+                }
+                CheckAnimationBoxes();
             }
-            else
-            {
-                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.x = float.Parse(value);
-            }
-            CheckAnimationBoxes();
         }
+        dontAffect = false;
     }
     public void UpdateAnimationBoxSizeY(string value)
     {
-        float valueFixed = 0;
-        if (float.TryParse(value, out valueFixed))
+        if (!dontAffect)
         {
-            if (_typeDropdown.value == 0)
+            float valueFixed = 0;
+            if (float.TryParse(value, out valueFixed))
             {
-                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].size.y = float.Parse(value);
+                if (_typeDropdown.value == 0)
+                {
+                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].size.y = float.Parse(value);
+                }
+                else
+                {
+                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.y = float.Parse(value);
+                }
+                CheckAnimationBoxes();
             }
-            else
-            {
-                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.y = float.Parse(value);
-            }
-            CheckAnimationBoxes();
         }
+        dontAffect = false;
     }
     public void UpdateAnimationBoxOffsetX(string value)
     {
-        float valueFixed = 0;
-        if (float.TryParse(value, out valueFixed))
+        if (!dontAffect)
         {
-            if (_typeDropdown.value == 0)
+            float valueFixed = 0;
+            if (float.TryParse(value, out valueFixed))
             {
-                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].offset.x = valueFixed;
+                if (_typeDropdown.value == 0)
+                {
+                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].offset.x = valueFixed;
+                }
+                else
+                {
+                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].offset.x = valueFixed;
+                }
+                CheckAnimationBoxes();
             }
-            else
-            {
-                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].offset.x = valueFixed;
-            }
-            CheckAnimationBoxes();
         }
+        dontAffect = false;
     }
     public void UpdateAnimationBoxOffsetY(string value)
     {
-        float valueFixed = 0;
-        if (float.TryParse(value, out valueFixed))
+        if (!dontAffect)
         {
-            if (_typeDropdown.value == 0)
+            float valueFixed = 0;
+            if (float.TryParse(value, out valueFixed))
             {
-                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].offset.y = float.Parse(value);
+                if (_typeDropdown.value == 0)
+                {
+                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes[_boxesDropdown.value].offset.y = float.Parse(value);
+                }
+                else
+                {
+                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].offset.y = float.Parse(value);
+                }
+                CheckAnimationBoxes();
             }
-            else
-            {
-                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].offset.y = float.Parse(value);
-            }
-            CheckAnimationBoxes();
         }
+        dontAffect = false;
     }
     private void CheckAnimationBoxes()
     {
@@ -340,7 +365,31 @@ public class CharacterEditor : MonoBehaviour
         _frames[_cel].EnableFrameSelected();
         _boxesDropdown.AddOptions(_boxesDropdownOptions);
         UpdateBoxesFields();
+        if (_boxesDropdown.value == 0)
+        {
+            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes.Count > 0)
+            {
+                dontAffect = true;
+                _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].size.x.ToString();
+                _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].size.y.ToString();
+                _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.x.ToString();
+                _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.y.ToString();
+                Debug.Log(_sizeXInputField.text);
+            }
+        }
+        else
+        {
+            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes.Count > 0)
+            {
+                dontAffect = true;
+                _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].size.x.ToString();
+                _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].size.y.ToString();
+                _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.x.ToString();
+                _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.y.ToString();
+            }
+        }
     }
+    private bool dontAffect;
 
     public void DeleteFrame(int cel)
     {

@@ -21,12 +21,9 @@ public class PlayerAnimator : DemonicsAnimator
     protected override void CheckEvents()
     {
         base.CheckEvents();
-        if (_animation.GetCel(_group, _cel).hitboxes.Count > 0)
+        if (GetEvent().projectile)
         {
-            if (_player.CurrentAttack.isProjectile)
-            {
-                _player.CreateEffect(true);
-            }
+            _player.CreateEffect(true);
         }
         if (GetEvent().jump)
         {
