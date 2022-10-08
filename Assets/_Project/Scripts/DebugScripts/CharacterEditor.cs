@@ -365,27 +365,25 @@ public class CharacterEditor : MonoBehaviour
         _frames[_cel].EnableFrameSelected();
         _boxesDropdown.AddOptions(_boxesDropdownOptions);
         UpdateBoxesFields();
-        if (_boxesDropdown.value == 0)
+        if (_typeDropdown.value == 0)
         {
             if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes.Count > 0)
             {
-                dontAffect = true;
                 _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].size.x.ToString();
                 _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].size.y.ToString();
                 _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.x.ToString();
-                _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.y.ToString();
-                Debug.Log(_sizeXInputField.text);
+                _offsetYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.y.ToString();
             }
         }
         else
         {
+            Debug.Log("A");
             if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes.Count > 0)
             {
-                dontAffect = true;
                 _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].size.x.ToString();
                 _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].size.y.ToString();
                 _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.x.ToString();
-                _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.y.ToString();
+                _offsetYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.y.ToString();
             }
         }
     }
