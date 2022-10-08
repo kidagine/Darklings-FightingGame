@@ -2,18 +2,16 @@ using UnityEngine;
 
 public class AssistAnimationEvents : MonoBehaviour
 {
-	[SerializeField] private Assist _assist = default;
-	[SerializeField] private PlayerAnimationEvents _playerAnimationEvents = default;
+    [SerializeField] private Assist _assist = default;
 
 
-	public void ProjectileAnimationEvent(AnimationEvent animationEvent)
-	{
-		_assist.Projectile();
-		//	_playerAnimationEvents.StartFrameCount(animationEvent);
-	}
+    public void ProjectileAnimationEvent()
+    {
+        _assist.Projectile();
+    }
 
-	public void DisappearAnimationEvent()
-	{
-		_assist.IsOnScreen = false;
-	}
+    public void DisappearAnimationEvent()
+    {
+        _assist.IsOnScreen = false;
+    }
 }

@@ -52,27 +52,42 @@ public class CharacterEditor : MonoBehaviour
         SetFrames();
         _characterDropdown.onValueChanged.AddListener(delegate
         {
+            _typeDropdown.value = 0;
             AnimationEnded();
             UpdateBoxesFields();
             CheckAnimationBoxes();
+            SetFrames();
             _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
             _skinDropdown.ClearOptions();
+            _spriteDropdown.ClearOptions();
             _skinDropdownOptions.Clear();
+            _spriteDropdownOptions.Clear();
             for (int i = 0; i < _animations[_characterDropdown.value].spriteAtlas.Length; i++)
             {
                 _skinDropdownOptions.Add(i.ToString());
             }
+            for (int i = 0; i < _animations[_characterDropdown.value].animationCelsGroup.Length; i++)
+            {
+                _spriteDropdownOptions.Add(_animations[_characterDropdown.value].animationCelsGroup[i].celName);
+            }
+            _spriteDropdown.AddOptions(_spriteDropdownOptions);
             _skinDropdown.AddOptions(_skinDropdownOptions);
         });
         _spriteDropdown.onValueChanged.AddListener(delegate
         {
+            _typeDropdown.value = 0;
             AnimationEnded();
             SetFrames();
             UpdateBoxesFields();
             CheckAnimationBoxes();
             _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
+            _frames[_cel].EnableFrameSelected();
         });
         _boxesDropdown.onValueChanged.AddListener(delegate
+        {
+            UpdateBoxesFields();
+        });
+        _typeDropdown.onValueChanged.AddListener(delegate
         {
             UpdateBoxesFields();
         });
@@ -117,6 +132,8 @@ public class CharacterEditor : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.A) && Input.GetKey(KeyCode.LeftShift))
         {
+            _isPlayOn = false;
+            _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
             _cel--;
             if (_cel < 0)
             {
@@ -126,6 +143,8 @@ public class CharacterEditor : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))
         {
+            _isPlayOn = false;
+            _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
             _cel++;
             if (_cel > _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Count - 1)
             {
@@ -135,12 +154,15 @@ public class CharacterEditor : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
-            Debug.Log("A");
-            _spriteDropdown.value = 5;
+            _isPlayOn = false;
+            _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
+            _spriteDropdown.value = _spriteDropdown.value - 1;
         }
         if (Input.GetKeyDown(KeyCode.S) && Input.GetKey(KeyCode.LeftShift))
         {
-            _spriteDropdown.value = 5;
+            _isPlayOn = false;
+            _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
+            _spriteDropdown.value = _spriteDropdown.value + 1;
         }
     }
 
@@ -165,9 +187,9 @@ public class CharacterEditor : MonoBehaviour
                     }
                 }
                 CheckAnimationBoxes();
-                _frames[_cel].EnableFrameSelected();
                 _frame = 0;
             }
+            _frames[_cel].EnableFrameSelected();
             _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
             _frame++;
         }
@@ -194,7 +216,14 @@ public class CharacterEditor : MonoBehaviour
             }
             else
             {
-                _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.x = float.Parse(value);
+                if (_animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes.Count > 0)
+                {
+                    _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.x = float.Parse(value);
+                }
+                else
+                {
+                    _characterDropdown.value = 0;
+                }
             }
             CheckAnimationBoxes();
         }
@@ -264,16 +293,17 @@ public class CharacterEditor : MonoBehaviour
         {
             _frames[i].gameObject.SetActive(true);
             _frames[i].SetDuration(_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].frames);
-            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].hitboxes.Count > 0)
+            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[i].hitboxes?.Count > 0)
             {
                 _frames[i].SetImage(Color.red);
+
             }
             else
             {
                 bool isPriorFrameActive = false;
                 for (int j = 0; j < _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel.Count; j++)
                 {
-                    if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[j].hitboxes.Count > 0 && j < i)
+                    if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[j].hitboxes?.Count > 0 && j < i)
                     {
                         isPriorFrameActive = true;
                     }
@@ -292,12 +322,25 @@ public class CharacterEditor : MonoBehaviour
 
     private void UpdateBoxesFields()
     {
-        if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes.Count > 0)
+        if (_typeDropdown.value == 0)
         {
-            _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[_boxesDropdown.value].size.x.ToString();
-            _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[_boxesDropdown.value].size.y.ToString();
-            _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[_boxesDropdown.value].offset.x.ToString();
-            _offsetYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[_boxesDropdown.value].offset.y.ToString();
+            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes.Count > 0)
+            {
+                _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].size.x.ToString();
+                _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].size.y.ToString();
+                _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.x.ToString();
+                _offsetYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[0].offset.y.ToString();
+            }
+        }
+        else
+        {
+            if (_animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes.Count > 0)
+            {
+                _sizeXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].size.x.ToString();
+                _sizeYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].size.y.ToString();
+                _offsetXInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.x.ToString();
+                _offsetYInputField.text = _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes[0].offset.y.ToString();
+            }
         }
     }
 
@@ -356,6 +399,7 @@ public class CharacterEditor : MonoBehaviour
         hitbox.size = new Vector2(1, 1);
         _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes.Add(hitbox);
         CheckAnimationBoxes();
+        SetFrames();
     }
 
     public void LoadFightScene()

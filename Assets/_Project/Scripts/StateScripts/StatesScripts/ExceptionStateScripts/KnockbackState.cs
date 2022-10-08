@@ -44,7 +44,6 @@ public class KnockbackState : State
         if (_playerMovement.IsGrounded && _canCheckGround)
         {
             Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
-            _audio.Sound("Landed").Play();
             _stateMachine.ChangeState(_knockdownState);
         }
     }

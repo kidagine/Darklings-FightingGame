@@ -24,7 +24,6 @@ public class TrainingMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _stateTwoText = default;
     [SerializeField] private Canvas[] _uiCanvases = default;
     [SerializeField] private BaseMenu _trainingPauseMenu = default;
-    [SerializeField] private PauseMenu _pauseMenu = default;
     [SerializeField] private TrainingSubOption[] _trainingSubOptions = default;
     [Header("Selectors")]
     private int _currentTrainingSubOptionIndex;

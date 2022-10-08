@@ -19,8 +19,6 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _characterName = default;
     [SerializeField] private TextMeshProUGUI _playerName = default;
     [SerializeField] private TextMeshProUGUI _assistName = default;
-    [SerializeField] private TextMeshProUGUI _whoPausedText = default;
-    [SerializeField] private TextMeshProUGUI _whoPausedTrainingText = default;
     [SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
     [SerializeField] private TextMeshProUGUI _hitsNumberText = default;
     [SerializeField] private Animator _arcanaAnimator = default;

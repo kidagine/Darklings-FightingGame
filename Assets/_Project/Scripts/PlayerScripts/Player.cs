@@ -11,7 +11,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [SerializeField] private Assist _assist = default;
     [SerializeField] private Pushbox _groundPushbox = default;
     [SerializeField] private Transform _hurtbox = default;
-    [SerializeField] private Hitbox _hitbox = default;
     [SerializeField] protected Transform _effectsParent = default;
     [SerializeField] private Transform _grabPoint = default;
     [SerializeField] private Transform _cameraPoint = default;
@@ -44,13 +43,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool IsPlayerOne { get; set; }
     public Fix64 AssistGauge { get; set; } = (Fix64)1;
     public Fix64 ArcanaGauge { get; set; }
-    public int ArcaneSlowdown { get; set; } = 5;
+    public int ArcaneSlowdown { get; set; } = 6;
     public bool CanShadowbreak { get; set; } = true;
     public bool BlockingLow { get; set; }
     public bool BlockingHigh { get; set; }
     public bool BlockingMiddair { get; set; }
     public bool Parrying { get; set; }
     public bool CanSkipAttack { get; set; }
+    public bool Invinsible { get; set; }
     void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
@@ -156,7 +156,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         if (AssistGauge < (Fix64)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
         {
-            AssistGauge += (Fix64)(Time.deltaTime / (9.0f - _assist.AssistStats.assistRecharge));
+            AssistGauge += (Fix64)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
             if (GameManager.Instance.InfiniteAssist)
             {
                 AssistGauge = (Fix64)1.0f;
@@ -382,13 +382,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             return _playerStateManager.TryToGrabbedState();
         }
+        if (Invinsible)
+        {
+            return false;
+        }
         if (CanBlock(attack))
         {
             if (!_playerStateManager.TryToBlockState(attack))
             {
                 return _playerStateManager.TryToHurtState(attack);
             }
-            return false;
         }
         return _playerStateManager.TryToHurtState(attack);
     }

@@ -15,7 +15,6 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private PlayerInput _playerInput = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] private GameObject _rebindOnePrompt = default;
-    [SerializeField] private GameObject _rebindTwoPrompt = default;
     [SerializeField] private GameObject _assistOne = default;
     [SerializeField] private GameObject _assistTwo = default;
     [SerializeField] private GameObject _iconsOne = default;

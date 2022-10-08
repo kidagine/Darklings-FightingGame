@@ -156,6 +156,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9e352103e513444b9d3658785a5d0c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animation: {fileID: 11400000, guid: 71811d894d0d73649bec5b4c8224ccda, type: 2}
+  _spriteRenderer: {fileID: 0}
+  OnCurrentAnimationFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _hitbox: {fileID: 6453347680146085869}
   _dustPrefab: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
   _projectilePriority: 0
@@ -361,7 +366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51729ec44d22e5f4f8bb5accfea6be2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitboxSize: {x: 1, y: 1}
+  _size: {x: 0, y: 0}
   _offset: {x: 0, y: 0}
   _hitGround: 1
   _hasHit: 0

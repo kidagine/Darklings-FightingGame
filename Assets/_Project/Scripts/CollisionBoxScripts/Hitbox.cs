@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Hitbox : MonoBehaviour
 {
+    [SerializeField] private Vector2 _size;
+    [SerializeField] private Vector2 _offset;
     public Action OnGroundCollision;
     public Action OnPlayerCollision;
     [SerializeField] private bool _hitGround;
@@ -15,8 +17,8 @@ public class Hitbox : MonoBehaviour
     [HideInInspector] public bool _hasHit;
     public Transform HitPoint { get; private set; }
     public bool HitConfirm { get; private set; }
-    public Vector2 Size { get; private set; }
-    public Vector2 Offset { get; private set; }
+    public Vector2 Size { get { return _size; } private set { } }
+    public Vector2 Offset { get { return _offset; } private set { } }
 
     void Awake()
     {
@@ -47,8 +49,8 @@ public class Hitbox : MonoBehaviour
     }
     public void SetBox(Vector2 size, Vector2 offset)
     {
-        Size = size;
-        Offset = offset;
+        _size = size;
+        _offset = offset;
     }
 
     void FixedUpdate()
