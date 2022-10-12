@@ -1,11 +1,12 @@
 # DARKLINGS-FightingGame
+PLAY AT: https://gamejolt.com/games/darklings/640842
+
 Darklings is a simple free to play 2D fighting game with the intention of being a very accessible fighter that will keep getting updated periodically.
 
 [![GitHub](https://img.shields.io/badge/unity--version-2021.6-blue)](https://img.shields.io/badge/unity--version-2021.3-blue)
 
-Play at: https://gamejolt.com/games/darklings/640842  
-Website at: https://kidagine.github.io/Darklings-Website/
 
+## Sub Repositories
 Website repository: https://github.com/kidagine/Darklings-Website <br>
 Launcher repository: https://github.com/kidagine/Darklings-Launcher <br>
 Command videos for WebGL repository: https://github.com/kidagine/Darklings-CommandListVideos <br>
