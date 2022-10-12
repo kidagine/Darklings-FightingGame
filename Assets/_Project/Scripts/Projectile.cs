@@ -19,9 +19,8 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
     public bool BlockingHigh { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public bool BlockingMiddair { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
         _originalSpeed = _speed;
         _rigidbody = GetComponent<Rigidbody2D>();
         _hitbox.OnPlayerCollision += () => GameManager.Instance.AddHitstop(this);

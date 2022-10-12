@@ -49,7 +49,7 @@ public class CharacterMenu : BaseMenu
         _currentEventSystem = EventSystem.current;
     }
 
-    public void SetCharacterImage(RuntimeAnimatorController animatorController, PlayerStatsSO playerStats, bool isRandomizer)
+    public void SetCharacterImage(PlayerStatsSO playerStats, bool isRandomizer)
     {
         _playerStats = playerStats;
         if (!FirstCharacterSelected)
@@ -60,8 +60,8 @@ public class CharacterMenu : BaseMenu
                 _playerUIRenderOne.gameObject.SetActive(true);
                 _iconsOne.gameObject.SetActive(true);
                 _playerOneName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-                _spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
                 _playerUIRenderOne.PlayerStats = playerStats;
+                _playerUIRenderOne.SetAnimator(_playerStats._animation);
                 _hpTextOne.text = $"LV{_playerStats.defenseLevel}";
                 _arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
                 _speedTextOne.text = $"LV{_playerStats.speedLevel}";
@@ -73,7 +73,6 @@ public class CharacterMenu : BaseMenu
                 _speedTextOne.text = "?";
                 _playerOneName.text = "Random";
             }
-            _characterOneAnimator.runtimeAnimatorController = animatorController;
         }
         else
         {
@@ -84,8 +83,8 @@ public class CharacterMenu : BaseMenu
                 _playerUIRenderTwo.gameObject.SetActive(true);
                 _iconsTwo.gameObject.SetActive(true);
                 _playerTwoName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-                _spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
                 _playerUIRenderTwo.PlayerStats = playerStats;
+                _playerUIRenderTwo.SetAnimator(_playerStats._animation);
                 _hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
                 _arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
                 _speedTextTwo.text = $"LV{_playerStats.speedLevel}";
@@ -97,7 +96,6 @@ public class CharacterMenu : BaseMenu
                 _speedTextTwo.text = "?";
                 _playerTwoName.text = "Random";
             }
-            _characterTwoAnimator.runtimeAnimatorController = animatorController;
         }
     }
 

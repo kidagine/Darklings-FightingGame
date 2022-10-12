@@ -35,7 +35,6 @@ public class PlayerCharacterSelector : MonoBehaviour
         if (Mathf.Approximately(currentPosition.x, collision.transform.localPosition.x))
         {
             _audio.Sound("Selected").Play();
-            RuntimeAnimatorController animatorController = collision.GetComponent<CharacterButton>().CharacterAnimatorController;
             PlayerStatsSO playerStats = collision.GetComponent<CharacterButton>().PlayerStatsSO;
             bool isRandomizer = collision.GetComponent<CharacterButton>().IsRandomizer;
         }
