@@ -1,7 +1,7 @@
 # DARKLINGS-FightingGame
 <b>PLAY AT:</b> https://gamejolt.com/games/darklings/640842
 
-Darklings is a simple free to play 2D fighting game with the intention of being a very accessible fighter that will keep getting updated periodically.
+Darklings is a free to play 2D fighting game with the intention of being an accessible fighter, that will keep getting updated periodically.
 
 [![GitHub](https://img.shields.io/badge/unity--version-2021.6-blue)](https://img.shields.io/badge/unity--version-2021.3-blue)
 
