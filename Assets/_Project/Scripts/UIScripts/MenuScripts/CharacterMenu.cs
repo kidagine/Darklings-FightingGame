@@ -151,6 +151,10 @@ public class CharacterMenu : BaseMenu
         {
             _playerUIRenderTwo.Taunt();
         }
+        if (FirstCharacterSelected)
+        {
+            EventSystem.current.gameObject.SetActive(false);
+        }
         StartCoroutine(TauntEndCoroutine());
     }
 

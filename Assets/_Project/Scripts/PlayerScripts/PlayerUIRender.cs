@@ -36,6 +36,7 @@ public class PlayerUIRender : DemonicsAnimator
         {
             skinNumber = PlayerStats.spriteLibraryAssets.Length - 1;
         }
+        _skin = skinNumber;
         return skinNumber;
     }
 
