@@ -22,6 +22,7 @@ public class DemonicsAnimator : MonoBehaviour
     public void SetAnimator(AnimationSO animation)
     {
         _animation = animation;
+        SetAnimation("Idle");
     }
 
     public void SetAnimation(string name)
