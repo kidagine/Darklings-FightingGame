@@ -1022,7 +1022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f363ecc522b1c47b74b2c581a99535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animation: {fileID: 11400000, guid: c57bc744493459f4e8da98859fba2649, type: 2}
+  _animation: {fileID: 11400000, guid: 07b0111e00bf2904484966df77266d4e, type: 2}
   _spriteRenderer: {fileID: 8073473789928578676}
   OnCurrentAnimationFinished:
     m_PersistentCalls:
@@ -1097,7 +1097,7 @@ SpriteRenderer:
   m_Size: {x: 2.25, y: 2.75}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &1790606702567451895
@@ -1339,7 +1339,6 @@ MonoBehaviour:
   _assist: {fileID: 8780121904732240358}
   _groundPushbox: {fileID: 516655848589572334}
   _hurtbox: {fileID: 8073473791272386160}
-  _hitbox: {fileID: 8073473789829592550}
   _effectsParent: {fileID: 2017372758765848807}
   _grabPoint: {fileID: 7600070780512524519}
   _cameraPoint: {fileID: 3775412804825945539}
@@ -2217,7 +2216,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _assist: {fileID: 8780121904732240358}
-  _playerAnimationEvents: {fileID: 8073473789928578682}
 --- !u!114 &4931428911186388808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2406,17 +2404,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6291948109849223294, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
   m_PrefabInstance: {fileID: 2836072438313833887}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8073473789829592550 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6291948109849223289, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
-  m_PrefabInstance: {fileID: 2836072438313833887}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51729ec44d22e5f4f8bb5accfea6be2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4976141870308499193
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -190,10 +190,6 @@ public class GameManager : MonoBehaviour
         PlayerTwo.SetController();
         _playerOneAnimator = PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimator>();
         _playerTwoAnimator = PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>();
-        PlayerOne.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerOneUI, _trainingMenu);
-        PlayerTwo.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerTwoUI, _trainingMenu);
-        PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
-        PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
         _playerOneAnimator.SetSpriteLibraryAsset(SceneSettings.ColorOne);
         if (SceneSettings.ColorTwo == SceneSettings.ColorOne && PlayerOne.PlayerStats.characterName == PlayerTwo.PlayerStats.characterName)
         {
@@ -207,6 +203,10 @@ public class GameManager : MonoBehaviour
             }
         }
         _playerTwoAnimator.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
+        PlayerOne.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerOneUI, _trainingMenu);
+        PlayerTwo.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerTwoUI, _trainingMenu);
+        PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
+        PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
         _playerOneController.IsPlayerOne = true;
         PlayerOne.SetPlayerUI(_playerOneUI);
         PlayerTwo.SetPlayerUI(_playerTwoUI);
@@ -371,10 +371,7 @@ public class GameManager : MonoBehaviour
             _winsImage.SetActive(false);
             _trainingPrompts.gameObject.SetActive(true);
             HasGameStarted = true;
-            if (!_isOnlineMode)
-            {
-                StartTrainingRound();
-            }
+            StartTrainingRound();
         }
         else
         {

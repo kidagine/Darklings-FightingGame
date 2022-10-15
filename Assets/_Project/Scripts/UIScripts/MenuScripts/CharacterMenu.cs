@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
 public class CharacterMenu : BaseMenu
@@ -38,6 +37,7 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private RebindMenu[] _rebindMenues = default;
     private PlayerStatsSO _playerStats;
     private EventSystem _currentEventSystem;
+    private Coroutine _tauntCoroutine;
     public bool FirstCharacterSelected { get; private set; }
 
 
@@ -89,7 +89,7 @@ public class CharacterMenu : BaseMenu
             }
             else
             {
-                _playerUIRenderOne.SetAnimator(_randomAnimation);
+                _playerUIRenderTwo.SetAnimator(_randomAnimation);
                 _hpTextTwo.text = "?";
                 _arcanaTextTwo.text = "?";
                 _speedTextTwo.text = "?";
@@ -155,7 +155,7 @@ public class CharacterMenu : BaseMenu
         {
             EventSystem.current.gameObject.SetActive(false);
         }
-        StartCoroutine(TauntEndCoroutine());
+        _tauntCoroutine = StartCoroutine(TauntEndCoroutine());
     }
 
     IEnumerator TauntEndCoroutine()
@@ -246,6 +246,11 @@ public class CharacterMenu : BaseMenu
     {
         if (!SceneSettings.SceneSettingsDecide)
         {
+            Debug.Log("A");
+            if (_tauntCoroutine != null)
+            {
+                StopCoroutine(_tauntCoroutine);
+            }
             _iconsOne.gameObject.SetActive(false);
             _iconsTwo.gameObject.SetActive(false);
             _currentEventSystem.SetSelectedGameObject(null);
