@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     [Range(10, 300)]
     [SerializeField] private int _countdownTime = 99;
     [Header("Data")]
+    [SerializeField] private CinemachineTargetGroup _targetGroup = default;
     [SerializeField] private Transform[] _spawnPositions = default;
     [SerializeField] private IntroUI _introUI = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
@@ -474,6 +475,8 @@ public class GameManager : MonoBehaviour
         }
         _countdown = _countdownTime;
         _countdownText.text = Mathf.Round(_countdown).ToString();
+        _targetGroup.m_Targets[0].weight = 0.5f;
+        _targetGroup.m_Targets[1].weight = 0.5f;
         PlayerOne.ResetPlayer();
         PlayerTwo.ResetPlayer();
         PlayerOne.transform.position = _spawnPositions[0].position;
@@ -718,11 +721,13 @@ public class GameManager : MonoBehaviour
                     {
                         if (_playerOneWon)
                         {
+                            StartCoroutine(CameraCenterCoroutine(1));
                             PlayerOne.PlayerStateManager.TryToTauntState();
                             PlayerTwo.PlayerStateManager.TryToGiveUpState();
                         }
                         else if (_playerTwoWon)
                         {
+                            StartCoroutine(CameraCenterCoroutine(0));
                             PlayerOne.PlayerStateManager.TryToGiveUpState();
                             PlayerTwo.PlayerStateManager.TryToTauntState();
                         }
@@ -788,6 +793,19 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    IEnumerator CameraCenterCoroutine(int player)
+    {
+        yield return new WaitForSeconds(0.2f);
+        float waitTime = 0.5f;
+        float elapsedTime = 0;
+        while (elapsedTime < waitTime)
+        {
+            _targetGroup.m_Targets[player].weight = Mathf.Lerp(0.5f, 0, (elapsedTime / waitTime));
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
     }
 
