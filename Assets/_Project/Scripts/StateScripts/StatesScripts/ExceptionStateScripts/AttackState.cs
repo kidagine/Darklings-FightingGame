@@ -133,29 +133,57 @@ public class AttackState : State
         }
         if (_player.CanSkipAttack && inputEnum != InputEnum.Throw)
         {
-            if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+            if (_playerMovement.IsInHitstop)
             {
-                if (_playerMovement.IsGrounded)
+                if (!_player.LockChain)
                 {
-                    _crouch = true;
+                    Attack(inputEnum, inputDirectionEnum);
+                    _player.hitstopEvent.AddListener(ChainAttack);
+                    _player.LockChain = true;
                 }
             }
             else
             {
-                _crouch = false;
+                Attack(inputEnum, inputDirectionEnum);
+                ChainAttack();
             }
-            if (_player.CurrentAttack.isAirAttack)
-            {
-                _air = true;
-            }
-            Initialize(inputEnum, _crouch, _air);
-            _stateMachine.ChangeState(this);
+
+
             return true;
         }
         else
         {
             return false;
         }
+    }
+
+    private InputEnum _inputEnumCurrent;
+
+    private void Attack(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
+    {
+        _inputEnumCurrent = inputEnum;
+        if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+        {
+            if (_playerMovement.IsGrounded)
+            {
+                _crouch = true;
+            }
+        }
+        else
+        {
+            _crouch = false;
+        }
+        if (_player.CurrentAttack.isAirAttack)
+        {
+            _air = true;
+        }
+    }
+
+    private void ChainAttack()
+    {
+        Initialize(_inputEnumCurrent, _crouch, _air);
+        _stateMachine.ChangeState(this);
+        _player.LockChain = false;
     }
 
     public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)

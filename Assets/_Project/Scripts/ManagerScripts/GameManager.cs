@@ -1078,7 +1078,6 @@ public class GameManager : MonoBehaviour
     public void AddHitstop(IHitstop hitstop)
     {
         _hitstopList.Add(hitstop);
-
     }
 
     public void SuperFreeze()
@@ -1094,7 +1093,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    private int _hitstop;
+    public int _hitstop;
     public void HitStop(int hitstop)
     {
         if (hitstop > 0)

@@ -152,7 +152,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void Knockback(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
     {
-        _player.knockbackEvent.AddListener(() =>
+        _player.hitstopEvent.AddListener(() =>
         {
             _knockbackCoroutine = StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
         });

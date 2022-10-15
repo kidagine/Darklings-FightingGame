@@ -2106,8 +2106,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8780121904479639522}
   - component: {fileID: 8780121904479639524}
-  - component: {fileID: 8780121904479639523}
-  - component: {fileID: 3922080387401972590}
   - component: {fileID: 4931428911186388808}
   m_Layer: 10
   m_Name: Assist_emulated
@@ -2183,39 +2181,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &8780121904479639523
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8780121904479639521}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 06752be27a5947b49bd0ec2a983c9c3a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3922080387401972590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8780121904479639521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23f42d64579e36f42965846ff6257153, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _assist: {fileID: 8780121904732240358}
 --- !u!114 &4931428911186388808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2246,7 +2211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8780121904732240357
 Transform:
   m_ObjectHideFlags: 0
@@ -2275,7 +2240,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5923da4ce5b43704ea47f09f7600ee69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 8780121904479639523}
+  _animation: {fileID: 11400000, guid: a716899a7c542f143957c820fb7c65a9, type: 2}
+  _spriteRenderer: {fileID: 8780121904479639524}
+  OnCurrentAnimationFinished:
+    m_PersistentCalls:
+      m_Calls: []
   _assistStatsSO: {fileID: 11400000, guid: 2f7ef4e4812540b42bf60476b4910e16, type: 2}
   _smokePrefab: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
 --- !u!114 &6582158388417803366

@@ -24,7 +24,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     private Coroutine _comboTimerCoroutine;
     private bool _comboTimerPaused;
     private readonly Fix64 _damageDecay = (Fix64)0.97f;
-    [HideInInspector] public UnityEvent knockbackEvent;
+    [HideInInspector] public UnityEvent hitstopEvent;
 
     public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
     public PlayerStateManager OtherPlayerStateManager { get; private set; }
@@ -51,6 +51,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool Parrying { get; set; }
     public bool CanSkipAttack { get; set; }
     public bool Invinsible { get; set; }
+    public bool LockChain { get; set; }
     void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
@@ -125,6 +126,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerUI.ResetHealthDamaged();
         InitializeStats();
         _playerUI.ShowPlayerIcon();
+        hitstopEvent.RemoveAllListeners();
+        LockChain = false;
     }
 
     public void ResetLives()
@@ -406,8 +409,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         _playerMovement.ExitHitstop();
         _playerAnimator.Resume();
-        knockbackEvent?.Invoke();
-        knockbackEvent.RemoveAllListeners();
+        hitstopEvent?.Invoke();
+        hitstopEvent.RemoveAllListeners();
     }
 
     public bool IsInHitstop()

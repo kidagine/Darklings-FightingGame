@@ -1,9 +1,8 @@
 using Demonics.Sounds;
 using UnityEngine;
 
-public class Assist : MonoBehaviour, IHitboxResponder
+public class Assist : DemonicsAnimator, IHitboxResponder
 {
-    [SerializeField] private Animator _animator = default;
     [SerializeField] private AssistStatsSO _assistStatsSO = default;
     [SerializeField] private GameObject _smokePrefab = default;
     private Audio _audio;
@@ -27,13 +26,30 @@ public class Assist : MonoBehaviour, IHitboxResponder
 
     public void Attack()
     {
+        gameObject.SetActive(true);
         IsOnScreen = true;
         _audio.Sound("Attack").Play();
         transform.SetParent(_player);
-        _animator.SetTrigger("Attack");
+        SetAnimation("Attack");
         transform.localPosition = AssistStats.assistPosition;
         transform.SetParent(null);
         transform.localScale = _player.localScale;
+    }
+
+    protected override void CheckEvents()
+    {
+        base.CheckEvents();
+        if (GetEvent().projectile)
+        {
+            Projectile();
+        }
+    }
+
+    protected override void AnimationEnded()
+    {
+        base.AnimationEnded();
+        IsOnScreen = false;
+        gameObject.SetActive(false);
     }
 
     public void Recall()
@@ -41,7 +57,6 @@ public class Assist : MonoBehaviour, IHitboxResponder
         if (IsOnScreen)
         {
             IsOnScreen = false;
-            _animator.Rebind();
             if (_hitEffect != null)
             {
                 _hitEffect.SetActive(false);
