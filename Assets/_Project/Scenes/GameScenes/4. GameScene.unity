@@ -9734,10 +9734,10 @@ MonoBehaviour:
   _controllerOneType: 0
   _controllerTwo: 0
   _controllerTwoType: 0
-  _music: 0
+  _music: 10
   _playerOneSkin: 0
   _playerTwoSkin: 1
-  _isTrainingMode: 1
+  _isTrainingMode: 0
   _isOnlineMode: 0
   _1BitOn: 0
   _gameSpeed: 1
@@ -9804,6 +9804,7 @@ MonoBehaviour:
   _cinemachineTargetGroup: {fileID: 1821676145}
   _musicAudio: {fileID: 392163761}
   _uiAudio: {fileID: 392163760}
+  _hitstop: 0
 --- !u!114 &392163760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9925,6 +9926,14 @@ MonoBehaviour:
       volume: 0.4
       pitch: 1
       name: NowSmile
+      loop: 1
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 6be944b23c5195244b935ca80e625c7c, type: 3}
+      volume: 0.4
+      pitch: 1
+      name: Home
       loop: 1
       playOnAwake: 0
       playOneInstanceAtATime: 0
@@ -49626,7 +49635,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 16375
 --- !u!114 &1938289647
 MonoBehaviour:
   m_ObjectHideFlags: 0

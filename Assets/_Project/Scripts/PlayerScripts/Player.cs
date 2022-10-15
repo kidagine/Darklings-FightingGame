@@ -192,6 +192,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void CheckFlip()
     {
+        Debug.Log("flip");
         if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && _keepFlip.localScale.x != 1.0f)
         {
             if (!OtherPlayerMovement.IsInCorner)
