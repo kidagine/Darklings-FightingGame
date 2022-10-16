@@ -49,3 +49,13 @@ public class AttackSO : ScriptableObject
     public string moveDescription;
     public VideoClip moveVideo;
 }
+
+public class ResultAttack
+{
+    public int startUpFrames;
+    public int activeFrames;
+    public int recoveryFrames;
+    public AttackTypeEnum attackTypeEnum;
+    public int damage;
+    public int comboDamage;
+}

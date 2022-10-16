@@ -1347,7 +1347,13 @@ MonoBehaviour:
   - {fileID: 7759221523502482170}
   - {fileID: 3488833446598643948}
   playerStats: {fileID: 0}
-  knockbackEvent:
+  hitstopEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  hitConnectsEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  parryConnectsEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &8073473790702501987
@@ -2318,6 +2324,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8073473790437601078}
     m_Modifications:
+    - target: {fileID: 5123739317702046984, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6291948109849223294, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2435,6 +2445,10 @@ PrefabInstance:
     - target: {fileID: 3820304870352819294, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6719501380990296644, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}

@@ -25,6 +25,10 @@ public class AirborneHurtState : HurtParentState
     public override void Enter()
     {
         _player.OtherPlayerUI.IncreaseCombo();
+        if (_player.OtherPlayerUI.CurrentComboCount == 1)
+        {
+            _player.OtherPlayer.ResultAttack.comboDamage = 0;
+        }
         _audio.Sound(_hurtAttack.impactSound).Play();
         _playerAnimator.HurtAir();
         _rigidbody.velocity = Vector2.zero;
@@ -61,6 +65,7 @@ public class AirborneHurtState : HurtParentState
         {
             ToDeathState();
         }
+        _player.OtherPlayer.hitConnectsEvent?.Invoke();
     }
     public override bool AssistCall()
     {

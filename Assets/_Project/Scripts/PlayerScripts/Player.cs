@@ -25,6 +25,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     private bool _comboTimerPaused;
     private readonly Fix64 _damageDecay = (Fix64)0.97f;
     [HideInInspector] public UnityEvent hitstopEvent;
+    [HideInInspector] public UnityEvent hitConnectsEvent;
+    [HideInInspector] public UnityEvent parryConnectsEvent;
 
     public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
     public PlayerStateManager OtherPlayerStateManager { get; private set; }
@@ -34,7 +36,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public PlayerStatsSO PlayerStats { get { return playerStats; } set { } }
     public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
     public AttackSO CurrentAttack { get; set; }
-    public AttackSO ResultAttack { get; set; }
+    public ResultAttack ResultAttack { get; set; }
     public Transform CameraPoint { get { return _cameraPoint; } private set { } }
     public bool CanAirArcana { get; set; }
     public int Health { get; set; }
@@ -56,6 +58,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         _playerMovement = GetComponent<PlayerMovement>();
         _playerComboSystem = GetComponent<PlayerComboSystem>();
+        ResultAttack = new ResultAttack();
     }
 
     public void SetController()
@@ -192,7 +195,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void CheckFlip()
     {
-        Debug.Log("flip");
         if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && _keepFlip.localScale.x != 1.0f)
         {
             if (!OtherPlayerMovement.IsInCorner)
@@ -224,15 +226,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             return true;
         }
         return false;
-    }
-
-    public void SetResultAttack(int calculatedDamage)
-    {
-        if (CurrentAttack != null)
-        {
-            ResultAttack = Instantiate(CurrentAttack);
-            ResultAttack.damage = calculatedDamage;
-        }
     }
 
     public float DemonLimitMultiplier()
@@ -327,10 +320,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             calculatedDamage *= damageScale;
         }
         int calculatedIntDamage = (int)Fix64.Round(calculatedDamage);
-        OtherPlayer.SetResultAttack(calculatedIntDamage);
+        OtherPlayer.SetResultAttack(calculatedIntDamage, hurtAttack);
         return calculatedIntDamage;
     }
 
+    public void SetResultAttack(int calculatedDamage, AttackSO attack)
+    {
+        ResultAttack.startUpFrames = attack.startUpFrames;
+        ResultAttack.activeFrames = attack.activeFrames;
+        ResultAttack.recoveryFrames = attack.recoveryFrames;
+        ResultAttack.attackTypeEnum = attack.attackTypeEnum;
+        ResultAttack.damage = calculatedDamage;
+        ResultAttack.comboDamage += calculatedDamage;
+    }
 
     public bool HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
     {

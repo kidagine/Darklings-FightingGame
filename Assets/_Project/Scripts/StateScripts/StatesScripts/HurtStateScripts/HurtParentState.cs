@@ -38,6 +38,7 @@ public class HurtParentState : State
         _player.OtherPlayerUI.IncreaseCombo();
         if (_player.OtherPlayerUI.CurrentComboCount == 1)
         {
+            _player.OtherPlayer.ResultAttack.comboDamage = 0;
             if (_hurtAttack.attackTypeEnum == AttackTypeEnum.Break)
             {
                 _player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Red);
@@ -57,6 +58,7 @@ public class HurtParentState : State
         {
             ToDeathState();
         }
+        _player.OtherPlayer.hitConnectsEvent?.Invoke();
     }
 
     private void ToDeathState()
