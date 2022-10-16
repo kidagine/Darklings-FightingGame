@@ -125,7 +125,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void AddForce(int moveHorizontally)
     {
-        _player.ExitHitstop();
         float jumpForce = _player.playerStats.jumpForce - 3.5f;
         int direction = 0;
         if (moveHorizontally == 1)

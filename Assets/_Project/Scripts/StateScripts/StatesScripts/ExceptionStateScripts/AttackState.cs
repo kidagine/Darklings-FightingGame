@@ -147,8 +147,6 @@ public class AttackState : State
                 Attack(inputEnum, inputDirectionEnum);
                 ChainAttack();
             }
-
-
             return true;
         }
         else
@@ -190,32 +188,50 @@ public class AttackState : State
     {
         if (_player.ArcanaGauge >= (Fix64)1 && _player.CanSkipAttack)
         {
-            if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+            if (_playerMovement.IsInHitstop)
             {
-                if (_playerMovement.IsGrounded)
+                if (!_player.LockChain)
                 {
-                    _crouch = true;
+                    Arcana(inputDirectionEnum);
+                    _player.hitstopEvent.AddListener(ChainArcana);
+                    _player.LockChain = true;
                 }
             }
             else
             {
-                _crouch = false;
+                Arcana(inputDirectionEnum);
+                ChainArcana();
             }
-            if (_air && _player.CanAirArcana)
-            {
-                _player.CanAirArcana = false;
-                _arcanaState.Initialize(_crouch, _air);
-                _stateMachine.ChangeState(_arcanaState);
-                return true;
-            }
-            else
-            {
-                _arcanaState.Initialize(_crouch, _air);
-                _stateMachine.ChangeState(_arcanaState);
-                return true;
-            }
+            return true;
         }
         return false;
+    }
+
+
+    private void Arcana(InputDirectionEnum inputDirectionEnum)
+    {
+        if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+        {
+            if (_playerMovement.IsGrounded)
+            {
+                _crouch = true;
+            }
+        }
+        else
+        {
+            _crouch = false;
+        }
+        if (_air && _player.CanAirArcana)
+        {
+            _player.CanAirArcana = false;
+        }
+    }
+
+    private void ChainArcana()
+    {
+        _arcanaState.Initialize(_crouch, _air);
+        _stateMachine.ChangeState(_arcanaState);
+        _player.LockChain = false;
     }
 
     public override bool ToHurtState(AttackSO attack)
