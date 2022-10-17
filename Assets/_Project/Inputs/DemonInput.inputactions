@@ -923,6 +923,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "NavigationLeft",
+                    "type": "Button",
+                    "id": "a9123728-0ac2-415d-bc3f-dcb6c1d0ec48",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NavigationRight",
+                    "type": "Button",
+                    "id": "d7c071bb-8534-4278-8262-781633a88662",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ToggleFramedata",
                     "type": "Button",
                     "id": "ad302711-aaaf-4ef8-a9f5-a439a4b42746",
@@ -1293,6 +1311,50 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "ToggleFramedata",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dabcf222-1fda-4a5f-a9e8-28e8aeacc782",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox",
+                    "action": "NavigationRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d28decdd-d5d9-46f4-a3b2-a04cae35da32",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "NavigationRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6e85d022-c7b5-45cf-bfce-2312b330ffb9",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox",
+                    "action": "NavigationLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11326740-b80e-48fc-a735-2882a10aa478",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "NavigationLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

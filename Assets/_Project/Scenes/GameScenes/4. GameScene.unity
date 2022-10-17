@@ -7476,6 +7476,12 @@ MonoBehaviour:
   OnRightPage:
     m_PersistentCalls:
       m_Calls: []
+  OnLeftNavigation:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightNavigation:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &283294400
 GameObject:
   m_ObjectHideFlags: 0
@@ -10784,7 +10790,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stage: 0
   _characterOne: 4
-  _characterTwo: 0
+  _characterTwo: 4
   _assistOne: 0
   _assistTwo: 0
   _controllerOne: 0
@@ -21766,7 +21772,7 @@ MonoBehaviour:
   _characterMovesPage: {fileID: 2065274076}
   _commonMovesPage: {fileID: 1167340524}
   _characterMovesButton: {fileID: 4703080449641630683}
-  _commonMovesButton: {fileID: 1416771432}
+  _commonMovesButton: {fileID: 1576503722}
   _slides:
   - {fileID: 1641534277}
   - {fileID: 544045073}
@@ -21785,6 +21791,9 @@ MonoBehaviour:
   - {fileID: 1039164220}
   - {fileID: 433678997}
   - {fileID: 643352893}
+  - {fileID: 1576503718}
+  - {fileID: 1416771428}
+  - {fileID: 1758844274}
   _toggleFramedataPrompt: {fileID: 1621392096}
   _knockdownImage: {fileID: 520475361}
   _reversalImage: {fileID: 1241117998}
@@ -23586,6 +23595,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftNavigation:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightNavigation:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &839049831
@@ -31993,6 +32008,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnLeftNavigation:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightNavigation:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1152085417
 GameObject:
   m_ObjectHideFlags: 0
@@ -32355,7 +32376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a95006015d83a4caf2752797cce8ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _actionReference: {fileID: 3781642598736455645, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
+  _actionReference: {fileID: 1601865184994860850, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
   _pauseMenu: {fileID: 534647985}
 --- !u!114 &1180880672
@@ -39283,7 +39304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a95006015d83a4caf2752797cce8ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _actionReference: {fileID: -5064225296483760917, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
+  _actionReference: {fileID: 1151530345847315047, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
   _pauseMenu: {fileID: 534647985}
 --- !u!114 &1404052555
@@ -41926,6 +41947,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftNavigation:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightNavigation:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1487661503
@@ -47837,6 +47864,36 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnLeftNavigation:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 784621987}
+        m_TargetAssemblyTypeName: CommandListMenu, Scripts
+        m_MethodName: PreviousPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnRightNavigation:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 784621987}
+        m_TargetAssemblyTypeName: CommandListMenu, Scripts
+        m_MethodName: NextPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1649140742
 GameObject:
   m_ObjectHideFlags: 0
@@ -48155,6 +48212,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftNavigation:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightNavigation:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1667847075
@@ -53226,6 +53289,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftNavigation:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightNavigation:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1817988703
@@ -62538,7 +62607,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 16375
 --- !u!1 &47249491209711718
 GameObject:
   m_ObjectHideFlags: 0

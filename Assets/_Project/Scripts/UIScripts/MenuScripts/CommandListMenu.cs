@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Demonics.UI;
 using TMPro;
 using UnityEngine;
@@ -86,14 +87,16 @@ public class CommandListMenu : BaseMenu
         {
             _slides[i].SetActive(false);
         }
+        string playerOne = Regex.Replace(_playerOne.PlayerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+        string playerTwo = Regex.Replace(_playerTwo.PlayerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
         if (_currentPage == 0)
         {
             _characterContent.anchoredPosition = Vector2.zero;
             _characterMovesButton.Select();
             _characterMovesPage.SetActive(true);
             _commonMovesPage.SetActive(false);
-            _characterText[0].text = _playerOne.PlayerStats.characterName.ToString();
-            _characterText[1].text = _playerTwo.PlayerStats.characterName.ToString();
+            _characterText[0].text = playerOne;
+            _characterText[1].text = playerTwo;
             _characterText[2].text = "Common Moves";
         }
         else if (_currentPage == 1)
@@ -102,9 +105,9 @@ public class CommandListMenu : BaseMenu
             _characterMovesButton.Select();
             _characterMovesPage.SetActive(true);
             _commonMovesPage.SetActive(false);
-            _characterText[0].text = _playerTwo.PlayerStats.characterName.ToString();
+            _characterText[0].text = playerTwo;
             _characterText[1].text = "Common Moves";
-            _characterText[2].text = _playerOne.PlayerStats.characterName.ToString();
+            _characterText[2].text = playerOne;
         }
         else
         {
@@ -113,8 +116,8 @@ public class CommandListMenu : BaseMenu
             _characterMovesPage.SetActive(false);
             _commonMovesPage.SetActive(true);
             _characterText[0].text = "Common Moves";
-            _characterText[1].text = _playerOne.PlayerStats.characterName.ToString();
-            _characterText[2].text = _playerTwo.PlayerStats.characterName.ToString();
+            _characterText[1].text = playerOne;
+            _characterText[2].text = playerTwo;
         }
         _slides[_currentPage].SetActive(true);
     }

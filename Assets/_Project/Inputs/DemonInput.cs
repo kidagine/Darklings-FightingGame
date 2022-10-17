@@ -945,6 +945,24 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""NavigationLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""a9123728-0ac2-415d-bc3f-dcb6c1d0ec48"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NavigationRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""d7c071bb-8534-4278-8262-781633a88662"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""ToggleFramedata"",
                     ""type"": ""Button"",
                     ""id"": ""ad302711-aaaf-4ef8-a9f5-a439a4b42746"",
@@ -1317,6 +1335,50 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""action"": ""ToggleFramedata"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dabcf222-1fda-4a5f-a9e8-28e8aeacc782"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""NavigationRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d28decdd-d5d9-46f4-a3b2-a04cae35da32"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""NavigationRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6e85d022-c7b5-45cf-bfce-2312b330ffb9"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""NavigationLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11326740-b80e-48fc-a735-2882a10aa478"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""NavigationLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1466,6 +1528,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         m_UI_RightPage = m_UI.FindAction("RightPage", throwIfNotFound: true);
         m_UI_NavigationUp = m_UI.FindAction("NavigationUp", throwIfNotFound: true);
         m_UI_NavigationDown = m_UI.FindAction("NavigationDown", throwIfNotFound: true);
+        m_UI_NavigationLeft = m_UI.FindAction("NavigationLeft", throwIfNotFound: true);
+        m_UI_NavigationRight = m_UI.FindAction("NavigationRight", throwIfNotFound: true);
         m_UI_ToggleFramedata = m_UI.FindAction("ToggleFramedata", throwIfNotFound: true);
         // Training
         m_Training = asset.FindActionMap("Training", throwIfNotFound: true);
@@ -1670,6 +1734,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_RightPage;
     private readonly InputAction m_UI_NavigationUp;
     private readonly InputAction m_UI_NavigationDown;
+    private readonly InputAction m_UI_NavigationLeft;
+    private readonly InputAction m_UI_NavigationRight;
     private readonly InputAction m_UI_ToggleFramedata;
     public struct UIActions
     {
@@ -1686,6 +1752,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         public InputAction @RightPage => m_Wrapper.m_UI_RightPage;
         public InputAction @NavigationUp => m_Wrapper.m_UI_NavigationUp;
         public InputAction @NavigationDown => m_Wrapper.m_UI_NavigationDown;
+        public InputAction @NavigationLeft => m_Wrapper.m_UI_NavigationLeft;
+        public InputAction @NavigationRight => m_Wrapper.m_UI_NavigationRight;
         public InputAction @ToggleFramedata => m_Wrapper.m_UI_ToggleFramedata;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
@@ -1729,6 +1797,12 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @NavigationDown.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationDown;
                 @NavigationDown.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationDown;
                 @NavigationDown.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationDown;
+                @NavigationLeft.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationLeft;
+                @NavigationLeft.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationLeft;
+                @NavigationLeft.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationLeft;
+                @NavigationRight.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationRight;
+                @NavigationRight.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationRight;
+                @NavigationRight.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNavigationRight;
                 @ToggleFramedata.started -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleFramedata;
                 @ToggleFramedata.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleFramedata;
                 @ToggleFramedata.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleFramedata;
@@ -1769,6 +1843,12 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @NavigationDown.started += instance.OnNavigationDown;
                 @NavigationDown.performed += instance.OnNavigationDown;
                 @NavigationDown.canceled += instance.OnNavigationDown;
+                @NavigationLeft.started += instance.OnNavigationLeft;
+                @NavigationLeft.performed += instance.OnNavigationLeft;
+                @NavigationLeft.canceled += instance.OnNavigationLeft;
+                @NavigationRight.started += instance.OnNavigationRight;
+                @NavigationRight.performed += instance.OnNavigationRight;
+                @NavigationRight.canceled += instance.OnNavigationRight;
                 @ToggleFramedata.started += instance.OnToggleFramedata;
                 @ToggleFramedata.performed += instance.OnToggleFramedata;
                 @ToggleFramedata.canceled += instance.OnToggleFramedata;
@@ -1873,6 +1953,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         void OnRightPage(InputAction.CallbackContext context);
         void OnNavigationUp(InputAction.CallbackContext context);
         void OnNavigationDown(InputAction.CallbackContext context);
+        void OnNavigationLeft(InputAction.CallbackContext context);
+        void OnNavigationRight(InputAction.CallbackContext context);
         void OnToggleFramedata(InputAction.CallbackContext context);
     }
     public interface ITrainingActions

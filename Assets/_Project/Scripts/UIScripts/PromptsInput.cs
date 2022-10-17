@@ -14,7 +14,8 @@ public class PromptsInput : MonoBehaviour
     public UnityEvent OnToggleFramedata;
     public UnityEvent OnLeftPage;
     public UnityEvent OnRightPage;
-
+    public UnityEvent OnLeftNavigation;
+    public UnityEvent OnRightNavigation;
 
     void OnEnable()
     {

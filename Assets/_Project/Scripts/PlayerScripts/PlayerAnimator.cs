@@ -106,7 +106,9 @@ public class PlayerAnimator : DemonicsAnimator
 
     public void WallSplat()
     {
-        SetAnimation("WallSplat");
+        transform.localPosition = new Vector2(0, 1);
+        transform.localRotation = Quaternion.Euler(0, 0, -90);
+        SetAnimation("Wallsplat");
     }
 
     public void Throw()
@@ -181,6 +183,12 @@ public class PlayerAnimator : DemonicsAnimator
     public void WakeUp()
     {
         SetAnimation("WakeUp");
+    }
+
+    public void ResetPosition()
+    {
+        transform.localPosition = Vector2.zero;
+        transform.localRotation = Quaternion.identity;
     }
 
     public Sprite GetCurrentSprite()
