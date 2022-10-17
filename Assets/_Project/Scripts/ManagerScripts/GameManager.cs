@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     [Range(10, 300)]
     [SerializeField] private int _countdownTime = 99;
     [Header("Data")]
+    [SerializeField] private CinemachineTargetGroup _targetGroup = default;
     [SerializeField] private Transform[] _spawnPositions = default;
     [SerializeField] private IntroUI _introUI = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
@@ -155,6 +156,7 @@ public class GameManager : MonoBehaviour
         GameObject playerTwoObject = Instantiate(_playerLocal);
         playerTwoObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerTwo];
         InitializePlayers(playerOneObject, playerTwoObject);
+        Time.timeScale = GameManager.Instance.GameSpeed;
     }
 
 
@@ -190,10 +192,6 @@ public class GameManager : MonoBehaviour
         PlayerTwo.SetController();
         _playerOneAnimator = PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimator>();
         _playerTwoAnimator = PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimator>();
-        PlayerOne.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerOneUI, _trainingMenu);
-        PlayerTwo.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerTwoUI, _trainingMenu);
-        PlayerOne.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
-        PlayerTwo.transform.GetChild(1).GetComponent<PlayerAnimationEvents>().SetTrainingMenu(_trainingMenu);
         _playerOneAnimator.SetSpriteLibraryAsset(SceneSettings.ColorOne);
         if (SceneSettings.ColorTwo == SceneSettings.ColorOne && PlayerOne.PlayerStats.characterName == PlayerTwo.PlayerStats.characterName)
         {
@@ -207,6 +205,9 @@ public class GameManager : MonoBehaviour
             }
         }
         _playerTwoAnimator.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
+        PlayerOne.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerOneUI, _trainingMenu);
+        PlayerTwo.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerTwoUI, _trainingMenu);
+        _trainingMenu.ConfigurePlayers(PlayerOne, PlayerTwo);
         _playerOneController.IsPlayerOne = true;
         PlayerOne.SetPlayerUI(_playerOneUI);
         PlayerTwo.SetPlayerUI(_playerTwoUI);
@@ -371,10 +372,7 @@ public class GameManager : MonoBehaviour
             _winsImage.SetActive(false);
             _trainingPrompts.gameObject.SetActive(true);
             HasGameStarted = true;
-            if (!_isOnlineMode)
-            {
-                StartTrainingRound();
-            }
+            StartTrainingRound();
         }
         else
         {
@@ -477,6 +475,8 @@ public class GameManager : MonoBehaviour
         }
         _countdown = _countdownTime;
         _countdownText.text = Mathf.Round(_countdown).ToString();
+        _targetGroup.m_Targets[0].weight = 0.5f;
+        _targetGroup.m_Targets[1].weight = 0.5f;
         PlayerOne.ResetPlayer();
         PlayerTwo.ResetPlayer();
         PlayerOne.transform.position = _spawnPositions[0].position;
@@ -721,11 +721,13 @@ public class GameManager : MonoBehaviour
                     {
                         if (_playerOneWon)
                         {
+                            StartCoroutine(CameraCenterCoroutine(1));
                             PlayerOne.PlayerStateManager.TryToTauntState();
                             PlayerTwo.PlayerStateManager.TryToGiveUpState();
                         }
                         else if (_playerTwoWon)
                         {
+                            StartCoroutine(CameraCenterCoroutine(0));
                             PlayerOne.PlayerStateManager.TryToGiveUpState();
                             PlayerTwo.PlayerStateManager.TryToTauntState();
                         }
@@ -791,6 +793,19 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    IEnumerator CameraCenterCoroutine(int player)
+    {
+        yield return new WaitForSeconds(0.2f);
+        float waitTime = 0.5f;
+        float elapsedTime = 0;
+        while (elapsedTime < waitTime)
+        {
+            _targetGroup.m_Targets[player].weight = Mathf.Lerp(0.5f, 0, (elapsedTime / waitTime));
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
     }
 
@@ -1063,7 +1078,6 @@ public class GameManager : MonoBehaviour
     public void AddHitstop(IHitstop hitstop)
     {
         _hitstopList.Add(hitstop);
-
     }
 
     public void SuperFreeze()
@@ -1079,7 +1093,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    private int _hitstop;
+    public int _hitstop;
     public void HitStop(int hitstop)
     {
         if (hitstop > 0)

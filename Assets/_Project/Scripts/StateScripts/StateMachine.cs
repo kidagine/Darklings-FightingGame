@@ -13,11 +13,6 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-
-    }
-
     void FixedUpdate()
     {
         if (CurrentState != null)

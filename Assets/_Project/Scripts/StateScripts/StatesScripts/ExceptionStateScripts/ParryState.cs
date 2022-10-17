@@ -24,6 +24,8 @@ public class ParryState : State
     public override void Enter()
     {
         base.Enter();
+        _player.SetResultAttack(0, _player.playerStats.mParry);
+        _player.parryConnectsEvent?.Invoke();
         _audio.Sound("ParryStart").Play();
         _player.CheckFlip();
         _playerAnimator.Parry();

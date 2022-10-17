@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
 public class CharacterMenu : BaseMenu
@@ -21,14 +20,11 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private GameObject _iconsTwo = default;
     [SerializeField] private PlayerUIRender _assistOneUIRenderer = default;
     [SerializeField] private PlayerUIRender _assistTwoUIRenderer = default;
-    [SerializeField] private Animator _characterOneAnimator = default;
-    [SerializeField] private Animator _characterTwoAnimator = default;
     [SerializeField] private ChangeStageMenu _changeStageMenu = default;
+    [SerializeField] private AnimationSO _randomAnimation = default;
     [SerializeField] private Button _firstCharacterButton = default;
     [SerializeField] private PlayerUIRender _playerUIRenderOne = default;
     [SerializeField] private PlayerUIRender _playerUIRenderTwo = default;
-    [SerializeField] private SpriteLibrary _spriteLibraryOne = default;
-    [SerializeField] private SpriteLibrary _spriteLibraryTwo = default;
     [SerializeField] private TextMeshProUGUI _playerOneName = default;
     [SerializeField] private TextMeshProUGUI _playerTwoName = default;
     [SerializeField] private TextMeshProUGUI _hpTextOne = default;
@@ -41,6 +37,7 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private RebindMenu[] _rebindMenues = default;
     private PlayerStatsSO _playerStats;
     private EventSystem _currentEventSystem;
+    private Coroutine _tauntCoroutine;
     public bool FirstCharacterSelected { get; private set; }
 
 
@@ -49,7 +46,7 @@ public class CharacterMenu : BaseMenu
         _currentEventSystem = EventSystem.current;
     }
 
-    public void SetCharacterImage(RuntimeAnimatorController animatorController, PlayerStatsSO playerStats, bool isRandomizer)
+    public void SetCharacterImage(PlayerStatsSO playerStats, bool isRandomizer)
     {
         _playerStats = playerStats;
         if (!FirstCharacterSelected)
@@ -60,20 +57,20 @@ public class CharacterMenu : BaseMenu
                 _playerUIRenderOne.gameObject.SetActive(true);
                 _iconsOne.gameObject.SetActive(true);
                 _playerOneName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-                _spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
                 _playerUIRenderOne.PlayerStats = playerStats;
+                _playerUIRenderOne.SetAnimator(_playerStats._animation);
                 _hpTextOne.text = $"LV{_playerStats.defenseLevel}";
                 _arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
                 _speedTextOne.text = $"LV{_playerStats.speedLevel}";
             }
             else
             {
+                _playerUIRenderOne.SetAnimator(_randomAnimation);
                 _hpTextOne.text = "?";
                 _arcanaTextOne.text = "?";
                 _speedTextOne.text = "?";
                 _playerOneName.text = "Random";
             }
-            _characterOneAnimator.runtimeAnimatorController = animatorController;
         }
         else
         {
@@ -84,20 +81,20 @@ public class CharacterMenu : BaseMenu
                 _playerUIRenderTwo.gameObject.SetActive(true);
                 _iconsTwo.gameObject.SetActive(true);
                 _playerTwoName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-                _spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
                 _playerUIRenderTwo.PlayerStats = playerStats;
+                _playerUIRenderTwo.SetAnimator(_playerStats._animation);
                 _hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
                 _arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
                 _speedTextTwo.text = $"LV{_playerStats.speedLevel}";
             }
             else
             {
+                _playerUIRenderTwo.SetAnimator(_randomAnimation);
                 _hpTextTwo.text = "?";
                 _arcanaTextTwo.text = "?";
                 _speedTextTwo.text = "?";
                 _playerTwoName.text = "Random";
             }
-            _characterTwoAnimator.runtimeAnimatorController = animatorController;
         }
     }
 
@@ -116,9 +113,8 @@ public class CharacterMenu : BaseMenu
                 _playerStats = _playerStatsArray[randomPlayer];
                 string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
                 _playerOneName.text = characterName;
-                _spriteLibraryOne.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
                 _playerUIRenderOne.PlayerStats = _playerStats;
-                _characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
+                _playerUIRenderOne.SetAnimator(_playerStats._animation);
             }
             _hpTextOne.text = $"LV{_playerStats.defenseLevel}";
             _arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
@@ -135,9 +131,8 @@ public class CharacterMenu : BaseMenu
                 _playerStats = _playerStatsArray[randomPlayer];
                 string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
                 _playerOneName.text = characterName;
-                _spriteLibraryTwo.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
                 _playerUIRenderTwo.PlayerStats = _playerStats;
-                _characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
+                _playerUIRenderTwo.SetAnimator(_playerStats._animation);
             }
             _hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
             _arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
@@ -156,7 +151,11 @@ public class CharacterMenu : BaseMenu
         {
             _playerUIRenderTwo.Taunt();
         }
-        StartCoroutine(TauntEndCoroutine());
+        if (FirstCharacterSelected)
+        {
+            EventSystem.current.gameObject.SetActive(false);
+        }
+        _tauntCoroutine = StartCoroutine(TauntEndCoroutine());
     }
 
     IEnumerator TauntEndCoroutine()
@@ -247,6 +246,11 @@ public class CharacterMenu : BaseMenu
     {
         if (!SceneSettings.SceneSettingsDecide)
         {
+            Debug.Log("A");
+            if (_tauntCoroutine != null)
+            {
+                StopCoroutine(_tauntCoroutine);
+            }
             _iconsOne.gameObject.SetActive(false);
             _iconsTwo.gameObject.SetActive(false);
             _currentEventSystem.SetSelectedGameObject(null);

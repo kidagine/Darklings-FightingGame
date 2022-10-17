@@ -7,18 +7,6 @@ public class PlayerAnimationEvents : MonoBehaviour
     [SerializeField] private Player _player = default;
     [SerializeField] private PlayerMovement _playerMovement = default;
     [SerializeField] private Audio _audio = default;
-    private TrainingMenu _trainingMenu;
-
-
-    public void SetTrainingMenu(TrainingMenu trainingMenu)
-    {
-        _trainingMenu = trainingMenu;
-    }
-
-    public void UnlockMovement()
-    {
-        SetFramedata();
-    }
 
     public void UnlockMovementNoFramedata()
     {
@@ -53,11 +41,6 @@ public class PlayerAnimationEvents : MonoBehaviour
         }
     }
 
-    public void ResetTimeScale()
-    {
-        Time.timeScale = GameManager.Instance.GameSpeed;
-    }
-
     public void ZeroGravity()
     {
         _playerMovement.ZeroGravity();
@@ -81,19 +64,6 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void PlayerSoundAnimationEvent(string soundName)
     {
         _audio.Sound(soundName).Play();
-    }
-
-    public void SetFramedata()
-    {
-        if (_player.ResultAttack != null)
-        {
-            _trainingMenu.FramedataValue(_player.IsPlayerOne, _player.ResultAttack);
-        }
-    }
-
-    public void SetFramedataParry()
-    {
-        _trainingMenu.FramedataValue(_player.IsPlayerOne, _player.PlayerStats.mParry);
     }
 
     public void AddForce(int moveHorizontally)

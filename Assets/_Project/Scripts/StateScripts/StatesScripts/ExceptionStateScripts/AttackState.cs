@@ -133,23 +133,20 @@ public class AttackState : State
         }
         if (_player.CanSkipAttack && inputEnum != InputEnum.Throw)
         {
-            if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+            if (_playerMovement.IsInHitstop)
             {
-                if (_playerMovement.IsGrounded)
+                if (!_player.LockChain)
                 {
-                    _crouch = true;
+                    Attack(inputEnum, inputDirectionEnum);
+                    _player.hitstopEvent.AddListener(ChainAttack);
+                    _player.LockChain = true;
                 }
             }
             else
             {
-                _crouch = false;
+                Attack(inputEnum, inputDirectionEnum);
+                ChainAttack();
             }
-            if (_player.CurrentAttack.isAirAttack)
-            {
-                _air = true;
-            }
-            Initialize(inputEnum, _crouch, _air);
-            _stateMachine.ChangeState(this);
             return true;
         }
         else
@@ -158,36 +155,83 @@ public class AttackState : State
         }
     }
 
+    private InputEnum _inputEnumCurrent;
+
+    private void Attack(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
+    {
+        _inputEnumCurrent = inputEnum;
+        if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+        {
+            if (_playerMovement.IsGrounded)
+            {
+                _crouch = true;
+            }
+        }
+        else
+        {
+            _crouch = false;
+        }
+        if (_player.CurrentAttack.isAirAttack)
+        {
+            _air = true;
+        }
+    }
+
+    private void ChainAttack()
+    {
+        Initialize(_inputEnumCurrent, _crouch, _air);
+        _stateMachine.ChangeState(this);
+        _player.LockChain = false;
+    }
+
     public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
     {
         if (_player.ArcanaGauge >= (Fix64)1 && _player.CanSkipAttack)
         {
-            if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+            if (_playerMovement.IsInHitstop)
             {
-                if (_playerMovement.IsGrounded)
+                if (!_player.LockChain)
                 {
-                    _crouch = true;
+                    Arcana(inputDirectionEnum);
+                    _player.hitstopEvent.AddListener(ChainArcana);
+                    _player.LockChain = true;
                 }
             }
             else
             {
-                _crouch = false;
+                Arcana(inputDirectionEnum);
+                ChainArcana();
             }
-            if (_air && _player.CanAirArcana)
-            {
-                _player.CanAirArcana = false;
-                _arcanaState.Initialize(_crouch, _air);
-                _stateMachine.ChangeState(_arcanaState);
-                return true;
-            }
-            else
-            {
-                _arcanaState.Initialize(_crouch, _air);
-                _stateMachine.ChangeState(_arcanaState);
-                return true;
-            }
+            return true;
         }
         return false;
+    }
+
+
+    private void Arcana(InputDirectionEnum inputDirectionEnum)
+    {
+        if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
+        {
+            if (_playerMovement.IsGrounded)
+            {
+                _crouch = true;
+            }
+        }
+        else
+        {
+            _crouch = false;
+        }
+        if (_air && _player.CanAirArcana)
+        {
+            _player.CanAirArcana = false;
+        }
+    }
+
+    private void ChainArcana()
+    {
+        _arcanaState.Initialize(_crouch, _air);
+        _stateMachine.ChangeState(_arcanaState);
+        _player.LockChain = false;
     }
 
     public override bool ToHurtState(AttackSO attack)

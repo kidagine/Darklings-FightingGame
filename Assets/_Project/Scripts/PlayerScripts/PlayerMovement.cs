@@ -125,7 +125,6 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void AddForce(int moveHorizontally)
     {
-        _player.ExitHitstop();
         float jumpForce = _player.playerStats.jumpForce - 3.5f;
         int direction = 0;
         if (moveHorizontally == 1)
@@ -152,7 +151,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     public void Knockback(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
     {
-        _player.knockbackEvent.AddListener(() =>
+        _player.hitstopEvent.AddListener(() =>
         {
             _knockbackCoroutine = StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
         });

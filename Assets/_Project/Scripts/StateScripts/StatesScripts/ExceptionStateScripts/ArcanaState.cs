@@ -38,7 +38,6 @@ public class ArcanaState : State
         {
             _playerUI.DisplayNotification(NotificationTypeEnum.Reversal);
         }
-        _playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
         _player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
         _player.ArcanaGauge -= (Fix64)1;
@@ -47,6 +46,7 @@ public class ArcanaState : State
         _playerMovement.TravelDistance(new Vector2(
                 _player.CurrentAttack.travelDistance * transform.root.localScale.x, 0));
         _playerAnimator.Arcana(_player.CurrentAttack.name);
+        _playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
     }
 
     public override void UpdateLogic()

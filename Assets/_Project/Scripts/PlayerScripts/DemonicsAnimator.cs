@@ -13,14 +13,16 @@ public class DemonicsAnimator : MonoBehaviour
     protected bool _frozen;
     [HideInInspector] public UnityEvent OnCurrentAnimationFinished;
 
-    protected virtual void Awake()
-    {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-    }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         PlayAnimation();
+    }
+
+    public void SetAnimator(AnimationSO animation)
+    {
+        _animation = animation;
+        SetAnimation("Idle");
     }
 
     public void SetAnimation(string name)
