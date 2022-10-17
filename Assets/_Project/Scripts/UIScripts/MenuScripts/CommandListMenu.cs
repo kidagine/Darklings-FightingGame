@@ -20,6 +20,7 @@ public class CommandListMenu : BaseMenu
     [SerializeField] private Button _characterMovesButton = default;
     [SerializeField] private Button _commonMovesButton = default;
     [SerializeField] private GameObject[] _slides = default;
+    [SerializeField] private GameObject[] _subSlides = default;
     [SerializeField] private CommandFramedata _commandFramedata = default;
     [SerializeField] private CommandListButton[] _commandListButtons = default;
     [SerializeField] private GameObject _toggleFramedataPrompt = default;
@@ -42,6 +43,20 @@ public class CommandListMenu : BaseMenu
     {
         _playerOne = GameManager.Instance.PlayerOne;
         _playerTwo = GameManager.Instance.PlayerTwo;
+    }
+
+    public void NextSubPage()
+    {
+        if (_subSlides[0].activeSelf)
+        {
+            _subSlides[0].SetActive(false);
+            _subSlides[1].SetActive(true);
+        }
+        else
+        {
+            _subSlides[0].SetActive(true);
+            _subSlides[1].SetActive(false);
+        }
     }
 
     public void NextPage()
