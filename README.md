@@ -3,10 +3,12 @@
 <b>PLAY AT:</b> [Darklings GameJolt](https://gamejolt.com/games/darklings/640842)
 
 Darklings is a free to play 2D fighting game with the intention of being an accessible fighter, that will keep getting updated periodically.
+<div align="center">
 
-[![GitHub](https://img.shields.io/badge/Unity_Version-2021.11-blue)](https://unity3d.com/get-unity/download/archive)
-[![GitHub](https://img.shields.io/badge/Game_Version-0.2.7-blue)](https://gamejolt.com/games/darklings/640842)
-
+[![GitHub](https://img.shields.io/badge/unity_version-2021.11-blue)](https://unity3d.com/get-unity/download/archive)
+[![GitHub](https://img.shields.io/badge/game_version-0.2.7-brightgreen)](https://gamejolt.com/games/darklings/640842)
+[![GitHub](https://img.shields.io/badge/views-1k-orange)](https://gamejolt.com/games/darklings/640842)
+</div>
 
 <p align="center">
   <img src="https://media3.giphy.com/media/JGw9y4Pn1490O3VkxT/giphy.gif?cid=790b7611da446f3f7c5f25b646b16cccdb4f401cdea30cc5&rid=giphy.gif&ct=s" alt="Darkling" />
