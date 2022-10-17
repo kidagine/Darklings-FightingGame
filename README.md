@@ -1,9 +1,9 @@
-# DARKLINGS - Fighting Game
+# DARKLINGS - Fighting Game [![GitHub](https://img.shields.io/badge/ABYSSALS-blueviolet.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAANBJREFUOI2lk8ENwyAMRR+fjhJxyCQMgDJ6tgF6iSNDkkptLSERm/9sjBNwJgmA1hqSuo+11oKPnxovLqUAdEm91opfB7CXUs5EQ+Zt25DUzSQNy/uPs/fiJ5H3eYjdq9daiTGyrmsA2Pe911oBbv0xRoBgVfhMl2qeYodWnggwdH+ybhVZY18+aiXfffu9S8YAMPJ8yANm//CgOecQYxxAJjZ/zjlcLvZvEwfYsiyXBE8xSZ8HKaVESolPg3SSfh5lX45BvGAGzuIwQ+C73/kNL939fYMqg7wAAAAASUVORK5CYII=)](https://gamejolt.com/games/darklings/640842)
 <b>PLAY AT:</b> https://gamejolt.com/games/darklings/640842
 
 Darklings is a free to play 2D fighting game with the intention of being an accessible fighter, that will keep getting updated periodically.
 
-[![GitHub](https://img.shields.io/badge/unity--version-2021.6-blue)](https://img.shields.io/badge/unity--version-2021.6-blue)
+[![GitHub](https://img.shields.io/badge/unity--version-2021.11-blue)](https://img.shields.io/badge/unity--version-2021.11-blue)
 [![GitHub](https://img.shields.io/badge/game--version-0.2.7-blue)](https://img.shields.io/badge/game--version-0.2.7-blue)
 
 
