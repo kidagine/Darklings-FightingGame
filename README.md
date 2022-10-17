@@ -1,4 +1,4 @@
-# DARKLINGS-FightingGame
+# DARKLINGS - Fighting Game
 <b>PLAY AT:</b> https://gamejolt.com/games/darklings/640842
 
 Darklings is a free to play 2D fighting game with the intention of being an accessible fighter, that will keep getting updated periodically.
