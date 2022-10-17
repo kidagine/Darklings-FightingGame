@@ -41,11 +41,6 @@ public class PlayerAnimationEvents : MonoBehaviour
         }
     }
 
-    public void ResetTimeScale()
-    {
-        Time.timeScale = GameManager.Instance.GameSpeed;
-    }
-
     public void ZeroGravity()
     {
         _playerMovement.ZeroGravity();

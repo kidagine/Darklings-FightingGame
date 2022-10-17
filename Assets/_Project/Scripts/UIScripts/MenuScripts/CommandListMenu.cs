@@ -2,16 +2,23 @@ using Demonics.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class CommandListMenu : BaseMenu
 {
-    [SerializeField] private TextMeshProUGUI _characterText = default;
+    [SerializeField] private TextMeshProUGUI[] _characterText = default;
     [SerializeField] private TextMeshProUGUI _descriptionText = default;
     [SerializeField] private VideoPlayer _showcaseVideo = default;
     [SerializeField] private PauseMenu _pauseMenu = default;
     [SerializeField] private PauseMenu _pauseTrainingMenu = default;
-    [SerializeField] private RectTransform _content = default;
+    [SerializeField] private RectTransform _characterContent = default;
+    [SerializeField] private RectTransform _commonContent = default;
+    [SerializeField] private GameObject _characterMovesPage = default;
+    [SerializeField] private GameObject _commonMovesPage = default;
+    [SerializeField] private Button _characterMovesButton = default;
+    [SerializeField] private Button _commonMovesButton = default;
+    [SerializeField] private GameObject[] _slides = default;
     [SerializeField] private CommandFramedata _commandFramedata = default;
     [SerializeField] private CommandListButton[] _commandListButtons = default;
     [SerializeField] private GameObject _toggleFramedataPrompt = default;
@@ -20,11 +27,13 @@ public class CommandListMenu : BaseMenu
     [SerializeField] private GameObject _projectileImage = default;
     [SerializeField] private GameObject _videoMenu = default;
     [SerializeField] private GameObject _framedataMenu = default;
-
+    private int _currentPage;
     private readonly string _baseUrl = "https://kidagine.github.io/Darklings-CommandListVideos/";
     private Player _playerOne;
     private Player _playerTwo;
     private Player _currentlyDisplayedPlayer;
+    private Player _otherDisplayedPlayer;
+
 
     public PauseMenu CurrentPauseMenu { get; private set; }
 
@@ -34,8 +43,85 @@ public class CommandListMenu : BaseMenu
         _playerTwo = GameManager.Instance.PlayerTwo;
     }
 
+    public void NextPage()
+    {
+        _currentPage++;
+        if (_currentPage > _slides.Length - 1)
+        {
+            _currentPage = 0;
+        }
+        if (_currentPage == 0)
+        {
+            SetCommandListData(_playerOne.playerStats);
+        }
+        else
+        {
+            SetCommandListData(_playerTwo.playerStats);
+        }
+        EventSystem.current.SetSelectedGameObject(null);
+        SetPageInfo();
+    }
+
+    public void PreviousPage()
+    {
+        _currentPage--;
+        if (_currentPage < 0)
+        {
+            _currentPage = _slides.Length - 1;
+        }
+        if (_currentPage == 0)
+        {
+            SetCommandListData(_playerOne.playerStats);
+        }
+        else
+        {
+            SetCommandListData(_playerTwo.playerStats);
+        }
+        SetPageInfo();
+    }
+
+    private void SetPageInfo()
+    {
+        for (int i = 0; i < _slides.Length; i++)
+        {
+            _slides[i].SetActive(false);
+        }
+        if (_currentPage == 0)
+        {
+            _characterContent.anchoredPosition = Vector2.zero;
+            _characterMovesButton.Select();
+            _characterMovesPage.SetActive(true);
+            _commonMovesPage.SetActive(false);
+            _characterText[0].text = _playerOne.PlayerStats.characterName.ToString();
+            _characterText[1].text = _playerTwo.PlayerStats.characterName.ToString();
+            _characterText[2].text = "Common Moves";
+        }
+        else if (_currentPage == 1)
+        {
+            _characterContent.anchoredPosition = Vector2.zero;
+            _characterMovesButton.Select();
+            _characterMovesPage.SetActive(true);
+            _commonMovesPage.SetActive(false);
+            _characterText[0].text = _playerTwo.PlayerStats.characterName.ToString();
+            _characterText[1].text = "Common Moves";
+            _characterText[2].text = _playerOne.PlayerStats.characterName.ToString();
+        }
+        else
+        {
+            _commonContent.anchoredPosition = Vector2.zero;
+            _commonMovesButton.Select();
+            _characterMovesPage.SetActive(false);
+            _commonMovesPage.SetActive(true);
+            _characterText[0].text = "Common Moves";
+            _characterText[1].text = _playerOne.PlayerStats.characterName.ToString();
+            _characterText[2].text = _playerTwo.PlayerStats.characterName.ToString();
+        }
+        _slides[_currentPage].SetActive(true);
+    }
+
     public void ChangePage()
     {
+        _currentPage++;
         if (_playerOne == _currentlyDisplayedPlayer)
         {
             _currentlyDisplayedPlayer = _playerTwo;
@@ -45,14 +131,10 @@ public class CommandListMenu : BaseMenu
             _currentlyDisplayedPlayer = _playerOne;
         }
         SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
-        EventSystem.current.SetSelectedGameObject(null);
-        _startingOption.Select();
-        _content.anchoredPosition = Vector2.zero;
     }
 
     private void SetCommandListData(PlayerStatsSO playerStats)
     {
-        _characterText.text = playerStats.characterName.ToString();
         _commandListButtons[0].SetData(playerStats.m5Arcana);
         _commandListButtons[1].SetData(playerStats.m2Arcana);
         if (playerStats.jArcana != null)
@@ -62,9 +144,6 @@ public class CommandListMenu : BaseMenu
         }
         else
         {
-            _commandListButtons[0].GetComponent<BaseButton>()._scrollUpAmount = 1900;
-            _commandListButtons[10].GetComponent<BaseButton>()._scrollDownAmount = -1900;
-            _commandListButtons[1].GetComponent<BaseButton>()._scrollDownAmount = 300;
             _commandListButtons[2].gameObject.SetActive(false);
         }
         _commandListButtons[3].SetData(playerStats.m5L);
@@ -75,7 +154,11 @@ public class CommandListMenu : BaseMenu
         _commandListButtons[8].SetData(playerStats.jM);
         _commandListButtons[9].SetData(playerStats.m5H);
         _commandListButtons[10].SetData(playerStats.m2H);
-        _commandListButtons[11].SetData(playerStats.jL);
+        // _commandListButtons[11].SetData(playerStats.jH);
+        _commandListButtons[12].SetData(playerStats.mThrow);
+        _commandListButtons[13].SetData(playerStats.mParry);
+        _commandListButtons[14].SetData(playerStats.jL);
+        SetPageInfo();
     }
 
     public void SetCommandListShowcase(ArcanaSO command)
@@ -141,7 +224,8 @@ public class CommandListMenu : BaseMenu
 
     private void OnEnable()
     {
-        _content.anchoredPosition = Vector2.zero;
+        _characterContent.anchoredPosition = Vector2.zero;
+        _commonContent.anchoredPosition = Vector2.zero;
         if (GameManager.Instance.IsTrainingMode)
         {
             CurrentPauseMenu = _pauseTrainingMenu;
@@ -150,13 +234,15 @@ public class CommandListMenu : BaseMenu
         {
             CurrentPauseMenu = _pauseMenu;
         }
-        if (_pauseMenu.PlayerOnePaused)
+        if (CurrentPauseMenu.PlayerOnePaused)
         {
             _currentlyDisplayedPlayer = _playerOne;
+            _otherDisplayedPlayer = _playerTwo;
         }
         else
         {
             _currentlyDisplayedPlayer = _playerTwo;
+            _otherDisplayedPlayer = _playerOne;
         }
         SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
     }

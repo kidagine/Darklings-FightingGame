@@ -156,6 +156,7 @@ public class GameManager : MonoBehaviour
         GameObject playerTwoObject = Instantiate(_playerLocal);
         playerTwoObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerTwo];
         InitializePlayers(playerOneObject, playerTwoObject);
+        Time.timeScale = GameManager.Instance.GameSpeed;
     }
 
 

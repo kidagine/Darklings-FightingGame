@@ -62,6 +62,7 @@ public class Assist : DemonicsAnimator, IHitboxResponder
                 _hitEffect.SetActive(false);
             }
         }
+        gameObject.SetActive(false);
     }
 
     public void Projectile()
