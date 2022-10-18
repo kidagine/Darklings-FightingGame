@@ -14,10 +14,13 @@ public class CommandListMenu : BaseMenu
     [SerializeField] private PauseMenu _pauseMenu = default;
     [SerializeField] private PauseMenu _pauseTrainingMenu = default;
     [SerializeField] private RectTransform _characterContent = default;
+    [SerializeField] private RectTransform _normalsContent = default;
     [SerializeField] private RectTransform _commonContent = default;
+    [SerializeField] private GameObject _demonLimitPage = default;
     [SerializeField] private GameObject _characterMovesPage = default;
     [SerializeField] private GameObject _commonMovesPage = default;
     [SerializeField] private Button _characterMovesButton = default;
+    [SerializeField] private Button _normalMovesButton = default;
     [SerializeField] private Button _commonMovesButton = default;
     [SerializeField] private GameObject[] _slides = default;
     [SerializeField] private GameObject[] _subSlides = default;
@@ -47,21 +50,33 @@ public class CommandListMenu : BaseMenu
 
     public void NextSubPage()
     {
-        if (_subSlides[0].activeSelf)
+        if (_characterMovesPage.activeSelf)
         {
-            _subSlides[0].SetActive(false);
-            _subSlides[1].SetActive(true);
-        }
-        else
-        {
-            _subSlides[0].SetActive(true);
-            _subSlides[1].SetActive(false);
+            EventSystem.current.SetSelectedGameObject(null);
+            if (_subSlides[0].activeSelf)
+            {
+                _subSlides[0].SetActive(false);
+                _subSlides[1].SetActive(true);
+                _characterContent.anchoredPosition = Vector2.zero;
+                _characterMovesButton.Select();
+            }
+            else
+            {
+                _subSlides[0].SetActive(true);
+                _subSlides[1].SetActive(false);
+                _normalsContent.anchoredPosition = Vector2.zero;
+                _normalMovesButton.Select();
+            }
         }
     }
 
     public void NextPage()
     {
         _currentPage++;
+        if (AreBothCharactersSame())
+        {
+            _currentPage++;
+        }
         if (_currentPage > _slides.Length - 1)
         {
             _currentPage = 0;
@@ -81,6 +96,10 @@ public class CommandListMenu : BaseMenu
     public void PreviousPage()
     {
         _currentPage--;
+        if (AreBothCharactersSame())
+        {
+            _currentPage--;
+        }
         if (_currentPage < 0)
         {
             _currentPage = _slides.Length - 1;
@@ -93,11 +112,22 @@ public class CommandListMenu : BaseMenu
         {
             SetCommandListData(_playerTwo.playerStats);
         }
+        EventSystem.current.SetSelectedGameObject(null);
         SetPageInfo();
+    }
+
+    private bool AreBothCharactersSame()
+    {
+        if (_playerOne.playerStats.characterIndex == _playerTwo.playerStats.characterIndex)
+        {
+            return true;
+        }
+        return false;
     }
 
     private void SetPageInfo()
     {
+        _demonLimitPage.SetActive(false);
         for (int i = 0; i < _slides.Length; i++)
         {
             _slides[i].SetActive(false);
@@ -106,16 +136,23 @@ public class CommandListMenu : BaseMenu
         string playerTwo = Regex.Replace(_playerTwo.PlayerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
         if (_currentPage == 0)
         {
+            _subSlides[0].SetActive(false);
+            _subSlides[1].SetActive(true);
             _characterContent.anchoredPosition = Vector2.zero;
             _characterMovesButton.Select();
             _characterMovesPage.SetActive(true);
             _commonMovesPage.SetActive(false);
             _characterText[0].text = playerOne;
-            _characterText[1].text = playerTwo;
+            if (AreBothCharactersSame())
+            {
+                _characterText[1].text = "Common Moves";
+            }
             _characterText[2].text = "Common Moves";
         }
         else if (_currentPage == 1)
         {
+            _subSlides[0].SetActive(false);
+            _subSlides[1].SetActive(true);
             _characterContent.anchoredPosition = Vector2.zero;
             _characterMovesButton.Select();
             _characterMovesPage.SetActive(true);
@@ -188,8 +225,7 @@ public class CommandListMenu : BaseMenu
 #if UNITY_WEBGL
         _showcaseVideo.url = _baseUrl + command.moveVideo.name + ".mp4";
 #endif
-        _showcaseVideo.Stop();
-        _showcaseVideo.Play();
+
         _reversalImage.SetActive(false);
         _knockdownImage.SetActive(false);
         _projectileImage.SetActive(false);
@@ -207,31 +243,51 @@ public class CommandListMenu : BaseMenu
         }
         _commandFramedata.SetFramedata(command);
         _toggleFramedataPrompt.SetActive(true);
+        if (!_toggleFramedata)
+        {
+            _videoMenu.SetActive(true);
+            _framedataMenu.SetActive(false);
+        }
+        _showcaseVideo.Stop();
+        _showcaseVideo.Play();
     }
 
     public void SetCommandListShowcase(AttackSO command)
     {
+        _demonLimitPage.SetActive(false);
         _videoMenu.SetActive(false);
         _framedataMenu.SetActive(true);
         _commandFramedata.SetFramedata(command);
         _toggleFramedataPrompt.SetActive(false);
     }
 
+    public void SetDemonLimitShowcase()
+    {
+        _demonLimitPage.SetActive(true);
+        _videoMenu.SetActive(false);
+        _framedataMenu.SetActive(false);
+    }
+    bool _toggleFramedata;
     public void ToggleFramedata()
     {
         if (_toggleFramedataPrompt.activeSelf)
-            if (_videoMenu.activeSelf)
+        {
+            if (!_toggleFramedata)
             {
+                _demonLimitPage.SetActive(false);
                 _videoMenu.SetActive(false);
                 _framedataMenu.SetActive(true);
             }
             else
             {
+                _demonLimitPage.SetActive(false);
                 _videoMenu.SetActive(true);
                 _framedataMenu.SetActive(false);
                 _showcaseVideo.Stop();
                 _showcaseVideo.Play();
             }
+            _toggleFramedata = !_toggleFramedata;
+        }
     }
 
     public void Back()
@@ -251,6 +307,10 @@ public class CommandListMenu : BaseMenu
         else
         {
             CurrentPauseMenu = _pauseMenu;
+        }
+        if (AreBothCharactersSame())
+        {
+            _slides[1].transform.parent.gameObject.SetActive(false);
         }
         if (CurrentPauseMenu.PlayerOnePaused)
         {
