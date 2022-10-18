@@ -41,7 +41,7 @@ public class PlayerAnimator : DemonicsAnimator
         if (GetEvent().throwEnd)
         {
             _audio.Sound("Impact6").Play();
-            CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake.intensity, _animation.GetGroup(_group).cameraShake.timer);
+            CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
             _player.OtherPlayerStateManager.TryToKnockdownState();
         }
         _player.Parrying = GetEvent().parry;
@@ -62,6 +62,30 @@ public class PlayerAnimator : DemonicsAnimator
         {
             _inputBuffer.CheckInputBuffer();
         }
+    }
+
+    public bool InRecovery()
+    {
+        for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
+        {
+            if (i < _cel)
+            {
+                if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes.Count > 0)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public bool InActive()
+    {
+        if (GetHitboxes().Length > 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void Walk()
@@ -194,6 +218,16 @@ public class PlayerAnimator : DemonicsAnimator
     public Sprite GetCurrentSprite()
     {
         return _spriteRenderer.sprite;
+    }
+
+    public void SpriteSuperArmorEffect()
+    {
+        _spriteRenderer.color = Color.red;
+    }
+
+    public void SpriteNormalEffect()
+    {
+        _spriteRenderer.color = Color.white;
     }
 
     public int SetSpriteLibraryAsset(int skinNumber)

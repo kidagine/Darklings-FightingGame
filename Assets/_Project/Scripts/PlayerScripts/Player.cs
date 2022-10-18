@@ -412,6 +412,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         _playerMovement.ExitHitstop();
         _playerAnimator.Resume();
+        _playerAnimator.SpriteNormalEffect();
         hitstopEvent?.Invoke();
         hitstopEvent.RemoveAllListeners();
     }
@@ -419,6 +420,24 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool IsInHitstop()
     {
         return _playerMovement.IsInHitstop;
+    }
+
+    public void HurtOnSuperArmor(AttackSO attack)
+    {
+        Health -= CalculateDamage(attack);
+        _playerUI.SetHealth(Health);
+        _playerUI.Damaged();
+        _playerAnimator.SpriteSuperArmorEffect();
+        GameManager.Instance.HitStop(attack.hitstop);
+    }
+
+    public bool CanTakeSuperArmorHit(AttackSO attack)
+    {
+        if (CurrentAttack.hasSuperArmor && !_playerAnimator.InRecovery() && !CanSkipAttack)
+        {
+            return true;
+        }
+        return false;
     }
 
     private bool CanBlock(AttackSO attack)

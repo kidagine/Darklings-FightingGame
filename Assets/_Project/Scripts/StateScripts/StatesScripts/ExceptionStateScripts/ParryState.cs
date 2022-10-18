@@ -10,6 +10,7 @@ public class ParryState : State
     private GrabbedState _grabbedState;
     private BlockState _blockState;
     private readonly int _parryKnockback = 2;
+    private readonly int _hitstopOnParry = 12;
     private bool _parried;
 
     private void Awake()
@@ -74,7 +75,7 @@ public class ParryState : State
             _player.ArcanaGain((Fix64)0.1f);
         }
         _parried = true;
-        GameManager.Instance.HitStop(8);
+        GameManager.Instance.HitStop(_hitstopOnParry);
         GameObject effect = Instantiate(_parryEffect);
         effect.transform.localPosition = attack.hurtEffectPosition;
         if (!attack.isProjectile)

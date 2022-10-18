@@ -236,6 +236,12 @@ public class AttackState : State
 
     public override bool ToHurtState(AttackSO attack)
     {
+        if (_player.CanTakeSuperArmorHit(attack))
+        {
+            _audio.Sound(attack.impactSound).Play();
+            _player.HurtOnSuperArmor(attack);
+            return false;
+        }
         _player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
         if (_playerMovement.IsGrounded)
         {
@@ -302,6 +308,12 @@ public class AttackState : State
 
     public override bool ToAirborneHurtState(AttackSO attack)
     {
+        if (_player.CanTakeSuperArmorHit(attack))
+        {
+            _audio.Sound(attack.impactSound).Play();
+            _player.HurtOnSuperArmor(attack);
+            return false;
+        }
         _airborneHurtState.Initialize(attack);
         _stateMachine.ChangeState(_airborneHurtState);
         return true;
