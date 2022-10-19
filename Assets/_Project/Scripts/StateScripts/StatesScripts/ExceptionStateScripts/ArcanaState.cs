@@ -33,6 +33,7 @@ public class ArcanaState : State
     public override void Enter()
     {
         base.Enter();
+        _player.SetSpriteOrderPriority();
         _playerMovement.StopKnockback();
         if (_playerComboSystem.GetArcana(_crouch, _air).reversal)
         {
