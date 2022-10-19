@@ -193,21 +193,28 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
+    public void HealthGain(int health)
+    {
+        if (playerStats.maxHealth > Health && GameManager.Instance.HasGameStarted)
+        {
+            Health += health;
+            if (Health > playerStats.maxHealth)
+            {
+                Health = playerStats.maxHealth;
+            }
+            _playerUI.SetHealth(Health);
+        }
+    }
+
     public void CheckFlip()
     {
-        if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && _keepFlip.localScale.x != 1.0f)
+        if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner)
         {
-            if (!OtherPlayerMovement.IsInCorner)
-            {
-                Flip(1);
-            }
+            Flip(1);
         }
-        else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner && _keepFlip.localScale.x != -1.0f)
+        else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner)
         {
-            if (!OtherPlayerMovement.IsInCorner)
-            {
-                Flip(-1);
-            }
+            Flip(-1);
         }
     }
 

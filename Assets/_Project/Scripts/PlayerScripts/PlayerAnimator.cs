@@ -233,13 +233,13 @@ public class PlayerAnimator : DemonicsAnimator
     public int SetSpriteLibraryAsset(int skinNumber)
     {
         _animation = _player.playerStats._animation;
-        if (skinNumber > PlayerStats.spriteLibraryAssets.Length - 1)
+        if (skinNumber > _animation.spriteAtlas.Length - 1)
         {
             _skin = 0;
         }
         else if (skinNumber < 0)
         {
-            skinNumber = PlayerStats.spriteLibraryAssets.Length - 1;
+            skinNumber = _animation.spriteAtlas.Length - 1;
         }
         _skin = skinNumber;
         return skinNumber;

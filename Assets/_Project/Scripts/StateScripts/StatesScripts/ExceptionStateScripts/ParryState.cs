@@ -68,11 +68,11 @@ public class ParryState : State
         _audio.Sound("Parry").Play();
         if (attack.isArcana)
         {
-            _player.ArcanaGain((Fix64)0.5f);
+            _player.HealthGain(200);
         }
         else
         {
-            _player.ArcanaGain((Fix64)0.1f);
+            _player.HealthGain(100);
         }
         _parried = true;
         GameManager.Instance.HitStop(_hitstopOnParry);

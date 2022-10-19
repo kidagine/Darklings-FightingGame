@@ -7,8 +7,6 @@ public class PlayerStatsSO : ScriptableObject
     [Header("Main")]
     public int characterIndex;
     public Sprite[] portraits;
-    public SpriteLibraryAsset[] spriteLibraryAssets;
-    public RuntimeAnimatorController runtimeAnimatorController;
     public AnimationSO _animation;
     public DialogueSO _dialogue;
     public CharacterTypeEnum characterName;

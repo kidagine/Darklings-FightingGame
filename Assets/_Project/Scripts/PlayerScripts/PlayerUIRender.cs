@@ -22,19 +22,15 @@ public class PlayerUIRender : DemonicsAnimator
         SetAnimation("Taunt");
     }
 
-    public void SetAnimationController()
-    {
-    }
-
     public int SetSpriteLibraryAsset(int skinNumber)
     {
-        if (skinNumber > PlayerStats.spriteLibraryAssets.Length - 1)
+        if (skinNumber > _animation.spriteAtlas.Length - 1)
         {
             skinNumber = 0;
         }
         else if (skinNumber < 0)
         {
-            skinNumber = PlayerStats.spriteLibraryAssets.Length - 1;
+            skinNumber = _animation.spriteAtlas.Length - 1;
         }
         _skin = skinNumber;
         return skinNumber;
