@@ -29,7 +29,6 @@ public class GrabbedState : State
     {
         base.Enter();
         _playerAnimator.Hurt();
-        _playerAnimator.SetSpriteOrder(-1);
         _player.SetPushboxTrigger(true);
         _playerMovement.SetRigidbodyKinematic(true);
         _player.OtherPlayer.SetToGrabPoint(_player);
@@ -94,7 +93,6 @@ public class GrabbedState : State
         _player.transform.rotation = Quaternion.identity;
         _playerMovement.SetRigidbodyKinematic(false);
         _player.SetPushboxTrigger(false);
-        _playerAnimator.SetSpriteOrder(0);
         _playerUI.UpdateHealthDamaged();
         _player.transform.SetParent(null);
     }

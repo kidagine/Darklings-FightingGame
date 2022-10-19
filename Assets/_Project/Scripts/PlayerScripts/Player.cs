@@ -409,6 +409,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return _playerStateManager.TryToHurtState(attack);
     }
 
+    public void SetSpriteOrderPriority()
+    {
+        _playerAnimator.SetSpriteOrder(1);
+        OtherPlayer._playerAnimator.SetSpriteOrder(0);
+    }
+
     public void EnterHitstop()
     {
         _playerMovement.EnterHitstop();
