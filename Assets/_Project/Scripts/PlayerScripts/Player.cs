@@ -52,7 +52,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool BlockingMiddair { get; set; }
     public bool Parrying { get; set; }
     public bool CanSkipAttack { get; set; }
-    public bool Invinsible { get; set; }
+    public bool Invincible { get; set; }
+    public bool Invisible { get; set; }
     public bool LockChain { get; set; }
     void Awake()
     {
@@ -391,9 +392,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void SetInvinsible(bool state)
     {
+        Invisible = state;
+        _playerAnimator.SetInvinsible(state);
         SetHurtbox(!state);
         SetPushboxTrigger(state);
-        _playerAnimator.SetInvinsible(state);
     }
 
     public bool TakeDamage(AttackSO attack)
@@ -403,7 +405,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             return _playerStateManager.TryToGrabbedState();
         }
-        if (Invinsible)
+        if (Invincible)
         {
             return false;
         }

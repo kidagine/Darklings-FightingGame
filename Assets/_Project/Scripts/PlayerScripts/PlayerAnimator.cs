@@ -51,7 +51,7 @@ public class PlayerAnimator : DemonicsAnimator
             _player.OtherPlayerStateManager.TryToKnockdownState();
         }
         _player.Parrying = GetEvent().parry;
-        _player.Invinsible = GetEvent().invisibile;
+        _player.Invincible = GetEvent().invisibile;
     }
 
     protected override void CheckAnimationBoxes()
