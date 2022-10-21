@@ -4,6 +4,7 @@ using UnityEngine;
 public class KnockbackState : State
 {
     [SerializeField] private GameObject _groundedPrefab = default;
+    [SerializeField] private CameraShakerSO _cameraShaker = default;
     private KnockdownState _knockdownState;
     private Coroutine _canCheckGroundCoroutine;
     private bool _canCheckGround;
@@ -22,7 +23,7 @@ public class KnockbackState : State
         base.Enter();
         _playerMovement.KnockbackNow(new Vector2(
             _player.OtherPlayer.transform.localScale.x, _knockbackDirectionY), new Vector2(_knockbackForce, _knockbackForce), _knockbackDuration);
-        CameraShake.Instance.Shake(1, 1);
+        CameraShake.Instance.Shake(_cameraShaker);
         _canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());
     }
 

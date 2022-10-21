@@ -147,6 +147,15 @@ public class PlayerController : BaseController
         }
     }
 
+    public void RedFrenzy(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            _playerStateManager.TryToRedFrenzyState();
+            _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+        }
+    }
+
     public void DashForward(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
@@ -281,6 +290,22 @@ public class PlayerController : BaseController
         if (callbackContext.performed)
         {
             CurrentPrompts?.OnRightPage?.Invoke();
+        }
+    }
+
+    public void NavigationRight(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnRightNavigation?.Invoke();
+        }
+    }
+
+    public void NavigationLeft(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnLeftNavigation?.Invoke();
         }
     }
 }

@@ -5,7 +5,6 @@ public class WallSplatState : State
 {
     [SerializeField] private GameObject _wallSplatPrefab = default;
     private AirborneHurtState _airborneHurtState;
-    private Coroutine _wallSplatCoroutine;
 
     void Awake()
     {
@@ -24,13 +23,7 @@ public class WallSplatState : State
         _playerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
         GameObject effect = Instantiate(_wallSplatPrefab);
         effect.transform.localPosition = transform.position;
-        _wallSplatCoroutine = StartCoroutine(WallSplatStateCoroutine());
-    }
-
-    IEnumerator WallSplatStateCoroutine()
-    {
-        yield return new WaitForSeconds(0.2f);
-        ToAirborneHurtState();
+        _playerAnimator.OnCurrentAnimationFinished.AddListener(ToAirborneHurtState);
     }
 
     private void ToAirborneHurtState()
@@ -53,9 +46,6 @@ public class WallSplatState : State
     public override void Exit()
     {
         base.Exit();
-        if (_wallSplatCoroutine != null)
-        {
-            StopCoroutine(_wallSplatCoroutine);
-        }
+        _playerAnimator.ResetPosition();
     }
 }

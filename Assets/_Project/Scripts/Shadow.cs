@@ -23,6 +23,11 @@ public class Shadow : MonoBehaviour
         _shadowSpriteRenderer.sprite = _spriteRenderer.sprite;
     }
 
+    public void SetInvinsible(bool state)
+    {
+        _shadowSpriteRenderer.enabled = !state;
+    }
+
     private void OnDestroy()
     {
         if (_shadowSpriteRenderer != null)

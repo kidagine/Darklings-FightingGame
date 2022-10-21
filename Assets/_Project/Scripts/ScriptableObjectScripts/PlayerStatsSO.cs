@@ -7,8 +7,6 @@ public class PlayerStatsSO : ScriptableObject
     [Header("Main")]
     public int characterIndex;
     public Sprite[] portraits;
-    public SpriteLibraryAsset[] spriteLibraryAssets;
-    public RuntimeAnimatorController runtimeAnimatorController;
     public AnimationSO _animation;
     public DialogueSO _dialogue;
     public CharacterTypeEnum characterName;
@@ -31,6 +29,7 @@ public class PlayerStatsSO : ScriptableObject
     public AttackSO jM;
     public AttackSO mThrow;
     public AttackSO mParry;
+    public AttackSO mRedFrenzy;
     public ArcanaSO m5Arcana;
     public ArcanaSO m2Arcana;
     public ArcanaSO jArcana;

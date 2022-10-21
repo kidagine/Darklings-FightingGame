@@ -14,6 +14,8 @@ public class AirParentState : State
     protected AirborneHurtState _airborneHurtState;
     protected BlockAirState _blockAirState;
     protected KnockbackState _knockbackState;
+    protected RedFrenzyState _redFrenzyState;
+
     protected int _jumpCancelForce = 11;
     protected virtual void Awake()
     {
@@ -27,6 +29,7 @@ public class AirParentState : State
         _airborneHurtState = GetComponent<AirborneHurtState>();
         _blockAirState = GetComponent<BlockAirState>();
         _knockbackState = GetComponent<KnockbackState>();
+        _redFrenzyState = GetComponent<RedFrenzyState>();
     }
 
     public override void Enter()
@@ -143,6 +146,13 @@ public class AirParentState : State
         _stateMachine.ChangeState(_blockAirState);
         return true;
     }
+
+    public override bool ToRedFrenzyState()
+    {
+        _stateMachine.ChangeState(_redFrenzyState);
+        return true;
+    }
+
 
     public override bool ToKnockbackState()
     {

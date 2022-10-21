@@ -6,9 +6,18 @@
             "id": "84ff6df3-f92c-4601-a566-16cb8774e036",
             "actions": [
                 {
-                    "name": "Parry",
+                    "name": "BlueFrenzy",
                     "type": "Button",
                     "id": "18af1f13-b80c-4915-bb78-f82258c184df",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RedFrenzy",
+                    "type": "Button",
+                    "id": "2d0c8a2c-8997-4c52-a8ef-e6072fcfcf6a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -534,11 +543,11 @@
                 {
                     "name": "",
                     "id": "f725e9e0-cd5c-4569-b676-6b4d35437c2d",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Xbox",
-                    "action": "Parry",
+                    "action": "BlueFrenzy",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -549,7 +558,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Parry",
+                    "action": "BlueFrenzy",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -560,7 +569,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Parry",
+                    "action": "BlueFrenzy",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -571,7 +580,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Parry",
+                    "action": "BlueFrenzy",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -582,7 +591,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Parry",
+                    "action": "BlueFrenzy",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -593,7 +602,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Parry",
+                    "action": "BlueFrenzy",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -603,8 +612,8 @@
                     "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Parry",
+                    "groups": "Keyboard",
+                    "action": "BlueFrenzy",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -614,19 +623,19 @@
                     "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Parry",
+                    "groups": "Keyboard",
+                    "action": "BlueFrenzy",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "",
                     "id": "4f4c906d-f75f-47b8-88d7-0de553a2bd03",
-                    "path": "<Keyboard>/c",
+                    "path": "<Keyboard>/v",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardTwo",
-                    "action": "Parry",
+                    "action": "BlueFrenzy",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -651,72 +660,6 @@
                     "action": "Throw",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "LightMediumController",
-                    "id": "a62ae586-c756-4610-a875-8ab51053deb6",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Throw",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "252a8857-64cf-4af2-b746-02be6c2956d4",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Throw",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "8c5a65c3-a040-4427-990c-53ab1459f02f",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Throw",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "LightMediumKeyboard",
-                    "id": "ba232192-5803-441a-8056-43f38f47aba3",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Throw",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "f882f94d-7f86-4633-ae4f-0b5b5d61a97c",
-                    "path": "<Keyboard>/j",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Throw",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "ec8ea7f8-aec1-4c5c-9fa9-f6dd0bd51058",
-                    "path": "<Keyboard>/k",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Throw",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -814,6 +757,105 @@
                     "processors": "",
                     "groups": "KeyboardTwo",
                     "action": "DashBack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "48aab4eb-cfb9-4451-8a17-e3a698ad24ce",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox",
+                    "action": "RedFrenzy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aec2417a-e932-4da9-b559-212322bfa485",
+                    "path": "<Keyboard>/semicolon",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "RedFrenzy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "HeavyArcanaController",
+                    "id": "eaa9fc5b-df57-46f1-ac43-0a6f2a289dba",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RedFrenzy",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "c9eb6bd1-bd23-4a6c-9ee7-f529967453a2",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RedFrenzy",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "671e75fe-4ddd-475c-bc12-edd861ee57df",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RedFrenzy",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "HeavyArcanaKeyboard",
+                    "id": "02603ae9-9399-4e12-9338-a7c0ddddbe88",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RedFrenzy",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "487cdeb1-0b75-4634-8fe5-7df49d491ea9",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "RedFrenzy",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "1a189900-b75d-47cf-8ea3-eb389a06c72c",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "RedFrenzy",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c7759a29-7616-4620-84b3-00cf103a4b55",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardTwo",
+                    "action": "RedFrenzy",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -917,6 +959,24 @@
                     "name": "NavigationDown",
                     "type": "Button",
                     "id": "d4f82386-2084-489e-85f5-48d644e2f706",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NavigationLeft",
+                    "type": "Button",
+                    "id": "a9123728-0ac2-415d-bc3f-dcb6c1d0ec48",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "NavigationRight",
+                    "type": "Button",
+                    "id": "d7c071bb-8534-4278-8262-781633a88662",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -1293,6 +1353,50 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "ToggleFramedata",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dabcf222-1fda-4a5f-a9e8-28e8aeacc782",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox",
+                    "action": "NavigationRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d28decdd-d5d9-46f4-a3b2-a04cae35da32",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "NavigationRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6e85d022-c7b5-45cf-bfce-2312b330ffb9",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Xbox",
+                    "action": "NavigationLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11326740-b80e-48fc-a735-2882a10aa478",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "NavigationLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -10,6 +10,7 @@ public class ArcanaState : State
     private AirborneHurtState _airborneHurtState;
     private GrabbedState _grabbedState;
     private ArcanaThrowState _arcanaThrowState;
+    protected RedFrenzyState _redFrenzyState;
     private bool _crouch;
     private bool _air;
 
@@ -22,6 +23,7 @@ public class ArcanaState : State
         _airborneHurtState = GetComponent<AirborneHurtState>();
         _grabbedState = GetComponent<GrabbedState>();
         _arcanaThrowState = GetComponent<ArcanaThrowState>();
+        _redFrenzyState = GetComponent<RedFrenzyState>();
     }
 
     public void Initialize(bool crouch = false, bool air = false)
@@ -33,6 +35,7 @@ public class ArcanaState : State
     public override void Enter()
     {
         base.Enter();
+        _player.SetSpriteOrderPriority();
         _playerMovement.StopKnockback();
         if (_playerComboSystem.GetArcana(_crouch, _air).reversal)
         {
@@ -108,6 +111,12 @@ public class ArcanaState : State
             _airHurtState.Initialize(attack);
             _stateMachine.ChangeState(_airHurtState);
         }
+        return true;
+    }
+
+    public override bool ToRedFrenzyState()
+    {
+        _stateMachine.ChangeState(_redFrenzyState);
         return true;
     }
 

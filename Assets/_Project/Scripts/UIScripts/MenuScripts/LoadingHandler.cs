@@ -25,8 +25,6 @@ public class LoadingHandler : MonoBehaviour
     {
         _playerUIRenderOne.PlayerStats = _playerStats[SceneSettings.PlayerOne];
         _playerUIRenderTwo.PlayerStats = _playerStats[SceneSettings.PlayerTwo];
-        _playerUIRenderOne.SetAnimationController();
-        _playerUIRenderTwo.SetAnimationController();
         _playerUIRenderOne.SetSpriteLibraryAsset(SceneSettings.ColorOne);
         _playerUIRenderTwo.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
         _playerUIRenderOne.SetAnimator(_playerStats[SceneSettings.PlayerOne]._animation);

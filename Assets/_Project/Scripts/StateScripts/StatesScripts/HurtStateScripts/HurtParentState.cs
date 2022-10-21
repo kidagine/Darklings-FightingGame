@@ -48,6 +48,10 @@ public class HurtParentState : State
                 _player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
             }
         }
+        if (_hurtAttack.cameraShaker != null)
+        {
+            CameraShake.Instance.Shake(_hurtAttack.cameraShaker);
+        }
         _player.Health -= _player.CalculateDamage(_hurtAttack);
         _playerUI.SetHealth(_player.Health);
         _playerUI.Damaged();

@@ -4,6 +4,7 @@ using Demonics.Sounds;
 using Demonics.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -1079,6 +1080,27 @@ public class GameManager : MonoBehaviour
     {
         _hitstopList.Add(hitstop);
     }
+    public void SetSuperFreeze(bool state)
+    {
+        if (state)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+    }
+
+    public void GlobalHitstop(int hitstopFrames)
+    {
+        var hitstopItems = FindObjectsOfType<MonoBehaviour>().OfType<IHitstop>();
+        foreach (IHitstop hitstop in hitstopItems)
+        {
+            _hitstopList.Add(hitstop);
+        }
+        HitStop(hitstopFrames);
+    }
 
     public void SuperFreeze()
     {
@@ -1086,17 +1108,17 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator SuperFreezeCoroutine()
     {
-        Time.timeScale = 0.0f;
+        Time.timeScale = 0;
         yield return new WaitForSecondsRealtime(0.3f);
         Time.timeScale = 0.5f;
         yield return new WaitForSecondsRealtime(1);
-        Time.timeScale = 1f;
+        Time.timeScale = 1;
     }
 
     public int _hitstop;
-    public void HitStop(int hitstop)
+    public void HitStop(int hitstopFrames)
     {
-        if (hitstop > 0)
+        if (hitstopFrames > 0)
         {
             for (int i = 0; i < _hitstopList.Count; i++)
             {
@@ -1105,7 +1127,7 @@ public class GameManager : MonoBehaviour
                     _hitstopList[i].EnterHitstop();
                 }
             }
-            _hitstop = hitstop;
+            _hitstop = hitstopFrames;
         }
     }
 

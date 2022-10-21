@@ -14,6 +14,7 @@ public class AttackState : State
     private GrabbedState _grabbedState;
     private ArcanaState _arcanaState;
     private KnockbackState _knockbackState;
+    protected RedFrenzyState _redFrenzyState;
     private InputEnum _inputEnum;
     private bool _air;
     private bool _crouch;
@@ -31,6 +32,7 @@ public class AttackState : State
         _grabbedState = GetComponent<GrabbedState>();
         _arcanaState = GetComponent<ArcanaState>();
         _knockbackState = GetComponent<KnockbackState>();
+        _redFrenzyState = GetComponent<RedFrenzyState>();
     }
 
     public void Initialize(InputEnum inputEnum, bool crouch, bool air)
@@ -44,6 +46,7 @@ public class AttackState : State
     {
         base.Enter();
         _player.CheckFlip();
+        _player.SetSpriteOrderPriority();
         _player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
         _playerAnimator.Attack(_player.CurrentAttack.name, true);
@@ -236,6 +239,12 @@ public class AttackState : State
 
     public override bool ToHurtState(AttackSO attack)
     {
+        if (_player.CanTakeSuperArmorHit(attack))
+        {
+            _audio.Sound(attack.impactSound).Play();
+            _player.HurtOnSuperArmor(attack);
+            return false;
+        }
         _player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
         if (_playerMovement.IsGrounded)
         {
@@ -300,8 +309,24 @@ public class AttackState : State
         }
     }
 
+    public override bool ToRedFrenzyState()
+    {
+        if (_player.CanSkipAttack)
+        {
+            _stateMachine.ChangeState(_redFrenzyState);
+            return true;
+        }
+        return false;
+    }
+
     public override bool ToAirborneHurtState(AttackSO attack)
     {
+        if (_player.CanTakeSuperArmorHit(attack))
+        {
+            _audio.Sound(attack.impactSound).Play();
+            _player.HurtOnSuperArmor(attack);
+            return false;
+        }
         _airborneHurtState.Initialize(attack);
         _stateMachine.ChangeState(_airborneHurtState);
         return true;

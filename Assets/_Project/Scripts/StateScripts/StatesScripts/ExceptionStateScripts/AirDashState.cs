@@ -6,6 +6,7 @@ public class AirDashState : State
 {
     [SerializeField] private GameObject _playerGhostPrefab = default;
     [SerializeField] private GameObject _dashPrefab = default;
+    private RedFrenzyState _redFrenzyState;
     private FallState _fallState;
     private JumpState _jumpState;
     private JumpForwardState _jumpForwardState;
@@ -17,6 +18,7 @@ public class AirDashState : State
         _fallState = GetComponent<FallState>();
         _jumpState = GetComponent<JumpState>();
         _jumpForwardState = GetComponent<JumpForwardState>();
+        _redFrenzyState = GetComponent<RedFrenzyState>();
     }
 
     public override void Enter()
@@ -115,6 +117,12 @@ public class AirDashState : State
     public override bool AssistCall()
     {
         _player.AssistAction();
+        return true;
+    }
+
+    public override bool ToRedFrenzyState()
+    {
+        _stateMachine.ChangeState(_redFrenzyState);
         return true;
     }
 

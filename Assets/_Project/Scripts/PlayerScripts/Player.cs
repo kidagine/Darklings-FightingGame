@@ -52,7 +52,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool BlockingMiddair { get; set; }
     public bool Parrying { get; set; }
     public bool CanSkipAttack { get; set; }
-    public bool Invinsible { get; set; }
+    public bool Invincible { get; set; }
+    public bool Invisible { get; set; }
     public bool LockChain { get; set; }
     void Awake()
     {
@@ -110,6 +111,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         RecallAssist();
         _playerStateManager.ResetToInitialState();
+        SetInvinsible(false);
         transform.rotation = Quaternion.identity;
         _effectsParent.gameObject.SetActive(true);
         SetHurtbox(true);
@@ -193,21 +195,28 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
+    public void HealthGain(int health)
+    {
+        if (playerStats.maxHealth > Health && GameManager.Instance.HasGameStarted)
+        {
+            Health += health;
+            if (Health > playerStats.maxHealth)
+            {
+                Health = playerStats.maxHealth;
+            }
+            _playerUI.SetHealth(Health);
+        }
+    }
+
     public void CheckFlip()
     {
-        if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner && _keepFlip.localScale.x != 1.0f)
+        if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner)
         {
-            if (!OtherPlayerMovement.IsInCorner)
-            {
-                Flip(1);
-            }
+            Flip(1);
         }
-        else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner && _keepFlip.localScale.x != -1.0f)
+        else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner)
         {
-            if (!OtherPlayerMovement.IsInCorner)
-            {
-                Flip(-1);
-            }
+            Flip(-1);
         }
     }
 
@@ -381,6 +390,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
+    public void SetInvinsible(bool state)
+    {
+        Invisible = state;
+        _playerAnimator.SetInvinsible(state);
+        SetHurtbox(!state);
+        SetPushboxTrigger(state);
+    }
+
     public bool TakeDamage(AttackSO attack)
     {
         GameManager.Instance.AddHitstop(this);
@@ -388,7 +405,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             return _playerStateManager.TryToGrabbedState();
         }
-        if (Invinsible)
+        if (Invincible)
         {
             return false;
         }
@@ -402,6 +419,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return _playerStateManager.TryToHurtState(attack);
     }
 
+    public void SetSpriteOrderPriority()
+    {
+        _playerAnimator.SetSpriteOrder(1);
+        OtherPlayer._playerAnimator.SetSpriteOrder(0);
+    }
+
     public void EnterHitstop()
     {
         _playerMovement.EnterHitstop();
@@ -412,6 +435,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         _playerMovement.ExitHitstop();
         _playerAnimator.Resume();
+        _playerAnimator.SpriteNormalEffect();
         hitstopEvent?.Invoke();
         hitstopEvent.RemoveAllListeners();
     }
@@ -419,6 +443,24 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool IsInHitstop()
     {
         return _playerMovement.IsInHitstop;
+    }
+
+    public void HurtOnSuperArmor(AttackSO attack)
+    {
+        Health -= CalculateDamage(attack);
+        _playerUI.SetHealth(Health);
+        _playerUI.Damaged();
+        _playerAnimator.SpriteSuperArmorEffect();
+        GameManager.Instance.HitStop(attack.hitstop);
+    }
+
+    public bool CanTakeSuperArmorHit(AttackSO attack)
+    {
+        if (CurrentAttack.hasSuperArmor && !_playerAnimator.InRecovery() && !CanSkipAttack)
+        {
+            return true;
+        }
+        return false;
     }
 
     private bool CanBlock(AttackSO attack)

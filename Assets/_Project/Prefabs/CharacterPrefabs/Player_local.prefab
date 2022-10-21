@@ -389,6 +389,7 @@ GameObject:
   - component: {fileID: 6770783201273014799}
   - component: {fileID: 4867772287099482726}
   - component: {fileID: 5968869363467781238}
+  - component: {fileID: 8956738660059495485}
   - component: {fileID: 7451506977121168975}
   m_Layer: 10
   m_Name: Player_states
@@ -575,6 +576,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: Shadowbreak
   _shadowbreakPrefab: {fileID: 6697712921357175186, guid: 93f3b4e55f7d0454b80fe978ef39dd19, type: 3}
+  _cameraShaker: {fileID: 11400000, guid: d73844c54b2cd4d49b724e8a2846656a, type: 2}
 --- !u!114 &2960404323607353414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,6 +696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateName: Knockback
   _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
+  _cameraShaker: {fileID: 11400000, guid: c650c6c2a1f199145b58e3c56c3f7eae, type: 2}
 --- !u!114 &5908386114410977804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -841,8 +844,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d20079fde9ae7147967eedf8d67ffb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateName: Parry
+  stateName: BlueFrenzy
   _parryEffect: {fileID: 6697712921357175186, guid: 0d500f9f22d720e499108f837ea8316b, type: 3}
+--- !u!114 &8956738660059495485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367645597814612059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27d39f9258f3c9449bb27838814b9fa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateName: RedFrenzy
+  _teleportDisappearEffect: {fileID: 5833315189278568593, guid: 734c902dfe2a81f4dbb1f11e9cc5e5fe, type: 3}
+  _teleportAppearEffect: {fileID: 5833315189278568593, guid: 53ddf5d8f73250d449189e16def40be8, type: 3}
 --- !u!114 &7451506977121168975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1485,7 +1503,7 @@ MonoBehaviour:
     playOneInstanceAtATime: 0
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 3f5a65dd5d6e12b4486978f2244ace84, type: 3}
-    volume: 0.144
+    volume: 0.396
     pitch: 1
     name: Hit
     loop: 0
@@ -1584,6 +1602,14 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     name: Shadowbreak
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: a13a0556982e69f46a904ccefc9065ca, type: 3}
+    volume: 1
+    pitch: 1
+    name: Vanish
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0
@@ -2033,6 +2059,54 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ad302711-aaaf-4ef8-a9f5-a439a4b42746
     m_ActionName: UI/ToggleFramedata[/DualShock4GamepadHID/buttonNorth,/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: NavigationLeft
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a9123728-0ac2-415d-bc3f-dcb6c1d0ec48
+    m_ActionName: UI/NavigationLeft[/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: NavigationRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d7c071bb-8534-4278-8262-781633a88662
+    m_ActionName: UI/NavigationRight[/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6371053321382070875}
+        m_TargetAssemblyTypeName: PlayerController, Scripts
+        m_MethodName: RedFrenzy
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2d0c8a2c-8997-4c52-a8ef-e6072fcfcf6a
+    m_ActionName: Gameplay/RedFrenzy[/DualShock4GamepadHID/rightTrigger,/Keyboard/semicolon,/DualShock4GamepadHID/buttonEast,/DualShock4GamepadHID/buttonSouth,/Keyboard/l,/Keyboard/i,/Keyboard/v]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay

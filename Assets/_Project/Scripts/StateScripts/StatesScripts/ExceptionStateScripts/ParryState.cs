@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class ParryState : State
@@ -10,6 +9,7 @@ public class ParryState : State
     private GrabbedState _grabbedState;
     private BlockState _blockState;
     private readonly int _parryKnockback = 2;
+    private readonly int _hitstopOnParry = 12;
     private bool _parried;
 
     private void Awake()
@@ -28,7 +28,7 @@ public class ParryState : State
         _player.parryConnectsEvent?.Invoke();
         _audio.Sound("ParryStart").Play();
         _player.CheckFlip();
-        _playerAnimator.Parry();
+        _playerAnimator.BlueFrenzy();
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
     }
 
@@ -67,14 +67,14 @@ public class ParryState : State
         _audio.Sound("Parry").Play();
         if (attack.isArcana)
         {
-            _player.ArcanaGain((Fix64)0.5f);
+            _player.HealthGain(200);
         }
         else
         {
-            _player.ArcanaGain((Fix64)0.1f);
+            _player.HealthGain(100);
         }
         _parried = true;
-        GameManager.Instance.HitStop(8);
+        GameManager.Instance.HitStop(_hitstopOnParry);
         GameObject effect = Instantiate(_parryEffect);
         effect.transform.localPosition = attack.hurtEffectPosition;
         if (!attack.isProjectile)
