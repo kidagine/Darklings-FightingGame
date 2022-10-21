@@ -29,6 +29,7 @@ public class PlayerStatsSO : ScriptableObject
     public AttackSO jM;
     public AttackSO mThrow;
     public AttackSO mParry;
+    public AttackSO mRedFrenzy;
     public ArcanaSO m5Arcana;
     public ArcanaSO m2Arcana;
     public ArcanaSO jArcana;

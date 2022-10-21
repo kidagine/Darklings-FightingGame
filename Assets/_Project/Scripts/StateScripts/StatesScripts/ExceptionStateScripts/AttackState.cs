@@ -14,6 +14,7 @@ public class AttackState : State
     private GrabbedState _grabbedState;
     private ArcanaState _arcanaState;
     private KnockbackState _knockbackState;
+    protected RedFrenzyState _redFrenzyState;
     private InputEnum _inputEnum;
     private bool _air;
     private bool _crouch;
@@ -31,6 +32,7 @@ public class AttackState : State
         _grabbedState = GetComponent<GrabbedState>();
         _arcanaState = GetComponent<ArcanaState>();
         _knockbackState = GetComponent<KnockbackState>();
+        _redFrenzyState = GetComponent<RedFrenzyState>();
     }
 
     public void Initialize(InputEnum inputEnum, bool crouch, bool air)
@@ -305,6 +307,12 @@ public class AttackState : State
                 }
             }
         }
+    }
+
+    public override bool ToRedFrenzyState()
+    {
+        _stateMachine.ChangeState(_redFrenzyState);
+        return true;
     }
 
     public override bool ToAirborneHurtState(AttackSO attack)

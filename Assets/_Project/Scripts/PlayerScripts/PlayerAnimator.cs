@@ -9,11 +9,17 @@ public class PlayerAnimator : DemonicsAnimator
     [SerializeField] private InputBuffer _inputBuffer = null;
     [SerializeField] private Audio _audio = default;
     [SerializeField] private Transform _grabPoint = default;
+    private Shadow _shadow;
 
     public PlayerStatsSO PlayerStats { get { return _player.playerStats; } set { } }
 
 
-    private void Start()
+    void Awake()
+    {
+        _shadow = GetComponent<Shadow>();
+    }
+
+    void Start()
     {
         _animation = _player.playerStats._animation;
     }
@@ -53,6 +59,12 @@ public class PlayerAnimator : DemonicsAnimator
         base.CheckAnimationBoxes();
         _playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
         _playerCollisionBoxes.SetHitboxes(GetHitboxes());
+    }
+
+    public void SetInvinsible(bool state)
+    {
+        _spriteRenderer.enabled = !state;
+        _shadow.SetInvinsible(state);
     }
 
     protected override void AnimationEnded()
@@ -140,9 +152,14 @@ public class PlayerAnimator : DemonicsAnimator
         SetAnimation("Throw");
     }
 
-    public void Parry()
+    public void BlueFrenzy()
     {
         SetAnimation("Parry");
+    }
+
+    public void RedFrenzy()
+    {
+        SetAnimation("RedFrenzy");
     }
 
     public void Arcana(string arcanaType)

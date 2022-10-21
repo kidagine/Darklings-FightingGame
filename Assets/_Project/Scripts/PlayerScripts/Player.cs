@@ -110,6 +110,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         RecallAssist();
         _playerStateManager.ResetToInitialState();
+        SetInvinsible(false);
         transform.rotation = Quaternion.identity;
         _effectsParent.gameObject.SetActive(true);
         SetHurtbox(true);
@@ -386,6 +387,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
             }
         }
+    }
+
+    public void SetInvinsible(bool state)
+    {
+        SetHurtbox(!state);
+        SetPushboxTrigger(state);
+        _playerAnimator.SetInvinsible(state);
     }
 
     public bool TakeDamage(AttackSO attack)

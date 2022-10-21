@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class ParryState : State
@@ -29,7 +28,7 @@ public class ParryState : State
         _player.parryConnectsEvent?.Invoke();
         _audio.Sound("ParryStart").Play();
         _player.CheckFlip();
-        _playerAnimator.Parry();
+        _playerAnimator.BlueFrenzy();
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
     }
 

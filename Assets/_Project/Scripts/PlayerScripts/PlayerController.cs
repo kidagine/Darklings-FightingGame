@@ -147,6 +147,15 @@ public class PlayerController : BaseController
         }
     }
 
+    public void RedFrenzy(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            _playerStateManager.TryToRedFrenzyState();
+            _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+        }
+    }
+
     public void DashForward(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
