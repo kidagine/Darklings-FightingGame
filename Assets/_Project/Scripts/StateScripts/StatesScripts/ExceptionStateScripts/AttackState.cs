@@ -311,8 +311,12 @@ public class AttackState : State
 
     public override bool ToRedFrenzyState()
     {
-        _stateMachine.ChangeState(_redFrenzyState);
-        return true;
+        if (_player.CanSkipAttack)
+        {
+            _stateMachine.ChangeState(_redFrenzyState);
+            return true;
+        }
+        return false;
     }
 
     public override bool ToAirborneHurtState(AttackSO attack)

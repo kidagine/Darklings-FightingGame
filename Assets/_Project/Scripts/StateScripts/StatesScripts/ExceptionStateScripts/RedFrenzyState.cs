@@ -129,6 +129,7 @@ public class RedFrenzyState : State
     public override void Exit()
     {
         base.Exit();
+        _player.CanSkipAttack = false;
         _playerUI.UpdateHealthDamaged();
         _playerMovement.ResetGravity();
     }

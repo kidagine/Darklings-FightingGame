@@ -10,8 +10,8 @@ public class DashState : State
     private RunState _runState;
     private HurtState _hurtState;
     private AirborneHurtState _airborneHurtState;
+    private RedFrenzyState _redFrenzyState;
     private Coroutine _dashCoroutine;
-    private int _dashFrame;
 
     public int DashDirection { get; set; }
 
@@ -21,6 +21,7 @@ public class DashState : State
         _runState = GetComponent<RunState>();
         _hurtState = GetComponent<HurtState>();
         _airborneHurtState = GetComponent<AirborneHurtState>();
+        _redFrenzyState = GetComponent<RedFrenzyState>();
     }
 
     public override void Enter()
@@ -82,6 +83,12 @@ public class DashState : State
     public override bool AssistCall()
     {
         _player.AssistAction();
+        return true;
+    }
+
+    public override bool ToRedFrenzyState()
+    {
+        _stateMachine.ChangeState(_redFrenzyState);
         return true;
     }
 
