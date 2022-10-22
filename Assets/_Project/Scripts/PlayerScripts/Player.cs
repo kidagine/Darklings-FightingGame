@@ -40,6 +40,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public Transform CameraPoint { get { return _cameraPoint; } private set { } }
     public bool CanAirArcana { get; set; }
     public int Health { get; set; }
+    public int HealthRecoverable { get; set; }
     public int Lives { get; set; } = 2;
     public bool IsAttacking { get; set; }
     public bool IsPlayerOne { get; set; }
@@ -151,6 +152,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         _playerUI.InitializeUI(playerStats, _controller, _playerIcons);
         Health = playerStats.maxHealth;
+        HealthRecoverable = playerStats.maxHealth;
         _playerUI.SetHealth(Health);
     }
 
@@ -195,17 +197,26 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
-    public void HealthGain(int health)
+    public void HealthGain()
     {
-        if (playerStats.maxHealth > Health && GameManager.Instance.HasGameStarted)
+        Health = HealthRecoverable;
+        _playerUI.UpdateHealth();
+        _playerUI.CheckDemonLimit(Health);
+    }
+
+    public void SetHealth(int value, bool noRecoverable = false)
+    {
+        Health -= value;
+        if (noRecoverable)
         {
-            Health += health;
-            if (Health > playerStats.maxHealth)
-            {
-                Health = playerStats.maxHealth;
-            }
-            _playerUI.SetHealth(Health);
+            HealthRecoverable -= value;
         }
+        else
+        {
+            HealthRecoverable -= value - 150;
+        }
+        _playerUI.SetHealth(Health);
+        _playerUI.SetRecoverableHealth(HealthRecoverable);
     }
 
     public void CheckFlip()
@@ -224,6 +235,18 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         transform.localScale = new Vector2(xDirection, transform.localScale.y);
         _keepFlip.localScale = transform.localScale;
+    }
+
+    public bool HasRecoverableHealth()
+    {
+        float remainingRecoverableHealth = HealthRecoverable - Health;
+        if (remainingRecoverableHealth > 0)
+        {
+            HealthRecoverable = Health;
+            _playerUI.SetRecoverableHealth(HealthRecoverable);
+            return true;
+        }
+        return false;
     }
 
     public bool AssistAction()

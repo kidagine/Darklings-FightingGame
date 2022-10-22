@@ -11,6 +11,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Animator[] _lostLivesAnimator = default;
     [SerializeField] private Slider _healthSlider = default;
     [SerializeField] private Slider _healthDamagedSlider = default;
+    [SerializeField] private Slider _healthRecoverableSlider = default;
     [SerializeField] private Slider _arcanaSlider = default;
     [SerializeField] private Slider _assistSlider = default;
     [SerializeField] private Image _portraitImage = default;
@@ -50,6 +51,7 @@ public class PlayerUI : MonoBehaviour
     private Coroutine _notificiationCoroutine;
     private Coroutine _resetComboCoroutine;
     private Coroutine _showPlayerIconCoroutine;
+    private Coroutine _healthCoroutine;
     private Coroutine _damagedHealthCoroutine;
     private Coroutine _damagedCoroutine;
     private Animator _animator;
@@ -160,6 +162,8 @@ public class PlayerUI : MonoBehaviour
         _healthSlider.maxValue = value;
         _healthDamagedSlider.maxValue = value;
         _healthDamagedSlider.value = value;
+        _healthRecoverableSlider.maxValue = value;
+        _healthRecoverableSlider.value = value;
     }
 
     private void SetMaxArcana(float value)
@@ -226,6 +230,47 @@ public class PlayerUI : MonoBehaviour
         _healthSlider.value = value;
     }
 
+    public void CheckDemonLimit(float value)
+    {
+        if (value > 3000)
+        {
+            _borderHealth.color = Color.white;
+            _borderPortrait.color = Color.white;
+            _healthCurrentColor = _healthNormalColor;
+            _healthImage.color = _healthCurrentColor;
+        }
+    }
+
+    public void UpdateHealth()
+    {
+        if (_healthCoroutine != null)
+        {
+            StopCoroutine(_healthCoroutine);
+        }
+        _healthCoroutine = StartCoroutine(SetHealthCoroutine());
+    }
+
+    IEnumerator SetHealthCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        float startValue = _healthSlider.value;
+        float endValue = _healthRecoverableSlider.value;
+        float elapsedTime = 0;
+        float duration = 0.1f;
+        while (elapsedTime < duration)
+        {
+            _healthSlider.value = Mathf.Lerp(startValue, endValue, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        _healthSlider.value = endValue;
+    }
+
+    public void SetRecoverableHealth(float value)
+    {
+        _healthRecoverableSlider.value = value;
+    }
+
     public void MaxHealth(float value)
     {
         _healthSlider.value = value;
@@ -262,6 +307,14 @@ public class PlayerUI : MonoBehaviour
         }
         _healthDamagedSlider.value = _healthSlider.maxValue;
     }
+    public void SetHealthDamaged(float value)
+    {
+        if (_damagedHealthCoroutine != null)
+        {
+            StopCoroutine(_damagedHealthCoroutine);
+        }
+        _healthDamagedSlider.value = value;
+    }
 
     public void UpdateHealthDamaged()
     {
@@ -269,7 +322,7 @@ public class PlayerUI : MonoBehaviour
         {
             StopCoroutine(_damagedHealthCoroutine);
         }
-        _damagedHealthCoroutine = StartCoroutine(SetHealthDamagedCoroutine(_healthSlider.value));
+        _damagedHealthCoroutine = StartCoroutine(SetHealthDamagedCoroutine(_healthRecoverableSlider.value));
     }
 
     IEnumerator SetHealthDamagedCoroutine(float value)

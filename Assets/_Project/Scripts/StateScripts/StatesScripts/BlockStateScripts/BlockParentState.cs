@@ -50,8 +50,7 @@ public class BlockParentState : State
         }
         if (_blockAttack.isArcana)
         {
-            _player.Health -= _chipDamage;
-            _playerUI.SetHealth(_player.Health);
+            _player.SetHealth(_chipDamage);
             _playerUI.Damaged();
             _playerUI.UpdateHealthDamaged();
         }

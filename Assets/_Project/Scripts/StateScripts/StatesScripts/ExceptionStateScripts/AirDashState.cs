@@ -122,8 +122,12 @@ public class AirDashState : State
 
     public override bool ToRedFrenzyState()
     {
-        _stateMachine.ChangeState(_redFrenzyState);
-        return true;
+        if (_player.HasRecoverableHealth())
+        {
+            _stateMachine.ChangeState(_redFrenzyState);
+            return true;
+        }
+        return false;
     }
 
     public override void Exit()

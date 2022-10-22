@@ -38,9 +38,8 @@ public class GrabbedState : State
 
     public override bool ToKnockdownState()
     {
-        _player.Health -= _player.playerStats.mThrow.damage;
         _player.OtherPlayerUI.IncreaseCombo();
-        _playerUI.SetHealth(_player.Health);
+        _player.SetHealth(_player.playerStats.mThrow.damage);
         _playerUI.Damaged();
         if (_player.OtherPlayerUI.CurrentComboCount == 1)
         {

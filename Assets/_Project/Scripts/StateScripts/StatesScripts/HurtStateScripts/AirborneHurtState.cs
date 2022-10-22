@@ -55,8 +55,7 @@ public class AirborneHurtState : HurtParentState
         }
         CameraShake.Instance.Shake(_hurtAttack.cameraShaker);
         _canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());
-        _player.Health -= _player.CalculateDamage(_hurtAttack);
-        _playerUI.SetHealth(_player.Health);
+        _player.SetHealth(_player.CalculateDamage(_hurtAttack));
         _playerUI.Damaged();
         _playerMovement.ResetGravity();
         _player.RecallAssist();

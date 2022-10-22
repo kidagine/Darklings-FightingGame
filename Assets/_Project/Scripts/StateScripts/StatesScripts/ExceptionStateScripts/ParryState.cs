@@ -24,6 +24,7 @@ public class ParryState : State
     public override void Enter()
     {
         base.Enter();
+        _player.SetSpriteOrderPriority();
         _player.SetResultAttack(0, _player.playerStats.mParry);
         _player.parryConnectsEvent?.Invoke();
         _audio.Sound("ParryStart").Play();
@@ -65,14 +66,7 @@ public class ParryState : State
     private void Parry(AttackSO attack)
     {
         _audio.Sound("Parry").Play();
-        if (attack.isArcana)
-        {
-            _player.HealthGain(200);
-        }
-        else
-        {
-            _player.HealthGain(100);
-        }
+        _player.HealthGain();
         _parried = true;
         GameManager.Instance.HitStop(_hitstopOnParry);
         GameObject effect = Instantiate(_parryEffect);
