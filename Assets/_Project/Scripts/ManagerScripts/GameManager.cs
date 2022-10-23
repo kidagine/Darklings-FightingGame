@@ -819,7 +819,7 @@ public class GameManager : MonoBehaviour
 
     public void SwitchCharacters()
     {
-        if (IsTrainingMode && _canCallSwitchCharacter)
+        if (IsTrainingMode && _canCallSwitchCharacter && Time.timeScale > 0)
         {
             StartCoroutine(SwitchCharactersCoroutine());
         }
@@ -901,7 +901,7 @@ public class GameManager : MonoBehaviour
 
     public virtual void ResetRound(Vector2 movementInput)
     {
-        if (_isTrainingMode)
+        if (_isTrainingMode && Time.timeScale > 0)
         {
             _fadeHandler.StartFadeTransition(true);
             _fadeHandler.onFadeEnd.AddListener(() =>

@@ -424,7 +424,7 @@ public class PlayerUI : MonoBehaviour
     public void OpenPause(bool isPlayerOne)
     {
         _pauseMenu.SetWhoPaused(isPlayerOne);
-        Time.timeScale = 0.0f;
+        Time.timeScale = 0;
         GameManager.Instance.DisableAllInput();
         GameManager.Instance.PauseMusic();
         GameManager.Instance.PausedController = _controller.ActiveController;
@@ -435,7 +435,7 @@ public class PlayerUI : MonoBehaviour
     public void OpenTrainingPause(bool isPlayerOne)
     {
         _trainingPauseMenu.SetWhoPaused(isPlayerOne);
-        Time.timeScale = 0.0f;
+        Time.timeScale = 0;
         GameManager.Instance.DisableAllInput();
         GameManager.Instance.PauseMusic();
         GameManager.Instance.PausedController = _controller.ActiveController;
