@@ -457,7 +457,7 @@ public class GameManager : MonoBehaviour
         {
             ReplayManager.Instance.SaveReplay();
         }
-        Time.timeScale = 0.0f;
+        Time.timeScale = 0;
     }
 
     public virtual void StartRound()
@@ -522,7 +522,7 @@ public class GameManager : MonoBehaviour
             {
                 _showEnd = true;
                 _uiAudio.Sound("TextSound").Play();
-                _readyAnimator.SetTrigger("Show");
+                _readyAnimator.Play("RoundShow");
                 if (_currentRound == 4)
                 {
                     _finalRound = true;
@@ -544,7 +544,7 @@ public class GameManager : MonoBehaviour
             {
                 if (DemonicsPhysics.WaitFramesOnce(ref _readyFrame))
                 {
-                    _readyAnimator.SetTrigger("Show");
+                    _readyAnimator.Play("FightShow");
                     _uiAudio.Sound("TextSound").Play();
                     _readyText.text = "Fight!";
                     _countdownText.gameObject.SetActive(true);
@@ -588,41 +588,6 @@ public class GameManager : MonoBehaviour
                 _roundOverTrainingCoroutine = StartCoroutine(RoundOverTrainingCoroutine());
             }
             else
-            {
-                _roundOverFrame = 30;
-                _roundOverSecondFrame = 60;
-                _roundOverThirdFrame = 120;
-                _roundOverFourthFrame = 120;
-                _roundOver = false;
-                _roundOverSecond = false;
-                _roundOverThird = false;
-                _startRoundOver = false;
-                _playerOneWon = false;
-                _playerTwoWon = false;
-                _timeout = timeout;
-                HasGameStarted = false;
-                _uiAudio.Sound("Round").Play();
-                _startRoundOver = true;
-            }
-        }
-    }
-
-    private int _roundOverFrame = 30;
-    private int _roundOverSecondFrame = 60;
-    private int _roundOverThirdFrame = 120;
-    private int _roundOverFourthFrame = 120;
-    private bool _roundOver;
-    private bool _roundOverSecond;
-    private bool _roundOverThird;
-    private bool _startRoundOver;
-    private bool _timeout;
-    private bool _playerOneWon;
-    private bool _playerTwoWon;
-    private void RunRoundOver()
-    {
-        if (_startRoundOver)
-        {
-            if (DemonicsPhysics.WaitFramesOnce(ref _roundOverFrame))
             {
                 string roundOverCause;
                 if (PlayerOne.Health == PlayerTwo.Health)
@@ -689,15 +654,44 @@ public class GameManager : MonoBehaviour
                     _readyObjects[i].SetActive(true);
                 }
                 _uiAudio.Sound("TextSound").Play();
-                _readyAnimator.SetTrigger("Show");
+                _readyAnimator.Play("ReadyTextShow");
                 _roundOver = true;
+                _roundOverFrame = 30;
+                _roundOverSecondFrame = 60;
+                _roundOverThirdFrame = 120;
+                _roundOverFourthFrame = 120;
+                _roundOverSecond = false;
+                _roundOverThird = false;
+                _startRoundOver = false;
+                _timeout = timeout;
+                HasGameStarted = false;
+                _uiAudio.Sound("Round").Play();
+                _startRoundOver = true;
             }
+        }
+    }
+
+    private int _roundOverFrame = 30;
+    private int _roundOverSecondFrame = 60;
+    private int _roundOverThirdFrame = 120;
+    private int _roundOverFourthFrame = 120;
+    private bool _roundOver;
+    private bool _roundOverSecond;
+    private bool _roundOverThird;
+    private bool _startRoundOver;
+    private bool _timeout;
+    private bool _playerOneWon;
+    private bool _playerTwoWon;
+    private void RunRoundOver()
+    {
+        if (_startRoundOver)
+        {
             if (_roundOver)
             {
                 if (DemonicsPhysics.WaitFramesOnce(ref _roundOverSecondFrame))
                 {
                     _uiAudio.Sound("TextSound").Play();
-                    _readyAnimator.SetTrigger("Show");
+                    _readyAnimator.Play("ReadyTextShow");
                     _currentRound++;
                     if (_playerOneWon)
                     {
@@ -1033,7 +1027,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(int index)
     {
-        Time.timeScale = 1.0f;
+        Time.timeScale = 1;
         SceneManager.LoadScene(index);
     }
 
@@ -1079,17 +1073,6 @@ public class GameManager : MonoBehaviour
     {
         _hitstopList.Add(hitstop);
     }
-    public void SetSuperFreeze(bool state)
-    {
-        if (state)
-        {
-            Time.timeScale = 0;
-        }
-        else
-        {
-            Time.timeScale = 1;
-        }
-    }
 
     public void GlobalHitstop(int hitstopFrames)
     {
@@ -1105,12 +1088,11 @@ public class GameManager : MonoBehaviour
     {
         StartCoroutine(SuperFreezeCoroutine());
     }
+
     IEnumerator SuperFreezeCoroutine()
     {
         Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(0.3f);
-        Time.timeScale = 0.5f;
-        yield return new WaitForSecondsRealtime(1);
+        yield return new WaitForSecondsRealtime(2);
         Time.timeScale = 1;
     }
 
