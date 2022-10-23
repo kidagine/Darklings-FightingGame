@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
     [Range(0, 10)]
     [SerializeField] private int _playerTwoSkin = default;
     [SerializeField] private bool _isTrainingMode = default;
-    [SerializeField] private bool _isOnlineMode = default;
     [SerializeField] private bool _1BitOn = default;
     [Range(1, 10)]
     [SerializeField] private int _gameSpeed = 1;
@@ -902,7 +901,7 @@ public class GameManager : MonoBehaviour
 
     public virtual void ResetRound(Vector2 movementInput)
     {
-        if (_isTrainingMode)
+        if (_isTrainingMode && _trainingPauseMenu)
         {
             _fadeHandler.StartFadeTransition(true);
             _fadeHandler.onFadeEnd.AddListener(() =>
