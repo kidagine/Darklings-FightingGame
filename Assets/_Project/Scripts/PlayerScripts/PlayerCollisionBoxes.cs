@@ -25,17 +25,22 @@ public class PlayerCollisionBoxes : MonoBehaviour
 
     public void SetHurtboxes(AnimationBox[] animationBoxes)
     {
-        if (!_player.Invisible)
+        if (_player != null)
         {
-            for (int i = 0; i < _hurtboxes.Count; i++)
+            if (_player.Invisible)
             {
-                _hurtboxes[i].gameObject.SetActive(false);
+                return;
             }
-            for (int i = 0; i < animationBoxes.Length; i++)
-            {
-                _hurtboxes[i].gameObject.SetActive(true);
-                _hurtboxes[i].SetBox(animationBoxes[i].size, animationBoxes[i].offset);
-            }
+        }
+
+        for (int i = 0; i < _hurtboxes.Count; i++)
+        {
+            _hurtboxes[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < animationBoxes.Length; i++)
+        {
+            _hurtboxes[i].gameObject.SetActive(true);
+            _hurtboxes[i].SetBox(animationBoxes[i].size, animationBoxes[i].offset);
         }
     }
 

@@ -901,7 +901,7 @@ public class GameManager : MonoBehaviour
 
     public virtual void ResetRound(Vector2 movementInput)
     {
-        if (_isTrainingMode && _trainingPauseMenu)
+        if (_isTrainingMode)
         {
             _fadeHandler.StartFadeTransition(true);
             _fadeHandler.onFadeEnd.AddListener(() =>
