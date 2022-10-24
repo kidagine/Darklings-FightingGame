@@ -656,8 +656,7 @@ public class GameManager : MonoBehaviour
                 _uiAudio.Sound("TextSound").Play();
                 _readyAnimator.Play("ReadyTextShow");
                 _roundOver = true;
-                _roundOverFrame = 30;
-                _roundOverSecondFrame = 60;
+                _roundOverSecondFrame = 120;
                 _roundOverThirdFrame = 120;
                 _roundOverFourthFrame = 120;
                 _roundOverSecond = false;
@@ -671,7 +670,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private int _roundOverFrame = 30;
     private int _roundOverSecondFrame = 60;
     private int _roundOverThirdFrame = 120;
     private int _roundOverFourthFrame = 120;
@@ -1083,17 +1081,11 @@ public class GameManager : MonoBehaviour
         }
         HitStop(hitstopFrames);
     }
-
+    private int _superFreezeOverFrame;
+    private bool _superFreezeOver;
     public void SuperFreeze()
     {
-        StartCoroutine(SuperFreezeCoroutine());
-    }
-
-    IEnumerator SuperFreezeCoroutine()
-    {
-        Time.timeScale = 0;
-        yield return new WaitForSecondsRealtime(2);
-        Time.timeScale = 1;
+        GlobalHitstop(120);
     }
 
     public int _hitstop;
