@@ -27,4 +27,9 @@ public class DeathState : State
     {
         return false;
     }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
 }

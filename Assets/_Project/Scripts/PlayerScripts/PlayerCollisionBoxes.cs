@@ -33,13 +33,8 @@ public class PlayerCollisionBoxes : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < _hurtboxes.Count; i++)
-        {
-            _hurtboxes[i].gameObject.SetActive(false);
-        }
         for (int i = 0; i < animationBoxes.Length; i++)
         {
-            _hurtboxes[i].gameObject.SetActive(true);
             _hurtboxes[i].SetBox(animationBoxes[i].size, animationBoxes[i].offset);
         }
     }

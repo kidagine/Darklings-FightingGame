@@ -39,6 +39,11 @@ public class Hurtbox : MonoBehaviour
         }
     }
 
+    public void SetIsTrigger(bool state)
+    {
+        _boxCollider.isTrigger = state;
+    }
+
     public void SetBox(Vector2 size, Vector2 offset)
     {
         _boxCollider.size = size;
