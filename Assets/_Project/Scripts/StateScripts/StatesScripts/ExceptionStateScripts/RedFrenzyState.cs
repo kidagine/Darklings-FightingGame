@@ -24,8 +24,6 @@ public class RedFrenzyState : State
     {
         base.Enter();
         _startTeleportFrame = 7;
-        _player.Health -= 1000;
-        _playerUI.SetHealth(_player.Health);
         _playerUI.Damaged();
         _player.CurrentAttack = _player.playerStats.mRedFrenzy;
         _player.CheckFlip();

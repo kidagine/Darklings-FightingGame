@@ -246,7 +246,6 @@ public class CharacterMenu : BaseMenu
     {
         if (!SceneSettings.SceneSettingsDecide)
         {
-            Debug.Log("A");
             if (_tauntCoroutine != null)
             {
                 StopCoroutine(_tauntCoroutine);

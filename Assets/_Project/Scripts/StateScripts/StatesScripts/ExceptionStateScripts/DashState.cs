@@ -88,8 +88,12 @@ public class DashState : State
 
     public override bool ToRedFrenzyState()
     {
-        _stateMachine.ChangeState(_redFrenzyState);
-        return true;
+        if (_player.HasRecoverableHealth())
+        {
+            _stateMachine.ChangeState(_redFrenzyState);
+            return true;
+        }
+        return false;
     }
 
     public override bool ToHurtState(AttackSO attack)

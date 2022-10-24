@@ -10,11 +10,13 @@ public class MainMenuSceneSettingsChecker : MonoBehaviour
 
     void Awake()
     {
-		if (SceneSettings.ChangeCharacter)
-		{
-			_mainMenuOverlay.Hide();
-			_mainMenu.Hide();
-			_characterSelectMenu.Show();
-		}
-	}
+        Time.timeScale = 1;
+
+        if (SceneSettings.ChangeCharacter)
+        {
+            _mainMenuOverlay.Hide();
+            _mainMenu.Hide();
+            _characterSelectMenu.Show();
+        }
+    }
 }
