@@ -453,13 +453,13 @@ public class GameManager : MonoBehaviour
         else
         {
             _matchOverMenu.Show();
-            if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
-            {
-                if (_controllerTwoType != ControllerTypeEnum.Keyboard)
-                {
-                    _matchOverSecondMenu.Show();
-                }
-            }
+            // if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
+            // {
+            //     if (_controllerTwoType != ControllerTypeEnum.Keyboard)
+            //     {
+            //         _matchOverSecondMenu.Show();
+            //     }
+            // }
         }
         if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
         {

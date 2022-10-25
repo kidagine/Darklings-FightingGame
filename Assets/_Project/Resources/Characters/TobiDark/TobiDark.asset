@@ -343,6 +343,20 @@ MonoBehaviour:
     cameraShake: {fileID: 0}
     animationCel:
     - frames: 1
+      sprite: {fileID: -1394641665, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 1.75, y: 2.5}
+        offset: {x: 0, y: 1.2}
+    - frames: 1
       sprite: {fileID: 408237090, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
       animationEvent:
         jump: 0
@@ -360,7 +374,21 @@ MonoBehaviour:
     loop: 0
     cameraShake: {fileID: 0}
     animationCel:
-    - frames: 10
+    - frames: 1
+      sprite: {fileID: 2092762443, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 3}
+        offset: {x: 0, y: 1.5}
+    - frames: 1
       sprite: {fileID: -871653408, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
       animationEvent:
         jump: 0
@@ -950,6 +978,54 @@ MonoBehaviour:
       hurtboxes:
       - size: {x: 2, y: 2.5}
         offset: {x: 0, y: 1.25}
+  - celName: RedFrenzy
+    loop: 0
+    cameraShake: {fileID: 11400000, guid: 1c671891c21f7fd4fb764bc8f3fc6f5f, type: 2}
+    animationCel:
+    - frames: 13
+      sprite: {fileID: -329892427, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 2.5}
+        offset: {x: 0, y: 1.2}
+    - frames: 4
+      sprite: {fileID: 1762270672, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes:
+      - size: {x: 2, y: 3}
+        offset: {x: 1.4, y: 1.7}
+      hurtboxes:
+      - size: {x: 2, y: 2}
+        offset: {x: 0, y: 1}
+    - frames: 23
+      sprite: {fileID: -329892427, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 2}
+        offset: {x: 0, y: 1}
   - celName: 2H
     loop: 0
     cameraShake: {fileID: 0}
