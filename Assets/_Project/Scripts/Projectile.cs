@@ -8,6 +8,7 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
     [SerializeField] private int _projectilePriority = default;
     [SerializeField] private float _speed = 4.0f;
     [SerializeField] private bool _isFixed = default;
+    [SerializeField] private bool _disableOnContact = true;
     private Rigidbody2D _rigidbody;
     private float _originalSpeed;
     public int ProjectilePriority { get { return _projectilePriority; } private set { } }
@@ -125,6 +126,9 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
     {
         _speed = 0;
         yield return new WaitForSecondsRealtime(0.05f);
-        gameObject.SetActive(false);
+        if (_disableOnContact)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }
