@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BlockParentState : State
 {
+    [SerializeField] private GameObject _chipEffectPrefab = default;
     [SerializeField] private GameObject _blockEffectPrefab = default;
     protected IdleState _idleState;
     protected CrouchState _crouchState;
@@ -44,7 +45,15 @@ public class BlockParentState : State
 
         if (!_skip)
         {
-            GameObject effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);
+            GameObject effect;
+            if (_blockAttack.isArcana)
+            {
+                effect = ObjectPoolingManager.Instance.Spawn(_chipEffectPrefab);
+            }
+            else
+            {
+                effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);
+            }
             effect.transform.localPosition = _blockAttack.hurtEffectPosition;
             GameManager.Instance.HitStop(_blockAttack.hitstop);
         }

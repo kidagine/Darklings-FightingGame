@@ -251,7 +251,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool AssistAction()
     {
-        if (AssistGauge >= (Fix64)0.5f && GameManager.Instance.HasGameStarted)
+        if (AssistGauge >= (Fix64)0.5f && GameManager.Instance.HasGameStarted && !_assist.IsOnScreen)
         {
             _assist.Attack();
             DecreaseArcana((Fix64)0.5f);
