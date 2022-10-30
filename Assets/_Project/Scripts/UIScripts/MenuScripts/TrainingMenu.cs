@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class TrainingMenu : BaseMenu
 {
     [SerializeField] private GameObject _p1 = default;
+    [SerializeField] private InputHistory _inputHistoryOne = default;
+    [SerializeField] private InputHistory _inputHistoryTwo = default;
     [SerializeField] private TextMeshProUGUI _startupOneText = default;
     [SerializeField] private TextMeshProUGUI _activeOneText = default;
     [SerializeField] private TextMeshProUGUI _recoveryOneText = default;
@@ -78,7 +80,20 @@ public class TrainingMenu : BaseMenu
             _trainingSubOptions[_currentTrainingSubOptionIndex].Activate();
         }
     }
-
+    public void SetInputHistory(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                _inputHistoryOne.transform.GetChild(0).gameObject.SetActive(false);
+                _inputHistoryTwo.transform.GetChild(0).gameObject.SetActive(false);
+                break;
+            case 1:
+                _inputHistoryOne.transform.GetChild(0).gameObject.SetActive(true);
+                _inputHistoryTwo.transform.GetChild(0).gameObject.SetActive(true);
+                break;
+        }
+    }
     public void SetHitboxes(int value)
     {
         if (value == 1)

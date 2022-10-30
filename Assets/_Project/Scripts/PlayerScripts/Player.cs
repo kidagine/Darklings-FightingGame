@@ -55,7 +55,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool CanSkipAttack { get; set; }
     public bool Invincible { get; set; }
     public bool Invisible { get; set; }
-    public bool LockChain { get; set; }
+    public bool LockChain { get; set;}
     void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
@@ -146,6 +146,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         Health = playerStats.maxHealth;
         _playerUI.MaxHealth(Health);
+        _playerUI.CheckDemonLimit(Health);
     }
 
     private void InitializeStats()

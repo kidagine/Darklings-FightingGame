@@ -22,7 +22,9 @@ public class WallSplatState : State
         _player.transform.position = _playerMovement.OnWall();
         _playerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
         GameObject effect = Instantiate(_wallSplatPrefab);
-        effect.transform.localPosition = transform.position;
+        SpriteRenderer effectSpriteRenderer = effect.GetComponent<SpriteRenderer>();
+        effect.transform.localPosition = new Vector2(transform.position.x + (_player.transform.localScale.x * effectSpriteRenderer.sprite.bounds.size.x / 2), transform.position.y);
+        effect.transform.localScale = new Vector2(_player.transform.localScale.x * -1, 1);
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ToAirborneHurtState);
     }
 
