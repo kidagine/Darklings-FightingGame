@@ -1490,7 +1490,7 @@ MonoBehaviour:
   _sounds:
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 315866ca7bda8c940a8d2a10e0e74aac, type: 3}
-    volume: 1
+    volume: 0
     pitch: 1.3
     name: Jump
     loop: 0
@@ -1629,6 +1629,14 @@ MonoBehaviour:
     volume: 0.15
     pitch: 1
     name: ParryStart
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 219ea6816f54f8b4f8c0a345498b0ce0, type: 3}
+    volume: 0.8
+    pitch: 1.1
+    name: WallSplat
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0

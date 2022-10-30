@@ -14,7 +14,7 @@ public class WallSplatState : State
     public override void Enter()
     {
         base.Enter();
-        _audio.Sound("Landed").Play();
+        _audio.Sound("WallSplat").Play();
         _playerAnimator.WallSplat();
         _player.SetHurtbox(false);
         _playerMovement.ZeroGravity();
