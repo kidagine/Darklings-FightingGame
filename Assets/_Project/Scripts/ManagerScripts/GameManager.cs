@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
     public BaseController PausedController { get; set; }
     public float GameSpeed { get; set; }
     private Keyboard keyboardTwo;
-
+    public static float CORNER_POSITION = 10.47f;
     void Awake()
     {
         keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");

@@ -98,6 +98,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
                         transform.position = new Vector2(transform.position.x - pushDistance / 2, transform.position.y);
                     }
                     _player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + pushDistance, _player.OtherPlayer.transform.position.y);
+                    if (_player.OtherPlayer.transform.position.x > GameManager.CORNER_POSITION)
+                    {
+                        _player.OtherPlayer.transform.position = new Vector2(GameManager.CORNER_POSITION, _player.OtherPlayer.transform.position.y);
+                    }
                 }
                 else if (transform.localScale.x < 0.0f)
                 {
@@ -106,6 +110,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
                         transform.position = new Vector2(transform.position.x + pushDistance / 2, transform.position.y);
                     }
                     _player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - pushDistance, _player.OtherPlayer.transform.position.y);
+                    if (_player.OtherPlayer.transform.position.x < -GameManager.CORNER_POSITION)
+                    {
+                        _player.OtherPlayer.transform.position = new Vector2(-GameManager.CORNER_POSITION, _player.OtherPlayer.transform.position.y);
+                    }
                 }
                 _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
             }
