@@ -55,7 +55,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool CanSkipAttack { get; set; }
     public bool Invincible { get; set; }
     public bool Invisible { get; set; }
-    public bool LockChain { get; set; }
+    public bool LockChain { get; set;}
     void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
@@ -146,6 +146,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         Health = playerStats.maxHealth;
         _playerUI.MaxHealth(Health);
+        _playerUI.CheckDemonLimit(Health);
     }
 
     private void InitializeStats()
@@ -251,7 +252,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool AssistAction()
     {
-        if (AssistGauge >= (Fix64)0.5f && GameManager.Instance.HasGameStarted)
+        if (AssistGauge >= (Fix64)0.5f && GameManager.Instance.HasGameStarted && !_assist.IsOnScreen)
         {
             _assist.Attack();
             DecreaseArcana((Fix64)0.5f);

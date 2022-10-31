@@ -33,22 +33,20 @@ public class PlayerCollisionBoxes : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < _hurtboxes.Count; i++)
-        {
-            _hurtboxes[i].gameObject.SetActive(false);
-        }
         for (int i = 0; i < animationBoxes.Length; i++)
         {
-            _hurtboxes[i].gameObject.SetActive(true);
             _hurtboxes[i].SetBox(animationBoxes[i].size, animationBoxes[i].offset);
         }
     }
 
-    public void SetHitboxes(AnimationBox[] animationBoxes)
+    public void SetHitboxes(AnimationBox[] animationBoxes, bool multiHit = false)
     {
-        for (int i = 0; i < _hitboxes.Count; i++)
+        if (animationBoxes.Length == 0 || multiHit)
         {
-            _hitboxes[i].gameObject.SetActive(false);
+            for (int i = 0; i < _hitboxes.Count; i++)
+            {
+                _hitboxes[i].gameObject.SetActive(false);
+            }
         }
         for (int i = 0; i < animationBoxes.Length; i++)
         {

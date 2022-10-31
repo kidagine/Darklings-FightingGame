@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: PitchBlack
   m_EditorClassIdentifier: 
   spriteAtlas:
+  - {fileID: 4343727234628468602, guid: c7d4c88969cb1e14ebd241f63ab4a2f3, type: 2}
   - {fileID: 4343727234628468602, guid: 723e55aacee6ac6459585eb66ec50429, type: 2}
   - {fileID: 4343727234628468602, guid: af275c2dd8ee91e4e91f4496dbc9435c, type: 2}
   - {fileID: 4343727234628468602, guid: 7c5d5f2781c3e82488e0543001691890, type: 2}
   - {fileID: 4343727234628468602, guid: 9e0d532921b66a544a994d81b855f7ae, type: 2}
-  - {fileID: 4343727234628468602, guid: c7d4c88969cb1e14ebd241f63ab4a2f3, type: 2}
   animationCelsGroup:
   - celName: Idle
     loop: 1
@@ -358,6 +358,20 @@ MonoBehaviour:
     cameraShake: {fileID: 0}
     animationCel:
     - frames: 1
+      sprite: {fileID: -1771032092, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 2.5}
+        offset: {x: 0, y: 1.2}
+    - frames: 1
       sprite: {fileID: -2110617761, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
         jump: 0
@@ -375,6 +389,20 @@ MonoBehaviour:
     loop: 0
     cameraShake: {fileID: 0}
     animationCel:
+    - frames: 1
+      sprite: {fileID: 995430397, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 2.1}
+        offset: {x: -0.1, y: 1}
     - frames: 10
       sprite: {fileID: 264363681, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -993,6 +1021,68 @@ MonoBehaviour:
       hurtboxes:
       - size: {x: 2, y: 2.5}
         offset: {x: 0, y: 1.25}
+  - celName: RedFrenzy
+    loop: 0
+    cameraShake: {fileID: 11400000, guid: 1c671891c21f7fd4fb764bc8f3fc6f5f, type: 2}
+    animationCel:
+    - frames: 7
+      sprite: {fileID: -1986718989, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 2.5}
+        offset: {x: 0, y: 1.2}
+    - frames: 6
+      sprite: {fileID: -2019162659, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 2.5}
+        offset: {x: 0, y: 1.2}
+    - frames: 4
+      sprite: {fileID: -3356742, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes:
+      - size: {x: 2, y: 3}
+        offset: {x: 1.4, y: 1.7}
+      hurtboxes:
+      - size: {x: 2, y: 2}
+        offset: {x: 0, y: 1}
+    - frames: 23
+      sprite: {fileID: -1122553214, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 2}
+        offset: {x: 0, y: 1}
   - celName: 2H
     loop: 0
     cameraShake: {fileID: 0}

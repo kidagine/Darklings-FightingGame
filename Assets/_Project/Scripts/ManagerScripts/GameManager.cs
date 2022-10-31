@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
     public BaseController PausedController { get; set; }
     public float GameSpeed { get; set; }
     private Keyboard keyboardTwo;
-
+    public static float CORNER_POSITION = 10.47f;
     void Awake()
     {
         keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
@@ -452,6 +452,13 @@ public class GameManager : MonoBehaviour
         else
         {
             _matchOverMenu.Show();
+            // if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
+            // {
+            //     if (_controllerTwoType != ControllerTypeEnum.Keyboard)
+            //     {
+            //         _matchOverSecondMenu.Show();
+            //     }
+            // }
         }
         if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
         {
@@ -583,6 +590,8 @@ public class GameManager : MonoBehaviour
     {
         if (HasGameStarted)
         {
+            _playerOneWon = false;
+            _playerTwoWon = false;
             if (_isTrainingMode)
             {
                 _roundOverTrainingCoroutine = StartCoroutine(RoundOverTrainingCoroutine());
@@ -804,9 +813,15 @@ public class GameManager : MonoBehaviour
     IEnumerator RoundOverTrainingCoroutine()
     {
         HasGameStarted = false;
-        Time.timeScale = 0.25f;
-        yield return new WaitForSeconds(1.5f);
-        StartTrainingRound();
+        Time.timeScale = 0.5f;
+        yield return new WaitForSecondsRealtime(1.5f);
+        Time.timeScale = 1f;
+        _fadeHandler.StartFadeTransition(true);
+        _fadeHandler.onFadeEnd.AddListener(() =>
+        {
+            _fadeHandler.StartFadeTransition(false);
+            StartTrainingRound();
+        });
     }
 
     public void SwitchCharacters()
@@ -1085,7 +1100,10 @@ public class GameManager : MonoBehaviour
     private bool _superFreezeOver;
     public void SuperFreeze()
     {
-        GlobalHitstop(120);
+        if (!IsTrainingMode)
+        {
+            GlobalHitstop(120);
+        }
     }
 
     public int _hitstop;

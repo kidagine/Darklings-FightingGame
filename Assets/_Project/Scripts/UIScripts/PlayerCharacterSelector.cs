@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerCharacterSelector : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _randomSpriteRenderer = default;
     private RectTransform _rectTransform;
     private Vector2 _directionInput;
     private Audio _audio;

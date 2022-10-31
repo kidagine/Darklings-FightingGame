@@ -762,6 +762,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: Block
+  _chipEffectPrefab: {fileID: 6697712921357175186, guid: 0cdc5cb35371e404abb984b17170771f, type: 3}
   _blockEffectPrefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
 --- !u!114 &6721287234222021846
 MonoBehaviour:
@@ -776,6 +777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: BlockLow
+  _chipEffectPrefab: {fileID: 6697712921357175186, guid: 0cdc5cb35371e404abb984b17170771f, type: 3}
   _blockEffectPrefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
 --- !u!114 &5154540708296696613
 MonoBehaviour:
@@ -790,6 +792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: BlockAir
+  _chipEffectPrefab: {fileID: 6697712921357175186, guid: 0cdc5cb35371e404abb984b17170771f, type: 3}
   _blockEffectPrefab: {fileID: 6697712921357175186, guid: d52089fbc8eae38488591b348a4ad159, type: 3}
   _groundedPrefab: {fileID: 401367926962692719, guid: e1fa28b1dea2b624b8c19f16e1a68370, type: 3}
 --- !u!114 &7855595845877207489
@@ -874,7 +877,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateName: WallSplat
-  _wallSplatPrefab: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
+  _wallSplatPrefab: {fileID: 6697712921357175186, guid: 4c9fbf8f787993647a1657160a636b9d, type: 3}
 --- !u!1 &7684445122000850538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1487,7 +1490,7 @@ MonoBehaviour:
   _sounds:
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 315866ca7bda8c940a8d2a10e0e74aac, type: 3}
-    volume: 1
+    volume: 0
     pitch: 1.3
     name: Jump
     loop: 0
@@ -1626,6 +1629,14 @@ MonoBehaviour:
     volume: 0.15
     pitch: 1
     name: ParryStart
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: 219ea6816f54f8b4f8c0a345498b0ce0, type: 3}
+    volume: 0.8
+    pitch: 1.1
+    name: WallSplat
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0

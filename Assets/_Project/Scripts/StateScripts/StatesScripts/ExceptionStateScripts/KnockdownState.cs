@@ -28,6 +28,7 @@ public class KnockdownState : State
         {
             ToDeathState();
         }
+        _player.SetHurtbox(false);
     }
 
     IEnumerator ToWakeUpStateCoroutine()
@@ -60,5 +61,6 @@ public class KnockdownState : State
         {
             StopCoroutine(_knockdownCoroutine);
         }
+        _player.SetHurtbox(true);
     }
 }
