@@ -310,10 +310,10 @@ public class AttackState : State
     }
 
     public override bool ToRedFrenzyState()
-    {
-        if (_player.HasRecoverableHealth())
+    {           
+        if (_player.CanSkipAttack)
         {
-            if (_player.CanSkipAttack)
+            if (_player.HasRecoverableHealth())
             {
                 _stateMachine.ChangeState(_redFrenzyState);
                 return true;
