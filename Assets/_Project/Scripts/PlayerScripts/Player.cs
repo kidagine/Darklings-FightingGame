@@ -24,6 +24,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     private Coroutine _comboTimerCoroutine;
     private bool _comboTimerPaused;
     private readonly Fix64 _damageDecay = (Fix64)0.97f;
+    private readonly Fix64 _whiteHealthDivider = (Fix64)1.4f;
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
@@ -214,7 +215,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
         else
         {
-            HealthRecoverable -= value - 150;
+            HealthRecoverable -= (int)((Fix64)value / _whiteHealthDivider);
         }
         _playerUI.SetHealth(Health);
         _playerUI.SetRecoverableHealth(HealthRecoverable);
@@ -471,8 +472,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void HurtOnSuperArmor(AttackSO attack)
     {
-        Health -= CalculateDamage(attack);
-        _playerUI.SetHealth(Health);
+        SetHealth(CalculateDamage(attack));
         _playerUI.Damaged();
         _playerAnimator.SpriteSuperArmorEffect();
         GameManager.Instance.HitStop(attack.hitstop);
