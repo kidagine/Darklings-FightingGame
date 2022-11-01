@@ -83,6 +83,7 @@ public class AnimationEvent
     public bool projectile;
     public bool invisibile;
     public bool throwEnd;
+    public bool throwArcanaEnd;
     public Vector2 grabPoint;
 }
 
