@@ -1046,7 +1046,9 @@ MonoBehaviour:
         invisibile: 0
         throwEnd: 0
         grabPoint: {x: 0, y: 0}
-      hitboxes: []
+      hitboxes:
+      - size: {x: 1, y: 1}
+        offset: {x: 0, y: 0}
       hurtboxes:
       - size: {x: 2, y: 3}
         offset: {x: 0, y: 1.5}
@@ -1060,7 +1062,9 @@ MonoBehaviour:
         invisibile: 0
         throwEnd: 0
         grabPoint: {x: 0, y: 0}
-      hitboxes: []
+      hitboxes:
+      - size: {x: 1, y: 1}
+        offset: {x: 0, y: 0}
       hurtboxes:
       - size: {x: 2, y: 3}
         offset: {x: 0, y: 1.5}
@@ -1074,7 +1078,9 @@ MonoBehaviour:
         invisibile: 0
         throwEnd: 0
         grabPoint: {x: 0, y: 0}
-      hitboxes: []
+      hitboxes:
+      - size: {x: 1, y: 1}
+        offset: {x: 0, y: 0}
       hurtboxes:
       - size: {x: 2, y: 3}
         offset: {x: 0, y: 1.5}
@@ -1088,7 +1094,9 @@ MonoBehaviour:
         invisibile: 0
         throwEnd: 0
         grabPoint: {x: 0, y: 0}
-      hitboxes: []
+      hitboxes:
+      - size: {x: 1, y: 1}
+        offset: {x: 0, y: 0}
       hurtboxes:
       - size: {x: 2, y: 3}
         offset: {x: 0, y: 1.5}
@@ -1102,7 +1110,9 @@ MonoBehaviour:
         invisibile: 0
         throwEnd: 0
         grabPoint: {x: 0, y: 0}
-      hitboxes: []
+      hitboxes:
+      - size: {x: 1, y: 1}
+        offset: {x: 0, y: 0}
       hurtboxes:
       - size: {x: 2, y: 3}
         offset: {x: 0, y: 1.5}
@@ -1120,6 +1130,80 @@ MonoBehaviour:
       hurtboxes:
       - size: {x: 2, y: 2.5}
         offset: {x: 0, y: 1.3}
+  - celName: 5AEnd
+    loop: 0
+    cameraShake: {fileID: 11400000, guid: 1a36444acf606ae4d878fd0e61f5918a, type: 2}
+    animationCel:
+    - frames: 10
+      sprite: {fileID: 469159266, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 0.8, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 3}
+        offset: {x: 0, y: 1.5}
+    - frames: 15
+      sprite: {fileID: 790584417, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
+      animationEvent:
+        jump: 1
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 1, y: 0.5}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 3}
+        offset: {x: 0, y: 1.5}
+    - frames: 18
+      sprite: {fileID: -732767633, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 1
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: -1, y: 1}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 3}
+        offset: {x: 0, y: 1.5}
+    - frames: 10
+      sprite: {fileID: 319992145, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
+      animationEvent:
+        jump: 0
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 0
+        grabPoint: {x: 1, y: 0.5}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 3}
+        offset: {x: 0, y: 1.5}
+    - frames: 36
+      sprite: {fileID: 808685495, guid: db81d0f99846072478ec42aaef2efc27, type: 3}
+      animationEvent:
+        jump: 1
+        footstep: 0
+        parry: 0
+        projectile: 0
+        invisibile: 0
+        throwEnd: 1
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 3}
+        offset: {x: 0, y: 1.5}
   - celName: 2A
     loop: 0
     cameraShake: {fileID: 0}
@@ -1293,7 +1377,7 @@ MonoBehaviour:
         projectile: 0
         invisibile: 0
         throwEnd: 0
-        grabPoint: {x: 0.83, y: 0}
+        grabPoint: {x: 0.8, y: 0}
       hitboxes: []
       hurtboxes:
       - size: {x: 1.75, y: 2.5}
@@ -1307,7 +1391,7 @@ MonoBehaviour:
         projectile: 0
         invisibile: 0
         throwEnd: 0
-        grabPoint: {x: -0.9, y: 1}
+        grabPoint: {x: 0.8, y: 0.8}
       hitboxes: []
       hurtboxes:
       - size: {x: 1.75, y: 2.5}
@@ -1321,7 +1405,7 @@ MonoBehaviour:
         projectile: 0
         invisibile: 0
         throwEnd: 0
-        grabPoint: {x: -0.9, y: 1}
+        grabPoint: {x: 0.7, y: 0.8}
       hitboxes: []
       hurtboxes:
       - size: {x: 1.8, y: 3}

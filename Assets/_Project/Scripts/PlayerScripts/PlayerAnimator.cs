@@ -169,7 +169,7 @@ public class PlayerAnimator : DemonicsAnimator
 
     public void ArcanaThrow()
     {
-        SetAnimation("ArcanaThrow");
+        SetAnimation("5AEnd");
     }
 
     public void Hurt()
