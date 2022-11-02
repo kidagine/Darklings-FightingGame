@@ -65,9 +65,4 @@ public class PlayerAnimationEvents : MonoBehaviour
     {
         _audio.Sound(soundName).Play();
     }
-
-    public void AddForce(int moveHorizontally)
-    {
-        _playerMovement.AddForce(moveHorizontally);
-    }
 }

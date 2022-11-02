@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
@@ -75,11 +76,14 @@ public class AnimationCel
 public class AnimationEvent
 {
     public bool jump;
+    [ShowIf("jump")]
+    public Vector2 jumpDirection;
     public bool footstep;
     public bool parry;
     public bool projectile;
     public bool invisibile;
     public bool throwEnd;
+    public bool throwArcanaEnd;
     public Vector2 grabPoint;
 }
 
