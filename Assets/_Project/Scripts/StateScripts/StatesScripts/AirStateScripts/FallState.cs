@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class FallState : AirParentState
@@ -19,10 +20,11 @@ public class FallState : AirParentState
 
     public void ToIdleState()
     {
-        if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0)
+        if (_playerMovement.IsGrounded && _physics.VelocityY <= (Fix64)0)
         {
             Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
             _audio.Sound("Landed").Play();
+            _physics.VelocityX = (Fix64)0;
             _stateMachine.ChangeState(_idleState);
         }
     }

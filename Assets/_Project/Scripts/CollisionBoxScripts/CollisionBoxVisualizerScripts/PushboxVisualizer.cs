@@ -2,26 +2,24 @@ using UnityEngine;
 
 public class PushboxVisualizer : MonoBehaviour
 {
-	private BoxCollider2D _boxCollider;
+	private DemonicsCollider _collider;
 	private SpriteRenderer _spriteRenderer;
-	private Pushbox _pushbox;
 
 
 	void Awake()
 	{
-		_pushbox = transform.parent.GetComponent<Pushbox>();
 		_spriteRenderer = GetComponent<SpriteRenderer>();
-		_boxCollider = transform.parent.GetComponent<BoxCollider2D>();
+		_collider = transform.parent.GetComponent<DemonicsCollider>();
 	}
 
-	void LateUpdate()
+	void FixedUpdate()
 	{
 		if (TrainingSettings.ShowHitboxes)
 		{
-			transform.localPosition = _boxCollider.offset;
-			_spriteRenderer.size = _boxCollider.size;
-			_spriteRenderer.color = _pushbox.PushboxColor;
-			_spriteRenderer.enabled = _boxCollider.enabled;
+			transform.position = new Vector2((float)_collider.PositionX, (float)_collider.PositionY);
+			_spriteRenderer.size = new Vector2((float)_collider.SizeX, (float)_collider.SizeY);
+			_spriteRenderer.color = _collider.GizmoColor;
+			_spriteRenderer.enabled = _collider.enabled;
 		}
 		else
 		{

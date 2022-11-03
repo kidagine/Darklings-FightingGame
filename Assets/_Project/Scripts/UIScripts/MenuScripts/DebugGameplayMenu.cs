@@ -29,7 +29,7 @@ public class DebugGameplayMenu : MonoBehaviour
 		{
 			_fpsText.text = "FPS: " + Mathf.FloorToInt(1f / Time.deltaTime);
 		}
-		_frameText.text = "Frame: " + DemonicsPhysics.Frame;
+		_frameText.text = "Frame: " + DemonicsWorld.Frame;
 	}
 	private void FixedUpdate()
 	{

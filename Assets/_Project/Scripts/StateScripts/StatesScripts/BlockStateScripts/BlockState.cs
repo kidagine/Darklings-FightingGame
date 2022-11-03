@@ -9,7 +9,7 @@ public class BlockState : BlockParentState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        if (DemonicsPhysics.WaitFrames(ref _blockFrame))
+        if (DemonicsWorld.WaitFrames(ref _blockFrame))
         {
             if (_brainController.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
             {

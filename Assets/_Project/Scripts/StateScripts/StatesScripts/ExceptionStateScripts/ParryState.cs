@@ -10,6 +10,7 @@ public class ParryState : State
     private BlockState _blockState;
     private readonly int _parryKnockback = 2;
     private readonly int _hitstopOnParry = 12;
+    private readonly int _knockbackDuration = 10;
     private bool _parried;
 
     private void Awake()
@@ -76,12 +77,12 @@ public class ParryState : State
             if (_player.OtherPlayerMovement.IsInCorner)
             {
                 _playerMovement.Knockback(new Vector2(
-                    _player.OtherPlayer.transform.localScale.x, 0), new Vector2(_parryKnockback, 0), 0.2f);
+                    _player.OtherPlayer.transform.localScale.x, 0), new Vector2(_parryKnockback, 0), _knockbackDuration);
             }
             else
             {
                 _player.OtherPlayerMovement.Knockback(new Vector2(
-                    _player.transform.localScale.x, 0), new Vector2(_parryKnockback, 0), 0.2f);
+                    _player.transform.localScale.x, 0), new Vector2(_parryKnockback, 0), _knockbackDuration);
             }
         }
     }

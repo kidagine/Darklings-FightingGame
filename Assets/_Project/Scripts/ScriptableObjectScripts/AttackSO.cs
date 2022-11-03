@@ -15,8 +15,7 @@ public class AttackSO : ScriptableObject
     public float knockback;
     public Vector2 knockbackForce;
     public Vector2 knockbackDirection;
-    [Range(0.0f, 1.0f)]
-    public float knockbackDuration;
+    public int knockbackDuration;
 
     [Header("Properties")]
     public bool hasSuperArmor;

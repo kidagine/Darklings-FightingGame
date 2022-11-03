@@ -1,8 +1,9 @@
 using Demonics.Sounds;
+using FixMath.NET;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour, IPushboxResponder
+public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private LayerMask _wallLayerMask = default;
     [SerializeField] private LayerMask _playerLayerMask = default;
@@ -11,13 +12,17 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     private Audio _audio;
     private Vector2 _velocity;
     private Coroutine _knockbackCoroutine;
+    private int _knockbackFrame;
+    private int _knockbackDuration;
+
+    private readonly Fix64 _cornerLimit = (Fix64)10.46;
+    public DemonicsPhysics Physics { get; private set; }
     public bool HasJumped { get; set; }
     public bool HasDoubleJumped { get; set; }
     public bool HasAirDashed { get; set; }
     public int MovementSpeed { get; set; }
     public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
-    public bool CanDoubleJump { get; set; } = true;
     public bool IsInCorner { get; private set; }
     public bool IsInHitstop { get; private set; }
 
@@ -25,6 +30,7 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
     {
         _player = GetComponent<Player>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        Physics = GetComponent<DemonicsPhysics>();
         _audio = GetComponent<Audio>();
     }
 
@@ -35,30 +41,27 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
 
     void FixedUpdate()
     {
-        CheckIsInCorner();
-        JumpControl();
+        CheckKnockback();
+        CheckCorner();
+        CheckGrounded();
     }
 
-    public void ResetMovement()
+    private void CheckGrounded()
     {
-        _rigidbody.velocity = Vector2.zero;
-    }
-
-    private void JumpControl()
-    {
-        if (_rigidbody.velocity.y < 0)
+        if (Physics.PositionY == DemonicsPhysics.GROUND_POINT)
         {
-            _rigidbody.velocity += 3 * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+            IsGrounded = true;
         }
-        else if (_rigidbody.velocity.y > 0)
+        else
         {
-            _rigidbody.velocity += 2 * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+            IsGrounded = false;
         }
     }
 
     public void TravelDistance(Vector2 travelDistance)
     {
-        _rigidbody.velocity = travelDistance * 3;
+        Physics.VelocityX = (Fix64)(travelDistance.x * 3);
+        Physics.VelocityY = (Fix64)(travelDistance.y * 3);
     }
 
     public void CheckForPlayer()
@@ -142,26 +145,25 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _rigidbody.AddForce(new Vector2((moveHorizontally) * (jumpForce / 5f), jumpForce + 1.0f), ForceMode2D.Impulse);
     }
 
-    public void OnGrounded()
+    public void KnockbackNow(Vector2 knockbackDirection, Vector2 knockbackForce, int knockbackDuration)
     {
-        IsGrounded = true;
+        _startPositionX = Physics.PositionX;
+        _startPositionY = Physics.PositionY;
+        _endPositionX = Physics.PositionX * (Fix64)(knockbackDirection.x * knockbackForce.x);
+        _endPositionY = Physics.PositionY * (Fix64)(knockbackDirection.y * knockbackForce.y);
+        _knockbackDuration = knockbackDuration;
     }
 
-    public void OnAir()
-    {
-        IsGrounded = false;
-    }
-
-    public void KnockbackNow(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
-    {
-        _knockbackCoroutine = StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
-    }
-
-    public void Knockback(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
+    public void Knockback(Vector2 knockbackDirection, Vector2 knockbackForce, int knockbackDuration)
     {
         _player.hitstopEvent.AddListener(() =>
         {
-            _knockbackCoroutine = StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
+            _startPositionX = Physics.PositionX;
+            _startPositionY = Physics.PositionY;
+            _endPositionX = Physics.PositionX + (Fix64)knockbackDirection.x * (Fix64)knockbackForce.x;
+            _endPositionY = Physics.PositionY + (Fix64)knockbackDirection.y * (Fix64)knockbackForce.y;
+
+            _knockbackDuration = knockbackDuration;
         });
     }
 
@@ -170,6 +172,27 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         if (_knockbackCoroutine != null)
         {
             StopCoroutine(_knockbackCoroutine);
+        }
+    }
+    Fix64 _startPositionX;
+    Fix64 _startPositionY;
+    Fix64 _endPositionX;
+    Fix64 _endPositionY;
+    private void CheckKnockback()
+    {
+        if (_knockbackDuration > 0)
+        {
+            _knockbackFrame++;
+            Fix64 ratio = (Fix64)_knockbackFrame / (Fix64)_knockbackDuration;
+            Physics.PositionX = _startPositionX * ((Fix64)1 - ratio) + _endPositionX * ratio;
+            Physics.PositionY = _startPositionY * ((Fix64)1 - ratio) + _endPositionY * ratio;
+            if (_knockbackFrame == _knockbackDuration)
+            {
+                Physics.PositionX = _endPositionX;
+                Physics.PositionY = _endPositionY;
+                _knockbackDuration = 0;
+                _knockbackFrame = 0;
+            }
         }
     }
 
@@ -187,10 +210,10 @@ public class PlayerMovement : MonoBehaviour, IPushboxResponder
         _rigidbody.MovePosition(finalPosition);
     }
 
-    private void CheckIsInCorner()
+    private void CheckCorner()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 1.0f, _wallLayerMask);
-        if (hit.collider != null)
+        if (Physics.PositionX >= Fix64.Abs(_cornerLimit))
         {
             IsInCorner = true;
         }

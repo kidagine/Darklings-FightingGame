@@ -22,7 +22,7 @@ public class BlockAirState : BlockParentState
     {
         ToBlockState();
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y / 1.05f);
-        if (DemonicsPhysics.WaitFrames(ref _blockFrame))
+        if (DemonicsWorld.WaitFrames(ref _blockFrame))
         {
             ToFallState();
         }

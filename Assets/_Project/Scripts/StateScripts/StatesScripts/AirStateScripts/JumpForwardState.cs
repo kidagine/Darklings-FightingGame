@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class JumpForwardState : AirParentState
@@ -36,11 +37,11 @@ public class JumpForwardState : AirParentState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        if (!DemonicsPhysics.WaitFrames(ref _jumpFrame))
+        if (!DemonicsWorld.WaitFrames(ref _jumpFrame))
         {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpY);
+            _physics.VelocityY = (Fix64)_jumpY;
         }
-        _rigidbody.velocity = new Vector2(_jumpX, _rigidbody.velocity.y);
+        _physics.VelocityX = (Fix64)_jumpX;
     }
 
     public override void Exit()

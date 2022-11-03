@@ -360,6 +360,8 @@ public class AttackState : State
     public override void Exit()
     {
         base.Exit();
+        _physics.VelocityX = (Fix64)0;
+        _physics.VelocityY = (Fix64)0;
         _player.CanSkipAttack = false;
         _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
     }

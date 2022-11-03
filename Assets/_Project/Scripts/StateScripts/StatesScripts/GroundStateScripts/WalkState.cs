@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class WalkState : GroundParentState
@@ -16,7 +17,7 @@ public class WalkState : GroundParentState
 		ToCrouchState();
 		ToJumpForwardState();
 		_player.CheckFlip();
-		_rigidbody.velocity = new Vector2(_baseController.InputDirection.x * _playerMovement.MovementSpeed, _rigidbody.velocity.y);
+		_physics.VelocityX = (Fix64)(_baseController.InputDirection.x * _playerMovement.MovementSpeed);
 	}
 
 	private void ToIdleState()

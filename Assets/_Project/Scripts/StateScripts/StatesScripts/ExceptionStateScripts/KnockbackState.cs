@@ -9,7 +9,7 @@ public class KnockbackState : State
     private Coroutine _canCheckGroundCoroutine;
     private bool _canCheckGround;
     private readonly float _knockbackDirectionY = 0.5f;
-    private readonly float _knockbackDuration = 0.2f;
+    private readonly int _knockbackDuration = 10;
     private readonly float _knockbackForce = 2.5f;
 
     protected void Awake()
