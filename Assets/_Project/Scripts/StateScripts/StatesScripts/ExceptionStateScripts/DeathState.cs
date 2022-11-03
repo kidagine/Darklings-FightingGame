@@ -19,7 +19,6 @@ public class DeathState : State
         base.UpdateLogic();
         if (_playerMovement.IsGrounded)
         {
-            _rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
         }
     }
 

@@ -104,6 +104,5 @@ public class BlockParentState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _rigidbody.velocity = Vector2.zero;
     }
 }

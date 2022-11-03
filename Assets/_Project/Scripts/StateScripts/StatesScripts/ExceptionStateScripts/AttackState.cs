@@ -94,10 +94,10 @@ public class AttackState : State
 
     private void ToFallStateOnGround()
     {
-        if (_air && _playerMovement.IsGrounded && _rigidbody.velocity.y <= 0)
-        {
-            _stateMachine.ChangeState(_fallState);
-        }
+        // if (_air && _playerMovement.IsGrounded && _rigidbody.velocity.y <= 0)
+        // {
+        //     _stateMachine.ChangeState(_fallState);
+        // }
     }
 
     private new void ToIdleState()
@@ -310,7 +310,7 @@ public class AttackState : State
     }
 
     public override bool ToRedFrenzyState()
-    {           
+    {
         if (_player.CanSkipAttack)
         {
             if (_player.HasRecoverableHealth())
@@ -360,8 +360,7 @@ public class AttackState : State
     public override void Exit()
     {
         base.Exit();
-        _physics.VelocityX = (Fix64)0;
-        _physics.VelocityY = (Fix64)0;
+        _physics.Velocity = FixVector2.Zero;
         _player.CanSkipAttack = false;
         _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
     }

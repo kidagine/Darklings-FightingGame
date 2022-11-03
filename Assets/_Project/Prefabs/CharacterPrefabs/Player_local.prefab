@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6928605624373777523}
   - component: {fileID: 8164358433208840962}
-  - component: {fileID: 6024183478153498967}
+  - component: {fileID: 5470316766750224333}
   m_Layer: 7
-  m_Name: Pushbox_spriteRenderer (2)
+  m_Name: Pushbox_collisionVisualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -921334925
   m_SortingLayer: 4
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 3ef86b434874f8f4fa7ccbe9577c875d, type: 3}
   m_Color: {r: 0, g: 0, b: 1, a: 1}
   m_FlipX: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6024183478153498967
+--- !u!114 &5470316766750224333
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -362,7 +362,6 @@ MonoBehaviour:
   _playerComboSystem: {fileID: 8073473790702501994}
   _inputBuffer: {fileID: 4664395619888274278}
   _audio: {fileID: 7611394710214668632}
-  _rigidbody: {fileID: 8073473790702501985}
   _physics: {fileID: 2755107397131263186}
 --- !u!114 &1873517839397687495
 MonoBehaviour:
@@ -1171,7 +1170,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8073473790702501984}
-  - component: {fileID: 8073473790702501985}
   - component: {fileID: 2755107397131263186}
   - component: {fileID: 8073473790702501988}
   - component: {fileID: 8073473790702501987}
@@ -1210,27 +1208,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &8073473790702501985
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8073473790702501986}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 2
-  m_Material: {fileID: 6200000, guid: 93bce4df195738747956615c3d5b45a6, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
 --- !u!114 &2755107397131263186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2309,9 +2286,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8073473790437601078}
     m_Modifications:
+    - target: {fileID: 2533667708567321803, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
+      propertyPath: m_Name
+      value: Hitbox_collisionVisualizer
+      objectReference: {fileID: 0}
     - target: {fileID: 5123739317702046984, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
       propertyPath: m_SortingOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6291948109849223289, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
+      propertyPath: _showGizmo
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6291948109849223289, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
+      propertyPath: _ignoreCollision
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6291948109849223294, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
       propertyPath: m_RootOrder
@@ -2361,8 +2350,29 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main_hitbox
       objectReference: {fileID: 0}
+    - target: {fileID: 6291948109849223295, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
+--- !u!1 &320500493324429652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2533667708567321803, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
+  m_PrefabInstance: {fileID: 2836072438313833887}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5491236174710387130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320500493324429652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34754119084380a419bb9c68c7a2cf23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8073473789829592545 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6291948109849223294, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
@@ -2375,6 +2385,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8073473791272386160}
     m_Modifications:
+    - target: {fileID: 3820304870352819292, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+      propertyPath: _showGizmo
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3820304870352819292, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+      propertyPath: _ignoreCollision
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3820304870352819292, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
       propertyPath: _hurtboxResponderObject
       value: 
@@ -2431,12 +2449,33 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4898812605033455692, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+      propertyPath: m_Name
+      value: Hurtbox_collisionVisualizer
+      objectReference: {fileID: 0}
     - target: {fileID: 6719501380990296644, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+--- !u!1 &500702964140621493 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4898812605033455692, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+  m_PrefabInstance: {fileID: 4976141870308499193}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &607065318714514336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 500702964140621493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34754119084380a419bb9c68c7a2cf23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8073473791817976484 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3820304870352819293, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}

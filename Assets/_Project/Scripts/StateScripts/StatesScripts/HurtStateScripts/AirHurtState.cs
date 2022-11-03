@@ -28,7 +28,6 @@ public class AirHurtState : HurtParentState
     {
         base.UpdateLogic();
         ToFallStateAfterGround();
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         _playerMovement.CheckForPlayer();
         if (DemonicsWorld.WaitFrames(ref _hurtFrame))
         {
@@ -55,11 +54,11 @@ public class AirHurtState : HurtParentState
 
     private void ToFallStateAfterGround()
     {
-        if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
-        {
-            _hurtState.Initialize(_hurtAttack, true);
-            _stateMachine.ChangeState(_hurtState);
-        }
+        // if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
+        // {
+        //     _hurtState.Initialize(_hurtAttack, true);
+        //     _stateMachine.ChangeState(_hurtState);
+        // }
     }
 
     public override bool ToHurtState(AttackSO attack)

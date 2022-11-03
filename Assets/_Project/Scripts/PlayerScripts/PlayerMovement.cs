@@ -7,10 +7,9 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private LayerMask _wallLayerMask = default;
     [SerializeField] private LayerMask _playerLayerMask = default;
-    private Rigidbody2D _rigidbody;
     private Player _player;
     private Audio _audio;
-    private Vector2 _velocity;
+    private FixVector2 _velocity;
     private Coroutine _knockbackCoroutine;
     private int _knockbackFrame;
     private int _knockbackDuration;
@@ -29,7 +28,6 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         _player = GetComponent<Player>();
-        _rigidbody = GetComponent<Rigidbody2D>();
         Physics = GetComponent<DemonicsPhysics>();
         _audio = GetComponent<Audio>();
     }
@@ -48,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckGrounded()
     {
-        if (Physics.PositionY == DemonicsPhysics.GROUND_POINT)
+        if (Physics.Position.y == DemonicsPhysics.GROUND_POINT)
         {
             IsGrounded = true;
         }
@@ -60,8 +58,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TravelDistance(Vector2 travelDistance)
     {
-        Physics.VelocityX = (Fix64)(travelDistance.x * 3);
-        Physics.VelocityY = (Fix64)(travelDistance.y * 3);
+        Physics.Velocity = new FixVector2((Fix64)travelDistance.x * (Fix64)3, (Fix64)travelDistance.y * (Fix64)3);
     }
 
     public void CheckForPlayer()
@@ -88,50 +85,50 @@ public class PlayerMovement : MonoBehaviour
 
     public void GroundedPoint(Vector2 point, float pushboxSizeX)
     {
-        if (_rigidbody.velocity.y < 0 && point.y == 1)
-        {
-            float difference = Mathf.Abs(_player.transform.position.x - _player.OtherPlayer.transform.position.x);
-            float pushDistance = (pushboxSizeX - difference) + 0.1f;
-            if (!_player.OtherPlayerMovement.IsInCorner || IsInCorner)
-            {
-                if (transform.localScale.x > 0.0f)
-                {
-                    if (_rigidbody.velocity.x > 0.0f)
-                    {
-                        transform.position = new Vector2(transform.position.x - pushDistance / 2, transform.position.y);
-                    }
-                    _player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + pushDistance, _player.OtherPlayer.transform.position.y);
-                    if (_player.OtherPlayer.transform.position.x > GameManager.CORNER_POSITION)
-                    {
-                        _player.OtherPlayer.transform.position = new Vector2(GameManager.CORNER_POSITION, _player.OtherPlayer.transform.position.y);
-                    }
-                }
-                else if (transform.localScale.x < 0.0f)
-                {
-                    if (_rigidbody.velocity.x > 0.0f)
-                    {
-                        transform.position = new Vector2(transform.position.x + pushDistance / 2, transform.position.y);
-                    }
-                    _player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - pushDistance, _player.OtherPlayer.transform.position.y);
-                    if (_player.OtherPlayer.transform.position.x < -GameManager.CORNER_POSITION)
-                    {
-                        _player.OtherPlayer.transform.position = new Vector2(-GameManager.CORNER_POSITION, _player.OtherPlayer.transform.position.y);
-                    }
-                }
-                _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-            }
-            else
-            {
-                if (transform.position.x > 0)
-                {
-                    transform.position = new Vector2(transform.position.x - pushDistance, transform.position.y);
-                }
-                else if (transform.position.x < 0)
-                {
-                    transform.position = new Vector2(transform.position.x + pushDistance, transform.position.y);
-                }
-            }
-        }
+        // if (_rigidbody.velocity.y < 0 && point.y == 1)
+        // {
+        //     float difference = Mathf.Abs(_player.transform.position.x - _player.OtherPlayer.transform.position.x);
+        //     float pushDistance = (pushboxSizeX - difference) + 0.1f;
+        //     if (!_player.OtherPlayerMovement.IsInCorner || IsInCorner)
+        //     {
+        //         if (transform.localScale.x > 0.0f)
+        //         {
+        //             if (_rigidbody.velocity.x > 0.0f)
+        //             {
+        //                 transform.position = new Vector2(transform.position.x - pushDistance / 2, transform.position.y);
+        //             }
+        //             _player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + pushDistance, _player.OtherPlayer.transform.position.y);
+        //             if (_player.OtherPlayer.transform.position.x > GameManager.CORNER_POSITION)
+        //             {
+        //                 _player.OtherPlayer.transform.position = new Vector2(GameManager.CORNER_POSITION, _player.OtherPlayer.transform.position.y);
+        //             }
+        //         }
+        //         else if (transform.localScale.x < 0.0f)
+        //         {
+        //             if (_rigidbody.velocity.x > 0.0f)
+        //             {
+        //                 transform.position = new Vector2(transform.position.x + pushDistance / 2, transform.position.y);
+        //             }
+        //             _player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - pushDistance, _player.OtherPlayer.transform.position.y);
+        //             if (_player.OtherPlayer.transform.position.x < -GameManager.CORNER_POSITION)
+        //             {
+        //                 _player.OtherPlayer.transform.position = new Vector2(-GameManager.CORNER_POSITION, _player.OtherPlayer.transform.position.y);
+        //             }
+        //         }
+        //         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+        //     }
+        //     else
+        //     {
+        //         if (transform.position.x > 0)
+        //         {
+        //             transform.position = new Vector2(transform.position.x - pushDistance, transform.position.y);
+        //         }
+        //         else if (transform.position.x < 0)
+        //         {
+        //             transform.position = new Vector2(transform.position.x + pushDistance, transform.position.y);
+        //         }
+        //     }
+        // }
     }
 
     public void AddForce(float moveHorizontally)
@@ -142,15 +139,12 @@ public class PlayerMovement : MonoBehaviour
         {
             direction = (int)transform.localScale.x * -1;
         }
-        _rigidbody.AddForce(new Vector2((moveHorizontally) * (jumpForce / 5f), jumpForce + 1.0f), ForceMode2D.Impulse);
     }
 
     public void KnockbackNow(Vector2 knockbackDirection, Vector2 knockbackForce, int knockbackDuration)
     {
-        _startPositionX = Physics.PositionX;
-        _startPositionY = Physics.PositionY;
-        _endPositionX = Physics.PositionX * (Fix64)(knockbackDirection.x * knockbackForce.x);
-        _endPositionY = Physics.PositionY * (Fix64)(knockbackDirection.y * knockbackForce.y);
+        _startPosition = Physics.Position;
+        _endPosition = new FixVector2(Physics.Position.x + (Fix64)knockbackDirection.x * (Fix64)knockbackForce.x, Physics.Position.y + (Fix64)knockbackDirection.y * (Fix64)knockbackForce.y); ;
         _knockbackDuration = knockbackDuration;
     }
 
@@ -158,11 +152,8 @@ public class PlayerMovement : MonoBehaviour
     {
         _player.hitstopEvent.AddListener(() =>
         {
-            _startPositionX = Physics.PositionX;
-            _startPositionY = Physics.PositionY;
-            _endPositionX = Physics.PositionX + (Fix64)knockbackDirection.x * (Fix64)knockbackForce.x;
-            _endPositionY = Physics.PositionY + (Fix64)knockbackDirection.y * (Fix64)knockbackForce.y;
-
+            _startPosition = Physics.Position;
+            _endPosition = new FixVector2(Physics.Position.x + (Fix64)knockbackDirection.x * (Fix64)knockbackForce.x, Physics.Position.y + (Fix64)knockbackDirection.y * (Fix64)knockbackForce.y); ;
             _knockbackDuration = knockbackDuration;
         });
     }
@@ -174,46 +165,28 @@ public class PlayerMovement : MonoBehaviour
             StopCoroutine(_knockbackCoroutine);
         }
     }
-    Fix64 _startPositionX;
-    Fix64 _startPositionY;
-    Fix64 _endPositionX;
-    Fix64 _endPositionY;
+    FixVector2 _startPosition;
+    FixVector2 _endPosition;
     private void CheckKnockback()
     {
         if (_knockbackDuration > 0)
         {
             _knockbackFrame++;
             Fix64 ratio = (Fix64)_knockbackFrame / (Fix64)_knockbackDuration;
-            Physics.PositionX = _startPositionX * ((Fix64)1 - ratio) + _endPositionX * ratio;
-            Physics.PositionY = _startPositionY * ((Fix64)1 - ratio) + _endPositionY * ratio;
+            Physics.Position = new FixVector2(_startPosition.x * ((Fix64)1 - ratio) + _endPosition.x * ratio, _startPosition.y * ((Fix64)1 - ratio) + _endPosition.y * ratio);
             if (_knockbackFrame == _knockbackDuration)
             {
-                Physics.PositionX = _endPositionX;
-                Physics.PositionY = _endPositionY;
+                Physics.Position = _endPosition;
                 _knockbackDuration = 0;
                 _knockbackFrame = 0;
             }
         }
     }
 
-    IEnumerator KnockbackCoroutine(Vector2 knockback, float knockbackDuration)
-    {
-        Vector2 startingPosition = transform.position;
-        Vector2 finalPosition = new(transform.position.x + knockback.x, transform.position.y + knockback.y);
-        float elapsedTime = 0;
-        while (elapsedTime < knockbackDuration)
-        {
-            _rigidbody.MovePosition(Vector3.Lerp(startingPosition, finalPosition, elapsedTime / knockbackDuration));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        _rigidbody.MovePosition(finalPosition);
-    }
-
     private void CheckCorner()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 1.0f, _wallLayerMask);
-        if (Physics.PositionX >= Fix64.Abs(_cornerLimit))
+        if (Physics.Position.x >= Fix64.Abs(_cornerLimit))
         {
             IsInCorner = true;
         }
@@ -242,12 +215,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetGravity()
     {
-        _rigidbody.gravityScale = 2.0f;
     }
 
     public void ZeroGravity()
     {
-        _rigidbody.gravityScale = 0.0f;
     }
 
     public void ResetToWalkSpeed()
@@ -264,8 +235,8 @@ public class PlayerMovement : MonoBehaviour
         if (!IsInHitstop)
         {
             IsInHitstop = true;
-            _velocity = _rigidbody.velocity;
-            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+            _velocity = Physics.Velocity;
+            Physics.Freeze = true;
         }
     }
 
@@ -274,21 +245,13 @@ public class PlayerMovement : MonoBehaviour
         if (IsInHitstop)
         {
             IsInHitstop = false;
-            _rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-            _rigidbody.velocity = _velocity;
+            Physics.Freeze = false;
+            Physics.Velocity = _velocity;
         }
     }
 
     public void SetRigidbodyKinematic(bool state)
     {
-        if (state)
-        {
-            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-        }
-        else
-        {
-            _rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-        }
-        _rigidbody.isKinematic = state;
+
     }
 }

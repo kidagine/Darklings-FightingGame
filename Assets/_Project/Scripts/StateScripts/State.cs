@@ -5,7 +5,6 @@ public class State : MonoBehaviour
 {
     public string stateName;
     protected StateMachine _stateMachine;
-    protected Rigidbody2D _rigidbody;
     protected DemonicsPhysics _physics;
     protected PlayerAnimator _playerAnimator;
     protected Player _player;
@@ -18,11 +17,10 @@ public class State : MonoBehaviour
     protected Audio _audio;
 
 
-    public void Initialize(StateMachine stateMachine, Rigidbody2D rigidbody, DemonicsPhysics physics, PlayerAnimator playerAnimator, Player player, PlayerMovement playerMovement,
+    public void Initialize(StateMachine stateMachine, DemonicsPhysics physics, PlayerAnimator playerAnimator, Player player, PlayerMovement playerMovement,
         PlayerUI playerUI, PlayerComboSystem playerComboSystem, InputBuffer inputBuffer, Audio audio)
     {
         _stateMachine = stateMachine;
-        _rigidbody = rigidbody;
         _physics = physics;
         _playerAnimator = playerAnimator;
         _player = player;

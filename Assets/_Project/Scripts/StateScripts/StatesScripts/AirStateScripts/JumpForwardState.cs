@@ -39,9 +39,9 @@ public class JumpForwardState : AirParentState
         base.UpdateLogic();
         if (!DemonicsWorld.WaitFrames(ref _jumpFrame))
         {
-            _physics.VelocityY = (Fix64)_jumpY;
+            _physics.Velocity = new FixVector2(_physics.Velocity.x, (Fix64)_jumpY);
         }
-        _physics.VelocityX = (Fix64)_jumpX;
+        _physics.Velocity = new FixVector2((Fix64)_jumpX, _physics.Velocity.y);
     }
 
     public override void Exit()

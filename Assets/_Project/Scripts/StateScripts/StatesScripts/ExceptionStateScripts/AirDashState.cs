@@ -39,8 +39,7 @@ public class AirDashState : State
             dashEffect.localScale = new Vector2(-1, transform.root.localScale.y);
             dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
         }
-        _physics.VelocityY = (Fix64)0;
-        _physics.VelocityX = (Fix64)(DashDirection * _player.playerStats.dashForce);
+        _physics.Velocity = new FixVector2((Fix64)DashDirection * (Fix64)_player.playerStats.dashForce, (Fix64)0);
         _physics.EnableGravity(false);
         _dashCoroutine = StartCoroutine(DashCoroutine());
     }
@@ -54,7 +53,6 @@ public class AirDashState : State
             playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.root.localScale.x, Color.white);
             yield return new WaitForSeconds(0.07f);
         }
-        _physics.VelocityX = (Fix64)0;
         yield return null;
         _dashCoroutine = null;
     }
@@ -134,6 +132,7 @@ public class AirDashState : State
     public override void Exit()
     {
         base.Exit();
+        _physics.Velocity = FixVector2.Zero;
         _physics.EnableGravity(true);
         if (_dashCoroutine != null)
         {

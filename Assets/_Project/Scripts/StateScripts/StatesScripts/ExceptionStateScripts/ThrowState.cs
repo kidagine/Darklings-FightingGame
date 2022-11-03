@@ -47,6 +47,5 @@ public class ThrowState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _rigidbody.velocity = Vector2.zero;
     }
 }

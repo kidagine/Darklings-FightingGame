@@ -5,45 +5,32 @@ using UnityEngine;
 
 public class DemonicsPhysics : MonoBehaviour
 {
-    public Fix64 VelocityX { get; set; }
-    public Fix64 VelocityY { get; set; }
-    public Fix64 PositionX { get; set; }
-    public Fix64 PositionY { get; set; }
-    private int _forceFrames;
+    public FixVector2 Velocity { get; set; }
+    public FixVector2 Position { get; set; }
     private Fix64 _gravity = (Fix64)0.7;
     public static Fix64 GROUND_POINT = (Fix64)(-4.485);
-    public static Fix64 CELLING_POINT = (Fix64)(0);
+    public static Fix64 CELLING_POINT = (Fix64)(7);
     public static Fix64 WALL_POINT = (Fix64)(10.75);
+    public bool Freeze { get; set; }
 
     public void OnCollision(DemonicsPhysics otherPhysics)
     {
-        if (Fix64.Abs(VelocityX) > Fix64.Abs(otherPhysics.VelocityX))
+        if (Fix64.Abs(Velocity.x) > Fix64.Abs(otherPhysics.Velocity.x))
         {
-            if (PositionX < otherPhysics.PositionX && VelocityX > (Fix64)0 || PositionX > otherPhysics.PositionX && VelocityX < (Fix64)0)
+            if (Position.x < otherPhysics.Position.x && Velocity.x > (Fix64)0 || Position.x > otherPhysics.Position.x && Velocity.x < (Fix64)0)
             {
-                VelocityX /= (Fix64)2;
-                otherPhysics.PositionX += VelocityX / (Fix64)50;
+                Velocity = new FixVector2(Velocity.x / (Fix64)2, Velocity.y);
+                otherPhysics.Position = new FixVector2(otherPhysics.Position.x + Velocity.x / (Fix64)50, otherPhysics.Position.y);
             }
         }
-        else if (Fix64.Abs(VelocityX) < Fix64.Abs(otherPhysics.VelocityX))
+        else if (Fix64.Abs(Velocity.x) < Fix64.Abs(otherPhysics.Velocity.x))
         {
-            if (otherPhysics.PositionX < PositionX && otherPhysics.VelocityX > (Fix64)0 || otherPhysics.PositionX > PositionX && otherPhysics.VelocityX < (Fix64)0)
+            if (otherPhysics.Position.x < Position.x && otherPhysics.Velocity.x > (Fix64)0 || otherPhysics.Position.x > Position.x && otherPhysics.Velocity.x < (Fix64)0)
             {
-                otherPhysics.VelocityX /= (Fix64)2;
-                PositionX += otherPhysics.VelocityX / (Fix64)50;
+                otherPhysics.Velocity = new FixVector2(otherPhysics.Velocity.x / (Fix64)2, otherPhysics.Velocity.y);
+                Position = new FixVector2(Position.x + otherPhysics.Velocity.x / (Fix64)50, Position.y);
             }
         }
-    }
-
-    public void ExitCollision()
-    {
-
-    }
-
-    public void Velocity(Fix64 forceX, Fix64 forceY)
-    {
-        VelocityX = forceX;
-        VelocityY = forceY;
     }
 
     void FixedUpdate()
@@ -54,32 +41,35 @@ public class DemonicsPhysics : MonoBehaviour
     private void Move()
     {
         //Sets physics
-        VelocityY -= _gravity;
-        PositionX += VelocityX / (Fix64)50;
-        PositionY += VelocityY / (Fix64)50;
+        Velocity = new FixVector2(Velocity.x, Velocity.y - _gravity);
+        if (Freeze)
+        {
+            Velocity = FixVector2.Zero;
+        }
+        Position = new FixVector2(Position.x + Velocity.x / (Fix64)50, Position.y + Velocity.y / (Fix64)50);
 
         Bounds();
         //Sets rendering
-        transform.position = new Vector2((float)PositionX, (float)PositionY);
+        transform.position = new Vector2((float)Position.x, (float)Position.y);
     }
 
     private void Bounds()
     {
-        if (PositionY <= GROUND_POINT)
+        if (Position.y <= GROUND_POINT)
         {
-            PositionY = GROUND_POINT;
+            Position = new FixVector2(Position.x, GROUND_POINT);
         }
-        if (PositionY >= CELLING_POINT && VelocityY > (Fix64)0)
+        if (Position.y >= CELLING_POINT && Velocity.y > (Fix64)0)
         {
-            VelocityY = (Fix64)0;
+            Velocity = new FixVector2(Velocity.x, (Fix64)0);
         }
-        if (PositionX >= WALL_POINT && VelocityX > (Fix64)0)
+        if (Position.x >= WALL_POINT && Velocity.x > (Fix64)0)
         {
-            PositionX = WALL_POINT;
+            Position = new FixVector2(WALL_POINT, Position.y);
         }
-        if (PositionX <= -WALL_POINT && VelocityX < (Fix64)0)
+        if (Position.x <= -WALL_POINT && Velocity.x < (Fix64)0)
         {
-            PositionX = -WALL_POINT;
+            Position = new FixVector2(-WALL_POINT, Position.y);
         }
     }
 

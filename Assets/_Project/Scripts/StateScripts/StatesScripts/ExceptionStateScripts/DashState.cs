@@ -41,7 +41,7 @@ public class DashState : State
             dashEffect.localScale = new Vector2(-1, transform.localScale.y);
             dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
         }
-        _physics.VelocityX = (Fix64)(DashDirection * _player.playerStats.dashForce);
+        _physics.Velocity = new FixVector2((Fix64)DashDirection * (Fix64)_player.playerStats.dashForce, _physics.Velocity.y);
         _playerMovement.ZeroGravity();
         _dashCoroutine = StartCoroutine(DashCoroutine());
     }
@@ -113,7 +113,7 @@ public class DashState : State
     public override void Exit()
     {
         base.Exit();
-        _physics.VelocityX = (Fix64)0;
+        _physics.Velocity = FixVector2.Zero;
         if (_dashCoroutine != null)
         {
             _playerMovement.ResetGravity();

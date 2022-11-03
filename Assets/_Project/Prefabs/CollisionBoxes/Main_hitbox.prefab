@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4436509041625834366}
   - component: {fileID: 5123739317702046984}
-  - component: {fileID: 7117303206570019132}
   m_Layer: 7
   m_Name: Hitbox_spriteRenderer
   m_TagString: Untagged
@@ -85,18 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7117303206570019132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2533667708567321803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49fa865ee649d4d4aaaca25047bf6024, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6291948109849223295
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,5 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51729ec44d22e5f4f8bb5accfea6be2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _showGizmo: 0
+  _ignoreCollision: 0
+  _offset: {x: 0, y: 0}
+  _size: {x: 0, y: 0}
   _hitGround: 0
   _hasHit: 0

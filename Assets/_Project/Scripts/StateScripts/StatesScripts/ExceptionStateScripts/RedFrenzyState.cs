@@ -44,7 +44,6 @@ public class RedFrenzyState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _rigidbody.velocity = Vector2.zero;
         _playerMovement.ZeroGravity();
         if (DemonicsWorld.WaitFramesOnce(ref _startTeleportFrame))
         {

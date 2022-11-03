@@ -50,7 +50,6 @@ public class ShadowbreakState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
 
     public override void Exit()

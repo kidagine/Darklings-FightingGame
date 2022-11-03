@@ -15,7 +15,7 @@ public class RunState : GroundParentState
         _audio.Sound("Run").Play();
         _playerMovement.MovementSpeed = _player.playerStats.SpeedRun;
         _runCoroutine = StartCoroutine(RunCoroutine());
-        _physics.VelocityX = (Fix64)(transform.root.localScale.x * _playerMovement.MovementSpeed);
+        _physics.Velocity = new FixVector2((Fix64)transform.root.localScale.x * (Fix64)_playerMovement.MovementSpeed, _physics.Velocity.y);
     }
 
     IEnumerator RunCoroutine()
@@ -66,7 +66,7 @@ public class RunState : GroundParentState
     public override void Exit()
     {
         base.Exit();
-        _physics.VelocityX = (Fix64)0;
+        _physics.Velocity = FixVector2.Zero;
         if (_runCoroutine != null)
         {
             StopCoroutine(_runCoroutine);

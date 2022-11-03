@@ -31,7 +31,6 @@ public class AirborneHurtState : HurtParentState
         }
         _audio.Sound(_hurtAttack.impactSound).Play();
         _playerAnimator.HurtAir();
-        _rigidbody.velocity = Vector2.zero;
         if (_player.OtherPlayerUI.CurrentComboCount == 1)
         {
             _player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
@@ -43,7 +42,6 @@ public class AirborneHurtState : HurtParentState
         {
             GameManager.Instance.AddHitstop(_player);
             _player.Flip((int)-_player.transform.localScale.x);
-            _rigidbody.AddForce(new Vector2(-_player.transform.localScale.x * 5, 12), ForceMode2D.Impulse);
         }
         else
         {
@@ -85,7 +83,6 @@ public class AirborneHurtState : HurtParentState
         base.UpdateLogic();
         ToKnockdownState();
         ToWallSplatState();
-        _rigidbody.velocity = _rigidbody.velocity;
     }
 
     private void ToDeathState()

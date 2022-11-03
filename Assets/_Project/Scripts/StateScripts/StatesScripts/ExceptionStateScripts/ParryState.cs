@@ -117,7 +117,6 @@ public class ParryState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _rigidbody.velocity = Vector2.zero;
     }
 
     public override void Exit()

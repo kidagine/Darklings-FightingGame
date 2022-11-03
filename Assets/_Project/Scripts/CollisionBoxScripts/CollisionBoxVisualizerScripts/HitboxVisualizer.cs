@@ -12,12 +12,12 @@ public class HitboxVisualizer : MonoBehaviour
         _hitbox = transform.parent.GetComponent<Hitbox>();
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (TrainingSettings.ShowHitboxes)
         {
-            transform.localPosition = new Vector2(_hitbox.Offset.x, _hitbox.Offset.y);
-            _spriteRenderer.size = _hitbox.Size;
+            transform.localPosition = new Vector2((float)_hitbox.Offset.x, (float)_hitbox.Offset.y);
+            _spriteRenderer.size = new Vector2((float)_hitbox.Size.x, (float)_hitbox.Size.y);
             _spriteRenderer.enabled = _hitbox.enabled;
         }
         else

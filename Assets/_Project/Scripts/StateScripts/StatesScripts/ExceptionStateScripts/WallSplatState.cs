@@ -37,7 +37,6 @@ public class WallSplatState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _rigidbody.velocity = Vector2.zero;
     }
 
     public override bool ToKnockdownState()

@@ -48,7 +48,7 @@ public class AirParentState : State
 
     public void ToFallState()
     {
-        if (_physics.VelocityY <= (Fix64)0)
+        if (_physics.Velocity.y <= (Fix64)0)
         {
             _stateMachine.ChangeState(_fallState);
         }

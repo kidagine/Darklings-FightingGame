@@ -113,8 +113,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void ResetPlayer(Vector2 resetPosition)
     {
         RecallAssist();
-        _playerMovement.Physics.PositionX = (Fix64)resetPosition.x;
-        _playerMovement.Physics.PositionY = (Fix64)resetPosition.y;
+        _playerMovement.Physics.Position = new FixVector2((Fix64)resetPosition.x, (Fix64)resetPosition.y);
         _playerStateManager.ResetToInitialState();
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;
@@ -356,7 +355,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             }
             calculatedDamage *= damageScale;
         }
-        int calculatedIntDamage = (int)Fix64.Round(calculatedDamage);
+        int calculatedIntDamage = (int)calculatedDamage;
         OtherPlayer.SetResultAttack(calculatedIntDamage, hurtAttack);
         return calculatedIntDamage;
     }
@@ -371,7 +370,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         ResultAttack.comboDamage += calculatedDamage;
     }
 
-    public bool HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
+    public bool HitboxCollided(Vector2 hurtPosition, Hurtbox hurtbox = null)
     {
         if (!CurrentAttack.isProjectile)
         {
@@ -380,7 +379,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 GameManager.Instance.AddHitstop(this);
             }
         }
-        CurrentAttack.hurtEffectPosition = new Vector2((float)(Fix64)hit.point.x, (float)(Fix64)hit.point.y);
+        CurrentAttack.hurtEffectPosition = hurtPosition;
         if (!CurrentAttack.isProjectile)
         {
             if (!CurrentAttack.isArcana)
