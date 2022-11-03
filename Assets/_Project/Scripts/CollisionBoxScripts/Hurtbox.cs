@@ -1,4 +1,4 @@
-﻿using FixMath.NET;
+using FixMath.NET;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -15,11 +15,6 @@ public class Hurtbox : DemonicsCollider
     {
         if (_hurtboxResponderObject != null)
             _hurtboxResponder = _hurtboxResponderObject.GetComponent<IHurtboxResponder>();
-    }
-
-    protected override void InitializeCollisionList()
-    {
-
     }
 
     public void SetIsTrigger(bool state)

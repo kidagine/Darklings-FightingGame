@@ -16,7 +16,7 @@ public class AirParentState : State
     protected KnockbackState _knockbackState;
     protected RedFrenzyState _redFrenzyState;
 
-    protected int _jumpCancelForce = 11;
+    protected Fix64 _jumpCancelForce = (Fix64)1;
     protected virtual void Awake()
     {
         _fallState = GetComponent<FallState>();

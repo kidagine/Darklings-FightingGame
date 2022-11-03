@@ -21,11 +21,11 @@ public class JumpState : AirParentState
         _physics.Velocity = new FixVector2((Fix64)0, _physics.Velocity.y);
         if (_jumpCancel)
         {
-            _physics.Velocity = new FixVector2(_physics.Velocity.x, (Fix64)_jumpCancelForce);
+            _physics.Velocity = new FixVector2(_physics.Velocity.x, _jumpCancelForce);
         }
         else
         {
-            _physics.Velocity = new FixVector2(_physics.Velocity.x, (Fix64)_player.playerStats.jumpForce);
+            _physics.Velocity = new FixVector2(_physics.Velocity.x, _player.playerStats.JumpForce);
         }
         _player.SetPushboxTrigger(true);
     }

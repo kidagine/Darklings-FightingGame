@@ -7,7 +7,7 @@ public class DemonicsPhysics : MonoBehaviour
 {
     public FixVector2 Velocity { get; set; }
     public FixVector2 Position { get; set; }
-    private Fix64 _gravity = (Fix64)0.7;
+    private Fix64 _gravity;
     public static Fix64 GROUND_POINT = (Fix64)(-4.485);
     public static Fix64 CELLING_POINT = (Fix64)(7);
     public static Fix64 WALL_POINT = (Fix64)(10.75);
@@ -20,7 +20,7 @@ public class DemonicsPhysics : MonoBehaviour
             if (Position.x < otherPhysics.Position.x && Velocity.x > (Fix64)0 || Position.x > otherPhysics.Position.x && Velocity.x < (Fix64)0)
             {
                 Velocity = new FixVector2(Velocity.x / (Fix64)2, Velocity.y);
-                otherPhysics.Position = new FixVector2(otherPhysics.Position.x + Velocity.x / (Fix64)50, otherPhysics.Position.y);
+                otherPhysics.Position = new FixVector2(otherPhysics.Position.x + Velocity.x, otherPhysics.Position.y);
             }
         }
         else if (Fix64.Abs(Velocity.x) < Fix64.Abs(otherPhysics.Velocity.x))
@@ -28,7 +28,7 @@ public class DemonicsPhysics : MonoBehaviour
             if (otherPhysics.Position.x < Position.x && otherPhysics.Velocity.x > (Fix64)0 || otherPhysics.Position.x > Position.x && otherPhysics.Velocity.x < (Fix64)0)
             {
                 otherPhysics.Velocity = new FixVector2(otherPhysics.Velocity.x / (Fix64)2, otherPhysics.Velocity.y);
-                Position = new FixVector2(Position.x + otherPhysics.Velocity.x / (Fix64)50, Position.y);
+                Position = new FixVector2(Position.x + otherPhysics.Velocity.x, Position.y);
             }
         }
     }
@@ -46,7 +46,7 @@ public class DemonicsPhysics : MonoBehaviour
         {
             Velocity = FixVector2.Zero;
         }
-        Position = new FixVector2(Position.x + Velocity.x / (Fix64)50, Position.y + Velocity.y / (Fix64)50);
+        Position = new FixVector2(Position.x + Velocity.x, Position.y + Velocity.y);
 
         Bounds();
         //Sets rendering
@@ -77,7 +77,7 @@ public class DemonicsPhysics : MonoBehaviour
     {
         if (state)
         {
-            _gravity = (Fix64)0.7;
+            _gravity = (Fix64)0.02;
         }
         else
         {

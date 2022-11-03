@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public bool HasJumped { get; set; }
     public bool HasDoubleJumped { get; set; }
     public bool HasAirDashed { get; set; }
-    public int MovementSpeed { get; set; }
+    public Fix64 MovementSpeed { get; set; }
     public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
     public bool IsInCorner { get; private set; }
@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TravelDistance(Vector2 travelDistance)
     {
-        Physics.Velocity = new FixVector2((Fix64)travelDistance.x * (Fix64)3, (Fix64)travelDistance.y * (Fix64)3);
+        Physics.Velocity = new FixVector2((Fix64)travelDistance.x, (Fix64)travelDistance.x);
     }
 
     public void CheckForPlayer()
@@ -75,7 +75,6 @@ public class PlayerMovement : MonoBehaviour
                     if (hit.collider.transform.root.TryGetComponent(out Player player))
                     {
                         float pushboxSizeX = hit.collider.GetComponent<BoxCollider2D>().size.x;
-                        GroundedPoint(hit.normal.normalized, pushboxSizeX);
                     }
                 }
             }
@@ -83,57 +82,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void GroundedPoint(Vector2 point, float pushboxSizeX)
-    {
-        // if (_rigidbody.velocity.y < 0 && point.y == 1)
-        // {
-        //     float difference = Mathf.Abs(_player.transform.position.x - _player.OtherPlayer.transform.position.x);
-        //     float pushDistance = (pushboxSizeX - difference) + 0.1f;
-        //     if (!_player.OtherPlayerMovement.IsInCorner || IsInCorner)
-        //     {
-        //         if (transform.localScale.x > 0.0f)
-        //         {
-        //             if (_rigidbody.velocity.x > 0.0f)
-        //             {
-        //                 transform.position = new Vector2(transform.position.x - pushDistance / 2, transform.position.y);
-        //             }
-        //             _player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + pushDistance, _player.OtherPlayer.transform.position.y);
-        //             if (_player.OtherPlayer.transform.position.x > GameManager.CORNER_POSITION)
-        //             {
-        //                 _player.OtherPlayer.transform.position = new Vector2(GameManager.CORNER_POSITION, _player.OtherPlayer.transform.position.y);
-        //             }
-        //         }
-        //         else if (transform.localScale.x < 0.0f)
-        //         {
-        //             if (_rigidbody.velocity.x > 0.0f)
-        //             {
-        //                 transform.position = new Vector2(transform.position.x + pushDistance / 2, transform.position.y);
-        //             }
-        //             _player.OtherPlayer.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - pushDistance, _player.OtherPlayer.transform.position.y);
-        //             if (_player.OtherPlayer.transform.position.x < -GameManager.CORNER_POSITION)
-        //             {
-        //                 _player.OtherPlayer.transform.position = new Vector2(-GameManager.CORNER_POSITION, _player.OtherPlayer.transform.position.y);
-        //             }
-        //         }
-        //         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-        //     }
-        //     else
-        //     {
-        //         if (transform.position.x > 0)
-        //         {
-        //             transform.position = new Vector2(transform.position.x - pushDistance, transform.position.y);
-        //         }
-        //         else if (transform.position.x < 0)
-        //         {
-        //             transform.position = new Vector2(transform.position.x + pushDistance, transform.position.y);
-        //         }
-        //     }
-        // }
-    }
-
     public void AddForce(float moveHorizontally)
     {
-        float jumpForce = _player.playerStats.jumpForce - 3.5f;
         int direction = 0;
         if (moveHorizontally == 1)
         {

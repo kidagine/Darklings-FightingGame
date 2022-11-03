@@ -114,6 +114,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         RecallAssist();
         _playerMovement.Physics.Position = new FixVector2((Fix64)resetPosition.x, (Fix64)resetPosition.y);
+        _playerMovement.Physics.Velocity = FixVector2.Zero;
         _playerStateManager.ResetToInitialState();
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;

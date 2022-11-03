@@ -13,11 +13,11 @@ public class WalkState : GroundParentState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        _physics.Velocity = new FixVector2((Fix64)_baseController.InputDirection.x * (Fix64)_playerMovement.MovementSpeed, (Fix64)0);
         ToIdleState();
         ToCrouchState();
         ToJumpForwardState();
         _player.CheckFlip();
-        _physics.Velocity = new FixVector2((Fix64)_baseController.InputDirection.x * (Fix64)_playerMovement.MovementSpeed, (Fix64)0);
     }
 
     private void ToIdleState()

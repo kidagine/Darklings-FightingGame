@@ -17,7 +17,7 @@ public class DemonicsCollider : MonoBehaviour
     public bool WasColliding { get; set; }
     public bool IgnoreCollision { get { return _ignoreCollision; } set { _ignoreCollision = value; } }
     public FixVector2 Size { get { return new FixVector2((Fix64)_size.x, (Fix64)_size.y); } set { _size = new Vector2((float)value.x, (float)value.y); } }
-    public FixVector2 Offset { get { return new FixVector2((Fix64)_offset.x, (Fix64)_offset.y); } set { _offset = new Vector2((float)value.x, (float)value.y); } }
+    public FixVector2 Offset { get { return new FixVector2((Fix64)_offset.x * (Fix64)transform.root.localScale.x, (Fix64)_offset.y); } set { _offset = new Vector2((float)value.x, (float)value.y); } }
     public FixVector2 Position
     {
         get

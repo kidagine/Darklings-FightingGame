@@ -57,7 +57,6 @@ public class Hitbox : DemonicsCollider
 
     public void SetBox(Vector2 size, Vector2 offset)
     {
-        Vector2 offsetWorldSpace = transform.TransformPoint(offset);
         Size = new FixVector2((Fix64)size.x, (Fix64)size.y);
         Offset = new FixVector2((Fix64)offset.x, (Fix64)offset.y);
     }
@@ -67,7 +66,7 @@ public class Hitbox : DemonicsCollider
         base.EnterCollision(collider);
         if (collider.TryGetComponent(out Hurtbox hurtbox))
         {
-            _hitboxResponder.HitboxCollided(Vector2.zero, hurtbox);
+            _hitboxResponder.HitboxCollided(new Vector2((float)collider.Position.x, (float)collider.Position.y), hurtbox);
         }
     }
 

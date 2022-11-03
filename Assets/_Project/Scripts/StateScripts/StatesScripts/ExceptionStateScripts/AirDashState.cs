@@ -39,7 +39,7 @@ public class AirDashState : State
             dashEffect.localScale = new Vector2(-1, transform.root.localScale.y);
             dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
         }
-        _physics.Velocity = new FixVector2((Fix64)DashDirection * (Fix64)_player.playerStats.dashForce, (Fix64)0);
+        _physics.Velocity = new FixVector2((Fix64)DashDirection * (Fix64)_player.playerStats.DashForce, (Fix64)0);
         _physics.EnableGravity(false);
         _dashCoroutine = StartCoroutine(DashCoroutine());
     }

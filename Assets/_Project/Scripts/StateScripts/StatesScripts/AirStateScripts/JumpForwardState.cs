@@ -4,10 +4,11 @@ using UnityEngine;
 public class JumpForwardState : AirParentState
 {
     [SerializeField] protected GameObject _jumpPrefab = default;
-    private int _jumpX;
-    private int _jumpY;
+    private Fix64 _jumpX;
+    private Fix64 _jumpY;
     private int _jumpFrame = 5;
     private bool _jumpCancel;
+    private readonly Fix64 _jumpForwardSubtract = (Fix64)0.25;
 
     public void Initialize(bool jumpCancel = false)
     {
@@ -24,13 +25,13 @@ public class JumpForwardState : AirParentState
         _playerMovement.ResetToWalkSpeed();
         if (_jumpCancel)
         {
-            _jumpX = _baseController.InputDirection.x * (_jumpCancelForce - 8);
+            _jumpX = _baseController.InputDirection.x * (_jumpCancelForce);
         }
         else
         {
-            _jumpX = _baseController.InputDirection.x * (_player.playerStats.jumpForce - 8);
+            _jumpX = _baseController.InputDirection.x * (_player.playerStats.JumpForce - _jumpForwardSubtract);
         }
-        _jumpY = _player.playerStats.jumpForce;
+        _jumpY = _player.playerStats.JumpForce;
     }
 
 

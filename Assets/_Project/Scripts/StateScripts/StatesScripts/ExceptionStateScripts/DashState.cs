@@ -41,7 +41,7 @@ public class DashState : State
             dashEffect.localScale = new Vector2(-1, transform.localScale.y);
             dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
         }
-        _physics.Velocity = new FixVector2((Fix64)DashDirection * (Fix64)_player.playerStats.dashForce, _physics.Velocity.y);
+        _physics.Velocity = new FixVector2((Fix64)DashDirection * (Fix64)_player.playerStats.DashForce, _physics.Velocity.y);
         _playerMovement.ZeroGravity();
         _dashCoroutine = StartCoroutine(DashCoroutine());
     }
