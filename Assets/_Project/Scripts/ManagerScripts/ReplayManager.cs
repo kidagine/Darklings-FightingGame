@@ -199,7 +199,7 @@ public class ReplayManager : MonoBehaviour
     {
         if (s)
         {
-            if (DemonicsPhysics.Frame == replayCardData.skip)
+            if (DemonicsWorld.Frame == replayCardData.skip)
             {
                 GameManager.Instance.SkipIntro();
                 s = false;
@@ -215,7 +215,7 @@ public class ReplayManager : MonoBehaviour
     {
         if (i < replayCardData.playerOneInputs.Length)
         {
-            if (DemonicsPhysics.Frame >= replayCardData.playerOneInputs[i].time)
+            if (DemonicsWorld.Frame >= replayCardData.playerOneInputs[i].time)
             {
                 _playerOneInputBuffer.AddInputBufferItem(replayCardData.playerOneInputs[i].input, replayCardData.playerOneInputs[i].direction);
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Direction)

@@ -35,9 +35,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _gameSpeed = 1;
     [Range(10, 300)]
     [SerializeField] private int _countdownTime = 99;
+    [SerializeField] private float[] _spawnPositionsX = default;
     [Header("Data")]
     [SerializeField] private CinemachineTargetGroup _targetGroup = default;
-    [SerializeField] private Transform[] _spawnPositions = default;
     [SerializeField] private IntroUI _introUI = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
@@ -170,8 +170,8 @@ public class GameManager : MonoBehaviour
         playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
-        PlayerOne.transform.position = _spawnPositions[0].position;
-        PlayerTwo.transform.position = _spawnPositions[1].position;
+        PlayerOne.transform.position = new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT);
+        PlayerTwo.transform.position = new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT);
         if (SceneSettings.ControllerOne != null && _controllerOneType != ControllerTypeEnum.Cpu)
         {
             _playerOneController.SetControllerToPlayer();
@@ -409,7 +409,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.anyKeyDown)
             {
-                ReplayManager.Instance.Skip = DemonicsPhysics.Frame;
+                ReplayManager.Instance.Skip = DemonicsWorld.Frame;
                 SkipIntro();
             }
         }
@@ -484,10 +484,8 @@ public class GameManager : MonoBehaviour
         _countdownText.text = Mathf.Round(_countdown).ToString();
         _targetGroup.m_Targets[0].weight = 0.5f;
         _targetGroup.m_Targets[1].weight = 0.5f;
-        PlayerOne.ResetPlayer();
-        PlayerTwo.ResetPlayer();
-        PlayerOne.transform.position = _spawnPositions[0].position;
-        PlayerTwo.transform.position = _spawnPositions[1].position;
+        PlayerOne.ResetPlayer(new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT));
+        PlayerTwo.ResetPlayer(new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT));
         PlayerOne.StopComboTimer();
         PlayerTwo.StopComboTimer();
         PlayerOne.PlayerStateManager.TryToTauntState();
@@ -502,16 +500,14 @@ public class GameManager : MonoBehaviour
 
     private void StartTrainingRound()
     {
-        PlayerOne.ResetPlayer();
-        PlayerTwo.ResetPlayer();
+        PlayerOne.ResetPlayer(new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT));
+        PlayerTwo.ResetPlayer(new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT));
         PlayerOne.ResetLives();
         PlayerTwo.ResetLives();
         _playerOneUI.FadeIn();
         _playerTwoUI.FadeIn();
         _timerAnimator.SetTrigger("FadeIn");
         _infiniteTime.SetActive(true);
-        PlayerOne.transform.position = _spawnPositions[0].position;
-        PlayerTwo.transform.position = _spawnPositions[1].position;
         HasGameStarted = true;
     }
     private int _showFrame = 30;
@@ -525,7 +521,7 @@ public class GameManager : MonoBehaviour
         if (_startRun)
         {
             Time.timeScale = GameSpeed;
-            if (DemonicsPhysics.WaitFramesOnce(ref _showFrame))
+            if (DemonicsWorld.WaitFramesOnce(ref _showFrame))
             {
                 _showEnd = true;
                 _uiAudio.Sound("TextSound").Play();
@@ -549,7 +545,7 @@ public class GameManager : MonoBehaviour
             }
             if (_showEnd)
             {
-                if (DemonicsPhysics.WaitFramesOnce(ref _readyFrame))
+                if (DemonicsWorld.WaitFramesOnce(ref _readyFrame))
                 {
                     _readyAnimator.Play("FightShow");
                     _uiAudio.Sound("TextSound").Play();
@@ -562,7 +558,7 @@ public class GameManager : MonoBehaviour
                 }
                 if (_readyEnd)
                 {
-                    if (DemonicsPhysics.WaitFramesOnce(ref _readyEndFrame))
+                    if (DemonicsWorld.WaitFramesOnce(ref _readyEndFrame))
                     {
                         _startRun = false;
                         for (int i = 0; i < _readyObjects.Length; i++)
@@ -695,7 +691,7 @@ public class GameManager : MonoBehaviour
         {
             if (_roundOver)
             {
-                if (DemonicsPhysics.WaitFramesOnce(ref _roundOverSecondFrame))
+                if (DemonicsWorld.WaitFramesOnce(ref _roundOverSecondFrame))
                 {
                     _uiAudio.Sound("TextSound").Play();
                     _readyAnimator.Play("ReadyTextShow");
@@ -718,7 +714,7 @@ public class GameManager : MonoBehaviour
                 }
                 if (_roundOverSecond)
                 {
-                    if (DemonicsPhysics.WaitFramesOnce(ref _roundOverThirdFrame))
+                    if (DemonicsWorld.WaitFramesOnce(ref _roundOverThirdFrame))
                     {
                         if (_playerOneWon)
                         {
@@ -741,7 +737,7 @@ public class GameManager : MonoBehaviour
                     }
                     if (_roundOverThird)
                     {
-                        if (DemonicsPhysics.WaitFramesOnce(ref _roundOverFourthFrame))
+                        if (DemonicsWorld.WaitFramesOnce(ref _roundOverFourthFrame))
                         {
                             for (int i = 0; i < _readyObjects.Length; i++)
                             {
@@ -919,23 +915,23 @@ public class GameManager : MonoBehaviour
                 {
                     StopCoroutine(_roundOverTrainingCoroutine);
                 }
-                PlayerOne.ResetPlayer();
-                PlayerTwo.ResetPlayer();
                 PlayerOne.ResetLives();
                 PlayerTwo.ResetLives();
+                Vector2 playerOneResetPosition = Vector2.zero;
+                Vector2 playerTwoResetPosition = Vector2.zero;
                 ObjectPoolingManager.Instance.DisableAllObjects();
                 if (movementInput.y == 1.0f)
                 {
                     _reverseReset = !_reverseReset;
                     if (!_reverseReset)
                     {
-                        PlayerOne.transform.position = _cachedOneResetPosition;
-                        PlayerTwo.transform.position = _cachedTwoResetPosition;
+                        playerOneResetPosition= _cachedOneResetPosition;
+                        playerTwoResetPosition = _cachedTwoResetPosition;
                     }
                     else
                     {
-                        PlayerTwo.transform.position = _cachedOneResetPosition;
-                        PlayerOne.transform.position = _cachedTwoResetPosition;
+                        playerTwoResetPosition = _cachedOneResetPosition;
+                        playerOneResetPosition = _cachedTwoResetPosition;
                     }
                 }
 
@@ -943,26 +939,26 @@ public class GameManager : MonoBehaviour
                 {
                     if (!_reverseReset)
                     {
-                        PlayerOne.transform.position = _cachedOneResetPosition;
-                        PlayerTwo.transform.position = _cachedTwoResetPosition;
+                        playerOneResetPosition = _cachedOneResetPosition;
+                        playerTwoResetPosition = _cachedTwoResetPosition;
                     }
                     else
                     {
-                        PlayerOne.transform.position = _cachedTwoResetPosition;
-                        PlayerTwo.transform.position = _cachedOneResetPosition;
+                        playerOneResetPosition= _cachedTwoResetPosition;
+                        playerTwoResetPosition = _cachedOneResetPosition;
                     }
                 }
                 else if (movementInput.y == -1.0f)
                 {
                     if (!_reverseReset)
                     {
-                        PlayerOne.transform.position = _spawnPositions[0].position;
-                        PlayerTwo.transform.position = _spawnPositions[1].position;
+                        playerOneResetPosition = new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT);
+                        playerTwoResetPosition = new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT);
                     }
                     else
                     {
-                        PlayerTwo.transform.position = _spawnPositions[0].position;
-                        PlayerOne.transform.position = _spawnPositions[1].position;
+                        playerTwoResetPosition = new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT);
+                        playerOneResetPosition = new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT);
                     }
                     _cachedOneResetPosition = PlayerOne.transform.position;
                     _cachedTwoResetPosition = PlayerTwo.transform.position;
@@ -971,13 +967,13 @@ public class GameManager : MonoBehaviour
                 {
                     if (!_reverseReset)
                     {
-                        PlayerOne.transform.position = new Vector2(_spawnPositions[0].position.x + 9, _spawnPositions[0].position.y);
-                        PlayerTwo.transform.position = new Vector2(_spawnPositions[1].position.x + 6, _spawnPositions[1].position.y);
+                        playerOneResetPosition = new Vector2(_spawnPositionsX[0] + 9, (float)DemonicsPhysics.GROUND_POINT);
+                        playerTwoResetPosition = new Vector2(_spawnPositionsX[1] + 6, (float)DemonicsPhysics.GROUND_POINT);
                     }
                     else
                     {
-                        PlayerTwo.transform.position = new Vector2(_spawnPositions[0].position.x + 9, _spawnPositions[0].position.y);
-                        PlayerOne.transform.position = new Vector2(_spawnPositions[1].position.x + 6, _spawnPositions[1].position.y);
+                        playerTwoResetPosition = new Vector2(_spawnPositionsX[0] + 9, (float)DemonicsPhysics.GROUND_POINT);
+                        playerOneResetPosition = new Vector2(_spawnPositionsX[1] + 6, (float)DemonicsPhysics.GROUND_POINT);
                     }
                     _cachedOneResetPosition = PlayerOne.transform.position;
                     _cachedTwoResetPosition = PlayerTwo.transform.position;
@@ -986,17 +982,19 @@ public class GameManager : MonoBehaviour
                 {
                     if (!_reverseReset)
                     {
-                        PlayerOne.transform.position = new Vector2(_spawnPositions[0].position.x - 6, _spawnPositions[0].position.y);
-                        PlayerTwo.transform.position = new Vector2(_spawnPositions[1].position.x - 9, _spawnPositions[1].position.y);
+                        playerOneResetPosition = new Vector2(_spawnPositionsX[0] - 9, (float)DemonicsPhysics.GROUND_POINT);
+                        playerTwoResetPosition = new Vector2(_spawnPositionsX[1] - 6, (float)DemonicsPhysics.GROUND_POINT);
                     }
                     else
                     {
-                        PlayerTwo.transform.position = new Vector2(_spawnPositions[0].position.x - 6, _spawnPositions[0].position.y);
-                        PlayerOne.transform.position = new Vector2(_spawnPositions[1].position.x - 9, _spawnPositions[1].position.y);
+                        playerTwoResetPosition = new Vector2(_spawnPositionsX[0] - 9, (float)DemonicsPhysics.GROUND_POINT);
+                        playerOneResetPosition = new Vector2(_spawnPositionsX[1] - 6, (float)DemonicsPhysics.GROUND_POINT);
                     }
                     _cachedOneResetPosition = PlayerOne.transform.position;
                     _cachedTwoResetPosition = PlayerTwo.transform.position;
                 }
+                PlayerOne.ResetPlayer(playerOneResetPosition);
+                PlayerTwo.ResetPlayer(playerTwoResetPosition);
                 _fadeHandler.StartFadeTransition(false);
             });
         }
@@ -1126,7 +1124,7 @@ public class GameManager : MonoBehaviour
     {
         if (_hitstop > 0)
         {
-            if (DemonicsPhysics.WaitFramesOnce(ref _hitstop))
+            if (DemonicsWorld.WaitFramesOnce(ref _hitstop))
             {
                 _hitstop = 0;
                 for (int i = 0; i < _hitstopList.Count; i++)

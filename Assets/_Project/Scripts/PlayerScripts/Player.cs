@@ -38,12 +38,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
     public AttackSO CurrentAttack { get; set; }
     public ResultAttack ResultAttack { get; set; }
+    public Pushbox Groundbox { get { return _groundPushbox; } private set { } }
     public Transform CameraPoint { get { return _cameraPoint; } private set { } }
     public bool CanAirArcana { get; set; }
     public int Health { get; set; }
     public int HealthRecoverable { get; set; }
     public int Lives { get; set; } = 2;
-    public bool IsAttacking { get; set; }
     public bool IsPlayerOne { get; set; }
     public Fix64 AssistGauge { get; set; } = (Fix64)1;
     public Fix64 ArcanaGauge { get; set; }
@@ -56,7 +56,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool CanSkipAttack { get; set; }
     public bool Invincible { get; set; }
     public bool Invisible { get; set; }
-    public bool LockChain { get; set;}
+    public bool LockChain { get; set; }
+
     void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
@@ -109,9 +110,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return true;
     }
 
-    public void ResetPlayer()
+    public void ResetPlayer(Vector2 resetPosition)
     {
         RecallAssist();
+        _playerMovement.Physics.Position = new FixVector2((Fix64)resetPosition.x, (Fix64)resetPosition.y);
+        _playerMovement.Physics.Velocity = FixVector2.Zero;
         _playerStateManager.ResetToInitialState();
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;
@@ -123,10 +126,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             ArcanaGauge = (Fix64)0;
         }
+        _playerMovement.Physics.EnableGravity(true);
         StopAllCoroutines();
         StopComboTimer();
         _playerMovement.StopAllCoroutines();
-        _playerMovement.ResetMovement();
         _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
         _playerUI.SetArcana((float)ArcanaGauge);
         _playerUI.SetAssist((float)AssistGauge);
@@ -353,7 +356,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             }
             calculatedDamage *= damageScale;
         }
-        int calculatedIntDamage = (int)Fix64.Round(calculatedDamage);
+        int calculatedIntDamage = (int)calculatedDamage;
         OtherPlayer.SetResultAttack(calculatedIntDamage, hurtAttack);
         return calculatedIntDamage;
     }
@@ -368,7 +371,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         ResultAttack.comboDamage += calculatedDamage;
     }
 
-    public bool HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
+    public bool HitboxCollided(Vector2 hurtPosition, Hurtbox hurtbox = null)
     {
         if (!CurrentAttack.isProjectile)
         {
@@ -377,7 +380,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 GameManager.Instance.AddHitstop(this);
             }
         }
-        CurrentAttack.hurtEffectPosition = new Vector2((float)(Fix64)hit.point.x, (float)(Fix64)hit.point.y);
+        CurrentAttack.hurtEffectPosition = hurtPosition;
         if (!CurrentAttack.isProjectile)
         {
             if (!CurrentAttack.isArcana)

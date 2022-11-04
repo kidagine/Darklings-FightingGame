@@ -46,10 +46,9 @@ public class HurtState : HurtParentState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _rigidbody.velocity = Vector2.zero;
         if (!_player.IsInHitstop())
         {
-            if (DemonicsPhysics.WaitFrames(ref _hurtFrame))
+            if (DemonicsWorld.WaitFrames(ref _hurtFrame))
             {
                 if (_brainController.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
                 {

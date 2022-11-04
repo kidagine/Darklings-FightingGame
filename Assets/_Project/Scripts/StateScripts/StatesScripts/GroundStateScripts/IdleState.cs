@@ -23,7 +23,6 @@ public class IdleState : GroundParentState
         ToCrouchState();
         ToJumpState();
         _player.CheckFlip();
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
 
     private void ToWalkState()

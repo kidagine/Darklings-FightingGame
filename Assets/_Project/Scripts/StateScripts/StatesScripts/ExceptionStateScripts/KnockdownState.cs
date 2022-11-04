@@ -50,7 +50,6 @@ public class KnockdownState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
         _playerMovement.CheckForPlayer();
     }
 

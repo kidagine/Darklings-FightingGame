@@ -60,8 +60,7 @@ public class ArcanaState : State
     {
         if (!_playerComboSystem.GetArcana(_crouch, _air).reversal)
         {
-            _playerMovement.TravelDistance(new Vector2(
-                _player.CurrentAttack.travelDistance * transform.root.localScale.x, 0));
+            _playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0));
         }
     }
 

@@ -76,9 +76,9 @@ public class Assist : DemonicsAnimator, IHitboxResponder
         _hitEffect.transform.SetParent(null);
     }
 
-    public bool HitboxCollided(RaycastHit2D hit, Hurtbox hurtbox = null)
+    public bool HitboxCollided(Vector2 hurtPosition, Hurtbox hurtbox = null)
     {
-        AssistStats.attackSO.hurtEffectPosition = hit.point;
+        AssistStats.attackSO.hurtEffectPosition = hurtPosition;
         return hurtbox.TakeDamage(AssistStats.attackSO);
     }
 

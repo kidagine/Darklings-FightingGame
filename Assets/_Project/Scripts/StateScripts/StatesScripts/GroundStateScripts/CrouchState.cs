@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class CrouchState : GroundParentState
@@ -6,6 +7,7 @@ public class CrouchState : GroundParentState
     {
         base.Enter();
         _playerAnimator.Crouch();
+        _physics.Velocity = FixVector2.Zero;
     }
 
     public override void UpdateLogic()
@@ -13,7 +15,6 @@ public class CrouchState : GroundParentState
         base.UpdateLogic();
         ToIdleState();
         _player.CheckFlip();
-        _rigidbody.velocity = Vector2.zero;
     }
 
     private void ToIdleState()

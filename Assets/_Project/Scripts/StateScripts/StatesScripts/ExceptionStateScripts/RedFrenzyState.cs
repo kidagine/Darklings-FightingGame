@@ -44,22 +44,21 @@ public class RedFrenzyState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _rigidbody.velocity = Vector2.zero;
         _playerMovement.ZeroGravity();
-        if (DemonicsPhysics.WaitFramesOnce(ref _startTeleportFrame))
+        if (DemonicsWorld.WaitFramesOnce(ref _startTeleportFrame))
         {
             StartTeleportToOpponent();
         }
         if (_midTeleportFrame > 0)
         {
-            if (DemonicsPhysics.WaitFramesOnce(ref _midTeleportFrame))
+            if (DemonicsWorld.WaitFramesOnce(ref _midTeleportFrame))
             {
                 MidTeleportToOpponent();
             }
         }
         if (_endTeleportFrame > 0)
         {
-            if (DemonicsPhysics.WaitFramesOnce(ref _endTeleportFrame))
+            if (DemonicsWorld.WaitFramesOnce(ref _endTeleportFrame))
             {
                 EndTeleportToOpponent();
             }

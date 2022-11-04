@@ -163,18 +163,18 @@ public class PlayerController : BaseController
             if (!_dashForwardPressed)
             {
                 _dashForwardPressed = true;
-                _dashForwardLastInputTime = DemonicsPhysics.Frame;
+                _dashForwardLastInputTime = DemonicsWorld.Frame;
             }
             else
             {
-                int timeSinceLastPress = DemonicsPhysics.Frame - _dashForwardLastInputTime;
+                int timeSinceLastPress = DemonicsWorld.Frame - _dashForwardLastInputTime;
                 if (timeSinceLastPress <= _dashTime)
                 {
                     _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
                     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
                     _dashForwardPressed = false;
                 }
-                _dashForwardLastInputTime = DemonicsPhysics.Frame;
+                _dashForwardLastInputTime = DemonicsWorld.Frame;
             }
         }
     }
@@ -186,17 +186,17 @@ public class PlayerController : BaseController
             if (!_dashBackPressed)
             {
                 _dashBackPressed = true;
-                _dashBackLastInputTime = DemonicsPhysics.Frame;
+                _dashBackLastInputTime = DemonicsWorld.Frame;
             }
             else
             {
-                int timeSinceLastPress = DemonicsPhysics.Frame - _dashBackLastInputTime;
+                int timeSinceLastPress = DemonicsWorld.Frame - _dashBackLastInputTime;
                 if (timeSinceLastPress <= _dashTime)
                 {
                     _inputBuffer.AddInputBufferItem(InputEnum.BackDash);
                     _dashBackPressed = false;
                 }
-                _dashBackLastInputTime = DemonicsPhysics.Frame;
+                _dashBackLastInputTime = DemonicsWorld.Frame;
             }
         }
     }

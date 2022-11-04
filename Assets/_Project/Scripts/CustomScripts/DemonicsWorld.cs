@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DemonicsPhysics : MonoBehaviour
+public class DemonicsWorld : MonoBehaviour
 {
     public static int Frame;
     private float _tick;

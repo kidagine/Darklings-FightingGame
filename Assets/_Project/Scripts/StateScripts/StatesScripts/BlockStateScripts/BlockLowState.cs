@@ -9,7 +9,7 @@ public class BlockLowState : BlockParentState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        if (DemonicsPhysics.WaitFrames(ref _blockFrame))
+        if (DemonicsWorld.WaitFrames(ref _blockFrame))
         {
             ToCrouchState();
         }
