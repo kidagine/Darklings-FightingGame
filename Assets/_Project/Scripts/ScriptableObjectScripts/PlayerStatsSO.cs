@@ -45,11 +45,11 @@ public class PlayerStatsSO : ScriptableObject
             switch (speedLevel)
             {
                 case 1:
-                    return (Fix64)0.05;
+                    return (Fix64)0.03;
                 case 2:
-                    return (Fix64)0.07;
+                    return (Fix64)0.05;
                 case 3:
-                    return (Fix64)0.09;
+                    return (Fix64)0.07;
                 default:
                     return (Fix64)0;
             }
@@ -81,11 +81,11 @@ public class PlayerStatsSO : ScriptableObject
             switch (jumpLevel)
             {
                 case 1:
-                    return (Fix64)0.4;
+                    return (Fix64)0.3;
                 case 2:
-                    return (Fix64)0.4;
+                    return (Fix64)0.33;
                 case 3:
-                    return (Fix64)0.4;
+                    return (Fix64)0.35;
                 default:
                     return (Fix64)0;
             }
@@ -99,11 +99,11 @@ public class PlayerStatsSO : ScriptableObject
             switch (dashLevel)
             {
                 case 1:
-                    return (Fix64)0.15;
+                    return (Fix64)0.22;
                 case 2:
-                    return (Fix64)0.18;
+                    return (Fix64)0.25;
                 case 3:
-                    return (Fix64)0.21;
+                    return (Fix64)0.28;
                 default:
                     return (Fix64)0;
             }

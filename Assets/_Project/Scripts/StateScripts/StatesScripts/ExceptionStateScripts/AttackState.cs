@@ -83,8 +83,7 @@ public class AttackState : State
         ToJumpForwardState();
         if (!_air && !_playerMovement.HasJumped)
         {
-            _playerMovement.TravelDistance(new Vector2(
-            _player.CurrentAttack.travelDistance * transform.root.localScale.x, _player.CurrentAttack.travelDistance * _player.CurrentAttack.travelDirection.y));
+            _playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance.x * transform.root.localScale.x, _player.CurrentAttack.travelDistance.y));
         }
         else
         {
@@ -360,7 +359,10 @@ public class AttackState : State
     public override void Exit()
     {
         base.Exit();
-        _physics.Velocity = FixVector2.Zero;
+        if (!_air)
+        {
+            _physics.Velocity = new FixVector2((Fix64)0, _physics.Velocity.y);
+        }
         _player.CanSkipAttack = false;
         _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
     }

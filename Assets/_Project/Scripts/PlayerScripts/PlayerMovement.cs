@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TravelDistance(Vector2 travelDistance)
     {
-        Physics.Velocity = new FixVector2((Fix64)travelDistance.x, (Fix64)travelDistance.x);
+        Physics.Velocity = new FixVector2((Fix64)travelDistance.x, (Fix64)travelDistance.y);
     }
 
     public void CheckForPlayer()
@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _knockbackFrame++;
             Fix64 ratio = (Fix64)_knockbackFrame / (Fix64)_knockbackDuration;
-            Physics.Position = new FixVector2(_startPosition.x * ((Fix64)1 - ratio) + _endPosition.x * ratio, _startPosition.y * ((Fix64)1 - ratio) + _endPosition.y * ratio);
+            Physics.SetPositionWithRender(new FixVector2(_startPosition.x * ((Fix64)1 - ratio) + _endPosition.x * ratio, _startPosition.y * ((Fix64)1 - ratio) + _endPosition.y * ratio));
             if (_knockbackFrame == _knockbackDuration)
             {
                 Physics.Position = _endPosition;
@@ -185,8 +185,7 @@ public class PlayerMovement : MonoBehaviour
         if (!IsInHitstop)
         {
             IsInHitstop = true;
-            _velocity = Physics.Velocity;
-            Physics.Freeze = true;
+            Physics.SetFreeze(true);
         }
     }
 
@@ -195,8 +194,7 @@ public class PlayerMovement : MonoBehaviour
         if (IsInHitstop)
         {
             IsInHitstop = false;
-            Physics.Freeze = false;
-            Physics.Velocity = _velocity;
+            Physics.SetFreeze(false);
         }
     }
 

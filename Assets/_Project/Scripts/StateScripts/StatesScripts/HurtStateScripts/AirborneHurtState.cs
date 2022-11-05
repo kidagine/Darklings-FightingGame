@@ -49,7 +49,7 @@ public class AirborneHurtState : HurtParentState
             GameObject effect = Instantiate(_hurtAttack.hurtEffect);
             effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
             _playerMovement.Knockback(new Vector2(
-            _player.OtherPlayer.transform.localScale.x, _hurtAttack.knockbackDirection.y), new Vector2(_hurtAttack.knockback, _hurtAttack.knockback), _hurtAttack.knockbackDuration);
+            _player.OtherPlayer.transform.localScale.x, _hurtAttack.knockbackDirection.y), _hurtAttack.knockbackForce, _hurtAttack.knockbackDuration);
         }
         CameraShake.Instance.Shake(_hurtAttack.cameraShaker);
         _canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());
@@ -113,7 +113,6 @@ public class AirborneHurtState : HurtParentState
         _stateMachine.ChangeState(this);
         return true;
     }
-
 
     public override bool ToGrabbedState()
     {

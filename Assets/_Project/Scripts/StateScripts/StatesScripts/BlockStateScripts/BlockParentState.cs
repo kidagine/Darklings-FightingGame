@@ -41,7 +41,7 @@ public class BlockParentState : State
         _audio.Sound("Block").Play();
         _blockFrame = _blockAttack.hitStun;
         _playerMovement.Knockback(new Vector2(
-            _player.OtherPlayer.transform.localScale.x, 0), new Vector2(_blockAttack.knockback, 0), _blockAttack.knockbackDuration);
+            _player.OtherPlayer.transform.localScale.x, 0), new Vector2(_blockAttack.knockbackForce.x, 0), _blockAttack.knockbackDuration);
 
         if (!_skip)
         {
