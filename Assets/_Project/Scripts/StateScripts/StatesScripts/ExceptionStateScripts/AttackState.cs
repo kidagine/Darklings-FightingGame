@@ -93,10 +93,10 @@ public class AttackState : State
 
     private void ToFallStateOnGround()
     {
-        // if (_air && _playerMovement.IsGrounded && _rigidbody.velocity.y <= 0)
-        // {
-        //     _stateMachine.ChangeState(_fallState);
-        // }
+        if (_air && _playerMovement.IsGrounded && _physics.Velocity.y <= (Fix64)0)
+        {
+            _stateMachine.ChangeState(_fallState);
+        }
     }
 
     private new void ToIdleState()

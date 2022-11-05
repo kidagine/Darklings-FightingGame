@@ -30,7 +30,14 @@ public class JumpForwardState : AirParentState
         }
         else
         {
-            _physics.Velocity = new FixVector2(_jumpForwardX * (Fix64)_baseController.InputDirection.x, _player.playerStats.JumpForce + 0.01);
+            if (_playerMovement.HasDoubleJumped)
+            {
+                _physics.Velocity = new FixVector2(_jumpForwardX * (Fix64)_baseController.InputDirection.x, (_player.playerStats.JumpForce + (Fix64)0.01) / _jumpDoubleDivider);
+            }
+            else
+            {
+                _physics.Velocity = new FixVector2(_jumpForwardX * (Fix64)_baseController.InputDirection.x, _player.playerStats.JumpForce + (Fix64)0.01);
+            }
         }
         //_jumpY = _player.playerStats.JumpForce;
     }

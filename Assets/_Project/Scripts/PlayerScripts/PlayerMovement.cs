@@ -93,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void KnockbackNow(Vector2 knockbackDirection, Vector2 knockbackForce, int knockbackDuration)
     {
+        Debug.Log("A");
         _startPosition = Physics.Position;
         _endPosition = new FixVector2(Physics.Position.x + (Fix64)knockbackDirection.x * (Fix64)knockbackForce.x, Physics.Position.y + (Fix64)knockbackDirection.y * (Fix64)knockbackForce.y); ;
         _knockbackDuration = knockbackDuration;
@@ -126,6 +127,7 @@ public class PlayerMovement : MonoBehaviour
             Physics.SetPositionWithRender(new FixVector2(_startPosition.x * ((Fix64)1 - ratio) + _endPosition.x * ratio, _startPosition.y * ((Fix64)1 - ratio) + _endPosition.y * ratio));
             if (_knockbackFrame == _knockbackDuration)
             {
+                Physics.Velocity = FixVector2.Zero;
                 Physics.Position = _endPosition;
                 _knockbackDuration = 0;
                 _knockbackFrame = 0;
@@ -185,6 +187,7 @@ public class PlayerMovement : MonoBehaviour
         if (!IsInHitstop)
         {
             IsInHitstop = true;
+            _velocity = Physics.Velocity;
             Physics.SetFreeze(true);
         }
     }
@@ -195,6 +198,8 @@ public class PlayerMovement : MonoBehaviour
         {
             IsInHitstop = false;
             Physics.SetFreeze(false);
+            Debug.Log(_velocity);
+            Physics.Velocity = _velocity;
         }
     }
 
