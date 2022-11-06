@@ -10,7 +10,7 @@ public class DemonicsCollider : MonoBehaviour
     [SerializeField] private Vector2 _offset = default;
     [SerializeField] private Vector2 _size = default;
     protected List<DemonicsCollider> _demonicsColliders = new List<DemonicsCollider>();
-    private DemonicsPhysics _demonicsPhysics;
+    protected DemonicsPhysics _physics;
 
 
     public Color GizmoColor { get; set; } = Color.green;
@@ -22,9 +22,9 @@ public class DemonicsCollider : MonoBehaviour
     {
         get
         {
-            if (_demonicsPhysics != null)
+            if (_physics != null)
             {
-                return new FixVector2((Fix64)(Fix64)_demonicsPhysics.Position.x + Offset.x, (Fix64)(Fix64)_demonicsPhysics.Position.y + Offset.y);
+                return new FixVector2((Fix64)(Fix64)_physics.Position.x + Offset.x, (Fix64)(Fix64)_physics.Position.y + Offset.y);
             }
             else
             {
@@ -50,7 +50,7 @@ public class DemonicsCollider : MonoBehaviour
 
     protected virtual void Start()
     {
-        _demonicsPhysics = transform.root.GetComponent<DemonicsPhysics>();
+        _physics = transform.root.GetComponent<DemonicsPhysics>();
         InitializeCollisionList();
     }
 
@@ -79,7 +79,7 @@ public class DemonicsCollider : MonoBehaviour
                 {
                     if (_demonicsColliders[i].transform.root.TryGetComponent(out DemonicsPhysics demonicsPhysics))
                     {
-                        _demonicsPhysics.OnCollision(demonicsPhysics);
+                        _physics.OnCollision(demonicsPhysics);
                     }
                 }
                 if (!WasColliding)

@@ -93,7 +93,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void KnockbackNow(Vector2 knockbackDirection, Vector2 knockbackForce, int knockbackDuration)
     {
-        Debug.Log("A");
         _startPosition = Physics.Position;
         _endPosition = new FixVector2(Physics.Position.x + (Fix64)knockbackDirection.x * (Fix64)knockbackForce.x, Physics.Position.y + (Fix64)knockbackDirection.y * (Fix64)knockbackForce.y); ;
         _knockbackDuration = knockbackDuration;
@@ -198,7 +197,6 @@ public class PlayerMovement : MonoBehaviour
         {
             IsInHitstop = false;
             Physics.SetFreeze(false);
-            Debug.Log(_velocity);
             Physics.Velocity = _velocity;
         }
     }

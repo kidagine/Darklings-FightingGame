@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 417637499252091369}
   - component: {fileID: 3046493706580312876}
-  - component: {fileID: 2632546348691414582}
   - component: {fileID: 3552182111618313448}
   - component: {fileID: 6748714475635321310}
   - component: {fileID: -1156615587920061613}
-  - component: {fileID: 5965571304961661190}
+  - component: {fileID: 6990918834568154549}
   m_Layer: 0
   m_Name: CShadow_effect
   m_TagString: Untagged
@@ -90,27 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &2632546348691414582
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3294536446187043669}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &3552182111618313448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,32 +137,18 @@ MonoBehaviour:
   _speed: 7
   _isFixed: 1
   _disableOnContact: 1
---- !u!61 &5965571304961661190
-BoxCollider2D:
+--- !u!114 &6990918834568154549
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3294536446187043669}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.75}
-    newSize: {x: 0.875, y: 0.875}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.75, y: 1.75}
-  m_EdgeRadius: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b07b43e8a218d4e9012782762e6ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4244931488107859237
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,7 +323,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51729ec44d22e5f4f8bb5accfea6be2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _size: {x: 1.5, y: 1.5}
+  _showGizmo: 0
+  _ignoreCollision: 0
   _offset: {x: 0, y: 0}
+  _size: {x: 1.5, y: 1.5}
   _hitGround: 1
-  _hasHit: 0

@@ -1,4 +1,5 @@
 using System.Collections;
+using FixMath.NET;
 using UnityEngine;
 
 public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
@@ -9,8 +10,7 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
     [SerializeField] private float _speed = 4.0f;
     [SerializeField] private bool _isFixed = default;
     [SerializeField] private bool _disableOnContact = true;
-    private Rigidbody2D _rigidbody;
-    private float _originalSpeed;
+    private DemonicsPhysics _physics;
     public int ProjectilePriority { get { return _projectilePriority; } private set { } }
     public Transform SourceTransform { get; private set; }
 
@@ -20,44 +20,30 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
     public bool BlockingHigh { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     public bool BlockingMiddair { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    void Awake()
-    {
-        _originalSpeed = _speed;
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _hitbox.OnPlayerCollision += () => GameManager.Instance.AddHitstop(this);
-        _hitbox.OnPlayerCollision += () => ExitHitstop();
-        _hitbox.OnGroundCollision += () => gameObject.SetActive(false);
-    }
-
     void OnEnable()
     {
+
         OnCurrentAnimationFinished.AddListener(() => gameObject.SetActive(false));
         SetAnimation("Idle");
-        _speed = _originalSpeed;
+
+        _physics = GetComponent<DemonicsPhysics>();
     }
 
-    void Update()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         if (_isFixed)
         {
-            _rigidbody.velocity = (transform.right * transform.root.localScale.x) * _speed;
+            _physics.Velocity = (new FixVector2((Fix64)transform.right.x, (Fix64)transform.right.y) * (Fix64)transform.root.localScale.x) * (Fix64)_speed;
         }
         else
         {
-            _rigidbody.velocity = Direction * _speed;
+            _physics.Velocity = new FixVector2((Fix64)Direction.x, (Fix64)Direction.y) * (Fix64)_speed;
         }
-    }
-
-    void OnDisable()
-    {
-        if (_hitbox.HitPoint != null)
+        if (_physics.OnGround)
         {
-            if (_hitbox.HitPoint.gameObject.layer == 6)
-            {
-                Instantiate(_dustPrefab, transform.position, Quaternion.identity);
-            }
-            _hitbox.OnPlayerCollision -= () => GameManager.Instance.AddHitstop(this);
-            _hitbox.OnGroundCollision -= () => gameObject.SetActive(false);
+            Instantiate(_dustPrefab, transform.position, Quaternion.identity);
+            gameObject.SetActive(false);
         }
     }
 
@@ -69,8 +55,9 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
         }
     }
 
-    public void SetSourceTransform(Transform sourceTransform)
+    public void SetSourceTransform(Transform sourceTransform, Vector2 position)
     {
+        _physics.Position = new FixVector2((Fix64)position.x, (Fix64)position.y);
         SourceTransform = sourceTransform;
         _hitbox.SetSourceTransform(sourceTransform);
     }
@@ -80,55 +67,21 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
         return false;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent(out Projectile projectile))
-        {
-            if (projectile.SourceTransform != SourceTransform)
-            {
-                if (projectile.ProjectilePriority > ProjectilePriority)
-                {
-                    gameObject.SetActive(false);
-                    Instantiate(_dustPrefab, transform.position, Quaternion.identity);
-                }
-                else if (projectile.ProjectilePriority == ProjectilePriority)
-                {
-                    gameObject.SetActive(false);
-                    projectile.gameObject.SetActive(false);
-                    Instantiate(_dustPrefab, transform.position, Quaternion.identity);
-                }
-            }
-        }
-    }
-
     public void EnterHitstop()
     {
+        _physics.SetFreeze(true);
         Pause();
-        _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-        _rigidbody.isKinematic = true;
     }
 
     public void ExitHitstop()
     {
+        gameObject.SetActive(false);
+        _physics.SetFreeze(false);
         Resume();
-        _rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-        _rigidbody.isKinematic = false;
-        if (gameObject.activeSelf)
-            StartCoroutine(DisableCoroutine());
     }
 
     public bool IsInHitstop()
     {
-        return _rigidbody.isKinematic;
-    }
-
-    IEnumerator DisableCoroutine()
-    {
-        _speed = 0;
-        yield return new WaitForSecondsRealtime(0.05f);
-        if (_disableOnContact)
-        {
-            gameObject.SetActive(false);
-        }
+        return false;
     }
 }

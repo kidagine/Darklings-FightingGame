@@ -1,10 +1,8 @@
 using FixMath.NET;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
 public class Hurtbox : DemonicsCollider
 {
-    [SerializeField] private BoxCollider2D _boxCollider = default;
     [SerializeField] private GameObject _hurtboxResponderObject = default;
     private IHurtboxResponder _hurtboxResponder;
 
@@ -15,11 +13,6 @@ public class Hurtbox : DemonicsCollider
     {
         if (_hurtboxResponderObject != null)
             _hurtboxResponder = _hurtboxResponderObject.GetComponent<IHurtboxResponder>();
-    }
-
-    public void SetIsTrigger(bool state)
-    {
-        _boxCollider.isTrigger = state;
     }
 
     public void SetBox(Vector2 size, Vector2 offset)

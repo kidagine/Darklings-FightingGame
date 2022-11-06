@@ -10,7 +10,7 @@ public class Hitbox : DemonicsCollider
     public Action OnPlayerCollision;
     [SerializeField] private bool _hitGround;
     [SerializeField] private IHitboxResponder _hitboxResponder;
-    private Transform _sourceTransform;
+    protected Transform _sourceTransform;
     public Transform HitPoint { get; private set; }
     public bool HitConfirm { get; private set; }
 
@@ -34,7 +34,7 @@ public class Hitbox : DemonicsCollider
         DemonicsCollider[] demonicsCollidersArray = FindObjectsOfType<DemonicsCollider>();
         for (int i = 0; i < demonicsCollidersArray.Length; i++)
         {
-            if (!demonicsCollidersArray[i].transform.IsChildOf(transform.root))
+            if (!demonicsCollidersArray[i].transform.IsChildOf(_sourceTransform))
             {
                 if (demonicsCollidersArray[i].TryGetComponent(out Hurtbox hurtbox))
                 {
@@ -66,13 +66,9 @@ public class Hitbox : DemonicsCollider
         base.EnterCollision(collider);
         if (collider.TryGetComponent(out Hurtbox hurtbox))
         {
+            OnPlayerCollision?.Invoke();
             _hitboxResponder.HitboxCollided(new Vector2((float)collider.Position.x, (float)collider.Position.y), hurtbox);
         }
-    }
-
-    protected override void ExitCollision()
-    {
-        base.ExitCollision();
     }
 
 #if UNITY_EDITOR

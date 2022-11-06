@@ -1,4 +1,5 @@
 using System.Collections;
+using FixMath.NET;
 using UnityEngine;
 
 public class KnockdownState : State
@@ -18,6 +19,7 @@ public class KnockdownState : State
     {
         base.Enter();
         _audio.Sound("Landed").Play();
+        _physics.Velocity = FixVector2.Zero;
         _playerAnimator.Knockdown();
         _player.SetHurtbox(false);
         _player.OtherPlayer.StopComboTimer();

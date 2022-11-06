@@ -1,3 +1,4 @@
+using FixMath.NET;
 using UnityEngine;
 
 public class GrabState : State
@@ -21,6 +22,7 @@ public class GrabState : State
     {
         base.Enter();
         _audio.Sound("Hit").Play();
+        _physics.Velocity = FixVector2.Zero;
         _playerAnimator.Grab();
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
         _player.CurrentAttack = _playerComboSystem.GetThrow();

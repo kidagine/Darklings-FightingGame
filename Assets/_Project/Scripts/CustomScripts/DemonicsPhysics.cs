@@ -7,6 +7,7 @@ public class DemonicsPhysics : MonoBehaviour
 {
     public FixVector2 Velocity { get; set; }
     public FixVector2 Position { get; set; }
+    public bool OnGround { get { return Position.y <= GROUND_POINT ? true : false; } private set { } }
     private FixVector2 _freezePosition;
     private Fix64 _gravity;
     private bool _freeze;

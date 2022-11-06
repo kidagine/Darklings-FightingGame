@@ -411,7 +411,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             {
                 hitEffect.transform.SetParent(null);
                 hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
-                hitEffect.GetComponent<Projectile>().SetSourceTransform(transform);
+                hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, transform.position);
                 hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0.0f);
                 hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
             }
