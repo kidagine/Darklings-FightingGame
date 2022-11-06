@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TravelDistance(Vector2 travelDistance)
     {
-        Physics.Velocity = new FixVector2((Fix64)travelDistance.x, (Fix64)travelDistance.x);
+        Physics.Velocity = new FixVector2((Fix64)travelDistance.x, (Fix64)travelDistance.y);
     }
 
     public void CheckForPlayer()
@@ -93,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void KnockbackNow(Vector2 knockbackDirection, Vector2 knockbackForce, int knockbackDuration)
     {
+        Debug.Log("A");
         _startPosition = Physics.Position;
         _endPosition = new FixVector2(Physics.Position.x + (Fix64)knockbackDirection.x * (Fix64)knockbackForce.x, Physics.Position.y + (Fix64)knockbackDirection.y * (Fix64)knockbackForce.y); ;
         _knockbackDuration = knockbackDuration;
@@ -123,9 +124,10 @@ public class PlayerMovement : MonoBehaviour
         {
             _knockbackFrame++;
             Fix64 ratio = (Fix64)_knockbackFrame / (Fix64)_knockbackDuration;
-            Physics.Position = new FixVector2(_startPosition.x * ((Fix64)1 - ratio) + _endPosition.x * ratio, _startPosition.y * ((Fix64)1 - ratio) + _endPosition.y * ratio);
+            Physics.SetPositionWithRender(new FixVector2(_startPosition.x * ((Fix64)1 - ratio) + _endPosition.x * ratio, _startPosition.y * ((Fix64)1 - ratio) + _endPosition.y * ratio));
             if (_knockbackFrame == _knockbackDuration)
             {
+                Physics.Velocity = FixVector2.Zero;
                 Physics.Position = _endPosition;
                 _knockbackDuration = 0;
                 _knockbackFrame = 0;
@@ -186,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
         {
             IsInHitstop = true;
             _velocity = Physics.Velocity;
-            Physics.Freeze = true;
+            Physics.SetFreeze(true);
         }
     }
 
@@ -195,7 +197,8 @@ public class PlayerMovement : MonoBehaviour
         if (IsInHitstop)
         {
             IsInHitstop = false;
-            Physics.Freeze = false;
+            Physics.SetFreeze(false);
+            Debug.Log(_velocity);
             Physics.Velocity = _velocity;
         }
     }

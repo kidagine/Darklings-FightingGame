@@ -391,7 +391,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             {
                 if (!CurrentAttack.isArcana && CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
                 {
-                    _playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0.0f), new Vector2(CurrentAttack.knockback, 0.0f), CurrentAttack.knockbackDuration);
+                    _playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0), new Vector2(CurrentAttack.knockbackForce.x, 0), CurrentAttack.knockbackDuration);
                 }
             }
         }

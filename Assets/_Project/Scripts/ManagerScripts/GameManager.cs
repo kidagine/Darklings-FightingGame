@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _gameSpeed = 1;
     [Range(10, 300)]
     [SerializeField] private int _countdownTime = 99;
+    [SerializeField] private float _leftSpawn = 9;
+    [SerializeField] private float _rightSpawn = 6;
     [SerializeField] private float[] _spawnPositionsX = default;
     [Header("Data")]
     [SerializeField] private CinemachineTargetGroup _targetGroup = default;
@@ -925,7 +927,7 @@ public class GameManager : MonoBehaviour
                     _reverseReset = !_reverseReset;
                     if (!_reverseReset)
                     {
-                        playerOneResetPosition= _cachedOneResetPosition;
+                        playerOneResetPosition = _cachedOneResetPosition;
                         playerTwoResetPosition = _cachedTwoResetPosition;
                     }
                     else
@@ -944,7 +946,7 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        playerOneResetPosition= _cachedTwoResetPosition;
+                        playerOneResetPosition = _cachedTwoResetPosition;
                         playerTwoResetPosition = _cachedOneResetPosition;
                     }
                 }
@@ -967,13 +969,13 @@ public class GameManager : MonoBehaviour
                 {
                     if (!_reverseReset)
                     {
-                        playerOneResetPosition = new Vector2(_spawnPositionsX[0] + 9, (float)DemonicsPhysics.GROUND_POINT);
-                        playerTwoResetPosition = new Vector2(_spawnPositionsX[1] + 6, (float)DemonicsPhysics.GROUND_POINT);
+                        playerOneResetPosition = new Vector2(_spawnPositionsX[0] + _leftSpawn, (float)DemonicsPhysics.GROUND_POINT);
+                        playerTwoResetPosition = new Vector2(_spawnPositionsX[1] + _rightSpawn, (float)DemonicsPhysics.GROUND_POINT);
                     }
                     else
                     {
-                        playerTwoResetPosition = new Vector2(_spawnPositionsX[0] + 9, (float)DemonicsPhysics.GROUND_POINT);
-                        playerOneResetPosition = new Vector2(_spawnPositionsX[1] + 6, (float)DemonicsPhysics.GROUND_POINT);
+                        playerTwoResetPosition = new Vector2(_spawnPositionsX[0] + _leftSpawn, (float)DemonicsPhysics.GROUND_POINT);
+                        playerOneResetPosition = new Vector2(_spawnPositionsX[1] + _rightSpawn, (float)DemonicsPhysics.GROUND_POINT);
                     }
                     _cachedOneResetPosition = PlayerOne.transform.position;
                     _cachedTwoResetPosition = PlayerTwo.transform.position;
@@ -982,13 +984,13 @@ public class GameManager : MonoBehaviour
                 {
                     if (!_reverseReset)
                     {
-                        playerOneResetPosition = new Vector2(_spawnPositionsX[0] - 9, (float)DemonicsPhysics.GROUND_POINT);
-                        playerTwoResetPosition = new Vector2(_spawnPositionsX[1] - 6, (float)DemonicsPhysics.GROUND_POINT);
+                        playerOneResetPosition = new Vector2(_spawnPositionsX[0] - _rightSpawn, (float)DemonicsPhysics.GROUND_POINT);
+                        playerTwoResetPosition = new Vector2(_spawnPositionsX[1] - _leftSpawn, (float)DemonicsPhysics.GROUND_POINT);
                     }
                     else
                     {
-                        playerTwoResetPosition = new Vector2(_spawnPositionsX[0] - 9, (float)DemonicsPhysics.GROUND_POINT);
-                        playerOneResetPosition = new Vector2(_spawnPositionsX[1] - 6, (float)DemonicsPhysics.GROUND_POINT);
+                        playerTwoResetPosition = new Vector2(_spawnPositionsX[0] - _rightSpawn, (float)DemonicsPhysics.GROUND_POINT);
+                        playerOneResetPosition = new Vector2(_spawnPositionsX[1] - _leftSpawn, (float)DemonicsPhysics.GROUND_POINT);
                     }
                     _cachedOneResetPosition = PlayerOne.transform.position;
                     _cachedTwoResetPosition = PlayerTwo.transform.position;

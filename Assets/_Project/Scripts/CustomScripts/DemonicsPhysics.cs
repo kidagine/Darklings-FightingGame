@@ -7,11 +7,13 @@ public class DemonicsPhysics : MonoBehaviour
 {
     public FixVector2 Velocity { get; set; }
     public FixVector2 Position { get; set; }
+    private FixVector2 _freezePosition;
     private Fix64 _gravity;
+    private bool _freeze;
     public static Fix64 GROUND_POINT = (Fix64)(-4.485);
     public static Fix64 CELLING_POINT = (Fix64)(7);
     public static Fix64 WALL_POINT = (Fix64)(10.75);
-    public bool Freeze { get; set; }
+
 
     public void OnCollision(DemonicsPhysics otherPhysics)
     {
@@ -33,6 +35,15 @@ public class DemonicsPhysics : MonoBehaviour
         }
     }
 
+    public void SetFreeze(bool state)
+    {
+        _freeze = state;
+        if (_freeze)
+        {
+            _freezePosition = Position;
+        }
+    }
+
     void FixedUpdate()
     {
         Move();
@@ -40,16 +51,24 @@ public class DemonicsPhysics : MonoBehaviour
 
     private void Move()
     {
+        if (_freeze)
+        {
+            Position = _freezePosition;
+            return;
+        }
         //Sets physics
         Velocity = new FixVector2(Velocity.x, Velocity.y - _gravity);
-        if (Freeze)
-        {
-            Velocity = FixVector2.Zero;
-        }
+
         Position = new FixVector2(Position.x + Velocity.x, Position.y + Velocity.y);
 
         Bounds();
         //Sets rendering
+        transform.position = new Vector2((float)Position.x, (float)Position.y);
+    }
+
+    public void SetPositionWithRender(FixVector2 position)
+    {
+        Position = position;
         transform.position = new Vector2((float)Position.x, (float)Position.y);
     }
 
@@ -77,7 +96,7 @@ public class DemonicsPhysics : MonoBehaviour
     {
         if (state)
         {
-            _gravity = (Fix64)0.02;
+            _gravity = (Fix64)0.018;
         }
         else
         {

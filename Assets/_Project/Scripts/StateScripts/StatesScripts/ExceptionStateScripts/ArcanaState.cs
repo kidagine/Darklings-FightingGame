@@ -44,24 +44,15 @@ public class ArcanaState : State
         _player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
         _player.ArcanaGauge -= (Fix64)1;
-        if (_player.CurrentAttack.travelDistance == 0)
+        if (_player.CurrentAttack.travelDistance.x == 0)
         {
             _playerMovement.ZeroGravity();
         }
         _playerUI.DecreaseArcana();
         _playerUI.SetArcana((float)_player.ArcanaGauge);
-        _playerMovement.TravelDistance(new Vector2(
-                _player.CurrentAttack.travelDistance * transform.root.localScale.x, 0));
+        _playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance.x * transform.root.localScale.x, _player.CurrentAttack.travelDistance.y));
         _playerAnimator.Arcana(_player.CurrentAttack.name);
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
-    }
-
-    public override void UpdateLogic()
-    {
-        if (!_playerComboSystem.GetArcana(_crouch, _air).reversal)
-        {
-            _playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance * transform.root.localScale.x, 0));
-        }
     }
 
     private void ArcanaEnd()
