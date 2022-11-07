@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class ArcanaState : State
@@ -43,7 +42,7 @@ public class ArcanaState : State
         }
         _player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
-        _player.ArcanaGauge -= (Fix64)1;
+        _player.ArcanaGauge -= (DemonicsFloat)1;
         if (_player.CurrentAttack.travelDistance.x == 0)
         {
             _playerMovement.ZeroGravity();

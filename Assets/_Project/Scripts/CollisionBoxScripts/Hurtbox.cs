@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class Hurtbox : DemonicsCollider
@@ -17,8 +16,8 @@ public class Hurtbox : DemonicsCollider
 
     public void SetBox(Vector2 size, Vector2 offset)
     {
-        Size = new FixVector2((Fix64)size.x, (Fix64)size.y);
-        Offset = new FixVector2((Fix64)offset.x, (Fix64)offset.y);
+        Size = new DemonicsVector2((DemonicsFloat)size.x, (DemonicsFloat)size.y);
+        Offset = new DemonicsVector2((DemonicsFloat)offset.x, (DemonicsFloat)offset.y);
     }
 
     public bool TakeDamage(AttackSO attackSO)

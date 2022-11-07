@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using FixMath.NET;
 using UnityEngine;
 
 public class DemonicsCollider : MonoBehaviour
@@ -16,15 +15,15 @@ public class DemonicsCollider : MonoBehaviour
     public Color GizmoColor { get; set; } = Color.green;
     public bool WasColliding { get; set; }
     public bool IgnoreCollision { get { return _ignoreCollision; } set { _ignoreCollision = value; } }
-    public FixVector2 Size { get { return new FixVector2((Fix64)_size.x, (Fix64)_size.y); } set { _size = new Vector2((float)value.x, (float)value.y); } }
-    public FixVector2 Offset { get { return new FixVector2((Fix64)_offset.x * (Fix64)transform.root.localScale.x, (Fix64)_offset.y); } set { _offset = new Vector2((float)value.x, (float)value.y); } }
-    public FixVector2 Position
+    public DemonicsVector2 Size { get { return new DemonicsVector2((DemonicsFloat)_size.x, (DemonicsFloat)_size.y); } set { _size = new Vector2((float)value.x, (float)value.y); } }
+    public DemonicsVector2 Offset { get { return new DemonicsVector2((DemonicsFloat)_offset.x * (DemonicsFloat)transform.root.localScale.x, (DemonicsFloat)_offset.y); } set { _offset = new Vector2((float)value.x, (float)value.y); } }
+    public DemonicsVector2 Position
     {
         get
         {
             if (_physics != null)
             {
-                return new FixVector2((Fix64)(Fix64)_physics.Position.x + Offset.x, (Fix64)(Fix64)_physics.Position.y + Offset.y);
+                return new DemonicsVector2((DemonicsFloat)(DemonicsFloat)_physics.Position.x + Offset.x, (DemonicsFloat)(DemonicsFloat)_physics.Position.y + Offset.y);
             }
             else
             {
@@ -35,10 +34,10 @@ public class DemonicsCollider : MonoBehaviour
     }
 
 
-    bool valueInRange(Fix64 value, Fix64 min, Fix64 max)
+    private bool valueInRange(DemonicsFloat value, DemonicsFloat min, DemonicsFloat max)
     { return (value >= min) && (value <= max); }
 
-    public bool Colliding(DemonicsCollider a, DemonicsCollider b)
+    private bool Colliding(DemonicsCollider a, DemonicsCollider b)
     {
         bool xOverlap = valueInRange(a.Position.x, b.Position.x, b.Position.x + b.Size.x) ||
                     valueInRange(b.Position.x, a.Position.x, a.Position.x + a.Size.x);

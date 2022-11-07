@@ -1,14 +1,13 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class JumpForwardState : AirParentState
 {
     [SerializeField] protected GameObject _jumpPrefab = default;
-    private Fix64 _jumpX;
-    private Fix64 _jumpY;
+    private DemonicsFloat _jumpX;
+    private DemonicsFloat _jumpY;
     private int _jumpFrame = 5;
     private bool _jumpCancel;
-    private readonly Fix64 _jumpForwardX = (Fix64)0.14;
+    private readonly DemonicsFloat _jumpForwardX = (DemonicsFloat)0.14;
 
     public void Initialize(bool jumpCancel = false)
     {
@@ -26,17 +25,17 @@ public class JumpForwardState : AirParentState
         if (_jumpCancel)
         {
             Debug.Log("A");
-            _physics.Velocity = new FixVector2(_jumpForwardX * (Fix64)_baseController.InputDirection.x, _jumpCancelForce);
+            _physics.Velocity = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, _jumpCancelForce);
         }
         else
         {
             if (_playerMovement.HasDoubleJumped)
             {
-                _physics.Velocity = new FixVector2(_jumpForwardX * (Fix64)_baseController.InputDirection.x, (_player.playerStats.JumpForce + (Fix64)0.01) / _jumpDoubleDivider);
+                _physics.Velocity = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, (_player.playerStats.JumpForce + (DemonicsFloat)0.01) / _jumpDoubleDivider);
             }
             else
             {
-                _physics.Velocity = new FixVector2(_jumpForwardX * (Fix64)_baseController.InputDirection.x, _player.playerStats.JumpForce + (Fix64)0.01);
+                _physics.Velocity = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, _player.playerStats.JumpForce + (DemonicsFloat)0.01);
             }
         }
         //_jumpY = _player.playerStats.JumpForce;

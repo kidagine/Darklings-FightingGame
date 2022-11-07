@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class ShadowbreakState : State
@@ -19,7 +18,7 @@ public class ShadowbreakState : State
     public override void Enter()
     {
         base.Enter();
-        _player.DecreaseArcana((Fix64)1);
+        _player.DecreaseArcana((DemonicsFloat)1);
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ToFallState);
         _playerAnimator.Shadowbreak();
         _audio.Sound("Shadowbreak").Play();

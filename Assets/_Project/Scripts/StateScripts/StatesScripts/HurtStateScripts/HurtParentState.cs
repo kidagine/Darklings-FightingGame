@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class HurtParentState : State
@@ -72,7 +71,7 @@ public class HurtParentState : State
 
     public override bool AssistCall()
     {
-        if (_player.AssistGauge >= (Fix64)1)
+        if (_player.AssistGauge >= (DemonicsFloat)1)
         {
             _stateMachine.ChangeState(_shadowbreakState);
             return true;

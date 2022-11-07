@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class WalkState : GroundParentState
@@ -13,7 +12,7 @@ public class WalkState : GroundParentState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _physics.Velocity = new FixVector2((Fix64)_baseController.InputDirection.x * (Fix64)_playerMovement.MovementSpeed, (Fix64)0);
+        _physics.Velocity = new DemonicsVector2((DemonicsFloat)_baseController.InputDirection.x * (DemonicsFloat)_playerMovement.MovementSpeed, (DemonicsFloat)0);
         ToIdleState();
         ToCrouchState();
         ToJumpForwardState();

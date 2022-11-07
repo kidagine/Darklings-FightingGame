@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 
@@ -38,74 +37,74 @@ public class PlayerStatsSO : ScriptableObject
 
     public int Arcana { get { return arcanaLevel; } set { } }
     public float Defense { get { return (defenseLevel - 1) * 0.05f + 0.95f; } set { } }
-    public Fix64 SpeedWalk
+    public DemonicsFloat SpeedWalk
     {
         get
         {
             switch (speedLevel)
             {
                 case 1:
-                    return (Fix64)0.03;
+                    return (DemonicsFloat)0.03;
                 case 2:
-                    return (Fix64)0.05;
+                    return (DemonicsFloat)0.05;
                 case 3:
-                    return (Fix64)0.07;
+                    return (DemonicsFloat)0.07;
                 default:
-                    return (Fix64)0;
+                    return (DemonicsFloat)0;
             }
         }
         set { }
     }
-    public Fix64 SpeedRun
+    public DemonicsFloat SpeedRun
     {
         get
         {
             switch (speedLevel)
             {
                 case 1:
-                    return (Fix64)0.15;
+                    return (DemonicsFloat)0.15;
                 case 2:
-                    return (Fix64)0.18;
+                    return (DemonicsFloat)0.18;
                 case 3:
-                    return (Fix64)0.21;
+                    return (DemonicsFloat)0.21;
                 default:
-                    return (Fix64)0;
+                    return (DemonicsFloat)0;
             }
         }
         set { }
     }
-    public Fix64 JumpForce
+    public DemonicsFloat JumpForce
     {
         get
         {
             switch (jumpLevel)
             {
                 case 1:
-                    return (Fix64)0.3;
+                    return (DemonicsFloat)0.3;
                 case 2:
-                    return (Fix64)0.33;
+                    return (DemonicsFloat)0.33;
                 case 3:
-                    return (Fix64)0.35;
+                    return (DemonicsFloat)0.35;
                 default:
-                    return (Fix64)0;
+                    return (DemonicsFloat)0;
             }
         }
         set { }
     }
-    public Fix64 DashForce
+    public DemonicsFloat DashForce
     {
         get
         {
             switch (dashLevel)
             {
                 case 1:
-                    return (Fix64)0.22;
+                    return (DemonicsFloat)0.22;
                 case 2:
-                    return (Fix64)0.25;
+                    return (DemonicsFloat)0.25;
                 case 3:
-                    return (Fix64)0.28;
+                    return (DemonicsFloat)0.28;
                 default:
-                    return (Fix64)0;
+                    return (DemonicsFloat)0;
             }
         }
         set { }

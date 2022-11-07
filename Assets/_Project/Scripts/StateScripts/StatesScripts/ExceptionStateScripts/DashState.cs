@@ -1,5 +1,4 @@
 using Demonics.Manager;
-using FixMath.NET;
 using System.Collections;
 using UnityEngine;
 
@@ -41,7 +40,7 @@ public class DashState : State
             dashEffect.localScale = new Vector2(-1, transform.localScale.y);
             dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
         }
-        _physics.Velocity = new FixVector2((Fix64)DashDirection * (Fix64)_player.playerStats.DashForce, _physics.Velocity.y);
+        _physics.Velocity = new DemonicsVector2((DemonicsFloat)DashDirection * (DemonicsFloat)_player.playerStats.DashForce, _physics.Velocity.y);
         _playerMovement.ZeroGravity();
         _dashCoroutine = StartCoroutine(DashCoroutine());
     }
@@ -113,7 +112,7 @@ public class DashState : State
     public override void Exit()
     {
         base.Exit();
-        _physics.Velocity = FixVector2.Zero;
+        _physics.Velocity = DemonicsVector2.Zero;
         if (_dashCoroutine != null)
         {
             _playerMovement.ResetGravity();

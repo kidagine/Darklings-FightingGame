@@ -1,5 +1,4 @@
 using System.Collections;
-using FixMath.NET;
 using UnityEngine;
 
 public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
@@ -34,11 +33,11 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
         base.FixedUpdate();
         if (_isFixed)
         {
-            _physics.Velocity = (new FixVector2((Fix64)transform.right.x, (Fix64)transform.right.y) * (Fix64)transform.root.localScale.x) * (Fix64)_speed;
+            _physics.Velocity = (new DemonicsVector2((DemonicsFloat)transform.right.x, (DemonicsFloat)transform.right.y) * (DemonicsFloat)transform.root.localScale.x) * (DemonicsFloat)_speed;
         }
         else
         {
-            _physics.Velocity = new FixVector2((Fix64)Direction.x, (Fix64)Direction.y) * (Fix64)_speed;
+            _physics.Velocity = new DemonicsVector2((DemonicsFloat)Direction.x, (DemonicsFloat)Direction.y) * (DemonicsFloat)_speed;
         }
         if (_physics.OnGround)
         {
@@ -57,7 +56,7 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
 
     public void SetSourceTransform(Transform sourceTransform, Vector2 position)
     {
-        _physics.Position = new FixVector2((Fix64)position.x, (Fix64)position.y);
+        _physics.Position = new DemonicsVector2((DemonicsFloat)position.x, (DemonicsFloat)position.y);
         SourceTransform = sourceTransform;
         _hitbox.SetSourceTransform(sourceTransform);
     }

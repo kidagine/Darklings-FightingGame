@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class AttackState : State
@@ -93,7 +92,7 @@ public class AttackState : State
 
     private void ToFallStateOnGround()
     {
-        if (_air && _playerMovement.IsGrounded && _physics.Velocity.y <= (Fix64)0)
+        if (_air && _playerMovement.IsGrounded && _physics.Velocity.y <= (DemonicsFloat)0)
         {
             _stateMachine.ChangeState(_fallState);
         }
@@ -188,7 +187,7 @@ public class AttackState : State
 
     public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
     {
-        if (_player.ArcanaGauge >= (Fix64)1 && _player.CanSkipAttack)
+        if (_player.ArcanaGauge >= (DemonicsFloat)1 && _player.CanSkipAttack)
         {
             if (_playerMovement.IsInHitstop)
             {
@@ -361,7 +360,7 @@ public class AttackState : State
         base.Exit();
         if (!_air)
         {
-            _physics.Velocity = new FixVector2((Fix64)0, _physics.Velocity.y);
+            _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, _physics.Velocity.y);
         }
         _player.CanSkipAttack = false;
         _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
