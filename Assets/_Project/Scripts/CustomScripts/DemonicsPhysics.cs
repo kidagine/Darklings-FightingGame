@@ -12,7 +12,9 @@ public class DemonicsPhysics : MonoBehaviour
     private bool _freeze;
     public static DemonicsFloat GROUND_POINT = (DemonicsFloat)(-4.485);
     public static DemonicsFloat CELLING_POINT = (DemonicsFloat)(7);
-    public static DemonicsFloat WALL_POINT = (DemonicsFloat)(10.75);
+    public static DemonicsFloat WALL_RIGHT_POINT;
+    public static DemonicsFloat WALL_LEFT_POINT;
+    private readonly DemonicsFloat _wallPointOffset = (DemonicsFloat)0.5;
 
 
     public void OnCollision(DemonicsPhysics otherPhysics)
@@ -46,6 +48,8 @@ public class DemonicsPhysics : MonoBehaviour
 
     void FixedUpdate()
     {
+        WALL_LEFT_POINT = (DemonicsFloat)Camera.main.ScreenToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane)).x + _wallPointOffset;
+        WALL_RIGHT_POINT = (DemonicsFloat)Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, 0, Camera.main.nearClipPlane)).x - _wallPointOffset;
         Move();
     }
 
@@ -82,13 +86,13 @@ public class DemonicsPhysics : MonoBehaviour
         {
             Velocity = new DemonicsVector2(Velocity.x, (DemonicsFloat)0);
         }
-        if (Position.x >= WALL_POINT && Velocity.x > (DemonicsFloat)0)
+        if (Position.x >= WALL_RIGHT_POINT && Velocity.x >= (DemonicsFloat)0)
         {
-            Position = new DemonicsVector2(WALL_POINT, Position.y);
+            Position = new DemonicsVector2(WALL_RIGHT_POINT, Position.y);
         }
-        if (Position.x <= -WALL_POINT && Velocity.x < (DemonicsFloat)0)
+        if (Position.x <= WALL_LEFT_POINT && Velocity.x <= (DemonicsFloat)0)
         {
-            Position = new DemonicsVector2(-WALL_POINT, Position.y);
+            Position = new DemonicsVector2(WALL_LEFT_POINT, Position.y);
         }
     }
 
