@@ -23,7 +23,7 @@ public class DemonicsCollider : MonoBehaviour
         {
             if (_physics != null)
             {
-                return new DemonicsVector2((DemonicsFloat)(DemonicsFloat)_physics.Position.x + Offset.x, (DemonicsFloat)(DemonicsFloat)_physics.Position.y + Offset.y);
+                return new DemonicsVector2((_physics.Position.x + Offset.x), (_physics.Position.y + Offset.y));
             }
             else
             {
@@ -39,9 +39,8 @@ public class DemonicsCollider : MonoBehaviour
 
     private bool Colliding(DemonicsCollider a, DemonicsCollider b)
     {
-        bool xOverlap = valueInRange(a.Position.x, b.Position.x, b.Position.x + b.Size.x) ||
-                    valueInRange(b.Position.x, a.Position.x, a.Position.x + a.Size.x);
-
+        bool xOverlap = valueInRange(a.Position.x - (a.Size.x / 2), b.Position.x - (b.Size.x / 2), b.Position.x + (b.Size.x / 2)) ||
+                    valueInRange(b.Position.x - (b.Size.x / 2), a.Position.x - (a.Size.x / 2), a.Position.x + (a.Size.x / 2));
         bool yOverlap = valueInRange(a.Position.y, b.Position.y, b.Position.y + b.Size.y) ||
                     valueInRange(b.Position.y, a.Position.y, a.Position.y + a.Size.y);
         return xOverlap && yOverlap;
