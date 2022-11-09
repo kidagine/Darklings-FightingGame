@@ -1,5 +1,4 @@
 using Demonics.Manager;
-using FixMath.NET;
 using System.Collections;
 using UnityEngine;
 
@@ -15,7 +14,6 @@ public class RunState : GroundParentState
         _audio.Sound("Run").Play();
         _playerMovement.MovementSpeed = _player.playerStats.SpeedRun;
         _runCoroutine = StartCoroutine(RunCoroutine());
-        _physics.Velocity = new FixVector2((Fix64)transform.root.localScale.x * (Fix64)_playerMovement.MovementSpeed, _physics.Velocity.y);
     }
 
     IEnumerator RunCoroutine()
@@ -33,6 +31,7 @@ public class RunState : GroundParentState
         base.UpdateLogic();
         ToIdleState();
         ToJumpForwardState();
+        _physics.Velocity = new DemonicsVector2((DemonicsFloat)transform.root.localScale.x * (DemonicsFloat)_playerMovement.MovementSpeed, _physics.Velocity.y);
     }
 
     private void ToIdleState()
@@ -66,7 +65,7 @@ public class RunState : GroundParentState
     public override void Exit()
     {
         base.Exit();
-        _physics.Velocity = FixVector2.Zero;
+        _physics.Velocity = DemonicsVector2.Zero;
         if (_runCoroutine != null)
         {
             StopCoroutine(_runCoroutine);

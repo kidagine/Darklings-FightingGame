@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class JumpState : AirParentState
@@ -18,20 +17,20 @@ public class JumpState : AirParentState
         Instantiate(_jumpPrefab, transform.position, Quaternion.identity);
         _audio.Sound("Jump").Play();
         _playerAnimator.Jump(true);
-        _physics.Velocity = new FixVector2((Fix64)0, _physics.Velocity.y);
+        _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, _physics.Velocity.y);
         if (_jumpCancel)
         {
-            _physics.Velocity = new FixVector2(_physics.Velocity.x, _jumpCancelForce);
+            _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _jumpCancelForce);
         }
         else
         {
             if (_playerMovement.HasDoubleJumped)
             {
-                _physics.Velocity = new FixVector2(_physics.Velocity.x, _player.playerStats.JumpForce / _jumpDoubleDivider);
+                _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce / _jumpDoubleDivider);
             }
             else
             {
-                _physics.Velocity = new FixVector2(_physics.Velocity.x, _player.playerStats.JumpForce);
+                _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce);
             }
         }
         _player.SetPushboxTrigger(true);

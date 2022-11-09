@@ -1,14 +1,14 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class JumpForwardState : AirParentState
 {
     [SerializeField] protected GameObject _jumpPrefab = default;
-    private Fix64 _jumpX;
-    private Fix64 _jumpY;
+    private DemonicsFloat _jumpX;
+    private DemonicsFloat _jumpY;
+    private DemonicsVector2 _jump;
     private int _jumpFrame = 5;
     private bool _jumpCancel;
-    private readonly Fix64 _jumpForwardX = (Fix64)0.14;
+    private readonly DemonicsFloat _jumpForwardX = (DemonicsFloat)0.14;
 
     public void Initialize(bool jumpCancel = false)
     {
@@ -25,32 +25,27 @@ public class JumpForwardState : AirParentState
         _playerMovement.ResetToWalkSpeed();
         if (_jumpCancel)
         {
-            Debug.Log("A");
-            _physics.Velocity = new FixVector2(_jumpForwardX * (Fix64)_baseController.InputDirection.x, _jumpCancelForce);
+            _jump = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, _jumpCancelForce);
         }
         else
         {
             if (_playerMovement.HasDoubleJumped)
             {
-                _physics.Velocity = new FixVector2(_jumpForwardX * (Fix64)_baseController.InputDirection.x, (_player.playerStats.JumpForce + (Fix64)0.01) / _jumpDoubleDivider);
+                _jump = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, (_player.playerStats.JumpForce + (DemonicsFloat)0.01) / _jumpDoubleDivider);
             }
             else
             {
-                _physics.Velocity = new FixVector2(_jumpForwardX * (Fix64)_baseController.InputDirection.x, _player.playerStats.JumpForce + (Fix64)0.01);
+                _jump = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, _player.playerStats.JumpForce + (DemonicsFloat)0.01);
             }
         }
-        //_jumpY = _player.playerStats.JumpForce;
+        _physics.Velocity = _jump;
     }
 
 
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        // if (!DemonicsWorld.WaitFrames(ref _jumpFrame))
-        // {
-        //     _physics.Velocity = new FixVector2(_physics.Velocity.x, (Fix64)_jumpY);
-        // }
-        // _physics.Velocity = new FixVector2((Fix64)_jumpX, _physics.Velocity.y);
+        _physics.Velocity = new DemonicsVector2(_jump.x, _physics.Velocity.y);
     }
 
     public override void Exit()

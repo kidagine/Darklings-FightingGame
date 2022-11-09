@@ -48,8 +48,7 @@ public class AirborneHurtState : HurtParentState
             _player.Flip((int)-_player.OtherPlayer.transform.localScale.x);
             GameObject effect = Instantiate(_hurtAttack.hurtEffect);
             effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
-            _playerMovement.Knockback(new Vector2(
-            _player.OtherPlayer.transform.localScale.x, _hurtAttack.knockbackDirection.y), _hurtAttack.knockbackForce, _hurtAttack.knockbackDuration);
+            _playerMovement.TravelDistance(_hurtAttack.knockbackForce);
         }
         CameraShake.Instance.Shake(_hurtAttack.cameraShaker);
         _canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());

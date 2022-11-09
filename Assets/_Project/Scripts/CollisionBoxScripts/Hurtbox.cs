@@ -1,10 +1,7 @@
-using FixMath.NET;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
 public class Hurtbox : DemonicsCollider
 {
-    [SerializeField] private BoxCollider2D _boxCollider = default;
     [SerializeField] private GameObject _hurtboxResponderObject = default;
     private IHurtboxResponder _hurtboxResponder;
 
@@ -17,15 +14,10 @@ public class Hurtbox : DemonicsCollider
             _hurtboxResponder = _hurtboxResponderObject.GetComponent<IHurtboxResponder>();
     }
 
-    public void SetIsTrigger(bool state)
-    {
-        _boxCollider.isTrigger = state;
-    }
-
     public void SetBox(Vector2 size, Vector2 offset)
     {
-        Size = new FixVector2((Fix64)size.x, (Fix64)size.y);
-        Offset = new FixVector2((Fix64)offset.x, (Fix64)offset.y);
+        Size = new DemonicsVector2((DemonicsFloat)size.x, (DemonicsFloat)size.y);
+        Offset = new DemonicsVector2((DemonicsFloat)offset.x, (DemonicsFloat)offset.y);
     }
 
     public bool TakeDamage(AttackSO attackSO)

@@ -1,5 +1,4 @@
 using Demonics.Manager;
-using FixMath.NET;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,8 +22,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     private BrainController _controller;
     private Coroutine _comboTimerCoroutine;
     private bool _comboTimerPaused;
-    private readonly Fix64 _damageDecay = (Fix64)0.97f;
-    private readonly Fix64 _whiteHealthDivider = (Fix64)1.4f;
+    private readonly DemonicsFloat _damageDecay = (DemonicsFloat)0.97f;
+    private readonly DemonicsFloat _whiteHealthDivider = (DemonicsFloat)1.4f;
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
@@ -45,8 +44,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int HealthRecoverable { get; set; }
     public int Lives { get; set; } = 2;
     public bool IsPlayerOne { get; set; }
-    public Fix64 AssistGauge { get; set; } = (Fix64)1;
-    public Fix64 ArcanaGauge { get; set; }
+    public DemonicsFloat AssistGauge { get; set; } = (DemonicsFloat)1;
+    public DemonicsFloat ArcanaGauge { get; set; }
     public int ArcaneSlowdown { get; set; } = 6;
     public bool CanShadowbreak { get; set; } = true;
     public bool BlockingLow { get; set; }
@@ -113,18 +112,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void ResetPlayer(Vector2 resetPosition)
     {
         RecallAssist();
-        _playerMovement.Physics.Position = new FixVector2((Fix64)resetPosition.x, (Fix64)resetPosition.y);
-        _playerMovement.Physics.Velocity = FixVector2.Zero;
+        _playerMovement.Physics.ResetSkipWall();
+        _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
+        _playerMovement.Physics.Velocity = DemonicsVector2.Zero;
         _playerStateManager.ResetToInitialState();
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;
         _effectsParent.gameObject.SetActive(true);
         SetHurtbox(true);
-        AssistGauge = (Fix64)1;
+        AssistGauge = (DemonicsFloat)1;
         transform.SetParent(null);
         if (!GameManager.Instance.InfiniteArcana)
         {
-            ArcanaGauge = (Fix64)0;
+            ArcanaGauge = (DemonicsFloat)0;
         }
         _playerMovement.Physics.EnableGravity(true);
         StopAllCoroutines();
@@ -169,12 +169,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     private void AssistCharge()
     {
-        if (AssistGauge < (Fix64)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
+        if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
         {
-            AssistGauge += (Fix64)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
+            AssistGauge += (DemonicsFloat)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
             if (GameManager.Instance.InfiniteAssist)
             {
-                AssistGauge = (Fix64)1.0f;
+                AssistGauge = (DemonicsFloat)1.0f;
             }
             _playerUI.SetAssist((float)AssistGauge);
         }
@@ -182,20 +182,20 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     private void ArcanaCharge()
     {
-        if (ArcanaGauge < (Fix64)playerStats.Arcana && GameManager.Instance.HasGameStarted)
+        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameManager.Instance.HasGameStarted)
         {
-            ArcanaGauge += (Fix64)(Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge));
+            ArcanaGauge += (DemonicsFloat)(Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge));
             if (GameManager.Instance.InfiniteArcana)
             {
-                ArcanaGauge = (Fix64)playerStats.Arcana;
+                ArcanaGauge = (DemonicsFloat)playerStats.Arcana;
             }
             _playerUI.SetArcana((float)ArcanaGauge);
         }
     }
 
-    public void ArcanaGain(Fix64 arcana)
+    public void ArcanaGain(DemonicsFloat arcana)
     {
-        if (ArcanaGauge < (Fix64)playerStats.Arcana && GameManager.Instance.HasGameStarted)
+        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameManager.Instance.HasGameStarted)
         {
             ArcanaGauge += arcana;
             _playerUI.SetArcana((float)ArcanaGauge);
@@ -218,7 +218,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
         else
         {
-            HealthRecoverable -= (int)((Fix64)value / _whiteHealthDivider);
+            HealthRecoverable -= (int)((DemonicsFloat)value / _whiteHealthDivider);
         }
         _playerUI.SetHealth(Health);
         _playerUI.SetRecoverableHealth(HealthRecoverable);
@@ -256,10 +256,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool AssistAction()
     {
-        if (AssistGauge >= (Fix64)0.5f && GameManager.Instance.HasGameStarted && !_assist.IsOnScreen)
+        if (AssistGauge >= (DemonicsFloat)0.5f && GameManager.Instance.HasGameStarted && !_assist.IsOnScreen)
         {
             _assist.Attack();
-            DecreaseArcana((Fix64)0.5f);
+            DecreaseArcana((DemonicsFloat)0.5f);
             return true;
         }
         return false;
@@ -274,7 +274,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return 1.0f;
     }
 
-    public void DecreaseArcana(Fix64 value)
+    public void DecreaseArcana(DemonicsFloat value)
     {
         AssistGauge -= value;
         _playerUI.SetAssist((float)AssistGauge);
@@ -346,10 +346,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int CalculateDamage(AttackSO hurtAttack)
     {
         int comboCount = OtherPlayerUI.CurrentComboCount;
-        Fix64 calculatedDamage = (Fix64)((hurtAttack.damage / playerStats.Defense) * OtherPlayer.DemonLimitMultiplier());
+        DemonicsFloat calculatedDamage = (DemonicsFloat)((hurtAttack.damage / playerStats.Defense) * OtherPlayer.DemonLimitMultiplier());
         if (comboCount > 1)
         {
-            Fix64 damageScale = (Fix64)1;
+            DemonicsFloat damageScale = (DemonicsFloat)1;
             for (int i = 0; i < comboCount; i++)
             {
                 damageScale *= _damageDecay;
@@ -411,7 +411,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             {
                 hitEffect.transform.SetParent(null);
                 hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
-                hitEffect.GetComponent<Projectile>().SetSourceTransform(transform);
+                hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, transform.position);
                 hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0.0f);
                 hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
             }

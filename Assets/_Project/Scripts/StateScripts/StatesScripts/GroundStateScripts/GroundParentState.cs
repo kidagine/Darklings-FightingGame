@@ -1,5 +1,4 @@
 
-using FixMath.NET;
 using UnityEngine;
 
 public class GroundParentState : State
@@ -65,7 +64,7 @@ public class GroundParentState : State
 
     public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
     {
-        if (_player.ArcanaGauge >= (Fix64)1)
+        if (_player.ArcanaGauge >= (DemonicsFloat)1)
         {
             if (inputDirectionEnum == InputDirectionEnum.Down || _baseController.Crouch())
             {

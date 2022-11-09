@@ -10,9 +10,7 @@ public class AttackSO : ScriptableObject
     public int hitStun;
     public int blockStun;
     public Vector2 travelDistance;
-    public Vector2 travelDirection;
     public Vector2 knockbackForce;
-    public Vector2 knockbackDirection;
     public int knockbackDuration;
 
     [Header("Properties")]

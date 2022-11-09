@@ -1,38 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
-using FixMath.NET;
 using UnityEngine;
 
 public class DemonicsPhysics : MonoBehaviour
 {
-    public FixVector2 Velocity { get; set; }
-    public FixVector2 Position { get; set; }
-    private FixVector2 _freezePosition;
-    private Fix64 _gravity;
+    public DemonicsVector2 Velocity { get; set; }
+    public DemonicsVector2 Position { get; set; }
+    public bool OnGround { get { return Position.y <= GROUND_POINT ? true : false; } private set { } }
+    private DemonicsVector2 _freezePosition;
+    private DemonicsFloat _gravity;
+    private Camera _camera;
     private bool _freeze;
-    public static Fix64 GROUND_POINT = (Fix64)(-4.485);
-    public static Fix64 CELLING_POINT = (Fix64)(7);
-    public static Fix64 WALL_POINT = (Fix64)(10.75);
-
+    public static DemonicsFloat GROUND_POINT = (DemonicsFloat)(-4.485);
+    public static DemonicsFloat CELLING_POINT = (DemonicsFloat)(7);
+    public static DemonicsFloat WALL_RIGHT_POINT;
+    public static DemonicsFloat WALL_LEFT_POINT;
+    private int _skipWallFrame = 1;
+    private readonly DemonicsFloat _wallPointOffset = (DemonicsFloat)0.6;
+    public DemonicsPhysics otherPhysics;
+    void Awake()
+    {
+        _camera = Camera.main;
+    }
 
     public void OnCollision(DemonicsPhysics otherPhysics)
     {
-        if (Fix64.Abs(Velocity.x) > Fix64.Abs(otherPhysics.Velocity.x))
-        {
-            if (Position.x < otherPhysics.Position.x && Velocity.x > (Fix64)0 || Position.x > otherPhysics.Position.x && Velocity.x < (Fix64)0)
-            {
-                Velocity = new FixVector2(Velocity.x / (Fix64)2, Velocity.y);
-                otherPhysics.Position = new FixVector2(otherPhysics.Position.x + Velocity.x, otherPhysics.Position.y);
-            }
-        }
-        else if (Fix64.Abs(Velocity.x) < Fix64.Abs(otherPhysics.Velocity.x))
-        {
-            if (otherPhysics.Position.x < Position.x && otherPhysics.Velocity.x > (Fix64)0 || otherPhysics.Position.x > Position.x && otherPhysics.Velocity.x < (Fix64)0)
-            {
-                otherPhysics.Velocity = new FixVector2(otherPhysics.Velocity.x / (Fix64)2, otherPhysics.Velocity.y);
-                Position = new FixVector2(Position.x + otherPhysics.Velocity.x, Position.y);
-            }
-        }
+        this.otherPhysics = otherPhysics;
     }
 
     public void SetFreeze(bool state)
@@ -44,51 +37,131 @@ public class DemonicsPhysics : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    public void ResetSkipWall()
     {
-        Move();
+        _skipWallFrame = 1;
     }
 
-    private void Move()
+    void FixedUpdate()
     {
+        // Stop physics if frozen
         if (_freeze)
         {
             Position = _freezePosition;
             return;
         }
+        // Set horizontal wall points
+        CameraHorizontalBounds();
         //Sets physics
-        Velocity = new FixVector2(Velocity.x, Velocity.y - _gravity);
-
-        Position = new FixVector2(Position.x + Velocity.x, Position.y + Velocity.y);
-
-        Bounds();
-        //Sets rendering
-        transform.position = new Vector2((float)Position.x, (float)Position.y);
+        Velocity = new DemonicsVector2(Velocity.x, Velocity.y - _gravity);
+        //Check collision
+        if (!Collision())
+        {
+            //Set physical Position
+            SetPositionWithRender(new DemonicsVector2(Position.x + Velocity.x, Position.y + Velocity.y));
+        }
     }
 
-    public void SetPositionWithRender(FixVector2 position)
+    private void CameraHorizontalBounds()
+    {
+        if (_skipWallFrame > 0)
+        {
+            _skipWallFrame--;
+            WALL_LEFT_POINT = (DemonicsFloat)(-1000);
+            WALL_RIGHT_POINT = (DemonicsFloat)(1000);
+        }
+        else
+        {
+            WALL_LEFT_POINT = (DemonicsFloat)_camera.ScreenToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane)).x + _wallPointOffset;
+            WALL_RIGHT_POINT = (DemonicsFloat)_camera.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, 0, Camera.main.nearClipPlane)).x - _wallPointOffset;
+        }
+    }
+
+    public void SetPositionWithRender(DemonicsVector2 position)
     {
         Position = position;
+        Bounds();
         transform.position = new Vector2((float)Position.x, (float)Position.y);
     }
+
+    private bool Collision()
+    {
+        if (otherPhysics != null)
+        {
+            DemonicsVector2 main = Velocity;
+            DemonicsVector2 second = otherPhysics.Velocity;
+            if (otherPhysics.Position.x >= WALL_RIGHT_POINT && Velocity.x >= (DemonicsFloat)0 || otherPhysics.Position.x <= WALL_LEFT_POINT && Velocity.x <= (DemonicsFloat)0)
+            {
+                main = new DemonicsVector2((DemonicsFloat)0, Velocity.y);
+                second = new DemonicsVector2((DemonicsFloat)0, otherPhysics.Velocity.y);
+                SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
+                otherPhysics.SetPositionWithRender(new DemonicsVector2(otherPhysics.Position.x + second.x, otherPhysics.Position.y + second.y));
+                return true;
+            }
+            if (DemonicsFloat.Abs(Velocity.x) > DemonicsFloat.Abs(otherPhysics.Velocity.x))
+            {
+                DemonicsFloat totalVelocity;
+                if (Velocity.x > (DemonicsFloat)0 && otherPhysics.Velocity.x < (DemonicsFloat)0)
+                {
+                    totalVelocity = DemonicsFloat.Abs(Velocity.x) - DemonicsFloat.Abs(otherPhysics.Velocity.x);
+                }
+                else
+                {
+                    totalVelocity = DemonicsFloat.Abs(Velocity.x);
+                }
+                if (Position.x < otherPhysics.Position.x && Velocity.x > (DemonicsFloat)0)
+                {
+                    main = new DemonicsVector2(totalVelocity, Velocity.y);
+                    second = new DemonicsVector2(totalVelocity, otherPhysics.Velocity.y);
+                    SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
+                    otherPhysics.SetPositionWithRender(new DemonicsVector2(otherPhysics.Position.x + second.x, otherPhysics.Position.y + second.y));
+                    return true;
+                }
+                else if (Position.x > otherPhysics.Position.x && Velocity.x < (DemonicsFloat)0)
+                {
+                    main = new DemonicsVector2(-totalVelocity, Velocity.y);
+                    second = new DemonicsVector2(-totalVelocity, otherPhysics.Velocity.y);
+                    SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
+                    otherPhysics.SetPositionWithRender(new DemonicsVector2(otherPhysics.Position.x + second.x, otherPhysics.Position.y + second.y));
+                    return true;
+                }
+                return false;
+            }
+            else if (DemonicsFloat.Abs(Velocity.x) == DemonicsFloat.Abs(otherPhysics.Velocity.x))
+            {
+                if (Position.x < otherPhysics.Position.x && Velocity.x > (DemonicsFloat)0 || Position.x > otherPhysics.Position.x && Velocity.x < (DemonicsFloat)0)
+                {
+                    main = new DemonicsVector2((DemonicsFloat)0, Velocity.y);
+                    second = new DemonicsVector2((DemonicsFloat)0, otherPhysics.Velocity.y);
+                    SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
+                    otherPhysics.SetPositionWithRender(new DemonicsVector2(otherPhysics.Position.x + second.x, otherPhysics.Position.y + second.y));
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
 
     private void Bounds()
     {
         if (Position.y <= GROUND_POINT)
         {
-            Position = new FixVector2(Position.x, GROUND_POINT);
+            Position = new DemonicsVector2(Position.x, GROUND_POINT);
         }
-        if (Position.y >= CELLING_POINT && Velocity.y > (Fix64)0)
+        if (Position.y >= CELLING_POINT && Velocity.y > (DemonicsFloat)0)
         {
-            Velocity = new FixVector2(Velocity.x, (Fix64)0);
+            Velocity = new DemonicsVector2(Velocity.x, (DemonicsFloat)0);
         }
-        if (Position.x >= WALL_POINT && Velocity.x > (Fix64)0)
+        if (Position.x >= WALL_RIGHT_POINT && Velocity.x >= (DemonicsFloat)0)
         {
-            Position = new FixVector2(WALL_POINT, Position.y);
+            Position = new DemonicsVector2(WALL_RIGHT_POINT, Position.y);
         }
-        if (Position.x <= -WALL_POINT && Velocity.x < (Fix64)0)
+        if (Position.x <= WALL_LEFT_POINT && Velocity.x <= (DemonicsFloat)0)
         {
-            Position = new FixVector2(-WALL_POINT, Position.y);
+            Position = new DemonicsVector2(WALL_LEFT_POINT, Position.y);
         }
     }
 
@@ -96,11 +169,11 @@ public class DemonicsPhysics : MonoBehaviour
     {
         if (state)
         {
-            _gravity = (Fix64)0.018;
+            _gravity = (DemonicsFloat)0.018;
         }
         else
         {
-            _gravity = (Fix64)0;
+            _gravity = (DemonicsFloat)0;
         }
     }
 }

@@ -69,9 +69,9 @@ public class Assist : DemonicsAnimator, IHitboxResponder
     {
         _hitEffect = Instantiate(_assistStatsSO.assistPrefab, transform);
         _hitEffect.transform.localPosition = Vector2.zero;
-        _hitEffect.GetComponent<Projectile>().SetSourceTransform(_player);
+        _hitEffect.GetComponent<Projectile>().SetSourceTransform(_player, transform.position);
         _hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
-        _hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, AssistStats.assistRotation);
+        _hitEffect.transform.localRotation = Quaternion.Euler(0, 0, AssistStats.assistRotation);
         _hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
         _hitEffect.transform.SetParent(null);
     }

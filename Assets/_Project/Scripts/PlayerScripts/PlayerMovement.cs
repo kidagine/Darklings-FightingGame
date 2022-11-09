@@ -1,5 +1,4 @@
 using Demonics.Sounds;
-using FixMath.NET;
 using System.Collections;
 using UnityEngine;
 
@@ -9,17 +8,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask _playerLayerMask = default;
     private Player _player;
     private Audio _audio;
-    private FixVector2 _velocity;
+    private DemonicsVector2 _velocity;
     private Coroutine _knockbackCoroutine;
     private int _knockbackFrame;
     private int _knockbackDuration;
 
-    private readonly Fix64 _cornerLimit = (Fix64)10.46;
+    private readonly DemonicsFloat _cornerLimit = (DemonicsFloat)10.46;
     public DemonicsPhysics Physics { get; private set; }
     public bool HasJumped { get; set; }
     public bool HasDoubleJumped { get; set; }
     public bool HasAirDashed { get; set; }
-    public Fix64 MovementSpeed { get; set; }
+    public DemonicsFloat MovementSpeed { get; set; }
     public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
     public bool IsInCorner { get; private set; }
@@ -58,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void TravelDistance(Vector2 travelDistance)
     {
-        Physics.Velocity = new FixVector2((Fix64)travelDistance.x, (Fix64)travelDistance.y);
+        Physics.Velocity = new DemonicsVector2((DemonicsFloat)travelDistance.x, (DemonicsFloat)travelDistance.y);
     }
 
     public void CheckForPlayer()
@@ -93,9 +92,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void KnockbackNow(Vector2 knockbackDirection, Vector2 knockbackForce, int knockbackDuration)
     {
-        Debug.Log("A");
         _startPosition = Physics.Position;
-        _endPosition = new FixVector2(Physics.Position.x + (Fix64)knockbackDirection.x * (Fix64)knockbackForce.x, Physics.Position.y + (Fix64)knockbackDirection.y * (Fix64)knockbackForce.y); ;
+        _endPosition = new DemonicsVector2(Physics.Position.x + (DemonicsFloat)knockbackDirection.x * (DemonicsFloat)knockbackForce.x, Physics.Position.y + (DemonicsFloat)knockbackDirection.y * (DemonicsFloat)knockbackForce.y); ;
         _knockbackDuration = knockbackDuration;
     }
 
@@ -104,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
         _player.hitstopEvent.AddListener(() =>
         {
             _startPosition = Physics.Position;
-            _endPosition = new FixVector2(Physics.Position.x + (Fix64)knockbackDirection.x * (Fix64)knockbackForce.x, Physics.Position.y + (Fix64)knockbackDirection.y * (Fix64)knockbackForce.y); ;
+            _endPosition = new DemonicsVector2(Physics.Position.x + (DemonicsFloat)knockbackDirection.x * (DemonicsFloat)knockbackForce.x, Physics.Position.y + (DemonicsFloat)knockbackDirection.y * (DemonicsFloat)knockbackForce.y); ;
             _knockbackDuration = knockbackDuration;
         });
     }
@@ -116,18 +114,18 @@ public class PlayerMovement : MonoBehaviour
             StopCoroutine(_knockbackCoroutine);
         }
     }
-    FixVector2 _startPosition;
-    FixVector2 _endPosition;
+    DemonicsVector2 _startPosition;
+    DemonicsVector2 _endPosition;
     private void CheckKnockback()
     {
         if (_knockbackDuration > 0)
         {
             _knockbackFrame++;
-            Fix64 ratio = (Fix64)_knockbackFrame / (Fix64)_knockbackDuration;
-            Physics.SetPositionWithRender(new FixVector2(_startPosition.x * ((Fix64)1 - ratio) + _endPosition.x * ratio, _startPosition.y * ((Fix64)1 - ratio) + _endPosition.y * ratio));
+            DemonicsFloat ratio = (DemonicsFloat)_knockbackFrame / (DemonicsFloat)_knockbackDuration;
+            Physics.SetPositionWithRender(new DemonicsVector2(_startPosition.x * ((DemonicsFloat)1 - ratio) + _endPosition.x * ratio, _startPosition.y * ((DemonicsFloat)1 - ratio) + _endPosition.y * ratio));
             if (_knockbackFrame == _knockbackDuration)
             {
-                Physics.Velocity = FixVector2.Zero;
+                Physics.Velocity = DemonicsVector2.Zero;
                 Physics.Position = _endPosition;
                 _knockbackDuration = 0;
                 _knockbackFrame = 0;
@@ -138,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
     private void CheckCorner()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 1.0f, _wallLayerMask);
-        if (Physics.Position.x >= Fix64.Abs(_cornerLimit))
+        if (Physics.Position.x >= DemonicsFloat.Abs(_cornerLimit))
         {
             IsInCorner = true;
         }
@@ -198,7 +196,6 @@ public class PlayerMovement : MonoBehaviour
         {
             IsInHitstop = false;
             Physics.SetFreeze(false);
-            Debug.Log(_velocity);
             Physics.Velocity = _velocity;
         }
     }

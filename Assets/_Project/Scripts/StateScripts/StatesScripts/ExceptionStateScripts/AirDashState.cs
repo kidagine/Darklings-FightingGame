@@ -1,5 +1,4 @@
 using Demonics.Manager;
-using FixMath.NET;
 using System.Collections;
 using UnityEngine;
 
@@ -39,7 +38,7 @@ public class AirDashState : State
             dashEffect.localScale = new Vector2(-1, transform.root.localScale.y);
             dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
         }
-        _physics.Velocity = new FixVector2((Fix64)DashDirection * (Fix64)_player.playerStats.DashForce, (Fix64)0);
+        _physics.Velocity = new DemonicsVector2((DemonicsFloat)DashDirection * (DemonicsFloat)_player.playerStats.DashForce, (DemonicsFloat)0);
         _physics.EnableGravity(false);
         _dashCoroutine = StartCoroutine(DashCoroutine());
     }
@@ -132,7 +131,7 @@ public class AirDashState : State
     public override void Exit()
     {
         base.Exit();
-        _physics.Velocity = FixVector2.Zero;
+        _physics.Velocity = DemonicsVector2.Zero;
         _physics.EnableGravity(true);
         if (_dashCoroutine != null)
         {

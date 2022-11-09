@@ -1,4 +1,3 @@
-using FixMath.NET;
 using UnityEngine;
 
 public class AirParentState : State
@@ -16,8 +15,8 @@ public class AirParentState : State
     protected KnockbackState _knockbackState;
     protected RedFrenzyState _redFrenzyState;
 
-    protected Fix64 _jumpDoubleDivider = (Fix64)1.2;
-    protected Fix64 _jumpCancelForce = (Fix64)0.2;
+    protected DemonicsFloat _jumpDoubleDivider = (DemonicsFloat)1.2;
+    protected DemonicsFloat _jumpCancelForce = (DemonicsFloat)0.2;
     protected virtual void Awake()
     {
         _fallState = GetComponent<FallState>();
@@ -49,7 +48,7 @@ public class AirParentState : State
 
     public void ToFallState()
     {
-        if (_physics.Velocity.y <= (Fix64)0)
+        if (_physics.Velocity.y <= (DemonicsFloat)0)
         {
             _stateMachine.ChangeState(_fallState);
         }
@@ -114,7 +113,7 @@ public class AirParentState : State
 
     public override bool ToArcanaState(InputDirectionEnum inputDirectionEnum)
     {
-        if (_player.ArcanaGauge >= (Fix64)1 && _playerComboSystem.GetArcana(isAir: true) != null)
+        if (_player.ArcanaGauge >= (DemonicsFloat)1 && _playerComboSystem.GetArcana(isAir: true) != null)
         {
             if (_player.CanAirArcana)
             {
