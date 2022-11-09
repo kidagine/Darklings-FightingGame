@@ -14,7 +14,6 @@ public class RunState : GroundParentState
         _audio.Sound("Run").Play();
         _playerMovement.MovementSpeed = _player.playerStats.SpeedRun;
         _runCoroutine = StartCoroutine(RunCoroutine());
-        _physics.Velocity = new DemonicsVector2((DemonicsFloat)transform.root.localScale.x * (DemonicsFloat)_playerMovement.MovementSpeed, _physics.Velocity.y);
     }
 
     IEnumerator RunCoroutine()
@@ -32,6 +31,7 @@ public class RunState : GroundParentState
         base.UpdateLogic();
         ToIdleState();
         ToJumpForwardState();
+        _physics.Velocity = new DemonicsVector2((DemonicsFloat)transform.root.localScale.x * (DemonicsFloat)_playerMovement.MovementSpeed, _physics.Velocity.y);
     }
 
     private void ToIdleState()

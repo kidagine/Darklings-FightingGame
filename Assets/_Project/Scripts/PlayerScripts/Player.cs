@@ -112,6 +112,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void ResetPlayer(Vector2 resetPosition)
     {
         RecallAssist();
+        _playerMovement.Physics.ResetSkipWall();
         _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
         _playerMovement.Physics.Velocity = DemonicsVector2.Zero;
         _playerStateManager.ResetToInitialState();
