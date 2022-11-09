@@ -104,7 +104,6 @@ public class DemonicsPhysics : MonoBehaviour
                 if (Velocity.x > (DemonicsFloat)0 && otherPhysics.Velocity.x < (DemonicsFloat)0)
                 {
                     totalVelocity = DemonicsFloat.Abs(Velocity.x) - DemonicsFloat.Abs(otherPhysics.Velocity.x);
-
                 }
                 else
                 {
