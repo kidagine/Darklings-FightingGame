@@ -88,6 +88,29 @@ public class DemonicsPhysics : MonoBehaviour
     {
         if (otherPhysics != null)
         {
+            if (Position.y > otherPhysics.Position.y)
+            {
+                if (Velocity.y < otherPhysics.Velocity.y)
+                {
+                    DemonicsFloat difference = DemonicsFloat.Abs(Position.x - otherPhysics.Position.x);
+                    DemonicsFloat pushDistance = (1.3 - difference);
+                    if (Position.x > otherPhysics.Position.x)
+                    {
+                        Position = new DemonicsVector2(Position.x + (pushDistance / 2), Position.y);
+                    }
+                    else
+                    {
+                        if (otherPhysics.Position.x <= WALL_LEFT_POINT && Velocity.x <= (DemonicsFloat)0)
+                        {
+                            Position = new DemonicsVector2(Position.x + (pushDistance / 2), Position.y);
+                        }
+                        else
+                        {
+                            Position = new DemonicsVector2(Position.x - (pushDistance / 2), Position.y);
+                        }
+                    }
+                }
+            }
             DemonicsVector2 main = Velocity;
             DemonicsVector2 second = otherPhysics.Velocity;
             if (otherPhysics.Position.x >= WALL_RIGHT_POINT && Velocity.x >= (DemonicsFloat)0 || otherPhysics.Position.x <= WALL_LEFT_POINT && Velocity.x <= (DemonicsFloat)0)

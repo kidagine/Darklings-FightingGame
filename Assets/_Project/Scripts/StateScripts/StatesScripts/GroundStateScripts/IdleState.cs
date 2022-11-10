@@ -19,6 +19,7 @@ public class IdleState : GroundParentState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        _physics.Velocity = DemonicsVector2.Zero;
         ToWalkState();
         ToCrouchState();
         ToJumpState();
