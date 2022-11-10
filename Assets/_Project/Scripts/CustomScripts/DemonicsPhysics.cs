@@ -17,7 +17,7 @@ public class DemonicsPhysics : MonoBehaviour
     public static DemonicsFloat WALL_LEFT_POINT;
     private int _skipWallFrame = 1;
     private readonly DemonicsFloat _wallPointOffset = (DemonicsFloat)0.6;
-    public DemonicsPhysics otherPhysics;
+    public DemonicsPhysics OtherPhysics { get; set; }
     void Awake()
     {
         _camera = Camera.main;
@@ -25,7 +25,7 @@ public class DemonicsPhysics : MonoBehaviour
 
     public void OnCollision(DemonicsPhysics otherPhysics)
     {
-        this.otherPhysics = otherPhysics;
+        this.OtherPhysics = otherPhysics;
     }
 
     public void SetFreeze(bool state)
@@ -86,89 +86,88 @@ public class DemonicsPhysics : MonoBehaviour
 
     private bool Collision()
     {
-        if (otherPhysics != null)
+        if (OtherPhysics != null)
         {
-            if (Position.y > otherPhysics.Position.y)
+            if (Position.y > OtherPhysics.Position.y)
             {
-                if (Velocity.y < otherPhysics.Velocity.y)
+                if (Velocity.y < OtherPhysics.Velocity.y)
                 {
-                    DemonicsFloat difference = DemonicsFloat.Abs(Position.x - otherPhysics.Position.x);
-                    DemonicsFloat pushDistance = (1.3 - difference);
-                    if (Position.x > otherPhysics.Position.x)
+                    DemonicsFloat difference = DemonicsFloat.Abs(Position.x - OtherPhysics.Position.x);
+                    DemonicsFloat pushDistance = ((DemonicsFloat)1.3 - difference) / ((DemonicsFloat)2);
+                    if (Position.x > OtherPhysics.Position.x)
                     {
-                        Debug.Log("A");
                         if (Position.x >= WALL_RIGHT_POINT)
                         {
-                            otherPhysics.Position = new DemonicsVector2(otherPhysics.Position.x - (pushDistance / 2), otherPhysics.Position.y);
+                            OtherPhysics.Position = new DemonicsVector2(OtherPhysics.Position.x - pushDistance, OtherPhysics.Position.y);
                         }
                         else
                         {
-                            Position = new DemonicsVector2(Position.x + (pushDistance / 2), Position.y);
+                            Position = new DemonicsVector2(Position.x + pushDistance, Position.y);
                         }
                     }
-                    else if (Position.x <= otherPhysics.Position.x)
+                    else if (Position.x <= OtherPhysics.Position.x)
                     {
-                        if (otherPhysics.Position.x <= WALL_LEFT_POINT)
+                        if (OtherPhysics.Position.x <= WALL_LEFT_POINT)
                         {
-                            Position = new DemonicsVector2(Position.x + (pushDistance / 2), Position.y);
+                            Position = new DemonicsVector2(Position.x + pushDistance, Position.y);
                         }
                         else if (Position.x <= WALL_LEFT_POINT)
                         {
-                            otherPhysics.Position = new DemonicsVector2(otherPhysics.Position.x + (pushDistance / 2), otherPhysics.Position.y);
+                            OtherPhysics.Position = new DemonicsVector2(OtherPhysics.Position.x + (pushDistance / 2), OtherPhysics.Position.y);
                         }
                         else
                         {
-                            Position = new DemonicsVector2(Position.x - (pushDistance / 2), Position.y);
+                            Position = new DemonicsVector2(Position.x - pushDistance, Position.y);
                         }
                     }
                 }
             }
             DemonicsVector2 main = Velocity;
-            DemonicsVector2 second = otherPhysics.Velocity;
-            if (otherPhysics.Position.x >= WALL_RIGHT_POINT && Velocity.x >= (DemonicsFloat)0 || otherPhysics.Position.x <= WALL_LEFT_POINT && Velocity.x <= (DemonicsFloat)0)
+            DemonicsVector2 second = OtherPhysics.Velocity;
+            if (OtherPhysics.Position.x >= WALL_RIGHT_POINT && Velocity.x >= (DemonicsFloat)0 || OtherPhysics.Position.x <= WALL_LEFT_POINT && Velocity.x <= (DemonicsFloat)0)
             {
                 main = new DemonicsVector2((DemonicsFloat)0, Velocity.y);
-                second = new DemonicsVector2((DemonicsFloat)0, otherPhysics.Velocity.y);
-                otherPhysics.SetPositionWithRender(new DemonicsVector2(otherPhysics.Position.x + second.x, otherPhysics.Position.y + second.y));
+                second = new DemonicsVector2((DemonicsFloat)0, OtherPhysics.Velocity.y);
+                OtherPhysics.SetPositionWithRender(new DemonicsVector2(OtherPhysics.Position.x + second.x, OtherPhysics.Position.y + second.y));
                 SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
                 return true;
             }
-            if (DemonicsFloat.Abs(Velocity.x) > DemonicsFloat.Abs(otherPhysics.Velocity.x))
+            if (DemonicsFloat.Abs(Velocity.x) > DemonicsFloat.Abs(OtherPhysics.Velocity.x))
             {
                 DemonicsFloat totalVelocity;
-                if (Velocity.x > (DemonicsFloat)0 && otherPhysics.Velocity.x < (DemonicsFloat)0)
+                if (Velocity.x > (DemonicsFloat)0 && OtherPhysics.Velocity.x < (DemonicsFloat)0)
                 {
-                    totalVelocity = DemonicsFloat.Abs(Velocity.x) - DemonicsFloat.Abs(otherPhysics.Velocity.x);
+                    totalVelocity = DemonicsFloat.Abs(Velocity.x) - DemonicsFloat.Abs(OtherPhysics.Velocity.x);
                 }
                 else
                 {
                     totalVelocity = DemonicsFloat.Abs(Velocity.x);
                 }
-                if (Position.x < otherPhysics.Position.x && Velocity.x > (DemonicsFloat)0)
+                if (Position.x < OtherPhysics.Position.x && Velocity.x > (DemonicsFloat)0)
                 {
                     main = new DemonicsVector2(totalVelocity, Velocity.y);
-                    second = new DemonicsVector2(totalVelocity, otherPhysics.Velocity.y);
-                    otherPhysics.SetPositionWithRender(new DemonicsVector2(otherPhysics.Position.x + second.x, otherPhysics.Position.y + second.y));
+                    second = new DemonicsVector2(totalVelocity, OtherPhysics.Velocity.y);
+                    OtherPhysics.SetPositionWithRender(new DemonicsVector2(OtherPhysics.Position.x + second.x, OtherPhysics.Position.y + second.y));
                     SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
                     return true;
                 }
-                else if (Position.x > otherPhysics.Position.x && Velocity.x < (DemonicsFloat)0)
+                else if (Position.x > OtherPhysics.Position.x && Velocity.x < (DemonicsFloat)0)
                 {
                     main = new DemonicsVector2(-totalVelocity, Velocity.y);
-                    second = new DemonicsVector2(-totalVelocity, otherPhysics.Velocity.y);
-                    otherPhysics.SetPositionWithRender(new DemonicsVector2(otherPhysics.Position.x + second.x, otherPhysics.Position.y + second.y));
+                    second = new DemonicsVector2(-totalVelocity, OtherPhysics.Velocity.y);
+                    OtherPhysics.SetPositionWithRender(new DemonicsVector2(OtherPhysics.Position.x + second.x, OtherPhysics.Position.y + second.y));
                     SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
                     return true;
                 }
                 return false;
             }
-            else if (DemonicsFloat.Abs(Velocity.x) == DemonicsFloat.Abs(otherPhysics.Velocity.x))
+            else if (DemonicsFloat.Abs(Velocity.x) == DemonicsFloat.Abs(OtherPhysics.Velocity.x))
             {
-                if (Position.x < otherPhysics.Position.x && Velocity.x > (DemonicsFloat)0 || Position.x > otherPhysics.Position.x && Velocity.x < (DemonicsFloat)0)
+                if (Position.x < OtherPhysics.Position.x && Velocity.x > (DemonicsFloat)0 || Position.x > OtherPhysics.Position.x && Velocity.x < (DemonicsFloat)0)
                 {
                     main = new DemonicsVector2((DemonicsFloat)0, Velocity.y);
-                    second = new DemonicsVector2((DemonicsFloat)0, otherPhysics.Velocity.y);
-                    otherPhysics.SetPositionWithRender(new DemonicsVector2(otherPhysics.Position.x + second.x, otherPhysics.Position.y + second.y));
+                    second = new DemonicsVector2((DemonicsFloat)0, OtherPhysics.Velocity.y);
+                    OtherPhysics.SetPositionWithRender(new DemonicsVector2(OtherPhysics.Position.x + second.x, OtherPhysics.Position.y + second.y));
 
                     SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
                     return true;
