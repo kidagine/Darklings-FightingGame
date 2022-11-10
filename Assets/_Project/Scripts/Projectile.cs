@@ -39,7 +39,7 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
         {
             _physics.Velocity = new DemonicsVector2((DemonicsFloat)Direction.x, (DemonicsFloat)Direction.y) * (DemonicsFloat)_speed;
         }
-        if (_physics.OnGround)
+        if (_physics.OnGround && _disableOnContact)
         {
             Instantiate(_dustPrefab, transform.position, Quaternion.identity);
             gameObject.SetActive(false);
