@@ -43,7 +43,6 @@ public class AirParentState : State
         ToFallState();
         ToJumpState();
         ToJumpForwardState();
-        _playerMovement.CheckForPlayer();
     }
 
     public void ToFallState()

@@ -28,7 +28,6 @@ public class AirHurtState : HurtParentState
     {
         base.UpdateLogic();
         ToFallStateAfterGround();
-        _playerMovement.CheckForPlayer();
         if (DemonicsWorld.WaitFrames(ref _hurtFrame))
         {
             ToFallAfterStunState();

@@ -51,7 +51,6 @@ public class KnockdownState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _playerMovement.CheckForPlayer();
     }
 
     public override void Exit()

@@ -44,7 +44,6 @@ public class RedFrenzyState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _playerMovement.ZeroGravity();
         if (DemonicsWorld.WaitFramesOnce(ref _startTeleportFrame))
         {
             StartTeleportToOpponent();
@@ -128,6 +127,5 @@ public class RedFrenzyState : State
         base.Exit();
         _player.CanSkipAttack = false;
         _playerUI.UpdateHealthDamaged();
-        _playerMovement.ResetGravity();
     }
 }

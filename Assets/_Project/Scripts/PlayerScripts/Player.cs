@@ -226,11 +226,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void CheckFlip()
     {
-        if (OtherPlayer.transform.position.x > transform.position.x && !_playerMovement.IsInCorner)
+        if (OtherPlayerMovement.Physics.Position.x > _playerMovement.Physics.Position.x)
         {
             Flip(1);
         }
-        else if (OtherPlayer.transform.position.x < transform.position.x && !_playerMovement.IsInCorner)
+        else if (OtherPlayerMovement.Physics.Position.x < _playerMovement.Physics.Position.x)
         {
             Flip(-1);
         }

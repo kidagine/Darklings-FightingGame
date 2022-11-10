@@ -84,10 +84,6 @@ public class AttackState : State
         {
             _playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance.x * transform.root.localScale.x, _player.CurrentAttack.travelDistance.y));
         }
-        else
-        {
-            _playerMovement.CheckForPlayer();
-        }
     }
 
     private void ToFallStateOnGround()
