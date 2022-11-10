@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private LayerMask _wallLayerMask = default;
-    [SerializeField] private LayerMask _playerLayerMask = default;
     private Player _player;
     private Audio _audio;
     private DemonicsVector2 _velocity;
@@ -53,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void TravelDistance(Vector2 travelDistance)
+    public void TravelDistance(DemonicsVector2 travelDistance)
     {
         Physics.Velocity = new DemonicsVector2((DemonicsFloat)travelDistance.x, (DemonicsFloat)travelDistance.y);
     }
@@ -110,21 +108,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public Vector2 OnWall()
+    public bool OnWall()
     {
-        if (!IsInHitstop)
+        if (Physics.Position.x > (DemonicsFloat)0 && Physics.Velocity.x <= (DemonicsFloat)0)
         {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 2.0f, _wallLayerMask);
-            if (hit.collider != null)
-            {
-                return new Vector2(hit.point.x - (0.2f * -transform.localScale.x), transform.localPosition.y);
-            }
-            else
-            {
-                return Vector2.zero;
-            }
+            return false;
         }
-        return Vector2.zero;
+        else if (Physics.Position.x < (DemonicsFloat)0 && Physics.Velocity.x >= (DemonicsFloat)0)
+        {
+            return false;
+        }
+        return Physics.OnWall;
     }
 
     public void ResetToWalkSpeed()

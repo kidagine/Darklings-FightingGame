@@ -82,7 +82,7 @@ public class AttackState : State
         ToJumpForwardState();
         if (!_air && !_playerMovement.HasJumped)
         {
-            _playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance.x * transform.root.localScale.x, _player.CurrentAttack.travelDistance.y));
+            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)_player.CurrentAttack.travelDistance.x * transform.root.localScale.x, (DemonicsFloat)_player.CurrentAttack.travelDistance.y));
         }
     }
 

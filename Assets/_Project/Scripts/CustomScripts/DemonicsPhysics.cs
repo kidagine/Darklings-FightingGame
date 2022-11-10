@@ -7,6 +7,7 @@ public class DemonicsPhysics : MonoBehaviour
     public DemonicsVector2 Velocity { get; set; }
     public DemonicsVector2 Position { get; set; }
     public bool OnGround { get { return Position.y <= GROUND_POINT ? true : false; } private set { } }
+    public bool OnWall { get { return Position.x >= WALL_RIGHT_POINT || Position.x <= WALL_LEFT_POINT ? true : false; } private set { } }
     private DemonicsVector2 _freezePosition;
     private DemonicsFloat _gravity;
     private Camera _camera;

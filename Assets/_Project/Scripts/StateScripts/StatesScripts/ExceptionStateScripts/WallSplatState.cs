@@ -18,7 +18,7 @@ public class WallSplatState : State
         _playerAnimator.WallSplat();
         _player.SetHurtbox(false);
         _playerMovement.StopAllCoroutines();
-        _player.transform.position = _playerMovement.OnWall();
+        _physics.SetFreeze(true);
         _playerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
         GameObject effect = Instantiate(_wallSplatPrefab);
         SpriteRenderer effectSpriteRenderer = effect.GetComponent<SpriteRenderer>();
@@ -46,6 +46,7 @@ public class WallSplatState : State
     public override void Exit()
     {
         base.Exit();
+        _physics.SetFreeze(false);
         _playerAnimator.ResetPosition();
     }
 }

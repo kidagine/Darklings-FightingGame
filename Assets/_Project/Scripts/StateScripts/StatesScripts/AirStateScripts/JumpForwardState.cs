@@ -6,7 +6,6 @@ public class JumpForwardState : AirParentState
     private DemonicsFloat _jumpX;
     private DemonicsFloat _jumpY;
     private DemonicsVector2 _jump;
-    private int _jumpFrame = 5;
     private bool _jumpCancel;
     private readonly DemonicsFloat _jumpForwardX = (DemonicsFloat)0.14;
 
@@ -20,7 +19,6 @@ public class JumpForwardState : AirParentState
         base.Enter();
         Instantiate(_jumpPrefab, transform.position, Quaternion.identity);
         _audio.Sound("Jump").Play();
-        _jumpFrame = 5;
         _playerAnimator.JumpForward(true);
         _playerMovement.ResetToWalkSpeed();
         if (_jumpCancel)
