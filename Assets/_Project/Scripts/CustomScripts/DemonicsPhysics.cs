@@ -96,6 +96,7 @@ public class DemonicsPhysics : MonoBehaviour
                     DemonicsFloat pushDistance = (1.3 - difference);
                     if (Position.x > otherPhysics.Position.x)
                     {
+                        Debug.Log("A");
                         if (Position.x >= WALL_RIGHT_POINT)
                         {
                             otherPhysics.Position = new DemonicsVector2(otherPhysics.Position.x - (pushDistance / 2), otherPhysics.Position.y);
