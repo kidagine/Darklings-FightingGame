@@ -80,11 +80,11 @@ public class PlayerStatsSO : ScriptableObject
             switch (jumpLevel)
             {
                 case 1:
-                    return (DemonicsFloat)0.3;
+                    return (DemonicsFloat)0.34;
                 case 2:
-                    return (DemonicsFloat)0.33;
-                case 3:
                     return (DemonicsFloat)0.35;
+                case 3:
+                    return (DemonicsFloat)0.37;
                 default:
                     return (DemonicsFloat)0;
             }

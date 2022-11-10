@@ -431,6 +431,8 @@ public class GameManager : MonoBehaviour
 
     public void StartIntro()
     {
+        PlayerOne.ResetPlayer(new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT));
+        PlayerTwo.ResetPlayer(new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT));
         for (int i = 0; i < _arcanaObjects.Length; i++)
         {
             _arcanaObjects[i].SetActive(false);

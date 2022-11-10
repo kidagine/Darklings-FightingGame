@@ -53,7 +53,6 @@ public class HurtParentState : State
         }
         _player.SetHealth(_player.CalculateDamage(_hurtAttack));
         _playerUI.Damaged();
-        _playerMovement.ResetGravity();
         _player.RecallAssist();
         GameManager.Instance.HitStop(_hurtAttack.hitstop);
         if (_player.Health <= 0)

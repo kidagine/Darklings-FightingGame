@@ -91,10 +91,10 @@ public class DemonicsCollider : MonoBehaviour
         {
             ExitCollision();
         }
-        if (_physics.otherPhysics != null)
+        if (_physics.OtherPhysics != null)
         {
-            _physics.otherPhysics.Velocity = new DemonicsVector2((DemonicsFloat)0, _physics.otherPhysics.Velocity.y);
-            _physics.otherPhysics = null;
+            _physics.OtherPhysics.Velocity = new DemonicsVector2((DemonicsFloat)0, _physics.OtherPhysics.Velocity.y);
+            _physics.OtherPhysics = null;
         }
     }
 

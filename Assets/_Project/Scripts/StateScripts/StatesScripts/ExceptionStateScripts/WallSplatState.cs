@@ -17,7 +17,6 @@ public class WallSplatState : State
         _audio.Sound("WallSplat").Play();
         _playerAnimator.WallSplat();
         _player.SetHurtbox(false);
-        _playerMovement.ZeroGravity();
         _playerMovement.StopAllCoroutines();
         _player.transform.position = _playerMovement.OnWall();
         _playerUI.DisplayNotification(NotificationTypeEnum.WallSplat);

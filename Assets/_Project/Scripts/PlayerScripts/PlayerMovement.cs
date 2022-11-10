@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
     private int _knockbackFrame;
     private int _knockbackDuration;
 
-    private readonly DemonicsFloat _cornerLimit = (DemonicsFloat)10.46;
     public DemonicsPhysics Physics { get; private set; }
     public bool HasJumped { get; set; }
     public bool HasDoubleJumped { get; set; }
@@ -39,7 +38,6 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         CheckKnockback();
-        CheckCorner();
         CheckGrounded();
     }
 
@@ -58,27 +56,6 @@ public class PlayerMovement : MonoBehaviour
     public void TravelDistance(Vector2 travelDistance)
     {
         Physics.Velocity = new DemonicsVector2((DemonicsFloat)travelDistance.x, (DemonicsFloat)travelDistance.y);
-    }
-
-    public void CheckForPlayer()
-    {
-        float space = 0.685f;
-        for (int i = 0; i < 3; i++)
-        {
-            Debug.DrawRay(new Vector2(transform.position.x + space, transform.position.y), Vector2.down, Color.green);
-            RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x + space, transform.position.y), Vector2.down, 0.6f, _playerLayerMask);
-            if (hit.collider != null)
-            {
-                if (hit.collider.transform.root != transform.root)
-                {
-                    if (hit.collider.transform.root.TryGetComponent(out Player player))
-                    {
-                        float pushboxSizeX = hit.collider.GetComponent<BoxCollider2D>().size.x;
-                    }
-                }
-            }
-            space -= 0.685f;
-        }
     }
 
     public void AddForce(float moveHorizontally)
@@ -133,19 +110,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void CheckCorner()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 1.0f, _wallLayerMask);
-        if (Physics.Position.x >= DemonicsFloat.Abs(_cornerLimit))
-        {
-            IsInCorner = true;
-        }
-        else
-        {
-            IsInCorner = false;
-        }
-    }
-
     public Vector2 OnWall()
     {
         if (!IsInHitstop)
@@ -161,14 +125,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         return Vector2.zero;
-    }
-
-    public void ResetGravity()
-    {
-    }
-
-    public void ZeroGravity()
-    {
     }
 
     public void ResetToWalkSpeed()
@@ -198,10 +154,5 @@ public class PlayerMovement : MonoBehaviour
             Physics.SetFreeze(false);
             Physics.Velocity = _velocity;
         }
-    }
-
-    public void SetRigidbodyKinematic(bool state)
-    {
-
     }
 }

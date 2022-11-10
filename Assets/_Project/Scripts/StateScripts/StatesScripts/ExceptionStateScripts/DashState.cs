@@ -41,7 +41,6 @@ public class DashState : State
             dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
         }
         _physics.Velocity = new DemonicsVector2((DemonicsFloat)DashDirection * (DemonicsFloat)_player.playerStats.DashForce, _physics.Velocity.y);
-        _playerMovement.ZeroGravity();
         _dashCoroutine = StartCoroutine(DashCoroutine());
     }
 
@@ -53,7 +52,6 @@ public class DashState : State
             playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.root.localScale.x, Color.white);
             yield return new WaitForSeconds(0.07f);
         }
-        _playerMovement.ResetGravity();
         ToIdleState();
         _inputBuffer.CheckInputBuffer();
         if (_baseController.InputDirection.x * transform.root.localScale.x > 0)
@@ -115,7 +113,6 @@ public class DashState : State
         _physics.Velocity = DemonicsVector2.Zero;
         if (_dashCoroutine != null)
         {
-            _playerMovement.ResetGravity();
             StopCoroutine(_dashCoroutine);
         }
     }
