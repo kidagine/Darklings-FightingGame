@@ -41,12 +41,9 @@ public class PlayerCollisionBoxes : MonoBehaviour
 
     public void SetHitboxes(AnimationBox[] animationBoxes, bool multiHit = false)
     {
-        if (animationBoxes.Length == 0 || multiHit)
+        for (int i = 0; i < _hitboxes.Count; i++)
         {
-            for (int i = 0; i < _hitboxes.Count; i++)
-            {
-                _hitboxes[i].gameObject.SetActive(false);
-            }
+            _hitboxes[i].gameObject.SetActive(false);
         }
         for (int i = 0; i < animationBoxes.Length; i++)
         {

@@ -41,8 +41,8 @@ public class DemonicsCollider : MonoBehaviour
     {
         bool xOverlap = valueInRange(a.Position.x - (a.Size.x / (DemonicsFloat)2), b.Position.x - (b.Size.x / (DemonicsFloat)2), b.Position.x + (b.Size.x / (DemonicsFloat)2)) ||
                     valueInRange(b.Position.x - (b.Size.x / (DemonicsFloat)2), a.Position.x - (a.Size.x / (DemonicsFloat)2), a.Position.x + (a.Size.x / (DemonicsFloat)2));
-        bool yOverlap = valueInRange(a.Position.y, b.Position.y, b.Position.y + b.Size.y) ||
-                    valueInRange(b.Position.y, a.Position.y, a.Position.y + a.Size.y);
+        bool yOverlap = valueInRange(a.Position.y - (a.Size.y / (DemonicsFloat)2), b.Position.y - (b.Size.y / (DemonicsFloat)2), b.Position.y + (b.Size.y / (DemonicsFloat)2)) ||
+                    valueInRange(b.Position.y - (b.Size.y / (DemonicsFloat)2), a.Position.y - (a.Size.y / (DemonicsFloat)2), a.Position.y + (a.Size.y / (DemonicsFloat)2));
         return xOverlap && yOverlap;
     }
 
@@ -80,10 +80,7 @@ public class DemonicsCollider : MonoBehaviour
                         _physics.OnCollision(demonicsPhysics);
                     }
                 }
-                if (!WasColliding)
-                {
-                    EnterCollision(_demonicsColliders[i]);
-                }
+                EnterCollision(_demonicsColliders[i]);
                 return;
             }
         }
@@ -96,7 +93,10 @@ public class DemonicsCollider : MonoBehaviour
 
     protected virtual void EnterCollision(DemonicsCollider collider)
     {
-        WasColliding = true;
+        if (!WasColliding)
+        {
+            WasColliding = true;
+        }
     }
 
     protected virtual void ExitCollision()

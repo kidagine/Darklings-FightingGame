@@ -13,7 +13,6 @@ public class Hitbox : DemonicsCollider
     protected Transform _sourceTransform;
     public bool HitConfirm { get; private set; }
 
-
     void Awake()
     {
         GizmoColor = Color.red;
@@ -90,15 +89,16 @@ public class Hitbox : DemonicsCollider
     {
         if (!HitConfirm)
         {
-            base.EnterCollision(collider);
             if (collider.TryGetComponent(out Hurtbox hurtbox))
             {
-                HitConfirm = true;
+                base.EnterCollision(collider);
                 OnPlayerCollision?.Invoke();
                 _hitboxResponder.HitboxCollided(new Vector2((float)HitPoint.x, (float)HitPoint.y), hurtbox);
+                HitConfirm = true;
             }
         }
     }
+
 
     protected override void OnDisable()
     {
