@@ -255,13 +255,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return false;
     }
 
-    public float DemonLimitMultiplier()
+    public DemonicsFloat DemonLimitMultiplier()
     {
         if (Health < 3000)
         {
-            return 1.2f;
+            return (DemonicsFloat)1.2;
         }
-        return 1.0f;
+        return (DemonicsFloat)1;
     }
 
     public void DecreaseArcana(DemonicsFloat value)
@@ -336,7 +336,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int CalculateDamage(AttackSO hurtAttack)
     {
         int comboCount = OtherPlayerUI.CurrentComboCount;
-        DemonicsFloat calculatedDamage = (DemonicsFloat)((hurtAttack.damage / playerStats.Defense) * OtherPlayer.DemonLimitMultiplier());
+        DemonicsFloat calculatedDamage = ((DemonicsFloat)hurtAttack.damage / (DemonicsFloat)playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
         if (comboCount > 1)
         {
             DemonicsFloat damageScale = (DemonicsFloat)1;
@@ -395,14 +395,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             GameObject hitEffect;
             hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
             hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
-            hitEffect.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, CurrentAttack.hitEffectRotation);
+            hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
             hitEffect.transform.localScale = new Vector2(-1, 1);
             if (isProjectile)
             {
                 hitEffect.transform.SetParent(null);
                 hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
                 hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, transform.position);
-                hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0.0f);
+                hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
                 hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
             }
         }

@@ -114,7 +114,7 @@ public class DemonicsPhysics : MonoBehaviour
                         }
                         else if (Position.x <= WALL_LEFT_POINT)
                         {
-                            OtherPhysics.Position = new DemonicsVector2(OtherPhysics.Position.x + (pushDistance / 2), OtherPhysics.Position.y);
+                            OtherPhysics.Position = new DemonicsVector2(OtherPhysics.Position.x + pushDistance, OtherPhysics.Position.y);
                         }
                         else
                         {

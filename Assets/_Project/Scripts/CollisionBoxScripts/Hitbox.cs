@@ -7,10 +7,10 @@ public class Hitbox : DemonicsCollider
 {
     public Action OnGroundCollision;
     public Action OnPlayerCollision;
+    public DemonicsVector2 HitPoint { get; private set; }
     [SerializeField] private bool _hitGround;
     [SerializeField] private IHitboxResponder _hitboxResponder;
     protected Transform _sourceTransform;
-    public Transform HitPoint { get; private set; }
     public bool HitConfirm { get; private set; }
 
 
@@ -26,6 +26,34 @@ public class Hitbox : DemonicsCollider
         {
             _hitboxResponder = transform.root.GetComponent<IHitboxResponder>();
         }
+    }
+
+    protected override bool Colliding(DemonicsCollider a, DemonicsCollider b)
+    {
+        if (gameObject.name.Contains("Main_hitbox"))
+        {
+            if (a._physics.Position.x > b._physics.Position.x)
+            {
+                HitPoint = new DemonicsVector2(a.Position.x - (a.Size.x / (DemonicsFloat)2), HitPoint.y);
+            }
+            else
+            {
+                HitPoint = new DemonicsVector2(a.Position.x + (a.Size.x / (DemonicsFloat)2), HitPoint.y);
+            }
+            if (a._physics.Position.y == b._physics.Position.y)
+            {
+                HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y);
+            }
+            else if (a._physics.Position.y >= b._physics.Position.y)
+            {
+                HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y - (a.Size.y / (DemonicsFloat)2));
+            }
+            else
+            {
+                HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y + (a.Size.y / (DemonicsFloat)2));
+            }
+        }
+        return base.Colliding(a, b);
     }
 
     protected override void InitializeCollisionList()
@@ -62,12 +90,22 @@ public class Hitbox : DemonicsCollider
 
     protected override void EnterCollision(DemonicsCollider collider)
     {
-        base.EnterCollision(collider);
-        if (collider.TryGetComponent(out Hurtbox hurtbox))
+        if (!HitConfirm)
         {
-            OnPlayerCollision?.Invoke();
-            _hitboxResponder.HitboxCollided(new Vector2((float)collider.Position.x, (float)collider.Position.y), hurtbox);
+            base.EnterCollision(collider);
+            if (collider.TryGetComponent(out Hurtbox hurtbox))
+            {
+                HitConfirm = true;
+                OnPlayerCollision?.Invoke();
+                _hitboxResponder.HitboxCollided(new Vector2((float)HitPoint.x, (float)HitPoint.y), hurtbox);
+            }
         }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        HitConfirm = false;
     }
 
 #if UNITY_EDITOR

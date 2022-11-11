@@ -78,7 +78,6 @@ public class HurtParentState : State
         return false;
     }
 
-
     public override void Exit()
     {
         base.Exit();
