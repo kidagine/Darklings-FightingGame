@@ -106,6 +106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7600070780512524519}
+  - component: {fileID: 7931729386021342095}
   m_Layer: 0
   m_Name: GrabPoint_emptyObject
   m_TagString: Untagged
@@ -128,6 +129,18 @@ Transform:
   m_Father: {fileID: 8073473789928578678}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7931729386021342095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2423683899322484342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b07b43e8a218d4e9012782762e6ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3488833446598643948
 GameObject:
   m_ObjectHideFlags: 0
@@ -980,7 +993,7 @@ MonoBehaviour:
   _playerMovement: {fileID: 8073473790702501987}
   _inputBuffer: {fileID: 4664395619888274278}
   _audio: {fileID: 7611394710214668632}
-  _grabPoint: {fileID: 7600070780512524519}
+  _grabPoint: {fileID: 7931729386021342095}
 --- !u!212 &8073473789928578676
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1266,12 +1279,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a6ea18400d51841a15234546f7cd06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallLayerMask:
-    serializedVersion: 2
-    m_Bits: 4096
-  _playerLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
 --- !u!114 &8073473790702501994
 MonoBehaviour:
   m_ObjectHideFlags: 0

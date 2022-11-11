@@ -53,12 +53,12 @@ public class DemonicsPhysics : MonoBehaviour
         }
         // Set horizontal wall points
         CameraHorizontalBounds();
-        //Sets physics
+        // Sets physics
         Velocity = new DemonicsVector2(Velocity.x, Velocity.y - _gravity);
-        //Check collision
+        // Check collision
         if (!Collision())
         {
-            //Set physical Position
+            // Set physical Position
             SetPositionWithRender(new DemonicsVector2(Position.x + Velocity.x, Position.y + Velocity.y));
         }
     }

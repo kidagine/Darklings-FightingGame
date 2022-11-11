@@ -96,17 +96,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void SetToGrabPoint(Player player)
     {
         player.transform.SetParent(_grabPoint);
-        player.transform.localPosition = Vector2.zero;
         player.transform.localScale = new Vector2(-1.0f, 1.0f);
-    }
-
-    public bool HasGrabbed()
-    {
-        if (_grabPoint.childCount == 0)
-        {
-            return false;
-        }
-        return true;
     }
 
     public void ResetPlayer(Vector2 resetPosition)
