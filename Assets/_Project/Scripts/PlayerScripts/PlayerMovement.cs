@@ -18,8 +18,8 @@ public class PlayerMovement : MonoBehaviour
     public DemonicsFloat MovementSpeed { get; set; }
     public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
-    public bool IsInCorner { get; private set; }
     public bool IsInHitstop { get; private set; }
+    public bool IsInCorner => Physics.Position.x == DemonicsPhysics.WALL_RIGHT_POINT || Physics.Position.x == DemonicsPhysics.WALL_LEFT_POINT;
 
     void Awake()
     {
