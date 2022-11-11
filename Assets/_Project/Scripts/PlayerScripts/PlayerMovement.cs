@@ -1,5 +1,4 @@
 using Demonics.Sounds;
-using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -84,10 +83,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void StopKnockback()
     {
-        if (_knockbackCoroutine != null)
-        {
-            StopCoroutine(_knockbackCoroutine);
-        }
+        _knockbackDuration = 0;
+        _knockbackFrame = 0; ;
     }
     DemonicsVector2 _startPosition;
     DemonicsVector2 _endPosition;

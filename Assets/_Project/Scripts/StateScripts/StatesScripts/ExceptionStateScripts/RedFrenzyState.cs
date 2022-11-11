@@ -23,6 +23,8 @@ public class RedFrenzyState : State
     public override void Enter()
     {
         base.Enter();
+        _physics.Velocity = DemonicsVector2.Zero;
+        _physics.EnableGravity(false);
         _startTeleportFrame = 7;
         _playerUI.Damaged();
         _player.CurrentAttack = _player.playerStats.mRedFrenzy;
@@ -76,12 +78,13 @@ public class RedFrenzyState : State
     {
         if (_player.transform.localScale.x > 0)
         {
-            _player.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - 1.5f, _player.OtherPlayer.transform.position.y);
+            _physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)_player.OtherPlayerMovement.Physics.Position.x - 1.5, (DemonicsFloat)_player.OtherPlayerMovement.Physics.Position.y));
         }
         else
         {
-            _player.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + 1.5f, _player.OtherPlayer.transform.position.y);
+            _physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)_player.OtherPlayerMovement.Physics.Position.x + 1.5, (DemonicsFloat)_player.OtherPlayerMovement.Physics.Position.y));
         }
+        _physics.SetFreeze(true);
         ObjectPoolingManager.Instance.Spawn(_teleportAppearEffect, transform.root.position);
         _endTeleportFrame = 11;
     }
@@ -121,10 +124,11 @@ public class RedFrenzyState : State
         return false;
     }
 
-
     public override void Exit()
     {
         base.Exit();
+        _physics.EnableGravity(true);
+        _physics.SetFreeze(false);
         _player.CanSkipAttack = false;
         _playerUI.UpdateHealthDamaged();
     }
