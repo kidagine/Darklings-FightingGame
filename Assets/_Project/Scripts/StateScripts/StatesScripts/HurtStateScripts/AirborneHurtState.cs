@@ -36,19 +36,19 @@ public class AirborneHurtState : HurtParentState
             _player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
         }
         _player.OtherPlayer.FreezeComboTimer();
-        _player.SetPushboxTrigger(true);
         _player.SetHurtbox(true);
         if (WallSplat)
         {
             GameManager.Instance.AddHitstop(_player);
             _player.Flip((int)-_player.transform.localScale.x);
+            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)_hurtAttack.knockbackForce.x * -_player.transform.localScale.x, (DemonicsFloat)_hurtAttack.knockbackForce.y));
         }
         else
         {
             _player.Flip((int)-_player.OtherPlayer.transform.localScale.x);
             GameObject effect = Instantiate(_hurtAttack.hurtEffect);
             effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
-            _playerMovement.TravelDistance(_hurtAttack.knockbackForce);
+            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)_hurtAttack.knockbackForce.x * -_player.transform.localScale.x, (DemonicsFloat)_hurtAttack.knockbackForce.y));
         }
         CameraShake.Instance.Shake(_hurtAttack.cameraShaker);
         _canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());
@@ -99,7 +99,7 @@ public class AirborneHurtState : HurtParentState
 
     private void ToWallSplatState()
     {
-        if (_playerMovement.OnWall() != Vector2.zero && !WallSplat)
+        if (_playerMovement.OnWall() && !WallSplat)
         {
             _stateMachine.ChangeState(_wallSplatState);
         }
@@ -132,7 +132,6 @@ public class AirborneHurtState : HurtParentState
         {
             StopCoroutine(_canCheckGroundCoroutine);
         }
-        _player.SetPushboxTrigger(false);
         WallSplat = false;
         _canCheckGround = false;
     }

@@ -45,7 +45,7 @@ public class ArcanaState : State
         _player.ArcanaGauge -= (DemonicsFloat)1;
         _playerUI.DecreaseArcana();
         _playerUI.SetArcana((float)_player.ArcanaGauge);
-        _playerMovement.TravelDistance(new Vector2(_player.CurrentAttack.travelDistance.x * transform.root.localScale.x, _player.CurrentAttack.travelDistance.y));
+        _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)_player.CurrentAttack.travelDistance.x * transform.root.localScale.x, (DemonicsFloat)_player.CurrentAttack.travelDistance.y));
         _playerAnimator.Arcana(_player.CurrentAttack.name);
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ArcanaEnd);
     }

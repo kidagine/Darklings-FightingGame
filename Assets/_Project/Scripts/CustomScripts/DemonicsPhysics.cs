@@ -7,6 +7,7 @@ public class DemonicsPhysics : MonoBehaviour
     public DemonicsVector2 Velocity { get; set; }
     public DemonicsVector2 Position { get; set; }
     public bool OnGround { get { return Position.y <= GROUND_POINT ? true : false; } private set { } }
+    public bool OnWall { get { return Position.x >= WALL_RIGHT_POINT || Position.x <= WALL_LEFT_POINT ? true : false; } private set { } }
     private DemonicsVector2 _freezePosition;
     private DemonicsFloat _gravity;
     private Camera _camera;
@@ -52,14 +53,15 @@ public class DemonicsPhysics : MonoBehaviour
         }
         // Set horizontal wall points
         CameraHorizontalBounds();
-        //Sets physics
+        // Sets physics
         Velocity = new DemonicsVector2(Velocity.x, Velocity.y - _gravity);
-        //Check collision
+        // Check collision
         if (!Collision())
         {
-            //Set physical Position
+            // Set physical Position
             SetPositionWithRender(new DemonicsVector2(Position.x + Velocity.x, Position.y + Velocity.y));
         }
+
     }
 
     private void CameraHorizontalBounds()
@@ -93,7 +95,7 @@ public class DemonicsPhysics : MonoBehaviour
                 if (Velocity.y < OtherPhysics.Velocity.y)
                 {
                     DemonicsFloat difference = DemonicsFloat.Abs(Position.x - OtherPhysics.Position.x);
-                    DemonicsFloat pushDistance = ((DemonicsFloat)1.3 - difference) / ((DemonicsFloat)2);
+                    DemonicsFloat pushDistance = ((DemonicsFloat)1.35 - difference) / ((DemonicsFloat)2);
                     if (Position.x > OtherPhysics.Position.x)
                     {
                         if (Position.x >= WALL_RIGHT_POINT)
@@ -113,7 +115,7 @@ public class DemonicsPhysics : MonoBehaviour
                         }
                         else if (Position.x <= WALL_LEFT_POINT)
                         {
-                            OtherPhysics.Position = new DemonicsVector2(OtherPhysics.Position.x + (pushDistance / 2), OtherPhysics.Position.y);
+                            OtherPhysics.Position = new DemonicsVector2(OtherPhysics.Position.x + pushDistance, OtherPhysics.Position.y);
                         }
                         else
                         {
@@ -128,8 +130,9 @@ public class DemonicsPhysics : MonoBehaviour
             {
                 main = new DemonicsVector2((DemonicsFloat)0, Velocity.y);
                 second = new DemonicsVector2((DemonicsFloat)0, OtherPhysics.Velocity.y);
-                OtherPhysics.SetPositionWithRender(new DemonicsVector2(OtherPhysics.Position.x + second.x, OtherPhysics.Position.y + second.y));
+                OtherPhysics.SetPositionWithRender(new DemonicsVector2(OtherPhysics.Position.x + second.x, OtherPhysics.Position.y));
                 SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
+                Intersects();
                 return true;
             }
             if (DemonicsFloat.Abs(Velocity.x) > DemonicsFloat.Abs(OtherPhysics.Velocity.x))
@@ -149,6 +152,7 @@ public class DemonicsPhysics : MonoBehaviour
                     second = new DemonicsVector2(totalVelocity, OtherPhysics.Velocity.y);
                     OtherPhysics.SetPositionWithRender(new DemonicsVector2(OtherPhysics.Position.x + second.x, OtherPhysics.Position.y + second.y));
                     SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
+                    Intersects();
                     return true;
                 }
                 else if (Position.x > OtherPhysics.Position.x && Velocity.x < (DemonicsFloat)0)
@@ -156,7 +160,8 @@ public class DemonicsPhysics : MonoBehaviour
                     main = new DemonicsVector2(-totalVelocity, Velocity.y);
                     second = new DemonicsVector2(-totalVelocity, OtherPhysics.Velocity.y);
                     OtherPhysics.SetPositionWithRender(new DemonicsVector2(OtherPhysics.Position.x + second.x, OtherPhysics.Position.y + second.y));
-                    SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
+                    SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y)); Intersects();
+
                     return true;
                 }
                 return false;
@@ -168,8 +173,8 @@ public class DemonicsPhysics : MonoBehaviour
                     main = new DemonicsVector2((DemonicsFloat)0, Velocity.y);
                     second = new DemonicsVector2((DemonicsFloat)0, OtherPhysics.Velocity.y);
                     OtherPhysics.SetPositionWithRender(new DemonicsVector2(OtherPhysics.Position.x + second.x, OtherPhysics.Position.y + second.y));
-
                     SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
+                    Intersects();
                     return true;
                 }
                 return false;
@@ -179,6 +184,30 @@ public class DemonicsPhysics : MonoBehaviour
         return false;
     }
 
+    private void Intersects()
+    {
+        if (OtherPhysics != null)
+        {
+            if (Position.x < OtherPhysics.Position.x)
+            {
+                if (Position.x + 1.35 > OtherPhysics.Position.x)
+                {
+                    DemonicsFloat difference = DemonicsFloat.Abs(Position.x - OtherPhysics.Position.x);
+                    DemonicsFloat pushDistance = ((DemonicsFloat)1.35 - difference) / ((DemonicsFloat)2);
+                    Position = new DemonicsVector2((Position.x - pushDistance), Position.y);
+                }
+            }
+            else
+            {
+                if (Position.x < OtherPhysics.Position.x + 1.35)
+                {
+                    DemonicsFloat difference = DemonicsFloat.Abs(Position.x - OtherPhysics.Position.x);
+                    DemonicsFloat pushDistance = ((DemonicsFloat)1.35 - difference) / ((DemonicsFloat)2);
+                    Position = new DemonicsVector2((Position.x + pushDistance), Position.y);
+                }
+            }
+        }
+    }
 
     private void Bounds()
     {

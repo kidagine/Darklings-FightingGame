@@ -28,7 +28,6 @@ public class ThrowState : State
             _player.Flip((int)transform.root.localScale.x * -1);
         }
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
-        _playerAnimator.OnCurrentAnimationFinished.AddListener(() => { _player.OtherPlayerStateManager.TryToKnockdownState(); });
         _playerAnimator.Throw();
     }
 

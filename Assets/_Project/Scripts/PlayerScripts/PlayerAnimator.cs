@@ -8,7 +8,7 @@ public class PlayerAnimator : DemonicsAnimator
     [SerializeField] private PlayerMovement _playerMovement = default;
     [SerializeField] private InputBuffer _inputBuffer = null;
     [SerializeField] private Audio _audio = default;
-    [SerializeField] private Transform _grabPoint = default;
+    [SerializeField] private DemonicsPhysics _grabPoint = default;
     private Shadow _shadow;
 
     public PlayerStatsSO PlayerStats { get { return _player.playerStats; } set { } }
@@ -41,15 +41,15 @@ public class PlayerAnimator : DemonicsAnimator
         }
         if (GetEvent().grabPoint != Vector2.zero)
         {
-            _grabPoint.localPosition = GetEvent().grabPoint;
-            _grabPoint.localRotation = Quaternion.Euler(0, 0, 0);
+            DemonicsVector2 throwOffset = new DemonicsVector2((DemonicsFloat)GetEvent().grabPoint.x * (DemonicsFloat)(_player.transform.localScale.x), (DemonicsFloat)GetEvent().grabPoint.y);
+            _player.OtherPlayerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x + throwOffset.x, _playerMovement.Physics.Position.y + throwOffset.y));
         }
         if (GetEvent().throwEnd)
         {
             _audio.Sound("Impact6").Play();
             CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
             _player.OtherPlayerStateManager.TryToKnockdownState();
-        }        
+        }
         if (GetEvent().throwArcanaEnd)
         {
             _audio.Sound("Impact6").Play();

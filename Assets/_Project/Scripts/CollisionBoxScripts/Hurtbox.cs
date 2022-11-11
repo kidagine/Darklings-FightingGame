@@ -5,8 +5,6 @@ public class Hurtbox : DemonicsCollider
     [SerializeField] private GameObject _hurtboxResponderObject = default;
     private IHurtboxResponder _hurtboxResponder;
 
-    public Color HurtboxColor { get; private set; } = Color.green;
-
 
     void Awake()
     {

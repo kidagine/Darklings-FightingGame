@@ -9,9 +9,9 @@ public class DemonicsCollider : MonoBehaviour
     [SerializeField] private Vector2 _offset = default;
     [SerializeField] private Vector2 _size = default;
     protected List<DemonicsCollider> _demonicsColliders = new List<DemonicsCollider>();
-    protected DemonicsPhysics _physics;
 
 
+    public DemonicsPhysics _physics { get; set; }
     public Color GizmoColor { get; set; } = Color.green;
     public bool WasColliding { get; set; }
     public bool IgnoreCollision { get { return _ignoreCollision; } set { _ignoreCollision = value; } }
@@ -37,10 +37,10 @@ public class DemonicsCollider : MonoBehaviour
     private bool valueInRange(DemonicsFloat value, DemonicsFloat min, DemonicsFloat max)
     { return (value >= min) && (value <= max); }
 
-    private bool Colliding(DemonicsCollider a, DemonicsCollider b)
+    protected virtual bool Colliding(DemonicsCollider a, DemonicsCollider b)
     {
-        bool xOverlap = valueInRange(a.Position.x - (a.Size.x / 2), b.Position.x - (b.Size.x / 2), b.Position.x + (b.Size.x / 2)) ||
-                    valueInRange(b.Position.x - (b.Size.x / 2), a.Position.x - (a.Size.x / 2), a.Position.x + (a.Size.x / 2));
+        bool xOverlap = valueInRange(a.Position.x - (a.Size.x / (DemonicsFloat)2), b.Position.x - (b.Size.x / (DemonicsFloat)2), b.Position.x + (b.Size.x / (DemonicsFloat)2)) ||
+                    valueInRange(b.Position.x - (b.Size.x / (DemonicsFloat)2), a.Position.x - (a.Size.x / (DemonicsFloat)2), a.Position.x + (a.Size.x / (DemonicsFloat)2));
         bool yOverlap = valueInRange(a.Position.y, b.Position.y, b.Position.y + b.Size.y) ||
                     valueInRange(b.Position.y, a.Position.y, a.Position.y + a.Size.y);
         return xOverlap && yOverlap;
@@ -91,11 +91,7 @@ public class DemonicsCollider : MonoBehaviour
         {
             ExitCollision();
         }
-        if (_physics.OtherPhysics != null)
-        {
-            _physics.OtherPhysics.Velocity = new DemonicsVector2((DemonicsFloat)0, _physics.OtherPhysics.Velocity.y);
-            _physics.OtherPhysics = null;
-        }
+        _physics.OtherPhysics = null;
     }
 
     protected virtual void EnterCollision(DemonicsCollider collider)
@@ -108,7 +104,7 @@ public class DemonicsCollider : MonoBehaviour
         WasColliding = false;
     }
 
-    void OnDisable()
+    protected virtual void OnDisable()
     {
         WasColliding = false;
     }

@@ -97,37 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34754119084380a419bb9c68c7a2cf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2423683899322484342
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7600070780512524519}
-  m_Layer: 0
-  m_Name: GrabPoint_emptyObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7600070780512524519
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2423683899322484342}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 1.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8073473789928578678}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3488833446598643948
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,7 +804,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8073473789928578678}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7759221523502482170
 GameObject:
@@ -953,7 +922,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8073473790464433816}
-  - {fileID: 7600070780512524519}
   - {fileID: 3775412804825945539}
   m_Father: {fileID: 8073473790702501984}
   m_RootOrder: 1
@@ -980,7 +948,7 @@ MonoBehaviour:
   _playerMovement: {fileID: 8073473790702501987}
   _inputBuffer: {fileID: 4664395619888274278}
   _audio: {fileID: 7611394710214668632}
-  _grabPoint: {fileID: 7600070780512524519}
+  _grabPoint: {fileID: 0}
 --- !u!212 &8073473789928578676
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1238,7 +1206,6 @@ MonoBehaviour:
   _groundPushbox: {fileID: 516655848589572334}
   _hurtbox: {fileID: 8073473791272386160}
   _effectsParent: {fileID: 2017372758765848807}
-  _grabPoint: {fileID: 7600070780512524519}
   _cameraPoint: {fileID: 3775412804825945539}
   _keepFlip: {fileID: 4489081760178489291}
   _playerIcons:
@@ -1266,12 +1233,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a6ea18400d51841a15234546f7cd06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallLayerMask:
-    serializedVersion: 2
-    m_Bits: 4096
-  _playerLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
 --- !u!114 &8073473790702501994
 MonoBehaviour:
   m_ObjectHideFlags: 0
