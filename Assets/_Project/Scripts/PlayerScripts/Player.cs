@@ -11,7 +11,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [SerializeField] private Pushbox _groundPushbox = default;
     [SerializeField] private Transform _hurtbox = default;
     [SerializeField] protected Transform _effectsParent = default;
-    [SerializeField] private Transform _grabPoint = default;
     [SerializeField] private Transform _cameraPoint = default;
     [SerializeField] private Transform _keepFlip = default;
     [SerializeField] private GameObject[] _playerIcons = default;
@@ -37,7 +36,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public PlayerUI PlayerUI { get { return _playerUI; } private set { } }
     public AttackSO CurrentAttack { get; set; }
     public ResultAttack ResultAttack { get; set; }
-    public Pushbox Groundbox { get { return _groundPushbox; } private set { } }
     public Transform CameraPoint { get { return _cameraPoint; } private set { } }
     public bool CanAirArcana { get; set; }
     public int Health { get; set; }
@@ -91,12 +89,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         OtherPlayerMovement = otherPlayer.GetComponent<PlayerMovement>();
         OtherPlayerUI = otherPlayer.PlayerUI;
         OtherPlayerStateManager = otherPlayer.PlayerStateManager;
-    }
-
-    public void SetToGrabPoint(Player player)
-    {
-        player.transform.SetParent(_grabPoint);
-        player.transform.localScale = new Vector2(-1.0f, 1.0f);
     }
 
     public void ResetPlayer(Vector2 resetPosition)

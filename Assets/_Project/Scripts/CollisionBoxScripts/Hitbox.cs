@@ -16,6 +16,7 @@ public class Hitbox : DemonicsCollider
 
     void Awake()
     {
+        GizmoColor = Color.red;
         _sourceTransform = transform.root;
     }
 
@@ -30,28 +31,25 @@ public class Hitbox : DemonicsCollider
 
     protected override bool Colliding(DemonicsCollider a, DemonicsCollider b)
     {
-        if (gameObject.name.Contains("Main_hitbox"))
+        if (a._physics.Position.x > b._physics.Position.x)
         {
-            if (a._physics.Position.x > b._physics.Position.x)
-            {
-                HitPoint = new DemonicsVector2(a.Position.x - (a.Size.x / (DemonicsFloat)2), HitPoint.y);
-            }
-            else
-            {
-                HitPoint = new DemonicsVector2(a.Position.x + (a.Size.x / (DemonicsFloat)2), HitPoint.y);
-            }
-            if (a._physics.Position.y == b._physics.Position.y)
-            {
-                HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y);
-            }
-            else if (a._physics.Position.y >= b._physics.Position.y)
-            {
-                HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y - (a.Size.y / (DemonicsFloat)2));
-            }
-            else
-            {
-                HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y + (a.Size.y / (DemonicsFloat)2));
-            }
+            HitPoint = new DemonicsVector2(a.Position.x - (a.Size.x / (DemonicsFloat)2), HitPoint.y);
+        }
+        else
+        {
+            HitPoint = new DemonicsVector2(a.Position.x + (a.Size.x / (DemonicsFloat)2), HitPoint.y);
+        }
+        if (a._physics.Position.y == b._physics.Position.y)
+        {
+            HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y);
+        }
+        else if (a._physics.Position.y >= b._physics.Position.y)
+        {
+            HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y - (a.Size.y / (DemonicsFloat)2));
+        }
+        else
+        {
+            HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y + (a.Size.y / (DemonicsFloat)2));
         }
         return base.Colliding(a, b);
     }
@@ -107,12 +105,4 @@ public class Hitbox : DemonicsCollider
         base.OnDisable();
         HitConfirm = false;
     }
-
-#if UNITY_EDITOR
-    protected override void OnDrawGizmos()
-    {
-        GizmoColor = Color.red;
-        base.OnDrawGizmos();
-    }
-#endif
 }

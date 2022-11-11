@@ -30,8 +30,7 @@ public class GrabbedState : State
         base.Enter();
         _playerAnimator.Hurt();
         _physics.EnableGravity(false);
-        _player.SetPushboxTrigger(true);
-        _player.OtherPlayer.SetToGrabPoint(_player);
+        _physics.Velocity = DemonicsVector2.Zero;
         _player.OtherPlayerStateManager.TryToThrowState();
         StartCoroutine(CanTechThrowCoroutine());
     }
@@ -92,8 +91,6 @@ public class GrabbedState : State
     {
         base.Exit();
         _physics.EnableGravity(true);
-        _player.SetPushboxTrigger(false);
         _playerUI.UpdateHealthDamaged();
-        _player.transform.SetParent(null);
     }
 }

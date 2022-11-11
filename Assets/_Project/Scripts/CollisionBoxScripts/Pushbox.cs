@@ -7,6 +7,11 @@ public class Pushbox : DemonicsCollider
         this.IgnoreCollision = state;
     }
 
+    void Awake()
+    {
+        GizmoColor = Color.blue;
+    }
+
     protected override void InitializeCollisionList()
     {
         DemonicsCollider[] demonicsCollidersArray = FindObjectsOfType<DemonicsCollider>();
@@ -22,12 +27,4 @@ public class Pushbox : DemonicsCollider
         }
         _demonicsColliders.Remove(this);
     }
-
-#if UNITY_EDITOR
-    protected override void OnDrawGizmos()
-    {
-        GizmoColor = Color.blue;
-        base.OnDrawGizmos();
-    }
-#endif
 }
