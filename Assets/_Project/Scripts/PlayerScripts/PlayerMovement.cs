@@ -62,13 +62,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Knockback(Vector2 knockbackForce, int knockbackDuration, int arc = 0, bool instant = false)
+    public void Knockback(Vector2 knockbackForce, int knockbackDuration, int direction, int arc = 0, bool instant = false)
     {
-        if (instant)
+        Physics.EnableGravity(false);
+        if (_knockbackDuration > 0)
         {
             StopKnockback();
+            Physics.SetFreeze(true);
+        }
+        if (instant)
+        {
             _startPosition = Physics.Position;
-            _endPosition = new DemonicsVector2(Physics.Position.x + (DemonicsFloat)knockbackForce.x, Physics.Position.y + (DemonicsFloat)knockbackForce.y);
+            _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + (DemonicsFloat)knockbackForce.y);
             _knockbackDuration = knockbackDuration;
             _arc = (DemonicsFloat)arc;
         }
@@ -76,9 +81,8 @@ public class PlayerMovement : MonoBehaviour
         {
             _player.hitstopEvent.AddListener(() =>
             {
-                StopKnockback();
                 _startPosition = Physics.Position;
-                _endPosition = new DemonicsVector2(Physics.Position.x + (DemonicsFloat)knockbackForce.x * -transform.localScale.x, Physics.Position.y + DemonicsPhysics.GROUND_POINT);
+                _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + DemonicsPhysics.GROUND_POINT);
                 _knockbackDuration = knockbackDuration;
                 _arc = (DemonicsFloat)arc;
             });
@@ -109,8 +113,8 @@ public class PlayerMovement : MonoBehaviour
             Physics.SetPositionWithRender(nextPosition);
             if (_knockbackFrame == _knockbackDuration)
             {
-                _knockbackDuration = 0;
-                _knockbackFrame = 0;
+                Physics.EnableGravity(true);
+                StopKnockback();
             }
         }
     }
