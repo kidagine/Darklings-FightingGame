@@ -76,11 +76,11 @@ public class ParryState : State
         {
             if (_player.OtherPlayerMovement.IsInCorner)
             {
-                _playerMovement.Knockback(new Vector2(_parryKnockback, 0), _knockbackDuration, 0);
+                _playerMovement.Knockback(new Vector2(_parryKnockback, 0), _knockbackDuration, (int)(_player.OtherPlayer.transform.localScale.x));
             }
             else
             {
-                _player.OtherPlayerMovement.Knockback(new Vector2(_parryKnockback, 0), _knockbackDuration, 0);
+                _player.OtherPlayerMovement.Knockback(new Vector2(_parryKnockback, 0), _knockbackDuration, (int)(_player.transform.localScale.x));
             }
         }
     }
