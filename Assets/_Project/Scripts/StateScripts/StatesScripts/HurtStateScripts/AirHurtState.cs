@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AirHurtState : HurtParentState
@@ -5,6 +6,7 @@ public class AirHurtState : HurtParentState
     private FallState _fallState;
     private HurtState _hurtState;
     private AirborneHurtState _airborneHurtState;
+    private bool _canCheckGround;
 
     protected override void Awake()
     {
@@ -33,6 +35,7 @@ public class AirHurtState : HurtParentState
             ToFallAfterStunState();
         }
     }
+
     public override bool ToAirborneHurtState(AttackSO attack)
     {
         _airborneHurtState.Initialize(attack);
@@ -53,16 +56,18 @@ public class AirHurtState : HurtParentState
 
     private void ToFallStateAfterGround()
     {
-        // if (_playerMovement.IsGrounded && _rigidbody.velocity.y <= 0.0f)
-        // {
-        //     _hurtState.Initialize(_hurtAttack, true);
-        //     _stateMachine.ChangeState(_hurtState);
-        // }
+        if (_playerMovement.IsGrounded && _physics.Velocity.y <= (DemonicsFloat)0 && !_player.IsInHitstop())
+        {
+            _physics.Velocity = DemonicsVector2.Zero;
+            _hurtState.Initialize(_hurtAttack, true);
+            _stateMachine.ChangeState(_hurtState);
+        }
     }
 
     public override bool ToHurtState(AttackSO attack)
     {
         this.Initialize(attack);
+        _canCheckGround = false;
         _stateMachine.ChangeState(this);
         return true;
     }

@@ -41,14 +41,13 @@ public class AirborneHurtState : HurtParentState
         {
             GameManager.Instance.AddHitstop(_player);
             _player.Flip((int)-_player.transform.localScale.x);
-            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)_hurtAttack.knockbackForce.x * -_player.transform.localScale.x, (DemonicsFloat)_hurtAttack.knockbackForce.y));
+            _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, (float)DemonicsPhysics.GROUND_POINT), 30, 2);
         }
         else
         {
-            _player.Flip((int)-_player.OtherPlayer.transform.localScale.x);
             GameObject effect = Instantiate(_hurtAttack.hurtEffect);
             effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
-            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)_hurtAttack.knockbackForce.x * -_player.transform.localScale.x, (DemonicsFloat)_hurtAttack.knockbackForce.y));
+            _playerMovement.Knockback(_hurtAttack.knockbackForce, _hurtAttack.knockbackDuration, _hurtAttack.knockbackArc);
         }
         CameraShake.Instance.Shake(_hurtAttack.cameraShaker);
         _canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());

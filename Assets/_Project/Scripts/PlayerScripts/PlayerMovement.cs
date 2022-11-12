@@ -6,9 +6,7 @@ public class PlayerMovement : MonoBehaviour
     private Player _player;
     private Audio _audio;
     private DemonicsVector2 _velocity;
-    private Coroutine _knockbackCoroutine;
     private int _knockbackFrame;
-    private int _knockbackDuration;
 
     public DemonicsPhysics Physics { get; private set; }
     public bool HasJumped { get; set; }
@@ -18,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
     public bool IsInHitstop { get; private set; }
-    public bool IsInCorner => Physics.Position.x == DemonicsPhysics.WALL_RIGHT_POINT || Physics.Position.x == DemonicsPhysics.WALL_LEFT_POINT;
+    public bool IsInCorner => Physics.OnWall;
 
     void Awake()
     {
@@ -64,28 +62,37 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void KnockbackNow(Vector2 knockbackDirection, Vector2 knockbackForce, int knockbackDuration)
+    public void Knockback(Vector2 knockbackForce, int knockbackDuration, int arc = 0, bool instant = false)
     {
-        _startPosition = Physics.Position;
-        _endPosition = new DemonicsVector2(Physics.Position.x + (DemonicsFloat)knockbackDirection.x * (DemonicsFloat)knockbackForce.x, Physics.Position.y + (DemonicsFloat)knockbackDirection.y * (DemonicsFloat)knockbackForce.y); ;
-        _knockbackDuration = knockbackDuration;
-    }
-
-    public void Knockback(Vector2 knockbackDirection, Vector2 knockbackForce, int knockbackDuration)
-    {
-        _player.hitstopEvent.AddListener(() =>
+        if (instant)
         {
+            StopKnockback();
             _startPosition = Physics.Position;
-            _endPosition = new DemonicsVector2(Physics.Position.x + (DemonicsFloat)knockbackDirection.x * (DemonicsFloat)knockbackForce.x, Physics.Position.y + (DemonicsFloat)knockbackDirection.y * (DemonicsFloat)knockbackForce.y); ;
+            _endPosition = new DemonicsVector2(Physics.Position.x + (DemonicsFloat)knockbackForce.x, Physics.Position.y + (DemonicsFloat)knockbackForce.y);
             _knockbackDuration = knockbackDuration;
-        });
+            _arc = (DemonicsFloat)arc;
+        }
+        else
+        {
+            _player.hitstopEvent.AddListener(() =>
+            {
+                StopKnockback();
+                _startPosition = Physics.Position;
+                _endPosition = new DemonicsVector2(Physics.Position.x + (DemonicsFloat)knockbackForce.x * -transform.localScale.x, Physics.Position.y + DemonicsPhysics.GROUND_POINT);
+                _knockbackDuration = knockbackDuration;
+                _arc = (DemonicsFloat)arc;
+            });
+        }
     }
 
     public void StopKnockback()
     {
         _knockbackDuration = 0;
-        _knockbackFrame = 0; ;
+        _knockbackFrame = 0;
     }
+
+    private DemonicsFloat _arc;
+    private int _knockbackDuration;
     DemonicsVector2 _startPosition;
     DemonicsVector2 _endPosition;
     private void CheckKnockback()
@@ -94,11 +101,14 @@ public class PlayerMovement : MonoBehaviour
         {
             _knockbackFrame++;
             DemonicsFloat ratio = (DemonicsFloat)_knockbackFrame / (DemonicsFloat)_knockbackDuration;
-            Physics.SetPositionWithRender(new DemonicsVector2(_startPosition.x * ((DemonicsFloat)1 - ratio) + _endPosition.x * ratio, _startPosition.y * ((DemonicsFloat)1 - ratio) + _endPosition.y * ratio));
+            DemonicsFloat distance = _endPosition.x - _startPosition.x;
+            DemonicsFloat nextX = DemonicsFloat.Lerp(_startPosition.x, _endPosition.x, ratio);
+            DemonicsFloat baseY = DemonicsFloat.Lerp(_startPosition.y, _endPosition.y, (nextX - _startPosition.x) / distance);
+            DemonicsFloat arc = _arc * (nextX - _startPosition.x) * (nextX - _endPosition.x) / ((DemonicsFloat)(-0.25) * distance * distance);
+            DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
+            Physics.SetPositionWithRender(nextPosition);
             if (_knockbackFrame == _knockbackDuration)
             {
-                Physics.Velocity = DemonicsVector2.Zero;
-                Physics.Position = _endPosition;
                 _knockbackDuration = 0;
                 _knockbackFrame = 0;
             }
@@ -107,14 +117,14 @@ public class PlayerMovement : MonoBehaviour
 
     public bool OnWall()
     {
-        if (Physics.Position.x > (DemonicsFloat)0 && Physics.Velocity.x <= (DemonicsFloat)0)
-        {
-            return false;
-        }
-        else if (Physics.Position.x < (DemonicsFloat)0 && Physics.Velocity.x >= (DemonicsFloat)0)
-        {
-            return false;
-        }
+        // if (Physics.Position.x > (DemonicsFloat)0 && Physics.Velocity.x <= (DemonicsFloat)0)
+        // {
+        //     return false;
+        // }
+        // else if (Physics.Position.x < (DemonicsFloat)0 && Physics.Velocity.x >= (DemonicsFloat)0)
+        // {
+        //     return false;
+        // }
         return Physics.OnWall;
     }
 
@@ -143,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
         {
             IsInHitstop = false;
             Physics.SetFreeze(false);
-            Physics.Velocity = _velocity;
+            Physics.Velocity = new DemonicsVector2(_velocity.x, Physics.Velocity.y);
         }
     }
 }

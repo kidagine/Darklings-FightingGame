@@ -18,6 +18,7 @@ public class KnockdownState : State
     {
         base.Enter();
         _audio.Sound("Landed").Play();
+        _playerMovement.StopKnockback();
         _physics.Velocity = DemonicsVector2.Zero;
         _playerAnimator.Knockdown();
         _player.SetHurtbox(false);
