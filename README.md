@@ -20,7 +20,22 @@ Darklings is a free to play 2D fighting game with the intention of being an acce
 Check the <b>production</b> branch for stable releases. <br />
 Check the <b>development</b> or latest numbered version branch for the latest releases.
 
+## Mechanical Features
+These features do not include everything in the game but rather more mechanically interesting things to point out from a developer's perspective. 
+
+**Technical Features**|**Game Features**|**Controller Features**                      
+  ------------------|  ------------------|  ------------------|
+Deterministic Physics|Local Multiplayer|Controllers Support
+Deterministic Animations|Pixel Skin Change|Dynamic Prompts
+State Machine|Hitstop System|Rebinding
+Streaming Videos|Dialogue System|
+Pixel Perfect Camera|Replay System|
+60FPS Logic Tick|AI Opponent|
+
+
 ## Sub Repositories
+These are the sub-repositories that help in one way or another to make Darklings.
+
  * [Website repository](https://github.com/kidagine/Darklings-Website) <br>
  * [Launcher repository](https://github.com/kidagine/Darklings-Launcher) <br>
  * [Command videos for WebGL repository](https://github.com/kidagine/Darklings-CommandListVideos) <br>
