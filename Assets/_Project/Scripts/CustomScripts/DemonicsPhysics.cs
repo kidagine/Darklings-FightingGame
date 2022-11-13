@@ -40,7 +40,7 @@ public class DemonicsPhysics : MonoBehaviour
 
     public void ResetSkipWall()
     {
-        _skipWallFrame = 1;
+        _skipWallFrame = 2;
     }
 
     void FixedUpdate()
