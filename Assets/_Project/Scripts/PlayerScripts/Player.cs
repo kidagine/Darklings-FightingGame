@@ -131,7 +131,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void MaxHealthStats()
     {
+        _playerUI.ResetHealthDamaged();
+
         Health = playerStats.maxHealth;
+        HealthRecoverable = playerStats.maxHealth;
         _playerUI.MaxHealth(Health);
         _playerUI.CheckDemonLimit(Health);
     }
