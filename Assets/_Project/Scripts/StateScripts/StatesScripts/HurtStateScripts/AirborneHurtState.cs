@@ -132,6 +132,7 @@ public class AirborneHurtState : HurtParentState
         {
             StopCoroutine(_canCheckGroundCoroutine);
         }
+
         WallSplat = false;
         _canCheckGround = false;
     }

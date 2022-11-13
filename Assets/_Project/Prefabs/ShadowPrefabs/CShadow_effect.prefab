@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 417637499252091369}
   - component: {fileID: 3046493706580312876}
   - component: {fileID: 3552182111618313448}
-  - component: {fileID: 6748714475635321310}
   - component: {fileID: -1156615587920061613}
   - component: {fileID: 6990918834568154549}
   m_Layer: 0
@@ -102,18 +101,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerShadowPrefab: {fileID: 8266339266402425017, guid: b5638136e48e55046817e86cb7734bf8, type: 3}
---- !u!114 &6748714475635321310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3294536446187043669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79d5daa63efee6c4b95e1953de0e2d82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-1156615587920061613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,10 +118,10 @@ MonoBehaviour:
   OnCurrentAnimationFinished:
     m_PersistentCalls:
       m_Calls: []
-  _hitbox: {fileID: 6453347680146085869}
+  _hitbox: {fileID: 123126206679066023}
   _dustPrefab: {fileID: 3294536446187043669, guid: cd594eba94539164287f65c91844dc24, type: 3}
   _projectilePriority: 1
-  _speed: 7
+  _speed: 0.1
   _isFixed: 1
   _disableOnContact: 1
 --- !u!114 &6990918834568154549
@@ -191,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5298348057825973488}
   - component: {fileID: 5260846222673715750}
-  - component: {fileID: 4973622382417209840}
+  - component: {fileID: 4115864829682453155}
   m_Layer: 7
   m_Name: Hitbox_spriteRenderer
   m_TagString: Untagged
@@ -266,7 +253,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4973622382417209840
+--- !u!114 &4115864829682453155
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -275,7 +262,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5585582147349947177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49fa865ee649d4d4aaaca25047bf6024, type: 3}
+  m_Script: {fileID: 11500000, guid: 34754119084380a419bb9c68c7a2cf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7565370206301344513
@@ -287,7 +274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6443289159971355478}
-  - component: {fileID: 6453347680146085869}
+  - component: {fileID: 123126206679066023}
   m_Layer: 7
   m_Name: Main_hitbox
   m_TagString: Untagged
@@ -311,7 +298,7 @@ Transform:
   m_Father: {fileID: 4210854016966709616}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6453347680146085869
+--- !u!114 &123126206679066023
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -320,11 +307,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7565370206301344513}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51729ec44d22e5f4f8bb5accfea6be2b, type: 3}
+  m_Script: {fileID: 11500000, guid: d7607f12deb3d8a4388823aa984b9f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _showGizmo: 0
-  _ignoreCollision: 0
+  _ignoreCollision: 1
   _offset: {x: 0, y: 0}
-  _size: {x: 1.5, y: 1.5}
-  _hitGround: 1
+  _size: {x: 0, y: 0}
+  _projectile: {fileID: -1156615587920061613}

@@ -25,6 +25,12 @@ public class ShadowbreakState : State
         CameraShake.Instance.Shake(_cameraShaker);
         Transform shadowbreak = Instantiate(_shadowbreakPrefab, _playerAnimator.transform).transform;
         shadowbreak.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
+        _player.hitstopEvent.RemoveAllListeners();
+        _playerMovement.ExitHitstop();
+        _playerMovement.StopKnockback();
+        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x, _playerMovement.Physics.Position.y + 1));
+        _playerMovement.Physics.SetFreeze(true);
+        _playerMovement.Physics.EnableGravity(false);
     }
 
     private void ToFallState()
@@ -46,14 +52,12 @@ public class ShadowbreakState : State
         return true;
     }
 
-    public override void UpdateLogic()
-    {
-        base.UpdateLogic();
-    }
-
     public override void Exit()
     {
         base.Exit();
+        _playerMovement.Physics.Velocity = DemonicsVector2.Zero;
+        _playerMovement.Physics.SetFreeze(false);
+        _playerMovement.Physics.EnableGravity(true);
         _player.OtherPlayer.StopComboTimer();
         _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
     }

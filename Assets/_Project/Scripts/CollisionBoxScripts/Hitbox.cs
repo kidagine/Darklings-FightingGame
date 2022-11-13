@@ -8,7 +8,6 @@ public class Hitbox : DemonicsCollider
     public Action OnGroundCollision;
     public Action OnPlayerCollision;
     public DemonicsVector2 HitPoint { get; private set; }
-    [SerializeField] private bool _hitGround;
     [SerializeField] private IHitboxResponder _hitboxResponder;
     protected Transform _sourceTransform;
     public bool HitConfirm { get; private set; }
