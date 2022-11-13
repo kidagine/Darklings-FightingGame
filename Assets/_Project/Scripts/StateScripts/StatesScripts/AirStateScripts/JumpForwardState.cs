@@ -19,7 +19,7 @@ public class JumpForwardState : AirParentState
         base.Enter();
         Instantiate(_jumpPrefab, transform.position, Quaternion.identity);
         _audio.Sound("Jump").Play();
-        _playerAnimator.JumpForward(true);
+        _playerAnimator.JumpForward();
         _playerMovement.ResetToWalkSpeed();
         if (_jumpCancel)
         {

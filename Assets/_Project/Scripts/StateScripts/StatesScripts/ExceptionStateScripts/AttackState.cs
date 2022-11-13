@@ -48,7 +48,7 @@ public class AttackState : State
         _player.SetSpriteOrderPriority();
         _player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
-        _playerAnimator.Attack(_player.CurrentAttack.name, true);
+        _playerAnimator.Attack(_player.CurrentAttack.name);
         if (!_air)
         {
             _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();

@@ -59,7 +59,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject[] _readyObjects = default;
     [SerializeField] protected GameObject[] _arcanaObjects = default;
     [SerializeField] protected GameObject _playerLocal = default;
-    [SerializeField] protected GameObject _playerNetcode = default;
     [SerializeField] protected GameObject _infiniteTime = default;
     [SerializeField] protected GameObject _winsImage = default;
     [SerializeField] private GameObject[] _hearts = default;

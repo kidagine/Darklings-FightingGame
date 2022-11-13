@@ -6,6 +6,7 @@ public class RedFrenzyState : State
     [SerializeField] private GameObject _teleportDisappearEffect = default;
     [SerializeField] private GameObject _teleportAppearEffect = default;
     private IdleState _idleState;
+    private FallState _fallState;
     private HurtState _hurtState;
     private AirHurtState _airHurtState;
     private int _startTeleportFrame;
@@ -16,6 +17,7 @@ public class RedFrenzyState : State
     void Awake()
     {
         _idleState = GetComponent<IdleState>();
+        _fallState = GetComponent<FallState>();
         _hurtState = GetComponent<HurtState>();
         _airHurtState = GetComponent<AirHurtState>();
     }
@@ -32,14 +34,22 @@ public class RedFrenzyState : State
         _player.SetSpriteOrderPriority();
         _audio.Sound("Vanish").Play();
         _playerAnimator.RedFrenzy();
-        _playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
+        _playerAnimator.OnCurrentAnimationFinished.AddListener(ToNextState);
     }
 
-    private new void ToIdleState()
+    private void ToNextState()
     {
         if (_stateMachine.CurrentState == this)
         {
-            _stateMachine.ChangeState(_idleState);
+            if (_playerMovement.IsGrounded)
+            {
+                _stateMachine.ChangeState(_idleState);
+            }
+            else
+            {
+                _playerAnimator.Jump();
+                _stateMachine.ChangeState(_fallState);
+            }
         }
     }
 
@@ -93,6 +103,7 @@ public class RedFrenzyState : State
     {
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
         _player.SetInvinsible(false);
+        Debug.Log("c");
     }
 
     public override bool ToHurtState(AttackSO attack)
@@ -127,8 +138,10 @@ public class RedFrenzyState : State
     public override void Exit()
     {
         base.Exit();
-        _physics.EnableGravity(true);
+        Debug.Log("A");
+        _player.SetInvinsible(false);
         _physics.SetFreeze(false);
+        _physics.EnableGravity(true);
         _player.CanSkipAttack = false;
         _playerUI.UpdateHealthDamaged();
     }

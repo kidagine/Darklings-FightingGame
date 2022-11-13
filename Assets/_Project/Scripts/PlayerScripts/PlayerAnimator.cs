@@ -121,17 +121,17 @@ public class PlayerAnimator : DemonicsAnimator
         SetAnimation("Crouch");
     }
 
-    public void Jump(bool reset = false)
+    public void Jump()
     {
         SetAnimation("Jump");
     }
 
-    public void JumpForward(bool reset = false)
+    public void JumpForward()
     {
         SetAnimation("JumpForward");
     }
 
-    public void Attack(string attackType, bool reset = false)
+    public void Attack(string attackType)
     {
         SetAnimation(attackType);
     }
