@@ -9,7 +9,7 @@ public class KnockbackState : State
     private Coroutine _canCheckGroundCoroutine;
     private bool _canCheckGround;
     private readonly float _knockbackDirectionY = 0.5f;
-    private readonly int _knockbackDuration = 10;
+    private readonly int _knockbackDuration = 25;
     private readonly float _knockbackForce = 2.5f;
 
     protected void Awake()
@@ -21,7 +21,7 @@ public class KnockbackState : State
     {
         _playerAnimator.HurtAir();
         base.Enter();
-        _playerMovement.Knockback(new Vector2(_knockbackForce, _knockbackForce), _knockbackDuration, (int)(_player.OtherPlayer.transform.localScale.x), 0, true);
+        _playerMovement.Knockback(new Vector2(_knockbackForce, _knockbackForce), _knockbackDuration, (int)(_player.OtherPlayer.transform.localScale.x), 5, true);
         CameraShake.Instance.Shake(_cameraShaker);
         _canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());
     }

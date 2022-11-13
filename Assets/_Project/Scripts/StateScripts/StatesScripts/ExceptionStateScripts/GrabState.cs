@@ -70,9 +70,4 @@ public class GrabState : State
         _stateMachine.ChangeState(_grabbedState);
         return true;
     }
-
-    public override void UpdateLogic()
-    {
-        base.UpdateLogic();
-    }
 }

@@ -25,6 +25,7 @@ public class ParryState : State
     public override void Enter()
     {
         base.Enter();
+        _physics.Velocity = DemonicsVector2.Zero;
         _player.SetSpriteOrderPriority();
         _player.SetResultAttack(0, _player.playerStats.mParry);
         _player.parryConnectsEvent?.Invoke();
