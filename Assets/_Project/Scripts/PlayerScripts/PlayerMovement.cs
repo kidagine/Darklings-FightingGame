@@ -62,30 +62,38 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Knockback(Vector2 knockbackForce, int knockbackDuration, int direction, int arc = 0, bool instant = false)
+    public void Knockback(Vector2 knockbackForce, int knockbackDuration, int direction, int arc = 0, bool instant = false, bool reachGround = false)
     {
-        Physics.EnableGravity(false);
-        if (_knockbackDuration > 0)
+        if (knockbackDuration > 0)
         {
-            StopKnockback();
-            Physics.SetFreeze(true);
-        }
-        if (instant)
-        {
-            _startPosition = Physics.Position;
-            _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + (DemonicsFloat)knockbackForce.y);
-            _knockbackDuration = knockbackDuration;
-            _arc = (DemonicsFloat)arc;
-        }
-        else
-        {
-            _player.hitstopEvent.AddListener(() =>
+            Physics.EnableGravity(false);
+            if (_knockbackDuration > 0)
+            {
+                StopKnockback();
+                Physics.SetFreeze(true);
+            }
+            DemonicsFloat endPositionY = (DemonicsFloat)0;
+            if (reachGround)
+            {
+                endPositionY = DemonicsPhysics.GROUND_POINT;
+            }
+            if (instant)
             {
                 _startPosition = Physics.Position;
-                _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + DemonicsPhysics.GROUND_POINT);
+                _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + endPositionY);
                 _knockbackDuration = knockbackDuration;
                 _arc = (DemonicsFloat)arc;
-            });
+            }
+            else
+            {
+                _player.hitstopEvent.AddListener(() =>
+                {
+                    _startPosition = Physics.Position;
+                    _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + endPositionY);
+                    _knockbackDuration = knockbackDuration;
+                    _arc = (DemonicsFloat)arc;
+                });
+            }
         }
     }
 
@@ -117,19 +125,6 @@ public class PlayerMovement : MonoBehaviour
                 StopKnockback();
             }
         }
-    }
-
-    public bool OnWall()
-    {
-        // if (Physics.Position.x > (DemonicsFloat)0 && Physics.Velocity.x <= (DemonicsFloat)0)
-        // {
-        //     return false;
-        // }
-        // else if (Physics.Position.x < (DemonicsFloat)0 && Physics.Velocity.x >= (DemonicsFloat)0)
-        // {
-        //     return false;
-        // }
-        return Physics.OnWall;
     }
 
     public void ResetToWalkSpeed()

@@ -28,9 +28,9 @@ public class ShadowbreakState : State
         _player.hitstopEvent.RemoveAllListeners();
         _playerMovement.ExitHitstop();
         _playerMovement.StopKnockback();
-        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x, _playerMovement.Physics.Position.y + 1));
-        _playerMovement.Physics.SetFreeze(true);
-        _playerMovement.Physics.EnableGravity(false);
+        _physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x, _playerMovement.Physics.Position.y + 1));
+        _physics.SetFreeze(true);
+        _physics.EnableGravity(false);
     }
 
     private void ToFallState()
@@ -55,9 +55,9 @@ public class ShadowbreakState : State
     public override void Exit()
     {
         base.Exit();
-        _playerMovement.Physics.Velocity = DemonicsVector2.Zero;
-        _playerMovement.Physics.SetFreeze(false);
-        _playerMovement.Physics.EnableGravity(true);
+        _physics.Velocity = DemonicsVector2.Zero;
+        _physics.SetFreeze(false);
+        _physics.EnableGravity(true);
         _player.OtherPlayer.StopComboTimer();
         _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
     }

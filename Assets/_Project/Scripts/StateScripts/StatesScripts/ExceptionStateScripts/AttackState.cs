@@ -354,6 +354,7 @@ public class AttackState : State
     public override void Exit()
     {
         base.Exit();
+        _physics.EnableGravity(true);
         if (!_air)
         {
             _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, _physics.Velocity.y);

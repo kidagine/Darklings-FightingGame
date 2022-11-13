@@ -20,6 +20,7 @@ public class KnockdownState : State
         _audio.Sound("Landed").Play();
         _playerMovement.StopKnockback();
         _physics.Velocity = DemonicsVector2.Zero;
+        _physics.EnableGravity(true);
         _playerAnimator.Knockdown();
         _player.SetHurtbox(false);
         _player.OtherPlayer.StopComboTimer();
