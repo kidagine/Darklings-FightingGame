@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Knockback(Vector2 knockbackForce, int knockbackDuration, int direction, int arc = 0, bool instant = false, bool reachGround = false)
+    public void Knockback(Vector2 knockbackForce, int knockbackDuration, int direction, int arc = 0, bool instant = false)
     {
         if (knockbackDuration > 0)
         {
@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
                 Physics.SetFreeze(true);
             }
             DemonicsFloat endPositionY = (DemonicsFloat)0;
-            if (reachGround)
+            if (arc > 0)
             {
                 endPositionY = DemonicsPhysics.GROUND_POINT;
             }
