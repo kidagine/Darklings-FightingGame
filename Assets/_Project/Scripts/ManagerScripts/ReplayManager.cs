@@ -200,7 +200,7 @@ public class ReplayManager : MonoBehaviour
     {
         if (s)
         {
-            if (DemonicsWorld.Frame == replayCardData.skip)
+            if (DemonicsWorld.Frame == replayCardData.skip && replayCardData.skip > 0)
             {
                 GameManager.Instance.SkipIntro();
                 s = false;

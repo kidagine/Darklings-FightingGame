@@ -25,6 +25,9 @@ public class RedFrenzyState : State
     public override void Enter()
     {
         base.Enter();
+        _player.hitstopEvent.RemoveAllListeners();
+        _playerMovement.ExitHitstop();
+        _playerMovement.StopKnockback();
         _physics.Velocity = DemonicsVector2.Zero;
         _physics.EnableGravity(false);
         _startTeleportFrame = 7;
@@ -103,7 +106,6 @@ public class RedFrenzyState : State
     {
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
         _player.SetInvinsible(false);
-        Debug.Log("c");
     }
 
     public override bool ToHurtState(AttackSO attack)
@@ -138,7 +140,6 @@ public class RedFrenzyState : State
     public override void Exit()
     {
         base.Exit();
-        Debug.Log("A");
         _player.SetInvinsible(false);
         _physics.SetFreeze(false);
         _physics.EnableGravity(true);
