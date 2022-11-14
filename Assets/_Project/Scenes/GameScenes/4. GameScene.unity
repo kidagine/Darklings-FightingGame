@@ -8432,7 +8432,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 16375
 --- !u!114 &289302306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11721,8 +11721,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 0
-  _characterOne: 1
-  _characterTwo: 1
+  _characterOne: 4
+  _characterTwo: 4
   _assistOne: 0
   _assistTwo: 0
   _controllerOne: 0
@@ -11732,7 +11732,7 @@ MonoBehaviour:
   _music: 10
   _playerOneSkin: 0
   _playerTwoSkin: 0
-  _isTrainingMode: 1
+  _isTrainingMode: 0
   _1BitOn: 0
   _gameSpeed: 1
   _countdownTime: 99
@@ -11764,7 +11764,6 @@ MonoBehaviour:
   - {fileID: 661996216}
   - {fileID: 1136645026}
   _playerLocal: {fileID: 8073473790702501986, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
-  _playerNetcode: {fileID: 8073473790702501986, guid: 7bf632d7cafa43948b56507cf5589a57, type: 3}
   _infiniteTime: {fileID: 2133406262}
   _winsImage: {fileID: 1594352878}
   _hearts:
@@ -25375,7 +25374,7 @@ MonoBehaviour:
   _replayNotificationAnimator: {fileID: 1059549328}
   _playerOneInputHistory: {fileID: 1607718335}
   _playerTwoInputHistory: {fileID: 446620529}
-  _isReplayMode: 0
+  _isReplayMode: 1
   _replayIndex: 1
 --- !u!4 &856490119
 Transform:
@@ -34691,7 +34690,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -198, y: -70}
+  m_AnchoredPosition: {x: -215, y: -70}
   m_SizeDelta: {x: 612.5, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1197889603
@@ -53681,7 +53680,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 0, y: 0.25}
-  m_AnchoredPosition: {x: 425, y: 35.4}
+  m_AnchoredPosition: {x: 413.5, y: 35.4}
   m_SizeDelta: {x: 612.5, y: 131.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1749494935
@@ -58251,7 +58250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -198, y: -70}
+  m_AnchoredPosition: {x: -215, y: -70}
   m_SizeDelta: {x: 612.5, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1897831751
@@ -59474,6 +59473,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d4f82386-2084-489e-85f5-48d644e2f706
     m_ActionName: UI/NavigationDown[/DualSenseGamepadHID/dpad/down,/XInputControllerWindows/dpad/down,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2d0c8a2c-8997-4c52-a8ef-e6072fcfcf6a
+    m_ActionName: Gameplay/RedFrenzy[/Keyboard/semicolon,/Keyboard/j,/Keyboard/k,/Keyboard/b]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a9123728-0ac2-415d-bc3f-dcb6c1d0ec48
+    m_ActionName: UI/NavigationLeft[/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d7c071bb-8534-4278-8262-781633a88662
+    m_ActionName: UI/NavigationRight[/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ad302711-aaaf-4ef8-a9f5-a439a4b42746
+    m_ActionName: UI/ToggleFramedata[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
@@ -62090,7 +62105,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -183, y: -70}
+  m_AnchoredPosition: {x: -200, y: -70}
   m_SizeDelta: {x: 627, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &2032908976
@@ -62759,7 +62774,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 0, y: 0.25}
-  m_AnchoredPosition: {x: 425, y: 35.4}
+  m_AnchoredPosition: {x: 413.5, y: 35.4}
   m_SizeDelta: {x: 612.5, y: 131.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2048904581
@@ -63229,7 +63244,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -183, y: -70}
+  m_AnchoredPosition: {x: -200, y: -70}
   m_SizeDelta: {x: 627, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &2069189482
@@ -65352,7 +65367,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 1
-  m_Value: 100
+  m_Value: 83
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -65375,7 +65390,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -198, y: -70}
+  m_AnchoredPosition: {x: -215, y: -70}
   m_SizeDelta: {x: 612.5, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!1 &47249490551188918
@@ -67579,7 +67594,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -183, y: -70}
+  m_AnchoredPosition: {x: -200, y: -70}
   m_SizeDelta: {x: 627, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1604159752679058267
@@ -67629,7 +67644,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 1
-  m_Value: 100
+  m_Value: 83
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

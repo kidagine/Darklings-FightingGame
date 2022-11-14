@@ -5,7 +5,7 @@ public class TauntState : State
 {
     private IdleState _idleState;
     private Coroutine _tauntCoroutine;
-    private readonly float _tauntTime = 2.75f;
+    private int _tauntFrame;
 
 
     private void Awake()
@@ -18,16 +18,10 @@ public class TauntState : State
         base.Enter();
         _player.CheckFlip();
         _playerAnimator.Taunt();
-        _tauntCoroutine = StartCoroutine(TauntCoroutine());
+        _tauntFrame = 160;
     }
 
-    IEnumerator TauntCoroutine()
-    {
-        yield return new WaitForSeconds(_tauntTime);
-        ToIdleState();
-    }
-
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         _stateMachine.ChangeState(_idleState);
     }
@@ -35,6 +29,10 @@ public class TauntState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        if (DemonicsWorld.WaitFramesOnce(ref _tauntFrame))
+        {
+            ToIdleState();
+        }
     }
 
     public override void Exit()

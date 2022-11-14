@@ -7,6 +7,9 @@ public class KnockdownState : State
     private WakeUpState _wakeUpState;
     private DeathState _deathState;
     private Coroutine _knockdownCoroutine;
+    private readonly int _knockdownFrames = 60;
+    private int _knockdownFramesCurrent;
+
 
     void Awake()
     {
@@ -18,29 +21,23 @@ public class KnockdownState : State
     {
         base.Enter();
         _audio.Sound("Landed").Play();
+        _playerMovement.StopKnockback();
         _physics.Velocity = DemonicsVector2.Zero;
+        _physics.EnableGravity(true);
         _playerAnimator.Knockdown();
         _player.SetHurtbox(false);
         _player.OtherPlayer.StopComboTimer();
         _playerUI.DisplayNotification(NotificationTypeEnum.Knockdown);
         Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
-        _knockdownCoroutine = StartCoroutine(ToWakeUpStateCoroutine());
         if (_player.Health <= 0)
         {
             ToDeathState();
         }
+        else
+        {
+            _knockdownFramesCurrent = _knockdownFrames;
+        }
         _player.SetHurtbox(false);
-    }
-
-    IEnumerator ToWakeUpStateCoroutine()
-    {
-        yield return new WaitForSeconds(1.0f);
-        ToWakeUpState();
-    }
-
-    private void ToWakeUpState()
-    {
-        _stateMachine.ChangeState(_wakeUpState);
     }
 
     private void ToDeathState()
@@ -51,6 +48,10 @@ public class KnockdownState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        if (DemonicsWorld.WaitFrames(ref _knockdownFramesCurrent))
+        {
+            _stateMachine.ChangeState(_wakeUpState);
+        }
     }
 
     public override void Exit()
@@ -60,6 +61,5 @@ public class KnockdownState : State
         {
             StopCoroutine(_knockdownCoroutine);
         }
-        _player.SetHurtbox(true);
     }
 }

@@ -94,6 +94,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void ResetPlayer(Vector2 resetPosition)
     {
         RecallAssist();
+        _playerMovement.StopKnockback();
         _playerMovement.Physics.ResetSkipWall();
         _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
         _playerMovement.Physics.Velocity = DemonicsVector2.Zero;
@@ -130,7 +131,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void MaxHealthStats()
     {
+        _playerUI.ResetHealthDamaged();
         Health = playerStats.maxHealth;
+        HealthRecoverable = playerStats.maxHealth;
         _playerUI.MaxHealth(Health);
         _playerUI.CheckDemonLimit(Health);
     }
@@ -373,7 +376,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             {
                 if (!CurrentAttack.isArcana && CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
                 {
-                    _playerMovement.Knockback(new Vector2(OtherPlayer.transform.localScale.x, 0), new Vector2(CurrentAttack.knockbackForce.x, 0), CurrentAttack.knockbackDuration);
+                    _playerMovement.Knockback(new Vector2(CurrentAttack.knockbackForce.x, 0), CurrentAttack.knockbackDuration, (int)(OtherPlayer.transform.localScale.x));
                 }
             }
         }

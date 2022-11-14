@@ -390,7 +390,10 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
         return Sqrt(f, numberOfIterations);
     }
 
-
+    public static DemonicsFloat Lerp(DemonicsFloat from, DemonicsFloat to, DemonicsFloat factor)
+    {
+        return from * (1 - factor) + to * factor;
+    }
     #region Sin
     public static DemonicsFloat Sin(DemonicsFloat i)
     {

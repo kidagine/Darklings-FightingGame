@@ -8,11 +8,9 @@ public class Hitbox : DemonicsCollider
     public Action OnGroundCollision;
     public Action OnPlayerCollision;
     public DemonicsVector2 HitPoint { get; private set; }
-    [SerializeField] private bool _hitGround;
     [SerializeField] private IHitboxResponder _hitboxResponder;
     protected Transform _sourceTransform;
     public bool HitConfirm { get; private set; }
-
 
     void Awake()
     {
@@ -90,10 +88,10 @@ public class Hitbox : DemonicsCollider
     {
         if (!HitConfirm)
         {
-            base.EnterCollision(collider);
             if (collider.TryGetComponent(out Hurtbox hurtbox))
             {
                 HitConfirm = true;
+                base.EnterCollision(collider);
                 OnPlayerCollision?.Invoke();
                 _hitboxResponder.HitboxCollided(new Vector2((float)HitPoint.x, (float)HitPoint.y), hurtbox);
             }

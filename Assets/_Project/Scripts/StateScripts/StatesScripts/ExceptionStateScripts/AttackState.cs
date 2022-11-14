@@ -48,7 +48,7 @@ public class AttackState : State
         _player.SetSpriteOrderPriority();
         _player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
-        _playerAnimator.Attack(_player.CurrentAttack.name, true);
+        _playerAnimator.Attack(_player.CurrentAttack.name);
         if (!_air)
         {
             _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
@@ -354,6 +354,7 @@ public class AttackState : State
     public override void Exit()
     {
         base.Exit();
+        _physics.EnableGravity(true);
         if (!_air)
         {
             _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, _physics.Velocity.y);

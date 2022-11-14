@@ -16,7 +16,7 @@ public class AirParentState : State
     protected RedFrenzyState _redFrenzyState;
 
     protected DemonicsFloat _jumpDoubleDivider = (DemonicsFloat)1.2;
-    protected DemonicsFloat _jumpCancelForce = (DemonicsFloat)0.2;
+    protected DemonicsFloat _jumpCancelForce = (DemonicsFloat)0.25;
     protected virtual void Awake()
     {
         _fallState = GetComponent<FallState>();

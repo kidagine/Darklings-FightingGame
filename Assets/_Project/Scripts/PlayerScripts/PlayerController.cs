@@ -25,19 +25,19 @@ public class PlayerController : BaseController
     public void Movement(CallbackContext callbackContext)
     {
         InputDirection = new Vector2Int(Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().x), Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().y));
-        if (InputDirection.x == 1.0f && _playerMovement.MovementInput.x != InputDirection.x)
+        if (InputDirection.x == 1 && _playerMovement.MovementInput.x != InputDirection.x)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
         }
-        if (InputDirection.x == -1.0f && _playerMovement.MovementInput.x != InputDirection.x)
+        if (InputDirection.x == -1 && _playerMovement.MovementInput.x != InputDirection.x)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
         }
-        if (InputDirection.y == 1.0f && _playerMovement.MovementInput.y != InputDirection.y)
+        if (InputDirection.y == 1 && _playerMovement.MovementInput.y != InputDirection.y)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
         }
-        if (InputDirection.y == -1.0f && _playerMovement.MovementInput.y != InputDirection.y)
+        if (InputDirection.y == -1 && _playerMovement.MovementInput.y != InputDirection.y)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
         }
@@ -70,6 +70,15 @@ public class PlayerController : BaseController
     {
         if (InputDirection.y == 0.0f)
         {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.None);
+            if (InputDirection.x == 1)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+            }
+            if (InputDirection.x == -1)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+            }
             return true;
         }
         return false;

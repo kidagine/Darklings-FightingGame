@@ -16,7 +16,7 @@ public class JumpState : AirParentState
         base.Enter();
         Instantiate(_jumpPrefab, transform.position, Quaternion.identity);
         _audio.Sound("Jump").Play();
-        _playerAnimator.Jump(true);
+        _playerAnimator.Jump();
         _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, _physics.Velocity.y);
         if (_jumpCancel)
         {

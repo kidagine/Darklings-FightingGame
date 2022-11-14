@@ -30,6 +30,7 @@ public class GrabbedState : State
         base.Enter();
         _playerAnimator.Hurt();
         _physics.EnableGravity(false);
+        _playerMovement.StopKnockback();
         _physics.Velocity = DemonicsVector2.Zero;
         _player.OtherPlayerStateManager.TryToThrowState();
         StartCoroutine(CanTechThrowCoroutine());

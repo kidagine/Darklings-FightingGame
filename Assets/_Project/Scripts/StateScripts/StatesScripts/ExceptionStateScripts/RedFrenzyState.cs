@@ -6,6 +6,7 @@ public class RedFrenzyState : State
     [SerializeField] private GameObject _teleportDisappearEffect = default;
     [SerializeField] private GameObject _teleportAppearEffect = default;
     private IdleState _idleState;
+    private FallState _fallState;
     private HurtState _hurtState;
     private AirHurtState _airHurtState;
     private int _startTeleportFrame;
@@ -16,6 +17,7 @@ public class RedFrenzyState : State
     void Awake()
     {
         _idleState = GetComponent<IdleState>();
+        _fallState = GetComponent<FallState>();
         _hurtState = GetComponent<HurtState>();
         _airHurtState = GetComponent<AirHurtState>();
     }
@@ -23,6 +25,11 @@ public class RedFrenzyState : State
     public override void Enter()
     {
         base.Enter();
+        _player.hitstopEvent.RemoveAllListeners();
+        _playerMovement.ExitHitstop();
+        _playerMovement.StopKnockback();
+        _physics.Velocity = DemonicsVector2.Zero;
+        _physics.EnableGravity(false);
         _startTeleportFrame = 7;
         _playerUI.Damaged();
         _player.CurrentAttack = _player.playerStats.mRedFrenzy;
@@ -30,14 +37,22 @@ public class RedFrenzyState : State
         _player.SetSpriteOrderPriority();
         _audio.Sound("Vanish").Play();
         _playerAnimator.RedFrenzy();
-        _playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
+        _playerAnimator.OnCurrentAnimationFinished.AddListener(ToNextState);
     }
 
-    private new void ToIdleState()
+    private void ToNextState()
     {
         if (_stateMachine.CurrentState == this)
         {
-            _stateMachine.ChangeState(_idleState);
+            if (_playerMovement.IsGrounded)
+            {
+                _stateMachine.ChangeState(_idleState);
+            }
+            else
+            {
+                _playerAnimator.Jump();
+                _stateMachine.ChangeState(_fallState);
+            }
         }
     }
 
@@ -76,12 +91,13 @@ public class RedFrenzyState : State
     {
         if (_player.transform.localScale.x > 0)
         {
-            _player.transform.position = new Vector2(_player.OtherPlayer.transform.position.x - 1.5f, _player.OtherPlayer.transform.position.y);
+            _physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)_player.OtherPlayerMovement.Physics.Position.x - 1.5, (DemonicsFloat)_player.OtherPlayerMovement.Physics.Position.y));
         }
         else
         {
-            _player.transform.position = new Vector2(_player.OtherPlayer.transform.position.x + 1.5f, _player.OtherPlayer.transform.position.y);
+            _physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)_player.OtherPlayerMovement.Physics.Position.x + 1.5, (DemonicsFloat)_player.OtherPlayerMovement.Physics.Position.y));
         }
+        _physics.SetFreeze(true);
         ObjectPoolingManager.Instance.Spawn(_teleportAppearEffect, transform.root.position);
         _endTeleportFrame = 11;
     }
@@ -121,10 +137,12 @@ public class RedFrenzyState : State
         return false;
     }
 
-
     public override void Exit()
     {
         base.Exit();
+        _player.SetInvinsible(false);
+        _physics.SetFreeze(false);
+        _physics.EnableGravity(true);
         _player.CanSkipAttack = false;
         _playerUI.UpdateHealthDamaged();
     }

@@ -59,7 +59,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] protected GameObject[] _readyObjects = default;
     [SerializeField] protected GameObject[] _arcanaObjects = default;
     [SerializeField] protected GameObject _playerLocal = default;
-    [SerializeField] protected GameObject _playerNetcode = default;
     [SerializeField] protected GameObject _infiniteTime = default;
     [SerializeField] protected GameObject _winsImage = default;
     [SerializeField] private GameObject[] _hearts = default;
@@ -85,8 +84,8 @@ public class GameManager : MonoBehaviour
     private Coroutine _roundOverTrainingCoroutine;
     private GameObject _currentStage;
     private List<IHitstop> _hitstopList = new();
-    private Vector2 _cachedOneResetPosition;
-    private Vector2 _cachedTwoResetPosition;
+    private DemonicsVector2 _cachedOneResetPosition;
+    private DemonicsVector2 _cachedTwoResetPosition;
     private int _countdown;
     private int _countdownFrames = 60;
     private int _currentRound = 1;
@@ -366,8 +365,8 @@ public class GameManager : MonoBehaviour
         }
         if (_isTrainingMode)
         {
-            _cachedOneResetPosition = PlayerOne.transform.position;
-            _cachedTwoResetPosition = PlayerTwo.transform.position;
+            _cachedOneResetPosition = PlayerOne.GetComponent<PlayerMovement>().Physics.Position;
+            _cachedTwoResetPosition = PlayerTwo.GetComponent<PlayerMovement>().Physics.Position;
             _countdownText.gameObject.SetActive(false);
             _hearts[0].gameObject.SetActive(false);
             _hearts[1].gameObject.SetActive(false);
@@ -425,7 +424,7 @@ public class GameManager : MonoBehaviour
         _playerOneDialogue.StopDialogue();
         _playerTwoDialogue.StopDialogue();
         StartRound();
-        _introAnimator.SetBool("IsIntroRunning", false);
+        _introUI.SkipIntro();
         IsDialogueRunning = false;
     }
 
@@ -440,7 +439,7 @@ public class GameManager : MonoBehaviour
         _introUI.SetPlayerNames(_playerStats[SceneSettings.PlayerOne].characterName.ToString(), _playerStats[SceneSettings.PlayerTwo].characterName.ToString());
         _playerOneDialogue.Initialize(true, _playerStats[SceneSettings.PlayerOne]._dialogue, _playerStats[SceneSettings.PlayerTwo].characterName);
         _playerTwoDialogue.Initialize(false, _playerStats[SceneSettings.PlayerTwo]._dialogue, _playerStats[SceneSettings.PlayerOne].characterName);
-        _introAnimator.SetBool("IsIntroRunning", true);
+        _introUI.StartIntro();
     }
 
     private void MatchOver()
@@ -464,10 +463,7 @@ public class GameManager : MonoBehaviour
             //     }
             // }
         }
-        if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
-        {
-            ReplayManager.Instance.SaveReplay();
-        }
+        ReplayManager.Instance.SaveReplay();
         Time.timeScale = 0;
     }
 
@@ -921,84 +917,47 @@ public class GameManager : MonoBehaviour
                 }
                 PlayerOne.ResetLives();
                 PlayerTwo.ResetLives();
-                Vector2 playerOneResetPosition = Vector2.zero;
-                Vector2 playerTwoResetPosition = Vector2.zero;
+                if (_cachedOneResetPosition == DemonicsVector2.Zero)
+                {
+                    _cachedOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0], DemonicsPhysics.GROUND_POINT);
+                    _cachedTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1], DemonicsPhysics.GROUND_POINT);
+                }
+                DemonicsVector2 playerOneResetPosition = _cachedOneResetPosition;
+                DemonicsVector2 playerTwoResetPosition = _cachedTwoResetPosition;
                 ObjectPoolingManager.Instance.DisableAllObjects();
-                if (movementInput.y == 1.0f)
+
+                if (movementInput.y == -1)
+                {
+                    playerOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0], DemonicsPhysics.GROUND_POINT);
+                    playerTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1], DemonicsPhysics.GROUND_POINT);
+                }
+                else if (movementInput.x == 1)
+                {
+                    playerOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0] + _leftSpawn, DemonicsPhysics.GROUND_POINT);
+                    playerTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1] + _rightSpawn, DemonicsPhysics.GROUND_POINT);
+                }
+                else if (movementInput.x == -1)
+                {
+                    playerOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0] - _rightSpawn, DemonicsPhysics.GROUND_POINT);
+                    playerTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1] - _leftSpawn, DemonicsPhysics.GROUND_POINT);
+                }
+                else if (movementInput.y == 1)
                 {
                     _reverseReset = !_reverseReset;
-                    if (!_reverseReset)
-                    {
-                        playerOneResetPosition = _cachedOneResetPosition;
-                        playerTwoResetPosition = _cachedTwoResetPosition;
-                    }
-                    else
-                    {
-                        playerTwoResetPosition = _cachedOneResetPosition;
-                        playerOneResetPosition = _cachedTwoResetPosition;
-                    }
                 }
+                if (_reverseReset)
+                {
+                    PlayerOne.ResetPlayer(new Vector2((float)playerTwoResetPosition.x, (float)playerTwoResetPosition.y));
+                    PlayerTwo.ResetPlayer(new Vector2((float)playerOneResetPosition.x, (float)playerOneResetPosition.y));
+                }
+                else
+                {
+                    PlayerOne.ResetPlayer(new Vector2((float)playerOneResetPosition.x, (float)playerOneResetPosition.y));
+                    PlayerTwo.ResetPlayer(new Vector2((float)playerTwoResetPosition.x, (float)playerTwoResetPosition.y));
+                }
+                _cachedOneResetPosition = playerOneResetPosition;
+                _cachedTwoResetPosition = playerTwoResetPosition;
 
-                if (movementInput == Vector2.zero)
-                {
-                    if (!_reverseReset)
-                    {
-                        playerOneResetPosition = _cachedOneResetPosition;
-                        playerTwoResetPosition = _cachedTwoResetPosition;
-                    }
-                    else
-                    {
-                        playerOneResetPosition = _cachedTwoResetPosition;
-                        playerTwoResetPosition = _cachedOneResetPosition;
-                    }
-                }
-                else if (movementInput.y == -1.0f)
-                {
-                    if (!_reverseReset)
-                    {
-                        playerOneResetPosition = new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT);
-                        playerTwoResetPosition = new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT);
-                    }
-                    else
-                    {
-                        playerTwoResetPosition = new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT);
-                        playerOneResetPosition = new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT);
-                    }
-                    _cachedOneResetPosition = PlayerOne.transform.position;
-                    _cachedTwoResetPosition = PlayerTwo.transform.position;
-                }
-                else if (movementInput.x == 1.0f)
-                {
-                    if (!_reverseReset)
-                    {
-                        playerOneResetPosition = new Vector2(_spawnPositionsX[0] + _leftSpawn, (float)DemonicsPhysics.GROUND_POINT);
-                        playerTwoResetPosition = new Vector2(_spawnPositionsX[1] + _rightSpawn, (float)DemonicsPhysics.GROUND_POINT);
-                    }
-                    else
-                    {
-                        playerTwoResetPosition = new Vector2(_spawnPositionsX[0] + _leftSpawn, (float)DemonicsPhysics.GROUND_POINT);
-                        playerOneResetPosition = new Vector2(_spawnPositionsX[1] + _rightSpawn, (float)DemonicsPhysics.GROUND_POINT);
-                    }
-                    _cachedOneResetPosition = PlayerOne.transform.position;
-                    _cachedTwoResetPosition = PlayerTwo.transform.position;
-                }
-                else if (movementInput.x == -1.0f)
-                {
-                    if (!_reverseReset)
-                    {
-                        playerOneResetPosition = new Vector2(_spawnPositionsX[0] - _rightSpawn, (float)DemonicsPhysics.GROUND_POINT);
-                        playerTwoResetPosition = new Vector2(_spawnPositionsX[1] - _leftSpawn, (float)DemonicsPhysics.GROUND_POINT);
-                    }
-                    else
-                    {
-                        playerTwoResetPosition = new Vector2(_spawnPositionsX[0] - _rightSpawn, (float)DemonicsPhysics.GROUND_POINT);
-                        playerOneResetPosition = new Vector2(_spawnPositionsX[1] - _leftSpawn, (float)DemonicsPhysics.GROUND_POINT);
-                    }
-                    _cachedOneResetPosition = PlayerOne.transform.position;
-                    _cachedTwoResetPosition = PlayerTwo.transform.position;
-                }
-                PlayerOne.ResetPlayer(playerOneResetPosition);
-                PlayerTwo.ResetPlayer(playerTwoResetPosition);
                 _fadeHandler.StartFadeTransition(false);
             });
         }

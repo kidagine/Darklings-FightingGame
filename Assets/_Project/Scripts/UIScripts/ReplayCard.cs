@@ -21,11 +21,7 @@ public class ReplayCard : MonoBehaviour
 
     private Sprite GetCharacterPortrait(int index)
     {
-        for (int i = 0; i < _characterPortraits.Length; i++)
-        {
-            return _characterPortraits[index];
-        }
-        return null;
+        return _characterPortraits[index];
     }
 }
 

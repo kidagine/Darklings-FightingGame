@@ -17,8 +17,7 @@ public class WallSplatState : State
         _audio.Sound("WallSplat").Play();
         _playerAnimator.WallSplat();
         _player.SetHurtbox(false);
-        // _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x - ((1.35 / 2) * _player.transform.localScale.x), _playerMovement.Physics.Position.y));
-        _playerMovement.StopAllCoroutines();
+        _playerMovement.StopKnockback();
         _physics.SetFreeze(true);
         _playerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
         GameObject effect = Instantiate(_wallSplatPrefab);
@@ -32,11 +31,6 @@ public class WallSplatState : State
     {
         _airborneHurtState.WallSplat = true;
         _stateMachine.ChangeState(_airborneHurtState);
-    }
-
-    public override void UpdateLogic()
-    {
-        base.UpdateLogic();
     }
 
     public override bool ToKnockdownState()

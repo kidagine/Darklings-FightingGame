@@ -7,6 +7,7 @@ public class HitboxProjectile : Hitbox
 
     void Awake()
     {
+        GizmoColor = Color.red;
         _sourceTransform = _projectile.SourceTransform;
     }
 

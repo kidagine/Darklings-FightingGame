@@ -73,15 +73,6 @@ public class PlayerAnimator : DemonicsAnimator
         _shadow.SetInvinsible(state);
     }
 
-    protected override void AnimationEnded()
-    {
-        base.AnimationEnded();
-        if (_inputBuffer != null)
-        {
-            _inputBuffer.CheckInputBuffer();
-        }
-    }
-
     public bool InRecovery()
     {
         for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
@@ -121,17 +112,17 @@ public class PlayerAnimator : DemonicsAnimator
         SetAnimation("Crouch");
     }
 
-    public void Jump(bool reset = false)
+    public void Jump()
     {
         SetAnimation("Jump");
     }
 
-    public void JumpForward(bool reset = false)
+    public void JumpForward()
     {
         SetAnimation("JumpForward");
     }
 
-    public void Attack(string attackType, bool reset = false)
+    public void Attack(string attackType)
     {
         SetAnimation(attackType);
     }

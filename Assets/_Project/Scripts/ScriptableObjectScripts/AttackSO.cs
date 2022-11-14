@@ -12,6 +12,7 @@ public class AttackSO : ScriptableObject
     public Vector2 travelDistance;
     public Vector2 knockbackForce;
     public int knockbackDuration;
+    public int knockbackArc;
 
     [Header("Properties")]
     public bool hasSuperArmor;

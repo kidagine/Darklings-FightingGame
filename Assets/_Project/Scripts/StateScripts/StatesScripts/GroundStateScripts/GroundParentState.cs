@@ -88,8 +88,16 @@ public class GroundParentState : State
 
     public override bool ToHurtState(AttackSO attack)
     {
-        _hurtState.Initialize(attack);
-        _stateMachine.ChangeState(_hurtState);
+        if (attack.knockbackArc > 0)
+        {
+            _airHurtState.Initialize(attack);
+            _stateMachine.ChangeState(_airHurtState);
+        }
+        else
+        {
+            _hurtState.Initialize(attack);
+            _stateMachine.ChangeState(_hurtState);
+        }
         return true;
     }
 
