@@ -8,18 +8,6 @@ public class InputBuffer : MonoBehaviour
     private InputHistory _inputHistory;
     private InputDirectionEnum _lastInputDirection;
 
-    void Update()
-    {
-        if (_inputBuffer.Count > 0)
-        {
-            InputBufferItem inputBufferItem = _inputBuffer.Peek();
-            if (!inputBufferItem.CheckIfValid())
-            {
-                _inputBuffer.Dequeue();
-            }
-        }
-    }
-
     public void Initialize(InputHistory inputHistory)
     {
         _inputHistory = inputHistory;
@@ -43,6 +31,14 @@ public class InputBuffer : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_inputBuffer.Count > 0)
+        {
+            InputBufferItem inputBufferItem = _inputBuffer.Peek();
+            if (!inputBufferItem.CheckIfValid())
+            {
+                _inputBuffer.Dequeue();
+            }
+        }
         CheckInputBuffer();
     }
 

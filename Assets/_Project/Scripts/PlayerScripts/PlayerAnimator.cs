@@ -73,15 +73,6 @@ public class PlayerAnimator : DemonicsAnimator
         _shadow.SetInvinsible(state);
     }
 
-    protected override void AnimationEnded()
-    {
-        base.AnimationEnded();
-        if (_inputBuffer != null)
-        {
-            _inputBuffer.CheckInputBuffer();
-        }
-    }
-
     public bool InRecovery()
     {
         for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
