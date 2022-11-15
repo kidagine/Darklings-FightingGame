@@ -160,8 +160,8 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed)
         {
-            _playerStateManager.TryToRedFrenzyState();
-            _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+            // _playerStateManager.TryToRedFrenzyState();
+            // _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
         }
     }
 

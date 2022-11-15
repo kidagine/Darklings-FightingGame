@@ -3,6 +3,7 @@ using UnityEngine;
 public class FallState : AirParentState
 {
     private IdleState _idleState;
+    private bool _checkInputBuffer;
 
     protected override void Awake()
     {
@@ -10,11 +11,24 @@ public class FallState : AirParentState
         _idleState = GetComponent<IdleState>();
     }
 
+    public override void Enter()
+    {
+        base.Enter();
+        if (_checkInputBuffer)
+        {
+        }
+    }
+
     public override void UpdateLogic()
     {
         base.UpdateLogic();
         ToIdleState();
         _player.CheckFlip();
+    }
+
+    public void Initialize(bool checkInputBuffer)
+    {
+        _checkInputBuffer = checkInputBuffer;
     }
 
     public void ToIdleState()
@@ -26,5 +40,11 @@ public class FallState : AirParentState
             _physics.Velocity = DemonicsVector2.Zero;
             _stateMachine.ChangeState(_idleState);
         }
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _checkInputBuffer = false;
     }
 }

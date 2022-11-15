@@ -27,11 +27,12 @@ public class HurtParentState : State
     public override void Enter()
     {
         base.Enter();
+        _physics.Velocity = DemonicsVector2.Zero;
         _audio.Sound(_hurtAttack.impactSound).Play();
         _hurtFrame = _hurtAttack.hitStun;
         if (!_playerMovement.IsInCorner)
         {
-            _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, _hurtAttack.knockbackForce.y), _hurtAttack.knockbackDuration, (int)(_player.OtherPlayer.transform.localScale.x), _hurtAttack.knockbackArc);
+            _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, _hurtAttack.knockbackForce.y), _hurtAttack.knockbackDuration, (int)(-_player.transform.localScale.x), _hurtAttack.knockbackArc);
         }
         _player.OtherPlayerUI.IncreaseCombo();
         if (_player.OtherPlayerUI.CurrentComboCount == 1)

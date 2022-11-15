@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
+    [SerializeField] private InputBuffer _inputBuffer = default;
     [SerializeField] private PlayerStateManager _playerStateManager = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Assist _assist = default;
@@ -234,6 +235,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             HealthRecoverable = Health;
             _playerUI.SetRecoverableHealth(HealthRecoverable);
+            return true;
+        }
+        return false;
+    }
+
+    public bool CheckRecoverableHealth()
+    {
+        float remainingRecoverableHealth = HealthRecoverable - Health;
+        if (remainingRecoverableHealth > 0)
+        {
             return true;
         }
         return false;
