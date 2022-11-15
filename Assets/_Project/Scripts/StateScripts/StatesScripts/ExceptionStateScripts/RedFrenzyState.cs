@@ -114,6 +114,11 @@ public class RedFrenzyState : State
         {
             _audio.Sound(attack.impactSound).Play();
             _player.HurtOnSuperArmor(attack);
+            if (_player.Health <= 0)
+            {
+                _hurtState.Initialize(attack);
+                _stateMachine.ChangeState(_hurtState);
+            }
             return false;
         }
         _player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
@@ -134,6 +139,11 @@ public class RedFrenzyState : State
     {
         _audio.Sound("Hit").Play();
         _player.HurtOnSuperArmor(attack);
+        if (_player.Health <= 0)
+        {
+            _hurtState.Initialize(attack);
+            _stateMachine.ChangeState(_hurtState);
+        }
         return false;
     }
 

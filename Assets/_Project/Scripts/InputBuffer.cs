@@ -6,11 +6,12 @@ public class InputBuffer : MonoBehaviour
     [SerializeField] private PlayerStateManager _playerStateManager = default;
     private readonly Queue<InputBufferItem> _inputBuffer = new();
     private readonly Queue<InputBufferItem> _inputBufferAttacks = new();
+    private List<InputBufferItem> _inputBufferItems = new List<InputBufferItem>();
     private InputHistory _inputHistory;
     private InputDirectionEnum _lastInputDirection;
     private InputBufferItem _cachedInputBufferItem;
     private Player _player;
-
+    private int _waitFrame;
 
     void Awake()
     {
@@ -45,32 +46,26 @@ public class InputBuffer : MonoBehaviour
     {
         if (_inputBuffer.Count > 0)
         {
-            InputBufferItem inputBufferItem = _inputBuffer.Peek();
-            if (!inputBufferItem.CheckIfValid())
+            if (!_inputBuffer.Peek().CheckIfValid())
             {
                 _inputBuffer.Dequeue();
             }
         }
         if (_inputBufferAttacks.Count > 0)
         {
-            InputBufferItem inputBufferItem = _inputBufferAttacks.Peek();
-            if (!inputBufferItem.CheckIfValid())
+            if (!_inputBufferAttacks.Peek().CheckIfValid())
             {
                 _inputBufferAttacks.Dequeue();
             }
         }
         CheckInputBuffer();
-        // if (_inputBufferItem != null)
-        // {
-        //     if (_inputBufferItem.Execute.Invoke())
-        //     {
-        //         if (_inputBufferAttacks.Count > 0)
-        //         {
-        //             _inputBufferAttacks.Dequeue();
-        //             _inputBufferItem = _inputBufferAttacks.Peek();
-        //         }
-        //     }
-        // }
+        if (_waitFrame > 0)
+        {
+            if (DemonicsWorld.WaitFramesOnce(ref _waitFrame))
+            {
+                CheckInputBufferAttacksList();
+            }
+        }
     }
 
     private void CheckInputBuffer()
@@ -83,52 +78,78 @@ public class InputBuffer : MonoBehaviour
             }
         }
     }
+    private void CheckInputBufferAttacksList()
+    {
+        InputBufferItem inputBufferItem = null;
+        for (int i = 0; i < _inputBufferItems.Count; i++)
+        {
+            if (inputBufferItem != null)
+            {
+                if (_inputBufferItems[i]._inputEnum == InputEnum.Medium && inputBufferItem._inputEnum == InputEnum.Light)
+                {
+                    if (_player.CheckRecoverableHealth())
+                    {
+                        inputBufferItem = new(InputEnum.RedFrenzy, DemonicsWorld.Frame);
+                        inputBufferItem.Execute += () => ExecuteInputBuffer(InputEnum.RedFrenzy);
+                        break;
+                    }
+                }
+                if (_inputBufferItems[i]._inputEnum == InputEnum.Heavy && inputBufferItem._inputEnum == InputEnum.Medium)
+                {
+                    Debug.Log("A");
+                    inputBufferItem = new(InputEnum.Parry, DemonicsWorld.Frame);
+                    inputBufferItem.Execute += () => ExecuteInputBuffer(InputEnum.Parry);
+                    break;
+                }
+            }
+
+            if (inputBufferItem == null)
+            {
+                inputBufferItem = _inputBufferItems[i];
+            }
+            else if (_inputBufferItems[i]._priority < inputBufferItem._priority)
+            {
+                inputBufferItem = _inputBufferItems[i];
+            }
+        }
+        if (inputBufferItem != null)
+        {
+            if (inputBufferItem.Execute.Invoke())
+            {
+                _inputBufferItems.Clear();
+            }
+        }
+    }
 
     public void CheckInputBufferAttacks()
     {
         if (_inputBufferAttacks.Count > 0)
         {
-            if (_cachedInputBufferItem != null)
+            if (_inputBufferItems.Count == 0 || _inputBufferItems[0]._timestamp == _inputBufferAttacks.Peek()._timestamp)
             {
-                Debug.Log(_inputBufferAttacks.Peek()._inputEnum + "|" + _cachedInputBufferItem._inputEnum);
-                Debug.Log(_inputBufferAttacks.Peek()._timestamp + "|" + _cachedInputBufferItem._timestamp);
-                if (_inputBufferAttacks.Peek()._timestamp == _cachedInputBufferItem._timestamp)
+                _inputBufferItems.Add(_inputBufferAttacks.Peek());
+                _inputBufferAttacks.Dequeue();
+                if (_inputBufferItems.Count == 1)
                 {
-                    if (_inputBufferAttacks.Peek()._inputEnum == InputEnum.Medium && _cachedInputBufferItem._inputEnum == InputEnum.Light)
-                    {
-                        if (_player.CheckRecoverableHealth())
-                        {
-                            if (_inputBufferAttacks.Peek().Execute.Invoke())
-                            {
-                                _cachedInputBufferItem = _inputBufferAttacks.Peek();
-                                _inputBufferAttacks.Dequeue();
-                            }
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        if (_inputBufferAttacks.Peek().Execute.Invoke())
-                        {
-                            _cachedInputBufferItem = _inputBufferAttacks.Peek();
-                            _inputBufferAttacks.Dequeue();
-                        }
-                        return;
-                    }
-                }
-                else
-                {
-                    if (_inputBufferAttacks.Peek().Execute.Invoke())
-                    {
-                        _cachedInputBufferItem = _inputBufferAttacks.Peek();
-                        _inputBufferAttacks.Dequeue();
-                    }
+                    _waitFrame = 2;
                 }
             }
             else
             {
-                _cachedInputBufferItem = _inputBufferAttacks.Peek();
-                CheckInputBufferAttacks();
+                _inputBufferItems.Clear();
+                _inputBufferItems.Add(_inputBufferAttacks.Peek());
+                _inputBufferAttacks.Dequeue();
+                if (_inputBufferItems.Count == 1)
+                {
+                    _waitFrame = 2;
+                }
+            }
+        }
+        else
+        {
+            if (_inputBufferItems.Count > 0)
+            {
+                CheckInputBufferAttacksList();
             }
         }
     }

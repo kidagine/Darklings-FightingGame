@@ -142,7 +142,6 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed)
         {
-            _playerStateManager.TryToGrabState();
             _inputBuffer.AddInputBufferItem(InputEnum.Throw);
         }
     }
@@ -151,7 +150,6 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed)
         {
-            _playerStateManager.TryToParryState();
             _inputBuffer.AddInputBufferItem(InputEnum.Parry);
         }
     }
@@ -160,8 +158,7 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed)
         {
-            // _playerStateManager.TryToRedFrenzyState();
-            // _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+            _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
         }
     }
 
