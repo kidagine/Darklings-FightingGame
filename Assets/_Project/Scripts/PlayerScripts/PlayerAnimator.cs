@@ -45,6 +45,7 @@ public class PlayerAnimator : DemonicsAnimator
         {
             _audio.Sound("Impact6").Play();
             CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+            _player.OtherPlayerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x + _player.OtherPlayer.GrabPoint.x, _playerMovement.Physics.Position.y + _player.OtherPlayer.GrabPoint.y));
             _player.OtherPlayerStateManager.TryToKnockdownState();
         }
         if (GetEvent().throwArcanaEnd)
