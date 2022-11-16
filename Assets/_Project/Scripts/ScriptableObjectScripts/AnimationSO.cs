@@ -81,6 +81,7 @@ public class AnimationEvent
     public bool footstep;
     public bool parry;
     public bool projectile;
+    [ShowIf("projectile")]
     public Vector2 projectilePoint;
     public bool invisibile;
     public bool throwEnd;

@@ -40,11 +40,11 @@ public class ArcanaState : State
         {
             _playerUI.DisplayNotification(NotificationTypeEnum.Reversal);
         }
-        if (_air)
+        _player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
+        if (_player.CurrentAttack.travelDistance == Vector2.zero)
         {
             _physics.EnableGravity(false);
         }
-        _player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
         _player.ArcanaGauge -= (DemonicsFloat)1;
         _playerUI.DecreaseArcana();

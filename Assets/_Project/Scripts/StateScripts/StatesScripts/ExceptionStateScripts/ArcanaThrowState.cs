@@ -12,11 +12,12 @@ public class ArcanaThrowState : State
     public override void Enter()
     {
         base.Enter();
+        _physics.Velocity = DemonicsVector2.Zero;
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
         _playerAnimator.ArcanaThrow();
     }
 
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         _stateMachine.ChangeState(_idleState);
     }

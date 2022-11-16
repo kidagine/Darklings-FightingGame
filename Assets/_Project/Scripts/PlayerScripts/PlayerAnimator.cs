@@ -6,9 +6,7 @@ public class PlayerAnimator : DemonicsAnimator
     [SerializeField] private PlayerCollisionBoxes _playerCollisionBoxes = default;
     [SerializeField] private Player _player = default;
     [SerializeField] private PlayerMovement _playerMovement = default;
-    [SerializeField] private InputBuffer _inputBuffer = null;
     [SerializeField] private Audio _audio = default;
-    [SerializeField] private DemonicsPhysics _grabPoint = default;
     private Shadow _shadow;
 
     public PlayerStatsSO PlayerStats { get { return _player.playerStats; } set { } }
@@ -33,7 +31,8 @@ public class PlayerAnimator : DemonicsAnimator
         }
         if (GetEvent().jump)
         {
-            _playerMovement.AddForce((GetEvent().jumpDirection.x));
+            Debug.Log("A");
+            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x, (DemonicsFloat)GetEvent().jumpDirection.y));
         }
         if (GetEvent().footstep)
         {

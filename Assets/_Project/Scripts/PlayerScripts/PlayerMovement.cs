@@ -54,15 +54,6 @@ public class PlayerMovement : MonoBehaviour
         Physics.Velocity = new DemonicsVector2((DemonicsFloat)travelDistance.x, (DemonicsFloat)travelDistance.y);
     }
 
-    public void AddForce(float moveHorizontally)
-    {
-        int direction = 0;
-        if (moveHorizontally == 1)
-        {
-            direction = (int)transform.localScale.x * -1;
-        }
-    }
-
     public void Knockback(Vector2 knockbackForce, int knockbackDuration, int direction, int arc = 0, bool instant = false)
     {
         if (knockbackDuration > 0)
