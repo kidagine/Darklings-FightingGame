@@ -56,7 +56,7 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
     {
         SourceTransform = sourceTransform;
         _hitbox.SetSourceTransform(sourceTransform);
-        _physics.Position = new DemonicsVector2((DemonicsFloat)position.x, (DemonicsFloat)position.y);
+        _physics.Position = new DemonicsVector2((DemonicsFloat)sourceTransform.position.x + (sourceTransform.localScale.x * (DemonicsFloat)position.x), (DemonicsFloat)sourceTransform.position.y + (DemonicsFloat)position.y);
     }
 
     public void DestroyProjectile()

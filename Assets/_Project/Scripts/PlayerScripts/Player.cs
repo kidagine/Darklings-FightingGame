@@ -394,7 +394,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return hurtbox.TakeDamage(CurrentAttack);
     }
 
-    public virtual void CreateEffect(bool isProjectile = false)
+    public virtual void CreateEffect(Vector2 projectilePosition, bool isProjectile = false)
     {
         if (CurrentAttack.hitEffect != null)
         {
@@ -407,7 +407,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             {
                 hitEffect.transform.SetParent(null);
                 hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
-                hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, transform.position);
+                hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition);
                 hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
                 hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
             }

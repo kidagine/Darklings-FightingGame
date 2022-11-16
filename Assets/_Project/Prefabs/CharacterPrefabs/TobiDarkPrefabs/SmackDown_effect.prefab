@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3044937809714068755}
   - component: {fileID: 6071108574213149507}
   - component: {fileID: 515523966936035834}
-  - component: {fileID: 2074140534665986628}
+  - component: {fileID: 9213146648293820983}
   m_Layer: 0
   m_Name: SmackDown_effect
   m_TagString: Untagged
@@ -151,31 +151,23 @@ MonoBehaviour:
       m_Calls: []
   _hitbox: {fileID: 6600987909185161583}
   _dustPrefab: {fileID: 3294536446187043669, guid: 0b02975833814574abc4c70ad2fa705a, type: 3}
-  _projectilePriority: 0
+  _projectilePriority: 10
   _speed: 0
   _isFixed: 0
   _disableOnContact: 0
---- !u!50 &2074140534665986628
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &9213146648293820983
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186600171355987556}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b07b43e8a218d4e9012782762e6ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ignoreWalls: 1
 --- !u!1 &3749200265558414954
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 337561286771120632}
   - component: {fileID: 2434697729181520250}
-  - component: {fileID: 2130477475384952554}
+  - component: {fileID: 4728841727150831296}
   m_Layer: 7
   m_Name: Hitbox_spriteRenderer
   m_TagString: Untagged
@@ -261,7 +253,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2130477475384952554
+--- !u!114 &4728841727150831296
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -270,7 +262,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3749200265558414954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49fa865ee649d4d4aaaca25047bf6024, type: 3}
+  m_Script: {fileID: 11500000, guid: 34754119084380a419bb9c68c7a2cf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6622408541464304708
@@ -350,7 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51729ec44d22e5f4f8bb5accfea6be2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _size: {x: 0, y: 0}
+  _showGizmo: 0
+  _ignoreCollision: 1
   _offset: {x: 0, y: 0}
-  _hitGround: 0
-  _hasHit: 0
+  _size: {x: 0, y: 0}

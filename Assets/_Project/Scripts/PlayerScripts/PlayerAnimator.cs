@@ -29,7 +29,7 @@ public class PlayerAnimator : DemonicsAnimator
         base.CheckEvents();
         if (GetEvent().projectile)
         {
-            _player.CreateEffect(true);
+            _player.CreateEffect(GetEvent().projectilePoint, true);
         }
         if (GetEvent().jump)
         {
