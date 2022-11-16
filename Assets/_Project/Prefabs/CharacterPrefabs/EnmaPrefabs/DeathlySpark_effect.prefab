@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5129326762219100241}
   - component: {fileID: 7880347287189351196}
   - component: {fileID: 4138882669964765112}
-  - component: {fileID: 8036290046098017133}
+  - component: {fileID: 3713228974342638109}
   m_Layer: 0
   m_Name: DeathlySpark_effect
   m_TagString: Untagged
@@ -166,38 +166,25 @@ MonoBehaviour:
   OnCurrentAnimationFinished:
     m_PersistentCalls:
       m_Calls: []
-  _hitbox: {fileID: 6453347680146085869}
+  _hitbox: {fileID: 4080371442021779744}
   _dustPrefab: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
   _projectilePriority: 2
-  _speed: 8
+  _speed: 0.1
   _isFixed: 0
   _disableOnContact: 1
---- !u!61 &8036290046098017133
-BoxCollider2D:
+--- !u!114 &3713228974342638109
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3294536446187043669}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.75, y: 1.75}
-    newSize: {x: 2.75, y: 2}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.75, y: 1.75}
-  m_EdgeRadius: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b07b43e8a218d4e9012782762e6ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ignoreWalls: 1
 --- !u!1 &4244931488107859237
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5298348057825973488}
   - component: {fileID: 5260846222673715750}
-  - component: {fileID: 4973622382417209840}
+  - component: {fileID: 7535741727905480026}
   m_Layer: 7
   m_Name: Hitbox_spriteRenderer
   m_TagString: Untagged
@@ -315,7 +302,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4973622382417209840
+--- !u!114 &7535741727905480026
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,7 +311,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5585582147349947177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49fa865ee649d4d4aaaca25047bf6024, type: 3}
+  m_Script: {fileID: 11500000, guid: 34754119084380a419bb9c68c7a2cf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7565370206301344513
@@ -336,7 +323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6443289159971355478}
-  - component: {fileID: 6453347680146085869}
+  - component: {fileID: 4080371442021779744}
   m_Layer: 7
   m_Name: Main_hitbox
   m_TagString: Untagged
@@ -360,7 +347,7 @@ Transform:
   m_Father: {fileID: 4210854016966709616}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6453347680146085869
+--- !u!114 &4080371442021779744
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -369,10 +356,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7565370206301344513}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51729ec44d22e5f4f8bb5accfea6be2b, type: 3}
+  m_Script: {fileID: 11500000, guid: d7607f12deb3d8a4388823aa984b9f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _size: {x: 0, y: 0}
+  _showGizmo: 0
+  _ignoreCollision: 1
   _offset: {x: 0, y: 0}
-  _hitGround: 0
-  _hasHit: 0
+  _size: {x: 0, y: 0}
+  _projectile: {fileID: 4138882669964765112}

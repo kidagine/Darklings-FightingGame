@@ -6,9 +6,7 @@ public class PlayerAnimator : DemonicsAnimator
     [SerializeField] private PlayerCollisionBoxes _playerCollisionBoxes = default;
     [SerializeField] private Player _player = default;
     [SerializeField] private PlayerMovement _playerMovement = default;
-    [SerializeField] private InputBuffer _inputBuffer = null;
     [SerializeField] private Audio _audio = default;
-    [SerializeField] private DemonicsPhysics _grabPoint = default;
     private Shadow _shadow;
 
     public PlayerStatsSO PlayerStats { get { return _player.playerStats; } set { } }
@@ -29,11 +27,11 @@ public class PlayerAnimator : DemonicsAnimator
         base.CheckEvents();
         if (GetEvent().projectile)
         {
-            _player.CreateEffect(true);
+            _player.CreateEffect(GetEvent().projectilePoint, true);
         }
         if (GetEvent().jump)
         {
-            _playerMovement.AddForce((GetEvent().jumpDirection.x));
+            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x, (DemonicsFloat)GetEvent().jumpDirection.y));
         }
         if (GetEvent().footstep)
         {
@@ -41,8 +39,7 @@ public class PlayerAnimator : DemonicsAnimator
         }
         if (GetEvent().grabPoint != Vector2.zero)
         {
-            DemonicsVector2 throwOffset = new DemonicsVector2((DemonicsFloat)GetEvent().grabPoint.x * (DemonicsFloat)(_player.transform.localScale.x), (DemonicsFloat)GetEvent().grabPoint.y);
-            _player.OtherPlayerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x + throwOffset.x, _playerMovement.Physics.Position.y + throwOffset.y));
+            _player.OtherPlayer.GrabPoint = new DemonicsVector2((DemonicsFloat)GetEvent().grabPoint.x * (DemonicsFloat)(_player.transform.localScale.x), (DemonicsFloat)GetEvent().grabPoint.y);
         }
         if (GetEvent().throwEnd)
         {

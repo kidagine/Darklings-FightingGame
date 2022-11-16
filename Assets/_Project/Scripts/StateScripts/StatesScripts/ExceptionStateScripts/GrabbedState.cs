@@ -29,11 +29,18 @@ public class GrabbedState : State
     {
         base.Enter();
         _playerAnimator.Hurt();
+        _physics.IgnoreWalls = true;
         _physics.EnableGravity(false);
         _playerMovement.StopKnockback();
         _physics.Velocity = DemonicsVector2.Zero;
         _player.OtherPlayerStateManager.TryToThrowState();
         StartCoroutine(CanTechThrowCoroutine());
+    }
+
+    public override void UpdateLogic()
+    {
+        base.UpdateLogic();
+        _physics.SetPositionWithRender(new DemonicsVector2(_player.OtherPlayerMovement.Physics.Position.x + _player.GrabPoint.x, _player.OtherPlayerMovement.Physics.Position.y + _player.GrabPoint.y));
     }
 
     public override bool ToKnockdownState()
@@ -91,6 +98,7 @@ public class GrabbedState : State
     public override void Exit()
     {
         base.Exit();
+        _physics.IgnoreWalls = false;
         _physics.EnableGravity(true);
         _playerUI.UpdateHealthDamaged();
     }

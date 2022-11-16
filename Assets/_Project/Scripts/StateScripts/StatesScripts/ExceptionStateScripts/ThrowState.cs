@@ -31,7 +31,7 @@ public class ThrowState : State
         _playerAnimator.Throw();
     }
 
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         _stateMachine.ChangeState(_idleState);
     }
@@ -41,10 +41,5 @@ public class ThrowState : State
         _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
         _stateMachine.ChangeState(_knockbackState);
         return true;
-    }
-
-    public override void UpdateLogic()
-    {
-        base.UpdateLogic();
     }
 }

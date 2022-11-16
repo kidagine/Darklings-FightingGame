@@ -41,6 +41,10 @@ public class ArcanaState : State
             _playerUI.DisplayNotification(NotificationTypeEnum.Reversal);
         }
         _player.CurrentAttack = _playerComboSystem.GetArcana(_crouch, _air);
+        if (_player.CurrentAttack.travelDistance == Vector2.zero)
+        {
+            _physics.EnableGravity(false);
+        }
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
         _player.ArcanaGauge -= (DemonicsFloat)1;
         _playerUI.DecreaseArcana();
@@ -122,5 +126,11 @@ public class ArcanaState : State
     {
         _stateMachine.ChangeState(_arcanaThrowState);
         return true;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _physics.EnableGravity(true);
     }
 }

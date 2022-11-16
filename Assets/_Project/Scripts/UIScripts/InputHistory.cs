@@ -41,7 +41,7 @@ public class InputHistory : MonoBehaviour
         InputTimes.Add(DemonicsWorld.Frame);
         Inputs.Add(inputEnum);
         Directions.Add(inputDirectionEnum);
-        if (inputDirectionEnum == InputDirectionEnum.NoneVertical || inputDirectionEnum == InputDirectionEnum.NoneHorizontal)
+        if (inputDirectionEnum == InputDirectionEnum.NoneVertical && inputEnum == InputEnum.Direction || inputDirectionEnum == InputDirectionEnum.NoneHorizontal && inputEnum == InputEnum.Direction)
         {
             return;
         }

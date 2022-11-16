@@ -15,12 +15,12 @@ MonoBehaviour:
   damage: 625
   attackTypeEnum: 2
   hitStun: 35
-  travelDistance: 0
-  travelDirection: {x: 0, y: 0}
-  knockback: 2.5
-  knockbackForce: {x: 0, y: 0}
-  knockbackDirection: {x: 0, y: 0.9}
-  knockbackDuration: 0.2
+  blockStun: 0
+  travelDistance: {x: 0, y: 0}
+  knockbackForce: {x: 5, y: 0}
+  knockbackDuration: 25
+  knockbackArc: 4
+  hasSuperArmor: 0
   isAirAttack: 0
   isProjectile: 1
   isArcana: 1
@@ -39,9 +39,8 @@ MonoBehaviour:
   startUpFrames: 9
   activeFrames: 10
   recoveryFrames: 13
+  moveName: 
+  moveDescription: 
+  moveVideo: {fileID: 0}
   airOk: 1
   reversal: 0
-  arcanaName: Deadly Shock
-  arcanaDescription: Throws a slow projectile causing knockdown, useful for gaining
-    ground on your opponent.
-  arcanaVideo: {fileID: 32900000, guid: a13d050202f42e24b8ae788b45766fc3, type: 3}
