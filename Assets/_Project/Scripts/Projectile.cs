@@ -21,7 +21,6 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
 
     void OnEnable()
     {
-
         OnCurrentAnimationFinished.AddListener(() => gameObject.SetActive(false));
         SetAnimation("Idle");
 
@@ -56,9 +55,9 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
 
     public void SetSourceTransform(Transform sourceTransform, Vector2 position)
     {
-        _physics.Position = new DemonicsVector2((DemonicsFloat)position.x, (DemonicsFloat)position.y);
         SourceTransform = sourceTransform;
         _hitbox.SetSourceTransform(sourceTransform);
+        _physics.Position = new DemonicsVector2((DemonicsFloat)position.x, (DemonicsFloat)position.y);
     }
 
     public bool TakeDamage(AttackSO attackSO)

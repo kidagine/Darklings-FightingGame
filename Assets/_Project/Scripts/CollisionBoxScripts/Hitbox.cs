@@ -54,6 +54,7 @@ public class Hitbox : DemonicsCollider
 
     protected override void InitializeCollisionList()
     {
+        _demonicsColliders.Clear();
         DemonicsCollider[] demonicsCollidersArray = FindObjectsOfType<DemonicsCollider>();
         for (int i = 0; i < demonicsCollidersArray.Length; i++)
         {
@@ -68,7 +69,7 @@ public class Hitbox : DemonicsCollider
         _demonicsColliders.Remove(this);
     }
 
-    public void SetSourceTransform(Transform sourceTransform)
+    public virtual void SetSourceTransform(Transform sourceTransform)
     {
         _sourceTransform = sourceTransform;
     }

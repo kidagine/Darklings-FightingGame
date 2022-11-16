@@ -16,4 +16,10 @@ public class HitboxProjectile : Hitbox
         GameManager.Instance.AddHitstop(_projectile);
         base.EnterCollision(collider);
     }
+
+    public override void SetSourceTransform(Transform sourceTransform)
+    {
+        _sourceTransform = sourceTransform;
+        base.InitializeCollisionList();
+    }
 }
