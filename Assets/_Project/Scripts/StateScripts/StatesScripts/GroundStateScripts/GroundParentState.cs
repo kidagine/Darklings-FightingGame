@@ -117,9 +117,9 @@ public class GroundParentState : State
 
     public override bool ToKnockbackState()
     {
-        if (transform.localScale.x == 1 && _playerMovement.MovementInput.x < 0
-               || transform.localScale.x == -1 && _playerMovement.MovementInput.x > 0)
+        if (_player.BlockingLeftOrRight())
         {
+            _blockState.Initialize(new AttackSO() { blockStun = 10, knockbackForce = new Vector2(0.1f, 0), knockbackDuration = 5 });
             _stateMachine.ChangeState(_blockState);
             return false;
         }

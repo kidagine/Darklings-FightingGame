@@ -523,10 +523,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return false;
     }
 
-    private bool BlockingLeftOrRight()
+    public bool BlockingLeftOrRight()
     {
-        if (transform.localScale.x == 1.0f && _playerMovement.MovementInput.x < 0.0f
-                   || transform.localScale.x == -1.0f && _playerMovement.MovementInput.x > 0.0f)
+        if (transform.localScale.x == 1 && _controller.ActiveController.InputDirection.x < 0
+                   || transform.localScale.x == -1 && _controller.ActiveController.InputDirection.x > 0)
         {
             return true;
         }
