@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
-    [SerializeField] private InputBuffer _inputBuffer = default;
     [SerializeField] private PlayerStateManager _playerStateManager = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Assist _assist = default;
