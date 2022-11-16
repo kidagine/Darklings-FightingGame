@@ -24,42 +24,50 @@ public class PlayerController : BaseController
     //GAMEPLAY
     public void Movement(CallbackContext callbackContext)
     {
-        InputDirection = new Vector2Int(Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().x), Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().y));
-        if (InputDirection.x == 1 && _playerMovement.MovementInput.x != InputDirection.x)
+        Vector2Int input = new Vector2Int(Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().x), Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().y));
+        if (callbackContext.performed)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+            if (input.x == 1)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+            }
+            if (input.x == -1)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+            }
+            if (input.y == 1)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+            }
+            if (input.y == -1)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+            }
         }
-        if (InputDirection.x == -1 && _playerMovement.MovementInput.x != InputDirection.x)
+
+        if (input.x == 0)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
         }
-        if (InputDirection.y == 1 && _playerMovement.MovementInput.y != InputDirection.y)
+        if (input.y == 0)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
         }
-        if (InputDirection.y == -1 && _playerMovement.MovementInput.y != InputDirection.y)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-        }
-        if (InputDirection == Vector2.zero && _playerMovement.MovementInput != InputDirection)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.None);
-        }
-        _playerMovement.MovementInput = InputDirection;
     }
 
     public override bool Jump()
     {
-        if (InputDirection.y > 0.0f)
+        if (InputDirection.y > 0)
         {
             return true;
         }
+
         return false;
     }
 
     public override bool Crouch()
     {
-        if (InputDirection.y < -0.0f)
+        if (InputDirection.y < 0)
         {
             return true;
         }
@@ -68,17 +76,9 @@ public class PlayerController : BaseController
 
     public override bool StandUp()
     {
-        if (InputDirection.y == 0.0f)
+        if (InputDirection.y == 0)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.None);
-            if (InputDirection.x == 1)
-            {
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
-            }
-            if (InputDirection.x == -1)
-            {
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
-            }
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
             return true;
         }
         return false;
@@ -177,7 +177,6 @@ public class PlayerController : BaseController
                 if (timeSinceLastPress <= _dashTime)
                 {
                     _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
-                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
                     _dashForwardPressed = false;
                 }
                 _dashForwardLastInputTime = DemonicsWorld.Frame;

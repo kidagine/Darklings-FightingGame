@@ -11,11 +11,13 @@ public class InputBuffer : MonoBehaviour
     private InputDirectionEnum _lastInputDirection;
     private InputBufferItem _cachedInputBufferItem;
     private Player _player;
+    private BrainController _controller;
     private int _waitFrame;
 
     void Awake()
     {
         _player = GetComponent<Player>();
+        _controller = GetComponent<BrainController>();
     }
 
     public void Initialize(InputHistory inputHistory)
@@ -23,7 +25,7 @@ public class InputBuffer : MonoBehaviour
         _inputHistory = inputHistory;
     }
 
-    public void AddInputBufferItem(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
+    public void AddInputBufferItem(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.NoneVertical)
     {
         if (inputEnum != InputEnum.Direction)
         {
@@ -38,7 +40,7 @@ public class InputBuffer : MonoBehaviour
             _inputHistory.AddInput(inputEnum, inputDirectionEnum);
             InputBufferItem inputBufferItem = new(inputEnum, DemonicsWorld.Frame);
             _inputBuffer.Enqueue(inputBufferItem);
-            inputBufferItem.Execute += () => { _lastInputDirection = inputDirectionEnum; return true; };
+            inputBufferItem.Execute += () => ExecuteMovementBuffer(inputDirectionEnum);
         }
     }
 
@@ -78,6 +80,7 @@ public class InputBuffer : MonoBehaviour
             }
         }
     }
+
     private void CheckInputBufferAttacksList()
     {
         InputBufferItem inputBufferItem = null;
@@ -96,7 +99,6 @@ public class InputBuffer : MonoBehaviour
                 }
                 if (_inputBufferItems[i]._inputEnum == InputEnum.Heavy && inputBufferItem._inputEnum == InputEnum.Medium)
                 {
-                    Debug.Log("A");
                     inputBufferItem = new(InputEnum.Parry, DemonicsWorld.Frame);
                     inputBufferItem.Execute += () => ExecuteInputBuffer(InputEnum.Parry);
                     break;
@@ -185,7 +187,7 @@ public class InputBuffer : MonoBehaviour
             bool value = _playerStateManager.TryToArcanaState(_lastInputDirection);
             if (value)
             {
-                _lastInputDirection = InputDirectionEnum.None;
+                _lastInputDirection = InputDirectionEnum.NoneVertical;
             }
             return value;
         }
@@ -194,10 +196,37 @@ public class InputBuffer : MonoBehaviour
             bool value = _playerStateManager.TryToAttackState(inputEnum, _lastInputDirection);
             if (value)
             {
-                _lastInputDirection = InputDirectionEnum.None;
+                _lastInputDirection = InputDirectionEnum.NoneVertical;
             }
             return value;
         }
+    }
+
+    private bool ExecuteMovementBuffer(InputDirectionEnum inputDirectionEnum)
+    {
+        _lastInputDirection = inputDirectionEnum;
+        switch (inputDirectionEnum)
+        {
+            case InputDirectionEnum.NoneVertical:
+                _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, 0);
+                break;
+            case InputDirectionEnum.NoneHorizontal:
+                _controller.ActiveController.InputDirection = new Vector2Int(0, _controller.ActiveController.InputDirection.y);
+                break;
+            case InputDirectionEnum.Up:
+                _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, 1);
+                break;
+            case InputDirectionEnum.Down:
+                _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, -1);
+                break;
+            case InputDirectionEnum.Left:
+                _controller.ActiveController.InputDirection = new Vector2Int(-1, _controller.ActiveController.InputDirection.y);
+                break;
+            case InputDirectionEnum.Right:
+                _controller.ActiveController.InputDirection = new Vector2Int(1, _controller.ActiveController.InputDirection.y);
+                break;
+        }
+        return true;
     }
 
     public void ClearInputBuffer()

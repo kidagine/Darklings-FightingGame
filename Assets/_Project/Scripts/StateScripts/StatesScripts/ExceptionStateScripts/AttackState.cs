@@ -120,7 +120,7 @@ public class AttackState : State
 
     public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
     {
-        if (inputEnum == InputEnum.Heavy && inputDirectionEnum == InputDirectionEnum.None)
+        if (inputEnum == InputEnum.Heavy && inputDirectionEnum == InputDirectionEnum.NoneVertical)
         {
             return false;
         }

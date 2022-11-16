@@ -36,12 +36,12 @@ public class InputHistory : MonoBehaviour
         }
     }
 
-    public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
+    public void AddInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.NoneVertical)
     {
         InputTimes.Add(DemonicsWorld.Frame);
         Inputs.Add(inputEnum);
         Directions.Add(inputDirectionEnum);
-        if (inputDirectionEnum == InputDirectionEnum.None && inputEnum == InputEnum.Direction)
+        if (inputDirectionEnum == InputDirectionEnum.NoneVertical || inputDirectionEnum == InputDirectionEnum.NoneHorizontal)
         {
             return;
         }
@@ -75,7 +75,7 @@ public class InputHistory : MonoBehaviour
         }
     }
 
-    private void AddSubInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
+    private void AddSubInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.NoneVertical)
     {
         InputHistoryImage inputHistoryImage = _inputHistoryImages[_previousInputImageIndex];
         if (inputEnum == InputEnum.Parry)
@@ -106,7 +106,7 @@ public class InputHistory : MonoBehaviour
         }
     }
 
-    private void AddMainInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
+    private void AddMainInput(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.NoneVertical)
     {
         InputHistoryImage inputHistoryImage = _inputHistoryImages[_currentInputImageIndex];
         if (_isNextInputBreak)
@@ -176,7 +176,7 @@ public class InputHistory : MonoBehaviour
         }
     }
 
-    private void SetInputImageSprite(Image inputImage, InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.None)
+    private void SetInputImageSprite(Image inputImage, InputEnum inputEnum, InputDirectionEnum inputDirectionEnum = InputDirectionEnum.NoneVertical)
     {
         switch (inputEnum)
         {
