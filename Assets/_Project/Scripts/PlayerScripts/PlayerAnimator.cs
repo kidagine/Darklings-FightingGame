@@ -31,7 +31,6 @@ public class PlayerAnimator : DemonicsAnimator
         }
         if (GetEvent().jump)
         {
-            Debug.Log("A");
             _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x, (DemonicsFloat)GetEvent().jumpDirection.y));
         }
         if (GetEvent().footstep)
@@ -40,8 +39,7 @@ public class PlayerAnimator : DemonicsAnimator
         }
         if (GetEvent().grabPoint != Vector2.zero)
         {
-            DemonicsVector2 throwOffset = new DemonicsVector2((DemonicsFloat)GetEvent().grabPoint.x * (DemonicsFloat)(_player.transform.localScale.x), (DemonicsFloat)GetEvent().grabPoint.y);
-            _player.OtherPlayerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x + throwOffset.x, _playerMovement.Physics.Position.y + throwOffset.y));
+            _player.OtherPlayer.GrabPoint = new DemonicsVector2((DemonicsFloat)GetEvent().grabPoint.x * (DemonicsFloat)(_player.transform.localScale.x), (DemonicsFloat)GetEvent().grabPoint.y);
         }
         if (GetEvent().throwEnd)
         {

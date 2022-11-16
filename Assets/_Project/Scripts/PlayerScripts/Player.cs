@@ -45,6 +45,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool IsPlayerOne { get; set; }
     public DemonicsFloat AssistGauge { get; set; } = (DemonicsFloat)1;
     public DemonicsFloat ArcanaGauge { get; set; }
+    public DemonicsVector2 GrabPoint { get; set; }
     public int ArcaneSlowdown { get; set; } = 6;
     public bool CanShadowbreak { get; set; } = true;
     public bool BlockingLow { get; set; }

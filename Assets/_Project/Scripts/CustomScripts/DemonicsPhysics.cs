@@ -20,6 +20,9 @@ public class DemonicsPhysics : MonoBehaviour
     private int _skipWallFrame = 1;
     private readonly DemonicsFloat _wallPointOffset = (DemonicsFloat)0.6;
     public DemonicsPhysics OtherPhysics { get; set; }
+    public bool IgnoreWalls { get { return _ignoreWalls; } set { _ignoreWalls = value; } }
+
+
     void Awake()
     {
         _camera = Camera.main;
@@ -220,7 +223,7 @@ public class DemonicsPhysics : MonoBehaviour
         {
             Velocity = new DemonicsVector2(Velocity.x, (DemonicsFloat)0);
         }
-        if (!_ignoreWalls)
+        if (!IgnoreWalls)
         {
             if (Position.x >= WALL_RIGHT_POINT && Velocity.x >= (DemonicsFloat)0)
             {
