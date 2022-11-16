@@ -4,7 +4,6 @@ using UnityEngine;
 public class TauntState : State
 {
     private IdleState _idleState;
-    private Coroutine _tauntCoroutine;
     private int _tauntFrame;
 
 
@@ -32,15 +31,6 @@ public class TauntState : State
         if (DemonicsWorld.WaitFramesOnce(ref _tauntFrame))
         {
             ToIdleState();
-        }
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-        if (_tauntCoroutine != null)
-        {
-            StopCoroutine(_tauntCoroutine);
         }
     }
 }

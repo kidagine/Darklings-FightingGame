@@ -3,12 +3,12 @@ using UnityEngine;
 
 [Flags]
 [Serializable]
-public enum InputDirectionEnum { None, Up, Down, Left, Right };
+public enum InputDirectionEnum { NoneVertical, NoneHorizontal, Up, Down, Left, Right };
 
 
 public class InputDirectionTypes : MonoBehaviour
 {
-	[SerializeField] private InputDirectionEnum _inputDirectionEnum = default;
+    [SerializeField] private InputDirectionEnum _inputDirectionEnum = default;
 
-	public InputDirectionEnum InputDirectionEnum { get { return _inputDirectionEnum; } private set { } }
+    public InputDirectionEnum InputDirectionEnum { get { return _inputDirectionEnum; } private set { } }
 }

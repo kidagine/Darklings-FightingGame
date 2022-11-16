@@ -17,12 +17,13 @@ public class PlayerMovement : MonoBehaviour
     public bool IsGrounded { get; set; } = true;
     public bool IsInHitstop { get; private set; }
     public bool IsInCorner => Physics.OnWall;
-
+    private InputBuffer inputBuffer;
     void Awake()
     {
         _player = GetComponent<Player>();
         Physics = GetComponent<DemonicsPhysics>();
         _audio = GetComponent<Audio>();
+        inputBuffer = GetComponent<InputBuffer>();
     }
 
     void Start()
@@ -143,6 +144,7 @@ public class PlayerMovement : MonoBehaviour
             IsInHitstop = true;
             _velocity = Physics.Velocity;
             Physics.SetFreeze(true);
+            _player.hitstopEvent.AddListener(inputBuffer.CheckInputBufferAttacks);
         }
     }
 

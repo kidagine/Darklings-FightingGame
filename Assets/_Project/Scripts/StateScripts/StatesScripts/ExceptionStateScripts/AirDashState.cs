@@ -1,5 +1,4 @@
 using Demonics.Manager;
-using System.Collections;
 using UnityEngine;
 
 public class AirDashState : State
@@ -10,8 +9,10 @@ public class AirDashState : State
     private FallState _fallState;
     private JumpState _jumpState;
     private JumpForwardState _jumpForwardState;
-
-    private Coroutine _dashCoroutine;
+    private readonly int _dashFrames = 5;
+    private int _dashFramesCurrent;
+    private readonly int _ghostsAmount = 3;
+    private int _ghostsAmountCurrent;
     public int DashDirection { get; set; }
     void Awake()
     {
@@ -27,6 +28,7 @@ public class AirDashState : State
         _playerAnimator.AirDash();
         _audio.Sound("Dash").Play();
         _player.SetPushboxTrigger(false);
+        _dashFramesCurrent = _dashFrames;
         Transform dashEffect = ObjectPoolingManager.Instance.Spawn(_dashPrefab, transform.position).transform;
         if (DashDirection > 0)
         {
@@ -40,41 +42,38 @@ public class AirDashState : State
         }
         _physics.Velocity = new DemonicsVector2((DemonicsFloat)DashDirection * (DemonicsFloat)_player.playerStats.DashForce, (DemonicsFloat)0);
         _physics.EnableGravity(false);
-        _dashCoroutine = StartCoroutine(DashCoroutine());
-    }
-
-    IEnumerator DashCoroutine()
-    {
-        _playerMovement.HasAirDashed = true;
-        for (int i = 0; i < 3; i++)
-        {
-            GameObject playerGhost = ObjectPoolingManager.Instance.Spawn(_playerGhostPrefab, transform.position);
-            playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.root.localScale.x, Color.white);
-            yield return new WaitForSeconds(0.07f);
-        }
-        yield return null;
-        _dashCoroutine = null;
     }
 
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        ToFallState();
         ToJumpState();
         ToJumpForwardState();
+        Dash();
     }
 
-    public void ToFallState()
+    private void Dash()
     {
-        if (_dashCoroutine == null)
+        if (_ghostsAmountCurrent < _ghostsAmount)
+        {
+            if (DemonicsWorld.WaitFramesOnce(ref _dashFramesCurrent))
+            {
+                GameObject playerGhost = ObjectPoolingManager.Instance.Spawn(_playerGhostPrefab, transform.position);
+                playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.root.localScale.x, Color.white);
+                _dashFramesCurrent = _dashFrames;
+                _ghostsAmountCurrent++;
+            }
+        }
+        else
         {
             _stateMachine.ChangeState(_fallState);
+            _inputBuffer.CheckInputBufferAttacks();
         }
     }
 
     public void ToJumpState()
     {
-        if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _dashCoroutine == null)
+        if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _ghostsAmountCurrent == _ghostsAmount)
         {
             if (_baseController.InputDirection.x == 0)
             {
@@ -94,7 +93,7 @@ public class AirDashState : State
 
     public void ToJumpForwardState()
     {
-        if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _dashCoroutine == null)
+        if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _ghostsAmountCurrent == _ghostsAmount)
         {
             if (_baseController.InputDirection.x != 0)
             {
@@ -131,12 +130,9 @@ public class AirDashState : State
     public override void Exit()
     {
         base.Exit();
+        _ghostsAmountCurrent = 0;
         _physics.Velocity = DemonicsVector2.Zero;
         _physics.EnableGravity(true);
-        if (_dashCoroutine != null)
-        {
-            StopCoroutine(_dashCoroutine);
-        }
     }
 }
 

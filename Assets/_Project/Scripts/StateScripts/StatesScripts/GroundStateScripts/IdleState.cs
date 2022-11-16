@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class IdleState : GroundParentState
 {
+    private bool _checkInputBuffer;
+
+
     public override void Enter()
     {
         base.Enter();
@@ -14,6 +17,14 @@ public class IdleState : GroundParentState
         _playerMovement.HasAirDashed = false;
         _playerMovement.HasDoubleJumped = false;
         _player.CanAirArcana = true;
+        if (_checkInputBuffer)
+        {
+        }
+    }
+
+    public void Initialize(bool checkInputBuffer)
+    {
+        _checkInputBuffer = checkInputBuffer;
     }
 
     public override void UpdateLogic()
@@ -73,5 +84,11 @@ public class IdleState : GroundParentState
         _blockState.Initialize(attack);
         _stateMachine.ChangeState(_blockState);
         return true;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _checkInputBuffer = false;
     }
 }

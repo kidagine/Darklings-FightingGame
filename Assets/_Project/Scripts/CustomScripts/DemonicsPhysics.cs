@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DemonicsPhysics : MonoBehaviour
 {
+    [SerializeField] private bool _ignoreWalls = default;
     public DemonicsVector2 Velocity { get; set; }
     public DemonicsVector2 Position { get; set; }
     public bool OnGround { get { return Position.y <= GROUND_POINT ? true : false; } private set { } }
@@ -219,13 +220,16 @@ public class DemonicsPhysics : MonoBehaviour
         {
             Velocity = new DemonicsVector2(Velocity.x, (DemonicsFloat)0);
         }
-        if (Position.x >= WALL_RIGHT_POINT && Velocity.x >= (DemonicsFloat)0)
+        if (!_ignoreWalls)
         {
-            Position = new DemonicsVector2(WALL_RIGHT_POINT, Position.y);
-        }
-        if (Position.x <= WALL_LEFT_POINT && Velocity.x <= (DemonicsFloat)0)
-        {
-            Position = new DemonicsVector2(WALL_LEFT_POINT, Position.y);
+            if (Position.x >= WALL_RIGHT_POINT && Velocity.x >= (DemonicsFloat)0)
+            {
+                Position = new DemonicsVector2(WALL_RIGHT_POINT, Position.y);
+            }
+            if (Position.x <= WALL_LEFT_POINT && Velocity.x <= (DemonicsFloat)0)
+            {
+                Position = new DemonicsVector2(WALL_LEFT_POINT, Position.y);
+            }
         }
     }
 

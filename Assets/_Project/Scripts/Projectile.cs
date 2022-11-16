@@ -21,7 +21,6 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
 
     void OnEnable()
     {
-
         OnCurrentAnimationFinished.AddListener(() => gameObject.SetActive(false));
         SetAnimation("Idle");
 
@@ -41,8 +40,7 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
         }
         if (_physics.OnGround && _disableOnContact)
         {
-            Instantiate(_dustPrefab, transform.position, Quaternion.identity);
-            gameObject.SetActive(false);
+            DestroyProjectile();
         }
     }
 
@@ -56,9 +54,15 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
 
     public void SetSourceTransform(Transform sourceTransform, Vector2 position)
     {
-        _physics.Position = new DemonicsVector2((DemonicsFloat)position.x, (DemonicsFloat)position.y);
         SourceTransform = sourceTransform;
         _hitbox.SetSourceTransform(sourceTransform);
+        _physics.Position = new DemonicsVector2((DemonicsFloat)position.x, (DemonicsFloat)position.y);
+    }
+
+    public void DestroyProjectile()
+    {
+        Instantiate(_dustPrefab, transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
     }
 
     public bool TakeDamage(AttackSO attackSO)

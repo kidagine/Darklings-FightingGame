@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
+    [SerializeField] private InputBuffer _inputBuffer = default;
     [SerializeField] private PlayerStateManager _playerStateManager = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Assist _assist = default;
@@ -239,6 +240,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return false;
     }
 
+    public bool CheckRecoverableHealth()
+    {
+        float remainingRecoverableHealth = HealthRecoverable - Health;
+        if (remainingRecoverableHealth > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public bool AssistAction()
     {
         if (AssistGauge >= (DemonicsFloat)0.5f && GameManager.Instance.HasGameStarted && !_assist.IsOnScreen)
@@ -374,7 +385,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             }
             if (OtherPlayerMovement.IsInCorner)
             {
-                if (!CurrentAttack.isArcana && CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
+                if (!CurrentAttack.isArcana && CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw && !CurrentAttack.causesKnockdown)
                 {
                     _playerMovement.Knockback(new Vector2(CurrentAttack.knockbackForce.x, 0), CurrentAttack.knockbackDuration, (int)(OtherPlayer.transform.localScale.x));
                 }

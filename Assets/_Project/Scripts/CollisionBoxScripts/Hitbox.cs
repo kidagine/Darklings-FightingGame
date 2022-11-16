@@ -9,13 +9,13 @@ public class Hitbox : DemonicsCollider
     public Action OnPlayerCollision;
     public DemonicsVector2 HitPoint { get; private set; }
     [SerializeField] private IHitboxResponder _hitboxResponder;
-    protected Transform _sourceTransform;
+    public Transform SourceTransform { get; set; }
     public bool HitConfirm { get; private set; }
 
     void Awake()
     {
         GizmoColor = Color.red;
-        _sourceTransform = transform.root;
+        SourceTransform = transform.root;
     }
 
     protected override void Start()
@@ -54,10 +54,11 @@ public class Hitbox : DemonicsCollider
 
     protected override void InitializeCollisionList()
     {
+        _demonicsColliders.Clear();
         DemonicsCollider[] demonicsCollidersArray = FindObjectsOfType<DemonicsCollider>();
         for (int i = 0; i < demonicsCollidersArray.Length; i++)
         {
-            if (!demonicsCollidersArray[i].transform.IsChildOf(_sourceTransform))
+            if (!demonicsCollidersArray[i].transform.IsChildOf(SourceTransform))
             {
                 if (demonicsCollidersArray[i].TryGetComponent(out Hurtbox hurtbox))
                 {
@@ -68,9 +69,9 @@ public class Hitbox : DemonicsCollider
         _demonicsColliders.Remove(this);
     }
 
-    public void SetSourceTransform(Transform sourceTransform)
+    public virtual void SetSourceTransform(Transform sourceTransform)
     {
-        _sourceTransform = sourceTransform;
+        SourceTransform = sourceTransform;
     }
 
     public void SetHitboxResponder(Transform hitboxResponder)
