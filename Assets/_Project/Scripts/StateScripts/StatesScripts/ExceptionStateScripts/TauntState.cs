@@ -15,6 +15,7 @@ public class TauntState : State
     public override void Enter()
     {
         base.Enter();
+        _physics.Velocity = DemonicsVector2.Zero;
         _player.CheckFlip();
         _playerAnimator.Taunt();
         _tauntFrame = 160;

@@ -52,11 +52,18 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
         }
     }
 
-    public void SetSourceTransform(Transform sourceTransform, Vector2 position)
+    public void SetSourceTransform(Transform sourceTransform, Vector2 position, bool assist)
     {
         SourceTransform = sourceTransform;
         _hitbox.SetSourceTransform(sourceTransform);
-        _physics.Position = new DemonicsVector2((DemonicsFloat)sourceTransform.position.x + (sourceTransform.localScale.x * (DemonicsFloat)position.x), (DemonicsFloat)sourceTransform.position.y + (DemonicsFloat)position.y);
+        if (assist)
+        {
+            _physics.Position = new DemonicsVector2((DemonicsFloat)position.x, (DemonicsFloat)position.y);
+        }
+        else
+        {
+            _physics.Position = new DemonicsVector2((DemonicsFloat)sourceTransform.position.x + (sourceTransform.localScale.x * (DemonicsFloat)position.x), (DemonicsFloat)sourceTransform.position.y + (DemonicsFloat)position.y);
+        }
     }
 
     public void DestroyProjectile()

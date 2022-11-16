@@ -68,7 +68,7 @@ public class Assist : DemonicsAnimator, IHitboxResponder
     public void Projectile()
     {
         _hitEffect = Instantiate(_assistStatsSO.assistPrefab, transform);
-        _hitEffect.GetComponent<Projectile>().SetSourceTransform(_player, transform.position);
+        _hitEffect.GetComponent<Projectile>().SetSourceTransform(_player, transform.position, true);
         _hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
         _hitEffect.transform.localRotation = Quaternion.Euler(0, 0, AssistStats.assistRotation);
         _hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
