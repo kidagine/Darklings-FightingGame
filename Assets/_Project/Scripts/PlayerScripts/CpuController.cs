@@ -4,16 +4,13 @@ public class CpuController : BaseController
 {
     [SerializeField] private PlayerStateManager _playerStateMachine = default;
     private Transform _otherPlayer;
-    private int _movementInputX;
     private DemonicsFloat _distance;
-    private float _arcanaTimer;
-    private float _movementTimer;
     private bool _crouch;
     private bool _jump;
-    private bool _dash;
     private bool _reset;
     private int _attackFrames = 3;
-    private int _specialFrames = 3;
+    private int _specialFrames = 4;
+    private int _movementFrames = 2;
     public void SetOtherPlayer(Transform otherPlayer)
     {
         _otherPlayer = otherPlayer;
@@ -28,8 +25,8 @@ public class CpuController : BaseController
             {
                 _reset = false;
                 _distance = DemonicsFloat.Abs(_playerMovement.Physics.Position.x - _player.OtherPlayerMovement.Physics.Position.x);
-                // Movement();
-                if (_distance <= (DemonicsFloat)4)
+                Movement();
+                if (_distance <= (DemonicsFloat)3.5)
                 {
                     Attack();
                 }
@@ -48,6 +45,65 @@ public class CpuController : BaseController
         else
         {
             InputDirection = Vector2Int.zero;
+        }
+    }
+
+    private void Movement()
+    {
+        if (IsControllerEnabled)
+        {
+            if (DemonicsWorld.WaitFramesOnce(ref _movementFrames))
+            {
+                int jumpRandom = Random.Range(0, 12);
+                int crouchRandom = Random.Range(0, 12);
+                int standingRandom = Random.Range(0, 4);
+                int movementRandom;
+                if (_distance <= (DemonicsFloat)6.5)
+                {
+                    movementRandom = Random.Range(0, 6);
+                }
+                else
+                {
+                    movementRandom = Random.Range(0, 9);
+                }
+                switch (movementRandom)
+                {
+                    case 0:
+                        _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
+                        break;
+                    case > 0 and <= 4:
+                        float _movementInputLeft = (int)(transform.localScale.x * 1);
+                        if (_movementInputLeft == 1)
+                        {
+                            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+                        }
+                        else if (_movementInputLeft == -1)
+                        {
+                            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+                        }
+                        break;
+                    case > 5:
+                        float _movementInputRight = (int)(transform.localScale.x * -1);
+                        if (_movementInputRight == 1)
+                        {
+                            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+                        }
+                        else if (_movementInputRight == -1)
+                        {
+                            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+                        }
+                        break;
+                }
+                if (jumpRandom == 2)
+                {
+                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+                }
+                if (crouchRandom == 2)
+                {
+                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+                }
+                _movementFrames = Random.Range(10, 15);
+            }
         }
     }
 
@@ -94,25 +150,37 @@ public class CpuController : BaseController
                 {
                     _inputBuffer.AddInputBufferItem(InputEnum.Special);
                 }
-                // _attackFrames = Random.Range(2, 5);
                 _specialFrames = Random.Range(5, 9);
             }
         }
     }
 
+    public override bool Jump()
+    {
+        if (InputDirection.y > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public override bool Crouch()
     {
-        return _crouch;
+        if (InputDirection.y < 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     public override bool StandUp()
     {
-        return !_crouch;
-    }
-
-    public override bool Jump()
-    {
-        return _jump;
+        if (InputDirection.y == 0)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
+            return true;
+        }
+        return false;
     }
 
     public override void ActivateInput()
