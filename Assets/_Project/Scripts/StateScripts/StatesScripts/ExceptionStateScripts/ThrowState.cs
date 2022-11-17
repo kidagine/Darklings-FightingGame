@@ -22,6 +22,7 @@ public class ThrowState : State
     public override void Enter()
     {
         base.Enter();
+        _physics.IgnoreWalls = true;
         _player.SetSpriteOrderPriority();
         if (_flip)
         {
@@ -41,5 +42,11 @@ public class ThrowState : State
         _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
         _stateMachine.ChangeState(_knockbackState);
         return true;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _physics.IgnoreWalls = false;
     }
 }

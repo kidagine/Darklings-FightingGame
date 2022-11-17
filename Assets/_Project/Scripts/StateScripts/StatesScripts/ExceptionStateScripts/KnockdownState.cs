@@ -25,7 +25,6 @@ public class KnockdownState : State
         _physics.Velocity = DemonicsVector2.Zero;
         _physics.EnableGravity(true);
         _playerAnimator.Knockdown();
-        _player.SetHurtbox(false);
         _player.OtherPlayer.StopComboTimer();
         _playerUI.DisplayNotification(NotificationTypeEnum.Knockdown);
         Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
@@ -37,7 +36,6 @@ public class KnockdownState : State
         {
             _knockdownFramesCurrent = _knockdownFrames;
         }
-        _player.SetHurtbox(false);
     }
 
     private void ToDeathState()

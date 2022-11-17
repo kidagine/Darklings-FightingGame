@@ -165,7 +165,7 @@ public class DemonicsPhysics : MonoBehaviour
                     second = new DemonicsVector2(-totalVelocity, OtherPhysics.Velocity.y);
                     OtherPhysics.SetPositionWithRender(new DemonicsVector2(OtherPhysics.Position.x + second.x, OtherPhysics.Position.y + second.y));
                     SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y)); Intersects();
-
+                    Intersects();
                     return true;
                 }
                 return false;
@@ -180,6 +180,10 @@ public class DemonicsPhysics : MonoBehaviour
                     SetPositionWithRender(new DemonicsVector2(Position.x + main.x, Position.y + main.y));
                     Intersects();
                     return true;
+                }
+                if (!IgnoreWalls)
+                {
+                    Intersects();
                 }
                 return false;
             }

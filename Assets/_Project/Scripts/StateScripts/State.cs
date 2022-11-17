@@ -50,8 +50,8 @@ public class State : MonoBehaviour
     public virtual bool ToThrowState() { return false; }
     public virtual bool ToKnockdownState() { return false; }
     public virtual bool ToKnockbackState() { return false; }
-    public virtual bool ToHurtState(AttackSO attack) { return true; }
-    public virtual bool ToAirborneHurtState(AttackSO attack) { return true; }
+    public virtual bool ToHurtState(AttackSO attack) { return false; }
+    public virtual bool ToAirborneHurtState(AttackSO attack) { return false; }
     public virtual bool ToBlockState(AttackSO attack) { return false; }
     public virtual bool ToGrabbedState() { return false; }
     public virtual bool ToTauntState() { return false; }
