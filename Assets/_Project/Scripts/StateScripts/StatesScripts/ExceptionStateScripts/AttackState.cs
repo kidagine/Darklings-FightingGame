@@ -242,7 +242,7 @@ public class AttackState : State
                 _hurtState.Initialize(attack);
                 _stateMachine.ChangeState(_hurtState);
             }
-            return false;
+            return true;
         }
         _player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
         if (_playerMovement.IsGrounded)
@@ -332,7 +332,7 @@ public class AttackState : State
                 _hurtState.Initialize(attack);
                 _stateMachine.ChangeState(_hurtState);
             }
-            return false;
+            return true;
         }
         _airborneHurtState.Initialize(attack);
         _stateMachine.ChangeState(_airborneHurtState);
