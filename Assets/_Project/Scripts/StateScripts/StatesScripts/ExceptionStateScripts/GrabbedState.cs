@@ -77,6 +77,7 @@ public class GrabbedState : State
         return false;
     }
 
+    //MAKE DETERMINISTIC
     IEnumerator CanTechThrowCoroutine()
     {
         yield return new WaitForSecondsRealtime(0.1f);

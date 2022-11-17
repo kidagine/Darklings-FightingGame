@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Hitbox : DemonicsCollider
 {
-    public Action OnGroundCollision;
-    public Action OnPlayerCollision;
     public DemonicsVector2 HitPoint { get; private set; }
     [SerializeField] private IHitboxResponder _hitboxResponder;
     public Transform SourceTransform { get; set; }
@@ -94,9 +92,11 @@ public class Hitbox : DemonicsCollider
                 bool hit = _hitboxResponder.HitboxCollided(new Vector2((float)HitPoint.x, (float)HitPoint.y), hurtbox);
                 if (hit)
                 {
-                    HitConfirm = true;
+                    if (gameObject.activeSelf)
+                    {
+                        HitConfirm = true;
+                    }
                     base.EnterCollision(collider);
-                    OnPlayerCollision?.Invoke();
                 }
             }
         }

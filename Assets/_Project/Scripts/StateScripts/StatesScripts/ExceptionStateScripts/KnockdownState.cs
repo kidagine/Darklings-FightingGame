@@ -6,7 +6,6 @@ public class KnockdownState : State
     [SerializeField] private GameObject _groundedPrefab = default;
     private WakeUpState _wakeUpState;
     private DeathState _deathState;
-    private Coroutine _knockdownCoroutine;
     private readonly int _knockdownFrames = 60;
     private int _knockdownFramesCurrent;
 
@@ -49,15 +48,6 @@ public class KnockdownState : State
         if (DemonicsWorld.WaitFrames(ref _knockdownFramesCurrent))
         {
             _stateMachine.ChangeState(_wakeUpState);
-        }
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-        if (_knockdownCoroutine != null)
-        {
-            StopCoroutine(_knockdownCoroutine);
         }
     }
 }
