@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -39,7 +40,8 @@ public class ReplayManager : MonoBehaviour
     public int ReplayFilesAmount { get { return _replayFiles.Length; } private set { } }
     public static ReplayManager Instance { get; private set; }
 
-
+    [DllImport("__Internal")]
+    private static extern void SyncFiles();
 
     void Awake()
     {
@@ -166,6 +168,10 @@ public class ReplayManager : MonoBehaviour
                     $"\nSkip:\n{Skip}");
                 fileStream.Write(skip, 0, skip.Length);
                 _replayNotificationAnimator.SetTrigger("Save");
+                if (Application.platform == RuntimePlatform.WebGLPlayer)
+                {
+                    SyncFiles();
+                }
             }
             catch (Exception e)
             {

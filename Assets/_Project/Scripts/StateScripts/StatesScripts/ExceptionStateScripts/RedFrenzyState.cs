@@ -119,7 +119,7 @@ public class RedFrenzyState : State
                 _hurtState.Initialize(attack);
                 _stateMachine.ChangeState(_hurtState);
             }
-            return false;
+            return true;
         }
         _player.OtherPlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
         if (_playerMovement.IsGrounded)

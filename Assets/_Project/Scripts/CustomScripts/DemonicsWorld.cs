@@ -11,6 +11,7 @@ public class DemonicsWorld : MonoBehaviour
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 1;
         Time.fixedDeltaTime = 0.01667f;
+        Frame = 0;
     }
 
     void Update()

@@ -437,10 +437,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
         if (CanBlock(attack))
         {
-            if (!_playerStateManager.TryToBlockState(attack))
+            bool blockSuccesful = _playerStateManager.TryToBlockState(attack);
+            if (!blockSuccesful)
             {
                 return _playerStateManager.TryToHurtState(attack);
             }
+            return true;
         }
         return _playerStateManager.TryToHurtState(attack);
     }
