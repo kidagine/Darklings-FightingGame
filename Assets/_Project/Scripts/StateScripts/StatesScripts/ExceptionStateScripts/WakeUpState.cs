@@ -28,15 +28,4 @@ public class WakeUpState : State
             _stateMachine.ChangeState(_idleState);
         }
     }
-
-    public override void UpdateLogic()
-    {
-        base.UpdateLogic();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-        _player.SetHurtbox(true);
-    }
 }

@@ -311,16 +311,18 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
+
+    //CHANGE TO DETERMINISTIC
     IEnumerator StartComboTimerCoroutine(ComboTimerStarterEnum comboTimerStarter)
     {
-        float elapsedTime = 0.0f;
+        float elapsedTime = 0;
         float waitTime = ComboTimerStarterTypes.GetComboTimerStarterValue(comboTimerStarter);
         Color color = ComboTimerStarterTypes.GetComboTimerStarterColor(comboTimerStarter);
         while (elapsedTime < waitTime)
         {
             if (!_comboTimerPaused)
             {
-                float value = Mathf.Lerp(1.0f, 0.0f, elapsedTime / waitTime);
+                float value = Mathf.Lerp(1, 0, elapsedTime / waitTime);
                 elapsedTime += Time.deltaTime;
                 _playerUI.SetComboTimer(value, color);
                 yield return null;
