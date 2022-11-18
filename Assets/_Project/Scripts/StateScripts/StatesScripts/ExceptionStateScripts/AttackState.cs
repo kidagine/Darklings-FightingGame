@@ -15,6 +15,7 @@ public class AttackState : State
     private KnockbackState _knockbackState;
     protected RedFrenzyState _redFrenzyState;
     private InputEnum _inputEnum;
+    private InputEnum _inputEnumCurrent;
     private bool _air;
     private bool _crouch;
 
@@ -109,6 +110,7 @@ public class AttackState : State
             _stateMachine.ChangeState(_crouchState);
         }
     }
+
     private void ToFallState()
     {
         if (_stateMachine.CurrentState == this)
@@ -151,8 +153,6 @@ public class AttackState : State
             return false;
         }
     }
-
-    private InputEnum _inputEnumCurrent;
 
     private void Attack(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
     {
@@ -203,7 +203,6 @@ public class AttackState : State
         }
         return false;
     }
-
 
     private void Arcana(InputDirectionEnum inputDirectionEnum)
     {

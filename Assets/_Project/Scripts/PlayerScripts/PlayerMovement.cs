@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         Physics.Velocity = new DemonicsVector2((DemonicsFloat)travelDistance.x, (DemonicsFloat)travelDistance.y);
     }
 
-    public void Knockback(Vector2 knockbackForce, int knockbackDuration, int direction, int arc = 0, bool instant = false)
+    public void Knockback(Vector2 knockbackForce, int knockbackDuration, int direction, int arc = 0, bool instant = false, bool ground = false)
     {
         if (knockbackDuration > 0)
         {
@@ -81,7 +81,14 @@ public class PlayerMovement : MonoBehaviour
                 _player.hitstopEvent.AddListener(() =>
                 {
                     _startPosition = Physics.Position;
-                    _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + endPositionY);
+                    if (!ground)
+                    {
+                        _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + endPositionY);
+                    }
+                    else
+                    {
+                        _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), DemonicsPhysics.GROUND_POINT - 0.5);
+                    }
                     _knockbackDuration = knockbackDuration;
                     _arc = (DemonicsFloat)arc;
                 });
