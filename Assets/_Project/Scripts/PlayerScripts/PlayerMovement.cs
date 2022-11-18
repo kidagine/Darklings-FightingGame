@@ -103,7 +103,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_knockbackDuration > 0)
         {
-            _knockbackFrame++;
             DemonicsFloat ratio = (DemonicsFloat)_knockbackFrame / (DemonicsFloat)_knockbackDuration;
             DemonicsFloat distance = _endPosition.x - _startPosition.x;
             DemonicsFloat nextX = DemonicsFloat.Lerp(_startPosition.x, _endPosition.x, ratio);
@@ -111,6 +110,7 @@ public class PlayerMovement : MonoBehaviour
             DemonicsFloat arc = _arc * (nextX - _startPosition.x) * (nextX - _endPosition.x) / ((DemonicsFloat)(-0.25) * distance * distance);
             DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
             Physics.SetPositionWithRender(nextPosition);
+            _knockbackFrame++;
             if (_knockbackFrame == _knockbackDuration)
             {
                 Physics.EnableGravity(true);

@@ -347,11 +347,11 @@ public class PlayerUI : MonoBehaviour
         _currentLifeIndex++;
     }
 
-    public void SetComboTimer(float value, Color color)
+    public void SetComboTimer(DemonicsFloat value, Color color)
     {
         _hitsNumberText.color = color;
         _comboTimerImage.color = color;
-        _comboTimerSlider.value = value;
+        _comboTimerSlider.value = (float)value;
     }
 
     public void SetComboTimerActive(bool state)

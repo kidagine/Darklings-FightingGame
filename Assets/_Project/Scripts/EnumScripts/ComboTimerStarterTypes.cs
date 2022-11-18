@@ -12,14 +12,14 @@ public class ComboTimerStarterTypes : MonoBehaviour
     private static Color _blue = new(1.0f, 1.0f, 1.0f);
 
 
-    public static float GetComboTimerStarterValue(ComboTimerStarterEnum comboTimerStarter)
+    public static int GetComboTimerStarterValue(ComboTimerStarterEnum comboTimerStarter)
     {
         return comboTimerStarter switch
         {
-            ComboTimerStarterEnum.Blue => 5f,
-            ComboTimerStarterEnum.Yellow => 4.4f,
-            ComboTimerStarterEnum.Red => 3.6f,
-            _ => 0.0f,
+            ComboTimerStarterEnum.Blue => 400,
+            ComboTimerStarterEnum.Yellow => 310,
+            ComboTimerStarterEnum.Red => 260,
+            _ => 0,
         };
     }
 
