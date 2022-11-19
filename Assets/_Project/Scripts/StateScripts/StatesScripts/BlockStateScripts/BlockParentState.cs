@@ -39,8 +39,15 @@ public class BlockParentState : State
         base.Enter();
         _audio.Sound("Block").Play();
         _physics.Velocity = DemonicsVector2.Zero;
-        _blockFrame = _blockAttack.hitStun;
-        _playerMovement.Knockback(new Vector2(_blockAttack.knockbackForce.x, 0), _blockAttack.knockbackDuration, (int)(_player.OtherPlayer.transform.localScale.x));
+        _blockFrame = _blockAttack.blockStun;
+        float knockbackForce = _blockAttack.knockbackForce.x;
+        int knockbackDuration = _blockAttack.knockbackDuration;
+        if (_blockAttack.isArcana)
+        {
+            knockbackForce /= 2;
+            knockbackDuration /= 2;
+        }
+        _playerMovement.Knockback(new Vector2(knockbackForce, 0), knockbackDuration, (int)(_player.OtherPlayer.transform.localScale.x));
         if (!_skip)
         {
             GameObject effect;
@@ -62,7 +69,6 @@ public class BlockParentState : State
             _playerUI.UpdateHealthDamaged();
         }
     }
-
 
     public override bool ToBlockState(AttackSO attack)
     {
@@ -97,10 +103,5 @@ public class BlockParentState : State
         _grabbedState.Initialize(true);
         _stateMachine.ChangeState(_grabbedState);
         return true;
-    }
-
-    public override void UpdateLogic()
-    {
-        base.UpdateLogic();
     }
 }

@@ -41,7 +41,7 @@ public class AirborneHurtState : HurtParentState
         {
             GameManager.Instance.AddHitstop(_player);
             _player.Flip((int)-_player.transform.localScale.x);
-            _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, (float)DemonicsPhysics.GROUND_POINT), 30, (int)(-_player.transform.localScale.x), 3);
+            _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, (float)DemonicsPhysics.GROUND_POINT), 30, (int)(-_player.transform.localScale.x), 3, ground: true);
         }
         else
         {

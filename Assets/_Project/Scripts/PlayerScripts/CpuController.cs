@@ -102,7 +102,7 @@ public class CpuController : BaseController
                 {
                     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
                 }
-                _movementFrames = Random.Range(10, 15);
+                _movementFrames = Random.Range(40, 65);
             }
         }
     }
@@ -130,7 +130,7 @@ public class CpuController : BaseController
                 {
                     _inputBuffer.AddInputBufferItem(InputEnum.Throw);
                 }
-                _attackFrames = Random.Range(2, 5);
+                _attackFrames = Random.Range(15, 30);
             }
         }
     }
@@ -150,7 +150,7 @@ public class CpuController : BaseController
                 {
                     _inputBuffer.AddInputBufferItem(InputEnum.Special);
                 }
-                _specialFrames = Random.Range(5, 9);
+                _specialFrames = Random.Range(40, 70);
             }
         }
     }

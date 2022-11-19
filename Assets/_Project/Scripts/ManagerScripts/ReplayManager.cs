@@ -40,9 +40,6 @@ public class ReplayManager : MonoBehaviour
     public int ReplayFilesAmount { get { return _replayFiles.Length; } private set { } }
     public static ReplayManager Instance { get; private set; }
 
-    [DllImport("__Internal")]
-    private static extern void SyncFiles();
-
     void Awake()
     {
         if (!SceneSettings.SceneSettingsDecide)
@@ -168,10 +165,6 @@ public class ReplayManager : MonoBehaviour
                     $"\nSkip:\n{Skip}");
                 fileStream.Write(skip, 0, skip.Length);
                 _replayNotificationAnimator.SetTrigger("Save");
-                if (Application.platform == RuntimePlatform.WebGLPlayer)
-                {
-                    SyncFiles();
-                }
             }
             catch (Exception e)
             {

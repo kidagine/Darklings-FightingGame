@@ -1,3 +1,4 @@
+using Demonics.Manager;
 using UnityEngine;
 
 public class ShadowbreakState : State
@@ -23,8 +24,9 @@ public class ShadowbreakState : State
         _playerAnimator.Shadowbreak();
         _audio.Sound("Shadowbreak").Play();
         CameraShake.Instance.Shake(_cameraShaker);
-        Transform shadowbreak = Instantiate(_shadowbreakPrefab, _playerAnimator.transform).transform;
-        shadowbreak.position = new Vector2(transform.position.x, transform.position.y + 1.5f);
+        Shadowbreak shadowbreak = ObjectPoolingManager.Instance.Spawn(_shadowbreakPrefab).GetComponent<Shadowbreak>();
+        shadowbreak.SetSourceTransform(_player.transform);
+        shadowbreak.SetPosition(new DemonicsVector2(_physics.Position.x, _physics.Position.y + 2));
         _player.hitstopEvent.RemoveAllListeners();
         _playerMovement.ExitHitstop();
         _playerMovement.StopKnockback();

@@ -19,8 +19,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [HideInInspector] public PlayerStatsSO playerStats;
     protected PlayerComboSystem _playerComboSystem;
     private BrainController _controller;
-    private Coroutine _comboTimerCoroutine;
     private bool _comboTimerPaused;
+    private int _comboTimerFrames;
+    private int _comboTimerWaitFrames;
+    private Color _comboTimerColor;
     private readonly DemonicsFloat _damageDecay = (DemonicsFloat)0.97f;
     private readonly DemonicsFloat _whiteHealthDivider = (DemonicsFloat)1.4f;
     [HideInInspector] public UnityEvent hitstopEvent;
@@ -55,6 +57,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool Invincible { get; set; }
     public bool Invisible { get; set; }
     public bool LockChain { get; set; }
+
 
     void Awake()
     {
@@ -151,6 +154,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         ArcanaCharge();
         AssistCharge();
+        ComboTimer();
     }
 
     private void AssistCharge()
@@ -279,15 +283,30 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void StartComboTimer(ComboTimerStarterEnum comboTimerStarter)
     {
         _playerUI.SetComboTimerActive(true);
-        _comboTimerCoroutine = StartCoroutine(StartComboTimerCoroutine(comboTimerStarter));
+        _comboTimerFrames = 0;
+        _comboTimerWaitFrames = ComboTimerStarterTypes.GetComboTimerStarterValue(comboTimerStarter);
+        _comboTimerColor = ComboTimerStarterTypes.GetComboTimerStarterColor(comboTimerStarter);
+        _playerUI.SetComboTimer((DemonicsFloat)1, _comboTimerColor);
+    }
+
+    private void ComboTimer()
+    {
+        if (_comboTimerWaitFrames > 0 && !_comboTimerPaused)
+        {
+            DemonicsFloat value = DemonicsFloat.Lerp((DemonicsFloat)1, (DemonicsFloat)0, (DemonicsFloat)_comboTimerFrames / (DemonicsFloat)_comboTimerWaitFrames);
+            _playerUI.SetComboTimer(value, _comboTimerColor);
+            _comboTimerFrames++;
+            if (_comboTimerFrames == _comboTimerWaitFrames)
+            {
+                OtherPlayer._playerStateManager.TryToIdleState();
+                _playerUI.SetComboTimerActive(false);
+            }
+        }
     }
 
     public void StopComboTimer()
     {
-        if (_comboTimerCoroutine != null)
-        {
-            StopCoroutine(_comboTimerCoroutine);
-        }
+        _comboTimerWaitFrames = 0;
         _playerUI.SetComboTimerActive(false);
         _playerUI.ResetCombo();
         _comboTimerPaused = false;
@@ -295,7 +314,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void FreezeComboTimer()
     {
-        if (_comboTimerCoroutine != null && !_comboTimerPaused)
+        if (_comboTimerWaitFrames > 0 && !_comboTimerPaused)
         {
             _playerUI.SetComboTimerLock(true);
             _comboTimerPaused = true;
@@ -304,36 +323,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void UnfreezeComboTimer()
     {
-        if (_comboTimerCoroutine != null && _comboTimerPaused)
+        if (_comboTimerWaitFrames > 0 && _comboTimerPaused)
         {
             _playerUI.SetComboTimerLock(false);
             _comboTimerPaused = false;
         }
-    }
-
-
-    //CHANGE TO DETERMINISTIC
-    IEnumerator StartComboTimerCoroutine(ComboTimerStarterEnum comboTimerStarter)
-    {
-        float elapsedTime = 0;
-        float waitTime = ComboTimerStarterTypes.GetComboTimerStarterValue(comboTimerStarter);
-        Color color = ComboTimerStarterTypes.GetComboTimerStarterColor(comboTimerStarter);
-        while (elapsedTime < waitTime)
-        {
-            if (!_comboTimerPaused)
-            {
-                float value = Mathf.Lerp(1, 0, elapsedTime / waitTime);
-                elapsedTime += Time.deltaTime;
-                _playerUI.SetComboTimer(value, color);
-                yield return null;
-            }
-            else
-            {
-                yield return null;
-            }
-        }
-        OtherPlayer._playerStateManager.TryToIdleState();
-        _playerUI.SetComboTimerActive(false);
     }
 
     public void RecallAssist()

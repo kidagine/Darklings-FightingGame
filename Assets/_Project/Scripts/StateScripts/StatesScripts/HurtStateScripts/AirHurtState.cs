@@ -6,6 +6,7 @@ public class AirHurtState : HurtParentState
     private FallState _fallState;
     private HurtState _hurtState;
     private AirborneHurtState _airborneHurtState;
+    private int _groundCheckFrames;
     private bool _canCheckGround;
 
     protected override void Awake()
@@ -34,6 +35,10 @@ public class AirHurtState : HurtParentState
         {
             ToFallAfterStunState();
         }
+        if (!_player.IsInHitstop())
+        {
+            _groundCheckFrames++;
+        }
     }
 
     public override bool ToAirborneHurtState(AttackSO attack)
@@ -56,7 +61,7 @@ public class AirHurtState : HurtParentState
 
     private void ToFallStateAfterGround()
     {
-        if (_playerMovement.IsGrounded && _physics.Velocity.y <= (DemonicsFloat)0 && !_player.IsInHitstop())
+        if (_playerMovement.IsGrounded && _physics.Velocity.y <= (DemonicsFloat)0 && _groundCheckFrames > 3)
         {
             _physics.Velocity = DemonicsVector2.Zero;
             _hurtState.Initialize(_hurtAttack, true);
@@ -70,5 +75,11 @@ public class AirHurtState : HurtParentState
         _canCheckGround = false;
         _stateMachine.ChangeState(this);
         return true;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _groundCheckFrames = 0;
     }
 }

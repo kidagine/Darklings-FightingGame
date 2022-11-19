@@ -22,7 +22,7 @@ public class BlockState : BlockParentState
         }
     }
 
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         _stateMachine.ChangeState(_idleState);
     }
