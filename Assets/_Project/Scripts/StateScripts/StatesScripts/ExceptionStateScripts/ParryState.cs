@@ -36,7 +36,7 @@ public class ParryState : State
     }
 
 
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         _stateMachine.ChangeState(_idleState);
     }
@@ -46,7 +46,7 @@ public class ParryState : State
         if (_player.Parrying)
         {
             Parry(attack);
-            return false;
+            return true;
         }
         _hurtState.Initialize(attack);
         _stateMachine.ChangeState(_hurtState);
@@ -58,7 +58,7 @@ public class ParryState : State
         if (_player.Parrying)
         {
             Parry(attack);
-            return false;
+            return true;
         }
         _airborneHurtState.Initialize(attack);
         _stateMachine.ChangeState(_airborneHurtState);
@@ -72,7 +72,7 @@ public class ParryState : State
         _parried = true;
         GameManager.Instance.HitStop(_hitstopOnParry);
         GameObject effect = Instantiate(_parryEffect);
-        effect.transform.localPosition = attack.hurtEffectPosition;
+        effect.transform.localPosition = new Vector2(_player.transform.position.x + (_player.transform.localScale.x * 1.5f), _player.transform.position.y + 1.5f);
         if (!attack.isProjectile)
         {
             if (_player.OtherPlayerMovement.IsInCorner)
