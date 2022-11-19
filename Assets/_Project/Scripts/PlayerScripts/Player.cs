@@ -477,6 +477,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         SetHealth(CalculateDamage(attack));
         _playerUI.Damaged();
+        _playerUI.UpdateHealthDamaged();
         _playerAnimator.SpriteSuperArmorEffect();
         GameManager.Instance.HitStop(attack.hitstop);
     }
