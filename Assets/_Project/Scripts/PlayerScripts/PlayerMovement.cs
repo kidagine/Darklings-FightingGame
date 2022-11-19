@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
     public bool HasDoubleJumped { get; set; }
     public bool HasAirDashed { get; set; }
     public DemonicsFloat MovementSpeed { get; set; }
-    public Vector2 MovementInput { get; set; }
     public bool IsGrounded { get; set; } = true;
     public bool IsInHitstop { get; private set; }
     public bool IsInCorner => Physics.OnWall;
@@ -121,6 +120,7 @@ public class PlayerMovement : MonoBehaviour
             if (_knockbackFrame == _knockbackDuration)
             {
                 Physics.EnableGravity(true);
+                Physics.Velocity = DemonicsVector2.Zero;
                 StopKnockback();
             }
         }
@@ -142,7 +142,10 @@ public class PlayerMovement : MonoBehaviour
             IsInHitstop = true;
             _velocity = Physics.Velocity;
             Physics.SetFreeze(true);
-            _player.hitstopEvent.AddListener(inputBuffer.CheckInputBufferAttacks);
+            if (_player.CanSkipAttack)
+            {
+                _player.hitstopEvent.AddListener(inputBuffer.CheckInputBufferAttacks);
+            }
         }
     }
 
