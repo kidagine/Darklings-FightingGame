@@ -133,6 +133,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerUI.ResetLives();
     }
 
+    public AttackSO shadowbreakKnockback()
+    {
+        GameManager.Instance.AddHitstop(this);
+        return new AttackSO() { blockStun = 30, hitstop = 5, knockbackForce = new Vector2(0.1f, 1), knockbackDuration = 5, hurtEffectPosition = new Vector2(0, (float)_playerMovement.Physics.Position.y + 1) };
+    }
+
     public void MaxHealthStats()
     {
         _playerUI.ResetHealthDamaged();

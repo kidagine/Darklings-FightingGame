@@ -8,6 +8,7 @@ public class ArcanaState : State
     private AirHurtState _airHurtState;
     private AirborneHurtState _airborneHurtState;
     private GrabbedState _grabbedState;
+    private KnockbackState _knockbackState;
     private ArcanaThrowState _arcanaThrowState;
     protected RedFrenzyState _redFrenzyState;
     private bool _crouch;
@@ -23,6 +24,7 @@ public class ArcanaState : State
         _grabbedState = GetComponent<GrabbedState>();
         _arcanaThrowState = GetComponent<ArcanaThrowState>();
         _redFrenzyState = GetComponent<RedFrenzyState>();
+        _knockbackState = GetComponent<KnockbackState>();
     }
 
     public void Initialize(bool crouch = false, bool air = false)
@@ -119,6 +121,12 @@ public class ArcanaState : State
     public override bool ToGrabbedState()
     {
         _stateMachine.ChangeState(_grabbedState);
+        return true;
+    }
+
+    public override bool ToKnockbackState()
+    {
+        _stateMachine.ChangeState(_knockbackState);
         return true;
     }
 
