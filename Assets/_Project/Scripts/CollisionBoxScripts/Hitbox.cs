@@ -8,7 +8,7 @@ public class Hitbox : DemonicsCollider
     public DemonicsVector2 HitPoint { get; private set; }
     [SerializeField] private IHitboxResponder _hitboxResponder;
     public Transform SourceTransform { get; set; }
-    public bool HitConfirm { get; private set; }
+    public bool HitConfirm { get; set; }
 
     void Awake()
     {

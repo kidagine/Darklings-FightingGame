@@ -119,7 +119,8 @@ public class GroundParentState : State
     {
         if (_player.BlockingLeftOrRight())
         {
-            _blockState.Initialize(new AttackSO() { blockStun = 10, knockbackForce = new Vector2(0.1f, 0), knockbackDuration = 5 });
+            GameManager.Instance.AddHitstop(_player);
+            _blockState.Initialize(new AttackSO() { blockStun = 30, hitstop = 5, knockbackForce = new Vector2(0.1f, 1), knockbackDuration = 5, hurtEffectPosition = new Vector2(0, (float)_physics.Position.y + 1) });
             _stateMachine.ChangeState(_blockState);
             return false;
         }
