@@ -39,7 +39,7 @@ public class BlockParentState : State
         base.Enter();
         _audio.Sound("Block").Play();
         _physics.Velocity = DemonicsVector2.Zero;
-        _blockFrame = _blockAttack.blockStun;
+        _blockFrame = _blockAttack.hitStun;
         float knockbackForce = _blockAttack.knockbackForce.x;
         int knockbackDuration = _blockAttack.knockbackDuration;
         if (_blockAttack.isArcana)
