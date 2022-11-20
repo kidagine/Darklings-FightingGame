@@ -31,7 +31,7 @@ public class PlayerAnimator : DemonicsAnimator
         }
         if (GetEvent().jump)
         {
-            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x, (DemonicsFloat)GetEvent().jumpDirection.y));
+            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent().jumpDirection.y));
         }
         if (GetEvent().footstep)
         {

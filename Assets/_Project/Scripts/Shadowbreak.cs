@@ -24,29 +24,6 @@ public class Shadowbreak : Hitbox
 
     }
 
-    // protected override void InitializeCollisionList()
-    // {
-    //     _demonicsColliders.Clear();
-    //     DemonicsCollider[] demonicsCollidersArray = FindObjectsOfType<DemonicsCollider>();
-    //     for (int i = 0; i < demonicsCollidersArray.Length; i++)
-    //     {
-    //         if (!demonicsCollidersArray[i].transform.IsChildOf(SourceTransform))
-    //         {
-    //             if (demonicsCollidersArray[i].TryGetComponent(out HitboxProjectile hitboxProjectile))
-    //             {
-    //                 if (hitboxProjectile.SourceTransform != SourceTransform)
-    //                 {
-    //                     _demonicsColliders.Add(demonicsCollidersArray[i]);
-    //                 }
-    //             }
-    //             if (demonicsCollidersArray[i].TryGetComponent(out Hurtbox hurtbox))
-    //             {
-    //                 _demonicsColliders.Add(demonicsCollidersArray[i]);
-    //             }
-    //         }
-    //     }
-    //     _demonicsColliders.Remove(this);
-    // }
     public void SetPosition(DemonicsVector2 position)
     {
         _physics.SetPositionWithRender(position);
