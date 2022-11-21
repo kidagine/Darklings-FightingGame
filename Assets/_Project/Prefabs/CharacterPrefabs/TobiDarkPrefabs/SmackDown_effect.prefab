@@ -149,7 +149,7 @@ MonoBehaviour:
   OnCurrentAnimationFinished:
     m_PersistentCalls:
       m_Calls: []
-  _hitbox: {fileID: 6600987909185161583}
+  _hitbox: {fileID: 4018897687827354311}
   _dustPrefab: {fileID: 3294536446187043669, guid: 0b02975833814574abc4c70ad2fa705a, type: 3}
   _projectilePriority: 10
   _speed: 0
@@ -306,7 +306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6957541509760086759}
-  - component: {fileID: 6600987909185161583}
+  - component: {fileID: 4018897687827354311}
   m_Layer: 7
   m_Name: Main_hitbox
   m_TagString: Untagged
@@ -330,7 +330,7 @@ Transform:
   m_Father: {fileID: 4278410639662342237}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6600987909185161583
+--- !u!114 &4018897687827354311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -339,10 +339,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7744204477748170214}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51729ec44d22e5f4f8bb5accfea6be2b, type: 3}
+  m_Script: {fileID: 11500000, guid: d7607f12deb3d8a4388823aa984b9f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _showGizmo: 0
   _ignoreCollision: 1
   _offset: {x: 0, y: 0}
   _size: {x: 0, y: 0}
+  _projectile: {fileID: 515523966936035834}
+  _ignorePriority: 1

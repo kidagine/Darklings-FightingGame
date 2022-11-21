@@ -3,6 +3,7 @@ using UnityEngine;
 public class HitboxProjectile : Hitbox
 {
     [SerializeField] private Projectile _projectile = default;
+    [SerializeField] private bool _ignorePriority = default;
 
     public Projectile Projectile { get { return _projectile; } private set { } }
     void Awake()
@@ -15,15 +16,19 @@ public class HitboxProjectile : Hitbox
     {
         if (collider.TryGetComponent(out HitboxProjectile hitboxProjectile))
         {
-            if (hitboxProjectile.Projectile.ProjectilePriority > Projectile.ProjectilePriority)
+            if (!_ignorePriority)
             {
-                Projectile.DestroyProjectile();
+                if (hitboxProjectile.Projectile.ProjectilePriority > Projectile.ProjectilePriority)
+                {
+                    Projectile.DestroyProjectile();
+                }
+                else if (hitboxProjectile.Projectile.ProjectilePriority == Projectile.ProjectilePriority)
+                {
+                    Projectile.DestroyProjectile();
+                    hitboxProjectile.Projectile.gameObject.SetActive(false);
+                }
             }
-            else if (hitboxProjectile.Projectile.ProjectilePriority == Projectile.ProjectilePriority)
-            {
-                Projectile.DestroyProjectile();
-                hitboxProjectile.Projectile.gameObject.SetActive(false);
-            }
+
         }
         else
         {
