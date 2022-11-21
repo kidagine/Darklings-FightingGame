@@ -95,45 +95,45 @@ public class PlayerPreferences : MonoBehaviour
     private void LoadOnlinePreferences()
     {
         // _playerNameInputField.text = PlayerPrefs.GetString("playerName", _playerNameInputFieldInitial);
-        _characterSelector.SetValue(DemonicsSaver.LoadInt("character", _characterSelectorInitial));
-        _charactersAssistSelector.SetValue(DemonicsSaver.LoadInt("characterassist", _characterAssistSelectorInitial));
-        _characterColorSelector.SetValue(DemonicsSaver.LoadInt("charactercolor", _characterColorSelectorInitial));
+        _characterSelector.SetValue(int.Parse(DemonicsSaver.Load("character", _characterSelectorInitial.ToString())));
+        _charactersAssistSelector.SetValue(int.Parse(DemonicsSaver.Load("characterassist", _characterAssistSelectorInitial.ToString())));
+        _characterColorSelector.SetValue(int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.ToString())));
     }
 
     private void LoadStagePreferences()
     {
-        _stageSelector.SetValue(DemonicsSaver.LoadInt("stage", _stageSelectorInitial));
-        _stageMusicSelector.SetValue(DemonicsSaver.LoadInt("stagemusic", _stageMusicSelectorInitial));
-        _stageStyleSelector.SetValue(DemonicsSaver.LoadInt("stagestyle", _stageStyleSelectorInitial));
+        _stageSelector.SetValue(int.Parse(DemonicsSaver.Load("stage", _stageSelectorInitial.ToString())));
+        _stageMusicSelector.SetValue(int.Parse(DemonicsSaver.Load("stagemusic", _stageMusicSelectorInitial.ToString())));
+        _stageStyleSelector.SetValue(int.Parse(DemonicsSaver.Load("stagestyle", _stageStyleSelectorInitial.ToString())));
     }
 
 
     private void LoadOptionPreferences()
     {
-        _vfxSelector.SetValue(DemonicsSaver.LoadInt("vfx", _vfxSelectorInitial));
-        _uiSelector.SetValue(DemonicsSaver.LoadInt("ui", _uiSelectorInitial));
-        _musicSelector.SetValue(DemonicsSaver.LoadInt("music", _musicSelectorInitial));
+        _vfxSelector.SetValue(int.Parse(DemonicsSaver.Load("vfx", _vfxSelectorInitial.ToString())));
+        _uiSelector.SetValue(int.Parse(DemonicsSaver.Load("ui", _uiSelectorInitial.ToString())));
+        _musicSelector.SetValue(int.Parse(DemonicsSaver.Load("music", _musicSelectorInitial.ToString())));
     }
 
     private void LoadTrainingPreferences()
     {
         //General
-        _healthSelector.SetValue(DemonicsSaver.LoadInt("health", _healthSelectorInitial));
-        _arcanaSelector.SetValue(DemonicsSaver.LoadInt("arcana", _arcanaSelectorInitial));
-        _assistSelector.SetValue(DemonicsSaver.LoadInt("assist", _assistSelectorInitial));
+        _healthSelector.SetValue(int.Parse(DemonicsSaver.Load("health", _healthSelectorInitial.ToString())));
+        _arcanaSelector.SetValue(int.Parse(DemonicsSaver.Load("arcana", _arcanaSelectorInitial.ToString())));
+        _assistSelector.SetValue(int.Parse(DemonicsSaver.Load("assist", _assistSelectorInitial.ToString())));
 
         //Cpu
-        _cpuSelector.SetValue(DemonicsSaver.LoadInt("cpu", _cpuSelectorInitial));
-        _blockSelector.SetValue(DemonicsSaver.LoadInt("block", _blockSelectorInitial));
-        _onHitSelector.SetValue(DemonicsSaver.LoadInt("onhit", _onHitSelectorInitial));
-        _stanceSelector.SetValue(DemonicsSaver.LoadInt("stance", _stanceSelectorInitial));
+        _cpuSelector.SetValue(int.Parse(DemonicsSaver.Load("cpu", _cpuSelectorInitial.ToString())));
+        _blockSelector.SetValue(int.Parse(DemonicsSaver.Load("block", _blockSelectorInitial.ToString())));
+        _onHitSelector.SetValue(int.Parse(DemonicsSaver.Load("onhit", _onHitSelectorInitial.ToString())));
+        _stanceSelector.SetValue(int.Parse(DemonicsSaver.Load("stance", _stanceSelectorInitial.ToString())));
 
         //Misc
-        _hitboxesSelector.SetValue(DemonicsSaver.LoadInt("hitboxes", _hitboxesSelectorInitial));
-        _framedataSelector.SetValue(DemonicsSaver.LoadInt("framedata", _framedataSelectorInitial));
-        _slowdownSelector.SetValue(DemonicsSaver.LoadInt("slowdown", _slowdownSelectorInitial));
-        _inputSelector.SetValue(DemonicsSaver.LoadInt("input", _inputSelectorInitial));
-        _uiCanvasSelector.SetValue(DemonicsSaver.LoadInt("uicanvas", _uiCanvasSelectorInitial));
+        _hitboxesSelector.SetValue(int.Parse(DemonicsSaver.Load("hitboxes", _hitboxesSelectorInitial.ToString())));
+        _framedataSelector.SetValue(int.Parse(DemonicsSaver.Load("framedata", _framedataSelectorInitial.ToString())));
+        _slowdownSelector.SetValue(int.Parse(DemonicsSaver.Load("slowdown", _slowdownSelectorInitial.ToString())));
+        _inputSelector.SetValue(int.Parse(DemonicsSaver.Load("input", _inputSelectorInitial.ToString())));
+        _uiCanvasSelector.SetValue(int.Parse(DemonicsSaver.Load("uicanvas", _uiCanvasSelectorInitial.ToString())));
     }
 
     public void SavePreference(string key, int value)

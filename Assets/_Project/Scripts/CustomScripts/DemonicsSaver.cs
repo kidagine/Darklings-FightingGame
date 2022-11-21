@@ -27,8 +27,9 @@ public static class DemonicsSaver
 
     public static string Load(string key, string defaultValue)
     {
+        string keyLower = key.ToLower();
 #if UNITY_WEBGL && !UNITY_EDITOR
-        string value = LoadData(key);
+        string value = LoadData(keyLower);
         if (string.IsNullOrEmpty(value))
         {
             value = defaultValue;
@@ -36,22 +37,7 @@ public static class DemonicsSaver
         return value;
 #endif
 #if !UNITY_WEBGL || UNITY_EDITOR
-        return PlayerPrefs.GetString(key);
-#endif
-    }
-
-    public static int LoadInt(string key, int defaultValue)
-    {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        string value = LoadData(key);
-        if (string.IsNullOrEmpty(value))
-        {
-            return defaultValue;
-        }
-        return int.Parse(value);
-#endif
-#if !UNITY_WEBGL || UNITY_EDITOR
-        return PlayerPrefs.GetInt(key);
+        return PlayerPrefs.GetString(keyLower, defaultValue);
 #endif
     }
 }
