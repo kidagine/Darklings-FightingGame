@@ -25,7 +25,7 @@ public class ReplayManager : MonoBehaviour
     private InputBuffer _playerOneInputBuffer;
     private InputBuffer _playerTwoInputBuffer;
     private readonly int _replaysLimit = 100;
-    private string[] _replayFiles;
+    private string[] _replays;
     private readonly string _versionSplit = "Version:";
     private readonly string _patchNotesSplit = "Patch Notes:";
     private readonly string _playerOneSplit = "Player One:";
@@ -37,7 +37,7 @@ public class ReplayManager : MonoBehaviour
 
     public string VersionNumber { get; private set; }
     public int Skip { get; set; }
-    public int ReplayFilesAmount { get { return _replayFiles.Length; } private set { } }
+    public int ReplayAmount { get { return _replays.Length; } private set { } }
     public static ReplayManager Instance { get; private set; }
 
     void Awake()
@@ -47,7 +47,8 @@ public class ReplayManager : MonoBehaviour
             SceneSettings.ReplayMode = _isReplayMode;
             SceneSettings.ReplayIndex = _replayIndex;
         }
-        _replayFiles = Directory.GetFiles(Application.persistentDataPath, "*.txt", SearchOption.AllDirectories);
+        _replays = DemonicsSaver.Load("replay", "").Split('@');
+
         if (SceneSettings.ReplayMode)
         {
             SetReplay();
@@ -110,66 +111,36 @@ public class ReplayManager : MonoBehaviour
     {
         if (!SceneSettings.IsTrainingMode && !SceneSettings.ReplayMode && _replayNotificationAnimator != null)
         {
-            int filesAmount = _replayFiles.Length;
-            if (filesAmount == _replaysLimit)
+            string replayName = "replay";
+            string replayData = "";
+            replayData += $"Version:\n{VersionNumber}";
+            replayData += $"\nPlayer One:\n{SceneSettings.PlayerOne}, {SceneSettings.ColorOne}, {SceneSettings.AssistOne}";
+            replayData += $"\nPlayer Two:\n{SceneSettings.PlayerTwo}, {SceneSettings.ColorTwo}, {SceneSettings.AssistTwo}";
+            replayData += $"\nStage:\n{SceneSettings.StageIndex}, {GameManager.Instance.CurrentMusic.name}, {SceneSettings.Bit1}";
+            string playerOneInputsHistory = "";
+            for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
             {
-                DeleteReplay();
+                playerOneInputsHistory += $"{_playerOneInputHistory.Inputs[i]},{_playerOneInputHistory.Directions[i]},{_playerOneInputHistory.InputTimes[i]}";
+                if (i != _playerOneInputHistory.Inputs.Count - 1)
+                {
+                    playerOneInputsHistory += "|";
+                }
             }
-
-            string fileName = Application.persistentDataPath + $@"/{filesAmount + 1}_{GameManager.Instance.PlayerOne.PlayerStats.name}_{GameManager.Instance.PlayerTwo.PlayerStats.name}.txt";
-            try
+            replayData += $"\nPlayer One Inputs:\n{playerOneInputsHistory}";
+            string playerTwoInputsHistory = "";
+            for (int i = 0; i < _playerTwoInputHistory.Inputs.Count; i++)
             {
-                if (File.Exists(fileName))
+                playerTwoInputsHistory += $"{_playerTwoInputHistory.Inputs[i]},{_playerTwoInputHistory.Directions[i]},{_playerTwoInputHistory.InputTimes[i]}";
+                if (i != _playerTwoInputHistory.Inputs.Count - 1)
                 {
-                    File.Delete(fileName);
+                    playerTwoInputsHistory += "|";
                 }
-
-                using FileStream fileStream = File.Create(fileName);
-                byte[] version = new UTF8Encoding(true).GetBytes(
-                    $"Version:\n{VersionNumber}");
-                fileStream.Write(version, 0, version.Length);
-                byte[] playerOne = new UTF8Encoding(true).GetBytes(
-                    $"\nPlayer One:\n{SceneSettings.PlayerOne}, {SceneSettings.ColorOne}, {SceneSettings.AssistOne}");
-                fileStream.Write(playerOne, 0, playerOne.Length);
-                byte[] playerTwo = new UTF8Encoding(true).GetBytes(
-                    $"\nPlayer Two:\n{SceneSettings.PlayerTwo}, {SceneSettings.ColorTwo}, {SceneSettings.AssistTwo}");
-                fileStream.Write(playerTwo, 0, playerTwo.Length);
-                byte[] stage = new UTF8Encoding(true).GetBytes(
-                    $"\nStage:\n{SceneSettings.StageIndex}, {GameManager.Instance.CurrentMusic.name}, {SceneSettings.Bit1}");
-                fileStream.Write(stage, 0, stage.Length);
-                string playerOneInputsHistory = "";
-                for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
-                {
-                    playerOneInputsHistory += $"{_playerOneInputHistory.Inputs[i]},{_playerOneInputHistory.Directions[i]},{_playerOneInputHistory.InputTimes[i]}";
-                    if (i != _playerOneInputHistory.Inputs.Count - 1)
-                    {
-                        playerOneInputsHistory += "|";
-                    }
-                }
-                byte[] playerOneInputs = new UTF8Encoding(true).GetBytes(
-                    $"\nPlayer One Inputs:\n{playerOneInputsHistory}");
-                fileStream.Write(playerOneInputs, 0, playerOneInputs.Length);
-                string playerTwoInputsHistory = "";
-                for (int i = 0; i < _playerTwoInputHistory.Inputs.Count; i++)
-                {
-                    playerTwoInputsHistory += $"{_playerTwoInputHistory.Inputs[i]},{_playerTwoInputHistory.Directions[i]},{_playerTwoInputHistory.InputTimes[i]}";
-                    if (i != _playerTwoInputHistory.Inputs.Count - 1)
-                    {
-                        playerTwoInputsHistory += "|";
-                    }
-                }
-                byte[] playerTwoInputs = new UTF8Encoding(true).GetBytes(
-                    $"\nPlayer Two Inputs:\n{playerTwoInputsHistory}");
-                fileStream.Write(playerTwoInputs, 0, playerTwoInputs.Length);
-                byte[] skip = new UTF8Encoding(true).GetBytes(
-                    $"\nSkip:\n{Skip}");
-                fileStream.Write(skip, 0, skip.Length);
-                _replayNotificationAnimator.SetTrigger("Save");
             }
-            catch (Exception e)
-            {
-                Debug.LogError("Error saving replay: " + e);
-            }
+            replayData += $"\nPlayer Two Inputs:\n{playerTwoInputsHistory}";
+            replayData += $"\nSkip:\n{Skip}";
+            replayData += $"\n@";
+            _replayNotificationAnimator.SetTrigger("Save");
+            DemonicsSaver.Save(replayName, replayData);
         }
     }
 
@@ -181,32 +152,32 @@ public class ReplayManager : MonoBehaviour
         GameManager.Instance.PlayerOne.GetComponent<PlayerInput>().enabled = false;
         GameManager.Instance.PlayerTwo.GetComponent<PlayerInput>().enabled = false;
         replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-        s = true;
+        initialReplayStart = true;
     }
 
     private ReplayCardData replayCardData;
-    bool t;
-    bool s;
+    bool runReplay;
+    bool initialReplayStart;
     private int i;
     private int j;
 
     public void StartLoadReplay()
     {
         replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-        t = true;
+        runReplay = true;
     }
     private void FixedUpdate()
     {
-        if (s)
+        if (initialReplayStart)
         {
             if (DemonicsWorld.Frame == replayCardData.skip && replayCardData.skip > 0)
             {
                 GameManager.Instance.SkipIntro();
-                s = false;
-                t = true;
+                initialReplayStart = false;
+                runReplay = true;
             }
         }
-        if (t)
+        if (runReplay)
         {
             NextReplayAction();
             NextReplayAction2();
@@ -239,7 +210,7 @@ public class ReplayManager : MonoBehaviour
 
     public ReplayCardData GetReplayData(int index)
     {
-        string replayText = File.ReadAllText(_replayFiles[index]);
+        string replayText = _replays[index];
 
         int versionTextPosition = replayText.IndexOf(_versionSplit) + _versionSplit.Length;
         string versionNumber = replayText[versionTextPosition..replayText.LastIndexOf(_playerOneSplit)].Trim();
@@ -308,7 +279,7 @@ public class ReplayManager : MonoBehaviour
 
     private void DeleteReplay()
     {
-        File.Delete(_replayFiles[0]);
+        File.Delete(_replays[0]);
     }
 
     public void Pause()
