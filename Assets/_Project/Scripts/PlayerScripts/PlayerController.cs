@@ -25,7 +25,6 @@ public class PlayerController : BaseController
     public void Movement(CallbackContext callbackContext)
     {
         Vector2Int input = new Vector2Int(Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().x), Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().y));
-        Debug.Log(input.x);
         if (callbackContext.performed)
         {
             if (input.x == 1)
