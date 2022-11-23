@@ -463,7 +463,10 @@ public class GameManager : MonoBehaviour
             //     }
             // }
         }
-        ReplayManager.Instance.SaveReplay();
+        if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
+        {
+            ReplayManager.Instance.SaveReplay();
+        }
         Time.timeScale = 0;
     }
 
