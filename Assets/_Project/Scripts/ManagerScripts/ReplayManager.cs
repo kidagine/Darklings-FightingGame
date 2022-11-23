@@ -140,7 +140,7 @@ public class ReplayManager : MonoBehaviour
             replayData += $"\nSkip:\n{Skip}";
             replayData += $"\n@";
             _replayNotificationAnimator.SetTrigger("Save");
-            DemonicsSaver.Save(replayName, replayData);
+            DemonicsSaver.Save(replayName, replayData, true);
         }
     }
 
