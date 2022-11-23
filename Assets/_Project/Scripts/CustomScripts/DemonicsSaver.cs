@@ -13,15 +13,30 @@ public static class DemonicsSaver
     [DllImport("__Internal")]
     private static extern string LoadData(string str);
 
-    public static void Save(string key, string value)
+    public static void Save(string key, string value, bool addOn = false)
     {
         string keyLower = key.ToLower();
 #if UNITY_WEBGL && !UNITY_EDITOR
-        SaveData(keyLower, value);
+        if (addOn)
+        {        
+            SaveData(keyLower, LoadData(keyLower) + value);
+        }
+        else
+        {
+            SaveData(keyLower, value);
+        }
 #endif
 #if !UNITY_WEBGL || UNITY_EDITOR
-        PlayerPrefs.SetString(keyLower, value);
-        PlayerPrefs.Save();
+        if (addOn)
+        {
+            PlayerPrefs.SetString(keyLower, PlayerPrefs.GetString(keyLower) + value);
+            PlayerPrefs.Save();
+        }
+        else
+        {
+            PlayerPrefs.SetString(keyLower, value);
+            PlayerPrefs.Save();
+        }
 #endif
     }
 

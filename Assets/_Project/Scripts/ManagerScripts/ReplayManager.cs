@@ -27,6 +27,7 @@ public class ReplayManager : MonoBehaviour
     private readonly int _replaysLimit = 100;
     private string[] _replays;
     private readonly string _versionSplit = "Version:";
+    private readonly string _dateSplit = "Date:";
     private readonly string _patchNotesSplit = "Patch Notes:";
     private readonly string _playerOneSplit = "Player One:";
     private readonly string _playerTwoSplit = "Player Two:";
@@ -114,6 +115,7 @@ public class ReplayManager : MonoBehaviour
             string replayName = "replay";
             string replayData = "";
             replayData += $"Version:\n{VersionNumber}";
+            replayData += $"\nDate:\n{DateTime.Now.ToString("MM/dd/yyyy HH:mm")}";
             replayData += $"\nPlayer One:\n{SceneSettings.PlayerOne}, {SceneSettings.ColorOne}, {SceneSettings.AssistOne}";
             replayData += $"\nPlayer Two:\n{SceneSettings.PlayerTwo}, {SceneSettings.ColorTwo}, {SceneSettings.AssistTwo}";
             replayData += $"\nStage:\n{SceneSettings.StageIndex}, {GameManager.Instance.CurrentMusic.name}, {SceneSettings.Bit1}";
@@ -140,7 +142,7 @@ public class ReplayManager : MonoBehaviour
             replayData += $"\nSkip:\n{Skip}";
             replayData += $"\n@";
             _replayNotificationAnimator.SetTrigger("Save");
-            DemonicsSaver.Save(replayName, replayData);
+            DemonicsSaver.Save(replayName, replayData, true);
         }
     }
 
@@ -213,7 +215,10 @@ public class ReplayManager : MonoBehaviour
         string replayText = _replays[index];
 
         int versionTextPosition = replayText.IndexOf(_versionSplit) + _versionSplit.Length;
-        string versionNumber = replayText[versionTextPosition..replayText.LastIndexOf(_playerOneSplit)].Trim();
+        string versionNumber = replayText[versionTextPosition..replayText.LastIndexOf(_dateSplit)].Trim();
+
+        int dateTextPosition = replayText.IndexOf(_dateSplit) + _dateSplit.Length;
+        string dateNumber = replayText[dateTextPosition..replayText.LastIndexOf(_playerOneSplit)].Trim();
 
         int playerOneTextPosition = replayText.IndexOf(_playerOneSplit) + _playerOneSplit.Length;
         string playerOneTextWhole = replayText[playerOneTextPosition..replayText.LastIndexOf(_playerTwoSplit)].Trim();
@@ -261,6 +266,7 @@ public class ReplayManager : MonoBehaviour
         ReplayCardData replayData = new()
         {
             versionNumber = versionNumber,
+            date = dateNumber,
             characterOne = int.Parse(playerOneInfo[0]),
             colorOne = int.Parse(playerOneInfo[1]),
             assistOne = int.Parse(playerOneInfo[2]),
