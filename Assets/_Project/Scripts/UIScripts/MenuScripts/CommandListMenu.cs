@@ -211,8 +211,9 @@ public class CommandListMenu : BaseMenu
         _commandListButtons[10].SetData(playerStats.m2H);
         // _commandListButtons[11].SetData(playerStats.jH);
         _commandListButtons[12].SetData(playerStats.mThrow);
-        _commandListButtons[13].SetData(playerStats.mParry);
-        _commandListButtons[14].SetData(playerStats.jL);
+        _commandListButtons[13].SetData(playerStats.mRedFrenzy);
+        _commandListButtons[14].SetData(playerStats.mParry);
+        _commandListButtons[15].SetData(playerStats.jL);
         SetPageInfo();
     }
 
