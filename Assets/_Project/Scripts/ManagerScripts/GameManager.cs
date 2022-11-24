@@ -674,6 +674,8 @@ public class GameManager : MonoBehaviour
                 HasGameStarted = false;
                 _uiAudio.Sound("Round").Play();
                 _startRoundOver = true;
+                _playerOneController.DeactivateInput();
+                _playerTwoController.DeactivateInput();
             }
         }
     }

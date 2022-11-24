@@ -25,7 +25,7 @@ public class PlayerController : BaseController
     public void Movement(CallbackContext callbackContext)
     {
         Vector2Int input = new Vector2Int(Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().x), Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().y));
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             if (input.x == 1)
             {
@@ -101,7 +101,7 @@ public class PlayerController : BaseController
 
     public void Light(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Light);
         }
@@ -109,7 +109,7 @@ public class PlayerController : BaseController
 
     public void Medium(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Medium);
         }
@@ -117,7 +117,7 @@ public class PlayerController : BaseController
 
     public void Heavy(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
         }
@@ -125,14 +125,14 @@ public class PlayerController : BaseController
 
     public void Arcane(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Special);
         }
     }
     public void Assist(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Assist);
         }
@@ -140,7 +140,7 @@ public class PlayerController : BaseController
 
     public void Throw(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Throw);
         }
@@ -148,7 +148,7 @@ public class PlayerController : BaseController
 
     public void Parry(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Parry);
         }
@@ -156,7 +156,7 @@ public class PlayerController : BaseController
 
     public void RedFrenzy(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
         }
@@ -164,7 +164,7 @@ public class PlayerController : BaseController
 
     public void DashForward(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             if (!_dashForwardPressed)
             {
@@ -186,7 +186,7 @@ public class PlayerController : BaseController
 
     public void DashBack(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (callbackContext.performed && IsControllerEnabled)
         {
             if (!_dashBackPressed)
             {
