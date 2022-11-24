@@ -49,5 +49,6 @@ public class KnockdownState : State
         {
             _stateMachine.ChangeState(_wakeUpState);
         }
+        _player.CheckFlip();
     }
 }
