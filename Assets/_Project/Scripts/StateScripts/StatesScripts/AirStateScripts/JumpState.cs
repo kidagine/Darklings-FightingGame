@@ -20,6 +20,8 @@ public class JumpState : AirParentState
         _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, _physics.Velocity.y);
         if (_jumpCancel)
         {
+            _player.hitstopEvent.RemoveAllListeners();
+            _playerMovement.StopKnockback();
             _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _jumpCancelForce);
         }
         else

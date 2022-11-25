@@ -95,6 +95,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void HitstopKnockback()
+    {
+
+    }
+
     public void StopKnockback()
     {
         _knockbackDuration = 0;
