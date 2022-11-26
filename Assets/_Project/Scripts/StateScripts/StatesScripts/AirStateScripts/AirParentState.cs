@@ -14,6 +14,7 @@ public class AirParentState : State
     protected BlockAirState _blockAirState;
     protected KnockbackState _knockbackState;
     protected RedFrenzyState _redFrenzyState;
+    protected TauntState _tauntState;
 
     protected DemonicsFloat _jumpDoubleDivider = (DemonicsFloat)1.2;
     protected DemonicsFloat _jumpCancelForce = (DemonicsFloat)0.25;
@@ -26,6 +27,7 @@ public class AirParentState : State
         _attackState = GetComponent<AttackState>();
         _arcanaState = GetComponent<ArcanaState>();
         _airHurtState = GetComponent<AirHurtState>();
+        _tauntState = GetComponent<TauntState>();
         _airborneHurtState = GetComponent<AirborneHurtState>();
         _blockAirState = GetComponent<BlockAirState>();
         _knockbackState = GetComponent<KnockbackState>();

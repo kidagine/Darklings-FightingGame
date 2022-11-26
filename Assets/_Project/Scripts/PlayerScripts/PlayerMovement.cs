@@ -95,6 +95,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void HitstopKnockback()
+    {
+
+    }
+
     public void StopKnockback()
     {
         _knockbackDuration = 0;
@@ -107,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
     DemonicsVector2 _endPosition;
     private void CheckKnockback()
     {
-        if (_knockbackDuration > 0)
+        if (_knockbackDuration > 0 && !IsInHitstop)
         {
             DemonicsFloat ratio = (DemonicsFloat)_knockbackFrame / (DemonicsFloat)_knockbackDuration;
             DemonicsFloat distance = _endPosition.x - _startPosition.x;

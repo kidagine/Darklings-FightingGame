@@ -58,10 +58,12 @@ public class DemonicsAnimator : MonoBehaviour
                 CheckAnimationBoxes();
                 _frame = 0;
             }
+            CheckGrab();
             _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
             _frame++;
         }
     }
+    protected virtual void CheckGrab() { }
     protected virtual void CheckEvents() { }
     protected virtual void CheckAnimationBoxes() { }
 

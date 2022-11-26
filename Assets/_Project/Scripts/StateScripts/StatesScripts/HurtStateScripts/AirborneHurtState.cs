@@ -7,7 +7,6 @@ public class AirborneHurtState : HurtParentState
     private KnockdownState _knockdownState;
     private GrabbedState _grabbedState;
     private AirHurtState _airHurtState;
-    private Coroutine _canCheckGroundCoroutine;
     private bool _canCheckGround;
 
     public bool WallSplat { get; set; }
@@ -51,7 +50,6 @@ public class AirborneHurtState : HurtParentState
             _playerMovement.Knockback(_hurtAttack.knockbackForce, _hurtAttack.knockbackDuration, (int)(_player.OtherPlayer.transform.localScale.x), _hurtAttack.knockbackArc);
         }
         CameraShake.Instance.Shake(_hurtAttack.cameraShaker);
-        _canCheckGroundCoroutine = StartCoroutine(CanCheckGroundCoroutine());
         _player.SetHealth(_player.CalculateDamage(_hurtAttack));
         _playerUI.Damaged();
         _player.RecallAssist();
@@ -66,21 +64,16 @@ public class AirborneHurtState : HurtParentState
     {
         return false;
     }
-    IEnumerator CanCheckGroundCoroutine()
-    {
-        while (_playerMovement.IsInHitstop)
-        {
-            yield return null;
-        }
-        yield return new WaitForSecondsRealtime(0.35f);
-        _canCheckGround = true;
-    }
 
     public override void UpdateLogic()
     {
         base.UpdateLogic();
         ToKnockdownState();
         ToWallSplatState();
+        if (!_playerMovement.IsGrounded)
+        {
+            _canCheckGround = true;
+        }
     }
 
     private void ToDeathState()
@@ -128,11 +121,6 @@ public class AirborneHurtState : HurtParentState
     public override void Exit()
     {
         base.Exit();
-        if (_canCheckGroundCoroutine != null)
-        {
-            StopCoroutine(_canCheckGroundCoroutine);
-        }
-
         WallSplat = false;
         _canCheckGround = false;
     }

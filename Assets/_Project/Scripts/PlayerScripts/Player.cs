@@ -493,10 +493,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     private bool CanBlock(AttackSO attack)
     {
-        if (_playerStateManager.CurrentState is BlockParentState)
-        {
-            return true;
-        }
         if (attack.attackTypeEnum == AttackTypeEnum.Break)
         {
             if (BlockingLeftOrRight())
@@ -504,6 +500,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 _playerUI.DisplayNotification(NotificationTypeEnum.GuardBreak);
             }
             return false;
+        }
+        if (_playerStateManager.CurrentState is BlockParentState)
+        {
+            return true;
         }
         if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && TrainingSettings.CpuOff)
         {

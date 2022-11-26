@@ -28,7 +28,7 @@ public class GrabbedState : State
     public override void Enter()
     {
         base.Enter();
-        _playerAnimator.Hurt();
+        _playerAnimator.HurtAir();
         _physics.IgnoreWalls = true;
         _physics.EnableGravity(false);
         _playerMovement.StopKnockback();
@@ -40,7 +40,7 @@ public class GrabbedState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _physics.SetPositionWithRender(new DemonicsVector2(_player.OtherPlayerMovement.Physics.Position.x + _player.GrabPoint.x, _player.OtherPlayerMovement.Physics.Position.y + _player.GrabPoint.y));
+        // _physics.SetPositionWithRender(new DemonicsVector2(_player.OtherPlayerMovement.Physics.Position.x + _player.GrabPoint.x, _player.OtherPlayerMovement.Physics.Position.y + _player.GrabPoint.y));
     }
 
     public override bool ToKnockdownState()

@@ -17,7 +17,7 @@ public class PlayerDialogue : MonoBehaviour
     private int _dialogueWaitFrame = 3;
     private int _midDialogueFrame;
     private int _endDialogueFrame;
-    private static bool _skip;
+    private bool _skip;
 
     void Start()
     {

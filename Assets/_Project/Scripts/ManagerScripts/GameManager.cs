@@ -109,7 +109,6 @@ public class GameManager : MonoBehaviour
     public BaseController PausedController { get; set; }
     public float GameSpeed { get; set; }
     private Keyboard keyboardTwo;
-    public static float CORNER_POSITION = 10.47f;
     void Awake()
     {
         keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
@@ -674,6 +673,8 @@ public class GameManager : MonoBehaviour
                 HasGameStarted = false;
                 _uiAudio.Sound("Round").Play();
                 _startRoundOver = true;
+                _playerOneController.DeactivateInput();
+                _playerTwoController.DeactivateInput();
             }
         }
     }
