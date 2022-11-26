@@ -1,30 +1,28 @@
-using System.Collections;
-using UnityEngine;
-
-
 public class BlockState : BlockParentState
 {
     public override void Enter()
     {
         base.Enter();
         _playerAnimator.Block();
-        _blockCoroutine = StartCoroutine(BlockCoroutine(_blockAttack.hitStun));
     }
 
-    IEnumerator BlockCoroutine(float blockStun)
+    public override void UpdateLogic()
     {
-        yield return new WaitForSeconds(blockStun);
-        if (_brainController.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+        base.UpdateLogic();
+        if (DemonicsWorld.WaitFrames(ref _blockFrame))
         {
-            ToAttackState();
-        }
-        else
-        {
-            ToIdleState();
+            if (_brainController.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.OnHit)
+            {
+                ToAttackState();
+            }
+            else
+            {
+                ToIdleState();
+            }
         }
     }
 
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         _stateMachine.ChangeState(_idleState);
     }

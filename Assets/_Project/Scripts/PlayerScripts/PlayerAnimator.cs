@@ -1,222 +1,267 @@
+using Demonics.Sounds;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.U2D.Animation;
 
-public class PlayerAnimator : MonoBehaviour
+public class PlayerAnimator : DemonicsAnimator
 {
-	[SerializeField] private PlayerStats _playerStats = default;
-	[SerializeField] private InputBuffer _inputBuffer = null;
-	private Animator _animator;
-	private SpriteLibrary _spriteLibrary;
-	private SpriteRenderer _spriteRenderer;
+    [SerializeField] private PlayerCollisionBoxes _playerCollisionBoxes = default;
+    [SerializeField] private Player _player = default;
+    [SerializeField] private PlayerMovement _playerMovement = default;
+    [SerializeField] private Audio _audio = default;
+    private Shadow _shadow;
 
-	[HideInInspector] public UnityEvent OnCurrentAnimationFinished;
-	
-	public PlayerStats PlayerStats { get { return _playerStats; } private set { } }
+    public PlayerStatsSO PlayerStats { get { return _player.playerStats; } set { } }
 
-	void Awake()
-	{
-		_animator = GetComponent<Animator>();
-		_spriteLibrary = GetComponent<SpriteLibrary>();
-		_spriteRenderer = GetComponent<SpriteRenderer>();
-	}
 
-	void Start()
-	{
-		_animator.runtimeAnimatorController = _playerStats.PlayerStatsSO.runtimeAnimatorController;
-	}
+    void Awake()
+    {
+        _shadow = GetComponent<Shadow>();
+    }
 
-	void Update()
-	{
-		if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
-		{
-			OnCurrentAnimationFinished?.Invoke();
-			OnCurrentAnimationFinished.RemoveAllListeners();
-			if (_inputBuffer != null)
-			{
-				_inputBuffer.CheckInputBuffer();
-			}
-		}
-	}
+    void Start()
+    {
+        _animation = _player.playerStats._animation;
+    }
 
-	public void Walk()
-	{
-		_animator.Play("Walk");
-	}
+    protected override void CheckGrab()
+    {
+        if (GetEvent().grabPoint != Vector2.zero)
+        {
+            _player.OtherPlayer.GrabPoint = new DemonicsVector2((DemonicsFloat)GetEvent().grabPoint.x * (DemonicsFloat)(_player.transform.localScale.x), (DemonicsFloat)GetEvent().grabPoint.y);
+            _player.OtherPlayerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x + _player.OtherPlayer.GrabPoint.x, _playerMovement.Physics.Position.y + _player.OtherPlayer.GrabPoint.y));
+        }
+    }
+    protected override void CheckEvents()
+    {
+        base.CheckEvents();
+        if (GetEvent().projectile)
+        {
+            _player.CreateEffect(GetEvent().projectilePoint, true);
+        }
+        if (GetEvent().jump)
+        {
+            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent().jumpDirection.y));
+        }
+        if (GetEvent().footstep)
+        {
+            _audio.SoundGroup("Footsteps").PlayInRandom();
+        }
+        if (GetEvent().throwEnd)
+        {
+            _audio.Sound("Impact6").Play();
+            CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+            _player.OtherPlayerStateManager.TryToKnockdownState();
+        }
+        if (GetEvent().throwArcanaEnd)
+        {
+            _audio.Sound("Impact6").Play();
+            CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+            _player.OtherPlayerStateManager.TryToHurtState(_player.CurrentAttack);
+        }
+        _player.Parrying = GetEvent().parry;
+        _player.Invincible = GetEvent().invisibile;
+    }
 
-	public void Idle()
-	{
-		_animator.Play("Idle");
-	}
+    protected override void CheckAnimationBoxes()
+    {
+        base.CheckAnimationBoxes();
+        _playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
+        _playerCollisionBoxes.SetHitboxes(GetHitboxes());
+    }
 
-	public void Crouch()
-	{
-		_animator.Play("Crouch");
-	}
+    public void SetInvinsible(bool state)
+    {
+        _spriteRenderer.enabled = !state;
+        _shadow.SetInvinsible(state);
+    }
 
-	public void Jump(bool reset = false)
-	{
-		if (reset)
-		{
-			_animator.Play("Jump", -1, 0f);
-		}
-		else
-		{
-			_animator.Play("Jump");
-		}
-	}
+    public bool InRecovery()
+    {
+        for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
+        {
+            if (i < _cel)
+            {
+                if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes.Count > 0)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	public void JumpForward(bool reset = false)
-	{
-		if (reset)
-		{
-			_animator.Play("JumpForward", -1, 0f);
-		}
-		else
-		{
-			_animator.Play("JumpForward");
-		}
-	}
+    public bool InActive()
+    {
+        if (GetHitboxes().Length > 0)
+        {
+            return true;
+        }
+        return false;
+    }
 
-	public void Attack(string attackType, bool reset = false)
-	{
-		if (reset)
-		{
-			_animator.Play(attackType, -1, 0f);
-		}
-		else
-		{
-			_animator.Play(attackType);
-		}
-	}
+    public void Walk()
+    {
+        SetAnimation("Walk");
+    }
 
-	public void Shadowbreak()
-	{
-		_animator.Play("Shadowbreak");
-	}
+    public void Idle()
+    {
+        SetAnimation("Idle");
+    }
 
-	public void Grab()
-	{
-		_animator.Play("Grab");
-	}
+    public void Crouch()
+    {
+        SetAnimation("Crouch");
+    }
 
-	public void WallSplat()
-	{
-		_animator.Play("WallSplat");
-	}
+    public void Jump()
+    {
+        SetAnimation("Jump");
+    }
 
-	public void Throw()
-	{
-		_animator.Play("Throw");
-	}
+    public void JumpForward()
+    {
+        SetAnimation("JumpForward");
+    }
 
-	public void Parry()
-	{
-		_animator.Play("Parry", -1, 0f);
-	}
+    public void Attack(string attackType)
+    {
+        SetAnimation(attackType);
+    }
 
-	public void Arcana(string arcanaType)
-	{
-		_animator.Play(arcanaType, -1, 0f);
-	}
+    public void Shadowbreak()
+    {
+        SetAnimation("Shadowbreak");
+    }
 
-	public void ArcanaThrow()
-	{
-		_animator.Play("ArcanaThrow");
-	}
+    public void Grab()
+    {
+        SetAnimation("Grab");
+    }
 
-	public void Hurt(bool reset = false)
-	{
-		if (reset)
-		{
-			_animator.Play("Hurt", -1, 0f);
-		}
-		else
-		{
-			_animator.Play("Hurt");
-		}
-	}
+    public void WallSplat()
+    {
+        transform.localPosition = new Vector2(0, 1);
+        transform.localRotation = Quaternion.Euler(0, 0, -90);
+        SetAnimation("Wallsplat");
+    }
 
-	public void HurtAir(bool reset = false)
-	{
-		if (reset)
-		{
-			_animator.Play("HurtAir", -1, 0f);
-		}
-		else
-		{
-			_animator.Play("HurtAir");
-		}
-	}
+    public void Throw()
+    {
+        SetAnimation("Throw");
+    }
 
-	public void Block()
-	{
-		_animator.Play("Block");
-	}
+    public void BlueFrenzy()
+    {
+        SetAnimation("Parry");
+    }
 
-	public void BlockLow()
-	{
-		_animator.Play("BlockLow");
-	}
-	public void BlockAir()
-	{
-		_animator.Play("BlockAir");
-	}
+    public void RedFrenzy()
+    {
+        SetAnimation("RedFrenzy");
+    }
 
-	public void Dash()
-	{
-		_animator.Play("Dash");
-	}
+    public void Arcana(string arcanaType)
+    {
+        SetAnimation(arcanaType);
+    }
 
-	public void AirDash()
-	{
-		_animator.Play("Jump");
-	}
+    public void ArcanaThrow()
+    {
+        SetAnimation("5AEnd");
+    }
 
-	public void Run()
-	{
-		_animator.Play("Run");
-	}
+    public void Hurt()
+    {
+        SetAnimation("Hurt");
+    }
 
-	public void Taunt()
-	{
-		_animator.Play("Taunt", -1, 0f);
-	}
+    public void HurtAir()
+    {
+        SetAnimation("HurtAir");
+    }
 
-	public void Knockdown()
-	{
-		_animator.Play("Knockdown");
-	}
+    public void Block()
+    {
+        SetAnimation("Block");
+    }
 
-	public void WakeUp()
-	{
-		_animator.Play("WakeUp");
-	}
+    public void BlockLow()
+    {
+        SetAnimation("BlockLow");
+    }
+    public void BlockAir()
+    {
+        SetAnimation("BlockAir");
+    }
 
-	public Sprite GetCurrentSprite()
-	{
-		return _spriteRenderer.sprite;
-	}
+    public void Dash()
+    {
+        SetAnimation("Dash");
+    }
 
-	public int SetSpriteLibraryAsset(int skinNumber)
-	{
-		if (skinNumber > PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1)
-		{
-			skinNumber = 0;
-		}
-		else if (skinNumber < 0)
-		{
-			skinNumber = PlayerStats.PlayerStatsSO.spriteLibraryAssets.Length - 1;
-		}
-		if (_spriteLibrary != null)
-		{
-			_spriteLibrary.spriteLibraryAsset = PlayerStats.PlayerStatsSO.spriteLibraryAssets[skinNumber];
-		}
-		return skinNumber;
-	}
+    public void AirDash()
+    {
+        SetAnimation("Jump");
+    }
 
-	public void SetSpriteOrder(int index)
-	{
-		_spriteRenderer.sortingOrder = index;
-	}
+    public void Run()
+    {
+        SetAnimation("Run");
+    }
+
+    public void Taunt()
+    {
+        SetAnimation("Taunt");
+    }
+
+    public void Knockdown()
+    {
+        SetAnimation("Knockdown");
+    }
+
+    public void WakeUp()
+    {
+        SetAnimation("WakeUp");
+    }
+
+    public void ResetPosition()
+    {
+        transform.localPosition = Vector2.zero;
+        transform.localRotation = Quaternion.identity;
+    }
+
+    public Sprite GetCurrentSprite()
+    {
+        return _spriteRenderer.sprite;
+    }
+
+    public void SpriteSuperArmorEffect()
+    {
+        _spriteRenderer.color = Color.red;
+    }
+
+    public void SpriteNormalEffect()
+    {
+        _spriteRenderer.color = Color.white;
+    }
+
+    public int SetSpriteLibraryAsset(int skinNumber)
+    {
+        _animation = _player.playerStats._animation;
+        if (skinNumber > _animation.spriteAtlas.Length - 1)
+        {
+            _skin = 0;
+        }
+        else if (skinNumber < 0)
+        {
+            skinNumber = _animation.spriteAtlas.Length - 1;
+        }
+        _skin = skinNumber;
+        return skinNumber;
+    }
+
+    public void SetSpriteOrder(int index)
+    {
+        _spriteRenderer.sortingOrder = index;
+    }
 }

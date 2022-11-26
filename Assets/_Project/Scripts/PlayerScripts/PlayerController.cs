@@ -1,254 +1,316 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 [RequireComponent(typeof(InputBuffer))]
 public class PlayerController : BaseController
 {
-	private int _lastDashDirection;
-	private bool _dashPressed;
-	private float _dashLastInputTime;
-	private float _dashTime = 0.3f;
+    public PromptsInput CurrentPrompts { get; set; }
+    private readonly string _controlRebindKey = "rebinds";
+    private bool _dashForwardPressed;
+    private bool _dashBackPressed;
+    private int _dashForwardLastInputTime;
+    private int _dashBackLastInputTime;
+    private readonly int _dashTime = 12;
 
-	private bool _pressedAction = false;
-	private bool _holdingParryTrigger = false;
 
+    void Start()
+    {
+        string rebinds = PlayerPrefs.GetString(_controlRebindKey);
+        _playerInput.actions.LoadBindingOverridesFromJson(rebinds);
+        _playerInput.actions.actionMaps[(int)ActionSchemeTypes.Training].Enable();
+    }
 
-	void Update()
-	{
-		if (GameManager.Instance.HasGameStarted)
-		{
-			if (!string.IsNullOrEmpty(_brainController.ControllerInputName) && !SceneSettings.ReplayMode)
-			{
-				if (IsControllerEnabled)
-				{
-					Movement();
-					Jump();
-					Crouch();
-					Parry();
-					Throw();
-					Light();
-					Medium();
-					Heavy();
-					Arcane();
-					Assist();
-					Dash(1);
-					Dash(-1);
-					_pressedAction = false;
-				}
-				Pause();
-				ResetRound();
-				SwitchCharacter();
-			}
-		}
-		else
-		{
-			InputDirection = Vector2.zero;
-		}
-	}
+    //GAMEPLAY
+    public void Movement(CallbackContext callbackContext)
+    {
+        Vector2Int input = new Vector2Int(Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().x), Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().y));
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            if (input.x == 1)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+            }
+            if (input.x == -1)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+            }
+            if (input.y == 1)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+            }
+            if (input.y == -1)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+            }
+        }
 
-	protected virtual void Movement()
-	{
-		InputDirection = new(Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal"), Input.GetAxisRaw(_brainController.ControllerInputName + "Vertical"));
-		if (InputDirection.x == 1.0f && _playerMovement.MovementInput.x != InputDirection.x)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
-		}
-		if (InputDirection.x == -1.0f && _playerMovement.MovementInput.x != InputDirection.x)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
-		}
-		if (InputDirection.y == 1.0f && _playerMovement.MovementInput.y != InputDirection.y)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
-		}
-		if (InputDirection.y == -1.0f && _playerMovement.MovementInput.y != InputDirection.y)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-		}
-		if (InputDirection == Vector2.zero && _playerMovement.MovementInput != InputDirection)
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.None);
-		}
-		_playerMovement.MovementInput = InputDirection;
-	}
+        if (input.x == 0)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
+        }
+        if (input.y == 0)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
+        }
+    }
 
-	public override bool Jump()
-	{
-		if (InputDirection.y > 0.0f)
-		{
-			return true;
-		}
-		return false;
-	}
+    public override bool Jump()
+    {
+        if (InputDirection.y > 0)
+        {
+            return true;
+        }
 
-	public override bool Crouch()
-	{
-		if (InputDirection.y < 0.0f)
-		{
-			return true;
-		}
-		return false;
-	}
+        return false;
+    }
 
-	public override bool StandUp()
-	{
-		if (InputDirection.y == 0.0f)
-		{
-			return true;
-		}
-		return false;
-	}
+    public override bool Crouch()
+    {
+        if (InputDirection.y < 0)
+        {
+            return true;
+        }
+        return false;
+    }
 
-	protected virtual void Light()
-	{
-		if (!_pressedAction)
-		{
-			if (Input.GetButtonDown(_brainController.ControllerInputName + "Light"))
-			{
-				_inputBuffer.AddInputBufferItem(InputEnum.Light);
-				_pressedAction = true;
-			}
-		}
-	}
+    public override bool StandUp()
+    {
+        if (InputDirection.y == 0)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
+            return true;
+        }
+        return false;
+    }
 
-	protected virtual void Medium()
-	{
-		if (!_pressedAction)
-		{
-			if (Input.GetButtonDown(_brainController.ControllerInputName + "Medium"))
-			{
-				_inputBuffer.AddInputBufferItem(InputEnum.Medium);
-				_pressedAction = true;
-			}
-		}
-	}
+    public void Jump(CallbackContext callbackContext)
+    {
+        //_inputBuffer.AddInputBufferItem(InputEnum.Light);
+    }
 
-	protected virtual void Heavy()
-	{
-		if (!_pressedAction)
-		{
-			if (Input.GetButtonDown(_brainController.ControllerInputName + "Heavy"))
-			{
-				_inputBuffer.AddInputBufferItem(InputEnum.Heavy);
-				_pressedAction = true;
-			}
-		}
-	}
+    public void Crouch(CallbackContext callbackContext)
+    {
+        //_inputBuffer.AddInputBufferItem(InputEnum.Light);
+    }
 
-	protected virtual void Arcane()
-	{
-		if (!_pressedAction)
-		{
-			if (Input.GetButtonDown(_brainController.ControllerInputName + "Arcane"))
-			{
-				_inputBuffer.AddInputBufferItem(InputEnum.Special);
-				_pressedAction = true;
-			}
-		}
-	}
+    public void StandUp(CallbackContext callbackContext)
+    {
+        //_inputBuffer.AddInputBufferItem(InputEnum.Light);
+    }
 
-	protected virtual void Assist()
-	{
-		if (Input.GetButtonDown(_brainController.ControllerInputName + "Assist"))
-		{
-			_inputBuffer.AddInputBufferItem(InputEnum.Assist);
-		}
-	}
+    public void Light(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Light);
+        }
+    }
 
-	protected virtual void Throw()
-	{
-		if (!_pressedAction)
-		{
-			if ((Input.GetButtonDown(_brainController.ControllerInputName + "Light") &&
-				Input.GetButtonDown(_brainController.ControllerInputName + "Medium")) ||
-				Input.GetButtonDown(_brainController.ControllerInputName + "Throw"))
-			{
-				_playerStateManager.TryToGrabState();
-				_inputBuffer.AddInputBufferItem(InputEnum.Throw);
-				_pressedAction = true;
-			}
-		}
-	}
+    public void Medium(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Medium);
+        }
+    }
 
-	protected virtual void Parry()
-	{
-		if (!_pressedAction)
-		{
-			if ((Input.GetButtonDown(_brainController.ControllerInputName + "Medium") &&
-				Input.GetButtonDown(_brainController.ControllerInputName + "Heavy")) ||
-				Input.GetButtonDown(_brainController.ControllerInputName + "Parry") ||
-				Input.GetAxis(_brainController.ControllerInputName + "Parry") >= 0.9f &&
-				!_holdingParryTrigger)
-			{
-				_playerStateManager.TryToParryState();
-				_inputBuffer.AddInputBufferItem(InputEnum.Parry);
-				_pressedAction = true;
-				_holdingParryTrigger = true;
-			}
-			if (Input.GetAxis(_brainController.ControllerInputName + "Parry") == 0.0f)
-			{
-				_holdingParryTrigger = false;
-			}
-		}
-	}
+    public void Heavy(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
+        }
+    }
 
-	private void ResetRound()
-	{
-		if (Input.GetButtonDown(_brainController.ControllerInputName + "Reset"))
-		{
-			GameManager.Instance.ResetRound(_playerMovement.MovementInput);
-		}
-	}
+    public void Arcane(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Special);
+        }
+    }
+    public void Assist(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Assist);
+        }
+    }
 
-	private void SwitchCharacter()
-	{
-		if (Input.GetButtonDown(_brainController.ControllerInputName + "Switch"))
-		{
-			GameManager.Instance.SwitchCharacters();
-		}
-	}
+    public void Throw(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Throw);
+        }
+    }
 
-	private void Pause()
-	{
-		if (GameManager.Instance.HasGameStarted)
-		{
-			if (Input.GetButtonDown(_brainController.ControllerInputName + "Pause"))
-			{
-				_player.Pause(_brainController.IsPlayerOne);
-			}
-			if (Input.GetButtonUp(_brainController.ControllerInputName + "Pause"))
-			{
-				_player.UnPause();
-			}
-		}
-	}
+    public void Parry(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Parry);
+        }
+    }
 
-	public override bool Dash(int direction)
-	{
-		float input = Input.GetAxisRaw(_brainController.ControllerInputName + "Horizontal");
-		if (input == direction && !_dashPressed)
-		{
-			_dashPressed = true;
-			float timeSinceLastPress = Time.time - _dashLastInputTime;
-			if (timeSinceLastPress <= _dashTime && direction == _lastDashDirection)
-			{
-				if (direction == 1)
-				{
-					_inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
-				}
-				else
-				{
-					_inputBuffer.AddInputBufferItem(InputEnum.BackDash);
-				}
-				return true;
-			}
-			_lastDashDirection = direction;
-			_dashLastInputTime = Time.time;
-		}
-		else if (input == 0)
-		{
-			_dashPressed = false;
-		}
+    public void RedFrenzy(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+        }
+    }
 
-		return false;
-	}
+    public void DashForward(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            if (!_dashForwardPressed)
+            {
+                _dashForwardPressed = true;
+                _dashForwardLastInputTime = DemonicsWorld.Frame;
+            }
+            else
+            {
+                int timeSinceLastPress = DemonicsWorld.Frame - _dashForwardLastInputTime;
+                if (timeSinceLastPress <= _dashTime)
+                {
+                    _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+                    _dashForwardPressed = false;
+                }
+                _dashForwardLastInputTime = DemonicsWorld.Frame;
+            }
+        }
+    }
+
+    public void DashBack(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed && IsControllerEnabled)
+        {
+            if (!_dashBackPressed)
+            {
+                _dashBackPressed = true;
+                _dashBackLastInputTime = DemonicsWorld.Frame;
+            }
+            else
+            {
+                int timeSinceLastPress = DemonicsWorld.Frame - _dashBackLastInputTime;
+                if (timeSinceLastPress <= _dashTime)
+                {
+                    _inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+                    _dashBackPressed = false;
+                }
+                _dashBackLastInputTime = DemonicsWorld.Frame;
+            }
+        }
+    }
+
+    public void Pause(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            _player.Pause(_brainController.IsPlayerOne);
+        }
+        if (callbackContext.canceled)
+        {
+            _player.UnPause();
+        }
+    }
+    //TRAINING
+    public void Reset(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            GameManager.Instance.ResetRound(InputDirection);
+        }
+    }
+
+    public void Switch(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            GameManager.Instance.SwitchCharacters();
+        }
+    }
+    //UI
+    public void Confirm(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnConfirm?.Invoke();
+        }
+    }
+
+    public void Back(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnBack?.Invoke();
+        }
+    }
+
+    public void Stage(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnStage?.Invoke();
+        }
+    }
+
+    public void Coop(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnCoop?.Invoke();
+        }
+    }
+
+    public void Controls(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnControls?.Invoke();
+        }
+    }
+
+    public void ToggleFramedata(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnToggleFramedata?.Invoke();
+        }
+    }
+
+    public void PageLeft(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnLeftPage?.Invoke();
+        }
+    }
+
+    public void PageRight(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnRightPage?.Invoke();
+        }
+    }
+
+    public void NavigationRight(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnRightNavigation?.Invoke();
+        }
+    }
+
+    public void NavigationLeft(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnLeftNavigation?.Invoke();
+        }
+    }
 }

@@ -3,60 +3,52 @@ using UnityEngine;
 
 public class KnockdownState : State
 {
-	[SerializeField] private GameObject _groundedPrefab = default;
-	private WakeUpState _wakeUpState;
-	private DeathState _deathState;
-	private Coroutine _knockdownCoroutine;
+    [SerializeField] private GameObject _groundedPrefab = default;
+    private WakeUpState _wakeUpState;
+    private DeathState _deathState;
+    private readonly int _knockdownFrames = 60;
+    private int _knockdownFramesCurrent;
 
-	void Awake()
-	{
-		_wakeUpState = GetComponent<WakeUpState>();
-		_deathState = GetComponent<DeathState>();
-	}
 
-	public override void Enter()
-	{
-		base.Enter();
-		_playerAnimator.Knockdown();
-		_player.SetHurtbox(false);
-		_player.OtherPlayer.StopComboTimer();
-		_playerUI.DisplayNotification(NotificationTypeEnum.Knockdown);
-		Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
-		_knockdownCoroutine = StartCoroutine(ToWakeUpStateCoroutine());
-		if (_player.Health <= 0)
-		{
-			ToDeathState();
-		}
-	}
+    void Awake()
+    {
+        _wakeUpState = GetComponent<WakeUpState>();
+        _deathState = GetComponent<DeathState>();
+    }
 
-	IEnumerator ToWakeUpStateCoroutine()
-	{
-		yield return new WaitForSeconds(1.0f);
-		ToWakeUpState();
-	}
+    public override void Enter()
+    {
+        base.Enter();
+        _audio.Sound("Landed").Play();
+        _playerMovement.StopKnockback();
+        _physics.Velocity = DemonicsVector2.Zero;
+        _physics.EnableGravity(true);
+        _playerAnimator.Knockdown();
+        _player.OtherPlayer.StopComboTimer();
+        _playerUI.DisplayNotification(NotificationTypeEnum.Knockdown);
+        Instantiate(_groundedPrefab, transform.position, Quaternion.identity);
+        if (_player.Health <= 0)
+        {
+            ToDeathState();
+        }
+        else
+        {
+            _knockdownFramesCurrent = _knockdownFrames;
+        }
+    }
 
-	private void ToWakeUpState()
-	{
-		_stateMachine.ChangeState(_wakeUpState);
-	}
+    private void ToDeathState()
+    {
+        _stateMachine.ChangeState(_deathState);
+    }
 
-	private void ToDeathState()
-	{
-		_stateMachine.ChangeState(_deathState);
-	}
-
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
-	}
-
-	public override void Exit()
-	{
-		base.Exit();
-		if (_knockdownCoroutine != null)
-		{
-			StopCoroutine(_knockdownCoroutine);
-		}
-	}
+    public override void UpdateLogic()
+    {
+        base.UpdateLogic();
+        if (DemonicsWorld.WaitFrames(ref _knockdownFramesCurrent))
+        {
+            _stateMachine.ChangeState(_wakeUpState);
+        }
+        _player.CheckFlip();
+    }
 }

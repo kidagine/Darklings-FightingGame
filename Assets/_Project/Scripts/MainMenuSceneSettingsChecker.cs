@@ -10,7 +10,9 @@ public class MainMenuSceneSettingsChecker : MonoBehaviour
 
     void Awake()
     {
-        if (SceneSettings.ChangeCharacter && SceneSettings.ControllerOne != "" && SceneSettings.ControllerTwo != "")
+        Time.timeScale = 1;
+
+        if (SceneSettings.ChangeCharacter)
         {
             _mainMenuOverlay.Hide();
             _mainMenu.Hide();

@@ -1,196 +1,166 @@
 using Demonics.Sounds;
-using System.Collections;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour, IPushboxResponder
+public class PlayerMovement : MonoBehaviour
 {
-	[SerializeField] private LayerMask _wallLayerMask = default;
-	private Rigidbody2D _rigidbody;
-	private PlayerStats _playerStats;
-	private Player _player;
-	private Audio _audio;
-	private bool _onTopOfPlayer;
-	public bool HasJumped { get; set; }
-	public bool HasDoubleJumped { get; set; }
-	public bool HasAirDashed { get; set; }
-	public float MovementSpeed { get; set; }
-	public Vector2 MovementInput { get; set; }
-	public bool IsGrounded { get; set; } = true;
-	public bool CanDoubleJump { get; set; } = true;
-	public bool IsInCorner { get; private set; }
+    private Player _player;
+    private Audio _audio;
+    private DemonicsVector2 _velocity;
+    private int _knockbackFrame;
 
-	void Awake()
-	{
-		_player = GetComponent<Player>();
-		_playerStats = GetComponent<PlayerStats>();
-		_rigidbody = GetComponent<Rigidbody2D>();
-		_audio = GetComponent<Audio>();
-	}
+    public DemonicsPhysics Physics { get; private set; }
+    public bool HasJumped { get; set; }
+    public bool HasDoubleJumped { get; set; }
+    public bool HasAirDashed { get; set; }
+    public DemonicsFloat MovementSpeed { get; set; }
+    public bool IsGrounded { get; set; } = true;
+    public bool IsInHitstop { get; private set; }
+    public bool IsInCorner => Physics.OnWall;
+    private InputBuffer inputBuffer;
+    void Awake()
+    {
+        _player = GetComponent<Player>();
+        Physics = GetComponent<DemonicsPhysics>();
+        _audio = GetComponent<Audio>();
+        inputBuffer = GetComponent<InputBuffer>();
+    }
 
-	void Start()
-	{
-		MovementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
-	}
+    void Start()
+    {
+        MovementSpeed = _player.playerStats.SpeedWalk;
+    }
 
-	void Update()
-	{
-		CheckIsInCorner();
-	}
+    void FixedUpdate()
+    {
+        CheckKnockback();
+        CheckGrounded();
+    }
 
-	void FixedUpdate()
-	{
-		JumpControl();
-	}
+    private void CheckGrounded()
+    {
+        if (Physics.Position.y == DemonicsPhysics.GROUND_POINT)
+        {
+            IsGrounded = true;
+        }
+        else
+        {
+            IsGrounded = false;
+        }
+    }
 
-	public void ResetMovement()
-	{
-		_rigidbody.velocity = Vector2.zero;
-	}
+    public void TravelDistance(DemonicsVector2 travelDistance)
+    {
+        Physics.Velocity = new DemonicsVector2((DemonicsFloat)travelDistance.x, (DemonicsFloat)travelDistance.y);
+    }
 
-	private void JumpControl()
-	{
-		if (_rigidbody.velocity.y < 0)
-		{
-			_rigidbody.velocity += (4 - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
-		}
-		else if (_rigidbody.velocity.y > 0)
-		{
-			_rigidbody.velocity += (3 - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
-		}
-	}
+    public void Knockback(Vector2 knockbackForce, int knockbackDuration, int direction, int arc = 0, bool instant = false, bool ground = false)
+    {
+        if (knockbackDuration > 0)
+        {
+            Physics.EnableGravity(false);
+            if (_knockbackDuration > 0)
+            {
+                StopKnockback();
+                Physics.SetFreeze(true);
+            }
+            DemonicsFloat endPositionY = (DemonicsFloat)0;
+            if (arc > 0)
+            {
+                endPositionY = DemonicsPhysics.GROUND_POINT;
+            }
+            if (instant)
+            {
+                _startPosition = Physics.Position;
+                _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + endPositionY);
+                _knockbackDuration = knockbackDuration;
+                _arc = (DemonicsFloat)arc;
+            }
+            else
+            {
+                _player.hitstopEvent.AddListener(() =>
+                {
+                    _startPosition = Physics.Position;
+                    if (!ground)
+                    {
+                        _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + endPositionY);
+                    }
+                    else
+                    {
+                        _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), DemonicsPhysics.GROUND_POINT - 0.5);
+                    }
+                    _knockbackDuration = knockbackDuration;
+                    _arc = (DemonicsFloat)arc;
+                });
+            }
+        }
+    }
 
-	public void TravelDistance(Vector2 travelDistance)
-	{
-		_rigidbody.velocity = Vector2.zero;
-		_rigidbody.AddForce(new Vector2(travelDistance.x * 3.0f, travelDistance.y * 3.0f), ForceMode2D.Impulse);
-	}
+    private void HitstopKnockback()
+    {
 
-	public void GroundedPoint(Transform other, float point)
-	{
-		if (_rigidbody.velocity.y < 0.0f)
-		{
-			float pushForceX = 8.0f;
-			float pushForceY = -4.0f;
-			if (_player.OtherPlayerMovement.IsInCorner && transform.localScale.x > 0.0f)
-			{
-				_onTopOfPlayer = true;
-				_rigidbody.velocity = Vector2.zero;
-				_rigidbody.AddForce(new Vector2(-pushForceX, pushForceY), ForceMode2D.Impulse);
-			}
-			else if (_player.OtherPlayerMovement.IsInCorner && transform.localScale.x < 0.0f)
-			{
-				_onTopOfPlayer = true;
-				_rigidbody.velocity = Vector2.zero;
-				_rigidbody.AddForce(new Vector2(pushForceX, pushForceY), ForceMode2D.Impulse);
-			}
-		}
-	}
+    }
 
-	public void AddForce(int moveHorizontally)
-	{
-		float jumpForce = _playerStats.PlayerStatsSO.jumpForce - 3.5f;
-		int direction = 0;
-		if (moveHorizontally == 1)
-		{
-			direction = (int)transform.localScale.x * -1;
-		}
-		_rigidbody.AddForce(new Vector2(Mathf.Round(direction) * (jumpForce / 2.5f), jumpForce + 1.0f), ForceMode2D.Impulse);
-	}
+    public void StopKnockback()
+    {
+        _knockbackDuration = 0;
+        _knockbackFrame = 0;
+    }
 
-	public void GroundedPointExit()
-	{
-		if (_onTopOfPlayer)
-		{
-			_onTopOfPlayer = false;
-		}
-	}
+    private DemonicsFloat _arc;
+    private int _knockbackDuration;
+    DemonicsVector2 _startPosition;
+    DemonicsVector2 _endPosition;
+    private void CheckKnockback()
+    {
+        if (_knockbackDuration > 0 && !IsInHitstop)
+        {
+            DemonicsFloat ratio = (DemonicsFloat)_knockbackFrame / (DemonicsFloat)_knockbackDuration;
+            DemonicsFloat distance = _endPosition.x - _startPosition.x;
+            DemonicsFloat nextX = DemonicsFloat.Lerp(_startPosition.x, _endPosition.x, ratio);
+            DemonicsFloat baseY = DemonicsFloat.Lerp(_startPosition.y, _endPosition.y, (nextX - _startPosition.x) / distance);
+            DemonicsFloat arc = _arc * (nextX - _startPosition.x) * (nextX - _endPosition.x) / ((DemonicsFloat)(-0.25) * distance * distance);
+            DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
+            Physics.SetPositionWithRender(nextPosition);
+            _knockbackFrame++;
+            if (_knockbackFrame == _knockbackDuration)
+            {
+                Physics.EnableGravity(true);
+                Physics.Velocity = DemonicsVector2.Zero;
+                StopKnockback();
+            }
+        }
+    }
 
-	public void OnGrounded()
-	{
-		IsGrounded = true;
-	}
+    public void ResetToWalkSpeed()
+    {
+        if (MovementSpeed == _player.playerStats.SpeedRun)
+        {
+            _audio.Sound("Run").Stop();
+            MovementSpeed = _player.playerStats.SpeedWalk;
+        }
+    }
 
-	public void OnAir()
-	{
-		IsGrounded = false;
-	}
+    public void EnterHitstop()
+    {
+        if (!IsInHitstop)
+        {
+            IsInHitstop = true;
+            _velocity = Physics.Velocity;
+            Physics.SetFreeze(true);
+            if (_player.CanSkipAttack)
+            {
+                _player.hitstopEvent.AddListener(inputBuffer.CheckInputBufferAttacks);
+            }
+        }
+    }
 
-	public void Knockback(Vector2 knockbackDirection, Vector2 knockbackForce, float knockbackDuration)
-	{
-		_rigidbody.MovePosition(new Vector2(transform.position.x + knockbackForce.x, transform.position.y + knockbackForce.y));
-		StartCoroutine(KnockbackCoroutine(knockbackForce * knockbackDirection, knockbackDuration));
-	}
-
-	IEnumerator KnockbackCoroutine(Vector2 knockback, float knockbackDuration)
-	{
-		Vector2 startingPosition = transform.position;
-		Vector2 finalPosition = new(transform.position.x + knockback.x, transform.position.y + knockback.y);
-		float elapsedTime = 0;
-		while (elapsedTime < knockbackDuration)
-		{
-			_rigidbody.MovePosition(Vector3.Lerp(startingPosition, finalPosition, elapsedTime / knockbackDuration));
-			elapsedTime += Time.deltaTime;
-			yield return null;
-		}
-		_rigidbody.MovePosition(finalPosition);
-	}
-
-	private void CheckIsInCorner()
-	{
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 1.0f, _wallLayerMask);
-		if (hit.collider != null)
-		{
-			IsInCorner = true;
-		}
-		else
-		{
-			IsInCorner = false;
-		}
-	}
-
-	public Vector2 OnWall()
-	{
-		RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(-transform.localScale.x, 0.0f), 2.0f, _wallLayerMask);
-		if (hit.collider != null)
-		{
-			return new Vector2(hit.point.x - (0.2f * -transform.localScale.x), transform.localPosition.y);
-		}
-		else
-		{
-			return Vector2.zero;
-		}
-	}
-
-
-	public void ResetGravity()
-	{
-		_rigidbody.gravityScale = 2.0f;
-	}
-
-	public void ZeroGravity()
-	{
-		_rigidbody.gravityScale = 0.0f;
-	}
-
-	public void ResetToWalkSpeed()
-	{
-		if (MovementSpeed == _playerStats.PlayerStatsSO.runSpeed)
-		{
-			_audio.Sound("Run").Stop();
-			MovementSpeed = _playerStats.PlayerStatsSO.walkSpeed;
-		}
-	}
-
-	public void SetRigidbodyKinematic(bool state)
-	{
-		if (state)
-		{
-			_rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-		}
-		else
-		{
-			_rigidbody.constraints = RigidbodyConstraints2D.None | RigidbodyConstraints2D.FreezeRotation;
-		}
-		_rigidbody.isKinematic = state;
-	}
+    public void ExitHitstop()
+    {
+        if (IsInHitstop)
+        {
+            IsInHitstop = false;
+            Physics.SetFreeze(false);
+            Physics.Velocity = new DemonicsVector2(_velocity.x, Physics.Velocity.y);
+        }
+    }
 }

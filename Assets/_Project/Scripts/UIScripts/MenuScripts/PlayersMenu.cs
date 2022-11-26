@@ -1,5 +1,6 @@
 using Demonics.Sounds;
 using Demonics.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,53 +25,31 @@ public class PlayersMenu : BaseMenu
 		_audio = GetComponent<Audio>();
 	}
 
-	void Start()
+	private void UpdateVisiblePlayers(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
 	{
-		InputSystem.onDeviceChange +=
-		(device, change) =>
+		for (int i = 0; i < _playerIcons.Length; i++)
 		{
-			switch (change)
-			{
-				case InputDeviceChange.Added:
-					if (device.name == "XInputControllerWindows")
-					{
-						_playerIcons[1].gameObject.SetActive(true);
-					}
-					else if (device.name == "XInputControllerWindows1")
-					{
-						_playerIcons[2].gameObject.SetActive(true);
-					}
-					break;
-
-				case InputDeviceChange.Removed:
-					if (device.name == "XInputControllerWindows")
-					{
-						_playerIcons[1].anchoredPosition = new Vector2(_center, _playerIcons[1].anchoredPosition.y);
-						_playerIcons[1].gameObject.SetActive(false);
-					}
-					else if (device.name == "XInputControllerWindows1")
-					{
-						_playerIcons[2].anchoredPosition = new Vector2(_center, _playerIcons[2].anchoredPosition.y);
-						_playerIcons[2].gameObject.SetActive(false);
-					}
-					break;
-			}
-		};
+			_playerIcons[i].GetComponent<PlayerIcon>().SetController();
+		}
 	}
 
-	void Update()
+	public void UpdateLeftRightCpu()
 	{
-		if (Input.GetButtonDown("KeyboardOne" + "Confirm"))
+		if (IsOnRight())
 		{
-			ConfirmQuickAssign(0);
+			_cpuTextRight.SetActive(false);
 		}
-		else if (Input.GetButtonDown("ControllerOne" + "Confirm"))
+		else
 		{
-			ConfirmQuickAssign(1);
+			_cpuTextRight.SetActive(true);
 		}
-		else if (Input.GetButtonDown("ControllerTwo" + "Confirm"))
+		if (IsOnLeft())
 		{
-			ConfirmQuickAssign(2);
+			_cpuTextLeft.SetActive(false);
+		}
+		else
+		{
+			_cpuTextLeft.SetActive(true);
 		}
 	}
 
@@ -80,7 +59,6 @@ public class PlayersMenu : BaseMenu
 		{
 			if (_playerIcons[i].anchoredPosition.x == _right)
 			{
-				_cpuTextRight.SetActive(false);
 				return true;
 			}
 		}
@@ -93,7 +71,6 @@ public class PlayersMenu : BaseMenu
 		{
 			if (_playerIcons[i].anchoredPosition.x == _left)
 			{
-				_cpuTextLeft.SetActive(false);
 				return true;
 			}
 		}
@@ -107,66 +84,81 @@ public class PlayersMenu : BaseMenu
 			_audio.Sound("Pressed").Play();
 			if (_playerIcons[0].anchoredPosition.x == _right)
 			{
-				SceneSettings.ControllerTwo = "KeyboardOne";
+				SceneSettings.ControllerTwoScheme = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerTwo = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else if (_playerIcons[1].anchoredPosition.x == _right)
 			{
-				SceneSettings.ControllerTwo = "ControllerOne";
+				SceneSettings.ControllerTwoScheme = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerTwo = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else if (_playerIcons[2].anchoredPosition.x == _right)
 			{
-				SceneSettings.ControllerTwo = "ControllerTwo";
+				SceneSettings.ControllerTwoScheme = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerTwo = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else
 			{
-				SceneSettings.ControllerTwo = "Cpu";
+				SceneSettings.ControllerTwo = null;
 			}
 			if (_playerIcons[0].anchoredPosition.x == _left)
 			{
-				SceneSettings.ControllerOne = "KeyboardOne";
+				SceneSettings.ControllerOneScheme = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerOne = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else if (_playerIcons[1].anchoredPosition.x == _left)
 			{
-				SceneSettings.ControllerOne = "ControllerOne";
+				SceneSettings.ControllerOneScheme = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerOne = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else if (_playerIcons[2].anchoredPosition.x == _left)
 			{
-				SceneSettings.ControllerOne = "ControllerTwo";
+				SceneSettings.ControllerOneScheme = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
+				SceneSettings.ControllerOne = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 			}
 			else
 			{
-				SceneSettings.ControllerOne = "Cpu";
+				SceneSettings.ControllerOne = null;
 			}
-			if (_playerIcons[0].anchoredPosition.x != _center && _playerIcons[1].anchoredPosition.x != _center
-				|| _playerIcons[0].anchoredPosition.x != _center && _playerIcons[2].anchoredPosition.x != _center
-				|| _playerIcons[1].anchoredPosition.x != _center && _playerIcons[2].anchoredPosition.x != _center)
-			{
-				_characterMenu.EnablePlayerTwoSelector();
-			}
+			gameObject.SetActive(false);
 			for (int i = 0; i < _playerIcons.Length; i++)
 			{
 				_playerIcons[i].GetComponent<PlayerIcon>().Center();
+				_playerIcons[i].gameObject.SetActive(false);
 			}
 			_characterMenu.Show();
-			gameObject.SetActive(false);
 		}
 	}
 
-	public void ConfirmQuickAssign(int index)
+	public bool ArePlayerIconsLeft()
 	{
-		if (gameObject.activeSelf)
+		for (int i = 0; i < _playerIcons.Length; i++)
 		{
-			_audio.Sound("Selected").Play();
-			_cpuTextLeft.SetActive(false);
-			_playerIcons[index].anchoredPosition = new Vector2(_left, 275.0f);
+			if (_playerIcons[i].anchoredPosition.x != _left)
+			{
+				return false;
+			}
 		}
+		return true;
+	}
+
+	public bool ArePlayerIconsRight()
+	{
+		for (int i = 0; i < _playerIcons.Length; i++)
+		{
+			if (_playerIcons[i].anchoredPosition.x != _right)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void OpenKeyboardCoOp()
 	{
 		_audio.Sound("Pressed").Play();
-		SceneSettings.ControllerTwo = "KeyboardTwo";
-		SceneSettings.ControllerOne = "KeyboardOne";
+		SceneSettings.ControllerTwo = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
+		SceneSettings.ControllerOne = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
 		gameObject.SetActive(false);
 		_characterMenu.Show();
 	}
@@ -175,6 +167,13 @@ public class PlayersMenu : BaseMenu
 	{
 		_cpuTextLeft.SetActive(true);
 		_cpuTextRight.SetActive(true);
+		InputSystem.onDeviceChange -= UpdateVisiblePlayers;
+	}
+
+	private void OnEnable()
+	{
+		InputSystem.onDeviceChange += UpdateVisiblePlayers;
+		UpdateVisiblePlayers(null, default);
 	}
 
 	public void Back()

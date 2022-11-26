@@ -10,7 +10,12 @@ public class DashState : State
     private RunState _runState;
     private HurtState _hurtState;
     private AirborneHurtState _airborneHurtState;
+    private RedFrenzyState _redFrenzyState;
     private Coroutine _dashCoroutine;
+    private readonly int _dashFrames = 5;
+    private int _dashFramesCurrent;
+    private readonly int _ghostsAmount = 3;
+    private int _ghostsAmountCurrent;
 
     public int DashDirection { get; set; }
 
@@ -20,6 +25,7 @@ public class DashState : State
         _runState = GetComponent<RunState>();
         _hurtState = GetComponent<HurtState>();
         _airborneHurtState = GetComponent<AirborneHurtState>();
+        _redFrenzyState = GetComponent<RedFrenzyState>();
     }
 
     public override void Enter()
@@ -27,43 +33,24 @@ public class DashState : State
         base.Enter();
         _playerAnimator.Dash();
         _audio.Sound("Dash").Play();
+        _dashFramesCurrent = _dashFrames;
         Transform dashEffect = ObjectPoolingManager.Instance.Spawn(_dashPrefab, transform.root.position).transform;
-        if (DashDirection > 0.0f)
+        if (DashDirection > 0)
         {
-            dashEffect.localScale = new Vector2(1.0f, transform.localScale.y);
-            dashEffect.position = new Vector2(dashEffect.position.x - 1.0f, dashEffect.position.y);
+            dashEffect.localScale = new Vector2(1, transform.localScale.y);
+            dashEffect.position = new Vector2(dashEffect.position.x - 1, dashEffect.position.y);
         }
         else
         {
-            dashEffect.localScale = new Vector2(-1.0f, transform.localScale.y);
-            dashEffect.position = new Vector2(dashEffect.position.x + 1.0f, dashEffect.position.y);
+            dashEffect.localScale = new Vector2(-1, transform.localScale.y);
+            dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
         }
-        _rigidbody.velocity = new Vector2(DashDirection, 0.0f) * _playerStats.PlayerStatsSO.dashForce;
-        _playerMovement.ZeroGravity();
-        _dashCoroutine = StartCoroutine(DashCoroutine());
+        _physics.Velocity = new DemonicsVector2((DemonicsFloat)DashDirection * (DemonicsFloat)_player.playerStats.DashForce, _physics.Velocity.y);
     }
 
-    IEnumerator DashCoroutine()
+    private new void ToIdleState()
     {
-        for (int i = 0; i < 3; i++)
-        {
-            GameObject playerGhost = ObjectPoolingManager.Instance.Spawn(_playerGhostPrefab, transform.position);
-            playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.root.localScale.x, Color.white);
-            yield return new WaitForSeconds(0.07f);
-        }
-        _rigidbody.velocity = Vector2.zero;
-        _playerMovement.ResetGravity();
-        ToIdleState();
-        _inputBuffer.CheckInputBuffer();
-        if (_baseController.InputDirection.x * transform.root.localScale.x > 0.0f)
-        {
-            ToRunState();
-        }
-        yield return null;
-    }
-
-    private void ToIdleState()
-    {
+        _idleState.Initialize(true);
         _stateMachine.ChangeState(_idleState);
     }
 
@@ -75,18 +62,50 @@ public class DashState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        _player.CheckFlip();
+        Dash();
     }
 
-    public override void UpdatePhysics()
+    private void Dash()
     {
-        base.UpdatePhysics();
-        _player.CheckFlip();
+        if (_ghostsAmountCurrent < _ghostsAmount)
+        {
+            if (DemonicsWorld.WaitFramesOnce(ref _dashFramesCurrent))
+            {
+                GameObject playerGhost = ObjectPoolingManager.Instance.Spawn(_playerGhostPrefab, transform.position);
+                playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.root.localScale.x, Color.white);
+                _dashFramesCurrent = _dashFrames;
+                _ghostsAmountCurrent++;
+            }
+        }
+        else
+        {
+            if (_baseController.InputDirection.x * transform.root.localScale.x > 0)
+            {
+                ToRunState();
+            }
+            else
+            {
+                ToIdleState();
+            }
+            _inputBuffer.CheckInputBufferAttacks();
+        }
     }
 
     public override bool AssistCall()
     {
         _player.AssistAction();
         return true;
+    }
+
+    public override bool ToRedFrenzyState()
+    {
+        if (_player.HasRecoverableHealth())
+        {
+            _stateMachine.ChangeState(_redFrenzyState);
+            return true;
+        }
+        return false;
     }
 
     public override bool ToHurtState(AttackSO attack)
@@ -106,10 +125,7 @@ public class DashState : State
     public override void Exit()
     {
         base.Exit();
-        if (_dashCoroutine != null)
-        {
-            _playerMovement.ResetGravity();
-            StopCoroutine(_dashCoroutine);
-        }
+        _ghostsAmountCurrent = 0;
+        _physics.Velocity = DemonicsVector2.Zero;
     }
 }

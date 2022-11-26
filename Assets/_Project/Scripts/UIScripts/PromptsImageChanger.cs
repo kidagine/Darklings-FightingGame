@@ -1,37 +1,44 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class PromptsImageChanger : MonoBehaviour
 {
-	[SerializeField] private Image _promptImage = default;
-	[SerializeField] private Sprite _promptKeyboardSprite = default;
-	[SerializeField] private Sprite _promptControllerSprite = default;
-	[SerializeField] private PauseMenu _pauseMenu = default;
+	[SerializeField] private InputActionReference _actionReference = default;
+	[SerializeField] private DeviceConfigurator _deviceConfigurator = default;
+	[SerializeField] private InputManager _inputManager = default;
+	private PlayerInput _playerInput;
+	private Image _image;
 
 
-	private void SetCorrectPromptSprite(string controller)
+	private void SetCorrectPromptSprite()
 	{
-		if (controller == ControllerTypeEnum.KeyboardOne.ToString() || controller == ControllerTypeEnum.KeyboardTwo.ToString())
-		{
-			_promptImage.sprite = _promptKeyboardSprite;
-		}
-		else
-		{
-			_promptImage.sprite = _promptControllerSprite;
-		}
+		InputAction inputAction = _actionReference.action;
+		int controlBindingIndex = inputAction.GetBindingIndexForControl(inputAction.controls[0]);
+		string currentBindingInput = InputControlPath.ToHumanReadableString(inputAction.bindings[controlBindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
+		_image.sprite = _deviceConfigurator.GetDeviceBindingIcon(_playerInput, currentBindingInput);
+	}
+
+	void Awake()
+	{
+		_playerInput = _inputManager.GetComponent<PlayerInput>();
+		_image = transform.GetChild(1).GetComponent<Image>();
 	}
 
 	void OnEnable()
 	{
-		if (_pauseMenu.PauseControllerType != null)
+		if (_inputManager != null)
 		{
-			SetCorrectPromptSprite(_pauseMenu.PauseControllerType);
-
+			_inputManager.OnInputChange.AddListener(SetCorrectPromptSprite);
 		}
-		else
+		SetCorrectPromptSprite();
+	}
+
+	void OnDisable()
+	{
+		if (_inputManager != null)
 		{
-			string controller = GameManager.Instance.PlayerOne.GetComponent<BrainController>().ControllerInputName;
-			SetCorrectPromptSprite(controller);
+			_inputManager.OnInputChange.RemoveListener(SetCorrectPromptSprite);
 		}
 	}
 }

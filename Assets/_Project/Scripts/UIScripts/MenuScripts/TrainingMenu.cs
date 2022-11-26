@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class TrainingMenu : BaseMenu
 {
     [SerializeField] private GameObject _p1 = default;
-    [SerializeField] private GameObject _p2 = default;
     [SerializeField] private InputHistory _inputHistoryOne = default;
     [SerializeField] private InputHistory _inputHistoryTwo = default;
     [SerializeField] private TextMeshProUGUI _startupOneText = default;
@@ -15,24 +14,33 @@ public class TrainingMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _recoveryOneText = default;
     [SerializeField] private TextMeshProUGUI _hitTypeOneText = default;
     [SerializeField] private TextMeshProUGUI _damageOneText = default;
+    [SerializeField] private TextMeshProUGUI _damageComboOneText = default;
     [SerializeField] private TextMeshProUGUI _stateOneText = default;
     [SerializeField] private TextMeshProUGUI _startupTwoText = default;
     [SerializeField] private TextMeshProUGUI _activeTwoText = default;
     [SerializeField] private TextMeshProUGUI _recoveryTwoText = default;
     [SerializeField] private TextMeshProUGUI _hitTypeTwoText = default;
     [SerializeField] private TextMeshProUGUI _damageTwoText = default;
+    [SerializeField] private TextMeshProUGUI _damageComboTwoText = default;
     [SerializeField] private TextMeshProUGUI _stateTwoText = default;
     [SerializeField] private Canvas[] _uiCanvases = default;
     [SerializeField] private BaseMenu _trainingPauseMenu = default;
-    [SerializeField] private PauseMenu _pauseMenu = default;
     [SerializeField] private TrainingSubOption[] _trainingSubOptions = default;
     [Header("Selectors")]
     private int _currentTrainingSubOptionIndex;
 
 
-    void Update()
+    public void ConfigurePlayers(Player playerOne, Player playerTwo)
     {
-        if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UILeft"))
+        playerOne.hitConnectsEvent.AddListener(() => FramedataValue(true, playerOne.ResultAttack));
+        playerTwo.hitConnectsEvent.AddListener(() => FramedataValue(false, playerTwo.ResultAttack));
+        playerOne.parryConnectsEvent.AddListener(() => FramedataValue(true, playerOne.ResultAttack));
+        playerTwo.parryConnectsEvent.AddListener(() => FramedataValue(false, playerTwo.ResultAttack));
+    }
+
+    public void ChangePage(bool left)
+    {
+        if (left)
         {
             if (_currentTrainingSubOptionIndex == 0)
             {
@@ -51,8 +59,9 @@ public class TrainingMenu : BaseMenu
             }
             _trainingSubOptions[_currentTrainingSubOptionIndex].Activate();
         }
-        if (Input.GetButtonDown(_pauseMenu.PauseControllerType + "UIRight"))
+        else
         {
+
             if (_currentTrainingSubOptionIndex == _trainingSubOptions.Length - 1)
             {
                 _currentTrainingSubOptionIndex = 0;
@@ -71,7 +80,20 @@ public class TrainingMenu : BaseMenu
             _trainingSubOptions[_currentTrainingSubOptionIndex].Activate();
         }
     }
-
+    public void SetInputHistory(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                _inputHistoryOne.transform.GetChild(0).gameObject.SetActive(false);
+                _inputHistoryTwo.transform.GetChild(0).gameObject.SetActive(false);
+                break;
+            case 1:
+                _inputHistoryOne.transform.GetChild(0).gameObject.SetActive(true);
+                _inputHistoryTwo.transform.GetChild(0).gameObject.SetActive(true);
+                break;
+        }
+    }
     public void SetHitboxes(int value)
     {
         if (value == 1)
@@ -204,19 +226,9 @@ public class TrainingMenu : BaseMenu
         {
             case 0:
                 _p1.SetActive(false);
-                _p2.SetActive(false);
                 break;
             case 1:
                 _p1.SetActive(true);
-                _p2.SetActive(false);
-                break;
-            case 2:
-                _p1.SetActive(false);
-                _p2.SetActive(true);
-                break;
-            case 3:
-                _p1.SetActive(true);
-                _p2.SetActive(true);
                 break;
         }
     }
@@ -233,7 +245,7 @@ public class TrainingMenu : BaseMenu
         }
     }
 
-    public void FramedataValue(bool isPlayerOne, AttackSO attack)
+    public void FramedataValue(bool isPlayerOne, ResultAttack attack)
     {
         if (isPlayerOne)
         {
@@ -256,6 +268,10 @@ public class TrainingMenu : BaseMenu
             if (_damageOneText.gameObject.activeSelf)
             {
                 _damageOneText.text = attack.damage.ToString();
+            }
+            if (_damageComboOneText.gameObject.activeSelf)
+            {
+                _damageComboOneText.text = attack.comboDamage.ToString();
             }
         }
         else
@@ -280,21 +296,10 @@ public class TrainingMenu : BaseMenu
             {
                 _damageTwoText.text = attack.damage.ToString();
             }
-        }
-    }
-
-    public void SetInputHistory(int value)
-    {
-        switch (value)
-        {
-            case 0:
-                _inputHistoryOne.transform.GetChild(0).gameObject.SetActive(false);
-                _inputHistoryTwo.transform.GetChild(0).gameObject.SetActive(false);
-                break;
-            case 1:
-                _inputHistoryOne.transform.GetChild(0).gameObject.SetActive(true);
-                _inputHistoryTwo.transform.GetChild(0).gameObject.SetActive(true);
-                break;
+            if (_damageComboTwoText.gameObject.activeSelf)
+            {
+                _damageComboTwoText.text = attack.comboDamage.ToString();
+            }
         }
     }
 

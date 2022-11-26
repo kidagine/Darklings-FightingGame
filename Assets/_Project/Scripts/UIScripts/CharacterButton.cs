@@ -4,18 +4,15 @@ using UnityEngine.EventSystems;
 
 public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
-    [SerializeField] private RuntimeAnimatorController _characterAnimatorController = default;
-	[SerializeField] private PlayerStatsSO _playerStatsSO = default;
+    [SerializeField] private PlayerStatsSO _playerStatsSO = default;
     [SerializeField] private CharacterMenu _characterMenu = default;
-    [SerializeField] private GameObject _randomSpriteRenderer = default;
     [SerializeField] private GameObject _firstPlayerSelector = default;
     [SerializeField] private GameObject _secondPlayerSelector = default;
-	[SerializeField] private bool _isRandomizer = default;
+    [SerializeField] private bool _isRandomizer = default;
     private Audio _audio;
 
-	public RuntimeAnimatorController CharacterAnimatorController { get { return _characterAnimatorController; }  set { } }
-	public PlayerStatsSO PlayerStatsSO { get { return _playerStatsSO; } set { } }
-	public bool IsRandomizer { get { return _isRandomizer; } private set { } }
+    public PlayerStatsSO PlayerStatsSO { get { return _playerStatsSO; } set { } }
+    public bool IsRandomizer { get { return _isRandomizer; } private set { } }
 
     void Start()
     {
@@ -33,7 +30,7 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
         {
             _secondPlayerSelector.SetActive(true);
         }
-        _characterMenu.SetCharacterImage(CharacterAnimatorController, PlayerStatsSO, IsRandomizer);
+        _characterMenu.SetCharacterImage(PlayerStatsSO, IsRandomizer);
     }
 
     public void OnDeselect(BaseEventData eventData)
@@ -51,13 +48,12 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     public void Click()
     {
         _audio.Sound("Pressed").Play();
-        _randomSpriteRenderer.gameObject.SetActive(false);
         _characterMenu.SelectCharacterImage();
     }
 
-	private void OnDisable()
+    private void OnDisable()
     {
         _firstPlayerSelector.SetActive(false);
         _secondPlayerSelector.SetActive(false);
     }
-} 
+}

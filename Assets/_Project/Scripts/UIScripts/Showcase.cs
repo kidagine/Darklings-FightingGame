@@ -14,7 +14,6 @@ public class Showcase : MonoBehaviour
 		while (true)
 		{
 			DisableAllShowcases();
-
 			_showcases.GetChild(_count).gameObject.SetActive(true);
 			_showcaseDots.GetChild(_count).GetChild(1).gameObject.SetActive(true);
 			_count++;

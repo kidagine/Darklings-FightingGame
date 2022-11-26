@@ -3,24 +3,37 @@ using UnityEngine.Events;
 
 public class PromptsInput : MonoBehaviour
 {
-    [SerializeField] private UnityEvent _confirmUnityEvent = default;
-    [SerializeField] private UnityEvent _backUnityEvent = default;
-    [SerializeField] private UnityEvent _mainSpecialUnityEvent = default;
+    [SerializeField] private PauseMenu _pauseMenu = default;
+    [SerializeField] private InputManager _inputManager = default;
+    public UnityEvent OnConfirm;
+    public UnityEvent OnBack;
+    public UnityEvent OnCoop;
+    public UnityEvent OnRebind;
+    public UnityEvent OnStage;
+    public UnityEvent OnControls;
+    public UnityEvent OnToggleFramedata;
+    public UnityEvent OnLeftPage;
+    public UnityEvent OnRightPage;
+    public UnityEvent OnLeftNavigation;
+    public UnityEvent OnRightNavigation;
 
-
-	private void Update()
+    void OnEnable()
     {
-        if (Input.GetButtonDown("KeyboardOne" + "Confirm") || Input.GetButtonDown("ControllerOne" + "Confirm") || Input.GetButtonDown("ControllerTwo" + "Confirm"))
+        if (_inputManager != null)
         {
-            _confirmUnityEvent?.Invoke();
+            _inputManager.CurrentPrompts = this;
         }
-        if (Input.GetButtonDown("KeyboardOne" + "Back") || Input.GetButtonDown("ControllerOne" + "Back"))
+        else
         {
-            _backUnityEvent?.Invoke();
-        }
-        if (Input.GetKeyDown(KeyCode.R) || Input.GetButtonDown("ControllerOne" + "Medium"))
-        {
-            _mainSpecialUnityEvent?.Invoke();
+            if (_pauseMenu != null)
+            {
+                GameManager.Instance.PauseMenu.PlayerInput.GetComponent<PlayerController>().CurrentPrompts = GetComponent<PromptsInput>();
+            }
+            else
+            {
+                GameManager.Instance.PlayerOne.GetComponent<PlayerController>().CurrentPrompts = GetComponent<PromptsInput>();
+            }
         }
     }
- }
+
+}

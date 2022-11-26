@@ -1,12 +1,36 @@
 using UnityEngine;
 
-public class Shadowbreak : MonoBehaviour
+public class Shadowbreak : Hitbox
 {
-	private void OnTriggerEnter2D(Collider2D collision)
-	{
-		if (collision.transform.root.TryGetComponent(out Player player))
-		{
-			player.PlayerStateManager.TryToKnockbackState();
-		}
-	}
+    [SerializeField] private DemonicsPhysics _physics = default;
+    [SerializeField] DemonicsAnimator _animator = default;
+
+
+    protected override void EnterCollision(DemonicsCollider collider)
+    {
+        if (!HitConfirm)
+        {
+            if (collider.transform.root.TryGetComponent(out Player player))
+            {
+                player.PlayerStateManager.TryToKnockbackState();
+                HitConfirm = true;
+            }
+        }
+    }
+    public override void SetSourceTransform(Transform sourceTransform)
+    {
+        base.SetSourceTransform(sourceTransform);
+        base.InitializeCollisionList();
+
+    }
+
+    public void SetPosition(DemonicsVector2 position)
+    {
+        _physics.SetPositionWithRender(position);
+    }
+    void OnEnable()
+    {
+        _animator.SetAnimation("Idle");
+        _animator.OnCurrentAnimationFinished.AddListener(() => gameObject.SetActive(false));
+    }
 }

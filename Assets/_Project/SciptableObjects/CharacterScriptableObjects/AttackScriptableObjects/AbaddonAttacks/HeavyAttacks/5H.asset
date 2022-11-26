@@ -12,22 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc38aa9bd105964ea227944394dc39b, type: 3}
   m_Name: 5H
   m_EditorClassIdentifier: 
+  damage: 700
+  attackTypeEnum: 4
+  hitStun: 41
+  blockStun: 0
   travelDistance: 0
   travelDirection: {x: 0, y: 0}
-  hitStun: 0.8
-  blockStun: 0
   knockback: 0.21
+  knockbackForce: {x: 0, y: 0}
   knockbackDirection: {x: 0, y: 0}
   knockbackDuration: 0.046
-  attackTypeEnum: 4
-  hitstop: 0.18
-  damage: 750
+  hasSuperArmor: 1
   isAirAttack: 0
   isProjectile: 0
   isArcana: 0
+  jumpCancelable: 0
   causesKnockdown: 0
   attackSound: Hit
   impactSound: Impact2
+  hitstop: 17
   hitEffect: {fileID: 3294536446187043669, guid: bfd0b34a3d096244c826f6c579f4b47e, type: 3}
   hitEffectPosition: {x: 1.4, y: 2}
   hitEffectRotation: 0
@@ -38,3 +41,6 @@ MonoBehaviour:
   startUpFrames: 20
   activeFrames: 8
   recoveryFrames: 30
+  moveName: 
+  moveDescription: 
+  moveVideo: {fileID: 0}

@@ -3,19 +3,22 @@ using UnityEngine;
 
 public class InputBufferItem
 {
-    private readonly float _timeBeforeActionsExpire = 0.29f;
-    private readonly float _timestamp;
-
+    private readonly int _timeBeforeActionsExpire = 20;
+    public int _timestamp;
+    public InputEnum _inputEnum;
+    public int _priority;
     public Func<bool> Execute;
 
-    public InputBufferItem(float timestamp)
+    public InputBufferItem(InputEnum inputEnum, int timestamp)
     {
+        _inputEnum = inputEnum;
         _timestamp = timestamp;
+        _priority = (int)inputEnum;
     }
 
     public bool CheckIfValid()
     {
-        if (_timestamp + _timeBeforeActionsExpire >= Time.time)
+        if (_timestamp + _timeBeforeActionsExpire >= DemonicsWorld.Frame)
         {
             return true;
         }

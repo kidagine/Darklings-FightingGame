@@ -3,58 +3,45 @@ using UnityEngine;
 
 public class WallSplatState : State
 {
-	[SerializeField] private GameObject _wallSplatPrefab = default;
-	private AirborneHurtState _airborneHurtState;
-	private Coroutine _wallSplatCoroutine;
+    [SerializeField] private GameObject _wallSplatPrefab = default;
+    private AirborneHurtState _airborneHurtState;
 
-	void Awake()
-	{
-		_airborneHurtState = GetComponent<AirborneHurtState>();
-	}
+    void Awake()
+    {
+        _airborneHurtState = GetComponent<AirborneHurtState>();
+    }
 
-	public override void Enter()
-	{
-		base.Enter();
-		_playerAnimator.WallSplat();
-		_player.SetHurtbox(false);
-		_playerMovement.ZeroGravity();
-		_playerMovement.StopAllCoroutines();
-		_player.transform.position = _playerMovement.OnWall();
-		_playerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
-		GameObject effect = Instantiate(_wallSplatPrefab);
-		effect.transform.localPosition = transform.position;
-		_wallSplatCoroutine = StartCoroutine(WallSplatStateCoroutine());
-	}
+    public override void Enter()
+    {
+        base.Enter();
+        _audio.Sound("WallSplat").Play();
+        _playerAnimator.WallSplat();
+        _player.SetHurtbox(false);
+        _playerMovement.StopKnockback();
+        _physics.SetFreeze(true);
+        _playerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
+        GameObject effect = Instantiate(_wallSplatPrefab);
+        SpriteRenderer effectSpriteRenderer = effect.GetComponent<SpriteRenderer>();
+        effect.transform.localPosition = new Vector2(transform.position.x + (_player.transform.localScale.x * effectSpriteRenderer.sprite.bounds.size.x / 2), transform.position.y);
+        effect.transform.localScale = new Vector2(_player.transform.localScale.x * -1, 1);
+        _playerAnimator.OnCurrentAnimationFinished.AddListener(ToAirborneHurtState);
+    }
 
-	IEnumerator WallSplatStateCoroutine()
-	{
-		yield return new WaitForSeconds(0.2f);
-		ToAirborneHurtState();
-	}
+    private void ToAirborneHurtState()
+    {
+        _airborneHurtState.WallSplat = true;
+        _stateMachine.ChangeState(_airborneHurtState);
+    }
 
-	private void ToAirborneHurtState()
-	{
-		_airborneHurtState.WallSplat = true;
-		_stateMachine.ChangeState(_airborneHurtState);
-	}
+    public override bool ToKnockdownState()
+    {
+        return false;
+    }
 
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(0.0f, 0.0f);
-	}
-
-	public override bool ToKnockdownState()
-	{
-		return false;
-	}
-
-	public override void Exit()
-	{
-		base.Exit();
-		if (_wallSplatCoroutine != null)
-		{
-			StopCoroutine(_wallSplatCoroutine);
-		}
-	}
+    public override void Exit()
+    {
+        base.Exit();
+        _physics.SetFreeze(false);
+        _playerAnimator.ResetPosition();
+    }
 }

@@ -3,47 +3,35 @@ using UnityEngine;
 
 public class TauntState : State
 {
-	private IdleState _idleState;
-	private Coroutine _tauntCoroutine;
-	private readonly float _tauntTime = 2.75f;
+    private IdleState _idleState;
+    private int _tauntFrame;
 
 
-	private void Awake()
-	{
-		_idleState = GetComponent<IdleState>();
-	}
+    private void Awake()
+    {
+        _idleState = GetComponent<IdleState>();
+    }
 
-	public override void Enter()
-	{
-		base.Enter();
-		_player.CheckFlip();
-		_playerAnimator.Taunt();
-		_tauntCoroutine = StartCoroutine(TauntCoroutine());
-	}
+    public override void Enter()
+    {
+        base.Enter();
+        _physics.Velocity = DemonicsVector2.Zero;
+        _player.CheckFlip();
+        _playerAnimator.Taunt();
+        _tauntFrame = 160;
+    }
 
-	IEnumerator TauntCoroutine()
-	{
-		yield return new WaitForSeconds(_tauntTime);
-		ToIdleState();
-	}
+    private new void ToIdleState()
+    {
+        _stateMachine.ChangeState(_idleState);
+    }
 
-	private void ToIdleState()
-	{
-		_stateMachine.ChangeState(_idleState);
-	}
-
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = Vector2.zero;
-	}
-
-	public override void Exit()
-	{
-		base.Exit();
-		if (_tauntCoroutine != null)
-		{
-			StopCoroutine(_tauntCoroutine);
-		}
-	}
+    public override void UpdateLogic()
+    {
+        base.UpdateLogic();
+        if (DemonicsWorld.WaitFramesOnce(ref _tauntFrame))
+        {
+            ToIdleState();
+        }
+    }
 }

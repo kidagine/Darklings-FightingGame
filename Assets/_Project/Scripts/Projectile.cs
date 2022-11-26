@@ -1,81 +1,97 @@
+using System.Collections;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour, IHurtboxResponder
+public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
 {
-	[SerializeField] private Hitbox _hitbox = default;
-	[SerializeField] private GameObject _dustPrefab = default;
-	[SerializeField] private int _projectilePriority = default;
-	[SerializeField] private float _speed = 4.0f;
-	[SerializeField] private bool _isFixed = default;
-	private Rigidbody2D _rigidbody;
-	public int ProjectilePriority { get { return _projectilePriority; } private set { } }
-	public Transform SourceTransform { get; private set; }
+    [SerializeField] private Hitbox _hitbox = default;
+    [SerializeField] private GameObject _dustPrefab = default;
+    [SerializeField] private int _projectilePriority = default;
+    [SerializeField] private float _speed = 4.0f;
+    [SerializeField] private bool _isFixed = default;
+    [SerializeField] private bool _disableOnContact = true;
+    private DemonicsPhysics _physics;
+    public int ProjectilePriority { get { return _projectilePriority; } private set { } }
+    public Transform SourceTransform { get; private set; }
 
 
-	public Vector2 Direction { get; set; }
-	public bool BlockingLow { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-	public bool BlockingHigh { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-	public bool BlockingMiddair { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public Vector2 Direction { get; set; }
+    public bool BlockingLow { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public bool BlockingHigh { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public bool BlockingMiddair { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-	void Awake()
-	{
-		_rigidbody = GetComponent<Rigidbody2D>();
-		_hitbox.OnCollision += () => gameObject.SetActive(false);
-	}
+    void OnEnable()
+    {
+        OnCurrentAnimationFinished.AddListener(() => gameObject.SetActive(false));
+        SetAnimation("Idle");
 
-	void Update()
-	{
-		if (_isFixed)
-		{
-			_rigidbody.velocity = (transform.right * transform.root.localScale.x) * _speed;
-		}
-		else
-		{
-			_rigidbody.velocity = Direction * _speed;
-		}
-	}
+        _physics = GetComponent<DemonicsPhysics>();
+    }
 
-	void OnDisable()
-	{
-		if (_hitbox.HitPoint != null)
-		{
-			if (_hitbox.HitPoint.gameObject.layer == 6)
-			{
-				Instantiate(_dustPrefab, transform.position, Quaternion.identity);
-			}
-			_hitbox.OnCollision -= () => gameObject.SetActive(false);
-		}
-	}
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        if (_isFixed)
+        {
+            _physics.Velocity = (new DemonicsVector2((DemonicsFloat)transform.right.x, (DemonicsFloat)transform.right.y) * (DemonicsFloat)transform.root.localScale.x) * (DemonicsFloat)_speed;
+        }
+        else
+        {
+            _physics.Velocity = new DemonicsVector2((DemonicsFloat)Direction.x, (DemonicsFloat)Direction.y) * (DemonicsFloat)_speed;
+        }
+        if (_physics.OnGround && _disableOnContact)
+        {
+            DestroyProjectile();
+        }
+    }
 
-	public void SetSourceTransform(Transform sourceTransform)
-	{
-		SourceTransform = sourceTransform;
-		_hitbox.SetSourceTransform(sourceTransform);
-	}
+    protected override void CheckAnimationBoxes()
+    {
+        if (GetHitboxes().Length > 0)
+        {
+            _hitbox.SetBox(GetHitboxes()[0].size, GetHitboxes()[0].offset);
+        }
+    }
 
-	public bool TakeDamage(AttackSO attackSO)
-	{
-		return false;
-	}
+    public void SetSourceTransform(Transform sourceTransform, Vector2 position, bool assist)
+    {
+        SourceTransform = sourceTransform;
+        _hitbox.SetSourceTransform(sourceTransform);
+        if (assist)
+        {
+            _physics.Position = new DemonicsVector2((DemonicsFloat)position.x, (DemonicsFloat)position.y);
+        }
+        else
+        {
+            _physics.Position = new DemonicsVector2((DemonicsFloat)sourceTransform.position.x + (sourceTransform.localScale.x * (DemonicsFloat)position.x), (DemonicsFloat)sourceTransform.position.y + (DemonicsFloat)position.y);
+        }
+    }
 
-	private void OnTriggerEnter2D(Collider2D collision)
-	{
-		if (collision.TryGetComponent(out Projectile projectile))
-		{
-			if (projectile.SourceTransform != SourceTransform)
-			{
-				if (projectile.ProjectilePriority > ProjectilePriority)
-				{
-					gameObject.SetActive(false);
-					Instantiate(_dustPrefab, transform.position, Quaternion.identity);
-				}
-				else if (projectile.ProjectilePriority == ProjectilePriority)
-				{
-					gameObject.SetActive(false);
-					projectile.gameObject.SetActive(false);
-					Instantiate(_dustPrefab, transform.position, Quaternion.identity);
-				}
-			}
-		}
-	}
+    public void DestroyProjectile()
+    {
+        Instantiate(_dustPrefab, transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
+    }
+
+    public bool TakeDamage(AttackSO attackSO)
+    {
+        return false;
+    }
+
+    public void EnterHitstop()
+    {
+        _physics.SetFreeze(true);
+        Pause();
+    }
+
+    public void ExitHitstop()
+    {
+        gameObject.SetActive(false);
+        _physics.SetFreeze(false);
+        Resume();
+    }
+
+    public bool IsInHitstop()
+    {
+        return false;
+    }
 }

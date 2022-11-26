@@ -6,6 +6,7 @@ public class CrouchState : GroundParentState
     {
         base.Enter();
         _playerAnimator.Crouch();
+        _physics.Velocity = DemonicsVector2.Zero;
     }
 
     public override void UpdateLogic()
@@ -34,11 +35,5 @@ public class CrouchState : GroundParentState
         _blockLowState.Initialize(attack);
         _stateMachine.ChangeState(_blockLowState);
         return true;
-    }
-
-    public override void UpdatePhysics()
-    {
-        base.UpdatePhysics();
-        _rigidbody.velocity = Vector2.zero;
     }
 }

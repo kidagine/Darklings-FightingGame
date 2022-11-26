@@ -2,82 +2,93 @@ using UnityEngine;
 
 public class IdleState : GroundParentState
 {
-	public override void Enter()
-	{
-		base.Enter();
-		if (GameManager.Instance.InfiniteHealth)
-		{
-			_player.MaxHealthStats();
-		}
-		_playerAnimator.Idle();
-		_player.SetAirPushBox(false);
-		_player.SetPushboxTrigger(false);
-		_playerMovement.HasAirDashed = false;
-		_playerMovement.HasDoubleJumped = false;
-		_player.CanAirArcana = true;
-	}
+    private bool _checkInputBuffer;
 
-	public override void UpdateLogic()
-	{
-		base.UpdateLogic();
-		ToWalkState();
-		ToCrouchState();
-		ToJumpState();
-		_player.CheckFlip();
-	}
 
-	private void ToWalkState()
-	{
-		if (_baseController.InputDirection.x != 0.0f)
-		{
-			_stateMachine.ChangeState(_walkState);
-		}
-	}
+    public override void Enter()
+    {
+        base.Enter();
+        if (GameManager.Instance.InfiniteHealth)
+        {
+            _player.MaxHealthStats();
+        }
+        _playerAnimator.Idle();
+        _player.SetPushboxTrigger(false);
+        _playerMovement.HasAirDashed = false;
+        _playerMovement.HasDoubleJumped = false;
+        _player.CanAirArcana = true;
+        if (_checkInputBuffer)
+        {
+        }
+    }
 
-	private void ToCrouchState()
-	{
-		if (_baseController.Crouch())
-		{
-			_stateMachine.ChangeState(_crouchState);
-		}
-	}
+    public void Initialize(bool checkInputBuffer)
+    {
+        _checkInputBuffer = checkInputBuffer;
+    }
 
-	private void ToJumpState()
-	{
-		if (_baseController.Jump() && !_playerMovement.HasJumped)
-		{
-			_playerMovement.HasJumped = true;
-			_stateMachine.ChangeState(_jumpState);
-		}
-		else if (_playerMovement.HasJumped)
-		{
-			_playerMovement.HasJumped = false;
-		}
-	}
+    public override void UpdateLogic()
+    {
+        base.UpdateLogic();
+        _physics.Velocity = DemonicsVector2.Zero;
+        ToWalkState();
+        ToCrouchState();
+        ToJumpState();
+        _player.CheckFlip();
+    }
 
-	public override bool ToParryState()
-	{
-		_stateMachine.ChangeState(_parryState);
-		return true;
-	}
+    private void ToWalkState()
+    {
+        if (_baseController.InputDirection.x != 0)
+        {
+            _stateMachine.ChangeState(_walkState);
+        }
+    }
 
-	public override bool ToDashState(int direction)
-	{
-		_dashState.DashDirection = direction;
-		_stateMachine.ChangeState(_dashState);
-		return true;
-	}
+    private void ToCrouchState()
+    {
+        if (_baseController.Crouch())
+        {
+            _stateMachine.ChangeState(_crouchState);
+        }
+    }
 
-	public override bool ToBlockState(AttackSO attack)
-	{
-		_blockState.Initialize(attack);
-		_stateMachine.ChangeState(_blockState);
-		return true;
-	}
+    private void ToJumpState()
+    {
+        if (_baseController.Jump() && !_playerMovement.HasJumped)
+        {
+            _playerMovement.HasJumped = true;
+            _stateMachine.ChangeState(_jumpState);
+        }
+        else if (_playerMovement.HasJumped)
+        {
+            _playerMovement.HasJumped = false;
+        }
+    }
 
-	public override void UpdatePhysics()
-	{
-		base.UpdatePhysics();
-		_rigidbody.velocity = new Vector2(0.0f, _rigidbody.velocity.y);
-	}
+    public override bool ToParryState()
+    {
+        _stateMachine.ChangeState(_parryState);
+        return true;
+    }
+
+    public override bool ToDashState(int direction)
+    {
+        _dashState.DashDirection = direction;
+        _stateMachine.ChangeState(_dashState);
+        return true;
+    }
+
+    public override bool ToBlockState(AttackSO attack)
+    {
+        _blockState.Initialize(attack);
+        _stateMachine.ChangeState(_blockState);
+        return true;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        _checkInputBuffer = false;
+    }
 }

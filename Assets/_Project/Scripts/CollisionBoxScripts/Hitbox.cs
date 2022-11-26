@@ -3,96 +3,108 @@ using Demonics.Utility;
 using System;
 using UnityEngine;
 
-public class Hitbox : MonoBehaviour
+public class Hitbox : DemonicsCollider
 {
-	public Vector2 _hitboxSize = default;
-	public Vector2 _offset = default;
-	public Action OnCollision;
-	[SerializeField] private bool _hitGround;
-	private Color _hitboxColor = Color.red;
-	private UnityEngine.LayerMask _hurtboxLayerMask;
-	private IHitboxResponder _hitboxResponder;
-	private Transform _sourceTransform;
-	[HideInInspector] public bool _hasHit;
-	public Transform HitPoint { get; private set; }
+    public DemonicsVector2 HitPoint { get; private set; }
+    [SerializeField] private IHitboxResponder _hitboxResponder;
+    public Transform SourceTransform { get; set; }
+    public bool HitConfirm { get; set; }
 
-	void Awake()
-	{
-		_sourceTransform = transform.root;
-	}
+    void Awake()
+    {
+        GizmoColor = Color.red;
+        SourceTransform = transform.root;
+    }
 
-	void Start()
-	{
-		if (_hitboxResponder == null)
-		{
-			_hitboxResponder = transform.root.GetComponent<IHitboxResponder>();
-		}
-		_hurtboxLayerMask += LayerProvider.GetLayerMask(LayerMaskEnum.Hurtbox);
-		if (_hitGround)
-		{
-			_hurtboxLayerMask += LayerProvider.GetLayerMask(LayerMaskEnum.Ground);
-		}
-	}
+    protected override void Start()
+    {
+        base.Start();
+        if (_hitboxResponder == null)
+        {
+            _hitboxResponder = transform.root.GetComponent<IHitboxResponder>();
+        }
+    }
 
-	public void SetSourceTransform(Transform sourceTransform)
-	{
-		_sourceTransform = sourceTransform;
-	}
+    protected override bool Colliding(DemonicsCollider a, DemonicsCollider b)
+    {
+        if (a._physics.Position.x > b._physics.Position.x)
+        {
+            HitPoint = new DemonicsVector2(a.Position.x - (a.Size.x / (DemonicsFloat)2), HitPoint.y);
+        }
+        else
+        {
+            HitPoint = new DemonicsVector2(a.Position.x + (a.Size.x / (DemonicsFloat)2), HitPoint.y);
+        }
+        if (a._physics.Position.y == b._physics.Position.y)
+        {
+            HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y);
+        }
+        else if (a._physics.Position.y >= b._physics.Position.y)
+        {
+            HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y - (a.Size.y / (DemonicsFloat)2));
+        }
+        else
+        {
+            HitPoint = new DemonicsVector2(HitPoint.x, a.Position.y + (a.Size.y / (DemonicsFloat)2));
+        }
+        return base.Colliding(a, b);
+    }
 
-	public void SetHitboxResponder(Transform hitboxResponder)
-	{
-		_hitboxResponder = hitboxResponder.GetComponent<IHitboxResponder>();
-	}
+    protected override void InitializeCollisionList()
+    {
+        _demonicsColliders.Clear();
+        DemonicsCollider[] demonicsCollidersArray = FindObjectsOfType<DemonicsCollider>();
+        for (int i = 0; i < demonicsCollidersArray.Length; i++)
+        {
+            if (!demonicsCollidersArray[i].transform.IsChildOf(SourceTransform))
+            {
+                if (demonicsCollidersArray[i].TryGetComponent(out Hurtbox hurtbox))
+                {
+                    _demonicsColliders.Add(demonicsCollidersArray[i]);
+                }
+            }
+        }
+        _demonicsColliders.Remove(this);
+    }
 
-	void Update()
-	{
-		Vector2 hitboxPosition = new(transform.position.x + (_offset.x * transform.root.localScale.x), transform.position.y + (_offset.y * transform.root.localScale.y));
-		RaycastHit2D[] hit = Physics2D.BoxCastAll(hitboxPosition, _hitboxSize, 0.0f, Vector2.zero, 0.0f, _hurtboxLayerMask);
-		if (hit.Length > 0)
-		{
-			for (int i = 0; i < hit.Length; i++)
-			{
-				if (hit[i].collider != null)
-				{
-					if (_hitboxResponder != null && !hit[i].collider.transform.IsChildOf(_sourceTransform) && !_hasHit)
-					{
-						HitPoint = hit[i].transform;
-						if (_hitGround && hit[i].normal == Vector2.up)
-						{
-							OnCollision?.Invoke();
-						}
-						if (hit[i].collider.transform.TryGetComponent(out Hurtbox hurtbox))
-						{
-							OnCollision?.Invoke();
-							_hitboxResponder.HitboxCollided(hit[i], hurtbox);
-						}
-						_hasHit = true;
-					}
-				}
-			}
-		}
-	}
+    public virtual void SetSourceTransform(Transform sourceTransform)
+    {
+        SourceTransform = sourceTransform;
+    }
 
-	void OnEnable()
-	{
-		_hasHit = false;
-	}
+    public void SetHitboxResponder(Transform hitboxResponder)
+    {
+        _hitboxResponder = hitboxResponder.GetComponent<IHitboxResponder>();
+    }
 
-	void OnDisable()
-	{
-		_hasHit = false;
-	}
+    public void SetBox(Vector2 size, Vector2 offset)
+    {
+        Size = new DemonicsVector2((DemonicsFloat)size.x, (DemonicsFloat)size.y);
+        Offset = new DemonicsVector2((DemonicsFloat)offset.x, (DemonicsFloat)offset.y);
+    }
 
-#if UNITY_EDITOR
-	private void OnDrawGizmos()
-	{
-		_hitboxColor.a = 0.6f;
-		Vector2 hitboxPosition = new(transform.position.x + (_offset.x * transform.root.localScale.x), transform.position.y + (_offset.y * transform.root.localScale.y));
-		Gizmos.color = _hitboxColor;
-		Gizmos.matrix = Matrix4x4.TRS(hitboxPosition, transform.rotation, Vector2.one);
+    protected override void EnterCollision(DemonicsCollider collider)
+    {
+        if (!HitConfirm)
+        {
+            if (collider.TryGetComponent(out Hurtbox hurtbox))
+            {
+                bool hit = _hitboxResponder.HitboxCollided(new Vector2((float)HitPoint.x, (float)HitPoint.y), hurtbox);
+                if (hit)
+                {
+                    if (gameObject.activeSelf)
+                    {
+                        HitConfirm = true;
+                    }
+                    base.EnterCollision(collider);
+                }
+            }
+        }
+    }
 
-		Gizmos.DrawWireCube(Vector3.zero, new Vector3(_hitboxSize.x, _hitboxSize.y, 1.0f));
-		Gizmos.DrawWireCube(Vector3.zero, new Vector3(_hitboxSize.x * 1.01f, _hitboxSize.y * 1.01f, 1.0f));
-	}
-#endif
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        HitConfirm = false;
+    }
 }

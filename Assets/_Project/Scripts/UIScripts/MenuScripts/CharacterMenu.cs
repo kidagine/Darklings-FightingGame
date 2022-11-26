@@ -5,238 +5,267 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
 public class CharacterMenu : BaseMenu
 {
-	[SerializeField] private SpriteRenderer _characterOneImage = default;
-	[SerializeField] private SpriteRenderer _characterTwoImage = default;
-	[SerializeField] private GameObject _assistOne = default;
-	[SerializeField] private GameObject _assistTwo = default;
-	[SerializeField] private SpriteRenderer _assistOneSpriteRenderer = default;
-	[SerializeField] private SpriteRenderer _assistTwoSpriteRenderer = default;
-	[SerializeField] private Animator _characterOneAnimator = default;
-	[SerializeField] private Animator _characterTwoAnimator = default;
-	[SerializeField] private ChangeStageMenu _changeStageMenu = default;
-	[SerializeField] private Button _firstCharacterButton = default;
-	[SerializeField] private PlayerAnimator _playerAnimatorOne = default;
-	[SerializeField] private PlayerAnimator _playerAnimatorTwo = default;
-	[SerializeField] private SpriteLibrary _spriteLibraryOne = default;
-	[SerializeField] private SpriteLibrary _spriteLibraryTwo = default;
-	[SerializeField] private TextMeshProUGUI _playerOneName = default;
-	[SerializeField] private TextMeshProUGUI _playerTwoName = default;
-	[SerializeField] private TextMeshProUGUI _hpTextOne = default;
-	[SerializeField] private TextMeshProUGUI _arcanaTextOne = default;
-	[SerializeField] private TextMeshProUGUI _speedTextOne = default;
-	[SerializeField] private TextMeshProUGUI _hpTextTwo = default;
-	[SerializeField] private TextMeshProUGUI _arcanaTextTwo = default;
-	[SerializeField] private TextMeshProUGUI _speedTextTwo = default;
-	[SerializeField] private PlayerStatsSO[] _playerStatsArray = default;
-	private PlayerStatsSO _playerStats;
-	private EventSystem _currentEventSystem;
+    [SerializeField] private PlayerInput _playerInput = default;
+    [SerializeField] private FadeHandler _fadeHandler = default;
+    [SerializeField] private GameObject _rebindOnePrompt = default;
+    [SerializeField] private GameObject _assistOne = default;
+    [SerializeField] private GameObject _assistTwo = default;
+    [SerializeField] private GameObject _iconsOne = default;
+    [SerializeField] private GameObject _iconsTwo = default;
+    [SerializeField] private PlayerUIRender _assistOneUIRenderer = default;
+    [SerializeField] private PlayerUIRender _assistTwoUIRenderer = default;
+    [SerializeField] private ChangeStageMenu _changeStageMenu = default;
+    [SerializeField] private AnimationSO _randomAnimation = default;
+    [SerializeField] private Button _firstCharacterButton = default;
+    [SerializeField] private PlayerUIRender _playerUIRenderOne = default;
+    [SerializeField] private PlayerUIRender _playerUIRenderTwo = default;
+    [SerializeField] private TextMeshProUGUI _playerOneName = default;
+    [SerializeField] private TextMeshProUGUI _playerTwoName = default;
+    [SerializeField] private TextMeshProUGUI _hpTextOne = default;
+    [SerializeField] private TextMeshProUGUI _arcanaTextOne = default;
+    [SerializeField] private TextMeshProUGUI _speedTextOne = default;
+    [SerializeField] private TextMeshProUGUI _hpTextTwo = default;
+    [SerializeField] private TextMeshProUGUI _arcanaTextTwo = default;
+    [SerializeField] private TextMeshProUGUI _speedTextTwo = default;
+    [SerializeField] private PlayerStatsSO[] _playerStatsArray = default;
+    [SerializeField] private RebindMenu[] _rebindMenues = default;
+    private PlayerStatsSO _playerStats;
+    private EventSystem _currentEventSystem;
+    private Coroutine _tauntCoroutine;
+    public bool FirstCharacterSelected { get; private set; }
 
-	public bool FirstCharacterSelected { get; private set; }
 
+    void Awake()
+    {
+        _currentEventSystem = EventSystem.current;
+    }
 
-	void Awake()
-	{
-		_currentEventSystem = EventSystem.current;
-	}
+    public void SetCharacterImage(PlayerStatsSO playerStats, bool isRandomizer)
+    {
+        _playerStats = playerStats;
+        if (!FirstCharacterSelected)
+        {
+            _playerOneName.enabled = true;
+            if (!isRandomizer)
+            {
+                _playerUIRenderOne.gameObject.SetActive(true);
+                _iconsOne.gameObject.SetActive(true);
+                _playerOneName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+                _playerUIRenderOne.PlayerStats = playerStats;
+                _playerUIRenderOne.SetAnimator(_playerStats._animation);
+                _hpTextOne.text = $"LV{_playerStats.defenseLevel}";
+                _arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
+                _speedTextOne.text = $"LV{_playerStats.speedLevel}";
+            }
+            else
+            {
+                _playerUIRenderOne.SetAnimator(_randomAnimation);
+                _hpTextOne.text = "?";
+                _arcanaTextOne.text = "?";
+                _speedTextOne.text = "?";
+                _playerOneName.text = "Random";
+            }
+        }
+        else
+        {
+            UsedController();
+            _playerTwoName.enabled = true;
+            if (!isRandomizer)
+            {
+                _playerUIRenderTwo.gameObject.SetActive(true);
+                _iconsTwo.gameObject.SetActive(true);
+                _playerTwoName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+                _playerUIRenderTwo.PlayerStats = playerStats;
+                _playerUIRenderTwo.SetAnimator(_playerStats._animation);
+                _hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
+                _arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
+                _speedTextTwo.text = $"LV{_playerStats.speedLevel}";
+            }
+            else
+            {
+                _playerUIRenderTwo.SetAnimator(_randomAnimation);
+                _hpTextTwo.text = "?";
+                _arcanaTextTwo.text = "?";
+                _speedTextTwo.text = "?";
+                _playerTwoName.text = "Random";
+            }
+        }
+    }
 
-	public void EnablePlayerTwoSelector()
-	{
-	}
+    public void SelectCharacterImage()
+    {
+        _currentEventSystem.sendNavigationEvents = false;
+        _playerOneName.enabled = true;
+        _playerTwoName.enabled = true;
+        if (!FirstCharacterSelected)
+        {
+            _assistOneUIRenderer.gameObject.SetActive(true);
+            _assistOne.SetActive(true);
+            if (_playerStats == null)
+            {
+                int randomPlayer = UnityEngine.Random.Range(0, _playerStatsArray.Length);
+                _playerStats = _playerStatsArray[randomPlayer];
+                string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+                _playerOneName.text = characterName;
+                _playerUIRenderOne.PlayerStats = _playerStats;
+                _playerUIRenderOne.SetAnimator(_playerStats._animation);
+            }
+            _hpTextOne.text = $"LV{_playerStats.defenseLevel}";
+            _arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
+            _speedTextOne.text = $"LV{_playerStats.speedLevel}";
+            SceneSettings.PlayerOne = _playerStats.characterIndex;
+        }
+        else
+        {
+            _assistTwoUIRenderer.gameObject.SetActive(true);
+            _assistTwo.SetActive(true);
+            if (_playerStats == null)
+            {
+                int randomPlayer = UnityEngine.Random.Range(0, _playerStatsArray.Length);
+                _playerStats = _playerStatsArray[randomPlayer];
+                string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+                _playerOneName.text = characterName;
+                _playerUIRenderTwo.PlayerStats = _playerStats;
+                _playerUIRenderTwo.SetAnimator(_playerStats._animation);
+            }
+            _hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
+            _arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
+            _speedTextTwo.text = $"LV{_playerStats.speedLevel}";
+            SceneSettings.PlayerTwo = _playerStats.characterIndex;
+        }
+    }
 
-	public void SetCharacterImage(RuntimeAnimatorController animatorController, PlayerStatsSO playerStats, bool isRandomizer)
-	{
-		_playerStats = playerStats;
-		if (!FirstCharacterSelected)
-		{
-			_playerOneName.enabled = true;
-			if (animatorController.name == "RandomSelectAnimator")
-			{
-				_characterTwoImage.flipX = false;
-				_playerOneName.enabled = false;
-			}
-			_characterOneImage.enabled = true;
-			if (!isRandomizer)
-			{
-				_playerOneName.text = playerStats.characterName.ToString();
-				_spriteLibraryOne.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
-				_playerAnimatorOne.PlayerStats.PlayerStatsSO = playerStats;
-				_hpTextOne.text = string.Format("{0:0.00}", _playerStats.defense);
-				_arcanaTextOne.text = _playerStats.maxArcana.ToString();
-				_speedTextOne.text = _playerStats.runSpeed.ToString();
-			}
-			else
-			{
-				_hpTextOne.text = "?";
-				_arcanaTextOne.text = "?";
-				_speedTextOne.text = "?";
-				_playerOneName.text = "Random";
-			}
-			if (isRandomizer)
-			{
+    public void SetCharacter(bool isPlayerOne)
+    {
+        if (isPlayerOne)
+        {
+            _playerUIRenderOne.Taunt();
+        }
+        else
+        {
+            _playerUIRenderTwo.Taunt();
+        }
+        if (FirstCharacterSelected)
+        {
+            EventSystem.current.gameObject.SetActive(false);
+        }
+        _tauntCoroutine = StartCoroutine(TauntEndCoroutine());
+    }
 
-			}
+    IEnumerator TauntEndCoroutine()
+    {
+        yield return new WaitForSeconds(1.0f);
+        _currentEventSystem.sendNavigationEvents = true;
+        if (!FirstCharacterSelected)
+        {
+            FirstCharacterSelected = true;
+            _currentEventSystem.SetSelectedGameObject(null);
+            _firstCharacterButton.Select();
+        }
+        else
+        {
+            SceneSettings.SceneSettingsDecide = true;
+            if (SceneSettings.RandomStage)
+            {
+                SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
+            }
+            _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(2));
+            _fadeHandler.StartFadeTransition(true);
 
-			_characterOneAnimator.runtimeAnimatorController = animatorController;
-		}
-		else
-		{
-			_playerTwoName.enabled = true;
-			if (animatorController.name == "RandomSelectAnimator")
-			{
-				_characterTwoImage.flipX = false;
-				_playerTwoName.enabled = false;
-			}
-			else
-			{
-				_characterTwoImage.flipX = true;
-			}
-			_characterTwoImage.enabled = true;
-			if (!isRandomizer)
-			{
-				_playerTwoName.text = playerStats.characterName.ToString();
-				_spriteLibraryTwo.spriteLibraryAsset = playerStats.spriteLibraryAssets[0];
-				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = playerStats;
-				_hpTextTwo.text = string.Format("{0:0.00}", _playerStats.defense);
-				_arcanaTextTwo.text = _playerStats.maxArcana.ToString();
-				_speedTextTwo.text = _playerStats.runSpeed.ToString();
-			}
-			else
-			{
-				_hpTextTwo.text = "?";
-				_arcanaTextTwo.text = "?";
-				_speedTextTwo.text = "?";
-				_playerTwoName.text = "Random";
-			}
+        }
+    }
 
-			_characterTwoAnimator.runtimeAnimatorController = animatorController;
-		}
-	}
+    public void GoBack(BaseMenu otherMenu)
+    {
+        if (_changeStageMenu.IsOpen)
+        {
+            _changeStageMenu.ChangeStageClose();
+        }
+        else
+        {
+            if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
+            {
+                OpenMenuHideCurrent(otherMenu);
+                ResetControllerInput();
+            }
+        }
+    }
 
-	public void SelectCharacterImage()
-	{
-		_currentEventSystem.sendNavigationEvents = false;
-		_playerOneName.enabled = true;
-		_playerTwoName.enabled = true;
-		if (!FirstCharacterSelected)
-		{
-			_assistOneSpriteRenderer.enabled = true;
-			_assistOne.SetActive(true);
-			if (_playerStats == null)
-			{
-				int randomPlayer = UnityEngine.Random.Range(0, _playerStatsArray.Length);
-				_playerStats = _playerStatsArray[randomPlayer];
-				string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-				Debug.Log(characterName);
-				_playerOneName.text = characterName;
-				_spriteLibraryOne.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
-				_playerAnimatorOne.PlayerStats.PlayerStatsSO = _playerStats;
-				_characterOneAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
-			}
-			_hpTextOne.text = string.Format("{0:0.00}", _playerStats.defense);
-			_arcanaTextOne.text = _playerStats.maxArcana.ToString();
-			_speedTextOne.text = _playerStats.runSpeed.ToString();
-			SceneSettings.PlayerOne = _playerStats.characterIndex;
-		}
-		else
-		{
-			_assistTwoSpriteRenderer.enabled = true;
-			_assistTwo.SetActive(true);
-			if (_playerStats == null)
-			{
-				int randomPlayer = UnityEngine.Random.Range(0, _playerStatsArray.Length);
-				_playerStats = _playerStatsArray[randomPlayer];
-				string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-				_playerOneName.text = characterName; 
-				_spriteLibraryTwo.spriteLibraryAsset = _playerStats.spriteLibraryAssets[0];
-				_playerAnimatorTwo.PlayerStats.PlayerStatsSO = _playerStats;
-				_characterTwoAnimator.runtimeAnimatorController = _playerStats.runtimeAnimatorController;
-			}
-			_hpTextTwo.text = string.Format("{0:0.00}", _playerStats.defense);
-			_arcanaTextTwo.text = _playerStats.maxArcana.ToString();
-			_speedTextTwo.text = _playerStats.runSpeed.ToString();
-			SceneSettings.PlayerTwo = _playerStats.characterIndex;
-		}
-	}
+    public void ResetControllerInput()
+    {
+        //SceneSettings.ControllerOne = "Cpu";
+        //SceneSettings.ControllerTwo = "Cpu";
+    }
 
-	public void SetCharacter(bool isPlayerOne)
-	{
-		if (isPlayerOne)
-		{
-			_playerAnimatorOne.Taunt();
-		}
-		else
-		{
-			_playerAnimatorTwo.Taunt();
-		}
-		StartCoroutine(TauntEndCoroutine());
-	}
+    public void OpenRebind()
+    {
+        if (UsedController())
+        {
+            if (!_changeStageMenu.IsOpen)
+            {
+                if (!FirstCharacterSelected && SceneSettings.ControllerOne != null)
+                {
+                    _rebindMenues[0].Show();
+                }
+                else if (SceneSettings.ControllerTwo != null)
+                {
+                    _rebindMenues[1].Show();
+                }
+                _currentEventSystem.sendNavigationEvents = true;
+            }
+        }
+    }
 
-	IEnumerator TauntEndCoroutine()
-	{
-		yield return new WaitForSeconds(1.0f);
-		_currentEventSystem.sendNavigationEvents = true;
-		if (!FirstCharacterSelected)
-		{
-			FirstCharacterSelected = true;
-			_currentEventSystem.SetSelectedGameObject(null);
-			_firstCharacterButton.Select();
-		}
-		else
-		{
-			SceneSettings.SceneSettingsDecide = true;
-			if (SceneSettings.RandomStage)
-			{
-				SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
-			}
-			SceneManager.LoadScene(2);
-		}
-	}
+    private bool UsedController()
+    {
+        InputDevice device;
+        if (!FirstCharacterSelected)
+        {
+            device = SceneSettings.ControllerOne;
+        }
+        else
+        {
+            device = SceneSettings.ControllerTwo;
+        }
+        if (device == _playerInput.devices[0])
+        {
+            _rebindOnePrompt.SetActive(true);
+            return true;
+        }
+        _rebindOnePrompt.SetActive(false);
+        return false;
+    }
 
-	public void GoBack(BaseMenu otherMenu)
-	{
-		if (_changeStageMenu.IsOpen)
-		{
-			_changeStageMenu.ChangeStageClose();
-		}
-		else
-		{
-			OpenMenuHideCurrent(otherMenu);
-			ResetControllerInput();
-		}
-	}
-
-	public void ResetControllerInput()
-	{
-		SceneSettings.ControllerOne = "Cpu";
-		SceneSettings.ControllerTwo = "Cpu";
-	}
-
-	private void OnDisable()
-	{
-		if (!SceneSettings.SceneSettingsDecide)
-		{
-			_currentEventSystem.sendNavigationEvents = true;
-			FirstCharacterSelected = false;
-			_hpTextOne.text = "";
-			_arcanaTextOne.text = "";
-			_speedTextOne.text = "";
-			_hpTextTwo.text = "";
-			_arcanaTextTwo.text = "";
-			_speedTextTwo.text = "";
-			_playerOneName.text = "";
-			_characterOneImage.enabled = false;
-			_characterOneAnimator.runtimeAnimatorController = null;
-			_characterTwoImage.enabled = false;
-			_characterTwoAnimator.runtimeAnimatorController = null;
-			_playerTwoName.text = "";
-			_assistOneSpriteRenderer.enabled = false;
-			_assistTwoSpriteRenderer.enabled = false;
-		}
-	}
+    private void OnDisable()
+    {
+        if (!SceneSettings.SceneSettingsDecide)
+        {
+            if (_tauntCoroutine != null)
+            {
+                StopCoroutine(_tauntCoroutine);
+            }
+            _iconsOne.gameObject.SetActive(false);
+            _iconsTwo.gameObject.SetActive(false);
+            _currentEventSystem.SetSelectedGameObject(null);
+            _currentEventSystem.sendNavigationEvents = true;
+            FirstCharacterSelected = false;
+            _hpTextOne.text = "";
+            _arcanaTextOne.text = "";
+            _speedTextOne.text = "";
+            _hpTextTwo.text = "";
+            _arcanaTextTwo.text = "";
+            _speedTextTwo.text = "";
+            _playerOneName.text = "";
+            _playerTwoName.text = "";
+            _assistOneUIRenderer.gameObject.SetActive(false);
+            _assistTwoUIRenderer.gameObject.SetActive(false);
+        }
+        _fadeHandler.onFadeEnd.RemoveAllListeners();
+    }
 }
