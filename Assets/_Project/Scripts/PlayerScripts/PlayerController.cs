@@ -12,7 +12,7 @@ public class PlayerController : BaseController
     private int _dashForwardLastInputTime;
     private int _dashBackLastInputTime;
     private readonly int _dashTime = 12;
-
+    Vector2Int _previousInput;
 
     void Start()
     {
@@ -25,24 +25,32 @@ public class PlayerController : BaseController
     public void Movement(CallbackContext callbackContext)
     {
         Vector2Int input = new Vector2Int(Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().x), Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().y));
-        if (callbackContext.performed && IsControllerEnabled)
+        if (callbackContext.performed && IsControllerEnabled && _previousInput != input)
         {
             if (input.x == 1)
             {
+                _previousInput = input;
                 _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
             }
             if (input.x == -1)
             {
+                _previousInput = input;
                 _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
             }
             if (input.y == 1)
             {
+                _previousInput = input;
                 _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
             }
             if (input.y == -1)
             {
+                _previousInput = input;
                 _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
             }
+        }
+        if (input == Vector2Int.zero)
+        {
+            _previousInput = Vector2Int.zero;
         }
 
         if (input.x == 0)
