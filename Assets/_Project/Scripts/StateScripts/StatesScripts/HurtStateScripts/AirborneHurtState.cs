@@ -86,6 +86,7 @@ public class AirborneHurtState : HurtParentState
     {
         if (_playerMovement.IsGrounded && _canCheckGround)
         {
+            _knockdownState.Initialize(_hurtAttack.causesSoftKnockdown);
             _stateMachine.ChangeState(_knockdownState);
         }
     }

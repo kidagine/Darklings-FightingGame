@@ -21,6 +21,7 @@ public class AttackSO : ScriptableObject
     public bool isArcana;
     public bool jumpCancelable;
     public bool causesKnockdown;
+    public bool causesSoftKnockdown;
     [Header("Sounds")]
     public string attackSound;
     public string impactSound;

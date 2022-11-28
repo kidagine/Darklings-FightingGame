@@ -11721,8 +11721,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 2
-  _characterOne: 0
-  _characterTwo: 1
+  _characterOne: 4
+  _characterTwo: 0
   _assistOne: 0
   _assistTwo: 0
   _controllerOne: 0
@@ -11731,8 +11731,8 @@ MonoBehaviour:
   _controllerTwoType: 0
   _music: 10
   _playerOneSkin: 0
-  _playerTwoSkin: 0
-  _isTrainingMode: 0
+  _playerTwoSkin: 1
+  _isTrainingMode: 1
   _1BitOn: 0
   _gameSpeed: 1
   _countdownTime: 99
@@ -19023,17 +19023,17 @@ MonoBehaviour:
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_PointAction: {fileID: 1054132383583890850, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 2064916234097673511, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_CancelAction: {fileID: -1967631576421560919, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 8056856818456041789, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MiddleClickAction: {fileID: 3279352641294131588, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_RightClickAction: {fileID: 3837173908680883260, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_ScrollWheelAction: {fileID: 4502412055082496612, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 4754684134866288074, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
+  m_PointAction: {fileID: 0}
+  m_MoveAction: {fileID: 4875369870055060632, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
+  m_SubmitAction: {fileID: -8610638692812447094, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
+  m_CancelAction: {fileID: 8462929126762520957, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
+  m_LeftClickAction: {fileID: 0}
+  m_MiddleClickAction: {fileID: 0}
+  m_RightClickAction: {fileID: 0}
+  m_ScrollWheelAction: {fileID: 0}
+  m_TrackedDevicePositionAction: {fileID: 0}
+  m_TrackedDeviceOrientationAction: {fileID: 0}
   m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
 --- !u!114 &655107893
@@ -43413,6 +43413,7 @@ MonoBehaviour:
   _notificationText: {fileID: 1767841291}
   _punishColor: {r: 0.8, g: 0.38431373, b: 0.1254902, a: 1}
   _knockdownColor: {r: 0.1254902, g: 0.2627451, b: 0.8, a: 1}
+  _softKnockdownColor: {r: 0, g: 0, b: 1, a: 1}
   _crossUpColor: {r: 0.8773585, g: 0.79303634, b: 0.15312389, a: 1}
   _guardBreakColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _reversalColor: {r: 0.8, g: 0.1254902, b: 0.1254902, a: 1}
@@ -54327,8 +54328,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -55225,6 +55226,7 @@ MonoBehaviour:
   _notificationText: {fileID: 4957905609994056631}
   _punishColor: {r: 0.8, g: 0.38500938, b: 0.12549019, a: 1}
   _knockdownColor: {r: 0.1254902, g: 0.2627451, b: 0.8, a: 1}
+  _softKnockdownColor: {r: 0.38375092, g: 0, b: 1, a: 1}
   _crossUpColor: {r: 0.8784314, g: 0.7921569, b: 0.15294118, a: 1}
   _guardBreakColor: {r: 0.87843144, g: 0.79215693, b: 0.15294118, a: 1}
   _reversalColor: {r: 0.8000001, g: 0.1254902, b: 0.1254902, a: 1}
@@ -70358,7 +70360,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: counter
+  m_text: s.knockdown
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
@@ -70385,8 +70387,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
