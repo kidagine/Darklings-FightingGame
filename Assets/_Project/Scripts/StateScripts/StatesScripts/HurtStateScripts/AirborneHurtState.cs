@@ -93,7 +93,7 @@ public class AirborneHurtState : HurtParentState
 
     private void ToWallSplatState()
     {
-        if (_playerMovement.IsInCorner && !WallSplat)
+        if (_playerMovement.IsInCorner && !WallSplat && !_hurtAttack.causesSoftKnockdown)
         {
             _stateMachine.ChangeState(_wallSplatState);
         }
