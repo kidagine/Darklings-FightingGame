@@ -123,14 +123,18 @@ public class AttackState : State
 
     public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
     {
-        if (inputEnum == InputEnum.Heavy && inputDirectionEnum == InputDirectionEnum.NoneVertical)
+        if (_playerMovement.IsGrounded)
         {
-            return false;
+            if (inputEnum == InputEnum.Heavy && inputDirectionEnum == InputDirectionEnum.NoneVertical)
+            {
+                return false;
+            }
+            if (inputEnum == InputEnum.Medium && _crouch && _player.CurrentAttack == _player.playerStats.m2M)
+            {
+                return false;
+            }
         }
-        if (inputEnum == InputEnum.Medium && _crouch && _player.CurrentAttack == _player.playerStats.m2M)
-        {
-            return false;
-        }
+
         if (_player.CanSkipAttack && inputEnum != InputEnum.Throw)
         {
             if (_playerMovement.IsInHitstop)

@@ -385,6 +385,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             {
                 CanSkipAttack = true;
             }
+            if (!_playerMovement.IsGrounded && !OtherPlayerMovement.IsGrounded)
+            {
+                hitstopEvent.AddListener(() => _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)0.1)));
+            }
             if (OtherPlayerMovement.IsInCorner)
             {
                 if (!CurrentAttack.isArcana && CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw && !CurrentAttack.causesKnockdown)
