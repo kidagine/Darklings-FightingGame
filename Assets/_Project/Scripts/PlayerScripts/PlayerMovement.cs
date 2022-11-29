@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Physics.Position.y == DemonicsPhysics.GROUND_POINT)
         {
+            _player.HasJuggleForce = true;
             IsGrounded = true;
         }
         else
@@ -114,7 +115,15 @@ public class PlayerMovement : MonoBehaviour
             DemonicsFloat nextX = DemonicsFloat.Lerp(_startPosition.x, _endPosition.x, ratio);
             DemonicsFloat baseY = DemonicsFloat.Lerp(_startPosition.y, _endPosition.y, (nextX - _startPosition.x) / distance);
             DemonicsFloat arc = _arc * (nextX - _startPosition.x) * (nextX - _endPosition.x) / ((DemonicsFloat)(-0.25) * distance * distance);
-            DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
+            DemonicsVector2 nextPosition;
+            if (arc == (DemonicsFloat)0)
+            {
+                nextPosition = new DemonicsVector2(nextX, Physics.Position.y);
+            }
+            else
+            {
+                nextPosition = new DemonicsVector2(nextX, baseY + arc);
+            }
             Physics.SetPositionWithRender(nextPosition);
             _knockbackFrame++;
             if (_knockbackFrame == _knockbackDuration)

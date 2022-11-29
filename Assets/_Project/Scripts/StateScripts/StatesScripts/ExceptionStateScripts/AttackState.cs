@@ -300,8 +300,8 @@ public class AttackState : State
                         _playerMovement.ExitHitstop();
                         _playerMovement.HasDoubleJumped = true;
                         _playerMovement.HasJumped = true;
-                        _jumpState.Initialize(true);
-                        _stateMachine.ChangeState(_jumpState);
+                        _jumpForwardState.Initialize(true);
+                        _stateMachine.ChangeState(_jumpForwardState);
                     }
                     else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
                     {
