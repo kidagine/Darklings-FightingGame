@@ -125,6 +125,10 @@ public class AttackState : State
     {
         if (_playerMovement.IsGrounded)
         {
+            if (_player.CurrentAttack == _player.playerStats.m2H)
+            {
+                return false;
+            }
             if (inputEnum == InputEnum.Heavy && inputDirectionEnum == InputDirectionEnum.NoneVertical)
             {
                 return false;
@@ -279,7 +283,6 @@ public class AttackState : State
                 {
                     if (_baseController.InputDirection.y > 0 && !_playerMovement.HasJumped)
                     {
-                        _playerMovement.ExitHitstop();
                         if (!_playerMovement.IsGrounded)
                         {
                             _playerMovement.HasDoubleJumped = true;
@@ -299,7 +302,6 @@ public class AttackState : State
 
     public void ToJumpForwardState()
     {
-
         if (_player.CurrentAttack.jumpCancelable || _air)
         {
             if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _player.OtherPlayerStateManager.CurrentState is HurtParentState)

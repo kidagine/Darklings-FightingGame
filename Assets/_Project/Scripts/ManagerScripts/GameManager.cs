@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _countdownTime = 99;
     [SerializeField] private float _leftSpawn = 9;
     [SerializeField] private float _rightSpawn = 6;
+    [SerializeField] private PlayerInput _uiInput = default;
     [SerializeField] private float[] _spawnPositionsX = default;
     [Header("Data")]
     [SerializeField] private CinemachineTargetGroup _targetGroup = default;
@@ -106,7 +107,7 @@ public class GameManager : MonoBehaviour
     public Player PlayerTwo { get; private set; }
     public PauseMenu PauseMenu { get; set; }
     public static GameManager Instance { get; private set; }
-    public BaseController PausedController { get; set; }
+    public BrainController PausedController { get; set; }
     public float GameSpeed { get; set; }
     private Keyboard keyboardTwo;
     void Awake()
@@ -1008,14 +1009,14 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene(index);
     }
-
-    public void DisableAllInput()
+    public void DisableAllInput(bool isPlayerOne = false)
     {
+        PlayerInput = _uiInput;
         if (_playerOneInput.enabled)
         {
             if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneInput.SwitchCurrentActionMap("UI");
+                _playerOneInput.enabled = false;
             }
         }
 
@@ -1023,26 +1024,50 @@ public class GameManager : MonoBehaviour
         {
             if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
             {
-                _playerTwoInput.SwitchCurrentActionMap("UI");
+                _playerTwoInput.enabled = false;
             }
+        }
+        if (isPlayerOne)
+        {
+            _uiInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
+        }
+        else
+        {
+            _uiInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
         }
     }
-
+    public PlayerInput PlayerInput { get; set; }
     public void EnableAllInput()
     {
-        if (_playerOneInput.enabled)
+        if (!_playerOneInput.enabled)
         {
             if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneInput.SwitchCurrentActionMap("Gameplay");
+                _playerOneInput.enabled = true;
+                if (_hasSwitchedCharacters)
+                {
+                    _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
+                }
+                else
+                {
+                    _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
+                }
             }
         }
 
-        if (_playerTwoInput.enabled)
+        if (!_playerTwoInput.enabled)
         {
             if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
             {
-                _playerTwoInput.SwitchCurrentActionMap("Gameplay");
+                _playerTwoInput.enabled = true;
+                if (_hasSwitchedCharacters)
+                {
+                    _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
+                }
+                else
+                {
+                    _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
+                }
             }
         }
     }

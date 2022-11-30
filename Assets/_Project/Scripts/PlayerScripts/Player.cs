@@ -580,6 +580,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         if (!GameManager.Instance.IsTrainingMode)
         {
+            Debug.Log("A");
             _playerUI.ClosePauseHold();
         }
     }
