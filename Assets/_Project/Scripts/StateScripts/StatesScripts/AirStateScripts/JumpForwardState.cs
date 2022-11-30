@@ -27,6 +27,7 @@ public class JumpForwardState : AirParentState
             _playerMovement.StopKnockback();
             _player.HasJuggleForce = true;
             _jump = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, _jumpCancelForce);
+            _inputBuffer.CheckInputBufferAttacks();
         }
         else
         {

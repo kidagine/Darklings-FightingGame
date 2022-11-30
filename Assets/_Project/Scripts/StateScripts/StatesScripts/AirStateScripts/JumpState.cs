@@ -24,6 +24,7 @@ public class JumpState : AirParentState
             _playerMovement.StopKnockback();
             _player.HasJuggleForce = true;
             _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _jumpCancelForce);
+            _inputBuffer.CheckInputBufferAttacks();
         }
         else
         {

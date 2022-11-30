@@ -425,10 +425,10 @@ public class PlayerUI : MonoBehaviour
     {
         _pauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
-        GameManager.Instance.DisableAllInput();
+        GameManager.Instance.PausedController = _controller;
+        GameManager.Instance.DisableAllInput(isPlayerOne);
         GameManager.Instance.PauseMusic();
-        GameManager.Instance.PausedController = _controller.ActiveController;
-        _pauseMenu.PlayerInput = _controller.GetComponent<PlayerInput>();
+        _pauseMenu.PlayerInput = GameManager.Instance.PlayerInput;
         _pauseMenu.Show();
     }
 
@@ -436,10 +436,10 @@ public class PlayerUI : MonoBehaviour
     {
         _trainingPauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
-        GameManager.Instance.DisableAllInput();
+        GameManager.Instance.PausedController = _controller;
+        GameManager.Instance.DisableAllInput(isPlayerOne);
         GameManager.Instance.PauseMusic();
-        GameManager.Instance.PausedController = _controller.ActiveController;
-        _trainingPauseMenu.PlayerInput = _controller.GetComponent<PlayerInput>();
+        _trainingPauseMenu.PlayerInput = GameManager.Instance.PlayerInput;
         _trainingPauseMenu.Show();
     }
 

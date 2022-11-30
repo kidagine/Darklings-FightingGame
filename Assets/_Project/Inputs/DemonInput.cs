@@ -900,7 +900,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""Back"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -922,7 +922,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""Confirm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -999,7 +999,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1010,7 +1010,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1021,7 +1021,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1032,7 +1032,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1076,7 +1076,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""LeftPage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1098,7 +1098,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""RightPage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -1120,7 +1120,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1131,7 +1131,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1142,7 +1142,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -1153,7 +1153,7 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard"",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
                     ""action"": ""Navigation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true

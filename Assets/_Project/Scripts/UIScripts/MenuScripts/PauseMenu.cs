@@ -8,12 +8,14 @@ public class PauseMenu : BaseMenu
 {
     [SerializeField] private PlayerUI _playerUI = default;
     [SerializeField] private TextMeshProUGUI _whoPaused = default;
+    [SerializeField] private PromptsInput _prompts = default;
     public bool PlayerOnePaused { get; private set; }
     public PlayerInput PlayerInput { get; set; }
 
     public void ClosePause()
     {
         _playerUI.ClosePause();
+        _prompts.enabled = false;
     }
 
     public void SetWhoPaused(bool playerOnePaused)
@@ -28,6 +30,7 @@ public class PauseMenu : BaseMenu
         {
             _whoPaused.text = "Player 2 Paused";
         }
+        _prompts.enabled = true;
     }
 
     public void Restart()
