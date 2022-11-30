@@ -134,6 +134,13 @@ public class AttackState : State
                 return false;
             }
         }
+        else
+        {
+            if (_player.CurrentAttack == _player.playerStats.jH)
+            {
+                return false;
+            }
+        }
 
         if (_player.CanSkipAttack && inputEnum != InputEnum.Throw)
         {
