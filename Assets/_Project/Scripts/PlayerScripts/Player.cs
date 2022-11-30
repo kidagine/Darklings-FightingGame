@@ -57,7 +57,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool Invincible { get; set; }
     public bool Invisible { get; set; }
     public bool LockChain { get; set; }
-
+    public bool HasJuggleForce { get; set; }
 
     void Awake()
     {
@@ -389,8 +389,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             {
                 if (!CurrentAttack.isArcana && CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw && !CurrentAttack.causesKnockdown)
                 {
-                    _playerMovement.Knockback(new Vector2(CurrentAttack.knockbackForce.x, 0), CurrentAttack.knockbackDuration, (int)(OtherPlayer.transform.localScale.x));
+                    if (_playerMovement.IsGrounded || OtherPlayerMovement.IsGrounded)
+                    {
+                        _playerMovement.Knockback(new Vector2(CurrentAttack.knockbackForce.x, 0), CurrentAttack.knockbackDuration, (int)(OtherPlayer.transform.localScale.x));
+                    }
                 }
+            }
+            if (!_playerMovement.IsGrounded && !OtherPlayerMovement.IsGrounded && HasJuggleForce)
+            {
+                HasJuggleForce = false;
+                hitstopEvent.AddListener(() => _playerMovement.TravelDistance(new DemonicsVector2(_playerMovement.Physics.Velocity.x, (DemonicsFloat)0.1)));
             }
         }
         return hurtbox.TakeDamage(CurrentAttack);

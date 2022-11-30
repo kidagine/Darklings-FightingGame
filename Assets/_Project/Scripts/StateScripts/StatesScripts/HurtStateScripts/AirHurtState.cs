@@ -25,6 +25,7 @@ public class AirHurtState : HurtParentState
         GameObject effect = Instantiate(_hurtAttack.hurtEffect);
         effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
         base.Enter();
+        _player.hitstopEvent.AddListener(() => _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)0.1)));
     }
 
     public override void UpdateLogic()

@@ -50,6 +50,7 @@ public class AttackState : State
         _player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
         _playerAnimator.Attack(_player.CurrentAttack.name);
+        _player.CurrentAttack = _playerAnimator.GetFramedate(_player.CurrentAttack);
         if (!_air)
         {
             _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
@@ -122,14 +123,25 @@ public class AttackState : State
 
     public override bool ToAttackState(InputEnum inputEnum, InputDirectionEnum inputDirectionEnum)
     {
-        if (inputEnum == InputEnum.Heavy && inputDirectionEnum == InputDirectionEnum.NoneVertical)
+        if (_playerMovement.IsGrounded)
         {
-            return false;
+            if (inputEnum == InputEnum.Heavy && inputDirectionEnum == InputDirectionEnum.NoneVertical)
+            {
+                return false;
+            }
+            if (inputEnum == InputEnum.Medium && _crouch && _player.CurrentAttack == _player.playerStats.m2M)
+            {
+                return false;
+            }
         }
-        if (inputEnum == InputEnum.Medium && _crouch && _player.CurrentAttack == _player.playerStats.m2M)
+        else
         {
-            return false;
+            if (_player.CurrentAttack == _player.playerStats.jH)
+            {
+                return false;
+            }
         }
+
         if (_player.CanSkipAttack && inputEnum != InputEnum.Throw)
         {
             if (_playerMovement.IsInHitstop)
@@ -263,17 +275,20 @@ public class AttackState : State
         {
             if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _player.OtherPlayerStateManager.CurrentState is HurtParentState)
             {
-                if (_baseController.InputDirection.x == 0.0f)
+                if (_baseController.InputDirection.x == 0)
                 {
-                    if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+                    if (_baseController.InputDirection.y > 0 && !_playerMovement.HasJumped)
                     {
                         _playerMovement.ExitHitstop();
-                        _playerMovement.HasDoubleJumped = true;
+                        if (!_playerMovement.IsGrounded)
+                        {
+                            _playerMovement.HasDoubleJumped = true;
+                        }
                         _playerMovement.HasJumped = true;
                         _jumpState.Initialize(true);
                         _stateMachine.ChangeState(_jumpState);
                     }
-                    else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+                    else if (_baseController.InputDirection.y <= 0 && _playerMovement.HasJumped)
                     {
                         _playerMovement.HasJumped = false;
                     }
@@ -284,21 +299,25 @@ public class AttackState : State
 
     public void ToJumpForwardState()
     {
+
         if (_player.CurrentAttack.jumpCancelable || _air)
         {
             if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _player.OtherPlayerStateManager.CurrentState is HurtParentState)
             {
-                if (_baseController.InputDirection.x != 0.0f)
+                if (_baseController.InputDirection.x != 0)
                 {
-                    if (_baseController.InputDirection.y > 0.0f && !_playerMovement.HasJumped)
+                    if (_baseController.InputDirection.y > 0 && !_playerMovement.HasJumped)
                     {
                         _playerMovement.ExitHitstop();
-                        _playerMovement.HasDoubleJumped = true;
+                        if (!_playerMovement.IsGrounded)
+                        {
+                            _playerMovement.HasDoubleJumped = true;
+                        }
                         _playerMovement.HasJumped = true;
-                        _jumpState.Initialize(true);
-                        _stateMachine.ChangeState(_jumpState);
+                        _jumpForwardState.Initialize(true);
+                        _stateMachine.ChangeState(_jumpForwardState);
                     }
-                    else if (_baseController.InputDirection.y <= 0.0f && _playerMovement.HasJumped)
+                    else if (_baseController.InputDirection.y <= 0 && _playerMovement.HasJumped)
                     {
                         _playerMovement.HasJumped = false;
                     }

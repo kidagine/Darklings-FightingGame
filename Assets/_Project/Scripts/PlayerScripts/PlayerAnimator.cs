@@ -98,6 +98,43 @@ public class PlayerAnimator : DemonicsAnimator
         return false;
     }
 
+    public AttackSO GetFramedate(AttackSO attack)
+    {
+        int startUpFrames = 0;
+        int activeFrames = 0;
+        int recoveryFrames = 0;
+        for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
+        {
+            if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes?.Count > 0)
+            {
+                activeFrames += _animation.animationCelsGroup[_group].animationCel[i].frames;
+            }
+            else
+            {
+                bool isPriorFrameActive = false;
+                for (int j = 0; j < _animation.animationCelsGroup[_group].animationCel.Count; j++)
+                {
+                    if (_animation.animationCelsGroup[_group].animationCel[j].hitboxes?.Count > 0 && j < i)
+                    {
+                        isPriorFrameActive = true;
+                    }
+                }
+                if (!isPriorFrameActive)
+                {
+                    startUpFrames += _animation.animationCelsGroup[_group].animationCel[i].frames;
+                }
+                else
+                {
+                    recoveryFrames += _animation.animationCelsGroup[_group].animationCel[i].frames;
+                }
+            }
+        }
+        attack.startUpFrames = startUpFrames;
+        attack.activeFrames = activeFrames;
+        attack.recoveryFrames = recoveryFrames;
+        return attack;
+    }
+
     public void Walk()
     {
         SetAnimation("Walk");

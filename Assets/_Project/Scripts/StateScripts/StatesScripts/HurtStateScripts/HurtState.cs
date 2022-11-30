@@ -4,6 +4,7 @@ using UnityEngine;
 public class HurtState : HurtParentState
 {
     private HurtState _hurtState;
+    private AirHurtState _airHurtState;
     private AirborneHurtState _airborneHurtState;
     private GrabbedState _grabbedState;
 
@@ -11,6 +12,7 @@ public class HurtState : HurtParentState
     {
         base.Awake();
         _hurtState = GetComponent<HurtState>();
+        _airHurtState = GetComponent<AirHurtState>();
         _airborneHurtState = GetComponent<AirborneHurtState>();
         _grabbedState = GetComponent<GrabbedState>();
     }
@@ -64,8 +66,16 @@ public class HurtState : HurtParentState
 
     public override bool ToHurtState(AttackSO attack)
     {
-        _hurtState.Initialize(attack);
-        _stateMachine.ChangeState(_hurtState);
+        if (attack.knockbackArc > 0)
+        {
+            _airHurtState.Initialize(attack);
+            _stateMachine.ChangeState(_airHurtState);
+        }
+        else
+        {
+            _hurtState.Initialize(attack);
+            _stateMachine.ChangeState(_hurtState);
+        }
         return true;
     }
 
