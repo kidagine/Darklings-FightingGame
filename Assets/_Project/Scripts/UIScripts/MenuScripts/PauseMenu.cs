@@ -1,3 +1,4 @@
+using System.Collections;
 using Demonics.UI;
 using TMPro;
 using UnityEngine;
@@ -30,11 +31,22 @@ public class PauseMenu : BaseMenu
         {
             _whoPaused.text = "Player 2 Paused";
         }
-        _prompts.enabled = true;
+    }
+
+    void OnEnable()
+    {
+        StartCoroutine(PromptEnablerCoroutine());
     }
 
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    IEnumerator PromptEnablerCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        _prompts.enabled = true;
+
     }
 }
