@@ -148,8 +148,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!IsInHitstop)
         {
-            IsInHitstop = true;
             _velocity = Physics.Velocity;
+            IsInHitstop = true;
             Physics.SetFreeze(true);
             if (_player.CanSkipAttack)
             {
