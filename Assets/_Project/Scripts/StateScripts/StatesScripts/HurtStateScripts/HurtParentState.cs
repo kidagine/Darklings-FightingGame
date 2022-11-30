@@ -36,6 +36,7 @@ public class HurtParentState : State
         }
         else
         {
+            _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, _hurtAttack.knockbackForce.y), _hurtAttack.knockbackDuration, (int)(-_player.transform.localScale.x), _hurtAttack.knockbackArc, ignoreX: true);
             //TODO: launch upward only
         }
         _player.OtherPlayerUI.IncreaseCombo();
