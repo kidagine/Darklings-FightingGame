@@ -1,43 +1,55 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class DebugGameplayMenu : MonoBehaviour
 {
-	[SerializeField] private TextAsset _versionTextAsset = default;
-	[SerializeField] private TextMeshProUGUI _versionText = default;
-	[SerializeField] private TextMeshProUGUI _fpsText = default;
-	[SerializeField] private TextMeshProUGUI _frameText = default;
-	private readonly string _versionSplit = "Version:";
-	private readonly string _patchNotesSplit = "Patch Notes:";
-	private int _fpsFrame;
-	void Awake()
-	{
-		gameObject.SetActive(false);
-#if UNITY_EDITOR
-		gameObject.SetActive(true);
-		string versionText = _versionTextAsset.text;
-		int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
-		string versionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
+    [SerializeField] private TextAsset _versionTextAsset = default;
+    [SerializeField] private TextMeshProUGUI _versionText = default;
+    [SerializeField] private TextMeshProUGUI _fpsText = default;
+    [SerializeField] private TextMeshProUGUI _frameText = default;
+    [SerializeField] private TextMeshProUGUI _p1PositionText = default;
+    [SerializeField] private TextMeshProUGUI _p2PositionText = default;
 
-		_versionText.text = "Ver:" + versionNumber;
-#endif
-	}
+    private readonly string _versionSplit = "Version:";
+    private readonly string _patchNotesSplit = "Patch Notes:";
+    private int _fpsFrame;
+    void Awake()
+    {
+        gameObject.SetActive(false);
 #if UNITY_EDITOR
-	private void Update()
-	{
-		if (_fpsFrame == 4)
-		{
-			_fpsText.text = "FPS: " + Mathf.FloorToInt(1f / Time.deltaTime);
-		}
-		_frameText.text = "Frame: " + DemonicsWorld.Frame;
-	}
-	private void FixedUpdate()
-	{
-		_fpsFrame++;
-		if (_fpsFrame == 6)
-		{
-			_fpsFrame = 0;
-		}
-	}
+        gameObject.SetActive(true);
+        string versionText = _versionTextAsset.text;
+        int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
+        string versionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
+
+        _versionText.text = "Ver:" + versionNumber;
+#endif
+    }
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (_fpsFrame == 4)
+        {
+            _fpsText.text = "FPS: " + Mathf.FloorToInt(1f / Time.deltaTime);
+        }
+        _frameText.text = "Frame: " + DemonicsWorld.Frame;
+    }
+    private void FixedUpdate()
+    {
+        _fpsFrame++;
+        if (_fpsFrame == 6)
+        {
+            _fpsFrame = 0;
+        }
+        string p1X = ((float)GameManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.x).ToString("0.00");
+        string p1Y = ((float)GameManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.y).ToString("0.00");
+        string p2X = ((float)GameManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.x).ToString("0.00");
+        string p2Y = ((float)GameManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.y).ToString("0.00");
+        _p1PositionText.transform.parent.position = new Vector2(Camera.main.WorldToScreenPoint(GameManager.Instance.PlayerOne.transform.position).x, _p1PositionText.transform.parent.position.y);
+        _p2PositionText.transform.parent.position = new Vector2(Camera.main.WorldToScreenPoint(GameManager.Instance.PlayerTwo.transform.position).x, _p2PositionText.transform.parent.position.y);
+        _p1PositionText.text = $"P1 ({p1X}, {p1Y})";
+        _p2PositionText.text = $"P2 ({p2X}, {p2Y})";
+    }
 #endif
 }
