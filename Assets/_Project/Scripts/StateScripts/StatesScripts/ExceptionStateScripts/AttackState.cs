@@ -272,10 +272,10 @@ public class AttackState : State
         }
         return true;
     }
-
+    private bool _t;
     private void ToJumpState()
     {
-        if (_player.CurrentAttack.jumpCancelable || _air)
+        if (_player.CurrentAttack.jumpCancelable || _air && !_t)
         {
             if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _player.OtherPlayerStateManager.CurrentState is HurtParentState)
             {
@@ -283,13 +283,42 @@ public class AttackState : State
                 {
                     if (_baseController.InputDirection.y > 0 && !_playerMovement.HasJumped)
                     {
-                        if (!_playerMovement.IsGrounded)
-                        {
-                            _playerMovement.HasDoubleJumped = true;
-                        }
+                        _t = true;
                         _playerMovement.HasJumped = true;
-                        _jumpState.Initialize(true);
-                        _stateMachine.ChangeState(_jumpState);
+                        _player.hitstopEvent.AddListener(JumpEvent);
+                    }
+                    else if (_baseController.InputDirection.y <= 0 && _playerMovement.HasJumped)
+                    {
+                        _playerMovement.HasJumped = false;
+                    }
+                }
+            }
+        }
+    }
+    private void JumpEvent()
+    {
+        if (!_playerMovement.IsGrounded)
+        {
+            _playerMovement.HasDoubleJumped = true;
+        }
+        _jumpState.Initialize(true);
+        _stateMachine.ChangeState(_jumpState);
+        _t = false;
+    }
+
+    public void ToJumpForwardState()
+    {
+        if (_player.CurrentAttack.jumpCancelable || _air && !_t)
+        {
+            if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _player.OtherPlayerStateManager.CurrentState is HurtParentState)
+            {
+                if (_baseController.InputDirection.x != 0)
+                {
+                    if (_baseController.InputDirection.y > 0 && !_playerMovement.HasJumped)
+                    {
+                        _t = true;
+                        _playerMovement.HasJumped = true;
+                        _player.hitstopEvent.AddListener(JumpForwardEvent);
                     }
                     else if (_baseController.InputDirection.y <= 0 && _playerMovement.HasJumped)
                     {
@@ -300,32 +329,15 @@ public class AttackState : State
         }
     }
 
-    public void ToJumpForwardState()
+    private void JumpForwardEvent()
     {
-        if (_player.CurrentAttack.jumpCancelable || _air)
+        if (!_playerMovement.IsGrounded)
         {
-            if (_player.playerStats.canDoubleJump && !_playerMovement.HasDoubleJumped && _player.OtherPlayerStateManager.CurrentState is HurtParentState)
-            {
-                if (_baseController.InputDirection.x != 0)
-                {
-                    if (_baseController.InputDirection.y > 0 && !_playerMovement.HasJumped)
-                    {
-                        _playerMovement.ExitHitstop();
-                        if (!_playerMovement.IsGrounded)
-                        {
-                            _playerMovement.HasDoubleJumped = true;
-                        }
-                        _playerMovement.HasJumped = true;
-                        _jumpForwardState.Initialize(true);
-                        _stateMachine.ChangeState(_jumpForwardState);
-                    }
-                    else if (_baseController.InputDirection.y <= 0 && _playerMovement.HasJumped)
-                    {
-                        _playerMovement.HasJumped = false;
-                    }
-                }
-            }
+            _playerMovement.HasDoubleJumped = true;
         }
+        _jumpForwardState.Initialize(true);
+        _stateMachine.ChangeState(_jumpForwardState);
+        _t = false;
     }
 
     public override bool ToRedFrenzyState()

@@ -395,11 +395,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                     }
                 }
             }
-            if (!_playerMovement.IsGrounded && !OtherPlayerMovement.IsGrounded && HasJuggleForce)
-            {
-                HasJuggleForce = false;
-                hitstopEvent.AddListener(() => _playerMovement.TravelDistance(new DemonicsVector2(_playerMovement.Physics.Velocity.x, (DemonicsFloat)0.1)));
-            }
         }
         return hurtbox.TakeDamage(CurrentAttack);
     }

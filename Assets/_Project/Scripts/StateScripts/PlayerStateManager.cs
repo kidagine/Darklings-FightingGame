@@ -115,7 +115,6 @@ public class PlayerStateManager : StateMachine
         return CurrentState.ToIdleState();
     }
 
-
     public bool TryToHurtState(AttackSO attack)
     {
         if (attack.causesKnockdown)
