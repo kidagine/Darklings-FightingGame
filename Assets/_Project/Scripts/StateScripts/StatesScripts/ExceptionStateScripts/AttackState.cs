@@ -44,7 +44,6 @@ public class AttackState : State
 
     public override void Enter()
     {
-        Debug.Log("ATT");
         base.Enter();
         _player.CheckFlip();
         _player.SetSpriteOrderPriority();
@@ -309,8 +308,7 @@ public class AttackState : State
     }
     private void JumpEvent()
     {
-        Debug.Log("JUMP");
-        if (!_playerMovement.IsGrounded)
+        if (!_playerMovement.IsGrounded && _player.CurrentAttack != _player.playerStats.m2H)
         {
             _playerMovement.HasDoubleJumped = true;
         }
@@ -351,8 +349,7 @@ public class AttackState : State
 
     private void JumpForwardEvent()
     {
-        Debug.Log("JUMP");
-        if (!_playerMovement.IsGrounded)
+        if (!_playerMovement.IsGrounded && _player.CurrentAttack != _player.playerStats.m2H)
         {
             _playerMovement.HasDoubleJumped = true;
         }
@@ -416,7 +413,6 @@ public class AttackState : State
 
     public override void Exit()
     {
-        Debug.Log("EXIT");
         base.Exit();
         _player.hitstopEvent.RemoveAllListeners();
         _physics.EnableGravity(true);
