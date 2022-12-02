@@ -306,6 +306,7 @@ public class AttackState : State
             }
         }
     }
+
     private void JumpEvent()
     {
         if (!_playerMovement.IsGrounded && _player.CurrentAttack != _player.playerStats.m2H)

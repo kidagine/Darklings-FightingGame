@@ -73,6 +73,7 @@ public class HurtParentState : State
         _playerUI.Damaged();
         _player.RecallAssist();
         GameManager.Instance.HitStop(_hurtAttack.hitstop);
+        _player.StartShakeContact();
         if (_player.Health <= 0)
         {
             ToDeathState();

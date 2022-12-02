@@ -23,6 +23,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     private int _comboTimerFrames;
     private int _comboTimerWaitFrames;
     private Color _comboTimerColor;
+    private Coroutine _shakeContactCoroutine;
     private readonly DemonicsFloat _damageDecay = (DemonicsFloat)0.97f;
     private readonly DemonicsFloat _whiteHealthDivider = (DemonicsFloat)1.4f;
     [HideInInspector] public UnityEvent hitstopEvent;
@@ -218,6 +219,31 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
         _playerUI.SetHealth(Health);
         _playerUI.SetRecoverableHealth(HealthRecoverable);
+    }
+
+    public void StartShakeContact()
+    {
+        _shakeContactCoroutine = StartCoroutine(ShakeContactCoroutine());
+    }
+
+    private void StopShakeCoroutine()
+    {
+        if (_shakeContactCoroutine != null)
+        {
+            _playerAnimator.transform.localPosition = Vector2.zero;
+            StopCoroutine(_shakeContactCoroutine);
+        }
+    }
+
+    IEnumerator ShakeContactCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.075f);
+            _playerAnimator.transform.localPosition = new Vector2(_playerAnimator.transform.localPosition.x - 0.03f, _playerAnimator.transform.localPosition.y);
+            yield return new WaitForSeconds(0.075f);
+            _playerAnimator.transform.localPosition = Vector2.zero;
+        }
     }
 
     public void CheckFlip()
@@ -464,6 +490,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void ExitHitstop()
     {
+        StopShakeCoroutine();
         _playerMovement.ExitHitstop();
         _playerAnimator.Resume();
         _playerAnimator.SpriteNormalEffect();
