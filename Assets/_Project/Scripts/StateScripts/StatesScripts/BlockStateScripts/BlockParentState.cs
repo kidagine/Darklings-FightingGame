@@ -61,6 +61,7 @@ public class BlockParentState : State
             }
             effect.transform.localPosition = new Vector2(_player.transform.position.x + (_player.transform.localScale.x * 0.25f), _blockAttack.hurtEffectPosition.y);
             GameManager.Instance.HitStop(_blockAttack.hitstop);
+            _player.StartShakeContact();
         }
         if (_blockAttack.isArcana)
         {
