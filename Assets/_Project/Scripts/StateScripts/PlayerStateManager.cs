@@ -117,7 +117,7 @@ public class PlayerStateManager : StateMachine
 
     public bool TryToHurtState(AttackSO attack)
     {
-        if (attack.causesKnockdown)
+        if (attack.causesKnockdown || attack.causesSoftKnockdown && !_playerMovement.IsGrounded)
         {
             return CurrentState.ToAirborneHurtState(attack);
         }

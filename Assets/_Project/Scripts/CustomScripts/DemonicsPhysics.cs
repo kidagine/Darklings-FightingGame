@@ -251,4 +251,16 @@ public class DemonicsPhysics : MonoBehaviour
             _gravity = (DemonicsFloat)0;
         }
     }
+
+    public void SetJuggleGravity(bool state)
+    {
+        if (state)
+        {
+            _gravity = (DemonicsFloat)0.013;
+        }
+        else
+        {
+            _gravity = (DemonicsFloat)0.018;
+        }
+    }
 }

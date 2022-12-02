@@ -21,7 +21,6 @@ public class JumpState : AirParentState
         _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)0);
         if (_playerMovement.HasDoubleJumped)
         {
-            Debug.Log("A");
             _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce / _jumpDoubleDivider);
         }
         else

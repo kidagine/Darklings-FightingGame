@@ -66,7 +66,7 @@ public class HurtState : HurtParentState
 
     public override bool ToHurtState(AttackSO attack)
     {
-        if (attack.knockbackArc > 0)
+        if (attack.knockbackArc > 0 && !attack.causesSoftKnockdown)
         {
             _airHurtState.Initialize(attack);
             _stateMachine.ChangeState(_airHurtState);
