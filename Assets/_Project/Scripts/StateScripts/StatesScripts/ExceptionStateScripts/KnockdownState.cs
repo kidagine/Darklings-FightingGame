@@ -21,7 +21,6 @@ public class KnockdownState : State
     public void Initialize(bool softKnockdown = false)
     {
         _softKnockdown = softKnockdown;
-
     }
 
     public override void Enter()
@@ -29,7 +28,6 @@ public class KnockdownState : State
         base.Enter();
         _audio.Sound("Landed").Play();
         _playerMovement.StopKnockback();
-        _physics.Velocity = DemonicsVector2.Zero;
         _physics.EnableGravity(true);
         _playerAnimator.Knockdown();
         _player.OtherPlayer.StopComboTimer();
@@ -67,6 +65,7 @@ public class KnockdownState : State
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        _physics.Velocity = DemonicsVector2.Zero;
         if (DemonicsWorld.WaitFrames(ref _knockdownFramesCurrent))
         {
             _stateMachine.ChangeState(_wakeUpState);
