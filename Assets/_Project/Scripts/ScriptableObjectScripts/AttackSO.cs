@@ -36,11 +36,8 @@ public class AttackSO : ScriptableObject
     public float hurtEffectRotation;
     public CameraShakerSO cameraShaker;
     [Header("Framedata")]
-    [ReadOnly]
     public int startUpFrames;
-    [ReadOnly]
     public int activeFrames;
-    [ReadOnly]
     public int recoveryFrames;
     public int hitAdv { get { return hitStun - recoveryFrames; } private set { } }
     public int blockAdv { get { return blockStun - recoveryFrames; } private set { } }

@@ -16,7 +16,7 @@ public class CrouchState : GroundParentState
         _player.CheckFlip();
     }
 
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         if (_baseController.StandUp())
         {

@@ -1,6 +1,5 @@
 using Cinemachine;
 using UnityEngine;
-
 public class CameraShake : MonoBehaviour
 {
     public static CameraShake Instance { get; private set; }

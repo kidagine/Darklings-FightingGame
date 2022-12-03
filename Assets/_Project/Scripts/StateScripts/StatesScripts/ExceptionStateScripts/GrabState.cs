@@ -27,7 +27,7 @@ public class GrabState : State
         _player.CurrentAttack = _playerComboSystem.GetThrow();
     }
 
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         if (_stateMachine.CurrentState == this)
         {
