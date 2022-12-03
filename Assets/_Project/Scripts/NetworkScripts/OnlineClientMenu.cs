@@ -26,6 +26,6 @@ public class OnlineClientMenu : BaseMenu
 
     private void HandleClientConnected()
     {
-        Hide();
+        gameObject.SetActive(false);
     }
 }
