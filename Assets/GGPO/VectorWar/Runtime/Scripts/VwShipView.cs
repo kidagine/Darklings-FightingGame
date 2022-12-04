@@ -3,19 +3,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityGGPO;
 
-namespace VectorWar {
+namespace VectorWar
+{
 
-    public class VwShipView : MonoBehaviour {
+    public class VwShipView : MonoBehaviour
+    {
         public Text txtStatus;
         public Image imgProgress;
         public Transform model;
 
-        public void Populate(Ship shipGs, PlayerConnectionInfo info) {
+        public void Populate(Ship shipGs, PlayerConnectionInfo info)
+        {
             transform.position = shipGs.position;
             model.rotation = Quaternion.Euler(0, 0, shipGs.heading);
             string status = "";
             int progress = -1;
-            switch (info.state) {
+            switch (info.state)
+            {
                 case PlayerConnectState.Connecting:
                     status = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "Local Player" : "Connecting...";
                     break;
@@ -35,19 +39,23 @@ namespace VectorWar {
                     break;
             }
 
-            if (progress > 0) {
+            if (progress > 0)
+            {
                 imgProgress.gameObject.SetActive(true);
                 imgProgress.fillAmount = progress / 100f;
             }
-            else {
+            else
+            {
                 imgProgress.gameObject.SetActive(false);
             }
 
-            if (status.Length > 0) {
+            if (status.Length > 0)
+            {
                 txtStatus.gameObject.SetActive(true);
                 txtStatus.text = status;
             }
-            else {
+            else
+            {
                 txtStatus.gameObject.SetActive(false);
             }
         }

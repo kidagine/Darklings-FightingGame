@@ -610,25 +610,21 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public string ConnectionStatus { get; private set; }
     public void Populate(PlayerConnectionInfo info)
     {
-        int progress = -1;
         switch (info.state)
         {
             case PlayerConnectState.Connecting:
-                ConnectionStatus = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "Local Player" : "Connecting...";
+                ConnectionStatus = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "<color=green>P" : "<color=blue>C";
                 break;
-
             case PlayerConnectState.Synchronizing:
-                progress = info.connect_progress;
-                ConnectionStatus = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "Local Player" : "Synchronizing...";
+                // progress = info.connect_progress;
+                ConnectionStatus = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "<color=green>P" : "<color=purple>S";
                 break;
-
             case PlayerConnectState.Disconnected:
-                ConnectionStatus = "Disconnected";
+                ConnectionStatus = "<color=red>D";
                 break;
-
             case PlayerConnectState.Disconnecting:
-                ConnectionStatus = "Waiting for player...";
-                progress = (Utils.TimeGetTime() - info.disconnect_start) * 100 / info.disconnect_timeout;
+                ConnectionStatus = "<color=yellow>W";
+                // progress = (Utils.TimeGetTime() - info.disconnect_start) * 100 / info.disconnect_timeout;
                 break;
         }
     }
