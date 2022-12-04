@@ -21,8 +21,8 @@ public class OnlineClientMenu : BaseMenu
     public void JoinLobby()
     {
         string ipAddress = _roomId.text;
-        _networkManager.networkAddress = "localhost";
-        _networkManager.StartClient();
+        // _networkManager.networkAddress = "localhost";
+        // _networkManager.StartClient();
     }
 
     private void HandleClientConnected()

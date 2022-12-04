@@ -230,7 +230,7 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed)
         {
-            GameManager.Instance.ResetRound(InputDirection);
+            GameplayManager.Instance.ResetRound(InputDirection);
         }
     }
 
@@ -238,7 +238,7 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed)
         {
-            GameManager.Instance.SwitchCharacters();
+            GameplayManager.Instance.SwitchCharacters();
         }
     }
     //UI

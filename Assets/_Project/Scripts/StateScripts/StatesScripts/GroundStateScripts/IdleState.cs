@@ -5,7 +5,7 @@ public class IdleState : GroundParentState
     public override void Enter()
     {
         base.Enter();
-        if (GameManager.Instance.InfiniteHealth)
+        if (GameplayManager.Instance.InfiniteHealth)
         {
             _player.MaxHealthStats();
         }

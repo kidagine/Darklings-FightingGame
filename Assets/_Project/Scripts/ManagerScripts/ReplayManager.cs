@@ -89,22 +89,21 @@ public class ReplayManager : MonoBehaviour
 
     void Start()
     {
-        Setup();
         if (SceneSettings.ReplayMode)
         {
             LoadReplay();
         }
     }
 
-    private void Setup()
+    public void Setup()
     {
         string versionText = _versionTextAsset.text;
         int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
         VersionNumber = versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
-        if (GameManager.Instance != null)
+        if (GameplayManager.Instance != null)
         {
-            _playerOneInputBuffer = GameManager.Instance.PlayerOne.GetComponent<InputBuffer>();
-            _playerTwoInputBuffer = GameManager.Instance.PlayerTwo.GetComponent<InputBuffer>();
+            _playerOneInputBuffer = GameplayManager.Instance.PlayerOne.GetComponent<InputBuffer>();
+            _playerTwoInputBuffer = GameplayManager.Instance.PlayerTwo.GetComponent<InputBuffer>();
         }
     }
 
@@ -118,7 +117,7 @@ public class ReplayManager : MonoBehaviour
             replayData += $"\nDate:\n{DateTime.Now.ToString("MM/dd/yyyy HH:mm")}";
             replayData += $"\nPlayer One:\n{SceneSettings.PlayerOne}, {SceneSettings.ColorOne}, {SceneSettings.AssistOne}";
             replayData += $"\nPlayer Two:\n{SceneSettings.PlayerTwo}, {SceneSettings.ColorTwo}, {SceneSettings.AssistTwo}";
-            replayData += $"\nStage:\n{SceneSettings.StageIndex}, {GameManager.Instance.CurrentMusic.name}, {SceneSettings.Bit1}";
+            replayData += $"\nStage:\n{SceneSettings.StageIndex}, {GameplayManager.Instance.CurrentMusic.name}, {SceneSettings.Bit1}";
             string playerOneInputsHistory = "";
             for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
             {
@@ -149,10 +148,10 @@ public class ReplayManager : MonoBehaviour
     public void LoadReplay()
     {
         SceneSettings.ReplayMode = true;
-        _playerOneController = GameManager.Instance.PlayerOne.GetComponent<BrainController>();
-        _playerTwoController = GameManager.Instance.PlayerTwo.GetComponent<BrainController>();
-        GameManager.Instance.PlayerOne.GetComponent<PlayerInput>().enabled = false;
-        GameManager.Instance.PlayerTwo.GetComponent<PlayerInput>().enabled = false;
+        _playerOneController = GameplayManager.Instance.PlayerOne.GetComponent<BrainController>();
+        _playerTwoController = GameplayManager.Instance.PlayerTwo.GetComponent<BrainController>();
+        GameplayManager.Instance.PlayerOne.GetComponent<PlayerInput>().enabled = false;
+        GameplayManager.Instance.PlayerTwo.GetComponent<PlayerInput>().enabled = false;
         replayCardData = GetReplayData(SceneSettings.ReplayIndex);
         initialReplayStart = true;
     }
@@ -174,7 +173,7 @@ public class ReplayManager : MonoBehaviour
         {
             if (DemonicsWorld.Frame == replayCardData.skip && replayCardData.skip > 0)
             {
-                GameManager.Instance.SkipIntro();
+                GameplayManager.Instance.SkipIntro();
                 initialReplayStart = false;
                 runReplay = true;
             }
@@ -291,8 +290,8 @@ public class ReplayManager : MonoBehaviour
     public void Pause()
     {
         Time.timeScale = 0.0f;
-        GameManager.Instance.DisableAllInput();
-        GameManager.Instance.PauseMusic();
+        GameplayManager.Instance.DisableAllInput();
+        GameplayManager.Instance.PauseMusic();
         _replayPauseMenu.Show();
     }
 

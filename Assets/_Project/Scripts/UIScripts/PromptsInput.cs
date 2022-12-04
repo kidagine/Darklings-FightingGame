@@ -27,11 +27,11 @@ public class PromptsInput : MonoBehaviour
         {
             if (_pauseMenu != null)
             {
-                GameManager.Instance.PauseMenu.PlayerInput.GetComponent<PlayerController>().CurrentPrompts = GetComponent<PromptsInput>();
+                GameplayManager.Instance.PauseMenu.PlayerInput.GetComponent<PlayerController>().CurrentPrompts = GetComponent<PromptsInput>();
             }
             else
             {
-                GameManager.Instance.PlayerOne.GetComponent<PlayerController>().CurrentPrompts = GetComponent<PromptsInput>();
+                GameplayManager.Instance.PlayerOne.GetComponent<PlayerController>().CurrentPrompts = GetComponent<PromptsInput>();
             }
         }
     }

@@ -32,7 +32,7 @@ public class HitboxProjectile : Hitbox
         }
         else
         {
-            GameManager.Instance.AddHitstop(_projectile);
+            GameplayManager.Instance.AddHitstop(_projectile);
             base.EnterCollision(collider);
         }
     }

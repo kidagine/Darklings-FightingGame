@@ -74,7 +74,7 @@ public class PlayerDialogue : MonoBehaviour
                     FinishedDialogue = true;
                     if (FinishedDialogue && _otherPlayerDialogue.FinishedDialogue)
                     {
-                        GameManager.Instance.StartRound();
+                        GameplayManager.Instance.StartRound();
                     }
                     else
                     {

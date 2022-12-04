@@ -425,10 +425,10 @@ public class PlayerUI : MonoBehaviour
     {
         _pauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
-        GameManager.Instance.PausedController = _controller;
-        GameManager.Instance.DisableAllInput(isPlayerOne);
-        GameManager.Instance.PauseMusic();
-        _pauseMenu.PlayerInput = GameManager.Instance.PlayerInput;
+        GameplayManager.Instance.PausedController = _controller;
+        GameplayManager.Instance.DisableAllInput(isPlayerOne);
+        GameplayManager.Instance.PauseMusic();
+        _pauseMenu.PlayerInput = GameplayManager.Instance.PlayerInput;
         _pauseMenu.Show();
     }
 
@@ -436,18 +436,18 @@ public class PlayerUI : MonoBehaviour
     {
         _trainingPauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
-        GameManager.Instance.PausedController = _controller;
-        GameManager.Instance.DisableAllInput(isPlayerOne);
-        GameManager.Instance.PauseMusic();
-        _trainingPauseMenu.PlayerInput = GameManager.Instance.PlayerInput;
+        GameplayManager.Instance.PausedController = _controller;
+        GameplayManager.Instance.DisableAllInput(isPlayerOne);
+        GameplayManager.Instance.PauseMusic();
+        _trainingPauseMenu.PlayerInput = GameplayManager.Instance.PlayerInput;
         _trainingPauseMenu.Show();
     }
 
     public void ClosePause()
     {
-        Time.timeScale = GameManager.Instance.GameSpeed;
-        GameManager.Instance.EnableAllInput();
-        GameManager.Instance.PlayMusic();
+        Time.timeScale = GameplayManager.Instance.GameSpeed;
+        GameplayManager.Instance.EnableAllInput();
+        GameplayManager.Instance.PlayMusic();
         _pauseMenu.Hide();
         _trainingPauseMenu.Hide();
         _replayPauseMenu.Hide();

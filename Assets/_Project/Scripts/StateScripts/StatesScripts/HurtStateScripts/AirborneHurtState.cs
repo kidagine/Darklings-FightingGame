@@ -38,7 +38,7 @@ public class AirborneHurtState : HurtParentState
         _player.SetHurtbox(true);
         if (WallSplat)
         {
-            GameManager.Instance.AddHitstop(_player);
+            GameplayManager.Instance.AddHitstop(_player);
             _player.Flip((int)-_player.transform.localScale.x);
             _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, (float)DemonicsPhysics.GROUND_POINT), 30, (int)(-_player.transform.localScale.x), 3, ground: true);
         }
@@ -53,7 +53,7 @@ public class AirborneHurtState : HurtParentState
         _player.SetHealth(_player.CalculateDamage(_hurtAttack));
         _playerUI.Damaged();
         _player.RecallAssist();
-        GameManager.Instance.HitStop(_hurtAttack.hitstop);
+        GameplayManager.Instance.HitStop(_hurtAttack.hitstop);
         if (_player.Health <= 0)
         {
             ToDeathState();

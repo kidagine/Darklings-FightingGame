@@ -70,7 +70,7 @@ public class ParryState : State
         _audio.Sound("Parry").Play();
         _player.HealthGain();
         _parried = true;
-        GameManager.Instance.HitStop(_hitstopOnParry);
+        GameplayManager.Instance.HitStop(_hitstopOnParry);
         GameObject effect = Instantiate(_parryEffect);
         effect.transform.localPosition = new Vector2(_player.transform.position.x + (_player.transform.localScale.x * 1.5f), _player.transform.position.y + 1.5f);
         if (!attack.isProjectile)

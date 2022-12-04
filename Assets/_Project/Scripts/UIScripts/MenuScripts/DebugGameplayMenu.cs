@@ -37,19 +37,22 @@ public class DebugGameplayMenu : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        _fpsFrame++;
-        if (_fpsFrame == 6)
+        if (GameplayManager.Instance.PlayerOne != null)
         {
-            _fpsFrame = 0;
+            _fpsFrame++;
+            if (_fpsFrame == 6)
+            {
+                _fpsFrame = 0;
+            }
+            string p1X = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.x).ToString("0.00");
+            string p1Y = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.y).ToString("0.00");
+            string p2X = ((float)GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.x).ToString("0.00");
+            string p2Y = ((float)GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.y).ToString("0.00");
+            _p1PositionText.transform.parent.position = new Vector2(Camera.main.WorldToScreenPoint(GameplayManager.Instance.PlayerOne.transform.position).x, _p1PositionText.transform.parent.position.y);
+            _p2PositionText.transform.parent.position = new Vector2(Camera.main.WorldToScreenPoint(GameplayManager.Instance.PlayerTwo.transform.position).x, _p2PositionText.transform.parent.position.y);
+            _p1PositionText.text = $"P1 ({p1X}, {p1Y})";
+            _p2PositionText.text = $"P2 ({p2X}, {p2Y})";
         }
-        string p1X = ((float)GameManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.x).ToString("0.00");
-        string p1Y = ((float)GameManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.y).ToString("0.00");
-        string p2X = ((float)GameManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.x).ToString("0.00");
-        string p2Y = ((float)GameManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.y).ToString("0.00");
-        _p1PositionText.transform.parent.position = new Vector2(Camera.main.WorldToScreenPoint(GameManager.Instance.PlayerOne.transform.position).x, _p1PositionText.transform.parent.position.y);
-        _p2PositionText.transform.parent.position = new Vector2(Camera.main.WorldToScreenPoint(GameManager.Instance.PlayerTwo.transform.position).x, _p2PositionText.transform.parent.position.y);
-        _p1PositionText.text = $"P1 ({p1X}, {p1Y})";
-        _p2PositionText.text = $"P2 ({p2X}, {p2Y})";
     }
 #endif
 }

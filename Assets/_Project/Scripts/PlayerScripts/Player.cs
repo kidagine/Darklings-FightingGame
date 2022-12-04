@@ -110,7 +110,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         SetHurtbox(true);
         AssistGauge = (DemonicsFloat)1;
         transform.SetParent(null);
-        if (!GameManager.Instance.InfiniteArcana)
+        if (!GameplayManager.Instance.InfiniteArcana)
         {
             ArcanaGauge = (DemonicsFloat)0;
         }
@@ -136,7 +136,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public AttackSO shadowbreakKnockback()
     {
-        GameManager.Instance.AddHitstop(this);
+        GameplayManager.Instance.AddHitstop(this);
         return new AttackSO() { hitStun = 30, hitstop = 5, knockbackForce = new Vector2(0.1f, 1), knockbackDuration = 5, hurtEffectPosition = new Vector2(0, (float)_playerMovement.Physics.Position.y + 1) };
     }
 
@@ -166,10 +166,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     private void AssistCharge()
     {
-        if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
+        if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameplayManager.Instance.HasGameStarted)
         {
             AssistGauge += (DemonicsFloat)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
-            if (GameManager.Instance.InfiniteAssist)
+            if (GameplayManager.Instance.InfiniteAssist)
             {
                 AssistGauge = (DemonicsFloat)1.0f;
             }
@@ -179,10 +179,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     private void ArcanaCharge()
     {
-        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameManager.Instance.HasGameStarted)
+        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameplayManager.Instance.HasGameStarted)
         {
             ArcanaGauge += (DemonicsFloat)(Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge));
-            if (GameManager.Instance.InfiniteArcana)
+            if (GameplayManager.Instance.InfiniteArcana)
             {
                 ArcanaGauge = (DemonicsFloat)playerStats.Arcana;
             }
@@ -192,7 +192,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void ArcanaGain(DemonicsFloat arcana)
     {
-        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameManager.Instance.HasGameStarted)
+        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameplayManager.Instance.HasGameStarted)
         {
             ArcanaGauge += arcana;
             _playerUI.SetArcana((float)ArcanaGauge);
@@ -288,7 +288,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool AssistAction()
     {
-        if (AssistGauge >= (DemonicsFloat)0.5f && GameManager.Instance.HasGameStarted && !_assist.IsOnScreen)
+        if (AssistGauge >= (DemonicsFloat)0.5f && GameplayManager.Instance.HasGameStarted && !_assist.IsOnScreen)
         {
             _assist.Attack();
             DecreaseArcana((DemonicsFloat)0.5f);
@@ -401,7 +401,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             if (!CurrentAttack.isArcana || CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
             {
-                GameManager.Instance.AddHitstop(this);
+                GameplayManager.Instance.AddHitstop(this);
             }
         }
         CurrentAttack.hurtEffectPosition = hurtPosition;
@@ -455,7 +455,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool TakeDamage(AttackSO attack)
     {
-        GameManager.Instance.AddHitstop(this);
+        GameplayManager.Instance.AddHitstop(this);
         if (attack.attackTypeEnum == AttackTypeEnum.Throw)
         {
             return _playerStateManager.TryToGrabbedState();
@@ -509,7 +509,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerUI.Damaged();
         _playerUI.UpdateHealthDamaged();
         _playerAnimator.SpriteSuperArmorEffect();
-        GameManager.Instance.HitStop(attack.hitstop);
+        GameplayManager.Instance.HitStop(attack.hitstop);
     }
 
     public bool CanTakeSuperArmorHit(AttackSO attack)
@@ -588,7 +588,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void Pause(bool isPlayerOne)
     {
-        if (GameManager.Instance.IsTrainingMode)
+        if (GameplayManager.Instance.IsTrainingMode)
         {
             _playerUI.OpenTrainingPause(isPlayerOne);
         }
@@ -600,7 +600,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void UnPause()
     {
-        if (!GameManager.Instance.IsTrainingMode)
+        if (!GameplayManager.Instance.IsTrainingMode)
         {
             Debug.Log("A");
             _playerUI.ClosePauseHold();

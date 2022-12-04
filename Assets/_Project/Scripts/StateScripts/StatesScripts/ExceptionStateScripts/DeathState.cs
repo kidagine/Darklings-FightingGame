@@ -10,8 +10,8 @@ public class DeathState : State
         _player.SetPushboxTrigger(true);
         _playerUI.SetRecoverableHealth(0);
         _playerUI.SetHealthDamaged(0);
-        GameManager.Instance.RoundOver(false);
-        GameManager.Instance.SuperFreeze();
+        GameplayManager.Instance.RoundOver(false);
+        GameplayManager.Instance.SuperFreeze();
     }
 
     public override void UpdateLogic()

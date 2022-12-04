@@ -44,8 +44,8 @@ public class CommandListMenu : BaseMenu
 
     void Awake()
     {
-        _playerOne = GameManager.Instance.PlayerOne;
-        _playerTwo = GameManager.Instance.PlayerTwo;
+        _playerOne = GameplayManager.Instance.PlayerOne;
+        _playerTwo = GameplayManager.Instance.PlayerTwo;
     }
 
     public void NextSubPage()
@@ -209,7 +209,7 @@ public class CommandListMenu : BaseMenu
         _commandListButtons[8].SetData(playerStats.jM);
         _commandListButtons[9].SetData(playerStats.m5H);
         _commandListButtons[10].SetData(playerStats.m2H);
-        // _commandListButtons[11].SetData(playerStats.jH);
+        _commandListButtons[11].SetData(playerStats.jH);
         _commandListButtons[12].SetData(playerStats.mThrow);
         _commandListButtons[13].SetData(playerStats.mRedFrenzy);
         _commandListButtons[14].SetData(playerStats.mParry);
@@ -301,7 +301,7 @@ public class CommandListMenu : BaseMenu
     {
         _characterContent.anchoredPosition = Vector2.zero;
         _commonContent.anchoredPosition = Vector2.zero;
-        if (GameManager.Instance.IsTrainingMode)
+        if (GameplayManager.Instance.IsTrainingMode)
         {
             CurrentPauseMenu = _pauseTrainingMenu;
         }
