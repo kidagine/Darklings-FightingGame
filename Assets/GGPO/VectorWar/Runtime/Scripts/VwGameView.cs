@@ -42,6 +42,8 @@ namespace VectorWar
             {
                 shipViews[i].Populate(shipsGss[i], gameInfo.players[i]);
             }
+            playerViews[0].Populate(gameInfo.players[0]);
+            playerViews[1].Populate(gameInfo.players[1]);
         }
 
         private void Update()

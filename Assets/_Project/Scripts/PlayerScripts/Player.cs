@@ -1,7 +1,9 @@
 using Demonics.Manager;
+using SharedGame;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityGGPO;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
@@ -602,8 +604,32 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         if (!GameplayManager.Instance.IsTrainingMode)
         {
-            Debug.Log("A");
             _playerUI.ClosePauseHold();
+        }
+    }
+    public string ConnectionStatus { get; private set; }
+    public void Populate(PlayerConnectionInfo info)
+    {
+        int progress = -1;
+        switch (info.state)
+        {
+            case PlayerConnectState.Connecting:
+                ConnectionStatus = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "Local Player" : "Connecting...";
+                break;
+
+            case PlayerConnectState.Synchronizing:
+                progress = info.connect_progress;
+                ConnectionStatus = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "Local Player" : "Synchronizing...";
+                break;
+
+            case PlayerConnectState.Disconnected:
+                ConnectionStatus = "Disconnected";
+                break;
+
+            case PlayerConnectState.Disconnecting:
+                ConnectionStatus = "Waiting for player...";
+                progress = (Utils.TimeGetTime() - info.disconnect_start) * 100 / info.disconnect_timeout;
+                break;
         }
     }
 }
