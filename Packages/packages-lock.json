@@ -158,6 +158,20 @@
       "source": "builtin",
       "dependencies": {}
     },
+    "unityggpo.plugin": {
+      "version": "file:UnityGGPO",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "unityggpo.sharedgame": {
+      "version": "file:SharedGame",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "unityggpo.plugin": "1.0.1"
+      }
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

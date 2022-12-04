@@ -7,9 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class NetworkManagerLobby : NetworkManager
 {
+    [SerializeField] private NetworkPlayerLobby _networkPlayerLobby = null;
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
-
+    public int PlayersInRoom { get; private set; }
 
     public override void OnClientConnect()
     {
@@ -21,5 +22,9 @@ public class NetworkManagerLobby : NetworkManager
     {
         base.OnClientDisconnect();
         OnClientDisconnected?.Invoke();
+    }
+    public override void OnServerAddPlayer(NetworkConnectionToClient conn)
+    {
+        PlayersInRoom++;
     }
 }

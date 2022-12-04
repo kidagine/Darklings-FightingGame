@@ -117,7 +117,8 @@ public class GameManager : MonoBehaviour
         {
             if (InputSystem.devices[1].name == "Mouse")
             {
-                InputSystem.RemoveDevice(InputSystem.devices[1]);
+                //InputSystem.AddDevice("Mouse");
+                //InputSystem.RemoveDevice(InputSystem.devices[1]);
             }
         }
 
