@@ -19,13 +19,14 @@ public class AirHurtState : HurtParentState
 
     public override void Enter()
     {
+        _physics.SetJuggleGravity(true);
         _player.OtherPlayer.UnfreezeComboTimer();
         _player.CheckFlip();
         _playerAnimator.HurtAir();
         GameObject effect = Instantiate(_hurtAttack.hurtEffect);
         effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
         base.Enter();
-        _player.hitstopEvent.AddListener(() => _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)0.1)));
+        _player.hitstopEvent.AddListener(() => _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)0.18)));
     }
 
     public override void UpdateLogic()
@@ -81,6 +82,7 @@ public class AirHurtState : HurtParentState
     public override void Exit()
     {
         base.Exit();
+        _physics.SetJuggleGravity(false);
         _groundCheckFrames = 0;
     }
 }

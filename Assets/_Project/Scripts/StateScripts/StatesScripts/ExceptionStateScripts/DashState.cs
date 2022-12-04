@@ -50,7 +50,6 @@ public class DashState : State
 
     private new void ToIdleState()
     {
-        _idleState.Initialize(true);
         _stateMachine.ChangeState(_idleState);
     }
 

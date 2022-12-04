@@ -11,7 +11,6 @@ public class CpuController : BaseController
     private float _movementTimer;
     private bool _crouch;
     private bool _jump;
-    private bool _dash;
     private bool _reset;
 
     public void SetOtherPlayer(Transform otherPlayer)
@@ -54,7 +53,6 @@ public class CpuController : BaseController
         _distance = Mathf.Abs(_otherPlayer.transform.position.x - transform.position.x);
         _movementTimer -= Time.deltaTime;
         _jump = false;
-        _dash = false;
         if (_movementTimer < 0)
         {
             int movementRandom;
@@ -113,10 +111,6 @@ public class CpuController : BaseController
             if (standingRandom == 2)
             {
                 _crouch = false;
-            }
-            if (dashRandom == 2)
-            {
-                _dash = true;
             }
             InputDirection = new Vector2Int(_movementInputX, 0);
             _movementTimer = Random.Range(0.2f, 0.35f);

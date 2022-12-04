@@ -19,7 +19,7 @@ public class WalkState : GroundParentState
         _player.CheckFlip();
     }
 
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         if (_baseController.InputDirection.x == 0.0f)
         {

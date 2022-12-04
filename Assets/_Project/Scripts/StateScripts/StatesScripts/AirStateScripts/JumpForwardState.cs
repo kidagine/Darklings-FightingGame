@@ -11,6 +11,7 @@ public class JumpForwardState : AirParentState
 
     public void Initialize(bool jumpCancel = false)
     {
+        _playerMovement.StopKnockback();
         _jumpCancel = jumpCancel;
     }
 
@@ -21,24 +22,17 @@ public class JumpForwardState : AirParentState
         _audio.Sound("Jump").Play();
         _playerAnimator.JumpForward();
         _playerMovement.ResetToWalkSpeed();
-        if (_jumpCancel)
+        if (_playerMovement.HasDoubleJumped)
         {
-            _player.ExitHitstop();
-            _playerMovement.StopKnockback();
-            _player.HasJuggleForce = true;
-            _jump = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, _jumpCancelForce);
-            _inputBuffer.CheckInputBufferAttacks();
+            _jump = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, (_player.playerStats.JumpForce) / _jumpDoubleDivider);
         }
         else
         {
-            if (_playerMovement.HasDoubleJumped)
-            {
-                _jump = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, (_player.playerStats.JumpForce + (DemonicsFloat)0.01) / _jumpDoubleDivider);
-            }
-            else
-            {
-                _jump = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, _player.playerStats.JumpForce + (DemonicsFloat)0.01);
-            }
+            _jump = new DemonicsVector2(_jumpForwardX * (DemonicsFloat)_baseController.InputDirection.x, _player.playerStats.JumpForce);
+        }
+        if (_jumpCancel)
+        {
+            _inputBuffer.CheckInputBufferAttacks();
         }
         _physics.Velocity = _jump;
     }

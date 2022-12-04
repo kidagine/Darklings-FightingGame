@@ -21,7 +21,7 @@ public class WakeUpState : State
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
     }
 
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         if (_stateMachine.CurrentState == this)
         {

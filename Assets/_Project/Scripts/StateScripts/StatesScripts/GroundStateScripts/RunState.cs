@@ -35,7 +35,7 @@ public class RunState : GroundParentState
         _physics.Velocity = new DemonicsVector2((DemonicsFloat)transform.root.localScale.x * (DemonicsFloat)_playerMovement.MovementSpeed, (DemonicsFloat)0);
     }
 
-    private void ToIdleState()
+    private new void ToIdleState()
     {
         if (_baseController.InputDirection.x == 0)
         {

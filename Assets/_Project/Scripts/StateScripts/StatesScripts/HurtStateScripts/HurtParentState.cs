@@ -32,12 +32,25 @@ public class HurtParentState : State
         _hurtFrame = _hurtAttack.hitStun;
         if (!_playerMovement.IsInCorner)
         {
-            _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, _hurtAttack.knockbackForce.y), _hurtAttack.knockbackDuration, (int)(-_player.transform.localScale.x), _hurtAttack.knockbackArc);
+            if (_hurtAttack.causesSoftKnockdown)
+            {
+                _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x / 2, 0), _hurtAttack.knockbackDuration, (int)(-_player.transform.localScale.x), 0);
+            }
+            else
+            {
+                _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, _hurtAttack.knockbackForce.y), _hurtAttack.knockbackDuration, (int)(-_player.transform.localScale.x), _hurtAttack.knockbackArc);
+            }
         }
         else
         {
-            _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, _hurtAttack.knockbackForce.y), _hurtAttack.knockbackDuration, (int)(-_player.transform.localScale.x), _hurtAttack.knockbackArc, ignoreX: true);
-            //TODO: launch upward only
+            if (_hurtAttack.causesSoftKnockdown)
+            {
+                _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, 0), _hurtAttack.knockbackDuration, (int)(-_player.transform.localScale.x), 0, ignoreX: true);
+            }
+            else
+            {
+                _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, _hurtAttack.knockbackForce.y), _hurtAttack.knockbackDuration, (int)(-_player.transform.localScale.x), _hurtAttack.knockbackArc, ignoreX: true);
+            }
         }
         _player.OtherPlayerUI.IncreaseCombo();
         if (_player.OtherPlayerUI.CurrentComboCount == 1)
@@ -52,7 +65,7 @@ public class HurtParentState : State
                 _player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
             }
         }
-        if (_hurtAttack.cameraShaker != null)
+        if (_hurtAttack.cameraShaker != null && !_hurtAttack.causesSoftKnockdown)
         {
             CameraShake.Instance.Shake(_hurtAttack.cameraShaker);
         }
@@ -60,6 +73,7 @@ public class HurtParentState : State
         _playerUI.Damaged();
         _player.RecallAssist();
         GameManager.Instance.HitStop(_hurtAttack.hitstop);
+        _player.StartShakeContact();
         if (_player.Health <= 0)
         {
             ToDeathState();

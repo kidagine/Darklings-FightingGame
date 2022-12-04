@@ -8,6 +8,7 @@ public class JumpState : AirParentState
 
     public void Initialize(bool jumpCancel = false)
     {
+        _playerMovement.StopKnockback();
         _jumpCancel = jumpCancel;
     }
 
@@ -17,25 +18,18 @@ public class JumpState : AirParentState
         Instantiate(_jumpPrefab, transform.position, Quaternion.identity);
         _audio.Sound("Jump").Play();
         _playerAnimator.Jump();
-        _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, _physics.Velocity.y);
-        if (_jumpCancel)
+        _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)0);
+        if (_playerMovement.HasDoubleJumped)
         {
-            _player.ExitHitstop();
-            _playerMovement.StopKnockback();
-            _player.HasJuggleForce = true;
-            _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _jumpCancelForce);
-            _inputBuffer.CheckInputBufferAttacks();
+            _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce / _jumpDoubleDivider);
         }
         else
         {
-            if (_playerMovement.HasDoubleJumped)
-            {
-                _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce / _jumpDoubleDivider);
-            }
-            else
-            {
-                _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce);
-            }
+            _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce);
+        }
+        if (_jumpCancel)
+        {
+            _inputBuffer.CheckInputBufferAttacks();
         }
         _player.SetPushboxTrigger(true);
     }

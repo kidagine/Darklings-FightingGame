@@ -354,6 +354,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        _uiInput.gameObject.SetActive(true);
         if (SceneSettings.MusicName == "Random")
         {
             CurrentMusic = _musicAudio.SoundGroup("Music").PlayInRandom();
