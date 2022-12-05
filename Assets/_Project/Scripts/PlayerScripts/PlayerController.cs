@@ -135,14 +135,14 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Special);
+            NetworkInput.ARCANA_INPUT = true;
         }
     }
     public void Assist(CallbackContext callbackContext)
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Assist);
+            NetworkInput.SHADOW_INPUT = true;
         }
     }
 
@@ -150,7 +150,7 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Throw);
+            NetworkInput.GRAB_INPUT = true;
         }
     }
 
@@ -158,7 +158,7 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Parry);
+            NetworkInput.BLUE_FRENZY_INPUT = true;
         }
     }
 
@@ -166,7 +166,7 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+            NetworkInput.RED_FRENZY_INPUT = true;
         }
     }
 

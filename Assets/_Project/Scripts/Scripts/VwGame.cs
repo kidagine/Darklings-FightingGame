@@ -40,13 +40,24 @@ namespace VectorWar
         public Vector2 position;
         public bool light;
         public bool medium;
-
+        public bool heavy;
+        public bool arcana;
+        public bool shadow;
+        public bool grab;
+        public bool blueFrenzy;
+        public bool redFrenzy;
         public void Serialize(BinaryWriter bw)
         {
             bw.Write(position.x);
             bw.Write(position.y);
             bw.Write(light);
             bw.Write(medium);
+            bw.Write(heavy);
+            bw.Write(arcana);
+            bw.Write(shadow);
+            bw.Write(grab);
+            bw.Write(blueFrenzy);
+            bw.Write(redFrenzy);
         }
 
         public void Deserialize(BinaryReader br)
@@ -55,6 +66,12 @@ namespace VectorWar
             position.y = br.ReadSingle();
             light = br.ReadBoolean();
             medium = br.ReadBoolean();
+            heavy = br.ReadBoolean();
+            arcana = br.ReadBoolean();
+            shadow = br.ReadBoolean();
+            grab = br.ReadBoolean();
+            blueFrenzy = br.ReadBoolean();
+            redFrenzy = br.ReadBoolean();
         }
     };
     [Serializable]
@@ -308,7 +325,7 @@ namespace VectorWar
             fire = (int)(inputs & INPUT_FIRE);
         }
 
-        public void ParseInputs(long inputs, int i, out bool light, out bool medium)
+        public void ParseInputs(long inputs, int i, out bool light, out bool medium, out bool heavy, out bool arcana, out bool grab, out bool shadow, out bool blueFrenzy, out bool redFrenzy)
         {
             if ((inputs & NetworkInput.LIGHT_BYTE) != 0)
             {
@@ -326,9 +343,57 @@ namespace VectorWar
             {
                 medium = false;
             }
+            if ((inputs & NetworkInput.HEAVY_BYTE) != 0)
+            {
+                heavy = true;
+            }
+            else
+            {
+                heavy = false;
+            }
+            if ((inputs & NetworkInput.ARCANA_BYTE) != 0)
+            {
+                arcana = true;
+            }
+            else
+            {
+                arcana = false;
+            }
+            if ((inputs & NetworkInput.GRAB_BYTE) != 0)
+            {
+                grab = true;
+            }
+            else
+            {
+                grab = false;
+            }
+            if ((inputs & NetworkInput.SHADOW_BYTE) != 0)
+            {
+                shadow = true;
+            }
+            else
+            {
+                shadow = false;
+            }
+            if ((inputs & NetworkInput.BLUE_FRENZY_BYTE) != 0)
+            {
+                blueFrenzy = true;
+            }
+            else
+            {
+                blueFrenzy = false;
+            }
+            if ((inputs & NetworkInput.RED_FRENZY_BYTE) != 0)
+            {
+                redFrenzy = true;
+            }
+            else
+            {
+                redFrenzy = false;
+            }
         }
 
-        public void MoveShip(int index, float heading, float thrust, int fire, bool light, bool medium)
+        public void MoveShip(int index, float heading, float thrust, int fire, bool light, bool medium, bool heavy, bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy)
         {
             var ship = _ships[index];
             var player = _players[index];
@@ -338,6 +403,12 @@ namespace VectorWar
             ship.heading = heading;
             _players[index].light = light;
             _players[index].medium = medium;
+            _players[index].heavy = heavy;
+            _players[index].arcana = arcana;
+            _players[index].grab = grab;
+            _players[index].shadow = shadow;
+            _players[index].blueFrenzy = blueFrenzy;
+            _players[index].redFrenzy = redFrenzy;
             _players[index].position = new Vector2(heading, 0);
             if (ship.cooldown == 0)
             {
@@ -461,6 +532,12 @@ namespace VectorWar
                 int fire;
                 bool light = false;
                 bool medium = false;
+                bool heavy = false;
+                bool arcana = false;
+                bool grab = false;
+                bool shadow = false;
+                bool blueFrenzy = false;
+                bool redFrenzy = false;
                 if ((disconnect_flags & (1 << i)) != 0)
                 {
                     GetShipAI(i, out heading, out thrust, out fire);
@@ -468,9 +545,9 @@ namespace VectorWar
                 else
                 {
                     ParseShipInputs(inputs[i], i, out heading, out thrust, out fire);
-                    ParseInputs(inputs[i], i, out light, out medium);
+                    ParseInputs(inputs[i], i, out light, out medium, out heavy, out arcana, out grab, out shadow, out blueFrenzy, out redFrenzy);
                 }
-                MoveShip(i, heading, thrust, fire, light, medium);
+                MoveShip(i, heading, thrust, fire, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy);
 
                 if (_ships[i].cooldown != 0)
                 {
@@ -484,13 +561,25 @@ namespace VectorWar
             long input = 0;
             if (id == 0)
             {
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Alpha2))
+                if (NetworkInput.UP_INPUT)
+                {
+                    input |= NetworkInput.UP_BYTE;
+                    NetworkInput.UP_INPUT = false;
+                }
+                if (NetworkInput.DOWN_INPUT)
+                {
+                    input |= NetworkInput.DOWN_BYTE;
+                    NetworkInput.DOWN_INPUT = false;
+                }
+                if (NetworkInput.LEFT_INPUT)
                 {
                     input |= NetworkInput.LEFT_BYTE;
+                    NetworkInput.LEFT_INPUT = false;
                 }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Alpha3))
+                if (NetworkInput.RIGHT_INPUT)
                 {
                     input |= NetworkInput.RIGHT_BYTE;
+                    NetworkInput.RIGHT_INPUT = false;
                 }
                 if (NetworkInput.LIGHT_INPUT)
                 {
@@ -507,19 +596,32 @@ namespace VectorWar
                     input |= NetworkInput.HEAVY_BYTE;
                     NetworkInput.HEAVY_INPUT = false;
                 }
-            }
-            else if (id == 1)
-            {
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Alpha4))
+                if (NetworkInput.ARCANA_INPUT)
                 {
-                    input |= INPUT_ROTATE_LEFT;
+                    input |= NetworkInput.ARCANA_BYTE;
+                    NetworkInput.ARCANA_INPUT = false;
                 }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Alpha5))
+                if (NetworkInput.SHADOW_INPUT)
                 {
-                    input |= INPUT_ROTATE_RIGHT;
+                    input |= NetworkInput.SHADOW_BYTE;
+                    NetworkInput.SHADOW_INPUT = false;
+                }
+                if (NetworkInput.GRAB_INPUT)
+                {
+                    input |= NetworkInput.GRAB_BYTE;
+                    NetworkInput.GRAB_INPUT = false;
+                }
+                if (NetworkInput.BLUE_FRENZY_INPUT)
+                {
+                    input |= NetworkInput.BLUE_FRENZY_BYTE;
+                    NetworkInput.BLUE_FRENZY_INPUT = false;
+                }
+                if (NetworkInput.RED_FRENZY_INPUT)
+                {
+                    input |= NetworkInput.RED_FRENZY_BYTE;
+                    NetworkInput.RED_FRENZY_INPUT = false;
                 }
             }
-
             return input;
         }
 

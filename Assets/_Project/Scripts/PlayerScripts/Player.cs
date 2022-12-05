@@ -622,6 +622,30 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Medium);
         }
+        if (playerGs.heavy)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
+        }
+        if (playerGs.arcana)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Special);
+        }
+        if (playerGs.grab)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Throw);
+        }
+        if (playerGs.shadow)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Assist);
+        }
+        if (playerGs.blueFrenzy)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Parry);
+        }
+        if (playerGs.redFrenzy)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+        }
         switch (info.state)
         {
             case PlayerConnectState.Connecting:
