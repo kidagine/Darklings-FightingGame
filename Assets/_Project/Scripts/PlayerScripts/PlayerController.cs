@@ -111,7 +111,7 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Light);
+            NetworkInput.LIGHT_INPUT = true;
         }
     }
 
@@ -119,7 +119,7 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Medium);
+            NetworkInput.MEDIUM_INPUT = true;
         }
     }
 
@@ -127,7 +127,7 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
+            NetworkInput.HEAVY_INPUT = true;
         }
     }
 

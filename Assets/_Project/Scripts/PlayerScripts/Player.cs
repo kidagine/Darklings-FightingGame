@@ -22,6 +22,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [HideInInspector] public PlayerStatsSO playerStats;
     protected PlayerComboSystem _playerComboSystem;
     private BrainController _controller;
+    private InputBuffer _inputBuffer;
     private bool _comboTimerPaused;
     private int _comboTimerFrames;
     private int _comboTimerWaitFrames;
@@ -65,6 +66,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     void Awake()
     {
+        _inputBuffer = GetComponent<InputBuffer>();
         _playerMovement = GetComponent<PlayerMovement>();
         _playerComboSystem = GetComponent<PlayerComboSystem>();
         ResultAttack = new ResultAttack();
@@ -611,8 +613,15 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public string ConnectionStatus { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        Debug.Log(playerGs.position.x);
         _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)playerGs.position.x + _playerMovement.Physics.Position.x, _playerMovement.Physics.Position.y);
+        if (playerGs.light)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Light);
+        }
+        if (playerGs.medium)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Medium);
+        }
         switch (info.state)
         {
             case PlayerConnectState.Connecting:

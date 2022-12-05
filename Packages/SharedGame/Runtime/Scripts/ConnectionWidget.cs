@@ -55,7 +55,10 @@ namespace SharedGame
 
         private void OnDestroy()
         {
-            gameManager.OnRunningChanged -= OnRunningChanged;
+            if (gameManager != null)
+            {
+                gameManager.OnRunningChanged -= OnRunningChanged;
+            }
             btnConnect.onClick.RemoveListener(OnConnect);
         }
 

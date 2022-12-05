@@ -12,7 +12,7 @@ namespace VectorWar
     public static class VWConstants
     {
         public const int MAX_SHIPS = 4;
-        public const int MAX_PLAYERS = 64;
+        public const int MAX_PLAYERS = 2;
 
         public const int INPUT_THRUST = (1 << 0);
         public const int INPUT_BREAK = (1 << 1);
@@ -38,17 +38,23 @@ namespace VectorWar
     public struct PlayerNetwork
     {
         public Vector2 position;
+        public bool light;
+        public bool medium;
 
         public void Serialize(BinaryWriter bw)
         {
             bw.Write(position.x);
             bw.Write(position.y);
+            bw.Write(light);
+            bw.Write(medium);
         }
 
         public void Deserialize(BinaryReader br)
         {
             position.x = br.ReadSingle();
             position.y = br.ReadSingle();
+            light = br.ReadBoolean();
+            medium = br.ReadBoolean();
         }
     };
     [Serializable]
@@ -84,6 +90,7 @@ namespace VectorWar
         public Vector2 velocity;
         public float radius;
         public float heading;
+        public int light;
         public int health;
         public int cooldown;
         public int score;
@@ -285,6 +292,7 @@ namespace VectorWar
                 heading = 0;
             }
 
+
             if ((inputs & INPUT_THRUST) != 0)
             {
                 thrust = SHIP_THRUST;
@@ -300,7 +308,27 @@ namespace VectorWar
             fire = (int)(inputs & INPUT_FIRE);
         }
 
-        public void MoveShip(int index, float heading, float thrust, int fire)
+        public void ParseInputs(long inputs, int i, out bool light, out bool medium)
+        {
+            if ((inputs & NetworkInput.LIGHT_BYTE) != 0)
+            {
+                light = true;
+            }
+            else
+            {
+                light = false;
+            }
+            if ((inputs & NetworkInput.MEDIUM_BYTE) != 0)
+            {
+                medium = true;
+            }
+            else
+            {
+                medium = false;
+            }
+        }
+
+        public void MoveShip(int index, float heading, float thrust, int fire, bool light, bool medium)
         {
             var ship = _ships[index];
             var player = _players[index];
@@ -308,6 +336,8 @@ namespace VectorWar
             GGPORunner.LogGame($"calculation of new ship coordinates: (thrust:{thrust} heading:{heading}).");
 
             ship.heading = heading;
+            _players[index].light = light;
+            _players[index].medium = medium;
             _players[index].position = new Vector2(heading, 0);
             if (ship.cooldown == 0)
             {
@@ -429,7 +459,8 @@ namespace VectorWar
             {
                 float thrust, heading;
                 int fire;
-
+                bool light = false;
+                bool medium = false;
                 if ((disconnect_flags & (1 << i)) != 0)
                 {
                     GetShipAI(i, out heading, out thrust, out fire);
@@ -437,8 +468,9 @@ namespace VectorWar
                 else
                 {
                     ParseShipInputs(inputs[i], i, out heading, out thrust, out fire);
+                    ParseInputs(inputs[i], i, out light, out medium);
                 }
-                MoveShip(i, heading, thrust, fire);
+                MoveShip(i, heading, thrust, fire, light, medium);
 
                 if (_ships[i].cooldown != 0)
                 {
@@ -454,11 +486,26 @@ namespace VectorWar
             {
                 if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Alpha2))
                 {
-                    input |= INPUT_ROTATE_LEFT;
+                    input |= NetworkInput.LEFT_BYTE;
                 }
                 if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Alpha3))
                 {
-                    input |= INPUT_ROTATE_RIGHT;
+                    input |= NetworkInput.RIGHT_BYTE;
+                }
+                if (NetworkInput.LIGHT_INPUT)
+                {
+                    input |= NetworkInput.LIGHT_BYTE;
+                    NetworkInput.LIGHT_INPUT = false;
+                }
+                if (NetworkInput.MEDIUM_INPUT)
+                {
+                    input |= NetworkInput.MEDIUM_BYTE;
+                    NetworkInput.MEDIUM_INPUT = false;
+                }
+                if (NetworkInput.HEAVY_INPUT)
+                {
+                    input |= NetworkInput.HEAVY_BYTE;
+                    NetworkInput.HEAVY_INPUT = false;
                 }
             }
             else if (id == 1)

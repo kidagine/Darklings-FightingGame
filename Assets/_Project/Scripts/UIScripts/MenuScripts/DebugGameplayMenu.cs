@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DebugGameplayMenu : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class DebugGameplayMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _p2PositionText = default;
     [SerializeField] private TextMeshProUGUI _p1ConnectionText = default;
     [SerializeField] private TextMeshProUGUI _p2ConnectionText = default;
+    [SerializeField] private Slider _p1ConnectionSlider = default;
+    [SerializeField] private Slider _p2ConnectionSlider = default;
 
 
     private readonly string _versionSplit = "Version:";

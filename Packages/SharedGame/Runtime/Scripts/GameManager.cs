@@ -73,7 +73,7 @@ namespace SharedGame
             var t = Time.realtimeSinceStartup;
             var t2 = t + 1f / 60f;
             System.Threading.Thread.Sleep(SToMs(t2 - t));
-            UnityEngine.Debug.Log($"{t} {t2} {Time.realtimeSinceStartup}");
+            //UnityEngine.Debug.Log($"{t} {t2} {Time.realtimeSinceStartup}");
         }
 
         private int SToMs(float time)
