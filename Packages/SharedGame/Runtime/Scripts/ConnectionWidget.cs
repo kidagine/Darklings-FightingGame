@@ -1,29 +1,34 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+namespace SharedGame
+{
 
-namespace SharedGame {
-
-    public class ConnectionWidget : MonoBehaviour {
-        public InputField[] inpIps;
+    public class ConnectionWidget : MonoBehaviour
+    {
+        public TMP_InputField[] inpIps;
         public Toggle[] tglSpectators;
-        public InputField inpPlayerIndex;
+        public TMP_InputField inpPlayerIndex;
         public Toggle tgLocal;
         public Button btnConnect;
 
         private GameManager gameManager => GameManager.Instance;
 
-        private void Awake() {
+        private void Awake()
+        {
             gameManager.OnRunningChanged += OnRunningChanged;
             btnConnect.onClick.AddListener(OnConnect);
 
             var connections = new List<Connections>();
-            connections.Add(new Connections() {
+            connections.Add(new Connections()
+            {
                 ip = "127.0.0.1",
                 port = 7000,
                 spectator = false
             });
-            connections.Add(new Connections() {
+            connections.Add(new Connections()
+            {
                 ip = "127.0.0.1",
                 port = 7001,
                 spectator = false
@@ -32,11 +37,14 @@ namespace SharedGame {
             LoadConnectionInfo(connections);
         }
 
-        private void OnConnect() {
-            if (tgLocal.isOn) {
+        private void OnConnect()
+        {
+            if (tgLocal.isOn)
+            {
                 gameManager.StartLocalGame();
             }
-            else {
+            else
+            {
                 var connectionInfo = GetConnectionInfo();
                 var perf = FindObjectOfType<GgpoPerformancePanel>();
                 perf.Setup();
@@ -45,27 +53,34 @@ namespace SharedGame {
             }
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             gameManager.OnRunningChanged -= OnRunningChanged;
             btnConnect.onClick.RemoveListener(OnConnect);
         }
 
-        private void OnRunningChanged(bool obj) {
+        private void OnRunningChanged(bool obj)
+        {
             gameObject.SetActive(!obj);
         }
 
-        public void LoadConnectionInfo(IList<Connections> connections) {
-            for (int i = 0; i < connections.Count; ++i) {
+        public void LoadConnectionInfo(IList<Connections> connections)
+        {
+            for (int i = 0; i < connections.Count; ++i)
+            {
                 inpIps[i].text = connections[i].ip + ":" + connections[i].port;
                 tglSpectators[i].isOn = connections[i].spectator;
             }
         }
 
-        public IList<Connections> GetConnectionInfo() {
+        public IList<Connections> GetConnectionInfo()
+        {
             var connections = new List<Connections>(inpIps.Length);
-            for (int i = 0; i < inpIps.Length; ++i) {
+            for (int i = 0; i < inpIps.Length; ++i)
+            {
                 var split = inpIps[i].text.Split(':');
-                connections.Add(new Connections() {
+                connections.Add(new Connections()
+                {
                     ip = split[0],
                     port = ushort.Parse(split[1]),
                     spectator = false

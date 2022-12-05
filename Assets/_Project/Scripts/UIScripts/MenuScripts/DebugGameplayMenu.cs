@@ -44,6 +44,15 @@ public class DebugGameplayMenu : MonoBehaviour
         {
             _p1ConnectionText.text = GameplayManager.Instance.PlayerOne.ConnectionStatus;
             _p2ConnectionText.text = GameplayManager.Instance.PlayerTwo.ConnectionStatus;
+            if (string.IsNullOrEmpty(_p1ConnectionText.text))
+            {
+                _p1ConnectionText.transform.parent.gameObject.SetActive(false);
+            }
+            if (string.IsNullOrEmpty(_p2ConnectionText.text))
+            {
+                _p2ConnectionText.transform.parent.gameObject.SetActive(false);
+            }
+
             string p1X = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.x).ToString("0.00");
             string p1Y = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.y).ToString("0.00");
             string p2X = ((float)GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.x).ToString("0.00");

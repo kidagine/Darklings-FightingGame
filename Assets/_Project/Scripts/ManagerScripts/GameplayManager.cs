@@ -60,6 +60,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] protected GameObject[] _readyObjects = default;
     [SerializeField] protected GameObject[] _arcanaObjects = default;
     [SerializeField] protected GameObject _playerLocal = default;
+    [SerializeField] protected GameObject _debugNetwork = default;
     [SerializeField] protected GameObject _infiniteTime = default;
     [SerializeField] protected GameObject _winsImage = default;
     [SerializeField] private GameObject[] _hearts = default;
@@ -127,6 +128,7 @@ public class GameplayManager : MonoBehaviour
         CheckInstance();
         if (!SceneSettings.SceneSettingsDecide)
         {
+            _debugNetwork.SetActive(true);
             if (_controllerOne >= 0)
             {
                 SceneSettings.ControllerOne = InputSystem.devices[_controllerOne];
@@ -150,7 +152,11 @@ public class GameplayManager : MonoBehaviour
         }
         else
         {
+            _debugNetwork.SetActive(false);
             _isTrainingMode = SceneSettings.IsTrainingMode;
+            GameObject playerOne = Instantiate(_playerLocal);
+            GameObject playerTwo = Instantiate(_playerLocal);
+            InitializePlayers(playerOne, playerTwo);
         }
         CheckSceneSettings();
     }
@@ -335,31 +341,34 @@ public class GameplayManager : MonoBehaviour
 
     public void DeactivateCpus()
     {
-#if !UNITY_EDITOR
-        if (IsTrainingMode)
+        if (SceneSettings.SceneSettingsDecide)
         {
-            _playerOneController.DeactivateCpu();
-            _playerTwoController.DeactivateCpu();
+            if (IsTrainingMode)
+            {
+                _playerOneController.DeactivateCpu();
+                _playerTwoController.DeactivateCpu();
+            }
         }
-#endif
     }
 
     public void MaxHealths()
     {
-#if !UNITY_EDITOR
-        if (IsTrainingMode)
+        if (SceneSettings.SceneSettingsDecide)
         {
-            PlayerOne.MaxHealthStats();
-            PlayerTwo.MaxHealthStats();
+            if (IsTrainingMode)
+            {
+                PlayerOne.MaxHealthStats();
+                PlayerTwo.MaxHealthStats();
+            }
         }
-#endif
     }
 
     void Start()
     {
-#if !UNITY_EDITOR
-        SetupGame();
-#endif
+        if (SceneSettings.SceneSettingsDecide)
+        {
+            SetupGame();
+        }
     }
 
     public void SetupGame()

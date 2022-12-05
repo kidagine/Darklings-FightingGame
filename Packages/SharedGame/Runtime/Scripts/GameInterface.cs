@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SharedGame
 {
@@ -8,12 +9,12 @@ namespace SharedGame
     public class GameInterface : MonoBehaviour
     {
         public int maxLogLines = 20;
-        public Text txtGameLog;
-        public Text txtPluginLog;
-        public Text txtIdlePerc;
-        public Text txtUpdatePerc;
-        public Text txtNowChecksum;
-        public Text txtPeriodicChecksum;
+        public TextMeshProUGUI txtGameLog;
+        public TextMeshProUGUI txtPluginLog;
+        public TextMeshProUGUI txtIdlePerc;
+        public TextMeshProUGUI txtUpdatePerc;
+        public TextMeshProUGUI txtNowChecksum;
+        public TextMeshProUGUI txtPeriodicChecksum;
         public Button btnPlayer1;
         public Button btnPlayer2;
         public Button btnConnect;
@@ -86,7 +87,7 @@ namespace SharedGame
 
         private void SetConnectText(string text)
         {
-            btnConnect.GetComponentInChildren<Text>().text = text;
+            btnConnect.GetComponentInChildren<TextMeshProUGUI>().text = text;
         }
 
         private void OnGameLog(string text)
