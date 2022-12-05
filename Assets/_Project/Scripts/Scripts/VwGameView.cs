@@ -34,6 +34,7 @@ namespace VectorWar
             GameInfo gameInfo = runner.GameInfo;
 
             var shipsGss = game._ships;
+            var playersGss = game._players;
             if (shipViews.Length != shipsGss.Length)
             {
                 ResetView(game);
@@ -42,8 +43,8 @@ namespace VectorWar
             {
                 shipViews[i].Populate(shipsGss[i], gameInfo.players[i]);
             }
-            playerViews[0].Populate(gameInfo.players[0]);
-            playerViews[1].Populate(gameInfo.players[1]);
+            playerViews[0].Populate(playersGss[0], gameInfo.players[0]);
+            playerViews[1].Populate(playersGss[1], gameInfo.players[1]);
         }
 
         private void Update()

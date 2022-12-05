@@ -16,17 +16,23 @@ public class DemonicsWorld : MonoBehaviour
 
     void Update()
     {
-        _tick += Time.deltaTime;
-        if (_tick >= Time.fixedDeltaTime)
+        if (GameplayManager.Instance.HasGameStarted)
         {
-            _tick -= Time.fixedDeltaTime;
-            Physics2D.Simulate(Time.fixedDeltaTime);
+            _tick += Time.deltaTime;
+            if (_tick >= Time.fixedDeltaTime)
+            {
+                _tick -= Time.fixedDeltaTime;
+                Physics2D.Simulate(Time.fixedDeltaTime);
+            }
         }
     }
 
     void FixedUpdate()
     {
-        Frame++;
+        if (GameplayManager.Instance.HasGameStarted)
+        {
+            Frame++;
+        }
     }
 
     public static bool WaitFrames(ref int frames)
