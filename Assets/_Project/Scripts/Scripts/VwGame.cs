@@ -38,6 +38,10 @@ namespace VectorWar
     public struct PlayerNetwork
     {
         public Vector2 position;
+        public bool up;
+        public bool down;
+        public bool left;
+        public bool right;
         public bool light;
         public bool medium;
         public bool heavy;
@@ -50,6 +54,10 @@ namespace VectorWar
         {
             bw.Write(position.x);
             bw.Write(position.y);
+            bw.Write(up);
+            bw.Write(down);
+            bw.Write(left);
+            bw.Write(right);
             bw.Write(light);
             bw.Write(medium);
             bw.Write(heavy);
@@ -64,6 +72,10 @@ namespace VectorWar
         {
             position.x = br.ReadSingle();
             position.y = br.ReadSingle();
+            up = br.ReadBoolean();
+            down = br.ReadBoolean();
+            left = br.ReadBoolean();
+            right = br.ReadBoolean();
             light = br.ReadBoolean();
             medium = br.ReadBoolean();
             heavy = br.ReadBoolean();
@@ -325,8 +337,40 @@ namespace VectorWar
             fire = (int)(inputs & INPUT_FIRE);
         }
 
-        public void ParseInputs(long inputs, int i, out bool light, out bool medium, out bool heavy, out bool arcana, out bool grab, out bool shadow, out bool blueFrenzy, out bool redFrenzy)
+        public void ParseInputs(long inputs, int i, out bool up, out bool down, out bool left, out bool right, out bool light, out bool medium, out bool heavy, out bool arcana, out bool grab, out bool shadow, out bool blueFrenzy, out bool redFrenzy)
         {
+            if ((inputs & NetworkInput.UP_BYTE) != 0)
+            {
+                up = true;
+            }
+            else
+            {
+                up = false;
+            }
+            if ((inputs & NetworkInput.DOWN_BYTE) != 0)
+            {
+                down = true;
+            }
+            else
+            {
+                down = false;
+            }
+            if ((inputs & NetworkInput.LEFT_BYTE) != 0)
+            {
+                left = true;
+            }
+            else
+            {
+                left = false;
+            }
+            if ((inputs & NetworkInput.RIGHT_BYTE) != 0)
+            {
+                right = true;
+            }
+            else
+            {
+                right = false;
+            }
             if ((inputs & NetworkInput.LIGHT_BYTE) != 0)
             {
                 light = true;
@@ -393,7 +437,7 @@ namespace VectorWar
             }
         }
 
-        public void MoveShip(int index, float heading, float thrust, int fire, bool light, bool medium, bool heavy, bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy)
+        public void MoveShip(int index, float heading, float thrust, int fire, bool up, bool down, bool left, bool right, bool light, bool medium, bool heavy, bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy)
         {
             var ship = _ships[index];
             var player = _players[index];
@@ -401,6 +445,10 @@ namespace VectorWar
             GGPORunner.LogGame($"calculation of new ship coordinates: (thrust:{thrust} heading:{heading}).");
 
             ship.heading = heading;
+            _players[index].up = up;
+            _players[index].down = down;
+            _players[index].left = left;
+            _players[index].right = right;
             _players[index].light = light;
             _players[index].medium = medium;
             _players[index].heavy = heavy;
@@ -530,6 +578,10 @@ namespace VectorWar
             {
                 float thrust, heading;
                 int fire;
+                bool up = false;
+                bool down = false;
+                bool left = false;
+                bool right = false;
                 bool light = false;
                 bool medium = false;
                 bool heavy = false;
@@ -545,9 +597,9 @@ namespace VectorWar
                 else
                 {
                     ParseShipInputs(inputs[i], i, out heading, out thrust, out fire);
-                    ParseInputs(inputs[i], i, out light, out medium, out heavy, out arcana, out grab, out shadow, out blueFrenzy, out redFrenzy);
+                    ParseInputs(inputs[i], i, out up, out down, out left, out right, out light, out medium, out heavy, out arcana, out grab, out shadow, out blueFrenzy, out redFrenzy);
                 }
-                MoveShip(i, heading, thrust, fire, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy);
+                MoveShip(i, heading, thrust, fire, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy);
 
                 if (_ships[i].cooldown != 0)
                 {

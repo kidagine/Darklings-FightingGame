@@ -614,6 +614,30 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
         _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)playerGs.position.x + _playerMovement.Physics.Position.x, _playerMovement.Physics.Position.y);
+        if (playerGs.up)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+        }
+        if (playerGs.down)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+        }
+        if (playerGs.left)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+        }
+        if (playerGs.right)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+        }
+        // if (playerGs.up && playerGs.down || !playerGs.up && !playerGs.down)
+        // {
+        //     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
+        // }
+        // if (playerGs.left && playerGs.right || !playerGs.left && !playerGs.right)
+        // {
+        //     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
+        // }
         if (playerGs.light)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Light);

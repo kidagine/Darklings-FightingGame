@@ -30,22 +30,22 @@ public class PlayerController : BaseController
             if (input.x == 1)
             {
                 _previousInput = input;
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+                NetworkInput.RIGHT_INPUT = true;
             }
             if (input.x == -1)
             {
                 _previousInput = input;
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+                NetworkInput.LEFT_INPUT = true;
             }
             if (input.y == 1)
             {
                 _previousInput = input;
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+                NetworkInput.UP_INPUT = true;
             }
             if (input.y == -1)
             {
                 _previousInput = input;
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+                NetworkInput.DOWN_INPUT = true;
             }
         }
         if (input == Vector2Int.zero)
