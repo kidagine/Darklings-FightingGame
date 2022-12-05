@@ -69,7 +69,6 @@ public class PlayerController : BaseController
         {
             return true;
         }
-
         return false;
     }
 

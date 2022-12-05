@@ -45,6 +45,7 @@ namespace SharedGame
             }
             else
             {
+                // NetworkInput.IS_LOCAL = false;
                 var connectionInfo = GetConnectionInfo();
                 var perf = FindObjectOfType<GgpoPerformancePanel>();
                 perf.Setup();

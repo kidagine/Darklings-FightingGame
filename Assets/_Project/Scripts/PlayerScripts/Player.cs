@@ -4,7 +4,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityGGPO;
-using VectorWar;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
@@ -613,7 +612,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public string ConnectionStatus { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)playerGs.position.x + _playerMovement.Physics.Position.x, _playerMovement.Physics.Position.y);
         if (playerGs.up)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NetworkInput
 {
+    public const bool IS_LOCAL = true;
     public const int UP_BYTE = (1 << 0);
     public const int DOWN_BYTE = (1 << 1);
     public const int LEFT_BYTE = (1 << 2);
