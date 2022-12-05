@@ -97,7 +97,7 @@ namespace SharedGame
         {
             if (gameLog)
             {
-                Debug.Log("[GameLog] " + text);
+                //Debug.Log("[GameLog] " + text);
             }
             gameLogs.Insert(0, text);
             while (gameLogs.Count > maxLogLines)
@@ -114,7 +114,7 @@ namespace SharedGame
         {
             if (pluginLog)
             {
-                Debug.Log("[PluginLog] " + text);
+                //Debug.Log("[PluginLog] " + text);
             }
             pluginLogs.Insert(0, text);
             while (pluginLogs.Count > maxLogLines)

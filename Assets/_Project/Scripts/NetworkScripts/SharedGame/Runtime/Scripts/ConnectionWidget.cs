@@ -41,11 +41,12 @@ namespace SharedGame
         {
             if (tgLocal.isOn)
             {
+                NetworkInput.IS_LOCAL = true;
                 gameManager.StartLocalGame();
             }
             else
             {
-                // NetworkInput.IS_LOCAL = false;
+                NetworkInput.IS_LOCAL = false;
                 var connectionInfo = GetConnectionInfo();
                 var perf = FindObjectOfType<GgpoPerformancePanel>();
                 perf.Setup();

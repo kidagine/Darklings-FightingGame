@@ -30,22 +30,50 @@ public class PlayerController : BaseController
             if (input.x == 1)
             {
                 _previousInput = input;
-                NetworkInput.RIGHT_INPUT = true;
+                if (NetworkInput.IS_LOCAL)
+                {
+                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+                }
+                else
+                {
+                    NetworkInput.RIGHT_INPUT = true;
+                }
             }
             if (input.x == -1)
             {
                 _previousInput = input;
-                NetworkInput.LEFT_INPUT = true;
+                if (NetworkInput.IS_LOCAL)
+                {
+                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+                }
+                else
+                {
+                    NetworkInput.LEFT_INPUT = true;
+                }
             }
             if (input.y == 1)
             {
                 _previousInput = input;
-                NetworkInput.UP_INPUT = true;
+                if (NetworkInput.IS_LOCAL)
+                {
+                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+                }
+                else
+                {
+                    NetworkInput.UP_INPUT = true;
+                }
             }
             if (input.y == -1)
             {
                 _previousInput = input;
-                NetworkInput.DOWN_INPUT = true;
+                if (NetworkInput.IS_LOCAL)
+                {
+                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+                }
+                else
+                {
+                    NetworkInput.DOWN_INPUT = true;
+                }
             }
         }
         if (input == Vector2Int.zero)
@@ -110,7 +138,14 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            NetworkInput.LIGHT_INPUT = true;
+            if (NetworkInput.IS_LOCAL)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Light);
+            }
+            else
+            {
+                NetworkInput.LIGHT_INPUT = true;
+            }
         }
     }
 
@@ -118,7 +153,14 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            NetworkInput.MEDIUM_INPUT = true;
+            if (NetworkInput.IS_LOCAL)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Medium);
+            }
+            else
+            {
+                NetworkInput.MEDIUM_INPUT = true;
+            }
         }
     }
 
@@ -126,7 +168,14 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            NetworkInput.HEAVY_INPUT = true;
+            if (NetworkInput.IS_LOCAL)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
+            }
+            else
+            {
+                NetworkInput.HEAVY_INPUT = true;
+            }
         }
     }
 
@@ -134,14 +183,28 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            NetworkInput.ARCANA_INPUT = true;
+            if (NetworkInput.IS_LOCAL)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Special);
+            }
+            else
+            {
+                NetworkInput.ARCANA_INPUT = true;
+            }
         }
     }
     public void Assist(CallbackContext callbackContext)
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            NetworkInput.SHADOW_INPUT = true;
+            if (NetworkInput.IS_LOCAL)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Assist);
+            }
+            else
+            {
+                NetworkInput.SHADOW_INPUT = true;
+            }
         }
     }
 
@@ -149,7 +212,14 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            NetworkInput.GRAB_INPUT = true;
+            if (NetworkInput.IS_LOCAL)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Throw);
+            }
+            else
+            {
+                NetworkInput.GRAB_INPUT = true;
+            }
         }
     }
 
@@ -157,7 +227,14 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            NetworkInput.BLUE_FRENZY_INPUT = true;
+            if (NetworkInput.IS_LOCAL)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Parry);
+            }
+            else
+            {
+                NetworkInput.BLUE_FRENZY_INPUT = true;
+            }
         }
     }
 
@@ -165,7 +242,14 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            NetworkInput.RED_FRENZY_INPUT = true;
+            if (NetworkInput.IS_LOCAL)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+            }
+            else
+            {
+                NetworkInput.RED_FRENZY_INPUT = true;
+            }
         }
     }
 

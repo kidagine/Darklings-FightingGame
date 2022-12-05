@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class NetworkInput
 {
-    public const bool IS_LOCAL = true;
     public const int UP_BYTE = (1 << 0);
     public const int DOWN_BYTE = (1 << 1);
     public const int LEFT_BYTE = (1 << 2);
@@ -18,7 +17,7 @@ public class NetworkInput
     public const int BLUE_FRENZY_BYTE = (1 << 10);
     public const int RED_FRENZY_BYTE = (1 << 11);
 
-
+    public static bool IS_LOCAL { get; set; } = true;
     public static bool UP_INPUT { get; set; }
     public static bool DOWN_INPUT { get; set; }
     public static bool LEFT_INPUT { get; set; }
