@@ -30,12 +30,12 @@ public class PromptsPause : MonoBehaviour
     private void SetCorrectPromptSprite()
     {
         int index = 0;
-        if (GameManager.Instance.PauseMenu.PlayerInput.currentControlScheme == ControllerTypeEnum.Keyboard.ToString())
+        if (GameplayManager.Instance.PauseMenu.PlayerInput.currentControlScheme == ControllerTypeEnum.Keyboard.ToString())
         {
             index = 1;
         }
         InputAction inputAction = _actionReference.action;
         string currentBindingInput = InputControlPath.ToHumanReadableString(inputAction.bindings[index].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
-        _image.sprite = _deviceConfigurator.GetDeviceBindingIcon(GameManager.Instance.PauseMenu.PlayerInput, currentBindingInput);
+        _image.sprite = _deviceConfigurator.GetDeviceBindingIcon(GameplayManager.Instance.PauseMenu.PlayerInput, currentBindingInput);
     }
 }

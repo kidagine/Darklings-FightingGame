@@ -143,7 +143,7 @@ public class PlayerStateManager : StateMachine
 
     protected override State GetInitialState()
     {
-        if (GameManager.Instance.IsTrainingMode)
+        if (GameplayManager.Instance.IsTrainingMode)
         {
             return _trainingInitialState;
         }

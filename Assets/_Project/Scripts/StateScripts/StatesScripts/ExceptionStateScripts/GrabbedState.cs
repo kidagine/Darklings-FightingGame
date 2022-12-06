@@ -55,7 +55,7 @@ public class GrabbedState : State
         _player.OtherPlayer.SetResultAttack(_player.playerStats.mThrow.damage, _player.playerStats.mThrow);
         _player.OtherPlayer.hitConnectsEvent?.Invoke();
         _player.OtherPlayer.StopComboTimer();
-        GameManager.Instance.HitStop(_player.playerStats.mThrow.hitstop);
+        GameplayManager.Instance.HitStop(_player.playerStats.mThrow.hitstop);
         if (_player.Health <= 0)
         {
             ToDeathState();

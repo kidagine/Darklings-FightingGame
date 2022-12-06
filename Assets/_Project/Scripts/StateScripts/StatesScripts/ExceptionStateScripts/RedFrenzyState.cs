@@ -84,7 +84,7 @@ public class RedFrenzyState : State
         _player.SetInvinsible(true);
         ObjectPoolingManager.Instance.Spawn(_teleportDisappearEffect, transform.root.position);
         _midTeleportFrame = 15;
-        GameManager.Instance.GlobalHitstop(26);
+        GameplayManager.Instance.GlobalHitstop(26);
     }
 
     private void MidTeleportToOpponent()

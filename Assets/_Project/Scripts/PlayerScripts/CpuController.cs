@@ -20,7 +20,7 @@ public class CpuController : BaseController
 
     void Update()
     {
-        if (GameManager.Instance.HasGameStarted)
+        if (GameplayManager.Instance.HasGameStarted)
         {
             if (!TrainingSettings.CpuOff || !SceneSettings.IsTrainingMode)
             {

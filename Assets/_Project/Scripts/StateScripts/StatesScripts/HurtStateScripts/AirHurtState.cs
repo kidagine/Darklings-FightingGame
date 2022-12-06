@@ -52,7 +52,7 @@ public class AirHurtState : HurtParentState
 
     private void ToFallAfterStunState()
     {
-        if (GameManager.Instance.InfiniteHealth)
+        if (GameplayManager.Instance.InfiniteHealth)
         {
             _player.MaxHealthStats();
         }

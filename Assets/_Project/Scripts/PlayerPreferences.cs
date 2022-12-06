@@ -85,7 +85,7 @@ public class PlayerPreferences : MonoBehaviour
         }
         if (_checkTraining)
         {
-            if (GameManager.Instance.IsTrainingMode)
+            if (GameplayManager.Instance.IsTrainingMode)
             {
                 LoadTrainingPreferences();
             }

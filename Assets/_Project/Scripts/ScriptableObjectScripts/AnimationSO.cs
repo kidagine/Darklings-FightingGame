@@ -49,8 +49,8 @@ public class AnimationSO : ScriptableObject
     private void OnDisable()
     {
 #if UNITY_EDITOR
-        EditorUtility.SetDirty(this);
-        AssetDatabase.SaveAssets();
+        // EditorUtility.SetDirty(this);
+        // AssetDatabase.SaveAssets();
 #endif
     }
 }

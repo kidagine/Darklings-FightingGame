@@ -23,7 +23,7 @@ public class IntroUI : MonoBehaviour
     {
         if (DemonicsWorld.WaitFramesOnce(ref _midDialogueFrame))
         {
-            GameManager.Instance.IsDialogueRunning = true;
+            GameplayManager.Instance.IsDialogueRunning = true;
             _playerOneDialogue.PlayDialogue();
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class OnlineClientMenu : BaseMenu
 {
     [SerializeField] private NetworkManagerLobby _networkManager = default;
+    [SerializeField] private OnlineHostMenu _onlineHostMenu = default;
     [SerializeField] private TMP_InputField _roomId = default;
 
     private void OnEnable()
@@ -20,12 +21,13 @@ public class OnlineClientMenu : BaseMenu
     public void JoinLobby()
     {
         string ipAddress = _roomId.text;
-        _networkManager.networkAddress = "localhost";
-        _networkManager.StartClient();
+        // _networkManager.networkAddress = "localhost";
+        // _networkManager.StartClient();
     }
 
     private void HandleClientConnected()
     {
+        _onlineHostMenu.Show();
         gameObject.SetActive(false);
     }
 }

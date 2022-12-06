@@ -1,7 +1,9 @@
 using Demonics.Manager;
+using SharedGame;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityGGPO;
 
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
@@ -19,6 +21,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [HideInInspector] public PlayerStatsSO playerStats;
     protected PlayerComboSystem _playerComboSystem;
     private BrainController _controller;
+    private InputBuffer _inputBuffer;
     private bool _comboTimerPaused;
     private int _comboTimerFrames;
     private int _comboTimerWaitFrames;
@@ -62,6 +65,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     void Awake()
     {
+        _inputBuffer = GetComponent<InputBuffer>();
         _playerMovement = GetComponent<PlayerMovement>();
         _playerComboSystem = GetComponent<PlayerComboSystem>();
         ResultAttack = new ResultAttack();
@@ -110,7 +114,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         SetHurtbox(true);
         AssistGauge = (DemonicsFloat)1;
         transform.SetParent(null);
-        if (!GameManager.Instance.InfiniteArcana)
+        if (!GameplayManager.Instance.InfiniteArcana)
         {
             ArcanaGauge = (DemonicsFloat)0;
         }
@@ -136,7 +140,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public AttackSO shadowbreakKnockback()
     {
-        GameManager.Instance.AddHitstop(this);
+        GameplayManager.Instance.AddHitstop(this);
         return new AttackSO() { hitStun = 30, hitstop = 5, knockbackForce = new Vector2(0.1f, 1), knockbackDuration = 5, hurtEffectPosition = new Vector2(0, (float)_playerMovement.Physics.Position.y + 1) };
     }
 
@@ -166,10 +170,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     private void AssistCharge()
     {
-        if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameManager.Instance.HasGameStarted)
+        if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameplayManager.Instance.HasGameStarted)
         {
             AssistGauge += (DemonicsFloat)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
-            if (GameManager.Instance.InfiniteAssist)
+            if (GameplayManager.Instance.InfiniteAssist)
             {
                 AssistGauge = (DemonicsFloat)1.0f;
             }
@@ -179,10 +183,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     private void ArcanaCharge()
     {
-        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameManager.Instance.HasGameStarted)
+        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameplayManager.Instance.HasGameStarted)
         {
             ArcanaGauge += (DemonicsFloat)(Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge));
-            if (GameManager.Instance.InfiniteArcana)
+            if (GameplayManager.Instance.InfiniteArcana)
             {
                 ArcanaGauge = (DemonicsFloat)playerStats.Arcana;
             }
@@ -192,7 +196,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void ArcanaGain(DemonicsFloat arcana)
     {
-        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameManager.Instance.HasGameStarted)
+        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameplayManager.Instance.HasGameStarted)
         {
             ArcanaGauge += arcana;
             _playerUI.SetArcana((float)ArcanaGauge);
@@ -288,7 +292,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool AssistAction()
     {
-        if (AssistGauge >= (DemonicsFloat)0.5f && GameManager.Instance.HasGameStarted && !_assist.IsOnScreen)
+        if (AssistGauge >= (DemonicsFloat)0.5f && GameplayManager.Instance.HasGameStarted && !_assist.IsOnScreen)
         {
             _assist.Attack();
             DecreaseArcana((DemonicsFloat)0.5f);
@@ -401,7 +405,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             if (!CurrentAttack.isArcana || CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
             {
-                GameManager.Instance.AddHitstop(this);
+                GameplayManager.Instance.AddHitstop(this);
             }
         }
         CurrentAttack.hurtEffectPosition = hurtPosition;
@@ -455,7 +459,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool TakeDamage(AttackSO attack)
     {
-        GameManager.Instance.AddHitstop(this);
+        GameplayManager.Instance.AddHitstop(this);
         if (attack.attackTypeEnum == AttackTypeEnum.Throw)
         {
             return _playerStateManager.TryToGrabbedState();
@@ -509,7 +513,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerUI.Damaged();
         _playerUI.UpdateHealthDamaged();
         _playerAnimator.SpriteSuperArmorEffect();
-        GameManager.Instance.HitStop(attack.hitstop);
+        GameplayManager.Instance.HitStop(attack.hitstop);
     }
 
     public bool CanTakeSuperArmorHit(AttackSO attack)
@@ -588,7 +592,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void Pause(bool isPlayerOne)
     {
-        if (GameManager.Instance.IsTrainingMode)
+        if (GameplayManager.Instance.IsTrainingMode)
         {
             _playerUI.OpenTrainingPause(isPlayerOne);
         }
@@ -600,10 +604,87 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void UnPause()
     {
-        if (!GameManager.Instance.IsTrainingMode)
+        if (!GameplayManager.Instance.IsTrainingMode)
         {
-            Debug.Log("A");
             _playerUI.ClosePauseHold();
+        }
+    }
+    public string ConnectionStatus { get; private set; }
+    public int ConnectionProgress { get; private set; }
+    public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
+    {
+        if (playerGs.up)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+        }
+        if (playerGs.down)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+        }
+        if (playerGs.left)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+        }
+        if (playerGs.right)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+        }
+        if (playerGs.up && playerGs.down || !playerGs.up && !playerGs.down)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
+        }
+        if (!playerGs.left && !playerGs.right)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
+        }
+        if (playerGs.light)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Light);
+        }
+        if (playerGs.medium)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Medium);
+        }
+        if (playerGs.heavy)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
+        }
+        if (playerGs.arcana)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Special);
+        }
+        if (playerGs.grab)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Throw);
+        }
+        if (playerGs.shadow)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Assist);
+        }
+        if (playerGs.blueFrenzy)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Parry);
+        }
+        if (playerGs.redFrenzy)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+        }
+        switch (info.state)
+        {
+            case PlayerConnectState.Connecting:
+                ConnectionStatus = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "<color=green>P" : "<color=blue>C";
+                break;
+            case PlayerConnectState.Synchronizing:
+                ConnectionProgress = info.connect_progress;
+                ConnectionStatus = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "<color=green>P" : "<color=purple>S";
+                break;
+            case PlayerConnectState.Disconnected:
+                ConnectionStatus = "<color=red>D";
+                break;
+            case PlayerConnectState.Disconnecting:
+                ConnectionStatus = "<color=yellow>W";
+                ConnectionProgress = (Utils.TimeGetTime() - info.disconnect_start) * 100 / info.disconnect_timeout;
+                break;
         }
     }
 }

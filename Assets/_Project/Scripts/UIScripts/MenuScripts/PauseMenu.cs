@@ -21,7 +21,7 @@ public class PauseMenu : BaseMenu
 
     public void SetWhoPaused(bool playerOnePaused)
     {
-        GameManager.Instance.PauseMenu = this;
+        GameplayManager.Instance.PauseMenu = this;
         PlayerOnePaused = playerOnePaused;
         if (playerOnePaused)
         {
