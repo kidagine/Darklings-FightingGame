@@ -84,31 +84,6 @@ public struct PlayerNetwork
         redFrenzy = br.ReadBoolean();
     }
 };
-[Serializable]
-public struct Bullet
-{
-    public bool active;
-    public Vector2 position;
-    public Vector2 velocity;
-
-    public void Serialize(BinaryWriter bw)
-    {
-        bw.Write(active);
-        bw.Write(position.x);
-        bw.Write(position.y);
-        bw.Write(velocity.x);
-        bw.Write(velocity.y);
-    }
-
-    public void Deserialize(BinaryReader br)
-    {
-        active = br.ReadBoolean();
-        position.x = br.ReadSingle();
-        position.y = br.ReadSingle();
-        velocity.x = br.ReadSingle();
-        velocity.y = br.ReadSingle();
-    }
-};
 
 [Serializable]
 public class Ship
@@ -121,7 +96,6 @@ public class Ship
     public int health;
     public int cooldown;
     public int score;
-    public Bullet[] bullets = new Bullet[MAX_BULLETS];
 
     public void Serialize(BinaryWriter bw)
     {
@@ -134,10 +108,6 @@ public class Ship
         bw.Write(health);
         bw.Write(cooldown);
         bw.Write(score);
-        for (int i = 0; i < MAX_BULLETS; ++i)
-        {
-            bullets[i].Serialize(bw);
-        }
     }
 
     public void Deserialize(BinaryReader br)
@@ -151,10 +121,6 @@ public class Ship
         health = br.ReadInt32();
         cooldown = br.ReadInt32();
         score = br.ReadInt32();
-        for (int i = 0; i < MAX_BULLETS; ++i)
-        {
-            bullets[i].Deserialize(br);
-        }
     }
 
     // @LOOK Not hashing bullets.
@@ -456,28 +422,6 @@ public struct VwGame : IGame
         _players[index].blueFrenzy = blueFrenzy;
         _players[index].redFrenzy = redFrenzy;
         _players[index].position = new Vector2(heading, 0);
-        if (ship.cooldown == 0)
-        {
-            if (fire != 0)
-            {
-                GGPORunner.LogGame("firing bullet.");
-                for (int i = 0; i < ship.bullets.Length; i++)
-                {
-                    float dx = Mathf.Cos(DegToRad(ship.heading));
-                    float dy = Mathf.Sin(DegToRad(ship.heading));
-                    if (!ship.bullets[i].active)
-                    {
-                        ship.bullets[i].active = true;
-                        ship.bullets[i].position.x = ship.position.x + (ship.radius * dx);
-                        ship.bullets[i].position.y = ship.position.y + (ship.radius * dy);
-                        ship.bullets[i].velocity.x = ship.velocity.x + (BULLET_SPEED * dx);
-                        ship.bullets[i].velocity.y = ship.velocity.y + (BULLET_SPEED * dy);
-                        ship.cooldown = BULLET_COOLDOWN;
-                        break;
-                    }
-                }
-            }
-        }
 
         if (thrust != 0)
         {
@@ -512,35 +456,6 @@ public struct VwGame : IGame
             ship.velocity.y *= -1;
             ship.position.y += (ship.velocity.y * 2);
         }
-        for (int i = 0; i < ship.bullets.Length; i++)
-        {
-            if (ship.bullets[i].active)
-            {
-                ship.bullets[i].position.x += ship.bullets[i].velocity.x;
-                ship.bullets[i].position.y += ship.bullets[i].velocity.y;
-                if (ship.bullets[i].position.x < _bounds.xMin ||
-                    ship.bullets[i].position.y < _bounds.yMin ||
-                    ship.bullets[i].position.x > _bounds.xMax ||
-                    ship.bullets[i].position.y > _bounds.yMax)
-                {
-                    ship.bullets[i].active = false;
-                }
-                else
-                {
-                    for (int j = 0; j < _ships.Length; j++)
-                    {
-                        var other = _ships[j];
-                        if (Distance(ship.bullets[i].position, other.position) < other.radius)
-                        {
-                            ship.score++;
-                            other.health -= BULLET_DAMAGE;
-                            ship.bullets[i].active = false;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     public void LogInfo(string filename)
@@ -559,12 +474,6 @@ public struct VwGame : IGame
             fp += string.Format("  ship {0} health:    %d.\n", i, ship.health);
             fp += string.Format("  ship {0} cooldown:  %d.\n", i, ship.cooldown);
             fp += string.Format("  ship {0} score:     {1}.\n", i, ship.score);
-            for (int j = 0; j < ship.bullets.Length; j++)
-            {
-                fp += string.Format("  ship {0} bullet {1}: {2} {3} -> {4} {5}.\n", i, j,
-                        ship.bullets[j].position.x, ship.bullets[j].position.y,
-                        ship.bullets[j].velocity.x, ship.bullets[j].velocity.y);
-            }
         }
         File.WriteAllText(filename, fp);
     }
