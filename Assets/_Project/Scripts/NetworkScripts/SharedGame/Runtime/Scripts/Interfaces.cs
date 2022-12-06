@@ -9,7 +9,6 @@ namespace SharedGame
         public ushort port;
         public string ip;
         public bool spectator;
-        public string playerName;
     }
 
     public interface IGame

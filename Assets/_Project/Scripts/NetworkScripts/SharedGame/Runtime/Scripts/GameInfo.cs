@@ -21,7 +21,6 @@ namespace SharedGame
         public int disconnect_timeout;
         public int disconnect_start;
         public int controllerId;
-        public string playerName;
     };
 
     public struct ChecksumInfo

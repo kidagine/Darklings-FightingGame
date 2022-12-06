@@ -50,14 +50,12 @@ namespace SharedGame
                 ip = inpIp.text,
                 port = ushort.Parse(inpPort.text),
                 spectator = false,
-                playerName = "Dark"
             });
             list.Add(new Connections()
             {
                 ip = txtIp.text,
                 port = ushort.Parse(txtPort.text),
                 spectator = false,
-                playerName = "Darkt"
             });
             return list;
         }

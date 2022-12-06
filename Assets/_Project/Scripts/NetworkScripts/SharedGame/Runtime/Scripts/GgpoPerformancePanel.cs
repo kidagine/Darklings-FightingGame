@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityGGPO;
-
+using TMPro;
 namespace SharedGame
 {
 
     [ExecuteInEditMode]
     public class GgpoPerformancePanel : MonoBehaviour, IPerfUpdate
     {
+        [SerializeField] private TextMeshProUGUI _networkText = default;
         public Rect fairnessRect;
         public Rect networkRect;
 
@@ -173,6 +174,7 @@ namespace SharedGame
                 localAhead = $"{stats.local_frames_behind} frames";
                 remoteAhead = $"{stats.remote_frames_behind} frames";
                 _last_text_update_time = now;
+                _networkText.text = $"P:{stats.ping}ms, R:{stats.local_frames_behind}";
             }
         }
 

@@ -407,9 +407,13 @@ public class GameplayManager : MonoBehaviour
         if (!NetworkInput.IS_LOCAL)
         {
             _networkCanvas.SetActive(true);
-            _playerOneUI.SetPlayerName("Dork");
-            _playerTwoUI.SetPlayerName("birk");
         }
+    }
+
+    public void SetOnlineNames(string playerOne, string playerTwo)
+    {
+        _playerOneUI.SetPlayerName(playerOne);
+        _playerTwoUI.SetPlayerName(playerTwo);
     }
 
     void FixedUpdate()

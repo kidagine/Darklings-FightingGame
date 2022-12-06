@@ -168,6 +168,7 @@ public struct VwGame : IGame
         var h = _bounds.yMax - _bounds.yMin;
         var r = h / 4;
         Framenumber = 0;
+        System.Random rs = new System.Random();
         _players = new PlayerNetwork[num_players];
         for (int i = 0; i < _players.Length; i++)
         {

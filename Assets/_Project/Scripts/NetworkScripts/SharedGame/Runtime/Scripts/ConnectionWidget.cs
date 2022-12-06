@@ -7,10 +7,10 @@ namespace SharedGame
 
     public class ConnectionWidget : MonoBehaviour
     {
-        public string[] playerNames;
         public TMP_InputField[] inpIps;
         public Toggle[] tglSpectators;
         public TMP_InputField inpPlayerIndex;
+        public TMP_InputField inpPlayerName;
         public Toggle tgLocal;
         public Button btnConnect;
 
@@ -27,16 +27,15 @@ namespace SharedGame
                 ip = "127.0.0.1",
                 port = 7000,
                 spectator = false,
-                playerName = Random.Range(0, 1000).ToString()
             });
             connections.Add(new Connections()
             {
                 ip = "127.0.0.1",
                 port = 7001,
                 spectator = false,
-                playerName = Random.Range(0, 1000).ToString()
             });
             inpPlayerIndex.text = "0";
+            inpPlayerName.text = "DemonFighter";
             LoadConnectionInfo(connections);
         }
 
@@ -92,7 +91,6 @@ namespace SharedGame
                     ip = split[0],
                     port = ushort.Parse(split[1]),
                     spectator = false,
-                    playerName = Random.Range(0, 1000).ToString()
                 });
             }
             return connections;
