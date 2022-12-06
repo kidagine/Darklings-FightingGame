@@ -85,58 +85,6 @@ public struct PlayerNetwork
     }
 };
 
-[Serializable]
-public class Ship
-{
-    public Vector2 position;
-    public Vector2 velocity;
-    public float radius;
-    public float heading;
-    public int light;
-    public int health;
-    public int cooldown;
-    public int score;
-
-    public void Serialize(BinaryWriter bw)
-    {
-        bw.Write(position.x);
-        bw.Write(position.y);
-        bw.Write(velocity.x);
-        bw.Write(velocity.y);
-        bw.Write(radius);
-        bw.Write(heading);
-        bw.Write(health);
-        bw.Write(cooldown);
-        bw.Write(score);
-    }
-
-    public void Deserialize(BinaryReader br)
-    {
-        position.x = br.ReadSingle();
-        position.y = br.ReadSingle();
-        velocity.x = br.ReadSingle();
-        velocity.y = br.ReadSingle();
-        radius = br.ReadSingle();
-        heading = br.ReadSingle();
-        health = br.ReadInt32();
-        cooldown = br.ReadInt32();
-        score = br.ReadInt32();
-    }
-
-    // @LOOK Not hashing bullets.
-    public override int GetHashCode()
-    {
-        int hashCode = 1858597544;
-        hashCode = hashCode * -1521134295 + position.GetHashCode();
-        hashCode = hashCode * -1521134295 + velocity.GetHashCode();
-        hashCode = hashCode * -1521134295 + radius.GetHashCode();
-        hashCode = hashCode * -1521134295 + heading.GetHashCode();
-        hashCode = hashCode * -1521134295 + health.GetHashCode();
-        hashCode = hashCode * -1521134295 + cooldown.GetHashCode();
-        hashCode = hashCode * -1521134295 + score.GetHashCode();
-        return hashCode;
-    }
-}
 
 [Serializable]
 public struct VwGame : IGame
@@ -145,7 +93,6 @@ public struct VwGame : IGame
 
     public int Checksum => GetHashCode();
 
-    public Ship[] _ships;
     public PlayerNetwork[] _players;
 
     public static Rect _bounds = new Rect(0, 0, 640, 480);
@@ -153,11 +100,7 @@ public struct VwGame : IGame
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(Framenumber);
-        bw.Write(_ships.Length);
-        for (int i = 0; i < _ships.Length; ++i)
-        {
-            _ships[i].Serialize(bw);
-        }
+        bw.Write(_players.Length);
         for (int i = 0; i < _players.Length; ++i)
         {
             _players[i].Serialize(bw);
@@ -168,14 +111,6 @@ public struct VwGame : IGame
     {
         Framenumber = br.ReadInt32();
         int length = br.ReadInt32();
-        if (length != _ships.Length)
-        {
-            _ships = new Ship[length];
-        }
-        for (int i = 0; i < _ships.Length; ++i)
-        {
-            _ships[i].Deserialize(br);
-        }
         if (length != _players.Length)
         {
             _players = new PlayerNetwork[length];
@@ -233,72 +168,13 @@ public struct VwGame : IGame
         var h = _bounds.yMax - _bounds.yMin;
         var r = h / 4;
         Framenumber = 0;
-        _ships = new Ship[num_players];
         _players = new PlayerNetwork[num_players];
-        for (int i = 0; i < _ships.Length; i++)
-        {
-            _ships[i] = new Ship();
-            int heading = i * 360 / num_players;
-            float cost, sint, theta;
-
-            theta = (float)heading * PI / 180;
-            cost = Mathf.Cos(theta);
-            sint = Mathf.Sin(theta);
-
-            _ships[i].position.x = (w / 2) + r * cost;
-            _ships[i].position.y = (h / 2) + r * sint;
-            _ships[i].heading = (heading + 180) % 360;
-            _ships[i].health = STARTING_HEALTH;
-            _ships[i].radius = SHIP_RADIUS;
-        }
         for (int i = 0; i < _players.Length; i++)
         {
             _players[i] = new PlayerNetwork();
             _players[i].position.x = 0;
             _players[i].position.y = 0;
         }
-    }
-
-    public void GetShipAI(int i, out float heading, out float thrust, out int fire)
-    {
-        heading = (_ships[i].heading + 5) % 360;
-        thrust = 0;
-        fire = 0;
-    }
-
-    public void ParseShipInputs(long inputs, int i, out float heading, out float thrust, out int fire)
-    {
-        var ship = _ships[i];
-
-        GGPORunner.LogGame($"parsing ship {i} inputs: {inputs}.");
-
-        if ((inputs & INPUT_ROTATE_RIGHT) != 0)
-        {
-            heading = 0.1f;
-        }
-        else if ((inputs & INPUT_ROTATE_LEFT) != 0)
-        {
-            heading = -0.1f;
-        }
-        else
-        {
-            heading = 0;
-        }
-
-
-        if ((inputs & INPUT_THRUST) != 0)
-        {
-            thrust = SHIP_THRUST;
-        }
-        else if ((inputs & INPUT_BREAK) != 0)
-        {
-            thrust = -SHIP_THRUST;
-        }
-        else
-        {
-            thrust = 0;
-        }
-        fire = (int)(inputs & INPUT_FIRE);
     }
 
     public void ParseInputs(long inputs, int i, out bool up, out bool down, out bool left, out bool right, out bool light, out bool medium, out bool heavy, out bool arcana, out bool grab, out bool shadow, out bool blueFrenzy, out bool redFrenzy)
@@ -401,14 +277,9 @@ public struct VwGame : IGame
         }
     }
 
-    public void MoveShip(int index, float heading, float thrust, int fire, bool up, bool down, bool left, bool right, bool light, bool medium, bool heavy, bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy)
+    public void MoveShip(int index, bool up, bool down, bool left, bool right, bool light, bool medium, bool heavy, bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy)
     {
-        var ship = _ships[index];
         var player = _players[index];
-
-        GGPORunner.LogGame($"calculation of new ship coordinates: (thrust:{thrust} heading:{heading}).");
-
-        ship.heading = heading;
         _players[index].up = up;
         _players[index].down = down;
         _players[index].left = left;
@@ -421,61 +292,6 @@ public struct VwGame : IGame
         _players[index].shadow = shadow;
         _players[index].blueFrenzy = blueFrenzy;
         _players[index].redFrenzy = redFrenzy;
-        _players[index].position = new Vector2(heading, 0);
-
-        if (thrust != 0)
-        {
-            float dx = thrust * Mathf.Cos(DegToRad(heading));
-            float dy = thrust * Mathf.Sin(DegToRad(heading));
-
-            ship.velocity.x += dx;
-            ship.velocity.y += dy;
-            float mag = Mathf.Sqrt(ship.velocity.x * ship.velocity.x +
-                             ship.velocity.y * ship.velocity.y);
-            if (mag > SHIP_MAX_THRUST)
-            {
-                ship.velocity.x = (ship.velocity.x * SHIP_MAX_THRUST) / mag;
-                ship.velocity.y = (ship.velocity.y * SHIP_MAX_THRUST) / mag;
-            }
-        }
-        GGPORunner.LogGame($"new ship velocity: (dx:{ship.velocity.x} dy:{ship.velocity.y}).");
-
-        ship.position.x += ship.velocity.x;
-        ship.position.y += ship.velocity.y;
-        GGPORunner.LogGame($"new ship position: (dx:{ship.position.x} dy:{ship.position.y}).");
-
-        if (ship.position.x - ship.radius < _bounds.xMin ||
-            ship.position.x + ship.radius > _bounds.xMax)
-        {
-            ship.velocity.x *= -1;
-            ship.position.x += (ship.velocity.x * 2);
-        }
-        if (ship.position.y - ship.radius < _bounds.yMin ||
-            ship.position.y + ship.radius > _bounds.yMax)
-        {
-            ship.velocity.y *= -1;
-            ship.position.y += (ship.velocity.y * 2);
-        }
-    }
-
-    public void LogInfo(string filename)
-    {
-        string fp = "";
-        fp += "GameState object.\n";
-        fp += string.Format("  bounds: {0},{1} x {2},{3}.\n", _bounds.xMin, _bounds.yMin, _bounds.xMax, _bounds.yMax);
-        fp += string.Format("  num_ships: {0}.\n", _ships.Length);
-        for (int i = 0; i < _ships.Length; i++)
-        {
-            var ship = _ships[i];
-            fp += string.Format("  ship {0} position:  %.4f, %.4f\n", i, ship.position.x, ship.position.y);
-            fp += string.Format("  ship {0} velocity:  %.4f, %.4f\n", i, ship.velocity.x, ship.velocity.y);
-            fp += string.Format("  ship {0} radius:    %d.\n", i, ship.radius);
-            fp += string.Format("  ship {0} heading:   %d.\n", i, ship.heading);
-            fp += string.Format("  ship {0} health:    %d.\n", i, ship.health);
-            fp += string.Format("  ship {0} cooldown:  %d.\n", i, ship.cooldown);
-            fp += string.Format("  ship {0} score:     {1}.\n", i, ship.score);
-        }
-        File.WriteAllText(filename, fp);
     }
 
     public void Update(long[] inputs, int disconnect_flags)
@@ -483,8 +299,6 @@ public struct VwGame : IGame
         Framenumber++;
         for (int i = 0; i < _players.Length; i++)
         {
-            float thrust, heading;
-            int fire;
             bool up = false;
             bool down = false;
             bool left = false;
@@ -499,19 +313,13 @@ public struct VwGame : IGame
             bool redFrenzy = false;
             if ((disconnect_flags & (1 << i)) != 0)
             {
-                GetShipAI(i, out heading, out thrust, out fire);
+                //AI
             }
             else
             {
-                ParseShipInputs(inputs[i], i, out heading, out thrust, out fire);
                 ParseInputs(inputs[i], i, out up, out down, out left, out right, out light, out medium, out heavy, out arcana, out grab, out shadow, out blueFrenzy, out redFrenzy);
             }
-            MoveShip(i, heading, thrust, fire, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy);
-
-            if (_ships[i].cooldown != 0)
-            {
-                _ships[i].cooldown--;
-            }
+            MoveShip(i, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy);
         }
     }
 
@@ -597,5 +405,10 @@ public struct VwGame : IGame
             hashCode = hashCode * -1521134295 + player.GetHashCode();
         }
         return hashCode;
+    }
+
+    public void LogInfo(string filename)
+    {
+        //Log
     }
 }

@@ -13,13 +13,8 @@ public class VwGameView : MonoBehaviour, IGameView
 
     private void ResetView(VwGame gs)
     {
-        var shipGss = gs._ships;
-        shipViews = new VwShipView[shipGss.Length];
-        playerViews = new Player[shipGss.Length];
-        for (int i = 0; i < shipGss.Length; ++i)
-        {
-            shipViews[i] = Instantiate(shipPrefab, transform);
-        }
+        var playersGss = gs._players;
+        playerViews = new Player[playersGss.Length];
         playerViews[0] = Instantiate(_player);
         playerViews[1] = Instantiate(_player);
         GameplayManager.Instance.InitializePlayers(playerViews[0].gameObject, playerViews[1].gameObject);
@@ -31,15 +26,10 @@ public class VwGameView : MonoBehaviour, IGameView
         VwGame game = (VwGame)runner.Game;
         GameInfo gameInfo = runner.GameInfo;
 
-        var shipsGss = game._ships;
         var playersGss = game._players;
-        if (shipViews.Length != shipsGss.Length)
+        if (playerViews.Length != playersGss.Length)
         {
             ResetView(game);
-        }
-        for (int i = 0; i < shipsGss.Length; ++i)
-        {
-            shipViews[i].Populate(shipsGss[i], gameInfo.players[i]);
         }
         playerViews[0].Populate(playersGss[0], gameInfo.players[0]);
         playerViews[1].Populate(playersGss[1], gameInfo.players[1]);
