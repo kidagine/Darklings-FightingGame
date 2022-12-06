@@ -614,22 +614,18 @@ public struct VwGame : IGame
             if (NetworkInput.UP_INPUT)
             {
                 input |= NetworkInput.UP_BYTE;
-                NetworkInput.UP_INPUT = false;
             }
             if (NetworkInput.DOWN_INPUT)
             {
                 input |= NetworkInput.DOWN_BYTE;
-                NetworkInput.DOWN_INPUT = false;
             }
             if (NetworkInput.LEFT_INPUT)
             {
                 input |= NetworkInput.LEFT_BYTE;
-                NetworkInput.LEFT_INPUT = false;
             }
             if (NetworkInput.RIGHT_INPUT)
             {
                 input |= NetworkInput.RIGHT_BYTE;
-                NetworkInput.RIGHT_INPUT = false;
             }
             if (NetworkInput.LIGHT_INPUT)
             {

@@ -147,6 +147,12 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    public void SetPlayerName(string name)
+    {
+        PlayerName = name;
+        _playerName.text = PlayerName;
+    }
+
     public void SetAssistName(string name)
     {
         _assistName.text = name;

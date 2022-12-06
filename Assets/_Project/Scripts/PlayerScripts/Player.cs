@@ -610,6 +610,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
     public string ConnectionStatus { get; private set; }
+    public int ConnectionProgress { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
         if (playerGs.up)
@@ -628,14 +629,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
         }
-        // if (playerGs.up && playerGs.down || !playerGs.up && !playerGs.down)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
-        // }
-        // if (playerGs.left && playerGs.right || !playerGs.left && !playerGs.right)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
-        // }
+        if (playerGs.up && playerGs.down || !playerGs.up && !playerGs.down)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
+        }
+        if (!playerGs.left && !playerGs.right)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
+        }
         if (playerGs.light)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Light);
@@ -674,7 +675,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 ConnectionStatus = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "<color=green>P" : "<color=blue>C";
                 break;
             case PlayerConnectState.Synchronizing:
-                // progress = info.connect_progress;
+                ConnectionProgress = info.connect_progress;
                 ConnectionStatus = (info.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) ? "<color=green>P" : "<color=purple>S";
                 break;
             case PlayerConnectState.Disconnected:
@@ -682,7 +683,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 break;
             case PlayerConnectState.Disconnecting:
                 ConnectionStatus = "<color=yellow>W";
-                // progress = (Utils.TimeGetTime() - info.disconnect_start) * 100 / info.disconnect_timeout;
+                ConnectionProgress = (Utils.TimeGetTime() - info.disconnect_start) * 100 / info.disconnect_timeout;
                 break;
         }
     }

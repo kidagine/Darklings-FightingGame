@@ -1,15 +1,19 @@
 ﻿using System.Diagnostics;
 using Unity.Collections;
 
-namespace SharedGame {
+namespace SharedGame
+{
 
-    public class Connections {
+    public class Connections
+    {
         public ushort port;
         public string ip;
         public bool spectator;
+        public string playerName;
     }
 
-    public interface IGame {
+    public interface IGame
+    {
         int Framenumber { get; }
         int Checksum { get; }
 
@@ -26,27 +30,32 @@ namespace SharedGame {
         void FreeBytes(NativeArray<byte> data);
     }
 
-    public struct StatusInfo {
+    public struct StatusInfo
+    {
         public float idlePerc;
         public float updatePerc;
         public ChecksumInfo now;
         public ChecksumInfo periodic;
 
-        public string TimePercString() {
+        public string TimePercString()
+        {
             var otherPerc = 1f - (idlePerc + updatePerc);
             return string.Format("idle:{0:.00} update{1:.00} other{2:.00}", idlePerc, updatePerc, otherPerc);
         }
 
-        public string ChecksumString() {
+        public string ChecksumString()
+        {
             return "periodic: " + RenderChecksum(periodic) + " now:" + RenderChecksum(now);
         }
 
-        private string RenderChecksum(ChecksumInfo info) {
+        private string RenderChecksum(ChecksumInfo info)
+        {
             return string.Format("f:{0} c:{1}", info.framenumber, info.checksum); // %04d  %08x
         }
     }
 
-    public interface IGameRunner {
+    public interface IGameRunner
+    {
         IGame Game { get; }
         GameInfo GameInfo { get; }
 
@@ -61,7 +70,8 @@ namespace SharedGame {
         void Shutdown();
     }
 
-    public interface IGameView {
+    public interface IGameView
+    {
 
         void UpdateGameView(IGameRunner runner);
     }

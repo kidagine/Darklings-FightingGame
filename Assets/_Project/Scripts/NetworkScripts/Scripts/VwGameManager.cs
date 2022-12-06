@@ -12,7 +12,7 @@ public class VwGameManager : GameManager
 
     public override void StartGGPOGame(IPerfUpdate perfPanel, IList<Connections> connections, int playerIndex)
     {
-        var game = new GGPORunner("vectorwar", new VwGame(connections.Count), perfPanel);
+        var game = new GGPORunner("darklings", new VwGame(connections.Count), perfPanel);
         game.Init(connections, playerIndex);
         StartGame(game);
     }

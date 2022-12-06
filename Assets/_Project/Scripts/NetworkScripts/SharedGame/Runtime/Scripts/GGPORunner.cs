@@ -277,6 +277,7 @@ namespace SharedGame
             int controllerId = 0;
             int playerIndex = 0;
             GameInfo.players = new PlayerConnectionInfo[num_players];
+            Random n = new Random();
             for (int i = 0; i < players.Count; i++)
             {
                 CheckAndReport(GGPO.Session.AddPlayer(players[i], out int handle));

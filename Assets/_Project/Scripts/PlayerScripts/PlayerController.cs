@@ -83,11 +83,27 @@ public class PlayerController : BaseController
 
         if (input.x == 0)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
+            if (NetworkInput.IS_LOCAL)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
+            }
+            else
+            {
+                NetworkInput.RIGHT_INPUT = false;
+                NetworkInput.LEFT_INPUT = false;
+            }
         }
         if (input.y == 0)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
+            if (NetworkInput.IS_LOCAL)
+            {
+                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
+            }
+            else
+            {
+                NetworkInput.UP_INPUT = false;
+                NetworkInput.DOWN_INPUT = false;
+            }
         }
     }
 

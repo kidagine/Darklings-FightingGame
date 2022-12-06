@@ -61,6 +61,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] protected GameObject[] _arcanaObjects = default;
     [SerializeField] protected GameObject _playerLocal = default;
     [SerializeField] protected GameObject _debugNetwork = default;
+    [SerializeField] protected GameObject _networkCanvas = default;
     [SerializeField] protected GameObject _infiniteTime = default;
     [SerializeField] protected GameObject _winsImage = default;
     [SerializeField] private GameObject[] _hearts = default;
@@ -402,6 +403,12 @@ public class GameplayManager : MonoBehaviour
             _inputHistories[1].transform.GetChild(0).gameObject.SetActive(false);
             _trainingPrompts.gameObject.SetActive(false);
             StartIntro();
+        }
+        if (!NetworkInput.IS_LOCAL)
+        {
+            _networkCanvas.SetActive(true);
+            _playerOneUI.SetPlayerName("Dork");
+            _playerTwoUI.SetPlayerName("birk");
         }
     }
 

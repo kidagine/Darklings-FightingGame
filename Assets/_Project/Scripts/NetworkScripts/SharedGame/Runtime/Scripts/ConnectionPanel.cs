@@ -3,9 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityGGPO;
 
-namespace SharedGame {
+namespace SharedGame
+{
 
-    public class ConnectionPanel : MonoBehaviour {
+    public class ConnectionPanel : MonoBehaviour
+    {
         public Button btnLocal;
         public Button btnRemote;
         public Button btnHost;
@@ -17,7 +19,8 @@ namespace SharedGame {
         private GameManager gameManager => GameManager.Instance;
         private GgpoPerformancePanel perf;
 
-        private void Awake() {
+        private void Awake()
+        {
             gameManager.OnRunningChanged += OnRunningChanged;
 
             perf = FindObjectOfType<GgpoPerformancePanel>();
@@ -31,41 +34,51 @@ namespace SharedGame {
             txtPort.text = "7001";
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             gameManager.OnRunningChanged -= OnRunningChanged;
             btnHost.onClick.RemoveListener(OnHostClick);
             btnRemote.onClick.RemoveListener(OnRemoteClick);
             btnLocal.onClick.RemoveListener(OnLocalClick);
         }
 
-        private List<Connections> GetConnections() {
+        private List<Connections> GetConnections()
+        {
             var list = new List<Connections>();
-            list.Add(new Connections() {
+            list.Add(new Connections()
+            {
                 ip = inpIp.text,
                 port = ushort.Parse(inpPort.text),
-                spectator = false
+                spectator = false,
+                playerName = "Dark"
             });
-            list.Add(new Connections() {
+            list.Add(new Connections()
+            {
                 ip = txtIp.text,
                 port = ushort.Parse(txtPort.text),
-                spectator = false
+                spectator = false,
+                playerName = "Darkt"
             });
             return list;
         }
 
-        private void OnHostClick() {
+        private void OnHostClick()
+        {
             gameManager.StartGGPOGame(perf, GetConnections(), 0);
         }
 
-        private void OnRemoteClick() {
+        private void OnRemoteClick()
+        {
             gameManager.StartGGPOGame(perf, GetConnections(), 1);
         }
 
-        private void OnLocalClick() {
+        private void OnLocalClick()
+        {
             gameManager.StartLocalGame();
         }
 
-        private void OnRunningChanged(bool isRunning) {
+        private void OnRunningChanged(bool isRunning)
+        {
             gameObject.SetActive(!isRunning);
         }
     }
