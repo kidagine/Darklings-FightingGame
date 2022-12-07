@@ -10,7 +10,6 @@ namespace SharedGame
         public TMP_InputField[] inpIps;
         public Toggle[] tglSpectators;
         public TMP_InputField inpPlayerIndex;
-        public TMP_InputField inpPlayerName;
         public Toggle tgLocal;
         public Button btnConnect;
 
@@ -35,7 +34,6 @@ namespace SharedGame
                 spectator = false,
             });
             inpPlayerIndex.text = "0";
-            inpPlayerName.text = "DemonFighter";
             LoadConnectionInfo(connections);
         }
 
@@ -55,6 +53,32 @@ namespace SharedGame
                 var playerIndex = int.Parse(inpPlayerIndex.text);
                 gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
             }
+        }
+
+        public void StartGGPO(int index)
+        {
+            var connections = new List<Connections>();
+            connections.Add(new Connections()
+            {
+                ip = "127.0.0.1",
+                port = 7000,
+                spectator = false,
+            });
+            connections.Add(new Connections()
+            {
+                ip = "127.0.0.1",
+                port = 7001,
+                spectator = false,
+            });
+            inpPlayerIndex.text = index.ToString();
+            LoadConnectionInfo(connections);
+
+            NetworkInput.IS_LOCAL = false;
+            var connectionInfo = GetConnectionInfo();
+            var perf = FindObjectOfType<GgpoPerformancePanel>();
+            perf.Setup();
+            var playerIndex = int.Parse(inpPlayerIndex.text);
+            gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
         }
 
         private void OnDestroy()
@@ -85,6 +109,7 @@ namespace SharedGame
             var connections = new List<Connections>(inpIps.Length);
             for (int i = 0; i < inpIps.Length; ++i)
             {
+                Debug.Log(inpIps[i].text);
                 var split = inpIps[i].text.Split(':');
                 connections.Add(new Connections()
                 {

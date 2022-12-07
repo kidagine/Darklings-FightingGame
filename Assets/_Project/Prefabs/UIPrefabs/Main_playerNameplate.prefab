@@ -309,7 +309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &739335789255711173
 RectTransform:
   m_ObjectHideFlags: 0
@@ -317,7 +317,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 739335789255711172}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -381,6 +381,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d820eeed7d045d54581b8c95f1b257cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _readyText: {fileID: 739335790500904184}
+  _demonNameText: {fileID: 739335789349891777}
+  _assistText: {fileID: 739335788771632163}
+  _characterImage: {fileID: 739335788455711407}
+  _playersStatsSo:
+  - {fileID: 11400000, guid: 9fad6f01eb20d174da80212d97759474, type: 2}
+  - {fileID: 11400000, guid: c9e23a7166185be40a239bb9e6a2d29e, type: 2}
+  - {fileID: 11400000, guid: 52e598ed7f0b55d4f8b68d93f8df619c, type: 2}
+  - {fileID: 11400000, guid: 2757249015513054e812e0982e14d73d, type: 2}
+  - {fileID: 11400000, guid: 6adec60993b6ad14f88d8b2abbec60d1, type: 2}
 --- !u!1 &739335789349891783
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +457,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Name
+  m_text: Name 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}

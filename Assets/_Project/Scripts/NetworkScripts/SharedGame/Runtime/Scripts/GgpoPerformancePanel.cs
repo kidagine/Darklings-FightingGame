@@ -174,7 +174,7 @@ namespace SharedGame
                 localAhead = $"{stats.local_frames_behind} frames";
                 remoteAhead = $"{stats.remote_frames_behind} frames";
                 _last_text_update_time = now;
-                _networkText.text = $"P:{stats.ping}ms, R:{stats.local_frames_behind}";
+                _networkText.text = $"P:{stats.ping}ms, R:{stats.remote_frames_behind}";
             }
         }
 

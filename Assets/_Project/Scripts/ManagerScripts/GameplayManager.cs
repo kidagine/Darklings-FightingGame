@@ -2,6 +2,7 @@ using Cinemachine;
 using Demonics.Manager;
 using Demonics.Sounds;
 using Demonics.UI;
+using SharedGame;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private PlayerInput _uiInput = default;
     [SerializeField] private float[] _spawnPositionsX = default;
     [Header("Data")]
+    [SerializeField] private ConnectionWidget _connectionWidget = default;
     [SerializeField] private CinemachineTargetGroup _targetGroup = default;
     [SerializeField] private IntroUI _introUI = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
@@ -154,10 +156,18 @@ public class GameplayManager : MonoBehaviour
         else
         {
             _debugNetwork.SetActive(false);
-            _isTrainingMode = SceneSettings.IsTrainingMode;
-            GameObject playerOne = Instantiate(_playerLocal);
-            GameObject playerTwo = Instantiate(_playerLocal);
-            InitializePlayers(playerOne, playerTwo);
+            if (!SceneSettings.IsOnline)
+            {
+                _isTrainingMode = SceneSettings.IsTrainingMode;
+                GameObject playerOne = Instantiate(_playerLocal);
+                GameObject playerTwo = Instantiate(_playerLocal);
+                InitializePlayers(playerOne, playerTwo);
+            }
+            else
+            {
+                _isTrainingMode = false;
+                _connectionWidget.StartGGPO(SceneSettings.OnlineIndex);
+            }
         }
         CheckSceneSettings();
     }
@@ -342,7 +352,7 @@ public class GameplayManager : MonoBehaviour
 
     public void DeactivateCpus()
     {
-        if (SceneSettings.SceneSettingsDecide)
+        if (!SceneSettings.IsOnline)
         {
             if (IsTrainingMode)
             {
@@ -354,7 +364,7 @@ public class GameplayManager : MonoBehaviour
 
     public void MaxHealths()
     {
-        if (SceneSettings.SceneSettingsDecide)
+        if (!SceneSettings.IsOnline)
         {
             if (IsTrainingMode)
             {
@@ -366,7 +376,7 @@ public class GameplayManager : MonoBehaviour
 
     void Start()
     {
-        if (SceneSettings.SceneSettingsDecide)
+        if (!SceneSettings.IsOnline)
         {
             SetupGame();
         }
