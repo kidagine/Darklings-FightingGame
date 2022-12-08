@@ -55,18 +55,18 @@ namespace SharedGame
             }
         }
 
-        public void StartGGPO(int index)
+        public void StartGGPO(string ipOne, string ipTwo, int index)
         {
             var connections = new List<Connections>();
             connections.Add(new Connections()
             {
-                ip = "127.0.0.1",
+                ip = ipOne,
                 port = 7000,
                 spectator = false,
             });
             connections.Add(new Connections()
             {
-                ip = "127.0.0.1",
+                ip = ipTwo,
                 port = 7001,
                 spectator = false,
             });

@@ -613,10 +613,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        // if (playerGs.skip)
-        // {
-        //     GameplayManager.Instance.SkipIntro();
-        // }
+        if (playerGs.skip)
+        {
+            GameplayManager.Instance.SkipIntro();
+        }
         if (playerGs.up)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);

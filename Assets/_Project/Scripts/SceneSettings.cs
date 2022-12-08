@@ -7,6 +7,8 @@ public class SceneSettings
     public static string MusicName = "Random";
     public static bool IsOnline = false;
     public static int OnlineIndex = 0;
+    public static string OnlineOneIp = "127.0.0.1";
+    public static string OnlineTwoIp = "127.0.0.1";
     public static InputDevice ControllerOne;
     public static InputDevice ControllerTwo;
     public static string ControllerOneScheme = "Keyboard";

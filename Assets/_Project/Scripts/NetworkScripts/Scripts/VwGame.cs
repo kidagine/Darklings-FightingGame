@@ -292,7 +292,6 @@ public struct VwGame : IGame
     }
     public void Update(long[] inputs, int disconnect_flags)
     {
-        Debug.Log("c");
         Framenumber++;
         DemonicsWorld.Frame = Framenumber;
         for (int i = 0; i < _players.Length; i++)

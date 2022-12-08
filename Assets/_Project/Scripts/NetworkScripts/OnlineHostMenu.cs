@@ -64,7 +64,8 @@ public class OnlineHostMenu : BaseMenu
                 demonName = player.Data["DemonName"].Value,
                 character = int.Parse(player.Data["Character"].Value),
                 assist = int.Parse(player.Data["Assist"].Value),
-                color = int.Parse(player.Data["Color"].Value)
+                color = int.Parse(player.Data["Color"].Value),
+                ip = player.Data["Ip"].Value
             });
             readyList.Add(bool.Parse(player.Data["Ready"].Value));
         }
@@ -122,6 +123,11 @@ public class OnlineHostMenu : BaseMenu
         {
             SceneSettings.OnlineIndex = 1;
         }
+        SceneSettings.NameOne = demonDatas[0].demonName;
+        SceneSettings.NameTwo = demonDatas[1].demonName;
+        SceneSettings.OnlineOneIp = demonDatas[0].ip;
+        SceneSettings.OnlineTwoIp = demonDatas[1].ip;
+        SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.ControllerOne = _playerInput.devices[0];
         SceneSettings.ControllerTwo = _playerInput.devices[0];
         SceneSettings.ControllerOneScheme = "Keyboard";

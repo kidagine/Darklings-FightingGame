@@ -35,4 +35,5 @@ public class DemonData
     public int character;
     public int assist;
     public int color;
+    public string ip;
 }
