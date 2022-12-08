@@ -25,7 +25,7 @@ public class OnlineHostMenu : BaseMenu
     private string _lobbyId;
     public bool Hosting { get; set; } = true;
 
-    async void Awake()
+    async void OnEnable()
     {
         if (Hosting)
         {

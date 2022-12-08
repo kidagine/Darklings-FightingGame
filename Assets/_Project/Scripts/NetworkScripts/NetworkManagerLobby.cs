@@ -44,7 +44,6 @@ public class NetworkManagerLobby : MonoBehaviour
         };
         Lobby lobby = await LobbyService.Instance.CreateLobbyAsync("darklings", _maxPlayers, createLobbyOptions);
         _hostLobby = lobby;
-        GetComponent<UnityTransport>().ConnectionData.Address = GetLocalIPAddress();
         NetworkManager.Singleton.StartHost();
         return lobby.LobbyCode;
     }
@@ -114,11 +113,15 @@ public class NetworkManagerLobby : MonoBehaviour
             if (_lobbyUpdateTimer < 0)
             {
                 _lobbyUpdateTimer = 1.1f;
-                Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_hostLobby.Id);
-                _hostLobby = lobby;
-                if (_hostLobby.Players.Count == 2)
-                    GetComponent<UnityTransport>().ConnectionData.Address = _hostLobby.Players[1].Data["Ip"].Value;
-                OnLobbyUpdate?.Invoke();
+                try
+                {
+                    Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_hostLobby.Id);
+                    _hostLobby = lobby;
+                    OnLobbyUpdate?.Invoke();
+                }
+                catch (System.Exception)
+                {
+                }
             }
         }
         else if (_clientLobby != null)
@@ -129,7 +132,6 @@ public class NetworkManagerLobby : MonoBehaviour
                 _lobbyUpdateTimer = 1.1f;
                 Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_clientLobby.Id);
                 _clientLobby = lobby;
-                GetComponent<UnityTransport>().ConnectionData.Address = _clientLobby.Players[0].Data["Ip"].Value;
                 OnLobbyUpdate?.Invoke();
             }
         }

@@ -44773,7 +44773,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 465378534}
-  _playerPreferences: {fileID: 0}
+  _playerPreferences: {fileID: 1912507501}
 --- !u!1 &1847732934
 GameObject:
   m_ObjectHideFlags: 0
@@ -53219,6 +53219,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 1124095648}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 922976189}
+        m_TargetAssemblyTypeName: OnlineHostMenu, Scripts
+        m_MethodName: QuitLobby
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
