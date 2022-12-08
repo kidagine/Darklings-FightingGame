@@ -5,9 +5,7 @@ using UnityEngine;
 
 public class VwGameView : MonoBehaviour, IGameView
 {
-    public VwShipView shipPrefab;
     [SerializeField] private Player _player = default;
-    private VwShipView[] shipViews = Array.Empty<VwShipView>();
     private Player[] playerViews = Array.Empty<Player>();
     private GameManager gameManager => GameManager.Instance;
 
@@ -25,14 +23,16 @@ public class VwGameView : MonoBehaviour, IGameView
     {
         VwGame game = (VwGame)runner.Game;
         GameInfo gameInfo = runner.GameInfo;
-
         var playersGss = game._players;
         if (playerViews.Length != playersGss.Length)
         {
             ResetView(game);
         }
-        playerViews[0].Populate(playersGss[0], gameInfo.players[0]);
-        playerViews[1].Populate(playersGss[1], gameInfo.players[1]);
+        if (!NetworkInput.IS_LOCAL)
+        {
+            playerViews[0].Populate(playersGss[0], gameInfo.players[0]);
+            playerViews[1].Populate(playersGss[1], gameInfo.players[1]);
+        }
     }
 
     private void Update()

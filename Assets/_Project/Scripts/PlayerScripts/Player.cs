@@ -613,6 +613,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
+        if (playerGs.skip)
+        {
+            GameplayManager.Instance.SkipIntro();
+        }
         if (playerGs.up)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
@@ -629,13 +633,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
         }
-        if (playerGs.up && playerGs.down || !playerGs.up && !playerGs.down)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
-        }
-        if (!playerGs.left && !playerGs.right)
+        if (!playerGs.left && !playerGs.right && _controller.ActiveController.InputDirection.x != 0)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
+        }
+        if (!playerGs.up && !playerGs.down && _controller.ActiveController.InputDirection.y != 0)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
         }
         if (playerGs.light)
         {
@@ -668,6 +672,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         if (playerGs.redFrenzy)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+        }
+        if (playerGs.dashForward)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+        }
+        if (playerGs.dashBackward)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.BackDash);
         }
         switch (info.state)
         {

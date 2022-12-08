@@ -1,28 +1,38 @@
+using System.Collections.Generic;
 using Demonics.UI;
 using TMPro;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;
 public class OnlineClientMenu : BaseMenu
 {
     [SerializeField] private NetworkManagerLobby _networkManager = default;
     [SerializeField] private OnlineHostMenu _onlineHostMenu = default;
-    [SerializeField] private TMP_InputField _roomId = default;
+    [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
+    [SerializeField] private TMP_InputField _lobbyIdInputField = default;
+    [SerializeField] private GameObject _joiningLobbyGroup = default;
+    [SerializeField] private GameObject _lobbyJoinGroup = default;
 
-    private void OnEnable()
-    {
-        NetworkManagerLobby.OnClientConnected += HandleClientConnected;
-    }
 
-    private void OnDisable()
+    public async void JoinLobby()
     {
-        NetworkManagerLobby.OnClientConnected -= HandleClientConnected;
-    }
-
-    public void JoinLobby()
-    {
-        string ipAddress = _roomId.text;
-        // _networkManager.networkAddress = "localhost";
-        // _networkManager.StartClient();
+        _joiningLobbyGroup.SetActive(true);
+        _lobbyJoinGroup.SetActive(false);
+        string lobbyId = _lobbyIdInputField.text;
+        Lobby lobby = await _networkManager.JoinLobby(_onlineSetupMenu.DemonData, lobbyId);
+        List<DemonData> demonDatas = new List<DemonData>();
+        foreach (var player in lobby.Players)
+        {
+            demonDatas.Add(new DemonData()
+            {
+                demonName = player.Data["DemonName"].Value,
+                character = int.Parse(player.Data["Character"].Value),
+                assist = int.Parse(player.Data["Assist"].Value),
+                color = int.Parse(player.Data["Color"].Value)
+            });
+        }
+        _onlineHostMenu.OpenAsClient(demonDatas.ToArray(), lobbyId);
+        OpenMenuHideCurrent(_onlineHostMenu);
     }
 
     private void HandleClientConnected()

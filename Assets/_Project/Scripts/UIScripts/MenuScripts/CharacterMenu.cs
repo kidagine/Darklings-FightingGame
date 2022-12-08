@@ -170,6 +170,7 @@ public class CharacterMenu : BaseMenu
         }
         else
         {
+            SceneSettings.IsOnline = true;
             SceneSettings.SceneSettingsDecide = true;
             if (SceneSettings.RandomStage)
             {
@@ -177,7 +178,6 @@ public class CharacterMenu : BaseMenu
             }
             _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(2));
             _fadeHandler.StartFadeTransition(true);
-
         }
     }
 

@@ -9127,7 +9127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c1697a0d93b4884b9379392a7f6a00c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipPrefab: {fileID: 5758650946544007418, guid: 36582b45fb00d7e4cb90db76275aa743, type: 3}
   _player: {fileID: 8073473790702501988, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
 --- !u!4 &300786368
 Transform:
@@ -12249,6 +12248,7 @@ MonoBehaviour:
   _spawnPositionsX:
   - -3.5
   - 3.5
+  _connectionWidget: {fileID: 1262826836}
   _targetGroup: {fileID: 1821676145}
   _introUI: {fileID: 633093284}
   _fadeHandler: {fileID: 55237746}
@@ -30702,7 +30702,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 227.73, y: 60}
+  m_SizeDelta: {x: 240, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1001368601
 MonoBehaviour:
@@ -30754,9 +30754,9 @@ MonoBehaviour:
   m_fontSize: 24
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 24
   m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 4096
@@ -38713,7 +38713,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6693954015620956570, guid: 07ba2ad70fada034ea9ea8236291918c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 400
+      value: 305
       objectReference: {fileID: 0}
     - target: {fileID: 6693954015620956570, guid: 07ba2ad70fada034ea9ea8236291918c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -38834,6 +38834,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6693954015620956570, guid: 07ba2ad70fada034ea9ea8236291918c, type: 3}
   m_PrefabInstance: {fileID: 1262826834}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1262826836 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 64325671, guid: 07ba2ad70fada034ea9ea8236291918c, type: 3}
+  m_PrefabInstance: {fileID: 1262826834}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f59c6338757557a48bfc1185208157bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1263741163 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4703080449929076746, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -72407,7 +72418,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Player x
+  m_text: demon fighter
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
   m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
@@ -72434,12 +72445,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 18.45
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 24
   m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 4096
@@ -72450,7 +72461,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -72494,7 +72505,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 227.73, y: 60}
+  m_SizeDelta: {x: 240, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1649658742357715704
 GameObject:
