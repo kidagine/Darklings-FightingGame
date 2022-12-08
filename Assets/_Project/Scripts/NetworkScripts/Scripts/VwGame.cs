@@ -136,6 +136,7 @@ public struct VwGame : IGame
 
     public VwGame(int num_players)
     {
+        Debug.Log("b");
         Framenumber = 0;
         _players = new PlayerNetwork[num_players];
         for (int i = 0; i < _players.Length; i++)
@@ -291,6 +292,7 @@ public struct VwGame : IGame
     }
     public void Update(long[] inputs, int disconnect_flags)
     {
+        Debug.Log("c");
         Framenumber++;
         DemonicsWorld.Frame = Framenumber;
         for (int i = 0; i < _players.Length; i++)
@@ -327,7 +329,6 @@ public struct VwGame : IGame
     public long ReadInputs(int id)
     {
         long input = 0;
-
         if (id == 0)
         {
             if (Input.anyKeyDown)

@@ -21,22 +21,17 @@ public class VwGameView : MonoBehaviour, IGameView
 
     public void UpdateGameView(IGameRunner runner)
     {
-
         VwGame game = (VwGame)runner.Game;
         GameInfo gameInfo = runner.GameInfo;
         var playersGss = game._players;
-
-        if (game._players[0].start || game._players[1].start)
+        if (playerViews.Length != playersGss.Length)
         {
-            if (playerViews.Length != playersGss.Length)
-            {
-                ResetView(game);
-            }
-            if (!NetworkInput.IS_LOCAL)
-            {
-                playerViews[0].Populate(playersGss[0], gameInfo.players[0]);
-                playerViews[1].Populate(playersGss[1], gameInfo.players[1]);
-            }
+            ResetView(game);
+        }
+        if (!NetworkInput.IS_LOCAL)
+        {
+            playerViews[0].Populate(playersGss[0], gameInfo.players[0]);
+            playerViews[1].Populate(playersGss[1], gameInfo.players[1]);
         }
     }
 

@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Demonics.UI;
 using TMPro;
+using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class OnlineHostMenu : BaseMenu
 {
@@ -18,6 +20,7 @@ public class OnlineHostMenu : BaseMenu
     [SerializeField] private GameObject _lobbyCreated = default;
     [SerializeField] private GameObject _copyLobbyId = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
+    [SerializeField] private PlayerInput _playerInput = default;
     private string _lobbyId;
     public bool Hosting { get; set; } = true;
 
@@ -43,8 +46,17 @@ public class OnlineHostMenu : BaseMenu
 
     private void UpdateLobby()
     {
-        Lobby lobby = _networkManager.GetHostLobby();
+        Lobby lobby = null;
+        if (Hosting)
+        {
+            lobby = _networkManager.GetHostLobby();
+        }
+        else
+        {
+            lobby = _networkManager.GetClientLobby();
+        }
         List<DemonData> demonDatas = new List<DemonData>();
+        List<bool> readyList = new List<bool>();
         foreach (var player in lobby.Players)
         {
             demonDatas.Add(new DemonData()
@@ -54,9 +66,18 @@ public class OnlineHostMenu : BaseMenu
                 assist = int.Parse(player.Data["Assist"].Value),
                 color = int.Parse(player.Data["Color"].Value)
             });
+            readyList.Add(bool.Parse(player.Data["Ready"].Value));
         }
         _nameplates[0].SetDemonData(demonDatas[0]);
         _nameplates[1].SetDemonData(demonDatas[1]);
+        _nameplates[0].SetReady(readyList[0]);
+        _nameplates[1].SetReady(readyList[1]);
+
+        if (readyList[0] && readyList[1])
+        {
+            _networkManager.OnLobbyUpdate -= UpdateLobby;
+            StartGame(demonDatas.ToArray());
+        }
     }
 
     public void CopyLobbyId()
@@ -66,6 +87,7 @@ public class OnlineHostMenu : BaseMenu
 
     public void OpenAsClient(DemonData[] demonDatas, string lobbyId)
     {
+        _networkManager.OnLobbyUpdate += UpdateLobby;
         Hosting = false;
         _nameplates[0].SetDemonData(demonDatas[0]);
         _nameplates[1].SetDemonData(demonDatas[1]);
@@ -73,12 +95,20 @@ public class OnlineHostMenu : BaseMenu
         _lobbyCreated.SetActive(true);
         _copyLobbyId.SetActive(false);
         _lobbyIdText.text = $"Lobby ID: {lobbyId.ToUpper()}";
-        //StartGame(demonDatas);
     }
 
     public void Ready()
     {
-        //_networkManager.JoinLobby();
+        if (Hosting)
+        {
+            bool ready = _nameplates[0].ToggleReady();
+            _networkManager.UpdateLobbyReady(ready, true);
+        }
+        else
+        {
+            bool ready = _nameplates[1].ToggleReady();
+            _networkManager.UpdateLobbyReady(ready, false);
+        }
     }
 
     private void StartGame(DemonData[] demonDatas)
@@ -92,6 +122,8 @@ public class OnlineHostMenu : BaseMenu
         {
             SceneSettings.OnlineIndex = 1;
         }
+        SceneSettings.ControllerOne = _playerInput.devices[0];
+        SceneSettings.ControllerTwo = _playerInput.devices[0];
         SceneSettings.ControllerOneScheme = "Keyboard";
         SceneSettings.ControllerTwoScheme = "Keyboard";
         SceneSettings.PlayerOne = demonDatas[0].character;
@@ -101,8 +133,9 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.ColorOne = demonDatas[0].color;
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.SceneSettingsDecide = true;
-        SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
-        _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(2));
+        SceneSettings.StageIndex = 0;
+        if (Hosting)
+            _fadeHandler.onFadeEnd.AddListener(() => NetworkManager.Singleton.SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
         _fadeHandler.StartFadeTransition(true);
     }
 

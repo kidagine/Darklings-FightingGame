@@ -166,6 +166,7 @@ public class GameplayManager : MonoBehaviour
             else
             {
                 _isTrainingMode = false;
+                Debug.Log(SceneSettings.OnlineIndex);
                 _connectionWidget.StartGGPO(SceneSettings.OnlineIndex);
             }
         }

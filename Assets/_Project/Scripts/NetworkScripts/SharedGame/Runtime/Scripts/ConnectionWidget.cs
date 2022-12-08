@@ -70,14 +70,12 @@ namespace SharedGame
                 port = 7001,
                 spectator = false,
             });
-            inpPlayerIndex.text = index.ToString();
             LoadConnectionInfo(connections);
-
             NetworkInput.IS_LOCAL = false;
             var connectionInfo = GetConnectionInfo();
             var perf = FindObjectOfType<GgpoPerformancePanel>();
             perf.Setup();
-            var playerIndex = int.Parse(inpPlayerIndex.text);
+            var playerIndex = index;
             gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
         }
 

@@ -9,6 +9,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using System.Net;
 using System.Net.Sockets;
+using UnityEngine.SceneManagement;
 
 public class NetworkManagerLobby : MonoBehaviour
 {
@@ -17,12 +18,7 @@ public class NetworkManagerLobby : MonoBehaviour
     private Lobby _clientLobby;
     private float _lobbyUpdateTimer;
     public Action OnLobbyUpdate;
-
-    void Update()
-    {
-        // HandleLobbyPollForUpdates();
-    }
-
+    private bool _connected;
     public static async void Authenticate()
     {
         await UnityServices.InitializeAsync();
@@ -31,6 +27,11 @@ public class NetworkManagerLobby : MonoBehaviour
             Debug.Log("Signed in:" + AuthenticationService.Instance.PlayerId);
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
+    void Update()
+    {
+        HandleLobbyPollForUpdates();
     }
 
     public async Task<string> CreateLobby(DemonData demonData)
@@ -43,21 +44,23 @@ public class NetworkManagerLobby : MonoBehaviour
         Lobby lobby = await LobbyService.Instance.CreateLobbyAsync("darklings", _maxPlayers, createLobbyOptions);
         _hostLobby = lobby;
         NetworkManager.Singleton.StartHost();
-        NetworkManager.Singleton.OnClientConnectedCallback += UpdateLobby;
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         return lobby.LobbyCode;
     }
 
-    private async void UpdateLobby(ulong playerId)
+    private async void OnClientConnected(ulong playerId)
     {
-        string lobbyCode = _hostLobby.LobbyCode;
-        Debug.Log(lobbyCode);
-        _hostLobby = await LobbyService.Instance.GetLobbyAsync(lobbyCode);
-        OnLobbyUpdate?.Invoke();
+        _connected = true;
     }
 
     public Lobby GetHostLobby()
     {
         return _hostLobby;
+    }
+
+    public Lobby GetClientLobby()
+    {
+        return _clientLobby;
     }
 
     public async Task<Lobby> JoinLobby(DemonData demonData, string lobbyId)
@@ -72,6 +75,29 @@ public class NetworkManagerLobby : MonoBehaviour
         return lobby;
     }
 
+    public async void UpdateLobbyReady(bool ready, bool isHost)
+    {
+        string lobbyId;
+        string playerId;
+        if (isHost)
+        {
+            lobbyId = _hostLobby.Id;
+            playerId = _hostLobby.Players[0].Id;
+        }
+        else
+        {
+            lobbyId = _clientLobby.Id;
+            playerId = _clientLobby.Players[1].Id;
+        }
+        UpdateLobbyOptions updateLobbyOptions = new UpdateLobbyOptions();
+        await LobbyService.Instance.UpdatePlayerAsync(lobbyId, AuthenticationService.Instance.PlayerId, new UpdatePlayerOptions
+        {
+            Data = new Dictionary<string, PlayerDataObject>{
+                { "Ready", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, ready.ToString())}
+            }
+        });
+    }
+
     public async void DeleteLobby()
     {
         await LobbyService.Instance.DeleteLobbyAsync(_hostLobby.Id);
@@ -82,14 +108,9 @@ public class NetworkManagerLobby : MonoBehaviour
         await LobbyService.Instance.RemovePlayerAsync(_clientLobby.Id, AuthenticationService.Instance.PlayerId);
     }
 
-    public void LoadScene()
-    {
-        //NetworkManager.Singleton.SceneManager.LoadScene();
-    }
-
     private async void HandleLobbyPollForUpdates()
     {
-        if (_hostLobby != null)
+        if (_hostLobby != null && _connected)
         {
             _lobbyUpdateTimer -= Time.unscaledDeltaTime;
             if (_lobbyUpdateTimer < 0)
@@ -97,6 +118,18 @@ public class NetworkManagerLobby : MonoBehaviour
                 _lobbyUpdateTimer = 1.1f;
                 Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_hostLobby.Id);
                 _hostLobby = lobby;
+                OnLobbyUpdate?.Invoke();
+            }
+        }
+        else if (_clientLobby != null)
+        {
+            _lobbyUpdateTimer -= Time.unscaledDeltaTime;
+            if (_lobbyUpdateTimer < 0)
+            {
+                _lobbyUpdateTimer = 1.1f;
+                Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_clientLobby.Id);
+                _clientLobby = lobby;
+                OnLobbyUpdate?.Invoke();
             }
         }
     }
@@ -110,6 +143,7 @@ public class NetworkManagerLobby : MonoBehaviour
                 { "Character", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.character.ToString())},
                 { "Assist", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.assist.ToString())},
                 { "Color", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.color.ToString())},
+                { "Ready", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, "False")},
                 { "Ip", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, GetLocalIPAddress())},
             }
         };
