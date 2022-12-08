@@ -12,7 +12,7 @@ public class PlayerController : BaseController
     private int _dashForwardLastInputTime;
     private int _dashBackLastInputTime;
     private readonly int _dashTime = 12;
-    Vector2Int _previousInput;
+    private Vector2Int _previousInput;
 
     void Start()
     {
@@ -283,7 +283,14 @@ public class PlayerController : BaseController
                 int timeSinceLastPress = DemonicsWorld.Frame - _dashForwardLastInputTime;
                 if (timeSinceLastPress <= _dashTime)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+                    if (NetworkInput.IS_LOCAL)
+                    {
+                        _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+                    }
+                    else
+                    {
+                        NetworkInput.DASH_FORWARD_INPUT = true;
+                    }
                     _dashForwardPressed = false;
                 }
                 _dashForwardLastInputTime = DemonicsWorld.Frame;
@@ -305,7 +312,14 @@ public class PlayerController : BaseController
                 int timeSinceLastPress = DemonicsWorld.Frame - _dashBackLastInputTime;
                 if (timeSinceLastPress <= _dashTime)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+                    if (NetworkInput.IS_LOCAL)
+                    {
+                        _inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+                    }
+                    else
+                    {
+                        NetworkInput.DASH_BACKWARD_INPUT = true;
+                    }
                     _dashBackPressed = false;
                 }
                 _dashBackLastInputTime = DemonicsWorld.Frame;

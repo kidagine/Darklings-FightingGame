@@ -1,17 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using System.Threading.Tasks;
-using Unity.Services.Relay;
-using Unity.Services.Relay.Models;
-using Unity.Netcode.Transports.UTP;
 using Unity.Netcode;
-using TMPro;
-using Unity.Netcode.Transports.UNET;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using System.Net;
@@ -23,7 +16,7 @@ public class NetworkManagerLobby : MonoBehaviour
     private Lobby _hostLobby;
     private Lobby _clientLobby;
     private float _lobbyUpdateTimer;
-
+    public Action OnLobbyUpdate;
 
     void Update()
     {
@@ -49,7 +42,22 @@ public class NetworkManagerLobby : MonoBehaviour
         };
         Lobby lobby = await LobbyService.Instance.CreateLobbyAsync("darklings", _maxPlayers, createLobbyOptions);
         _hostLobby = lobby;
+        NetworkManager.Singleton.StartHost();
+        NetworkManager.Singleton.OnClientConnectedCallback += UpdateLobby;
         return lobby.LobbyCode;
+    }
+
+    private async void UpdateLobby(ulong playerId)
+    {
+        string lobbyCode = _hostLobby.LobbyCode;
+        Debug.Log(lobbyCode);
+        _hostLobby = await LobbyService.Instance.GetLobbyAsync(lobbyCode);
+        OnLobbyUpdate?.Invoke();
+    }
+
+    public Lobby GetHostLobby()
+    {
+        return _hostLobby;
     }
 
     public async Task<Lobby> JoinLobby(DemonData demonData, string lobbyId)
@@ -58,12 +66,10 @@ public class NetworkManagerLobby : MonoBehaviour
         {
             Player = GetPlayer(demonData)
         };
+        Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyId, joinLobbyByCodeOptions);
+        _clientLobby = lobby;
         NetworkManager.Singleton.StartClient();
-        return await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyId, joinLobbyByCodeOptions);
-    }
-    public async void UpdateLobby()
-    {
-        //await LobbyManager.UpdatePlayerDataAsync(LobbyConverters.LocalToRemoteUserData(m_LocalUser));
+        return lobby;
     }
 
     public async void DeleteLobby()

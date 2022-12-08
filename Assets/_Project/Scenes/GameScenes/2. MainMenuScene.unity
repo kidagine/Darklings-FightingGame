@@ -5022,7 +5022,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1648980302}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: NetworkManagerLobby, Scripts
         m_MethodName: Authenticate
         m_Mode: 1
@@ -20598,7 +20598,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1535894904}
-  _networkManager: {fileID: 1648980302}
+  _networkManager: {fileID: 1648980305}
   _onlineHostMenu: {fileID: 922976189}
   _onlineSetupMenu: {fileID: 1844477016}
   _lobbyIdInputField: {fileID: 1535894904}
@@ -23165,7 +23165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1097312450}
-  _networkManager: {fileID: 1648980302}
+  _networkManager: {fileID: 1648980305}
   _onlineSetupMenu: {fileID: 1844477016}
   _nameplates:
   - {fileID: 2077998982}
@@ -23717,13 +23717,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pauseMenu: {fileID: 0}
-  _inputManager: {fileID: 0}
+  _inputManager: {fileID: 1856510700}
   OnConfirm:
     m_PersistentCalls:
       m_Calls: []
   OnBack:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 922976189}
+        m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+        m_MethodName: OpenMenuHideCurrent
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1124095647}
+          m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 922976189}
+        m_TargetAssemblyTypeName: OnlineHostMenu, Scripts
+        m_MethodName: QuitLobby
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnCoop:
     m_PersistentCalls:
       m_Calls: []
@@ -30008,11 +30032,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449152406412, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449925156736, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -30084,7 +30108,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 250
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_SizeDelta.y
@@ -30148,11 +30172,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076746, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Name
-      value: Paste_button
+      value: Join_button
       objectReference: {fileID: 0}
     - target: {fileID: 4703080450183459385, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_text
-      value: Paste
+      value: Join
       objectReference: {fileID: 0}
     - target: {fileID: 4703080450183459385, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_fontColor.b
@@ -30197,9 +30221,9 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 789811729}
         m_TargetAssemblyTypeName: OnlineClientMenu, Scripts
-        m_MethodName: Paste
+        m_MethodName: JoinLobby
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -38043,19 +38067,7 @@ MonoBehaviour:
   m_CharacterLimit: 6
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 789811729}
-        m_TargetAssemblyTypeName: OnlineClientMenu, Scripts
-        m_MethodName: JoinLobby
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -40049,9 +40061,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1648980299}
-  - component: {fileID: 1648980302}
   - component: {fileID: 1648980303}
   - component: {fileID: 1648980304}
+  - component: {fileID: 1648980305}
   m_Layer: 0
   m_Name: Main_networkManagerLobby
   m_TagString: Untagged
@@ -40074,19 +40086,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1648980302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1648980298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19f9fde70f914ce47b163e268ed6fb27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxPlayers: 2
 --- !u!114 &1648980303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40149,6 +40148,19 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     SpawnTimeout: 1
     EnableNetworkLogs: 1
+--- !u!114 &1648980305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648980298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19f9fde70f914ce47b163e268ed6fb27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxPlayers: 2
 --- !u!1 &1651129284
 GameObject:
   m_ObjectHideFlags: 0
@@ -50653,7 +50665,7 @@ MonoBehaviour:
   m_ReadOnly: 0
   m_RichText: 1
   m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_OnFocusSelectAll: 1
+  m_OnFocusSelectAll: 0
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
   m_isRichTextEditingAllowed: 0
@@ -52985,13 +52997,25 @@ MonoBehaviour:
   _onClickedAnimationEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 922976189}
         m_TargetAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1124095647}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 922976189}
+        m_TargetAssemblyTypeName: OnlineHostMenu, Scripts
+        m_MethodName: QuitLobby
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

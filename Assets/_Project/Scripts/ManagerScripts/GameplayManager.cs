@@ -352,7 +352,7 @@ public class GameplayManager : MonoBehaviour
 
     public void DeactivateCpus()
     {
-        if (!SceneSettings.IsOnline)
+        if (!SceneSettings.IsOnline && SceneSettings.SceneSettingsDecide)
         {
             if (IsTrainingMode)
             {
@@ -364,7 +364,7 @@ public class GameplayManager : MonoBehaviour
 
     public void MaxHealths()
     {
-        if (!SceneSettings.IsOnline)
+        if (!SceneSettings.IsOnline && SceneSettings.SceneSettingsDecide)
         {
             if (IsTrainingMode)
             {
@@ -376,7 +376,7 @@ public class GameplayManager : MonoBehaviour
 
     void Start()
     {
-        if (!SceneSettings.IsOnline)
+        if (!SceneSettings.IsOnline && SceneSettings.SceneSettingsDecide)
         {
             SetupGame();
         }
@@ -447,30 +447,36 @@ public class GameplayManager : MonoBehaviour
                 }
             }
         }
-        if (IsDialogueRunning && !SceneSettings.ReplayMode)
-        {
-            if (Input.anyKeyDown)
-            {
-                ReplayManager.Instance.Skip = DemonicsWorld.Frame;
-                SkipIntro();
-            }
-        }
+        // if (!SceneSettings.IsOnline)
+        // {
+        //     if (IsDialogueRunning && !SceneSettings.ReplayMode)
+        //     {
+        //         if (Input.anyKeyDown)
+        //         {
+        //             SkipIntro();
+        //         }
+        //     }
+        // }
         RunHitStop();
         RunReady();
         RunRoundOver();
     }
-
     public void SkipIntro()
     {
-        _playerOneDialogue.StopDialogue();
-        _playerTwoDialogue.StopDialogue();
-        StartRound();
-        _introUI.SkipIntro();
-        IsDialogueRunning = false;
+        if (IsDialogueRunning && !SceneSettings.ReplayMode)
+        {
+            ReplayManager.Instance.Skip = DemonicsWorld.Frame;
+            _playerOneDialogue.StopDialogue();
+            _playerTwoDialogue.StopDialogue();
+            StartRound();
+            _introUI.SkipIntro();
+            IsDialogueRunning = false;
+        }
     }
 
     public void StartIntro()
     {
+        Debug.Log("a");
         PlayerOne.ResetPlayer(new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT));
         PlayerTwo.ResetPlayer(new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT));
         for (int i = 0; i < _arcanaObjects.Length; i++)

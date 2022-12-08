@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class NetworkInput
 {
-    public const int UP_BYTE = (1 << 0);
-    public const int DOWN_BYTE = (1 << 1);
-    public const int LEFT_BYTE = (1 << 2);
-    public const int RIGHT_BYTE = (1 << 3);
-    public const int LIGHT_BYTE = (1 << 4);
-    public const int MEDIUM_BYTE = (1 << 5);
-    public const int HEAVY_BYTE = (1 << 6);
-    public const int ARCANA_BYTE = (1 << 7);
-    public const int GRAB_BYTE = (1 << 8);
-    public const int SHADOW_BYTE = (1 << 9);
-    public const int BLUE_FRENZY_BYTE = (1 << 10);
-    public const int RED_FRENZY_BYTE = (1 << 11);
+    public const int SKIP_BYTE = (1 << 0);
+    public const int UP_BYTE = (1 << 1);
+    public const int DOWN_BYTE = (1 << 2);
+    public const int LEFT_BYTE = (1 << 3);
+    public const int RIGHT_BYTE = (1 << 4);
+    public const int LIGHT_BYTE = (1 << 5);
+    public const int MEDIUM_BYTE = (1 << 6);
+    public const int HEAVY_BYTE = (1 << 7);
+    public const int ARCANA_BYTE = (1 << 8);
+    public const int GRAB_BYTE = (1 << 9);
+    public const int SHADOW_BYTE = (1 << 10);
+    public const int BLUE_FRENZY_BYTE = (1 << 11);
+    public const int RED_FRENZY_BYTE = (1 << 12);
+    public const int DASH_FORWARD_BYTE = (1 << 13);
+    public const int DASH_BACKWARD_BYTE = (1 << 14);
 
     public static bool IS_LOCAL { get; set; } = true;
     public static bool UP_INPUT { get; set; }
@@ -30,4 +33,6 @@ public class NetworkInput
     public static bool SHADOW_INPUT { get; set; }
     public static bool BLUE_FRENZY_INPUT { get; set; }
     public static bool RED_FRENZY_INPUT { get; set; }
+    public static bool DASH_FORWARD_INPUT { get; set; }
+    public static bool DASH_BACKWARD_INPUT { get; set; }
 }

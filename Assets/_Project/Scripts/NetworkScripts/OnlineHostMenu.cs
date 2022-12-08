@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Demonics.UI;
 using TMPro;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -31,12 +32,31 @@ public class OnlineHostMenu : BaseMenu
             _lobbyCreated.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null);
             _startingOption.Select();
+            _networkManager.OnLobbyUpdate += UpdateLobby;
         }
         else
         {
             _creatingLobby.SetActive(false);
             _lobbyCreated.SetActive(true);
         }
+    }
+
+    private void UpdateLobby()
+    {
+        Lobby lobby = _networkManager.GetHostLobby();
+        List<DemonData> demonDatas = new List<DemonData>();
+        foreach (var player in lobby.Players)
+        {
+            demonDatas.Add(new DemonData()
+            {
+                demonName = player.Data["DemonName"].Value,
+                character = int.Parse(player.Data["Character"].Value),
+                assist = int.Parse(player.Data["Assist"].Value),
+                color = int.Parse(player.Data["Color"].Value)
+            });
+        }
+        _nameplates[0].SetDemonData(demonDatas[0]);
+        _nameplates[1].SetDemonData(demonDatas[1]);
     }
 
     public void CopyLobbyId()
@@ -53,7 +73,7 @@ public class OnlineHostMenu : BaseMenu
         _lobbyCreated.SetActive(true);
         _copyLobbyId.SetActive(false);
         _lobbyIdText.text = $"Lobby ID: {lobbyId.ToUpper()}";
-        StartGame(demonDatas);
+        //StartGame(demonDatas);
     }
 
     public void Ready()
@@ -64,7 +84,14 @@ public class OnlineHostMenu : BaseMenu
     private void StartGame(DemonData[] demonDatas)
     {
         SceneSettings.IsOnline = true;
-        SceneSettings.OnlineIndex = 0;
+        if (Hosting)
+        {
+            SceneSettings.OnlineIndex = 0;
+        }
+        else
+        {
+            SceneSettings.OnlineIndex = 1;
+        }
         SceneSettings.ControllerOneScheme = "Keyboard";
         SceneSettings.ControllerTwoScheme = "Keyboard";
         SceneSettings.PlayerOne = demonDatas[0].character;
@@ -77,5 +104,17 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
         _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(2));
         _fadeHandler.StartFadeTransition(true);
+    }
+
+    public void QuitLobby()
+    {
+        if (Hosting)
+        {
+            _networkManager.DeleteLobby();
+        }
+        else
+        {
+            _networkManager.LeaveLobby();
+        }
     }
 }

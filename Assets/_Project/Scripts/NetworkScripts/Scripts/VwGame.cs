@@ -5,37 +5,12 @@ using Unity.Collections;
 using UnityEngine;
 
 
-using static VWConstants;
-
-public static class VWConstants
-{
-    public const int MAX_SHIPS = 4;
-    public const int MAX_PLAYERS = 2;
-
-    public const int INPUT_THRUST = (1 << 0);
-    public const int INPUT_BREAK = (1 << 1);
-    public const int INPUT_ROTATE_LEFT = (1 << 2);
-    public const int INPUT_ROTATE_RIGHT = (1 << 3);
-    public const int INPUT_FIRE = (1 << 4);
-    public const int INPUT_BOMB = (1 << 5);
-    public const int MAX_BULLETS = 30;
-
-    public const float PI = 3.1415926f;
-    public const int STARTING_HEALTH = 100;
-    public const float ROTATE_INCREMENT = 3f;
-    public const float SHIP_RADIUS = 15f;
-    public const float SHIP_THRUST = 0.06f;
-    public const float SHIP_MAX_THRUST = 4.0f;
-    public const float SHIP_BREAK_SPEED = 0.6f;
-    public const float BULLET_SPEED = 5f;
-    public const int BULLET_COOLDOWN = 8;
-    public const int BULLET_DAMAGE = 10;
-}
-
 [Serializable]
 public struct PlayerNetwork
 {
     public Vector2 position;
+    public bool start;
+    public bool skip;
     public bool up;
     public bool down;
     public bool left;
@@ -48,10 +23,14 @@ public struct PlayerNetwork
     public bool grab;
     public bool blueFrenzy;
     public bool redFrenzy;
+    public bool dashForward;
+    public bool dashBackward;
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(position.x);
         bw.Write(position.y);
+        bw.Write(start);
+        bw.Write(skip);
         bw.Write(up);
         bw.Write(down);
         bw.Write(left);
@@ -64,12 +43,16 @@ public struct PlayerNetwork
         bw.Write(grab);
         bw.Write(blueFrenzy);
         bw.Write(redFrenzy);
+        bw.Write(dashForward);
+        bw.Write(dashBackward);
     }
 
     public void Deserialize(BinaryReader br)
     {
         position.x = br.ReadSingle();
         position.y = br.ReadSingle();
+        start = br.ReadBoolean();
+        skip = br.ReadBoolean();
         up = br.ReadBoolean();
         down = br.ReadBoolean();
         left = br.ReadBoolean();
@@ -82,9 +65,10 @@ public struct PlayerNetwork
         grab = br.ReadBoolean();
         blueFrenzy = br.ReadBoolean();
         redFrenzy = br.ReadBoolean();
+        dashForward = br.ReadBoolean();
+        dashBackward = br.ReadBoolean();
     }
 };
-
 
 [Serializable]
 public struct VwGame : IGame
@@ -144,18 +128,6 @@ public struct VwGame : IGame
         }
     }
 
-    private static float DegToRad(float deg)
-    {
-        return PI * deg / 180;
-    }
-
-    private static float Distance(Vector2 lhs, Vector2 rhs)
-    {
-        float x = rhs.x - lhs.x;
-        float y = rhs.y - lhs.y;
-        return Mathf.Sqrt(x * x + y * y);
-    }
-
     /*
      * InitGameState --
      *
@@ -164,22 +136,25 @@ public struct VwGame : IGame
 
     public VwGame(int num_players)
     {
-        var w = _bounds.xMax - _bounds.xMin;
-        var h = _bounds.yMax - _bounds.yMin;
-        var r = h / 4;
         Framenumber = 0;
-        System.Random rs = new System.Random();
         _players = new PlayerNetwork[num_players];
         for (int i = 0; i < _players.Length; i++)
         {
             _players[i] = new PlayerNetwork();
-            _players[i].position.x = 0;
-            _players[i].position.y = 0;
         }
     }
 
-    public void ParseInputs(long inputs, int i, out bool up, out bool down, out bool left, out bool right, out bool light, out bool medium, out bool heavy, out bool arcana, out bool grab, out bool shadow, out bool blueFrenzy, out bool redFrenzy)
+    public void ParseInputs(long inputs, int i, out bool skip, out bool up, out bool down, out bool left, out bool right, out bool light, out bool medium,
+    out bool heavy, out bool arcana, out bool grab, out bool shadow, out bool blueFrenzy, out bool redFrenzy, out bool dashForward, out bool dashBackward)
     {
+        if ((inputs & NetworkInput.SKIP_BYTE) != 0)
+        {
+            skip = true;
+        }
+        else
+        {
+            skip = false;
+        }
         if ((inputs & NetworkInput.UP_BYTE) != 0)
         {
             up = true;
@@ -276,11 +251,29 @@ public struct VwGame : IGame
         {
             redFrenzy = false;
         }
+        if ((inputs & NetworkInput.DASH_FORWARD_BYTE) != 0)
+        {
+            dashForward = true;
+        }
+        else
+        {
+            dashForward = false;
+        }
+        if ((inputs & NetworkInput.DASH_BACKWARD_BYTE) != 0)
+        {
+            dashBackward = true;
+        }
+        else
+        {
+            dashBackward = false;
+        }
     }
 
-    public void MoveShip(int index, bool up, bool down, bool left, bool right, bool light, bool medium, bool heavy, bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy)
+    public void PlayerLogic(int index, bool skip, bool up, bool down, bool left, bool right, bool light, bool medium, bool heavy,
+    bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy, bool dashForward, bool dashBackward)
     {
         var player = _players[index];
+        _players[index].skip = skip;
         _players[index].up = up;
         _players[index].down = down;
         _players[index].left = left;
@@ -293,13 +286,16 @@ public struct VwGame : IGame
         _players[index].shadow = shadow;
         _players[index].blueFrenzy = blueFrenzy;
         _players[index].redFrenzy = redFrenzy;
+        _players[index].dashForward = dashForward;
+        _players[index].dashBackward = dashBackward;
     }
-
     public void Update(long[] inputs, int disconnect_flags)
     {
         Framenumber++;
+        DemonicsWorld.Frame = Framenumber;
         for (int i = 0; i < _players.Length; i++)
         {
+            bool skip = false;
             bool up = false;
             bool down = false;
             bool left = false;
@@ -312,23 +308,32 @@ public struct VwGame : IGame
             bool shadow = false;
             bool blueFrenzy = false;
             bool redFrenzy = false;
+            bool dashForward = false;
+            bool dashBackward = false;
             if ((disconnect_flags & (1 << i)) != 0)
             {
                 //AI
             }
             else
             {
-                ParseInputs(inputs[i], i, out up, out down, out left, out right, out light, out medium, out heavy, out arcana, out grab, out shadow, out blueFrenzy, out redFrenzy);
+                ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
+                 out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
             }
-            MoveShip(i, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy);
+            PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
+            _players[i].start = true;
         }
     }
 
     public long ReadInputs(int id)
     {
         long input = 0;
+
         if (id == 0)
         {
+            if (Input.anyKeyDown)
+            {
+                input |= NetworkInput.SKIP_BYTE;
+            }
             if (NetworkInput.UP_INPUT)
             {
                 input |= NetworkInput.UP_BYTE;
@@ -384,6 +389,16 @@ public struct VwGame : IGame
             {
                 input |= NetworkInput.RED_FRENZY_BYTE;
                 NetworkInput.RED_FRENZY_INPUT = false;
+            }
+            if (NetworkInput.DASH_FORWARD_INPUT)
+            {
+                input |= NetworkInput.DASH_FORWARD_BYTE;
+                NetworkInput.DASH_FORWARD_INPUT = false;
+            }
+            if (NetworkInput.DASH_BACKWARD_INPUT)
+            {
+                input |= NetworkInput.DASH_BACKWARD_BYTE;
+                NetworkInput.DASH_BACKWARD_INPUT = false;
             }
         }
         return input;
