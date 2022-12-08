@@ -15,6 +15,7 @@ public class OnlineHostMenu : BaseMenu
     [SerializeField] private NetworkManagerLobby _networkManager = default;
     [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
     [SerializeField] private DemonNameplate[] _nameplates = default;
+    [SerializeField] private TextMeshProUGUI _readyText = default;
     [SerializeField] private TextMeshProUGUI _lobbyIdText = default;
     [SerializeField] private GameObject _creatingLobby = default;
     [SerializeField] private GameObject _lobbyCreated = default;
@@ -57,23 +58,22 @@ public class OnlineHostMenu : BaseMenu
         }
         List<DemonData> demonDatas = new List<DemonData>();
         List<bool> readyList = new List<bool>();
-        foreach (var player in lobby.Players)
+        _nameplates[0].gameObject.SetActive(false);
+        _nameplates[1].gameObject.SetActive(false);
+        for (int i = 0; i < lobby.Players.Count; i++)
         {
             demonDatas.Add(new DemonData()
             {
-                demonName = player.Data["DemonName"].Value,
-                character = int.Parse(player.Data["Character"].Value),
-                assist = int.Parse(player.Data["Assist"].Value),
-                color = int.Parse(player.Data["Color"].Value),
-                ip = player.Data["Ip"].Value
+                demonName = lobby.Players[i].Data["DemonName"].Value,
+                character = int.Parse(lobby.Players[i].Data["Character"].Value),
+                assist = int.Parse(lobby.Players[i].Data["Assist"].Value),
+                color = int.Parse(lobby.Players[i].Data["Color"].Value),
+                ip = lobby.Players[i].Data["Ip"].Value
             });
-            readyList.Add(bool.Parse(player.Data["Ready"].Value));
+            readyList.Add(bool.Parse(lobby.Players[i].Data["Ready"].Value));
+            _nameplates[i].SetDemonData(demonDatas[i]);
+            _nameplates[i].SetReady(readyList[i]);
         }
-        _nameplates[0].SetDemonData(demonDatas[0]);
-        _nameplates[1].SetDemonData(demonDatas[1]);
-        _nameplates[0].SetReady(readyList[0]);
-        _nameplates[1].SetReady(readyList[1]);
-
         if (readyList[0] && readyList[1])
         {
             _networkManager.OnLobbyUpdate -= UpdateLobby;
@@ -103,11 +103,27 @@ public class OnlineHostMenu : BaseMenu
         if (Hosting)
         {
             bool ready = _nameplates[0].ToggleReady();
+            if (ready)
+            {
+                _readyText.text = "Cancel";
+            }
+            else
+            {
+                _readyText.text = "Ready";
+            }
             _networkManager.UpdateLobbyReady(ready, true);
         }
         else
         {
             bool ready = _nameplates[1].ToggleReady();
+            if (ready)
+            {
+                _readyText.text = "Cancel";
+            }
+            else
+            {
+                _readyText.text = "Ready";
+            }
             _networkManager.UpdateLobbyReady(ready, false);
         }
     }
@@ -140,6 +156,7 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.SceneSettingsDecide = true;
         SceneSettings.StageIndex = 0;
+        // _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
         if (Hosting)
             _fadeHandler.onFadeEnd.AddListener(() => NetworkManager.Singleton.SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
         _fadeHandler.StartFadeTransition(true);
@@ -147,6 +164,8 @@ public class OnlineHostMenu : BaseMenu
 
     public void QuitLobby()
     {
+        _creatingLobby.SetActive(true);
+        _lobbyCreated.SetActive(false);
         if (Hosting)
         {
             _networkManager.DeleteLobby();

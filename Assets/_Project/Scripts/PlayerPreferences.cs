@@ -94,7 +94,7 @@ public class PlayerPreferences : MonoBehaviour
 
     private void LoadOnlinePreferences()
     {
-        // _playerNameInputField.text = PlayerPrefs.GetString("playerName", _playerNameInputFieldInitial);
+        _playerNameInputField.text = DemonicsSaver.Load("playerName", _playerNameInputFieldInitial.ToString());
         _characterSelector.SetValue(int.Parse(DemonicsSaver.Load("character", _characterSelectorInitial.ToString())));
         _charactersAssistSelector.SetValue(int.Parse(DemonicsSaver.Load("characterassist", _characterAssistSelectorInitial.ToString())));
         _characterColorSelector.SetValue(int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.ToString())));

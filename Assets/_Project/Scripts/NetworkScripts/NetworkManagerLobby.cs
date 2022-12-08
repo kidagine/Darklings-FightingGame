@@ -10,6 +10,7 @@ using Unity.Services.Lobbies.Models;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine.SceneManagement;
+using Unity.Netcode.Transports.UTP;
 
 public class NetworkManagerLobby : MonoBehaviour
 {
@@ -43,14 +44,9 @@ public class NetworkManagerLobby : MonoBehaviour
         };
         Lobby lobby = await LobbyService.Instance.CreateLobbyAsync("darklings", _maxPlayers, createLobbyOptions);
         _hostLobby = lobby;
+        GetComponent<UnityTransport>().ConnectionData.Address = GetLocalIPAddress();
         NetworkManager.Singleton.StartHost();
-        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         return lobby.LobbyCode;
-    }
-
-    private async void OnClientConnected(ulong playerId)
-    {
-        _connected = true;
     }
 
     public Lobby GetHostLobby()
@@ -98,9 +94,11 @@ public class NetworkManagerLobby : MonoBehaviour
         });
     }
 
-    public async void DeleteLobby()
+    public void DeleteLobby()
     {
-        await LobbyService.Instance.DeleteLobbyAsync(_hostLobby.Id);
+        string id = _hostLobby.Id;
+        _hostLobby = null;
+        LobbyService.Instance.DeleteLobbyAsync(id);
     }
 
     public async void LeaveLobby()
@@ -110,7 +108,7 @@ public class NetworkManagerLobby : MonoBehaviour
 
     private async void HandleLobbyPollForUpdates()
     {
-        if (_hostLobby != null && _connected)
+        if (_hostLobby != null)
         {
             _lobbyUpdateTimer -= Time.unscaledDeltaTime;
             if (_lobbyUpdateTimer < 0)
@@ -118,6 +116,8 @@ public class NetworkManagerLobby : MonoBehaviour
                 _lobbyUpdateTimer = 1.1f;
                 Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_hostLobby.Id);
                 _hostLobby = lobby;
+                if (_hostLobby.Players.Count == 2)
+                    GetComponent<UnityTransport>().ConnectionData.Address = _hostLobby.Players[1].Data["Ip"].Value;
                 OnLobbyUpdate?.Invoke();
             }
         }
@@ -129,6 +129,7 @@ public class NetworkManagerLobby : MonoBehaviour
                 _lobbyUpdateTimer = 1.1f;
                 Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_clientLobby.Id);
                 _clientLobby = lobby;
+                GetComponent<UnityTransport>().ConnectionData.Address = _clientLobby.Players[0].Data["Ip"].Value;
                 OnLobbyUpdate?.Invoke();
             }
         }

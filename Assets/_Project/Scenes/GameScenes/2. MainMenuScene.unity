@@ -23170,6 +23170,7 @@ MonoBehaviour:
   _nameplates:
   - {fileID: 2077998982}
   - {fileID: 1879126254}
+  _readyText: {fileID: 1818787446}
   _lobbyIdText: {fileID: 326892375}
   _creatingLobby: {fileID: 1933874606}
   _lobbyCreated: {fileID: 1809697916}
@@ -23657,7 +23658,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &945083557
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23676,7 +23677,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -490}
+  m_AnchoredPosition: {x: 0, y: -980}
   m_SizeDelta: {x: 1920, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &945083558
@@ -44218,6 +44219,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818430136}
   m_CullTransparentMesh: 1
+--- !u!114 &1818787446 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4703080450183459385, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+  m_PrefabInstance: {fileID: 1097312449}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1820566726
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44733,6 +44745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 465378534}
+  _playerPreferences: {fileID: 0}
 --- !u!1 &1847732934
 GameObject:
   m_ObjectHideFlags: 0
@@ -53005,18 +53018,6 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 1124095647}
           m_ObjectArgumentAssemblyTypeName: Demonics.UI.BaseMenu, Demonics
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 922976189}
-        m_TargetAssemblyTypeName: OnlineHostMenu, Scripts
-        m_MethodName: QuitLobby
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

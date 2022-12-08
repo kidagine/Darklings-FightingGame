@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class OnlineSetupMenu : BaseMenu
 {
+    [SerializeField] private PlayerPreferences _playerPreferences = default;
     public DemonData DemonData { get; set; } = new DemonData() { demonName = "DemonFighter", character = 0, assist = 0, color = 0 };
 
 
     public void SetDemonName(string demonName)
     {
+        DemonicsSaver.Save("playerName", demonName);
         DemonData.demonName = demonName;
     }
 

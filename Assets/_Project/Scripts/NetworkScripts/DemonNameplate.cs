@@ -33,7 +33,7 @@ public class DemonNameplate : MonoBehaviour
         }
         else
         {
-            _readyText.text = "Unready";
+            _readyText.text = "Waiting";
         }
         return _ready;
     }
@@ -46,7 +46,7 @@ public class DemonNameplate : MonoBehaviour
         }
         else
         {
-            _readyText.text = "Unready";
+            _readyText.text = "Waiting";
         }
     }
 }
