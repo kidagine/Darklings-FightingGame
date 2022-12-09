@@ -93,11 +93,11 @@ public class NetworkManagerLobby : MonoBehaviour
         });
     }
 
-    public void DeleteLobby()
+    public async Task DeleteLobby()
     {
         string id = _hostLobby.Id;
         _hostLobby = null;
-        LobbyService.Instance.DeleteLobbyAsync(id);
+        await LobbyService.Instance.DeleteLobbyAsync(id);
     }
 
     public async void LeaveLobby()
