@@ -1,5 +1,7 @@
+using System.Collections;
 using Demonics.Sounds;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class PlayerAnimator : DemonicsAnimator
 {

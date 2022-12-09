@@ -13,19 +13,21 @@ using UnityEngine.InputSystem;
 public class OnlineHostMenu : BaseMenu
 {
     [SerializeField] private NetworkManagerLobby _networkManager = default;
+    [SerializeField] private OnlineMainMenu _onlineMainMenu = default;
     [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
     [SerializeField] private DemonNameplate[] _nameplates = default;
     [SerializeField] private TextMeshProUGUI _readyText = default;
     [SerializeField] private TextMeshProUGUI _lobbyIdText = default;
     [SerializeField] private GameObject _creatingLobby = default;
     [SerializeField] private GameObject _lobbyCreated = default;
+    [SerializeField] private GameObject _exitingLobby = default;
     [SerializeField] private GameObject _copyLobbyId = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] private PlayerInput _playerInput = default;
     private string _lobbyId;
     public bool Hosting { get; set; } = true;
 
-    async void Awake()
+    async void OnEnable()
     {
         if (Hosting)
         {
@@ -162,17 +164,25 @@ public class OnlineHostMenu : BaseMenu
         _fadeHandler.StartFadeTransition(true);
     }
 
-    public void QuitLobby()
+    public async void QuitLobby()
     {
-        _creatingLobby.SetActive(true);
+        _creatingLobby.SetActive(false);
         _lobbyCreated.SetActive(false);
         if (Hosting)
         {
-            _networkManager.DeleteLobby();
+            _exitingLobby.SetActive(true);
+            await _networkManager.DeleteLobby();
+            OpenMenuHideCurrent(_onlineMainMenu);
+            _exitingLobby.SetActive(false);
+            _creatingLobby.SetActive(true);
         }
         else
         {
-            _networkManager.LeaveLobby();
+            _exitingLobby.SetActive(true);
+            await _networkManager.LeaveLobby();
+            OpenMenuHideCurrent(_onlineMainMenu);
+            _exitingLobby.SetActive(false);
+            _creatingLobby.SetActive(true);
         }
     }
 }
