@@ -33,6 +33,8 @@ public class OnlineClientMenu : BaseMenu
         }
         _onlineHostMenu.OpenAsClient(demonDatas.ToArray(), lobbyId);
         OpenMenuHideCurrent(_onlineHostMenu);
+        _joiningLobbyGroup.SetActive(false);
+        _lobbyJoinGroup.SetActive(true);
     }
 
     private void HandleClientConnected()
