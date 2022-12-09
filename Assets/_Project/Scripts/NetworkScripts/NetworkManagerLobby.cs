@@ -100,7 +100,7 @@ public class NetworkManagerLobby : MonoBehaviour
         await LobbyService.Instance.DeleteLobbyAsync(id);
     }
 
-    public async void LeaveLobby()
+    public async Task LeaveLobby()
     {
         await LobbyService.Instance.RemovePlayerAsync(_clientLobby.Id, AuthenticationService.Instance.PlayerId);
     }

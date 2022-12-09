@@ -178,7 +178,11 @@ public class OnlineHostMenu : BaseMenu
         }
         else
         {
-            _networkManager.LeaveLobby();
+            _exitingLobby.SetActive(true);
+            await _networkManager.LeaveLobby();
+            OpenMenuHideCurrent(_onlineMainMenu);
+            _exitingLobby.SetActive(false);
+            _creatingLobby.SetActive(true);
         }
     }
 }
