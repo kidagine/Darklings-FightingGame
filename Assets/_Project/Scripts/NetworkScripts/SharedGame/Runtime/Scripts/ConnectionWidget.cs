@@ -141,10 +141,8 @@ namespace SharedGame
         public IList<Connections> GetConnectionInfo()
         {
             var connections = new List<Connections>(inpIps.Length);
-            Debug.Log(connections.Count);
             for (int i = 0; i < inpIps.Length; ++i)
             {
-                Debug.Log(inpIps[i].text);
                 var split = inpIps[i].text.Split(':');
                 connections.Add(new Connections()
                 {
