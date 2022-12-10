@@ -87,7 +87,13 @@ namespace SharedGame
             }
             txtPluginLog.gameObject.SetActive(tglPluginLog.isOn);
         }
-
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                OnConnect();
+            }
+        }
         private void SetConnectText(string text)
         {
             btnConnect.GetComponentInChildren<TextMeshProUGUI>().text = text;
