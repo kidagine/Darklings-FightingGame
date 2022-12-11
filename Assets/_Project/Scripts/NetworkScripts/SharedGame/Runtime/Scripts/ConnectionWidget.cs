@@ -84,8 +84,6 @@ namespace SharedGame
                 var perf = FindObjectOfType<GgpoPerformancePanel>();
                 perf.Setup();
                 var playerIndex = int.Parse(inpPlayerIndex.text);
-                Debug.Log(connectionInfo[0].ip + "|" + connectionInfo[0].port);
-                Debug.Log(connectionInfo[1].ip + "|" + connectionInfo[1].port);
                 gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
             }
         }
