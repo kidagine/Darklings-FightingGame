@@ -136,7 +136,6 @@ public struct VwGame : IGame
 
     public VwGame(int num_players)
     {
-        Debug.Log("b");
         Framenumber = 0;
         _players = new PlayerNetwork[num_players];
         for (int i = 0; i < _players.Length; i++)

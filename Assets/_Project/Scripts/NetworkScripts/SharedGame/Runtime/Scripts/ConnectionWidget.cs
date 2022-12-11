@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Net;
+using System;
+
 namespace SharedGame
 {
 
@@ -19,22 +22,52 @@ namespace SharedGame
         {
             gameManager.OnRunningChanged += OnRunningChanged;
             btnConnect.onClick.AddListener(OnConnect);
-
             var connections = new List<Connections>();
             connections.Add(new Connections()
             {
-                ip = "127.0.0.1",
+                ip = "192.168.0.104",
                 port = 7000,
                 spectator = false,
             });
             connections.Add(new Connections()
             {
-                ip = "127.0.0.1",
+                ip = "192.168.0.104",
                 port = 7001,
                 spectator = false,
             });
             inpPlayerIndex.text = "0";
             LoadConnectionInfo(connections);
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                tgLocal.isOn = !tgLocal.isOn;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (inpPlayerIndex.text == "0")
+                {
+                    inpPlayerIndex.text = "1";
+                }
+                else
+                {
+                    inpPlayerIndex.text = "0";
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                inpIps[0].Select();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                inpIps[1].Select();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                OnConnect();
+            }
         }
 
         private void OnConnect()
@@ -76,6 +109,7 @@ namespace SharedGame
             var perf = FindObjectOfType<GgpoPerformancePanel>();
             perf.Setup();
             var playerIndex = index;
+            Debug.Log(connectionInfo[0].ip + "|" + connectionInfo[0].port);
             gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
         }
 

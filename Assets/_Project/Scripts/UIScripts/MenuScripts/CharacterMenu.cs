@@ -170,7 +170,7 @@ public class CharacterMenu : BaseMenu
         }
         else
         {
-            SceneSettings.IsOnline = true;
+            SceneSettings.IsOnline = false;
             SceneSettings.SceneSettingsDecide = true;
             if (SceneSettings.RandomStage)
             {

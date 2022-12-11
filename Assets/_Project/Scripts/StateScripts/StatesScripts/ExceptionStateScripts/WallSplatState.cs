@@ -14,6 +14,7 @@ public class WallSplatState : State
     public override void Enter()
     {
         base.Enter();
+        _player.hitstopEvent.RemoveAllListeners();
         _audio.Sound("WallSplat").Play();
         _playerAnimator.WallSplat();
         _player.SetHurtbox(false);
@@ -36,6 +37,12 @@ public class WallSplatState : State
     public override bool ToKnockdownState()
     {
         return false;
+    }
+
+    public override void UpdateLogic()
+    {
+        base.UpdateLogic();
+        _physics.Velocity = DemonicsVector2.Zero;
     }
 
     public override void Exit()

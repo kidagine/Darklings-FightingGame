@@ -121,7 +121,7 @@ public class GameplayManager : MonoBehaviour
         {
             if (InputSystem.devices[1].name == "Mouse")
             {
-                //InputSystem.RemoveDevice(InputSystem.devices[1]);
+                InputSystem.RemoveDevice(InputSystem.devices[1]);
             }
         }
 
@@ -157,13 +157,16 @@ public class GameplayManager : MonoBehaviour
             _debugNetwork.SetActive(false);
             if (!SceneSettings.IsOnline)
             {
+                Debug.Log("A");
+                NetworkInput.IS_LOCAL = true;
+                GameManager.Instance.StartLocalGame();
                 _isTrainingMode = SceneSettings.IsTrainingMode;
-                GameObject playerOne = Instantiate(_playerLocal);
-                GameObject playerTwo = Instantiate(_playerLocal);
-                InitializePlayers(playerOne, playerTwo);
+
+                //InitializePlayers(playerOne, playerTwo);
             }
             else
             {
+                Debug.Log("B");
                 _isTrainingMode = false;
                 _connectionWidget.StartGGPO(SceneSettings.OnlineOneIp, SceneSettings.OnlineTwoIp, SceneSettings.OnlineIndex);
             }
@@ -351,35 +354,22 @@ public class GameplayManager : MonoBehaviour
 
     public void DeactivateCpus()
     {
-        if (!SceneSettings.IsOnline && SceneSettings.SceneSettingsDecide)
+        if (IsTrainingMode && PlayerOne != null)
         {
-            if (IsTrainingMode)
-            {
-                _playerOneController.DeactivateCpu();
-                _playerTwoController.DeactivateCpu();
-            }
+            _playerOneController.DeactivateCpu();
+            _playerTwoController.DeactivateCpu();
         }
     }
 
     public void MaxHealths()
     {
-        if (!SceneSettings.IsOnline && SceneSettings.SceneSettingsDecide)
+        if (IsTrainingMode && PlayerOne != null)
         {
-            if (IsTrainingMode)
-            {
-                PlayerOne.MaxHealthStats();
-                PlayerTwo.MaxHealthStats();
-            }
+            PlayerOne.MaxHealthStats();
+            PlayerTwo.MaxHealthStats();
         }
     }
 
-    void Start()
-    {
-        if (!SceneSettings.IsOnline && SceneSettings.SceneSettingsDecide)
-        {
-            SetupGame();
-        }
-    }
 
     public void SetupGame()
     {
@@ -475,7 +465,6 @@ public class GameplayManager : MonoBehaviour
 
     public void StartIntro()
     {
-        Debug.Log("a");
         PlayerOne.ResetPlayer(new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT));
         PlayerTwo.ResetPlayer(new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT));
         for (int i = 0; i < _arcanaObjects.Length; i++)
