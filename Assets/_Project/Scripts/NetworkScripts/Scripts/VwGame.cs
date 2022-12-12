@@ -8,19 +8,23 @@ using UnityEngine;
 [Serializable]
 public struct PlayerNetwork
 {
+    public PlayerStatsSO playerStats;
     public Vector2 position;
+    public Vector2 velocity;
+    public Vector2 direction;
+    public string animation;
+    public int animationFrames;
+    public float speed;
+    public float gravity;
+    public float jump;
+    public int dashFrames;
+    public bool jumped;
     public bool start;
     public bool skip;
     public bool up;
     public bool down;
     public bool left;
     public bool right;
-    public bool light;
-    public bool medium;
-    public bool heavy;
-    public bool arcana;
-    public bool shadow;
-    public bool grab;
     public bool blueFrenzy;
     public bool redFrenzy;
     public bool dashForward;
@@ -29,18 +33,23 @@ public struct PlayerNetwork
     {
         bw.Write(position.x);
         bw.Write(position.y);
+        bw.Write(velocity.x);
+        bw.Write(velocity.y);
+        bw.Write(direction.x);
+        bw.Write(direction.y);
+        bw.Write(animation);
+        bw.Write(animationFrames);
+        bw.Write(speed);
+        bw.Write(gravity);
+        bw.Write(jump);
+        bw.Write(jumped);
+        bw.Write(dashFrames);
         bw.Write(start);
         bw.Write(skip);
         bw.Write(up);
         bw.Write(down);
         bw.Write(left);
         bw.Write(right);
-        bw.Write(light);
-        bw.Write(medium);
-        bw.Write(heavy);
-        bw.Write(arcana);
-        bw.Write(shadow);
-        bw.Write(grab);
         bw.Write(blueFrenzy);
         bw.Write(redFrenzy);
         bw.Write(dashForward);
@@ -51,23 +60,48 @@ public struct PlayerNetwork
     {
         position.x = br.ReadSingle();
         position.y = br.ReadSingle();
+        velocity.x = br.ReadSingle();
+        velocity.y = br.ReadSingle();
+        direction.x = br.ReadSingle();
+        direction.y = br.ReadSingle();
+        animation = br.ReadString();
+        animationFrames = br.ReadInt32();
+        speed = br.ReadSingle();
+        gravity = br.ReadSingle();
+        jump = br.ReadSingle();
+        jumped = br.ReadBoolean();
+        dashFrames = br.ReadInt32();
         start = br.ReadBoolean();
         skip = br.ReadBoolean();
         up = br.ReadBoolean();
         down = br.ReadBoolean();
         left = br.ReadBoolean();
         right = br.ReadBoolean();
-        light = br.ReadBoolean();
-        medium = br.ReadBoolean();
-        heavy = br.ReadBoolean();
-        arcana = br.ReadBoolean();
-        shadow = br.ReadBoolean();
-        grab = br.ReadBoolean();
         blueFrenzy = br.ReadBoolean();
         redFrenzy = br.ReadBoolean();
         dashForward = br.ReadBoolean();
         dashBackward = br.ReadBoolean();
     }
+
+    public override int GetHashCode()
+    {
+        int hashCode = 1858597544;
+        hashCode = hashCode * -1521134295 + position.GetHashCode();
+        hashCode = hashCode * -1521134295 + start.GetHashCode();
+        hashCode = hashCode * -1521134295 + animation.GetHashCode();
+        hashCode = hashCode * -1521134295 + skip.GetHashCode();
+        hashCode = hashCode * -1521134295 + up.GetHashCode();
+        hashCode = hashCode * -1521134295 + down.GetHashCode();
+        hashCode = hashCode * -1521134295 + left.GetHashCode();
+        hashCode = hashCode * -1521134295 + right.GetHashCode();
+        hashCode = hashCode * -1521134295 + blueFrenzy.GetHashCode();
+        hashCode = hashCode * -1521134295 + redFrenzy.GetHashCode();
+        hashCode = hashCode * -1521134295 + dashForward.GetHashCode();
+        hashCode = hashCode * -1521134295 + dashBackward.GetHashCode();
+        return hashCode;
+    }
+
+    public States CurrentState;
 };
 
 [Serializable]
@@ -78,8 +112,6 @@ public struct VwGame : IGame
     public int Checksum => GetHashCode();
 
     public PlayerNetwork[] _players;
-
-    public static Rect _bounds = new Rect(0, 0, 640, 480);
 
     public void Serialize(BinaryWriter bw)
     {
@@ -134,13 +166,18 @@ public struct VwGame : IGame
      * Initialize our game state.
      */
 
-    public VwGame(int num_players)
+    public VwGame(PlayerStatsSO[] playerStats)
     {
         Framenumber = 0;
-        _players = new PlayerNetwork[num_players];
+        _players = new PlayerNetwork[playerStats.Length];
         for (int i = 0; i < _players.Length; i++)
         {
             _players[i] = new PlayerNetwork();
+            _players[i].CurrentState = new IdleStates();
+            _players[i].position = new Vector2(GameplayManager.Instance.GetSpawnPositions()[i], (float)DemonicsPhysics.GROUND_POINT);
+            _players[i].playerStats = playerStats[i];
+            _players[i].animation = "Idle";
+            _players[i].gravity = 0.018f;
         }
     }
 
@@ -272,23 +309,78 @@ public struct VwGame : IGame
     public void PlayerLogic(int index, bool skip, bool up, bool down, bool left, bool right, bool light, bool medium, bool heavy,
     bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy, bool dashForward, bool dashBackward)
     {
-        var player = _players[index];
-        _players[index].skip = skip;
-        _players[index].up = up;
-        _players[index].down = down;
-        _players[index].left = left;
-        _players[index].right = right;
-        _players[index].light = light;
-        _players[index].medium = medium;
-        _players[index].heavy = heavy;
-        _players[index].arcana = arcana;
-        _players[index].grab = grab;
-        _players[index].shadow = shadow;
-        _players[index].blueFrenzy = blueFrenzy;
-        _players[index].redFrenzy = redFrenzy;
-        _players[index].dashForward = dashForward;
-        _players[index].dashBackward = dashBackward;
+        // if (light)
+        // {
+        //     _players[index].dashFrames = 15;
+        //     _players[index].CurrentState.ToAttackState();
+        // }
+        if (up)
+        {
+            _players[index].direction = new Vector2(0, 1);
+        }
+        if (down)
+        {
+            _players[index].direction = new Vector2(0, -1);
+        }
+        if (right)
+        {
+            _players[index].direction = new Vector2(1, _players[index].direction.y);
+        }
+        if (left)
+        {
+            _players[index].direction = new Vector2(-1, _players[index].direction.y);
+        }
+        if (!left && !right)
+        {
+            _players[index].direction = new Vector2(0, _players[index].direction.y);
+        }
+        if (!up && !down)
+        {
+            _players[index].direction = new Vector2(_players[index].direction.x, 0);
+        }
+        if (dashForward)
+        {
+            _players[index].dashFrames = 15;
+            _players[index].direction = new Vector2(1, 0);
+            _players[index].CurrentState = new DashStates();
+            _players[index].CurrentState.Enter(_players[index]);
+            _players[index].animation = _players[index].CurrentState.Animation;
+        }
+        if (dashBackward)
+        {
+            _players[index].dashFrames = 15;
+            _players[index].direction = new Vector2(-1, 0);
+            _players[index].CurrentState = new DashStates();
+            _players[index].CurrentState.Enter(_players[index]);
+            _players[index].animation = _players[index].CurrentState.Animation;
+        }
+        _players[index].CurrentState.UpdateLogic(_players[index]);
+        if (_players[index].CurrentState.NextState != null && _players[index].CurrentState.NextState != _players[index].CurrentState)
+        {
+            _players[index].CurrentState = _players[index].CurrentState.NextState;
+            _players[index].CurrentState.Enter(_players[index]);
+            _players[index].animation = _players[index].CurrentState.Animation;
+            _players[index].velocity = _players[index].CurrentState.velocity;
+        }
+        _players[index].animationFrames = _players[index].CurrentState.AnimationFrames;
+        _players[index].velocity = new Vector2(_players[index].CurrentState.velocity.x, _players[index].velocity.y);
+        _players[index].velocity = new Vector2(_players[index].velocity.x, _players[index].velocity.y - _players[index].gravity);
+        _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
+        if ((DemonicsFloat)_players[index].position.y <= DemonicsPhysics.GROUND_POINT)
+        {
+            _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
+        }
+        if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
+        {
+            _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
+        }
+        if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
+        {
+            _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
+        }
+        _players[index].dashFrames--;
     }
+
     public void Update(long[] inputs, int disconnect_flags)
     {
         Framenumber++;
@@ -327,78 +419,75 @@ public struct VwGame : IGame
     public long ReadInputs(int id)
     {
         long input = 0;
-        if (id == 0)
+        if (Input.anyKeyDown)
         {
-            if (Input.anyKeyDown)
-            {
-                input |= NetworkInput.SKIP_BYTE;
-            }
-            if (NetworkInput.UP_INPUT)
-            {
-                input |= NetworkInput.UP_BYTE;
-            }
-            if (NetworkInput.DOWN_INPUT)
-            {
-                input |= NetworkInput.DOWN_BYTE;
-            }
-            if (NetworkInput.LEFT_INPUT)
-            {
-                input |= NetworkInput.LEFT_BYTE;
-            }
-            if (NetworkInput.RIGHT_INPUT)
-            {
-                input |= NetworkInput.RIGHT_BYTE;
-            }
-            if (NetworkInput.LIGHT_INPUT)
-            {
-                input |= NetworkInput.LIGHT_BYTE;
-                NetworkInput.LIGHT_INPUT = false;
-            }
-            if (NetworkInput.MEDIUM_INPUT)
-            {
-                input |= NetworkInput.MEDIUM_BYTE;
-                NetworkInput.MEDIUM_INPUT = false;
-            }
-            if (NetworkInput.HEAVY_INPUT)
-            {
-                input |= NetworkInput.HEAVY_BYTE;
-                NetworkInput.HEAVY_INPUT = false;
-            }
-            if (NetworkInput.ARCANA_INPUT)
-            {
-                input |= NetworkInput.ARCANA_BYTE;
-                NetworkInput.ARCANA_INPUT = false;
-            }
-            if (NetworkInput.SHADOW_INPUT)
-            {
-                input |= NetworkInput.SHADOW_BYTE;
-                NetworkInput.SHADOW_INPUT = false;
-            }
-            if (NetworkInput.GRAB_INPUT)
-            {
-                input |= NetworkInput.GRAB_BYTE;
-                NetworkInput.GRAB_INPUT = false;
-            }
-            if (NetworkInput.BLUE_FRENZY_INPUT)
-            {
-                input |= NetworkInput.BLUE_FRENZY_BYTE;
-                NetworkInput.BLUE_FRENZY_INPUT = false;
-            }
-            if (NetworkInput.RED_FRENZY_INPUT)
-            {
-                input |= NetworkInput.RED_FRENZY_BYTE;
-                NetworkInput.RED_FRENZY_INPUT = false;
-            }
-            if (NetworkInput.DASH_FORWARD_INPUT)
-            {
-                input |= NetworkInput.DASH_FORWARD_BYTE;
-                NetworkInput.DASH_FORWARD_INPUT = false;
-            }
-            if (NetworkInput.DASH_BACKWARD_INPUT)
-            {
-                input |= NetworkInput.DASH_BACKWARD_BYTE;
-                NetworkInput.DASH_BACKWARD_INPUT = false;
-            }
+            input |= NetworkInput.SKIP_BYTE;
+        }
+        if (NetworkInput.UP_INPUT)
+        {
+            input |= NetworkInput.UP_BYTE;
+        }
+        if (NetworkInput.DOWN_INPUT)
+        {
+            input |= NetworkInput.DOWN_BYTE;
+        }
+        if (NetworkInput.LEFT_INPUT)
+        {
+            input |= NetworkInput.LEFT_BYTE;
+        }
+        if (NetworkInput.RIGHT_INPUT)
+        {
+            input |= NetworkInput.RIGHT_BYTE;
+        }
+        if (NetworkInput.LIGHT_INPUT)
+        {
+            input |= NetworkInput.LIGHT_BYTE;
+            NetworkInput.LIGHT_INPUT = false;
+        }
+        if (NetworkInput.MEDIUM_INPUT)
+        {
+            input |= NetworkInput.MEDIUM_BYTE;
+            NetworkInput.MEDIUM_INPUT = false;
+        }
+        if (NetworkInput.HEAVY_INPUT)
+        {
+            input |= NetworkInput.HEAVY_BYTE;
+            NetworkInput.HEAVY_INPUT = false;
+        }
+        if (NetworkInput.ARCANA_INPUT)
+        {
+            input |= NetworkInput.ARCANA_BYTE;
+            NetworkInput.ARCANA_INPUT = false;
+        }
+        if (NetworkInput.SHADOW_INPUT)
+        {
+            input |= NetworkInput.SHADOW_BYTE;
+            NetworkInput.SHADOW_INPUT = false;
+        }
+        if (NetworkInput.GRAB_INPUT)
+        {
+            input |= NetworkInput.GRAB_BYTE;
+            NetworkInput.GRAB_INPUT = false;
+        }
+        if (NetworkInput.BLUE_FRENZY_INPUT)
+        {
+            input |= NetworkInput.BLUE_FRENZY_BYTE;
+            NetworkInput.BLUE_FRENZY_INPUT = false;
+        }
+        if (NetworkInput.RED_FRENZY_INPUT)
+        {
+            input |= NetworkInput.RED_FRENZY_BYTE;
+            NetworkInput.RED_FRENZY_INPUT = false;
+        }
+        if (NetworkInput.DASH_FORWARD_INPUT)
+        {
+            input |= NetworkInput.DASH_FORWARD_BYTE;
+            NetworkInput.DASH_FORWARD_INPUT = false;
+        }
+        if (NetworkInput.DASH_BACKWARD_INPUT)
+        {
+            input |= NetworkInput.DASH_BACKWARD_BYTE;
+            NetworkInput.DASH_BACKWARD_INPUT = false;
         }
         return input;
     }
@@ -425,5 +514,297 @@ public struct VwGame : IGame
     public void LogInfo(string filename)
     {
         //Log
+    }
+}
+public class States
+{
+    public States NextState;
+    public string Animation;
+    public int AnimationFrames;
+    public Vector2 velocity;
+    public virtual void Enter(PlayerNetwork player) { }
+    public virtual void UpdateLogic(PlayerNetwork player) { }
+    public virtual void Exit() { }
+    public virtual Vector2 GetVelocity() { return Vector2.zero; }
+    public virtual bool ToAttackState() { return false; }
+
+};
+public class IdleStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "Idle";
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        velocity = Vector2.zero;
+        ToWalkState(player.direction.x);
+        ToJumpState(player.direction.y);
+        ToCrouchState(player.direction.y);
+    }
+
+    private void ToWalkState(float directionX)
+    {
+        if (directionX != 0)
+        {
+            NextState = new WalkStates();
+        }
+    }
+
+    private void ToJumpState(float directionY)
+    {
+        if (directionY > 0)
+        {
+            NextState = new JumpStates();
+        }
+    }
+
+    private void ToCrouchState(float directionY)
+    {
+        if (directionY < 0)
+        {
+            NextState = new CrouchStates();
+        }
+    }
+    public override bool ToAttackState()
+    {
+        NextState = new AttackStates();
+        return true;
+    }
+}
+public class CrouchStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "Crouch";
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        velocity = Vector2.zero;
+        ToIdleState(player.direction.y);
+    }
+
+    private void ToIdleState(float directionY)
+    {
+        if (directionY >= 0)
+        {
+            NextState = new IdleStates();
+        }
+    }
+}
+public class WalkStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "Walk";
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedWalk, 0);
+        ToIdleState(player.direction.x);
+        ToJumpForwardState(player.direction.y);
+        ToCrouchState(player.direction.y);
+    }
+
+    private void ToIdleState(float directionX)
+    {
+        if (directionX == 0)
+        {
+            NextState = new IdleStates();
+        }
+    }
+
+    private void ToJumpForwardState(float directionY)
+    {
+        if (directionY > 0)
+        {
+            NextState = new JumpForwardStates();
+        }
+    }
+
+    private void ToCrouchState(float directionY)
+    {
+        if (directionY < 0)
+        {
+            NextState = new CrouchStates();
+        }
+    }
+}
+
+public class DashStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "Dash";
+        velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
+        NextState = null;
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        Dash(player);
+    }
+
+    private void Dash(PlayerNetwork player)
+    {
+        if (player.dashFrames == 0)
+        {
+            if (player.direction.x != 0)
+            {
+                NextState = new RunStates();
+            }
+            else
+            {
+                NextState = new IdleStates();
+            }
+        }
+    }
+}
+
+public class DashAirState : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "Dash";
+        velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
+        NextState = null;
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        Dash(player);
+    }
+
+    private void Dash(PlayerNetwork player)
+    {
+        if (player.dashFrames == 0)
+        {
+            if (player.direction.x != 0)
+            {
+                NextState = new RunStates();
+            }
+            else
+            {
+                NextState = new IdleStates();
+            }
+        }
+    }
+}
+
+public class RunStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "Run";
+    }
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedRun, 0);
+        ToIdleState(player.direction.x);
+    }
+
+    private void ToIdleState(float directionX)
+    {
+        if (directionX == 0)
+        {
+            NextState = new IdleStates();
+        }
+    }
+}
+
+public class JumpStates : States
+{
+
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "Jump";
+        velocity = new Vector2(player.velocity.x, (float)player.playerStats.JumpForce);
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        ToIdleState(player.position.y);
+        //ToJumpState(player.direction.y);
+    }
+    public override Vector2 GetVelocity() { return velocity; }
+
+    private void ToIdleState(float positionY)
+    {
+        if ((DemonicsFloat)positionY == DemonicsPhysics.GROUND_POINT)
+        {
+            NextState = new IdleStates();
+        }
+    }
+    private void ToJumpState(float directionY)
+    {
+        if (directionY > 0)
+        {
+            NextState = new JumpStates();
+        }
+    }
+}
+
+public class JumpForwardStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "JumpForward";
+        velocity = new Vector2(0.14f * player.direction.x, (float)player.playerStats.JumpForce);
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        ToIdleState(player.position.y);
+    }
+
+    private void ToIdleState(float positionY)
+    {
+        if ((DemonicsFloat)positionY == DemonicsPhysics.GROUND_POINT)
+        {
+            NextState = new IdleStates();
+        }
+    }
+}
+public class AttackStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "5M";
+        AnimationFrames = 0;
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        ToIdleState(player);
+        AnimationFrames++;
+    }
+
+    private void ToIdleState(PlayerNetwork player)
+    {
+        if (AnimationFrames >= 50)
+        {
+            NextState = new IdleStates();
+        }
     }
 }

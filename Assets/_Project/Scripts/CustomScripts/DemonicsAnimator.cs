@@ -27,7 +27,7 @@ public class DemonicsAnimator : MonoBehaviour
 
     public void SetAnimation(string name)
     {
-        if (_animation != null)
+        if (_animation != null && _animation.GetGroup(_group).celName != name)
         {
             _frame = 0;
             _cel = 0;
@@ -36,6 +36,22 @@ public class DemonicsAnimator : MonoBehaviour
             CheckAnimationBoxes();
             CheckEvents();
             _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
+        }
+    }
+    public void SetAnimation(string name, int frame)
+    {
+        if (_animation != null)
+        {
+            _frame = 0;
+            _cel = frame;
+            _group = _animation.GetGroupId(name);
+            _isPaused = false;
+            CheckAnimationBoxes();
+            CheckEvents();
+            if (_cel < 3)
+            {
+                _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
+            }
         }
     }
 

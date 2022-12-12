@@ -63,7 +63,7 @@ public class DemonicsPhysics : MonoBehaviour
         if (!Collision())
         {
             // Set physical Position
-            SetPositionWithRender(new DemonicsVector2(Position.x + Velocity.x, Position.y + Velocity.y));
+            //SetPositionWithRender(new DemonicsVector2(Position.x + Velocity.x, Position.y + Velocity.y));
         }
 
     }
@@ -86,7 +86,7 @@ public class DemonicsPhysics : MonoBehaviour
     public void SetPositionWithRender(DemonicsVector2 position)
     {
         Position = position;
-        Bounds();
+        //Bounds();
         transform.position = new Vector2((float)Position.x, (float)Position.y);
     }
 

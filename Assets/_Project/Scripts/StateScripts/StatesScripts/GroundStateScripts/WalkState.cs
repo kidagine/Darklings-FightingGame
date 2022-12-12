@@ -12,7 +12,7 @@ public class WalkState : GroundParentState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        _physics.Velocity = new DemonicsVector2((DemonicsFloat)_baseController.InputDirection.x * (DemonicsFloat)_playerMovement.MovementSpeed, (DemonicsFloat)0);
+        //_physics.Velocity = new DemonicsVector2((DemonicsFloat)_baseController.InputDirection.x * (DemonicsFloat)_playerMovement.MovementSpeed, (DemonicsFloat)0);
         ToIdleState();
         ToCrouchState();
         ToJumpForwardState();

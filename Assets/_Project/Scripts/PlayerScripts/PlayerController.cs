@@ -30,50 +30,22 @@ public class PlayerController : BaseController
             if (input.x == 1)
             {
                 _previousInput = input;
-                if (NetworkInput.IS_LOCAL)
-                {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
-                }
-                else
-                {
-                    NetworkInput.RIGHT_INPUT = true;
-                }
+                NetworkInput.RIGHT_INPUT = true;
             }
             if (input.x == -1)
             {
                 _previousInput = input;
-                if (NetworkInput.IS_LOCAL)
-                {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
-                }
-                else
-                {
-                    NetworkInput.LEFT_INPUT = true;
-                }
+                NetworkInput.LEFT_INPUT = true;
             }
             if (input.y == 1)
             {
                 _previousInput = input;
-                if (NetworkInput.IS_LOCAL)
-                {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
-                }
-                else
-                {
-                    NetworkInput.UP_INPUT = true;
-                }
+                NetworkInput.UP_INPUT = true;
             }
             if (input.y == -1)
             {
                 _previousInput = input;
-                if (NetworkInput.IS_LOCAL)
-                {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-                }
-                else
-                {
-                    NetworkInput.DOWN_INPUT = true;
-                }
+                NetworkInput.DOWN_INPUT = true;
             }
         }
         if (input == Vector2Int.zero)
@@ -83,27 +55,13 @@ public class PlayerController : BaseController
 
         if (input.x == 0)
         {
-            if (NetworkInput.IS_LOCAL)
-            {
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
-            }
-            else
-            {
-                NetworkInput.RIGHT_INPUT = false;
-                NetworkInput.LEFT_INPUT = false;
-            }
+            NetworkInput.RIGHT_INPUT = false;
+            NetworkInput.LEFT_INPUT = false;
         }
         if (input.y == 0)
         {
-            if (NetworkInput.IS_LOCAL)
-            {
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
-            }
-            else
-            {
-                NetworkInput.UP_INPUT = false;
-                NetworkInput.DOWN_INPUT = false;
-            }
+            NetworkInput.UP_INPUT = false;
+            NetworkInput.DOWN_INPUT = false;
         }
     }
 
@@ -154,14 +112,7 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            if (NetworkInput.IS_LOCAL)
-            {
-                _inputBuffer.AddInputBufferItem(InputEnum.Light);
-            }
-            else
-            {
-                NetworkInput.LIGHT_INPUT = true;
-            }
+            NetworkInput.LIGHT_INPUT = true;
         }
     }
 
@@ -283,14 +234,7 @@ public class PlayerController : BaseController
                 int timeSinceLastPress = DemonicsWorld.Frame - _dashForwardLastInputTime;
                 if (timeSinceLastPress <= _dashTime)
                 {
-                    if (NetworkInput.IS_LOCAL)
-                    {
-                        _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
-                    }
-                    else
-                    {
-                        NetworkInput.DASH_FORWARD_INPUT = true;
-                    }
+                    NetworkInput.DASH_FORWARD_INPUT = true;
                     _dashForwardPressed = false;
                 }
                 _dashForwardLastInputTime = DemonicsWorld.Frame;
@@ -312,14 +256,7 @@ public class PlayerController : BaseController
                 int timeSinceLastPress = DemonicsWorld.Frame - _dashBackLastInputTime;
                 if (timeSinceLastPress <= _dashTime)
                 {
-                    if (NetworkInput.IS_LOCAL)
-                    {
-                        _inputBuffer.AddInputBufferItem(InputEnum.BackDash);
-                    }
-                    else
-                    {
-                        NetworkInput.DASH_BACKWARD_INPUT = true;
-                    }
+                    NetworkInput.DASH_BACKWARD_INPUT = true;
                     _dashBackPressed = false;
                 }
                 _dashBackLastInputTime = DemonicsWorld.Frame;

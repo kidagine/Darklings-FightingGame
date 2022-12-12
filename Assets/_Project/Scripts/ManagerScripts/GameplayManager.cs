@@ -175,6 +175,22 @@ public class GameplayManager : MonoBehaviour
     }
 
 
+    public PlayerStatsSO[] GetPlayerStats()
+    {
+        List<PlayerStatsSO> playerStats = new List<PlayerStatsSO>();
+        playerStats.Add(_playerStats[SceneSettings.PlayerOne]);
+        playerStats.Add(_playerStats[SceneSettings.PlayerTwo]);
+        return playerStats.ToArray();
+    }
+
+    public float[] GetSpawnPositions()
+    {
+        List<float> spawnPositions = new List<float>();
+        spawnPositions.Add(_spawnPositionsX[0]);
+        spawnPositions.Add(_spawnPositionsX[1]);
+        return spawnPositions.ToArray();
+    }
+
     public void InitializePlayers(GameObject playerOneObject, GameObject playerTwoObject)
     {
         playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];

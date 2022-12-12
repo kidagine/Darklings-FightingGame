@@ -16,7 +16,6 @@ public class State : MonoBehaviour
     protected InputBuffer _inputBuffer;
     protected Audio _audio;
 
-
     public void Initialize(StateMachine stateMachine, DemonicsPhysics physics, PlayerAnimator playerAnimator, Player player, PlayerMovement playerMovement,
         PlayerUI playerUI, PlayerComboSystem playerComboSystem, InputBuffer inputBuffer, Audio audio)
     {
