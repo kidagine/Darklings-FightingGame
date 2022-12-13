@@ -14,6 +14,7 @@ public struct PlayerNetwork
     public Vector2 direction;
     public string animation;
     public int animationFrames;
+    public string sound;
     public float speed;
     public float gravity;
     public float jump;
@@ -39,6 +40,7 @@ public struct PlayerNetwork
         bw.Write(direction.y);
         bw.Write(animation);
         bw.Write(animationFrames);
+        bw.Write(sound);
         bw.Write(speed);
         bw.Write(gravity);
         bw.Write(jump);
@@ -66,6 +68,7 @@ public struct PlayerNetwork
         direction.y = br.ReadSingle();
         animation = br.ReadString();
         animationFrames = br.ReadInt32();
+        sound = br.ReadString();
         speed = br.ReadSingle();
         gravity = br.ReadSingle();
         jump = br.ReadSingle();
@@ -89,6 +92,7 @@ public struct PlayerNetwork
         hashCode = hashCode * -1521134295 + position.GetHashCode();
         hashCode = hashCode * -1521134295 + start.GetHashCode();
         hashCode = hashCode * -1521134295 + animation.GetHashCode();
+        hashCode = hashCode * -1521134295 + sound.GetHashCode();
         hashCode = hashCode * -1521134295 + skip.GetHashCode();
         hashCode = hashCode * -1521134295 + up.GetHashCode();
         hashCode = hashCode * -1521134295 + down.GetHashCode();
@@ -108,7 +112,7 @@ public struct PlayerNetwork
 public struct VwGame : IGame
 {
     public int Framenumber { get; private set; }
-
+    public int NextFramenumber { get; private set; }
     public int Checksum => GetHashCode();
 
     public PlayerNetwork[] _players;
@@ -116,6 +120,7 @@ public struct VwGame : IGame
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(Framenumber);
+        bw.Write(NextFramenumber);
         bw.Write(_players.Length);
         for (int i = 0; i < _players.Length; ++i)
         {
@@ -126,6 +131,7 @@ public struct VwGame : IGame
     public void Deserialize(BinaryReader br)
     {
         Framenumber = br.ReadInt32();
+        NextFramenumber = br.ReadInt32();
         int length = br.ReadInt32();
         if (length != _players.Length)
         {
@@ -169,6 +175,7 @@ public struct VwGame : IGame
     public VwGame(PlayerStatsSO[] playerStats)
     {
         Framenumber = 0;
+        NextFramenumber = 1;
         _players = new PlayerNetwork[playerStats.Length];
         for (int i = 0; i < _players.Length; i++)
         {
@@ -177,6 +184,7 @@ public struct VwGame : IGame
             _players[i].position = new Vector2(GameplayManager.Instance.GetSpawnPositions()[i], (float)DemonicsPhysics.GROUND_POINT);
             _players[i].playerStats = playerStats[i];
             _players[i].animation = "Idle";
+            _players[i].sound = "";
             _players[i].gravity = 0.018f;
         }
     }
@@ -309,11 +317,9 @@ public struct VwGame : IGame
     public void PlayerLogic(int index, bool skip, bool up, bool down, bool left, bool right, bool light, bool medium, bool heavy,
     bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy, bool dashForward, bool dashBackward)
     {
-        // if (light)
-        // {
-        //     _players[index].dashFrames = 15;
-        //     _players[index].CurrentState.ToAttackState();
-        // }
+        if (light)
+        {
+        }
         if (up)
         {
             _players[index].direction = new Vector2(0, 1);
@@ -340,19 +346,32 @@ public struct VwGame : IGame
         }
         if (dashForward)
         {
-            _players[index].dashFrames = 15;
-            _players[index].direction = new Vector2(1, 0);
-            _players[index].CurrentState = new DashStates();
-            _players[index].CurrentState.Enter(_players[index]);
-            _players[index].animation = _players[index].CurrentState.Animation;
+            if (_players[index].CurrentState.ToDashState())
+            {
+                _players[index].dashFrames = 15;
+                _players[index].direction = new Vector2(1, 0);
+                _players[index].CurrentState = _players[index].CurrentState.NextState;
+                _players[index].CurrentState.Enter(_players[index]);
+                _players[index].gravity = _players[index].CurrentState.Gravity;
+                _players[index].animation = _players[index].CurrentState.Animation;
+                _players[index].velocity = _players[index].CurrentState.velocity;
+                _players[index].sound = _players[index].CurrentState.Sound;
+                NextFramenumber = Framenumber + 1;
+            }
         }
         if (dashBackward)
         {
-            _players[index].dashFrames = 15;
-            _players[index].direction = new Vector2(-1, 0);
-            _players[index].CurrentState = new DashStates();
-            _players[index].CurrentState.Enter(_players[index]);
-            _players[index].animation = _players[index].CurrentState.Animation;
+            if (_players[index].CurrentState.ToDashState())
+            {
+                _players[index].dashFrames = 15;
+                _players[index].direction = new Vector2(-1, 0);
+                _players[index].CurrentState = _players[index].CurrentState.NextState;
+                _players[index].CurrentState.Enter(_players[index]);
+                _players[index].gravity = _players[index].CurrentState.Gravity;
+                _players[index].animation = _players[index].CurrentState.Animation;
+                _players[index].sound = _players[index].CurrentState.Sound;
+                NextFramenumber = Framenumber + 1;
+            }
         }
         _players[index].CurrentState.UpdateLogic(_players[index]);
         if (_players[index].CurrentState.NextState != null && _players[index].CurrentState.NextState != _players[index].CurrentState)
@@ -361,10 +380,17 @@ public struct VwGame : IGame
             _players[index].CurrentState.Enter(_players[index]);
             _players[index].animation = _players[index].CurrentState.Animation;
             _players[index].velocity = _players[index].CurrentState.velocity;
+            _players[index].gravity = _players[index].CurrentState.Gravity;
+            if (_players[index].CurrentState.Sound != "")
+            {
+                _players[index].sound = _players[index].CurrentState.Sound;
+                NextFramenumber = Framenumber + 1;
+            }
         }
         _players[index].animationFrames = _players[index].CurrentState.AnimationFrames;
         _players[index].velocity = new Vector2(_players[index].CurrentState.velocity.x, _players[index].velocity.y);
         _players[index].velocity = new Vector2(_players[index].velocity.x, _players[index].velocity.y - _players[index].gravity);
+
         _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
         if ((DemonicsFloat)_players[index].position.y <= DemonicsPhysics.GROUND_POINT)
         {
@@ -379,6 +405,29 @@ public struct VwGame : IGame
             _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
         }
         _players[index].dashFrames--;
+        NextFrameReset(index);
+    }
+
+    private void NextFrameReset(int index)
+    {
+        if (NextFramenumber <= Framenumber)
+        {
+            if (!string.IsNullOrEmpty(_players[index].sound))
+            {
+                if (index == 0)
+                {
+                    GameplayManager.Instance.PlayerOne.Play(_players[index].sound);
+                    _players[index].sound = "";
+                    NextFramenumber = 0;
+                }
+                else
+                {
+                    GameplayManager.Instance.PlayerTwo.Play(_players[index].sound);
+                    _players[index].sound = "";
+                    NextFramenumber = 0;
+                }
+            }
+        }
     }
 
     public void Update(long[] inputs, int disconnect_flags)
@@ -515,19 +564,116 @@ public struct VwGame : IGame
     {
         //Log
     }
+
+    private bool Collision(DemonicsVector2 position, DemonicsVector2 velocity, DemonicsVector2 otherPosition, DemonicsVector2 otherVelocity)
+    {
+
+        if (position.y > otherPosition.y)
+        {
+            if (velocity.y < otherVelocity.y)
+            {
+                DemonicsFloat difference = DemonicsFloat.Abs(position.x - otherPosition.x);
+                DemonicsFloat pushDistance = ((DemonicsFloat)1.35 - difference) / ((DemonicsFloat)2);
+                if (position.x > otherPosition.x)
+                {
+                    if (position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
+                    {
+                        otherPosition = new DemonicsVector2(otherPosition.x - pushDistance, otherPosition.y);
+                    }
+                    else
+                    {
+                        position = new DemonicsVector2(position.x + pushDistance, position.y);
+                    }
+                }
+                else if (position.x <= otherPosition.x)
+                {
+                    if (otherPosition.x <= DemonicsPhysics.WALL_LEFT_POINT)
+                    {
+                        position = new DemonicsVector2(otherPosition.x + pushDistance, position.y);
+                    }
+                    else if (position.x <= DemonicsPhysics.WALL_LEFT_POINT)
+                    {
+                        otherPosition = new DemonicsVector2(otherPosition.x + pushDistance, otherPosition.y);
+                    }
+                    else
+                    {
+                        position = new DemonicsVector2(position.x - pushDistance, position.y);
+                    }
+                }
+            }
+        }
+        DemonicsVector2 main = velocity;
+        DemonicsVector2 second = otherVelocity;
+        if (otherPosition.x >= DemonicsPhysics.WALL_RIGHT_POINT && velocity.x >= (DemonicsFloat)0 || otherPosition.x <= DemonicsPhysics.WALL_LEFT_POINT && velocity.x <= (DemonicsFloat)0)
+        {
+            main = new DemonicsVector2((DemonicsFloat)0, velocity.y);
+            second = new DemonicsVector2((DemonicsFloat)0, otherVelocity.y);
+            //OtherPhysics.SetPositionWithRender(new DemonicsVector2(otherPosition.x + second.x, otherPosition.y));
+            //SetPositionWithRender(new DemonicsVector2(position.x + main.x, position.y + main.y));
+            return true;
+        }
+        if (DemonicsFloat.Abs(velocity.x) > DemonicsFloat.Abs(otherVelocity.x))
+        {
+            DemonicsFloat totalVelocity;
+            if (velocity.x > (DemonicsFloat)0 && otherVelocity.x < (DemonicsFloat)0)
+            {
+                totalVelocity = DemonicsFloat.Abs(velocity.x) - DemonicsFloat.Abs(otherVelocity.x);
+            }
+            else
+            {
+                totalVelocity = DemonicsFloat.Abs(velocity.x);
+            }
+            if (position.x < otherPosition.x && velocity.x > (DemonicsFloat)0)
+            {
+                main = new DemonicsVector2(totalVelocity, velocity.y);
+                second = new DemonicsVector2(totalVelocity, otherVelocity.y);
+                //OtherPhysics.SetPositionWithRender(new DemonicsVector2(otherPosition.x + second.x, otherPosition.y + second.y));
+                //SetPositionWithRender(new DemonicsVector2(position.x + main.x, position.y + main.y));
+                return true;
+            }
+            else if (position.x > otherPosition.x && velocity.x < (DemonicsFloat)0)
+            {
+                main = new DemonicsVector2(-totalVelocity, velocity.y);
+                second = new DemonicsVector2(-totalVelocity, otherVelocity.y);
+                //OtherPhysics.SetPositionWithRender(new DemonicsVector2(otherPosition.x + second.x, otherPosition.y + second.y));
+                //SetPositionWithRender(new DemonicsVector2(position.x + main.x, position.y + main.y));
+                return true;
+            }
+            return false;
+        }
+        else if (DemonicsFloat.Abs(velocity.x) == DemonicsFloat.Abs(otherVelocity.x))
+        {
+            if (position.x < otherPosition.x && velocity.x > (DemonicsFloat)0 || position.x > otherPosition.x && velocity.x < (DemonicsFloat)0)
+            {
+                main = new DemonicsVector2((DemonicsFloat)0, velocity.y);
+                second = new DemonicsVector2((DemonicsFloat)0, otherVelocity.y);
+                //OtherPhysics.SetPositionWithRender(new DemonicsVector2(otherPosition.x + second.x, otherPosition.y + second.y));
+                position = new DemonicsVector2(position.x + main.x, position.y + main.y);
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
 }
 public class States
 {
     public States NextState;
     public string Animation;
     public int AnimationFrames;
+    public float Gravity;
+    public string Sound;
     public Vector2 velocity;
-    public virtual void Enter(PlayerNetwork player) { }
+    public virtual void Enter(PlayerNetwork player)
+    {
+        Sound = "";
+        Gravity = 0.018f;
+    }
     public virtual void UpdateLogic(PlayerNetwork player) { }
     public virtual void Exit() { }
     public virtual Vector2 GetVelocity() { return Vector2.zero; }
     public virtual bool ToAttackState() { return false; }
-
+    public virtual bool ToDashState() { return false; }
 };
 public class IdleStates : States
 {
@@ -543,6 +689,7 @@ public class IdleStates : States
         velocity = Vector2.zero;
         ToWalkState(player.direction.x);
         ToJumpState(player.direction.y);
+        ToJumpForwardState(player);
         ToCrouchState(player.direction.y);
     }
 
@@ -561,7 +708,13 @@ public class IdleStates : States
             NextState = new JumpStates();
         }
     }
-
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.direction.y > 0 && player.direction.x != 0)
+        {
+            NextState = new JumpForwardStates();
+        }
+    }
     private void ToCrouchState(float directionY)
     {
         if (directionY < 0)
@@ -572,6 +725,11 @@ public class IdleStates : States
     public override bool ToAttackState()
     {
         NextState = new AttackStates();
+        return true;
+    }
+    public override bool ToDashState()
+    {
+        NextState = new DashStates();
         return true;
     }
 }
@@ -646,6 +804,7 @@ public class DashStates : States
     {
         base.Enter(player);
         Animation = "Dash";
+        Sound = "Dash";
         velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
         NextState = null;
     }
@@ -676,9 +835,10 @@ public class DashAirState : States
 {
     public override void Enter(PlayerNetwork player)
     {
-        base.Enter(player);
         Animation = "Dash";
+        Sound = "Dash";
         velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
+        Gravity = 0;
         NextState = null;
     }
 
@@ -729,11 +889,11 @@ public class RunStates : States
 
 public class JumpStates : States
 {
-
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
         Animation = "Jump";
+        Sound = "Jump";
         velocity = new Vector2(player.velocity.x, (float)player.playerStats.JumpForce);
     }
 
@@ -742,6 +902,7 @@ public class JumpStates : States
         base.UpdateLogic(player);
         ToIdleState(player.position.y);
         //ToJumpState(player.direction.y);
+        ToFallState(player.velocity.y);
     }
     public override Vector2 GetVelocity() { return velocity; }
 
@@ -759,6 +920,19 @@ public class JumpStates : States
             NextState = new JumpStates();
         }
     }
+    private void ToFallState(float velocityY)
+    {
+        if (velocityY <= 0)
+        {
+            NextState = new FallStates();
+        }
+    }
+
+    public override bool ToDashState()
+    {
+        NextState = new DashAirState();
+        return true;
+    }
 }
 
 public class JumpForwardStates : States
@@ -767,6 +941,7 @@ public class JumpForwardStates : States
     {
         base.Enter(player);
         Animation = "JumpForward";
+        Sound = "Jump";
         velocity = new Vector2(0.14f * player.direction.x, (float)player.playerStats.JumpForce);
     }
 
@@ -780,6 +955,29 @@ public class JumpForwardStates : States
     {
         if ((DemonicsFloat)positionY == DemonicsPhysics.GROUND_POINT)
         {
+            NextState = new IdleStates();
+        }
+    }
+}
+public class FallStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "Jump";
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        ToIdleState(player);
+    }
+
+    private void ToIdleState(PlayerNetwork player)
+    {
+        if ((DemonicsFloat)player.position.y == DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+        {
+            Sound = "Jump";
             NextState = new IdleStates();
         }
     }

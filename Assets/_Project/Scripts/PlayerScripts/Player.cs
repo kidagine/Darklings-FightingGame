@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityGGPO;
-
+using Demonics.Sounds;
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
     [SerializeField] private PlayerStateManager _playerStateManager = default;
@@ -15,6 +15,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [SerializeField] protected Transform _effectsParent = default;
     [SerializeField] private Transform _cameraPoint = default;
     [SerializeField] private Transform _keepFlip = default;
+    [SerializeField] private Audio _audio = default;
     [SerializeField] private GameObject[] _playerIcons = default;
     protected PlayerUI _playerUI;
     private PlayerMovement _playerMovement;
@@ -609,82 +610,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             _playerUI.ClosePauseHold();
         }
     }
+    public void Play(string sound)
+    {
+        if (!string.IsNullOrEmpty(sound))
+        {
+            Debug.Log("snd:" + sound);
+            _audio.Sound(sound).Play();
+        }
+    }
     public string ConnectionStatus { get; private set; }
     public int ConnectionProgress { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
         CurrentAttack = _playerComboSystem.GetComboAttack(InputEnum.Medium, false, false);
-        //_playerMovement.Physics.Velocity = new DemonicsVector2((DemonicsFloat)playerGs.velocity.x, (DemonicsFloat)playerGs.velocity.y);
+
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
         _playerAnimator.SetAnimation(playerGs.animation);
-        // if (playerGs.skip)
-        // {
-        //     GameplayManager.Instance.SkipIntro();
-        // }
-        // if (playerGs.up)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
-        // }
-        // if (playerGs.down)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-        // }
-        // if (playerGs.left)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
-        // }
-        // if (playerGs.right)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
-        // }
-        // if (!playerGs.left && !playerGs.right && _controller.ActiveController.InputDirection.x != 0)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
-        // }
-        // if (!playerGs.up && !playerGs.down && _controller.ActiveController.InputDirection.y != 0)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
-        // }
-        // if (playerGs.light)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Light);
-        // }
-        // if (playerGs.medium)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Medium);
-        // }
-        // if (playerGs.heavy)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
-        // }
-        // if (playerGs.arcana)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Special);
-        // }
-        // if (playerGs.grab)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Throw);
-        // }
-        // if (playerGs.shadow)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Assist);
-        // }
-        // if (playerGs.blueFrenzy)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.Parry);
-        // }
-        // if (playerGs.redFrenzy)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
-        // }
-        // if (playerGs.dashForward)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
-        // }
-        // if (playerGs.dashBackward)
-        // {
-        //     _inputBuffer.AddInputBufferItem(InputEnum.BackDash);
-        // }
         switch (info.state)
         {
             case PlayerConnectState.Connecting:

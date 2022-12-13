@@ -452,16 +452,6 @@ public class GameplayManager : MonoBehaviour
                 }
             }
         }
-        // if (!SceneSettings.IsOnline)
-        // {
-        //     if (IsDialogueRunning && !SceneSettings.ReplayMode)
-        //     {
-        //         if (Input.anyKeyDown)
-        //         {
-        //             SkipIntro();
-        //         }
-        //     }
-        // }
         RunHitStop();
         RunReady();
         RunRoundOver();
