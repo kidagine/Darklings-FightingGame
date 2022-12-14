@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Demonics.UI;
 using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;

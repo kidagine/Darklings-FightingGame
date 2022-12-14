@@ -1,7 +1,5 @@
 using Cinemachine;
 using Demonics.Manager;
-using Demonics.Sounds;
-using Demonics.UI;
 using SharedGame;
 using System.Collections;
 using System.Collections.Generic;

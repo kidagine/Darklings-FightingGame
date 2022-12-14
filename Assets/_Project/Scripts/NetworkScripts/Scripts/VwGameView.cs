@@ -1,8 +1,7 @@
-﻿using Demonics.Manager;
+using Demonics.Manager;
 using SharedGame;
 using System;
 using UnityEngine;
-
 
 public class VwGameView : MonoBehaviour, IGameView
 {
@@ -10,7 +9,7 @@ public class VwGameView : MonoBehaviour, IGameView
     private Player[] playerViews = Array.Empty<Player>();
     private GameManager gameManager => GameManager.Instance;
 
-    private void ResetView(VwGame gs)
+    private void SetGame(VwGame gs)
     {
         var playersGss = gs._players;
         playerViews = new Player[playersGss.Length];
@@ -27,7 +26,7 @@ public class VwGameView : MonoBehaviour, IGameView
         var playersGss = game._players;
         if (playerViews.Length != playersGss.Length)
         {
-            ResetView(game);
+            SetGame(game);
         }
         for (int i = 0; i < playersGss.Length; ++i)
         {
@@ -37,7 +36,10 @@ public class VwGameView : MonoBehaviour, IGameView
     }
     private void UpdateEffects(JumpEffectNetwork jumpEffect)
     {
-        //ObjectPoolingManager.Instance.SetObject("jumpEffect", jumpEffect.active);
+        GameObject effect = ObjectPoolingManager.Instance.GetObject("Jump_effect");
+        effect.SetActive(jumpEffect.active);
+        effect.transform.position = jumpEffect.position;
+        effect.GetComponent<DemonicsAnimator>().SetAnimation("Idle", jumpEffect.animationFrames);
     }
     private void Update()
     {

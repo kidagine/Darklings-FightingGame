@@ -4,7 +4,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityGGPO;
-using Demonics.Sounds;
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
     [SerializeField] private PlayerStateManager _playerStateManager = default;
@@ -625,14 +624,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        CurrentAttack = _playerComboSystem.GetComboAttack(InputEnum.Medium, false, false);
-
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
-        if (playerGs.jumpEffect.active)
-        {
-            Debug.Log("A");
-        }
+        NetworkDebug(info);
+    }
+
+    private void NetworkDebug(PlayerConnectionInfo info)
+    {
+#if UNITY_EDITOR
         switch (info.state)
         {
             case PlayerConnectState.Connecting:
@@ -650,5 +649,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 ConnectionProgress = (Utils.TimeGetTime() - info.disconnect_start) * 100 / info.disconnect_timeout;
                 break;
         }
+#endif
     }
 }

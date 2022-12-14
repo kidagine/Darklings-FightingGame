@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Demonics.UI;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;

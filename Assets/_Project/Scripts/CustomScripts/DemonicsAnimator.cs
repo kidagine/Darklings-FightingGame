@@ -25,6 +25,17 @@ public class DemonicsAnimator : MonoBehaviour
         SetAnimation("Idle");
     }
 
+    public int GetMaxAnimationFrames(string name)
+    {
+        int maxFrames = 0;
+        _group = _animation.GetGroupId(name);
+        for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
+        {
+            maxFrames += _animation.GetGroup(_group).animationCel[i].frames;
+        }
+        return maxFrames;
+    }
+
     public void SetAnimation(string name)
     {
         if (_animation != null && _animation.GetGroup(_group).celName != name)
