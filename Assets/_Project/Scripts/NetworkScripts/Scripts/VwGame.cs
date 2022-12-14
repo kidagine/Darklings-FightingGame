@@ -365,6 +365,7 @@ public struct VwGame : IGame
                 _players[index].CurrentState.Enter(_players[index]);
                 _players[index].gravity = _players[index].CurrentState.Gravity;
                 _players[index].animation = _players[index].CurrentState.Animation;
+                _players[index].velocity = _players[index].CurrentState.velocity;
                 _players[index].sound = _players[index].CurrentState.Sound;
                 NextFramenumber = Framenumber + 1;
             }
@@ -1021,6 +1022,11 @@ public class FallStates : States
             Sound = "Jump";
             NextState = new IdleStates();
         }
+    }
+    public override bool ToDashState()
+    {
+        NextState = new DashAirState();
+        return true;
     }
 }
 public class AttackStates : States
