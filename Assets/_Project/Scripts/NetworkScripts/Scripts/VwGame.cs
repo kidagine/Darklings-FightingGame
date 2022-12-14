@@ -31,7 +31,7 @@ public struct JumpEffectNetwork
     }
 };
 [Serializable]
-public struct PlayerNetwork
+public class PlayerNetwork
 {
     public PlayerStatsSO playerStats;
     public Vector2 position;
@@ -44,7 +44,8 @@ public struct PlayerNetwork
     public float gravity;
     public float jump;
     public int dashFrames;
-    public bool jumped;
+    public bool canJump;
+    public bool canDoubleJump;
     public bool start;
     public bool skip;
     public States CurrentState;
@@ -63,7 +64,8 @@ public struct PlayerNetwork
         bw.Write(speed);
         bw.Write(gravity);
         bw.Write(jump);
-        bw.Write(jumped);
+        bw.Write(canJump);
+        bw.Write(canDoubleJump);
         bw.Write(dashFrames);
         bw.Write(start);
         bw.Write(skip);
@@ -85,7 +87,8 @@ public struct PlayerNetwork
         speed = br.ReadSingle();
         gravity = br.ReadSingle();
         jump = br.ReadSingle();
-        jumped = br.ReadBoolean();
+        canJump = br.ReadBoolean();
+        canDoubleJump = br.ReadBoolean();
         dashFrames = br.ReadInt32();
         start = br.ReadBoolean();
         skip = br.ReadBoolean();
@@ -184,6 +187,7 @@ public struct VwGame : IGame
             _players[i].animation = "Idle";
             _players[i].sound = "";
             _players[i].gravity = 0.018f;
+            _players[i].canJump = true;
             _players[i].jumpEffect.animationMaxFrames = ObjectPoolingManager.Instance.GetObjectAnimation("s").GetMaxAnimationFrames("s");
         }
     }
@@ -721,7 +725,7 @@ public class IdleStates : GroundParentStates
         base.UpdateLogic(player);
         velocity = Vector2.zero;
         ToWalkState(player.direction.x);
-        ToJumpState(player.direction.y);
+        ToJumpState(player);
         ToJumpForwardState(player);
         ToCrouchState(player.direction.y);
         AnimationFrames++;
@@ -735,11 +739,15 @@ public class IdleStates : GroundParentStates
         }
     }
 
-    private void ToJumpState(float directionY)
+    private void ToJumpState(PlayerNetwork player)
     {
-        if (directionY > 0)
+        if (player.direction.y > 0)
         {
-            NextState = new JumpStates();
+            if (player.canJump)
+            {
+                player.canJump = false;
+                NextState = new JumpStates();
+            }
         }
     }
     private void ToJumpForwardState(PlayerNetwork player)
@@ -802,23 +810,23 @@ public class WalkStates : GroundParentStates
     {
         base.UpdateLogic(player);
         velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedWalk, 0);
-        ToIdleState(player.direction.x);
-        ToJumpForwardState(player.direction.y);
+        ToIdleState(player);
+        ToJumpForwardState(player);
         ToCrouchState(player.direction.y);
         AnimationFrames++;
     }
 
-    private void ToIdleState(float directionX)
+    private void ToIdleState(PlayerNetwork player)
     {
-        if (directionX == 0)
+        if (player.direction.x == 0)
         {
             NextState = new IdleStates();
         }
     }
 
-    private void ToJumpForwardState(float directionY)
+    private void ToJumpForwardState(PlayerNetwork player)
     {
-        if (directionY > 0)
+        if (player.direction.y > 0)
         {
             NextState = new JumpForwardStates();
         }
@@ -938,7 +946,8 @@ public class JumpStates : States
     {
         base.UpdateLogic(player);
         ToIdleState(player.position.y);
-        //ToJumpState(player.direction.y);
+        ToJumpState(player);
+        ToJumpForwardState(player);
         ToFallState(player.velocity.y);
         AnimationFrames++;
     }
@@ -951,11 +960,26 @@ public class JumpStates : States
             NextState = new IdleStates();
         }
     }
-    private void ToJumpState(float directionY)
+    private void ToJumpState(PlayerNetwork player)
     {
-        if (directionY > 0)
+        if (player.direction.y > 0)
         {
-            NextState = new JumpStates();
+            if (player.canDoubleJump)
+            {
+                player.canDoubleJump = false;
+                NextState = new JumpStates();
+            }
+        }
+    }
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.direction.y > 0 && player.direction.x != 0)
+        {
+            if (player.canDoubleJump)
+            {
+                player.canDoubleJump = false;
+                NextState = new JumpForwardStates();
+            }
         }
     }
     private void ToFallState(float velocityY)
@@ -989,9 +1013,32 @@ public class JumpForwardStates : States
     {
         base.UpdateLogic(player);
         ToIdleState(player.position.y);
+        ToJumpState(player);
+        ToJumpForwardState(player);
         AnimationFrames++;
     }
-
+    private void ToJumpState(PlayerNetwork player)
+    {
+        if (player.direction.y > 0)
+        {
+            if (player.canDoubleJump)
+            {
+                player.canDoubleJump = false;
+                NextState = new JumpStates();
+            }
+        }
+    }
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.direction.y > 0 && player.direction.x != 0)
+        {
+            if (player.canDoubleJump)
+            {
+                player.canDoubleJump = false;
+                NextState = new JumpForwardStates();
+            }
+        }
+    }
     private void ToIdleState(float positionY)
     {
         if ((DemonicsFloat)positionY == DemonicsPhysics.GROUND_POINT)
@@ -1019,6 +1066,7 @@ public class FallStates : States
     {
         if ((DemonicsFloat)player.position.y == DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
+            player.canJump = true;
             Sound = "Jump";
             NextState = new IdleStates();
         }
