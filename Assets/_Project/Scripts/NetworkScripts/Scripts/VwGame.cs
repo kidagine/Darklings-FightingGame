@@ -44,6 +44,7 @@ public class PlayerNetwork
     public float gravity;
     public float jump;
     public int dashFrames;
+    public bool hasJumped;
     public bool canJump;
     public bool canDoubleJump;
     public bool start;
@@ -64,6 +65,7 @@ public class PlayerNetwork
         bw.Write(speed);
         bw.Write(gravity);
         bw.Write(jump);
+        bw.Write(hasJumped);
         bw.Write(canJump);
         bw.Write(canDoubleJump);
         bw.Write(dashFrames);
@@ -87,6 +89,7 @@ public class PlayerNetwork
         speed = br.ReadSingle();
         gravity = br.ReadSingle();
         jump = br.ReadSingle();
+        hasJumped = br.ReadBoolean();
         canJump = br.ReadBoolean();
         canDoubleJump = br.ReadBoolean();
         dashFrames = br.ReadInt32();
@@ -188,6 +191,7 @@ public struct VwGame : IGame
             _players[i].sound = "";
             _players[i].gravity = 0.018f;
             _players[i].canJump = true;
+            _players[i].canDoubleJump = true;
             _players[i].jumpEffect.animationMaxFrames = ObjectPoolingManager.Instance.GetObjectAnimation("s").GetMaxAnimationFrames("s");
         }
     }
@@ -745,6 +749,7 @@ public class IdleStates : GroundParentStates
         {
             if (player.canJump)
             {
+                player.hasJumped = true;
                 player.canJump = false;
                 NextState = new JumpStates();
             }
@@ -754,7 +759,12 @@ public class IdleStates : GroundParentStates
     {
         if (player.direction.y > 0 && player.direction.x != 0)
         {
-            NextState = new JumpForwardStates();
+            if (player.canJump)
+            {
+                player.hasJumped = true;
+                player.canJump = false;
+                NextState = new JumpForwardStates();
+            }
         }
     }
     private void ToCrouchState(float directionY)
@@ -826,9 +836,14 @@ public class WalkStates : GroundParentStates
 
     private void ToJumpForwardState(PlayerNetwork player)
     {
-        if (player.direction.y > 0)
+        if (player.direction.y > 0 && player.direction.x != 0)
         {
-            NextState = new JumpForwardStates();
+            if (player.canJump)
+            {
+                player.hasJumped = true;
+                player.canJump = false;
+                NextState = new JumpForwardStates();
+            }
         }
     }
 
@@ -895,14 +910,8 @@ public class DashAirState : States
     {
         if (player.dashFrames == 0)
         {
-            if (player.direction.x != 0)
-            {
-                NextState = new RunStates();
-            }
-            else
-            {
-                NextState = new IdleStates();
-            }
+            player.velocity = Vector2.zero;
+            NextState = new FallStates();
         }
     }
 }
@@ -930,26 +939,20 @@ public class RunStates : States
     }
 }
 
-public class JumpStates : States
+public class AirParentStates : States
 {
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        Animation = "Jump";
-        Sound = "Jump";
-        Effect = "Jump";
-        EffectPosition = player.position;
-        velocity = new Vector2(player.velocity.x, (float)player.playerStats.JumpForce);
     }
 
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
         ToIdleState(player.position.y);
-        ToJumpState(player);
         ToJumpForwardState(player);
-        ToFallState(player.velocity.y);
-        AnimationFrames++;
+        ToJumpState(player);
+        ToFallState(player);
     }
     public override Vector2 GetVelocity() { return velocity; }
 
@@ -962,42 +965,71 @@ public class JumpStates : States
     }
     private void ToJumpState(PlayerNetwork player)
     {
-        if (player.direction.y > 0)
+        if (player.canDoubleJump)
         {
-            if (player.canDoubleJump)
+            Debug.Log(player.hasJumped);
+            if (player.direction.y > 0 && !player.hasJumped)
             {
+                player.hasJumped = true;
                 player.canDoubleJump = false;
                 NextState = new JumpStates();
+            }
+            else if (player.direction.y <= 0 && player.hasJumped)
+            {
+                player.hasJumped = false;
             }
         }
     }
     private void ToJumpForwardState(PlayerNetwork player)
     {
-        if (player.direction.y > 0 && player.direction.x != 0)
+        if (player.canDoubleJump)
         {
-            if (player.canDoubleJump)
+            if (player.direction.y > 0 && player.direction.x != 0 && !player.hasJumped)
             {
+                player.hasJumped = true;
                 player.canDoubleJump = false;
                 NextState = new JumpForwardStates();
             }
+            else if (player.direction.y <= 0 && player.hasJumped)
+            {
+                player.hasJumped = false;
+            }
         }
     }
-    private void ToFallState(float velocityY)
+    private void ToFallState(PlayerNetwork player)
     {
-        if (velocityY <= 0)
+        if (player.velocity.y <= 0)
         {
+            player.hasJumped = false;
             NextState = new FallStates();
         }
     }
-
     public override bool ToDashState()
     {
         NextState = new DashAirState();
         return true;
     }
 }
+public class JumpStates : AirParentStates
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        Animation = "Jump";
+        Sound = "Jump";
+        Effect = "Jump";
+        EffectPosition = player.position;
+        velocity = new Vector2(0, (float)player.playerStats.JumpForce);
+    }
 
-public class JumpForwardStates : States
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        AnimationFrames++;
+    }
+}
+
+public class JumpForwardStates : AirParentStates
 {
     public override void Enter(PlayerNetwork player)
     {
@@ -1012,48 +1044,17 @@ public class JumpForwardStates : States
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
-        ToIdleState(player.position.y);
-        ToJumpState(player);
-        ToJumpForwardState(player);
         AnimationFrames++;
     }
-    private void ToJumpState(PlayerNetwork player)
-    {
-        if (player.direction.y > 0)
-        {
-            if (player.canDoubleJump)
-            {
-                player.canDoubleJump = false;
-                NextState = new JumpStates();
-            }
-        }
-    }
-    private void ToJumpForwardState(PlayerNetwork player)
-    {
-        if (player.direction.y > 0 && player.direction.x != 0)
-        {
-            if (player.canDoubleJump)
-            {
-                player.canDoubleJump = false;
-                NextState = new JumpForwardStates();
-            }
-        }
-    }
-    private void ToIdleState(float positionY)
-    {
-        if ((DemonicsFloat)positionY == DemonicsPhysics.GROUND_POINT)
-        {
-            NextState = new IdleStates();
-        }
-    }
 }
-public class FallStates : States
+public class FallStates : AirParentStates
 {
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
         Animation = "Jump";
         AnimationFrames = -1;
+        velocity = player.velocity;
     }
 
     public override void UpdateLogic(PlayerNetwork player)
@@ -1061,20 +1062,18 @@ public class FallStates : States
         base.UpdateLogic(player);
         ToIdleState(player);
     }
+    public override Vector2 GetVelocity() { return velocity; }
 
     private void ToIdleState(PlayerNetwork player)
     {
         if ((DemonicsFloat)player.position.y == DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
+            player.hasJumped = false;
+            player.canDoubleJump = true;
             player.canJump = true;
             Sound = "Jump";
             NextState = new IdleStates();
         }
-    }
-    public override bool ToDashState()
-    {
-        NextState = new DashAirState();
-        return true;
     }
 }
 public class AttackStates : States
