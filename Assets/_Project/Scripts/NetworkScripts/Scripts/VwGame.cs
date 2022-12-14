@@ -4,7 +4,21 @@ using System.IO;
 using Unity.Collections;
 using UnityEngine;
 
+[Serializable]
+public struct JumpEffectNetwork
+{
+    public bool active;
 
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(active);
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        active = br.ReadBoolean();
+    }
+};
 [Serializable]
 public struct PlayerNetwork
 {
@@ -22,14 +36,8 @@ public struct PlayerNetwork
     public bool jumped;
     public bool start;
     public bool skip;
-    public bool up;
-    public bool down;
-    public bool left;
-    public bool right;
-    public bool blueFrenzy;
-    public bool redFrenzy;
-    public bool dashForward;
-    public bool dashBackward;
+    public States CurrentState;
+    public JumpEffectNetwork jumpEffect;
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(position.x);
@@ -48,14 +56,8 @@ public struct PlayerNetwork
         bw.Write(dashFrames);
         bw.Write(start);
         bw.Write(skip);
-        bw.Write(up);
-        bw.Write(down);
-        bw.Write(left);
-        bw.Write(right);
-        bw.Write(blueFrenzy);
-        bw.Write(redFrenzy);
-        bw.Write(dashForward);
-        bw.Write(dashBackward);
+        CurrentState.Serialize(bw);
+        jumpEffect.Serialize(bw);
     }
 
     public void Deserialize(BinaryReader br)
@@ -76,14 +78,8 @@ public struct PlayerNetwork
         dashFrames = br.ReadInt32();
         start = br.ReadBoolean();
         skip = br.ReadBoolean();
-        up = br.ReadBoolean();
-        down = br.ReadBoolean();
-        left = br.ReadBoolean();
-        right = br.ReadBoolean();
-        blueFrenzy = br.ReadBoolean();
-        redFrenzy = br.ReadBoolean();
-        dashForward = br.ReadBoolean();
-        dashBackward = br.ReadBoolean();
+        CurrentState.Deserialize(br);
+        jumpEffect.Deserialize(br);
     }
 
     public override int GetHashCode()
@@ -94,18 +90,8 @@ public struct PlayerNetwork
         hashCode = hashCode * -1521134295 + animation.GetHashCode();
         hashCode = hashCode * -1521134295 + sound.GetHashCode();
         hashCode = hashCode * -1521134295 + skip.GetHashCode();
-        hashCode = hashCode * -1521134295 + up.GetHashCode();
-        hashCode = hashCode * -1521134295 + down.GetHashCode();
-        hashCode = hashCode * -1521134295 + left.GetHashCode();
-        hashCode = hashCode * -1521134295 + right.GetHashCode();
-        hashCode = hashCode * -1521134295 + blueFrenzy.GetHashCode();
-        hashCode = hashCode * -1521134295 + redFrenzy.GetHashCode();
-        hashCode = hashCode * -1521134295 + dashForward.GetHashCode();
-        hashCode = hashCode * -1521134295 + dashBackward.GetHashCode();
         return hashCode;
     }
-
-    public States CurrentState;
 };
 
 [Serializable]
@@ -386,6 +372,10 @@ public struct VwGame : IGame
                 _players[index].sound = _players[index].CurrentState.Sound;
                 NextFramenumber = Framenumber + 1;
             }
+            if (_players[index].CurrentState.Effect != "")
+            {
+                _players[index].jumpEffect.active = true;
+            }
         }
         _players[index].animationFrames = _players[index].CurrentState.AnimationFrames;
         _players[index].velocity = new Vector2(_players[index].CurrentState.velocity.x, _players[index].velocity.y);
@@ -405,6 +395,22 @@ public struct VwGame : IGame
             _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
         }
         _players[index].dashFrames--;
+        if (GameplayManager.Instance.PlayerOne)
+        {
+            if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
+            {
+                _players[0].CurrentState.AnimationFrames = 0;
+                _players[0].animationFrames = 0;
+            }
+        }
+        if (GameplayManager.Instance.PlayerTwo)
+        {
+            if (GameplayManager.Instance.PlayerTwo.IsAnimationFinished())
+            {
+                _players[1].CurrentState.AnimationFrames = 0;
+                _players[1].animationFrames = 0;
+            }
+        }
         NextFrameReset(index);
     }
 
@@ -416,17 +422,18 @@ public struct VwGame : IGame
             {
                 if (index == 0)
                 {
-                    GameplayManager.Instance.PlayerOne.Play(_players[index].sound);
+                    GameplayManager.Instance.PlayerOne.PlaySound(_players[index].sound);
                     _players[index].sound = "";
                     NextFramenumber = 0;
                 }
                 else
                 {
-                    GameplayManager.Instance.PlayerTwo.Play(_players[index].sound);
+                    GameplayManager.Instance.PlayerTwo.PlaySound(_players[index].sound);
                     _players[index].sound = "";
                     NextFramenumber = 0;
                 }
             }
+            _players[index].jumpEffect.active = false;
         }
     }
 
@@ -567,7 +574,6 @@ public struct VwGame : IGame
 
     private bool Collision(DemonicsVector2 position, DemonicsVector2 velocity, DemonicsVector2 otherPosition, DemonicsVector2 otherVelocity)
     {
-
         if (position.y > otherPosition.y)
         {
             if (velocity.y < otherVelocity.y)
@@ -663,6 +669,7 @@ public class States
     public int AnimationFrames;
     public float Gravity;
     public string Sound;
+    public string Effect;
     public Vector2 velocity;
     public virtual void Enter(PlayerNetwork player)
     {
@@ -674,8 +681,23 @@ public class States
     public virtual Vector2 GetVelocity() { return Vector2.zero; }
     public virtual bool ToAttackState() { return false; }
     public virtual bool ToDashState() { return false; }
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(velocity.x);
+        bw.Write(velocity.y);
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        velocity.x = br.ReadSingle();
+        velocity.y = br.ReadSingle();
+    }
 };
-public class IdleStates : States
+public class GroundParentStates : States
+{
+    //TODO
+}
+public class IdleStates : GroundParentStates
 {
     public override void Enter(PlayerNetwork player)
     {
@@ -691,6 +713,7 @@ public class IdleStates : States
         ToJumpState(player.direction.y);
         ToJumpForwardState(player);
         ToCrouchState(player.direction.y);
+        AnimationFrames++;
     }
 
     private void ToWalkState(float directionX)
@@ -733,7 +756,7 @@ public class IdleStates : States
         return true;
     }
 }
-public class CrouchStates : States
+public class CrouchStates : GroundParentStates
 {
     public override void Enter(PlayerNetwork player)
     {
@@ -756,7 +779,7 @@ public class CrouchStates : States
         }
     }
 }
-public class WalkStates : States
+public class WalkStates : GroundParentStates
 {
     public override void Enter(PlayerNetwork player)
     {
@@ -771,6 +794,7 @@ public class WalkStates : States
         ToIdleState(player.direction.x);
         ToJumpForwardState(player.direction.y);
         ToCrouchState(player.direction.y);
+        AnimationFrames++;
     }
 
     private void ToIdleState(float directionX)
@@ -894,6 +918,7 @@ public class JumpStates : States
         base.Enter(player);
         Animation = "Jump";
         Sound = "Jump";
+        Effect = "Jump";
         velocity = new Vector2(player.velocity.x, (float)player.playerStats.JumpForce);
     }
 
@@ -903,6 +928,7 @@ public class JumpStates : States
         ToIdleState(player.position.y);
         //ToJumpState(player.direction.y);
         ToFallState(player.velocity.y);
+        AnimationFrames++;
     }
     public override Vector2 GetVelocity() { return velocity; }
 
@@ -949,6 +975,7 @@ public class JumpForwardStates : States
     {
         base.UpdateLogic(player);
         ToIdleState(player.position.y);
+        AnimationFrames++;
     }
 
     private void ToIdleState(float positionY)
@@ -971,6 +998,7 @@ public class FallStates : States
     {
         base.UpdateLogic(player);
         ToIdleState(player);
+        AnimationFrames++;
     }
 
     private void ToIdleState(PlayerNetwork player)

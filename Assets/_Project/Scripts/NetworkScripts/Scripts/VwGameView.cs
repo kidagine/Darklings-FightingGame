@@ -1,4 +1,5 @@
-﻿using SharedGame;
+﻿using Demonics.Manager;
+using SharedGame;
 using System;
 using UnityEngine;
 
@@ -28,10 +29,16 @@ public class VwGameView : MonoBehaviour, IGameView
         {
             ResetView(game);
         }
-        playerViews[0].Populate(playersGss[0], gameInfo.players[0]);
-        playerViews[1].Populate(playersGss[1], gameInfo.players[1]);
+        for (int i = 0; i < playersGss.Length; ++i)
+        {
+            playerViews[i].Populate(playersGss[i], gameInfo.players[i]);
+            UpdateEffects(playersGss[i].jumpEffect);
+        }
     }
-
+    private void UpdateEffects(JumpEffectNetwork jumpEffect)
+    {
+        //ObjectPoolingManager.Instance.SetObject("jumpEffect", jumpEffect.active);
+    }
     private void Update()
     {
         if (gameManager.IsRunning)

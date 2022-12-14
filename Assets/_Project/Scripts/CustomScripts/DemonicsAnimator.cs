@@ -16,7 +16,7 @@ public class DemonicsAnimator : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        PlayAnimation();
+        // PlayAnimation();
     }
 
     public void SetAnimator(AnimationSO animation)
@@ -38,24 +38,49 @@ public class DemonicsAnimator : MonoBehaviour
             _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
         }
     }
+
+    public bool IsAnimationFinished()
+    {
+        return _finished;
+    }
+    private bool _finished;
     public void SetAnimation(string name, int frame)
     {
-        if (_animation != null)
+        _group = _animation.GetGroupId(name);
+        for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
         {
-            _frame = 0;
-            _cel = frame;
-            _group = _animation.GetGroupId(name);
-            _isPaused = false;
-            CheckAnimationBoxes();
-            CheckEvents();
-            if (_cel < 3)
+            if (frame > 0)
             {
-                _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
+                frame -= _animation.GetGroup(_group).animationCel[i].frames;
+                if (frame < 0)
+                {
+                    _finished = false;
+                    _frame = Mathf.Abs(frame);
+                    _cel = i;
+                    break;
+                }
+                if (frame > 0 && _animation.GetGroup(_group).loop)
+                {
+                    _finished = true;
+                    _frame = 0;
+                    _cel = 0;
+                }
+            }
+            else
+            {
+                _finished = false;
+                _frame = Mathf.Abs(frame);
+                _cel = i;
+                break;
             }
         }
+
+        CheckAnimationBoxes();
+        CheckEvents();
+        _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
     }
 
-    private void PlayAnimation()
+    public void PlayAnimation()
     {
         if (!_isPaused && !_frozen)
         {

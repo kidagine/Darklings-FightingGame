@@ -32,12 +32,7 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
             value.m_rawValue > 0 ? 1 :
             0;
     }
-    public byte[] ToBinary()
-    {
-        byte[] result = new byte[6];
 
-        return result;
-    }
     public static DemonicsFloat Abs(DemonicsFloat value)
     {
         return new DemonicsFloat(value.m_rawValue > 0 ? value.m_rawValue : -value.m_rawValue);

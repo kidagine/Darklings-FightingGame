@@ -434,19 +434,19 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         if (CurrentAttack.hitEffect != null)
         {
-            GameObject hitEffect;
-            hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
-            hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
-            hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
-            hitEffect.transform.localScale = new Vector2(-1, 1);
-            if (isProjectile)
-            {
-                hitEffect.transform.SetParent(null);
-                hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
-                hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition, false);
-                hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
-                hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
-            }
+            // GameObject hitEffect;
+            // hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
+            // hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
+            // hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
+            // hitEffect.transform.localScale = new Vector2(-1, 1);
+            // if (isProjectile)
+            // {
+            //     hitEffect.transform.SetParent(null);
+            //     hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
+            //     hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition, false);
+            //     hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
+            //     hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
+            // }
         }
     }
 
@@ -610,13 +610,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             _playerUI.ClosePauseHold();
         }
     }
-    public void Play(string sound)
+    public void PlaySound(string sound)
     {
         if (!string.IsNullOrEmpty(sound))
         {
-            Debug.Log("snd:" + sound);
             _audio.Sound(sound).Play();
         }
+    }
+    public bool IsAnimationFinished()
+    {
+        return _playerAnimator.IsAnimationFinished();
     }
     public string ConnectionStatus { get; private set; }
     public int ConnectionProgress { get; private set; }
@@ -625,7 +628,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         CurrentAttack = _playerComboSystem.GetComboAttack(InputEnum.Medium, false, false);
 
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
-        _playerAnimator.SetAnimation(playerGs.animation);
+        _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
+        if (playerGs.jumpEffect.active)
+        {
+            Debug.Log("A");
+        }
         switch (info.state)
         {
             case PlayerConnectState.Connecting:

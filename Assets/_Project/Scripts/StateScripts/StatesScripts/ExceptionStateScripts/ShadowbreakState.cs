@@ -24,9 +24,9 @@ public class ShadowbreakState : State
         _playerAnimator.Shadowbreak();
         _audio.Sound("Shadowbreak").Play();
         CameraShake.Instance.Shake(_cameraShaker);
-        Shadowbreak shadowbreak = ObjectPoolingManager.Instance.Spawn(_shadowbreakPrefab).GetComponent<Shadowbreak>();
-        shadowbreak.SetSourceTransform(_player.transform);
-        shadowbreak.SetPosition(new DemonicsVector2(_physics.Position.x, _physics.Position.y + 3));
+        //Shadowbreak shadowbreak = ObjectPoolingManager.Instance.Spawn(_shadowbreakPrefab).GetComponent<Shadowbreak>();
+        //shadowbreak.SetSourceTransform(_player.transform);
+        //shadowbreak.SetPosition(new DemonicsVector2(_physics.Position.x, _physics.Position.y + 3));
         _player.hitstopEvent.RemoveAllListeners();
         _playerMovement.ExitHitstop();
         _playerMovement.StopKnockback();
