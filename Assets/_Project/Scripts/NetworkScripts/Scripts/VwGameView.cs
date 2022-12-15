@@ -31,17 +31,17 @@ public class VwGameView : MonoBehaviour, IGameView
         for (int i = 0; i < playersGss.Length; ++i)
         {
             playerViews[i].Populate(playersGss[i], gameInfo.players[i]);
-            UpdateEffects(playersGss[i].jumpEffect);
+            UpdateEffects(i, playersGss[i].effect);
         }
     }
-    private void UpdateEffects(JumpEffectNetwork jumpEffect)
+    private void UpdateEffects(int index, EffectNetwork effects)
     {
-        GameObject effect = ObjectPoolingManager.Instance.GetObject(jumpEffect.name);
-        if (effect != null)
+        GameObject[] effectObjects = ObjectPoolingManager.Instance.GetList(index, "effects.jumpEffects[i].name");
+        for (int i = 0; i < effectObjects.Length; i++)
         {
-            effect.SetActive(jumpEffect.active);
-            effect.transform.position = jumpEffect.position;
-            effect.GetComponent<DemonicsAnimator>().SetAnimation("Idle", jumpEffect.animationFrames);
+            effectObjects[i].SetActive(effects.jumpEffects[i].active);
+            effectObjects[i].transform.position = effects.jumpEffects[i].position;
+            effectObjects[i].GetComponent<DemonicsAnimator>().SetAnimation("Idle", effects.jumpEffects[i].animationFrames);
         }
     }
     private void Update()

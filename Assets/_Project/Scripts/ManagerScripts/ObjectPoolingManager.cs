@@ -7,7 +7,8 @@ public class ObjectPoolingManager : MonoBehaviour
     [SerializeField] private Dictionary<string, Queue<GameObject>> _objectPoolDictionary = new Dictionary<string, Queue<GameObject>>();
     private List<GameObject> _objects = new List<GameObject>();
     public static ObjectPoolingManager Instance { get; private set; }
-    private List<GameObject> _jumpEffects = new List<GameObject>();
+    private List<GameObject> _jumpOneEffects = new List<GameObject>();
+    private List<GameObject> _jumpTwoEffects = new List<GameObject>();
 
 
     void Awake()
@@ -32,8 +33,10 @@ public class ObjectPoolingManager : MonoBehaviour
         for (int i = 0; i < _jumpEffectPools.size; ++i)
         {
             GameObject effect = Instantiate(_jumpEffectPools.prefab, transform).gameObject;
+            GameObject effect2 = Instantiate(_jumpEffectPools.prefab, transform).gameObject;
             effect.SetActive(false);
-            _jumpEffects.Add(effect);
+            _jumpOneEffects.Add(effect);
+            _jumpTwoEffects.Add(effect2);
         }
     }
 
@@ -49,21 +52,21 @@ public class ObjectPoolingManager : MonoBehaviour
         }
     }
 
-    public GameObject GetObject(string name)
+    public GameObject[] GetList(int index, string name)
     {
-        for (int i = 0; i < _jumpEffects.Count; i++)
+        if (index == 0)
         {
-            if (!_jumpEffects[i].activeSelf)
-            {
-                return _jumpEffects[i];
-            }
+            return _jumpOneEffects.ToArray();
         }
-        return null;
+        else
+        {
+            return _jumpTwoEffects.ToArray();
+        }
     }
-
     public DemonicsAnimator GetObjectAnimation(string name)
     {
-        return _jumpEffects[0].GetComponent<DemonicsAnimator>();
+
+        return _jumpOneEffects[0].GetComponent<DemonicsAnimator>();
     }
 
     public void DisableAllObjects()

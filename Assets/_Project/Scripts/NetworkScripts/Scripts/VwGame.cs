@@ -34,6 +34,27 @@ public struct JumpEffectNetwork
     }
 };
 [Serializable]
+public struct EffectNetwork
+{
+    public JumpEffectNetwork[] jumpEffects;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        for (int i = 0; i < jumpEffects.Length; ++i)
+        {
+            jumpEffects[i].Serialize(bw);
+        }
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        for (int i = 0; i < jumpEffects.Length; ++i)
+        {
+            jumpEffects[i].Deserialize(br);
+        }
+    }
+};
+[Serializable]
 public class PlayerNetwork
 {
     public PlayerStatsSO playerStats;
@@ -53,7 +74,7 @@ public class PlayerNetwork
     public bool start;
     public bool skip;
     public States CurrentState;
-    public JumpEffectNetwork jumpEffect;
+    public EffectNetwork effect;
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(position.x);
@@ -75,7 +96,7 @@ public class PlayerNetwork
         bw.Write(start);
         bw.Write(skip);
         CurrentState.Serialize(bw);
-        jumpEffect.Serialize(bw);
+        effect.Serialize(bw);
     }
 
     public void Deserialize(BinaryReader br)
@@ -99,7 +120,7 @@ public class PlayerNetwork
         start = br.ReadBoolean();
         skip = br.ReadBoolean();
         CurrentState.Deserialize(br);
-        jumpEffect.Deserialize(br);
+        effect.Deserialize(br);
     }
 
     public override int GetHashCode()
@@ -195,8 +216,13 @@ public struct VwGame : IGame
             _players[i].gravity = 0.018f;
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
-            _players[i].jumpEffect.name = "Jump_effect";
-            _players[i].jumpEffect.animationMaxFrames = ObjectPoolingManager.Instance.GetObjectAnimation("s").GetMaxAnimationFrames("s");
+            _players[i].effect = new EffectNetwork();
+            _players[i].effect.jumpEffects = new JumpEffectNetwork[4];
+            for (int j = 0; j < _players[i].effect.jumpEffects.Length; j++)
+            {
+                _players[i].effect.jumpEffects[j].name = "Jump_effect";
+                _players[i].effect.jumpEffects[j].animationMaxFrames = ObjectPoolingManager.Instance.GetObjectAnimation("s").GetMaxAnimationFrames("s");
+            }
         }
     }
 
@@ -389,27 +415,63 @@ public struct VwGame : IGame
                 _players[index].sound = _players[index].CurrentState.Sound;
                 NextFramenumber = Framenumber + 1;
             }
-        }
-        if (!string.IsNullOrEmpty(_players[index].CurrentState.Effect))
-        {
-            _players[index].jumpEffect.active = true;
-            _players[index].jumpEffect.position = _players[index].CurrentState.EffectPosition;
+            if (!string.IsNullOrEmpty(_players[index].CurrentState.Effect))
+            {
+                for (int i = 0; i < _players[index].effect.jumpEffects.Length; i++)
+                {
+                    if (!_players[index].effect.jumpEffects[i].active)
+                    {
+                        _players[index].effect.jumpEffects[i].active = true;
+                        _players[index].effect.jumpEffects[i].position = _players[index].CurrentState.EffectPosition;
+                        break;
+                    }
+                }
+            }
         }
         _players[index].velocity = new Vector2(_players[index].velocity.x, _players[index].velocity.y - _players[index].gravity);
 
-        _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
-        if ((DemonicsFloat)_players[index].position.y <= DemonicsPhysics.GROUND_POINT)
+
+
+        if (index == 0)
         {
-            _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
+            if (!Collision(_players[0], _players[1]))
+            {
+                _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
+            }
+            if ((DemonicsFloat)_players[index].position.y <= DemonicsPhysics.GROUND_POINT)
+            {
+                _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
+            }
+            if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
+            {
+                _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
+            }
+            if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
+            {
+                _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
+            }
         }
-        if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
+        else
         {
-            _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
+            if (!Collision(_players[1], _players[0]))
+            {
+                _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
+            }
+            if ((DemonicsFloat)_players[index].position.y <= DemonicsPhysics.GROUND_POINT)
+            {
+                _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
+            }
+            if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
+            {
+                _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
+            }
+            if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
+            {
+                _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
+            }
         }
-        if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
-        {
-            _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
-        }
+
+
         _players[index].dashFrames--;
         if (GameplayManager.Instance.PlayerOne)
         {
@@ -425,15 +487,17 @@ public struct VwGame : IGame
                 _players[1].animationFrames = 0;
             }
         }
-        if (_players[index].jumpEffect.active)
+        for (int i = 0; i < _players[index].effect.jumpEffects.Length; i++)
         {
-            _players[index].jumpEffect.animationFrames++;
-        }
-        if (_players[index].jumpEffect.animationFrames >= _players[index].jumpEffect.animationMaxFrames)
-        {
-            _players[index].CurrentState.Effect = "";
-            _players[index].jumpEffect.animationFrames = 0;
-            _players[index].jumpEffect.active = false;
+            if (_players[index].effect.jumpEffects[i].active)
+            {
+                _players[index].effect.jumpEffects[i].animationFrames++;
+                if (_players[index].effect.jumpEffects[i].animationFrames >= _players[index].effect.jumpEffects[i].animationMaxFrames)
+                {
+                    _players[index].effect.jumpEffects[i].animationFrames = 0;
+                    _players[index].effect.jumpEffects[i].active = false;
+                }
+            }
         }
         NextFrameReset(index);
     }
@@ -498,150 +562,150 @@ public struct VwGame : IGame
     public long ReadInputs(int id)
     {
         long input = 0;
-        if (id == 2)
-        {
-            if (Input.anyKeyDown)
-            {
-                input |= NetworkInput.SKIP_BYTE;
-            }
-            if (NetworkInput.UP_INPUT)
-            {
-                input |= NetworkInput.UP_BYTE;
-            }
-            if (NetworkInput.DOWN_INPUT)
-            {
-                input |= NetworkInput.DOWN_BYTE;
-            }
-            if (NetworkInput.LEFT_INPUT)
-            {
-                input |= NetworkInput.LEFT_BYTE;
-            }
-            if (NetworkInput.RIGHT_INPUT)
-            {
-                input |= NetworkInput.RIGHT_BYTE;
-            }
-            if (NetworkInput.LIGHT_INPUT)
-            {
-                input |= NetworkInput.LIGHT_BYTE;
-                NetworkInput.LIGHT_INPUT = false;
-            }
-            if (NetworkInput.MEDIUM_INPUT)
-            {
-                input |= NetworkInput.MEDIUM_BYTE;
-                NetworkInput.MEDIUM_INPUT = false;
-            }
-            if (NetworkInput.HEAVY_INPUT)
-            {
-                input |= NetworkInput.HEAVY_BYTE;
-                NetworkInput.HEAVY_INPUT = false;
-            }
-            if (NetworkInput.ARCANA_INPUT)
-            {
-                input |= NetworkInput.ARCANA_BYTE;
-                NetworkInput.ARCANA_INPUT = false;
-            }
-            if (NetworkInput.SHADOW_INPUT)
-            {
-                input |= NetworkInput.SHADOW_BYTE;
-                NetworkInput.SHADOW_INPUT = false;
-            }
-            if (NetworkInput.GRAB_INPUT)
-            {
-                input |= NetworkInput.GRAB_BYTE;
-                NetworkInput.GRAB_INPUT = false;
-            }
-            if (NetworkInput.BLUE_FRENZY_INPUT)
-            {
-                input |= NetworkInput.BLUE_FRENZY_BYTE;
-                NetworkInput.BLUE_FRENZY_INPUT = false;
-            }
-            if (NetworkInput.RED_FRENZY_INPUT)
-            {
-                input |= NetworkInput.RED_FRENZY_BYTE;
-                NetworkInput.RED_FRENZY_INPUT = false;
-            }
-            if (NetworkInput.DASH_FORWARD_INPUT)
-            {
-                input |= NetworkInput.DASH_FORWARD_BYTE;
-                NetworkInput.DASH_FORWARD_INPUT = false;
-            }
-            if (NetworkInput.DASH_BACKWARD_INPUT)
-            {
-                input |= NetworkInput.DASH_BACKWARD_BYTE;
-                NetworkInput.DASH_BACKWARD_INPUT = false;
-            }
-        }
         if (id == 0)
         {
             if (Input.anyKeyDown)
             {
                 input |= NetworkInput.SKIP_BYTE;
             }
-            if (NetworkInput.UP_INPUT)
+            if (NetworkInput.ONE_UP_INPUT)
             {
                 input |= NetworkInput.UP_BYTE;
             }
-            if (NetworkInput.DOWN_INPUT)
+            if (NetworkInput.ONE_DOWN_INPUT)
             {
                 input |= NetworkInput.DOWN_BYTE;
             }
-            if (NetworkInput.LEFT_INPUT)
+            if (NetworkInput.ONE_LEFT_INPUT)
             {
                 input |= NetworkInput.LEFT_BYTE;
             }
-            if (NetworkInput.RIGHT_INPUT)
+            if (NetworkInput.ONE_RIGHT_INPUT)
             {
                 input |= NetworkInput.RIGHT_BYTE;
             }
-            if (NetworkInput.LIGHT_INPUT)
+            if (NetworkInput.ONE_LIGHT_INPUT)
             {
                 input |= NetworkInput.LIGHT_BYTE;
-                NetworkInput.LIGHT_INPUT = false;
+                NetworkInput.ONE_LIGHT_INPUT = false;
             }
-            if (NetworkInput.MEDIUM_INPUT)
+            if (NetworkInput.ONE_MEDIUM_INPUT)
             {
                 input |= NetworkInput.MEDIUM_BYTE;
-                NetworkInput.MEDIUM_INPUT = false;
+                NetworkInput.ONE_MEDIUM_INPUT = false;
             }
-            if (NetworkInput.HEAVY_INPUT)
+            if (NetworkInput.ONE_HEAVY_INPUT)
             {
                 input |= NetworkInput.HEAVY_BYTE;
-                NetworkInput.HEAVY_INPUT = false;
+                NetworkInput.ONE_HEAVY_INPUT = false;
             }
-            if (NetworkInput.ARCANA_INPUT)
+            if (NetworkInput.ONE_ARCANA_INPUT)
             {
                 input |= NetworkInput.ARCANA_BYTE;
-                NetworkInput.ARCANA_INPUT = false;
+                NetworkInput.ONE_ARCANA_INPUT = false;
             }
-            if (NetworkInput.SHADOW_INPUT)
+            if (NetworkInput.ONE_SHADOW_INPUT)
             {
                 input |= NetworkInput.SHADOW_BYTE;
-                NetworkInput.SHADOW_INPUT = false;
+                NetworkInput.ONE_SHADOW_INPUT = false;
             }
-            if (NetworkInput.GRAB_INPUT)
+            if (NetworkInput.ONE_GRAB_INPUT)
             {
                 input |= NetworkInput.GRAB_BYTE;
-                NetworkInput.GRAB_INPUT = false;
+                NetworkInput.ONE_GRAB_INPUT = false;
             }
-            if (NetworkInput.BLUE_FRENZY_INPUT)
+            if (NetworkInput.ONE_BLUE_FRENZY_INPUT)
             {
                 input |= NetworkInput.BLUE_FRENZY_BYTE;
-                NetworkInput.BLUE_FRENZY_INPUT = false;
+                NetworkInput.ONE_BLUE_FRENZY_INPUT = false;
             }
-            if (NetworkInput.RED_FRENZY_INPUT)
+            if (NetworkInput.ONE_RED_FRENZY_INPUT)
             {
                 input |= NetworkInput.RED_FRENZY_BYTE;
-                NetworkInput.RED_FRENZY_INPUT = false;
+                NetworkInput.ONE_RED_FRENZY_INPUT = false;
             }
-            if (NetworkInput.DASH_FORWARD_INPUT)
+            if (NetworkInput.ONE_DASH_FORWARD_INPUT)
             {
                 input |= NetworkInput.DASH_FORWARD_BYTE;
-                NetworkInput.DASH_FORWARD_INPUT = false;
+                NetworkInput.ONE_DASH_FORWARD_INPUT = false;
             }
-            if (NetworkInput.DASH_BACKWARD_INPUT)
+            if (NetworkInput.ONE_DASH_BACKWARD_INPUT)
             {
                 input |= NetworkInput.DASH_BACKWARD_BYTE;
-                NetworkInput.DASH_BACKWARD_INPUT = false;
+                NetworkInput.ONE_DASH_BACKWARD_INPUT = false;
+            }
+        }
+        if (id == 1)
+        {
+            if (Input.anyKeyDown)
+            {
+                input |= NetworkInput.SKIP_BYTE;
+            }
+            if (NetworkInput.TWO_UP_INPUT)
+            {
+                input |= NetworkInput.UP_BYTE;
+            }
+            if (NetworkInput.TWO_DOWN_INPUT)
+            {
+                input |= NetworkInput.DOWN_BYTE;
+            }
+            if (NetworkInput.TWO_LEFT_INPUT)
+            {
+                input |= NetworkInput.LEFT_BYTE;
+            }
+            if (NetworkInput.TWO_RIGHT_INPUT)
+            {
+                input |= NetworkInput.RIGHT_BYTE;
+            }
+            if (NetworkInput.TWO_LIGHT_INPUT)
+            {
+                input |= NetworkInput.LIGHT_BYTE;
+                NetworkInput.TWO_LIGHT_INPUT = false;
+            }
+            if (NetworkInput.TWO_MEDIUM_INPUT)
+            {
+                input |= NetworkInput.MEDIUM_BYTE;
+                NetworkInput.TWO_MEDIUM_INPUT = false;
+            }
+            if (NetworkInput.TWO_HEAVY_INPUT)
+            {
+                input |= NetworkInput.HEAVY_BYTE;
+                NetworkInput.TWO_HEAVY_INPUT = false;
+            }
+            if (NetworkInput.TWO_ARCANA_INPUT)
+            {
+                input |= NetworkInput.ARCANA_BYTE;
+                NetworkInput.TWO_ARCANA_INPUT = false;
+            }
+            if (NetworkInput.TWO_SHADOW_INPUT)
+            {
+                input |= NetworkInput.SHADOW_BYTE;
+                NetworkInput.TWO_SHADOW_INPUT = false;
+            }
+            if (NetworkInput.TWO_GRAB_INPUT)
+            {
+                input |= NetworkInput.GRAB_BYTE;
+                NetworkInput.TWO_GRAB_INPUT = false;
+            }
+            if (NetworkInput.TWO_BLUE_FRENZY_INPUT)
+            {
+                input |= NetworkInput.BLUE_FRENZY_BYTE;
+                NetworkInput.TWO_BLUE_FRENZY_INPUT = false;
+            }
+            if (NetworkInput.TWO_RED_FRENZY_INPUT)
+            {
+                input |= NetworkInput.RED_FRENZY_BYTE;
+                NetworkInput.TWO_RED_FRENZY_INPUT = false;
+            }
+            if (NetworkInput.TWO_DASH_FORWARD_INPUT)
+            {
+                input |= NetworkInput.DASH_FORWARD_BYTE;
+                NetworkInput.TWO_DASH_FORWARD_INPUT = false;
+            }
+            if (NetworkInput.TWO_DASH_BACKWARD_INPUT)
+            {
+                input |= NetworkInput.DASH_BACKWARD_BYTE;
+                NetworkInput.TWO_DASH_BACKWARD_INPUT = false;
             }
         }
         return input;
@@ -669,6 +733,110 @@ public struct VwGame : IGame
     public void LogInfo(string filename)
     {
         //Log
+    }
+    private bool Collision(PlayerNetwork player, PlayerNetwork otherPlayer)
+    {
+
+        // if (player.position.y > otherPlayer.position.y)
+        // {
+        //     if (player.velocity.y < otherPlayer.velocity.y)
+        //     {
+        //         float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
+        //         float pushDistance = (1.35f - difference) / (2);
+        //         if (player.position.x > otherPlayer.position.x)
+        //         {
+        //             if (player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
+        //             {
+        //                 otherPlayer.position = new Vector2(otherPlayer.position.x - pushDistance, otherPlayer.position.y);
+        //             }
+        //             else
+        //             {
+        //                 player.position = new Vector2(player.position.x + pushDistance, player.position.y);
+        //             }
+        //         }
+        //         else if (player.position.x <= otherPlayer.position.x)
+        //         {
+        //             if (otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
+        //             {
+        //                 player.position = new Vector2(player.position.x + pushDistance, player.position.y);
+        //             }
+        //             else if (otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
+        //             {
+        //                 otherPlayer.position = new Vector2(otherPlayer.position.x + pushDistance, otherPlayer.position.y);
+        //             }
+        //             else
+        //             {
+        //                 player.position = new Vector2(player.position.x - pushDistance, player.position.y);
+        //             }
+        //         }
+        //     }
+        // }
+        if (Colliding(player, otherPlayer))
+        {
+            Vector2 main = player.velocity;
+            Vector2 second = otherPlayer.velocity;
+            if (otherPlayer.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT && player.velocity.x >= 0 || otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT && otherPlayer.velocity.x <= 0)
+            {
+                main = new Vector2(0, player.velocity.y);
+                second = new Vector2(0, otherPlayer.velocity.y);
+                otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y));
+                player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                return true;
+            }
+            if (Mathf.Abs(player.velocity.x) > Mathf.Abs(otherPlayer.velocity.x))
+            {
+                float totalVelocity;
+                if (player.velocity.x > 0 && otherPlayer.velocity.x < 0)
+                {
+                    totalVelocity = Mathf.Abs(player.velocity.x) - Mathf.Abs(otherPlayer.velocity.x);
+                }
+                else
+                {
+                    totalVelocity = Mathf.Abs(player.velocity.x);
+                }
+                if (player.position.x < otherPlayer.position.x && player.velocity.x > 0)
+                {
+                    main = new Vector2(totalVelocity, player.velocity.y);
+                    second = new Vector2(totalVelocity, otherPlayer.velocity.y);
+                    otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
+                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    return true;
+                }
+                else if (player.position.x > otherPlayer.position.x && player.velocity.x < 0)
+                {
+                    main = new Vector2(-totalVelocity, player.velocity.y);
+                    second = new Vector2(-totalVelocity, otherPlayer.velocity.y);
+                    otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
+                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    return true;
+                }
+                return false;
+            }
+            else if (Mathf.Abs(player.velocity.x) == Mathf.Abs(otherPlayer.velocity.x))
+            {
+                if (player.position.x < otherPlayer.position.x && player.velocity.x > 0 || player.position.x > otherPlayer.position.x && player.velocity.x < 0)
+                {
+                    main = new Vector2(0, player.velocity.y);
+                    second = new Vector2(0, otherPlayer.velocity.y);
+                    otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
+                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+    private bool valueInRange(float value, float min, float max)
+    { return (value >= min) && (value <= max); }
+    private bool Colliding(PlayerNetwork a, PlayerNetwork b)
+    {
+        bool xOverlap = valueInRange(a.position.x - (1.35f / 2), b.position.x - (1.35f / 2), b.position.x + (1.35f / 2)) ||
+                    valueInRange(b.position.x - (1.35f / 2), a.position.x - (1.35f / 2), a.position.x + (1.35f / 2));
+        bool yOverlap = valueInRange(a.position.y - (1.5f / 2), b.position.y - (1.5f / 2), b.position.y + (1.5f / 2)) ||
+                    valueInRange(b.position.y - (1.5f / 2), a.position.y - (1.5f / 2), a.position.y + (1.5f / 2));
+        return xOverlap && yOverlap;
     }
 }
 public class States

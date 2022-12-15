@@ -21,18 +21,33 @@ public class NetworkInput
     public const int DASH_BACKWARD_BYTE = (1 << 14);
 
     public static bool IS_LOCAL { get; set; } = true;
-    public static bool UP_INPUT { get; set; }
-    public static bool DOWN_INPUT { get; set; }
-    public static bool LEFT_INPUT { get; set; }
-    public static bool RIGHT_INPUT { get; set; }
-    public static bool LIGHT_INPUT { get; set; }
-    public static bool MEDIUM_INPUT { get; set; }
-    public static bool HEAVY_INPUT { get; set; }
-    public static bool ARCANA_INPUT { get; set; }
-    public static bool GRAB_INPUT { get; set; }
-    public static bool SHADOW_INPUT { get; set; }
-    public static bool BLUE_FRENZY_INPUT { get; set; }
-    public static bool RED_FRENZY_INPUT { get; set; }
-    public static bool DASH_FORWARD_INPUT { get; set; }
-    public static bool DASH_BACKWARD_INPUT { get; set; }
+    public static bool ONE_UP_INPUT { get; set; }
+    public static bool ONE_DOWN_INPUT { get; set; }
+    public static bool ONE_LEFT_INPUT { get; set; }
+    public static bool ONE_RIGHT_INPUT { get; set; }
+    public static bool ONE_LIGHT_INPUT { get; set; }
+    public static bool ONE_MEDIUM_INPUT { get; set; }
+    public static bool ONE_HEAVY_INPUT { get; set; }
+    public static bool ONE_ARCANA_INPUT { get; set; }
+    public static bool ONE_GRAB_INPUT { get; set; }
+    public static bool ONE_SHADOW_INPUT { get; set; }
+    public static bool ONE_BLUE_FRENZY_INPUT { get; set; }
+    public static bool ONE_RED_FRENZY_INPUT { get; set; }
+    public static bool ONE_DASH_FORWARD_INPUT { get; set; }
+    public static bool ONE_DASH_BACKWARD_INPUT { get; set; }
+    public static bool TWO_UP_INPUT { get; set; }
+    public static bool TWO_DOWN_INPUT { get; set; }
+    public static bool TWO_LEFT_INPUT { get; set; }
+    public static bool TWO_RIGHT_INPUT { get; set; }
+    public static bool TWO_LIGHT_INPUT { get; set; }
+    public static bool TWO_MEDIUM_INPUT { get; set; }
+    public static bool TWO_HEAVY_INPUT { get; set; }
+    public static bool TWO_ARCANA_INPUT { get; set; }
+    public static bool TWO_GRAB_INPUT { get; set; }
+    public static bool TWO_SHADOW_INPUT { get; set; }
+    public static bool TWO_BLUE_FRENZY_INPUT { get; set; }
+    public static bool TWO_RED_FRENZY_INPUT { get; set; }
+    public static bool TWO_DASH_FORWARD_INPUT { get; set; }
+    public static bool TWO_DASH_BACKWARD_INPUT { get; set; }
+
 }
