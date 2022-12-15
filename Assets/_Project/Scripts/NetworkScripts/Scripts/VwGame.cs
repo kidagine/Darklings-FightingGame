@@ -358,7 +358,6 @@ public struct VwGame : IGame
                 _players[index].CurrentState.Enter(_players[index]);
                 _players[index].gravity = _players[index].CurrentState.Gravity;
                 _players[index].animation = _players[index].CurrentState.Animation;
-                _players[index].velocity = _players[index].CurrentState.velocity;
                 _players[index].sound = _players[index].CurrentState.Sound;
                 NextFramenumber = Framenumber + 1;
             }
@@ -373,7 +372,6 @@ public struct VwGame : IGame
                 _players[index].CurrentState.Enter(_players[index]);
                 _players[index].gravity = _players[index].CurrentState.Gravity;
                 _players[index].animation = _players[index].CurrentState.Animation;
-                _players[index].velocity = _players[index].CurrentState.velocity;
                 _players[index].sound = _players[index].CurrentState.Sound;
                 NextFramenumber = Framenumber + 1;
             }
@@ -384,7 +382,6 @@ public struct VwGame : IGame
             _players[index].CurrentState = _players[index].CurrentState.NextState;
             _players[index].CurrentState.Enter(_players[index]);
             _players[index].animation = _players[index].CurrentState.Animation;
-            _players[index].velocity = _players[index].CurrentState.velocity;
             _players[index].gravity = _players[index].CurrentState.Gravity;
             if (_players[index].CurrentState.Sound != "")
             {
@@ -401,7 +398,6 @@ public struct VwGame : IGame
         {
             _players[index].animationFrames = _players[index].CurrentState.AnimationFrames;
         }
-        _players[index].velocity = new Vector2(_players[index].CurrentState.velocity.x, _players[index].velocity.y);
         _players[index].velocity = new Vector2(_players[index].velocity.x, _players[index].velocity.y - _players[index].gravity);
 
         _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
@@ -580,7 +576,7 @@ public struct VwGame : IGame
                 NetworkInput.DASH_BACKWARD_INPUT = false;
             }
         }
-        if (id == 1)
+        if (id == 0)
         {
             if (Input.anyKeyDown)
             {
@@ -697,7 +693,6 @@ public class States
     }
     public virtual void UpdateLogic(PlayerNetwork player) { }
     public virtual void Exit() { }
-    public virtual Vector2 GetVelocity() { return Vector2.zero; }
     public virtual bool ToAttackState() { return false; }
     public virtual bool ToDashState() { return false; }
     public void Serialize(BinaryWriter bw)
@@ -727,7 +722,7 @@ public class IdleStates : GroundParentStates
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
-        velocity = Vector2.zero;
+        player.velocity = Vector2.zero;
         ToWalkState(player.direction.x);
         ToJumpState(player);
         ToJumpForwardState(player);
@@ -796,7 +791,7 @@ public class CrouchStates : GroundParentStates
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
-        velocity = Vector2.zero;
+        player.velocity = Vector2.zero;
         ToIdleState(player.direction.y);
     }
 
@@ -819,7 +814,7 @@ public class WalkStates : GroundParentStates
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
-        velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedWalk, 0);
+        player.velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedWalk, 0);
         ToIdleState(player);
         ToJumpForwardState(player);
         ToCrouchState(player.direction.y);
@@ -863,7 +858,7 @@ public class DashStates : States
         base.Enter(player);
         Animation = "Dash";
         Sound = "Dash";
-        velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
+        player.velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
         NextState = null;
     }
 
@@ -895,7 +890,7 @@ public class DashAirState : States
     {
         Animation = "Dash";
         Sound = "Dash";
-        velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
+        player.velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
         Gravity = 0;
         NextState = null;
     }
@@ -926,7 +921,7 @@ public class RunStates : States
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
-        velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedRun, 0);
+        player.velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedRun, 0);
         ToIdleState(player.direction.x);
     }
 
@@ -949,25 +944,15 @@ public class AirParentStates : States
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
-        ToIdleState(player.position.y);
         ToJumpForwardState(player);
         ToJumpState(player);
         ToFallState(player);
     }
-    public override Vector2 GetVelocity() { return velocity; }
 
-    private void ToIdleState(float positionY)
-    {
-        if ((DemonicsFloat)positionY == DemonicsPhysics.GROUND_POINT)
-        {
-            NextState = new IdleStates();
-        }
-    }
     private void ToJumpState(PlayerNetwork player)
     {
         if (player.canDoubleJump)
         {
-            Debug.Log(player.hasJumped);
             if (player.direction.y > 0 && !player.hasJumped)
             {
                 player.hasJumped = true;
@@ -1019,7 +1004,7 @@ public class JumpStates : AirParentStates
         Sound = "Jump";
         Effect = "Jump";
         EffectPosition = player.position;
-        velocity = new Vector2(0, (float)player.playerStats.JumpForce);
+        player.velocity = new Vector2(0, (float)player.playerStats.JumpForce);
     }
 
     public override void UpdateLogic(PlayerNetwork player)
@@ -1038,7 +1023,7 @@ public class JumpForwardStates : AirParentStates
         Sound = "Jump";
         Effect = "Jump";
         EffectPosition = player.position;
-        velocity = new Vector2(0.14f * player.direction.x, (float)player.playerStats.JumpForce);
+        player.velocity = new Vector2(0.14f * player.direction.x, (float)player.playerStats.JumpForce);
     }
 
     public override void UpdateLogic(PlayerNetwork player)
@@ -1053,17 +1038,47 @@ public class FallStates : AirParentStates
     {
         base.Enter(player);
         Animation = "Jump";
-        AnimationFrames = -1;
-        velocity = player.velocity;
     }
 
     public override void UpdateLogic(PlayerNetwork player)
     {
-        base.UpdateLogic(player);
         ToIdleState(player);
+        ToJumpForwardState(player);
+        ToJumpState(player);
     }
-    public override Vector2 GetVelocity() { return velocity; }
 
+    private void ToJumpState(PlayerNetwork player)
+    {
+        if (player.canDoubleJump)
+        {
+            if (player.direction.y > 0 && !player.hasJumped)
+            {
+                player.hasJumped = true;
+                player.canDoubleJump = false;
+                NextState = new JumpStates();
+            }
+            else if (player.direction.y <= 0 && player.hasJumped)
+            {
+                player.hasJumped = false;
+            }
+        }
+    }
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.canDoubleJump)
+        {
+            if (player.direction.y > 0 && player.direction.x != 0 && !player.hasJumped)
+            {
+                player.hasJumped = true;
+                player.canDoubleJump = false;
+                NextState = new JumpForwardStates();
+            }
+            else if (player.direction.y <= 0 && player.hasJumped)
+            {
+                player.hasJumped = false;
+            }
+        }
+    }
     private void ToIdleState(PlayerNetwork player)
     {
         if ((DemonicsFloat)player.position.y == DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
