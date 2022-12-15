@@ -38,7 +38,7 @@ public class VwGameView : MonoBehaviour, IGameView
     {
         for (int i = 0; i < effects.Length; i++)
         {
-            GameObject[] effectObjects = ObjectPoolingManager.Instance.GetPool(index, "Jump");
+            GameObject[] effectObjects = ObjectPoolingManager.Instance.GetPool(index, effects[i].name);
             if (effectObjects.Length > 0)
             {
                 for (int j = 0; j < effectObjects.Length; j++)

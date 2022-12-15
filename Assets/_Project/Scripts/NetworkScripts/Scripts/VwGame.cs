@@ -68,6 +68,7 @@ public class PlayerNetwork
     public float gravity;
     public float jump;
     public int dashFrames;
+    public bool canDash;
     public bool hasJumped;
     public bool canJump;
     public bool canDoubleJump;
@@ -88,6 +89,7 @@ public class PlayerNetwork
         bw.Write(sound);
         bw.Write(speed);
         bw.Write(gravity);
+        bw.Write(canDash);
         bw.Write(jump);
         bw.Write(hasJumped);
         bw.Write(canJump);
@@ -115,6 +117,7 @@ public class PlayerNetwork
         sound = br.ReadString();
         speed = br.ReadSingle();
         gravity = br.ReadSingle();
+        canDash = br.ReadBoolean();
         jump = br.ReadSingle();
         hasJumped = br.ReadBoolean();
         canJump = br.ReadBoolean();
@@ -207,7 +210,6 @@ public struct VwGame : IGame
 
     public VwGame(PlayerStatsSO[] playerStats)
     {
-
         Framenumber = 0;
         NextFramenumber = 1;
         _players = new PlayerNetwork[playerStats.Length];
@@ -388,7 +390,7 @@ public struct VwGame : IGame
         }
         if (dashForward)
         {
-            if (_players[index].CurrentState.ToDashState())
+            if (_players[index].CurrentState.ToDashState(_players[index]))
             {
                 _players[index].dashFrames = 15;
                 _players[index].direction = new Vector2(1, 0);
@@ -397,11 +399,29 @@ public struct VwGame : IGame
                 _players[index].gravity = _players[index].CurrentState.Gravity;
                 _players[index].sound = _players[index].CurrentState.Sound;
                 NextFramenumber = Framenumber + 1;
+                if (!string.IsNullOrEmpty(_players[index].CurrentState.Effect))
+                {
+                    for (int i = 0; i < _players[index].effects.Length; i++)
+                    {
+                        if (_players[index].CurrentState.Effect == _players[index].effects[i].name)
+                        {
+                            for (int j = 0; j < _players[index].effects[i].effectGroups.Length; j++)
+                            {
+                                if (!_players[index].effects[i].effectGroups[j].active)
+                                {
+                                    _players[index].effects[i].effectGroups[j].active = true;
+                                    _players[index].effects[i].effectGroups[j].position = _players[index].CurrentState.EffectPosition;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         if (dashBackward)
         {
-            if (_players[index].CurrentState.ToDashState())
+            if (_players[index].CurrentState.ToDashState(_players[index]))
             {
                 _players[index].dashFrames = 15;
                 _players[index].direction = new Vector2(-1, 0);
@@ -410,6 +430,24 @@ public struct VwGame : IGame
                 _players[index].gravity = _players[index].CurrentState.Gravity;
                 _players[index].sound = _players[index].CurrentState.Sound;
                 NextFramenumber = Framenumber + 1;
+                if (!string.IsNullOrEmpty(_players[index].CurrentState.Effect))
+                {
+                    for (int i = 0; i < _players[index].effects.Length; i++)
+                    {
+                        if (_players[index].CurrentState.Effect == _players[index].effects[i].name)
+                        {
+                            for (int j = 0; j < _players[index].effects[i].effectGroups.Length; j++)
+                            {
+                                if (!_players[index].effects[i].effectGroups[j].active)
+                                {
+                                    _players[index].effects[i].effectGroups[j].active = true;
+                                    _players[index].effects[i].effectGroups[j].position = _players[index].CurrentState.EffectPosition;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         _players[index].CurrentState.UpdateLogic(_players[index]);
@@ -443,8 +481,6 @@ public struct VwGame : IGame
             }
         }
         _players[index].velocity = new Vector2(_players[index].velocity.x, _players[index].velocity.y - _players[index].gravity);
-
-
 
         if (index == 0)
         {
@@ -872,7 +908,7 @@ public class States
     public virtual void UpdateLogic(PlayerNetwork player) { }
     public virtual void Exit() { }
     public virtual bool ToAttackState() { return false; }
-    public virtual bool ToDashState() { return false; }
+    public virtual bool ToDashState(PlayerNetwork player) { return false; }
     public void Serialize(BinaryWriter bw)
     {
 
@@ -950,7 +986,7 @@ public class IdleStates : GroundParentStates
         NextState = new AttackStates();
         return true;
     }
-    public override bool ToDashState()
+    public override bool ToDashState(PlayerNetwork player)
     {
         NextState = new DashStates();
         return true;
@@ -1034,6 +1070,8 @@ public class DashStates : States
         base.Enter(player);
         player.animation = "Dash";
         Sound = "Dash";
+        Effect = "Dash";
+        EffectPosition = player.position;
         player.velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
         NextState = null;
     }
@@ -1067,6 +1105,8 @@ public class DashAirState : States
         player.animationFrames = 0;
         player.animation = "Dash";
         Sound = "Dash";
+        Effect = "Dash";
+        EffectPosition = player.position;
         player.velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
         Gravity = 0;
         NextState = null;
@@ -1166,10 +1206,15 @@ public class AirParentStates : States
             NextState = new FallStates();
         }
     }
-    public override bool ToDashState()
+    public override bool ToDashState(PlayerNetwork player)
     {
-        NextState = new DashAirState();
-        return true;
+        if (player.canDash)
+        {
+            player.canDash = false;
+            NextState = new DashAirState();
+            return true;
+        }
+        return false;
     }
 }
 public class JumpStates : AirParentStates
@@ -1260,10 +1305,13 @@ public class FallStates : AirParentStates
     {
         if ((DemonicsFloat)player.position.y == DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
+            player.canDash = true;
             player.hasJumped = false;
             player.canDoubleJump = true;
             player.canJump = true;
             Sound = "Jump";
+            Effect = "Jump";
+            EffectPosition = player.position;
             NextState = new IdleStates();
         }
     }
