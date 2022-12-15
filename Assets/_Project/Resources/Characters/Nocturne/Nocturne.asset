@@ -255,6 +255,27 @@ MonoBehaviour:
       hurtboxes:
       - size: {x: 2, y: 3}
         offset: {x: 0, y: 1.5}
+  - celName: Fall
+    loop: 0
+    cameraShake: {fileID: 0}
+    animationCel:
+    - frames: 10
+      sprite: {fileID: 945619634, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 2, y: 3}
+        offset: {x: 0, y: 1.5}
   - celName: JumpForward
     loop: 0
     cameraShake: {fileID: 0}

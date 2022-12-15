@@ -51,7 +51,14 @@ public class ObjectPoolingManager : MonoBehaviour
 
     public GameObject GetObject(string name)
     {
-        return _jumpEffects[0];
+        for (int i = 0; i < _jumpEffects.Count; i++)
+        {
+            if (!_jumpEffects[i].activeSelf)
+            {
+                return _jumpEffects[i];
+            }
+        }
+        return null;
     }
 
     public DemonicsAnimator GetObjectAnimation(string name)

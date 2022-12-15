@@ -8,6 +8,7 @@ using UnityEngine;
 public struct JumpEffectNetwork
 {
     public Vector2 position;
+    public string name;
     public int animationFrames;
     public int animationMaxFrames;
     public bool active;
@@ -16,6 +17,7 @@ public struct JumpEffectNetwork
     {
         bw.Write(position.x);
         bw.Write(position.y);
+        bw.Write(name);
         bw.Write(animationFrames);
         bw.Write(animationMaxFrames);
         bw.Write(active);
@@ -25,6 +27,7 @@ public struct JumpEffectNetwork
     {
         position.x = br.ReadSingle();
         position.y = br.ReadSingle();
+        name = br.ReadString();
         animationFrames = br.ReadInt32();
         animationMaxFrames = br.ReadInt32();
         active = br.ReadBoolean();
@@ -192,6 +195,7 @@ public struct VwGame : IGame
             _players[i].gravity = 0.018f;
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
+            _players[i].jumpEffect.name = "Jump_effect";
             _players[i].jumpEffect.animationMaxFrames = ObjectPoolingManager.Instance.GetObjectAnimation("s").GetMaxAnimationFrames("s");
         }
     }
@@ -876,7 +880,6 @@ public class DashAirState : States
     public override void Enter(PlayerNetwork player)
     {
         player.animationFrames = 0;
-
         player.animation = "Dash";
         Sound = "Dash";
         player.velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
@@ -1026,8 +1029,7 @@ public class FallStates : AirParentStates
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        player.animation = "Jump";
-        player.animationFrames = 0;
+        player.animation = "Fall";
     }
 
     public override void UpdateLogic(PlayerNetwork player)

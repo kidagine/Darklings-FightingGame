@@ -36,10 +36,13 @@ public class VwGameView : MonoBehaviour, IGameView
     }
     private void UpdateEffects(JumpEffectNetwork jumpEffect)
     {
-        GameObject effect = ObjectPoolingManager.Instance.GetObject("Jump_effect");
-        effect.SetActive(jumpEffect.active);
-        effect.transform.position = jumpEffect.position;
-        effect.GetComponent<DemonicsAnimator>().SetAnimation("Idle", jumpEffect.animationFrames);
+        GameObject effect = ObjectPoolingManager.Instance.GetObject(jumpEffect.name);
+        if (effect != null)
+        {
+            effect.SetActive(jumpEffect.active);
+            effect.transform.position = jumpEffect.position;
+            effect.GetComponent<DemonicsAnimator>().SetAnimation("Idle", jumpEffect.animationFrames);
+        }
     }
     private void Update()
     {

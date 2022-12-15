@@ -202,8 +202,6 @@ public class GameplayManager : MonoBehaviour
         playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
-        PlayerOne.transform.position = new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT);
-        PlayerTwo.transform.position = new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT);
         if (SceneSettings.ControllerOne != null && _controllerOneType != ControllerTypeEnum.Cpu)
         {
             _playerOneController.SetControllerToPlayer();
