@@ -9,6 +9,7 @@ public class PlayerStatsSO : ScriptableObject
     public Sprite[] portraits;
     public AnimationSO _animation;
     public DialogueSO _dialogue;
+    public EffectsLibrarySO _effectsLibrary;
     public CharacterTypeEnum characterName;
     [Header("Stats")]
     public int defenseLevel;

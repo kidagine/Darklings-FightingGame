@@ -5,21 +5,17 @@ using Unity.Collections;
 using UnityEngine;
 
 [Serializable]
-public struct JumpEffectNetwork
+public struct EffectGroupNetwork
 {
     public Vector2 position;
-    public string name;
     public int animationFrames;
-    public int animationMaxFrames;
     public bool active;
 
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(position.x);
         bw.Write(position.y);
-        bw.Write(name);
         bw.Write(animationFrames);
-        bw.Write(animationMaxFrames);
         bw.Write(active);
     }
 
@@ -27,30 +23,34 @@ public struct JumpEffectNetwork
     {
         position.x = br.ReadSingle();
         position.y = br.ReadSingle();
-        name = br.ReadString();
         animationFrames = br.ReadInt32();
-        animationMaxFrames = br.ReadInt32();
         active = br.ReadBoolean();
     }
 };
 [Serializable]
 public struct EffectNetwork
 {
-    public JumpEffectNetwork[] jumpEffects;
+    public string name;
+    public int animationMaxFrames;
+    public EffectGroupNetwork[] effectGroups;
 
     public void Serialize(BinaryWriter bw)
     {
-        for (int i = 0; i < jumpEffects.Length; ++i)
+        bw.Write(name);
+        bw.Write(animationMaxFrames);
+        for (int i = 0; i < effectGroups.Length; ++i)
         {
-            jumpEffects[i].Serialize(bw);
+            effectGroups[i].Serialize(bw);
         }
     }
 
     public void Deserialize(BinaryReader br)
     {
-        for (int i = 0; i < jumpEffects.Length; ++i)
+        name = br.ReadString();
+        animationMaxFrames = br.ReadInt32();
+        for (int i = 0; i < effectGroups.Length; ++i)
         {
-            jumpEffects[i].Deserialize(br);
+            effectGroups[i].Deserialize(br);
         }
     }
 };
@@ -74,7 +74,7 @@ public class PlayerNetwork
     public bool start;
     public bool skip;
     public States CurrentState;
-    public EffectNetwork effect;
+    public EffectNetwork[] effects;
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(position.x);
@@ -96,7 +96,10 @@ public class PlayerNetwork
         bw.Write(start);
         bw.Write(skip);
         CurrentState.Serialize(bw);
-        effect.Serialize(bw);
+        for (int i = 0; i < effects.Length; ++i)
+        {
+            effects[i].Serialize(bw);
+        }
     }
 
     public void Deserialize(BinaryReader br)
@@ -120,7 +123,10 @@ public class PlayerNetwork
         start = br.ReadBoolean();
         skip = br.ReadBoolean();
         CurrentState.Deserialize(br);
-        effect.Deserialize(br);
+        for (int i = 0; i < effects.Length; ++i)
+        {
+            effects[i].Deserialize(br);
+        }
     }
 
     public override int GetHashCode()
@@ -201,12 +207,13 @@ public struct VwGame : IGame
 
     public VwGame(PlayerStatsSO[] playerStats)
     {
-        ObjectPoolingManager.Instance.PoolInitialize();
+
         Framenumber = 0;
         NextFramenumber = 1;
         _players = new PlayerNetwork[playerStats.Length];
         for (int i = 0; i < _players.Length; i++)
         {
+            ObjectPoolingManager.Instance.PoolInitialize(i, playerStats[i]._effectsLibrary);
             _players[i] = new PlayerNetwork();
             _players[i].CurrentState = new IdleStates();
             _players[i].position = new Vector2(GameplayManager.Instance.GetSpawnPositions()[i], (float)DemonicsPhysics.GROUND_POINT);
@@ -216,12 +223,13 @@ public struct VwGame : IGame
             _players[i].gravity = 0.018f;
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
-            _players[i].effect = new EffectNetwork();
-            _players[i].effect.jumpEffects = new JumpEffectNetwork[4];
-            for (int j = 0; j < _players[i].effect.jumpEffects.Length; j++)
+            _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
+            for (int j = 0; j < _players[i].effects.Length; j++)
             {
-                _players[i].effect.jumpEffects[j].name = "Jump_effect";
-                _players[i].effect.jumpEffects[j].animationMaxFrames = ObjectPoolingManager.Instance.GetObjectAnimation("s").GetMaxAnimationFrames("s");
+                _players[i].effects[j] = new EffectNetwork();
+                _players[i].effects[j].name = playerStats[i]._effectsLibrary._objectPools[j].groupName;
+                _players[i].effects[j].animationMaxFrames = ObjectPoolingManager.Instance.GetObjectAnimation(i, _players[i].effects[j].name).GetMaxAnimationFrames();
+                _players[i].effects[j].effectGroups = new EffectGroupNetwork[playerStats[i]._effectsLibrary._objectPools[j].size];
             }
         }
     }
@@ -417,13 +425,19 @@ public struct VwGame : IGame
             }
             if (!string.IsNullOrEmpty(_players[index].CurrentState.Effect))
             {
-                for (int i = 0; i < _players[index].effect.jumpEffects.Length; i++)
+                for (int i = 0; i < _players[index].effects.Length; i++)
                 {
-                    if (!_players[index].effect.jumpEffects[i].active)
+                    if (_players[index].CurrentState.Effect == _players[index].effects[i].name)
                     {
-                        _players[index].effect.jumpEffects[i].active = true;
-                        _players[index].effect.jumpEffects[i].position = _players[index].CurrentState.EffectPosition;
-                        break;
+                        for (int j = 0; j < _players[index].effects[i].effectGroups.Length; j++)
+                        {
+                            if (!_players[index].effects[i].effectGroups[j].active)
+                            {
+                                _players[index].effects[i].effectGroups[j].active = true;
+                                _players[index].effects[i].effectGroups[j].position = _players[index].CurrentState.EffectPosition;
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -487,15 +501,18 @@ public struct VwGame : IGame
                 _players[1].animationFrames = 0;
             }
         }
-        for (int i = 0; i < _players[index].effect.jumpEffects.Length; i++)
+        for (int i = 0; i < _players[index].effects.Length; i++)
         {
-            if (_players[index].effect.jumpEffects[i].active)
+            for (int j = 0; j < _players[index].effects[i].effectGroups.Length; j++)
             {
-                _players[index].effect.jumpEffects[i].animationFrames++;
-                if (_players[index].effect.jumpEffects[i].animationFrames >= _players[index].effect.jumpEffects[i].animationMaxFrames)
+                if (_players[index].effects[i].effectGroups[j].active)
                 {
-                    _players[index].effect.jumpEffects[i].animationFrames = 0;
-                    _players[index].effect.jumpEffects[i].active = false;
+                    _players[index].effects[i].effectGroups[j].animationFrames++;
+                    if (_players[index].effects[i].effectGroups[j].animationFrames >= _players[index].effects[i].animationMaxFrames)
+                    {
+                        _players[index].effects[i].effectGroups[j].animationFrames = 0;
+                        _players[index].effects[i].effectGroups[j].active = false;
+                    }
                 }
             }
         }

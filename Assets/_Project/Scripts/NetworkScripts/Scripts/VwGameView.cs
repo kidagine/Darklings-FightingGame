@@ -31,17 +31,23 @@ public class VwGameView : MonoBehaviour, IGameView
         for (int i = 0; i < playersGss.Length; ++i)
         {
             playerViews[i].Populate(playersGss[i], gameInfo.players[i]);
-            UpdateEffects(i, playersGss[i].effect);
+            UpdateEffects(i, playersGss[i].effects);
         }
     }
-    private void UpdateEffects(int index, EffectNetwork effects)
+    private void UpdateEffects(int index, EffectNetwork[] effects)
     {
-        GameObject[] effectObjects = ObjectPoolingManager.Instance.GetList(index, "effects.jumpEffects[i].name");
-        for (int i = 0; i < effectObjects.Length; i++)
+        for (int i = 0; i < effects.Length; i++)
         {
-            effectObjects[i].SetActive(effects.jumpEffects[i].active);
-            effectObjects[i].transform.position = effects.jumpEffects[i].position;
-            effectObjects[i].GetComponent<DemonicsAnimator>().SetAnimation("Idle", effects.jumpEffects[i].animationFrames);
+            GameObject[] effectObjects = ObjectPoolingManager.Instance.GetPool(index, "Jump");
+            if (effectObjects.Length > 0)
+            {
+                for (int j = 0; j < effectObjects.Length; j++)
+                {
+                    effectObjects[j].SetActive(effects[i].effectGroups[j].active);
+                    effectObjects[j].transform.position = effects[i].effectGroups[j].position;
+                    effectObjects[j].GetComponent<DemonicsAnimator>().SetAnimation("Idle", effects[i].effectGroups[j].animationFrames);
+                }
+            }
         }
     }
     private void Update()

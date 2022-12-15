@@ -2,41 +2,46 @@
 using UnityEngine;
 public class ObjectPoolingManager : MonoBehaviour
 {
+    [SerializeField] private Transform _playerOnePool = default;
+    [SerializeField] private Transform _playerTwoPool = default;
     [SerializeField] private List<ObjectPool> _objectPools;
-    [SerializeField] private ObjectPool _jumpEffectPools;
-    [SerializeField] private Dictionary<string, Queue<GameObject>> _objectPoolDictionary = new Dictionary<string, Queue<GameObject>>();
     private List<GameObject> _objects = new List<GameObject>();
     public static ObjectPoolingManager Instance { get; private set; }
     private List<GameObject> _jumpOneEffects = new List<GameObject>();
     private List<GameObject> _jumpTwoEffects = new List<GameObject>();
-
+    private List<ObjectPoolGroup> _objectsPoolOne = new List<ObjectPoolGroup>();
+    private List<ObjectPoolGroup> _objectsPoolTwo = new List<ObjectPoolGroup>();
 
     void Awake()
     {
         CheckInstance();
     }
 
-    public void PoolInitialize()
+    public void PoolInitialize(int index, EffectsLibrarySO effectsLibrary)
     {
-        // foreach (ObjectPool objectPool in _objectPools)
-        // {
-        //     Queue<GameObject> objectPoolQueue = new Queue<GameObject>();
-        //     for (int i = 0; i < objectPool.size; i++)
-        //     {
-        //         GameObject poolObject = Instantiate(objectPool.prefab, transform);
-        //         poolObject.SetActive(false);
-        //         objectPoolQueue.Enqueue(poolObject);
-        //         _objects.Add(poolObject);
-        //     }
-        //     _objectPoolDictionary.Add(objectPool.prefab.name, objectPoolQueue);
-        // }
-        for (int i = 0; i < _jumpEffectPools.size; ++i)
+        if (index == 0)
         {
-            GameObject effect = Instantiate(_jumpEffectPools.prefab, transform).gameObject;
-            GameObject effect2 = Instantiate(_jumpEffectPools.prefab, transform).gameObject;
-            effect.SetActive(false);
-            _jumpOneEffects.Add(effect);
-            _jumpTwoEffects.Add(effect2);
+            for (int i = 0; i < effectsLibrary._objectPools.Count; i++)
+            {
+                _objectsPoolOne.Add(new ObjectPoolGroup() { groupName = effectsLibrary._objectPools[i].groupName, objects = new List<GameObject>() });
+                for (int j = 0; j < effectsLibrary._objectPools[i].size; ++j)
+                {
+                    GameObject effect = Instantiate(effectsLibrary._objectPools[i].prefab, _playerOnePool).gameObject;
+                    _objectsPoolOne[i].objects.Add(effect);
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < effectsLibrary._objectPools.Count; i++)
+            {
+                _objectsPoolTwo.Add(new ObjectPoolGroup() { groupName = effectsLibrary._objectPools[i].groupName, objects = new List<GameObject>() });
+                for (int j = 0; j < effectsLibrary._objectPools[i].size; ++j)
+                {
+                    GameObject effect = Instantiate(effectsLibrary._objectPools[i].prefab, _playerTwoPool).gameObject;
+                    _objectsPoolTwo[i].objects.Add(effect);
+                }
+            }
         }
     }
 
@@ -52,21 +57,53 @@ public class ObjectPoolingManager : MonoBehaviour
         }
     }
 
-    public GameObject[] GetList(int index, string name)
+    public GameObject[] GetPool(int index, string name)
     {
         if (index == 0)
         {
-            return _jumpOneEffects.ToArray();
+            for (int i = 0; i < _objectsPoolOne.Count; i++)
+            {
+                if (_objectsPoolOne[i].groupName == name)
+                {
+                    return _objectsPoolOne[i].objects.ToArray();
+                }
+            }
         }
         else
         {
-            return _jumpTwoEffects.ToArray();
+            for (int i = 0; i < _objectsPoolTwo.Count; i++)
+            {
+                if (_objectsPoolTwo[i].groupName == name)
+                {
+                    return _objectsPoolTwo[i].objects.ToArray();
+                }
+            }
         }
+        return null;
     }
-    public DemonicsAnimator GetObjectAnimation(string name)
+    public DemonicsAnimator GetObjectAnimation(int index, string name)
     {
-
-        return _jumpOneEffects[0].GetComponent<DemonicsAnimator>();
+        if (index == 0)
+        {
+            for (int i = 0; i < _objectsPoolOne.Count; i++)
+            {
+                if (_objectsPoolOne[i].groupName == name)
+                {
+                    return _objectsPoolOne[i].objects[0].GetComponent<DemonicsAnimator>();
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _objectsPoolTwo.Count; i++)
+            {
+                if (_objectsPoolTwo[i].groupName == name)
+                {
+                    return _objectsPoolTwo[i].objects[0].GetComponent<DemonicsAnimator>();
+                }
+            }
+        }
+        return null;
     }
 
     public void DisableAllObjects()
@@ -79,5 +116,11 @@ public class ObjectPoolingManager : MonoBehaviour
             }
         }
     }
+}
+
+public struct ObjectPoolGroup
+{
+    public string groupName;
+    public List<GameObject> objects;
 }
 
