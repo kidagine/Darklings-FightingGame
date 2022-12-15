@@ -357,7 +357,6 @@ public struct VwGame : IGame
                 _players[index].CurrentState = _players[index].CurrentState.NextState;
                 _players[index].CurrentState.Enter(_players[index]);
                 _players[index].gravity = _players[index].CurrentState.Gravity;
-                _players[index].animation = _players[index].CurrentState.Animation;
                 _players[index].sound = _players[index].CurrentState.Sound;
                 NextFramenumber = Framenumber + 1;
             }
@@ -371,7 +370,6 @@ public struct VwGame : IGame
                 _players[index].CurrentState = _players[index].CurrentState.NextState;
                 _players[index].CurrentState.Enter(_players[index]);
                 _players[index].gravity = _players[index].CurrentState.Gravity;
-                _players[index].animation = _players[index].CurrentState.Animation;
                 _players[index].sound = _players[index].CurrentState.Sound;
                 NextFramenumber = Framenumber + 1;
             }
@@ -381,7 +379,6 @@ public struct VwGame : IGame
         {
             _players[index].CurrentState = _players[index].CurrentState.NextState;
             _players[index].CurrentState.Enter(_players[index]);
-            _players[index].animation = _players[index].CurrentState.Animation;
             _players[index].gravity = _players[index].CurrentState.Gravity;
             if (_players[index].CurrentState.Sound != "")
             {
@@ -393,10 +390,6 @@ public struct VwGame : IGame
         {
             _players[index].jumpEffect.active = true;
             _players[index].jumpEffect.position = _players[index].CurrentState.EffectPosition;
-        }
-        if (_players[index].CurrentState.AnimationFrames >= 0)
-        {
-            _players[index].animationFrames = _players[index].CurrentState.AnimationFrames;
         }
         _players[index].velocity = new Vector2(_players[index].velocity.x, _players[index].velocity.y - _players[index].gravity);
 
@@ -418,7 +411,6 @@ public struct VwGame : IGame
         {
             if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
             {
-                _players[0].CurrentState.AnimationFrames = 0;
                 _players[0].animationFrames = 0;
             }
         }
@@ -426,7 +418,6 @@ public struct VwGame : IGame
         {
             if (GameplayManager.Instance.PlayerTwo.IsAnimationFinished())
             {
-                _players[1].CurrentState.AnimationFrames = 0;
                 _players[1].animationFrames = 0;
             }
         }
@@ -679,15 +670,13 @@ public struct VwGame : IGame
 public class States
 {
     public States NextState;
-    public string Animation;
-    public int AnimationFrames;
     public float Gravity;
     public string Sound;
     public string Effect;
     public Vector2 EffectPosition;
-    public Vector2 velocity;
     public virtual void Enter(PlayerNetwork player)
     {
+        player.animationFrames = 0;
         Sound = "";
         Gravity = 0.018f;
     }
@@ -697,14 +686,12 @@ public class States
     public virtual bool ToDashState() { return false; }
     public void Serialize(BinaryWriter bw)
     {
-        bw.Write(velocity.x);
-        bw.Write(velocity.y);
+
     }
 
     public void Deserialize(BinaryReader br)
     {
-        velocity.x = br.ReadSingle();
-        velocity.y = br.ReadSingle();
+
     }
 };
 public class GroundParentStates : States
@@ -716,7 +703,7 @@ public class IdleStates : GroundParentStates
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        Animation = "Idle";
+        player.animation = "Idle";
     }
 
     public override void UpdateLogic(PlayerNetwork player)
@@ -727,7 +714,7 @@ public class IdleStates : GroundParentStates
         ToJumpState(player);
         ToJumpForwardState(player);
         ToCrouchState(player.direction.y);
-        AnimationFrames++;
+        player.animationFrames++;
     }
 
     private void ToWalkState(float directionX)
@@ -785,7 +772,7 @@ public class CrouchStates : GroundParentStates
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        Animation = "Crouch";
+        player.animation = "Crouch";
     }
 
     public override void UpdateLogic(PlayerNetwork player)
@@ -808,7 +795,7 @@ public class WalkStates : GroundParentStates
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        Animation = "Walk";
+        player.animation = "Walk";
     }
 
     public override void UpdateLogic(PlayerNetwork player)
@@ -818,7 +805,7 @@ public class WalkStates : GroundParentStates
         ToIdleState(player);
         ToJumpForwardState(player);
         ToCrouchState(player.direction.y);
-        AnimationFrames++;
+        player.animationFrames++;
     }
 
     private void ToIdleState(PlayerNetwork player)
@@ -856,7 +843,7 @@ public class DashStates : States
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        Animation = "Dash";
+        player.animation = "Dash";
         Sound = "Dash";
         player.velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
         NextState = null;
@@ -888,7 +875,9 @@ public class DashAirState : States
 {
     public override void Enter(PlayerNetwork player)
     {
-        Animation = "Dash";
+        player.animationFrames = 0;
+
+        player.animation = "Dash";
         Sound = "Dash";
         player.velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
         Gravity = 0;
@@ -916,7 +905,7 @@ public class RunStates : States
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        Animation = "Run";
+        player.animation = "Run";
     }
     public override void UpdateLogic(PlayerNetwork player)
     {
@@ -1000,7 +989,7 @@ public class JumpStates : AirParentStates
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        Animation = "Jump";
+        player.animation = "Jump";
         Sound = "Jump";
         Effect = "Jump";
         EffectPosition = player.position;
@@ -1010,7 +999,7 @@ public class JumpStates : AirParentStates
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
-        AnimationFrames++;
+        player.animationFrames++;
     }
 }
 
@@ -1019,7 +1008,7 @@ public class JumpForwardStates : AirParentStates
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        Animation = "JumpForward";
+        player.animation = "JumpForward";
         Sound = "Jump";
         Effect = "Jump";
         EffectPosition = player.position;
@@ -1029,7 +1018,7 @@ public class JumpForwardStates : AirParentStates
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
-        AnimationFrames++;
+        player.animationFrames++;
     }
 }
 public class FallStates : AirParentStates
@@ -1037,7 +1026,8 @@ public class FallStates : AirParentStates
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        Animation = "Jump";
+        player.animation = "Jump";
+        player.animationFrames = 0;
     }
 
     public override void UpdateLogic(PlayerNetwork player)
@@ -1096,22 +1086,18 @@ public class AttackStates : States
     public override void Enter(PlayerNetwork player)
     {
         base.Enter(player);
-        Animation = "5M";
-        AnimationFrames = 0;
+        player.animation = "5M";
     }
 
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
         ToIdleState(player);
-        AnimationFrames++;
+        player.animationFrames++;
     }
 
     private void ToIdleState(PlayerNetwork player)
     {
-        if (AnimationFrames >= 50)
-        {
-            NextState = new IdleStates();
-        }
+
     }
 }
