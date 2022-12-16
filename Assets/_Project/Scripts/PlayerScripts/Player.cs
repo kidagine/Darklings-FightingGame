@@ -262,6 +262,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
+    public int IsFlip()
+    {
+        return (int)transform.localScale.x;
+    }
+
     public void Flip(int xDirection)
     {
         transform.localScale = new Vector2(xDirection, transform.localScale.y);
