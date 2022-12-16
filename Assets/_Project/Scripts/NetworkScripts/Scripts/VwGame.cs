@@ -1100,7 +1100,7 @@ public class DashAirState : States
     public override void Enter(PlayerNetwork player)
     {
         player.animationFrames = 0;
-        player.animation = "Dash";
+        player.animation = "Fall";
         Sound = "Dash";
         if (player.direction.x > 0)
         {

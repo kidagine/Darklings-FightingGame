@@ -29,10 +29,8 @@ public class PlayerGhost : MonoBehaviour
         }
     }
 
-    public void SetSprite(Sprite sprite, float flipSpriteValue, Color color)
+    public void SetSprite(Sprite sprite)
     {
-        _spriteRenderer.color = color;
         _spriteRenderer.sprite = sprite;
-        transform.localScale = new Vector2(flipSpriteValue, 1.0f);
     }
 }

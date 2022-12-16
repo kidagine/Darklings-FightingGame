@@ -32,7 +32,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
-
+    public PlayerAnimator PlayerAnimator { get { return _playerAnimator; } private set { } }
     public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
     public PlayerStateManager OtherPlayerStateManager { get; private set; }
     public Player OtherPlayer { get; private set; }
@@ -122,7 +122,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         StopAllCoroutines();
         StopComboTimer();
         _playerMovement.StopAllCoroutines();
-        _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
+        PlayerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
         _playerUI.SetArcana((float)ArcanaGauge);
         _playerUI.SetAssist((float)AssistGauge);
         _playerUI.ResetHealthDamaged();
@@ -244,9 +244,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         while (true)
         {
             yield return new WaitForSeconds(0.075f);
-            _playerAnimator.transform.localPosition = new Vector2(_playerAnimator.transform.localPosition.x - 0.03f, _playerAnimator.transform.localPosition.y);
+            PlayerAnimator.transform.localPosition = new Vector2(PlayerAnimator.transform.localPosition.x - 0.03f, PlayerAnimator.transform.localPosition.y);
             yield return new WaitForSeconds(0.075f);
-            _playerAnimator.transform.localPosition = Vector2.zero;
+            PlayerAnimator.transform.localPosition = Vector2.zero;
         }
     }
 
@@ -457,7 +457,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void SetInvinsible(bool state)
     {
         Invisible = state;
-        _playerAnimator.SetInvinsible(state);
+        PlayerAnimator.SetInvinsible(state);
         SetHurtbox(!state);
         SetPushboxTrigger(state);
     }
@@ -487,22 +487,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void SetSpriteOrderPriority()
     {
-        _playerAnimator.SetSpriteOrder(1);
-        OtherPlayer._playerAnimator.SetSpriteOrder(0);
+        PlayerAnimator.SetSpriteOrder(1);
+        OtherPlayer.PlayerAnimator.SetSpriteOrder(0);
     }
 
     public void EnterHitstop()
     {
         _playerMovement.EnterHitstop();
-        _playerAnimator.Pause();
+        PlayerAnimator.Pause();
     }
 
     public void ExitHitstop()
     {
         StopShakeCoroutine();
         _playerMovement.ExitHitstop();
-        _playerAnimator.Resume();
-        _playerAnimator.SpriteNormalEffect();
+        PlayerAnimator.Resume();
+        PlayerAnimator.SpriteNormalEffect();
         hitstopEvent?.Invoke();
         hitstopEvent.RemoveAllListeners();
     }
@@ -517,13 +517,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         SetHealth(CalculateDamage(attack));
         _playerUI.Damaged();
         _playerUI.UpdateHealthDamaged();
-        _playerAnimator.SpriteSuperArmorEffect();
+        PlayerAnimator.SpriteSuperArmorEffect();
         GameplayManager.Instance.HitStop(attack.hitstop);
     }
 
     public bool CanTakeSuperArmorHit(AttackSO attack)
     {
-        if (CurrentAttack.hasSuperArmor && !_playerAnimator.InRecovery() && !CanSkipAttack)
+        if (CurrentAttack.hasSuperArmor && !PlayerAnimator.InRecovery() && !CanSkipAttack)
         {
             return true;
         }
@@ -623,14 +623,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     }
     public bool IsAnimationFinished()
     {
-        return _playerAnimator.IsAnimationFinished();
+        return PlayerAnimator.IsAnimationFinished();
     }
     public string ConnectionStatus { get; private set; }
     public int ConnectionProgress { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
-        _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
+        PlayerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         NetworkDebug(info);
     }
 
