@@ -464,13 +464,17 @@ public struct VwGame : IGame
             {
                 _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
             }
-            if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
+
+            if (GameplayManager.Instance.PlayerOne)
             {
-                _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
-            }
-            if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
-            {
-                _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
+                if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
+                {
+                    _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
+                }
+                if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
+                {
+                    _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
+                }
             }
         }
         else
@@ -483,13 +487,17 @@ public struct VwGame : IGame
             {
                 _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
             }
-            if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
+
+            if (GameplayManager.Instance.PlayerOne)
             {
-                _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
-            }
-            if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
-            {
-                _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
+                if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
+                {
+                    _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
+                }
+                if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
+                {
+                    _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
+                }
             }
         }
 
@@ -763,43 +771,42 @@ public struct VwGame : IGame
     }
     private bool Collision(PlayerNetwork player, PlayerNetwork otherPlayer)
     {
-
-        // if (player.position.y > otherPlayer.position.y)
-        // {
-        //     if (player.velocity.y < otherPlayer.velocity.y)
-        //     {
-        //         float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
-        //         float pushDistance = (1.35f - difference) / (2);
-        //         if (player.position.x > otherPlayer.position.x)
-        //         {
-        //             if (player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
-        //             {
-        //                 otherPlayer.position = new Vector2(otherPlayer.position.x - pushDistance, otherPlayer.position.y);
-        //             }
-        //             else
-        //             {
-        //                 player.position = new Vector2(player.position.x + pushDistance, player.position.y);
-        //             }
-        //         }
-        //         else if (player.position.x <= otherPlayer.position.x)
-        //         {
-        //             if (otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
-        //             {
-        //                 player.position = new Vector2(player.position.x + pushDistance, player.position.y);
-        //             }
-        //             else if (otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
-        //             {
-        //                 otherPlayer.position = new Vector2(otherPlayer.position.x + pushDistance, otherPlayer.position.y);
-        //             }
-        //             else
-        //             {
-        //                 player.position = new Vector2(player.position.x - pushDistance, player.position.y);
-        //             }
-        //         }
-        //     }
-        // }
         if (Colliding(player, otherPlayer))
         {
+            if (player.position.y > otherPlayer.position.y)
+            {
+                if (player.velocity.y < otherPlayer.velocity.y)
+                {
+                    float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
+                    float pushDistance = (1.35f - difference) / (2);
+                    if (player.position.x > otherPlayer.position.x)
+                    {
+                        if (player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
+                        {
+                            otherPlayer.position = new Vector2(otherPlayer.position.x - pushDistance, otherPlayer.position.y);
+                        }
+                        else
+                        {
+                            player.position = new Vector2(player.position.x + pushDistance, player.position.y);
+                        }
+                    }
+                    else if (player.position.x <= otherPlayer.position.x)
+                    {
+                        if (otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
+                        {
+                            player.position = new Vector2(player.position.x + pushDistance, player.position.y);
+                        }
+                        else if (otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
+                        {
+                            otherPlayer.position = new Vector2(otherPlayer.position.x + pushDistance, otherPlayer.position.y);
+                        }
+                        else
+                        {
+                            player.position = new Vector2(player.position.x - pushDistance, player.position.y);
+                        }
+                    }
+                }
+            }
             Vector2 main = player.velocity;
             Vector2 second = otherPlayer.velocity;
             if (otherPlayer.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT && player.velocity.x >= 0 || otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT && otherPlayer.velocity.x <= 0)
@@ -808,6 +815,7 @@ public struct VwGame : IGame
                 second = new Vector2(0, otherPlayer.velocity.y);
                 otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y));
                 player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                Intersects(player, otherPlayer);
                 return true;
             }
             if (Mathf.Abs(player.velocity.x) > Mathf.Abs(otherPlayer.velocity.x))
@@ -827,6 +835,7 @@ public struct VwGame : IGame
                     second = new Vector2(totalVelocity, otherPlayer.velocity.y);
                     otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
                     player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    Intersects(player, otherPlayer);
                     return true;
                 }
                 else if (player.position.x > otherPlayer.position.x && player.velocity.x < 0)
@@ -835,6 +844,7 @@ public struct VwGame : IGame
                     second = new Vector2(-totalVelocity, otherPlayer.velocity.y);
                     otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
                     player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    Intersects(player, otherPlayer);
                     return true;
                 }
                 return false;
@@ -847,13 +857,36 @@ public struct VwGame : IGame
                     second = new Vector2(0, otherPlayer.velocity.y);
                     otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
                     player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    Intersects(player, otherPlayer);
                     return true;
                 }
+                Intersects(player, otherPlayer);
                 return false;
             }
             return true;
         }
         return false;
+    }
+    private void Intersects(PlayerNetwork player, PlayerNetwork otherPlayer)
+    {
+        if (player.position.x < otherPlayer.position.x)
+        {
+            if (player.position.x + 1.35f > otherPlayer.position.x)
+            {
+                float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
+                float pushDistance = (1.35f - difference) / (2);
+                player.position = new Vector2((player.position.x - pushDistance), player.position.y);
+            }
+        }
+        else
+        {
+            if (player.position.x < otherPlayer.position.x + 1.35f)
+            {
+                float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
+                float pushDistance = (1.35f - difference) / (2);
+                player.position = new Vector2((player.position.x + pushDistance), player.position.y);
+            }
+        }
     }
     private bool valueInRange(float value, float min, float max)
     { return (value >= min) && (value <= max); }
@@ -1161,6 +1194,19 @@ public class RunStates : States
         base.UpdateLogic(player);
         player.velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedRun, 0);
         ToIdleState(player.direction.x);
+        ToJumpForwardState(player);
+    }
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.direction.y > 0 && player.direction.x != 0)
+        {
+            if (player.canJump)
+            {
+                player.hasJumped = true;
+                player.canJump = false;
+                NextState = new JumpForwardStates();
+            }
+        }
     }
 
     private void ToIdleState(float directionX)

@@ -36,7 +36,7 @@ public class DemonicsAnimator : MonoBehaviour
         return maxFrames;
     }
 
-    public void SetAnimation(string name)
+    public virtual void SetAnimation(string name)
     {
         if (_animation != null && _animation.GetGroup(_group).celName != name)
         {

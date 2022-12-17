@@ -105,7 +105,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         RecallAssist();
         _playerMovement.StopKnockback();
         _playerMovement.Physics.ResetSkipWall();
-        _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
+        // _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
         _playerMovement.Physics.Velocity = DemonicsVector2.Zero;
         _playerStateManager.ResetToInitialState();
         SetInvinsible(false);

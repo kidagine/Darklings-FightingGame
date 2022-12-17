@@ -44,14 +44,20 @@ public class VwGameView : MonoBehaviour, IGameView
                 for (int j = 0; j < effectObjects.Length; j++)
                 {
                     effectObjects[j].SetActive(effects[i].effectGroups[j].active);
-                    if (effectObjects[j].activeSelf)
+                    if (!effectObjects[j].activeSelf)
                     {
-                        effectObjects[j].transform.position = effects[i].effectGroups[j].position;
-                        effectObjects[j].GetComponent<SpriteRenderer>().flipX = effects[i].effectGroups[j].flip;
-                        effectObjects[j].GetComponent<DemonicsAnimator>().SetAnimation("Idle", effects[i].effectGroups[j].animationFrames);
                         if (effectObjects[j].TryGetComponent(out PlayerGhost playerGhost))
                         {
                             playerGhost.SetSprite(playerViews[index].PlayerAnimator.GetCurrentSprite());
+                        }
+                    }
+                    else
+                    {
+                        effectObjects[j].transform.position = effects[i].effectGroups[j].position;
+                        effectObjects[j].GetComponent<SpriteRenderer>().flipX = effects[i].effectGroups[j].flip;
+                        if (!effectObjects[j].TryGetComponent(out PlayerGhost playerGhost))
+                        {
+                            effectObjects[j].GetComponent<DemonicsAnimator>().SetAnimation("Idle", effects[i].effectGroups[j].animationFrames);
                         }
                     }
                 }
