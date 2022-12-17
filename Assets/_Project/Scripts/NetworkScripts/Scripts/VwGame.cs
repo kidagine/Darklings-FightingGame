@@ -488,6 +488,7 @@ public struct VwGame : IGame
                 _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
             }
 
+
             if (GameplayManager.Instance.PlayerOne)
             {
                 if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
@@ -779,28 +780,13 @@ public struct VwGame : IGame
                 {
                     float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
                     float pushDistance = (1.35f - difference) / (2);
-                    if (player.position.x > otherPlayer.position.x)
+                    if (player.position.x <= otherPlayer.position.x)
                     {
+                        if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
+                        {
+                            player.position = new Vector2(player.position.x + pushDistance, player.position.y);
+                        }
                         if (player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
-                        {
-                            otherPlayer.position = new Vector2(otherPlayer.position.x - pushDistance, otherPlayer.position.y);
-                        }
-                        else
-                        {
-                            player.position = new Vector2(player.position.x + pushDistance, player.position.y);
-                        }
-                    }
-                    else if (player.position.x <= otherPlayer.position.x)
-                    {
-                        if (otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
-                        {
-                            player.position = new Vector2(player.position.x + pushDistance, player.position.y);
-                        }
-                        else if (otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
-                        {
-                            otherPlayer.position = new Vector2(otherPlayer.position.x + pushDistance, otherPlayer.position.y);
-                        }
-                        else
                         {
                             player.position = new Vector2(player.position.x - pushDistance, player.position.y);
                         }
@@ -809,7 +795,7 @@ public struct VwGame : IGame
             }
             Vector2 main = player.velocity;
             Vector2 second = otherPlayer.velocity;
-            if (otherPlayer.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT && player.velocity.x >= 0 || otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT && otherPlayer.velocity.x <= 0)
+            if (otherPlayer.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT && player.velocity.x >= 0 || otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT && player.velocity.x <= 0)
             {
                 main = new Vector2(0, player.velocity.y);
                 second = new Vector2(0, otherPlayer.velocity.y);
@@ -869,6 +855,10 @@ public struct VwGame : IGame
     }
     private void Intersects(PlayerNetwork player, PlayerNetwork otherPlayer)
     {
+        if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT || player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
+        {
+            return;
+        }
         if (player.position.x < otherPlayer.position.x)
         {
             if (player.position.x + 1.35f > otherPlayer.position.x)
