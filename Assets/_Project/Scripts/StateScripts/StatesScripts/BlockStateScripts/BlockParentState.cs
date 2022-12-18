@@ -50,16 +50,16 @@ public class BlockParentState : State
         _playerMovement.Knockback(new Vector2(knockbackForce, 0), knockbackDuration, (int)(_player.OtherPlayer.transform.localScale.x));
         if (!_skip)
         {
-            GameObject effect;
-            if (_blockAttack.isArcana)
-            {
-                effect = ObjectPoolingManager.Instance.Spawn(_chipEffectPrefab);
-            }
-            else
-            {
-                effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);
-            }
-            effect.transform.localPosition = new Vector2(_player.transform.position.x + (_player.transform.localScale.x * 0.25f), _blockAttack.hurtEffectPosition.y);
+            // GameObject effect;
+            // if (_blockAttack.isArcana)
+            // {
+            //     effect = ObjectPoolingManager.Instance.Spawn(_chipEffectPrefab);
+            // }
+            // else
+            // {
+            //     effect = ObjectPoolingManager.Instance.Spawn(_blockEffectPrefab);
+            // }
+            // effect.transform.localPosition = new Vector2(_player.transform.position.x + (_player.transform.localScale.x * 0.25f), _blockAttack.hurtEffectPosition.y);
             GameplayManager.Instance.HitStop(_blockAttack.hitstop);
             _player.StartShakeContact();
         }

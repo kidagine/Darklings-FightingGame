@@ -1,7 +1,5 @@
 using Cinemachine;
 using Demonics.Manager;
-using Demonics.Sounds;
-using Demonics.UI;
 using SharedGame;
 using System.Collections;
 using System.Collections.Generic;
@@ -175,6 +173,22 @@ public class GameplayManager : MonoBehaviour
     }
 
 
+    public PlayerStatsSO[] GetPlayerStats()
+    {
+        List<PlayerStatsSO> playerStats = new List<PlayerStatsSO>();
+        playerStats.Add(_playerStats[SceneSettings.PlayerOne]);
+        playerStats.Add(_playerStats[SceneSettings.PlayerTwo]);
+        return playerStats.ToArray();
+    }
+
+    public float[] GetSpawnPositions()
+    {
+        List<float> spawnPositions = new List<float>();
+        spawnPositions.Add(_spawnPositionsX[0]);
+        spawnPositions.Add(_spawnPositionsX[1]);
+        return spawnPositions.ToArray();
+    }
+
     public void InitializePlayers(GameObject playerOneObject, GameObject playerTwoObject)
     {
         playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];
@@ -188,8 +202,6 @@ public class GameplayManager : MonoBehaviour
         playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
-        PlayerOne.transform.position = new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT);
-        PlayerTwo.transform.position = new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT);
         if (SceneSettings.ControllerOne != null && _controllerOneType != ControllerTypeEnum.Cpu)
         {
             _playerOneController.SetControllerToPlayer();
@@ -436,16 +448,6 @@ public class GameplayManager : MonoBehaviour
                 }
             }
         }
-        // if (!SceneSettings.IsOnline)
-        // {
-        //     if (IsDialogueRunning && !SceneSettings.ReplayMode)
-        //     {
-        //         if (Input.anyKeyDown)
-        //         {
-        //             SkipIntro();
-        //         }
-        //     }
-        // }
         RunHitStop();
         RunReady();
         RunRoundOver();

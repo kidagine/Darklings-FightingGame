@@ -946,9 +946,7 @@ MonoBehaviour:
   _playerCollisionBoxes: {fileID: 3247643240904518811}
   _player: {fileID: 8073473790702501988}
   _playerMovement: {fileID: 8073473790702501987}
-  _inputBuffer: {fileID: 4664395619888274278}
   _audio: {fileID: 7611394710214668632}
-  _grabPoint: {fileID: 0}
 --- !u!212 &8073473789928578676
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1188,6 +1186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b07b43e8a218d4e9012782762e6ffb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ignoreWalls: 0
 --- !u!114 &8073473790702501988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1200,7 +1199,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f69f186f0a13a149a6086016aa99b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputBuffer: {fileID: 4664395619888274278}
   _playerStateManager: {fileID: 8168889133440061290}
   _playerAnimator: {fileID: 8073473789928578677}
   _assist: {fileID: 8780121904732240358}
@@ -1209,6 +1207,7 @@ MonoBehaviour:
   _effectsParent: {fileID: 2017372758765848807}
   _cameraPoint: {fileID: 3775412804825945539}
   _keepFlip: {fileID: 4489081760178489291}
+  _audio: {fileID: 7611394710214668632}
   _playerIcons:
   - {fileID: 7759221523502482170}
   - {fileID: 3488833446598643948}
@@ -1329,7 +1328,7 @@ MonoBehaviour:
   _sounds:
   - source: {fileID: 0}
     clip: {fileID: 8300000, guid: 315866ca7bda8c940a8d2a10e0e74aac, type: 3}
-    volume: 0
+    volume: 1
     pitch: 1.3
     name: Jump
     loop: 0

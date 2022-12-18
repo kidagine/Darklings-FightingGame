@@ -16,7 +16,7 @@ public class DemonicsAnimator : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        PlayAnimation();
+        // PlayAnimation();
     }
 
     public void SetAnimator(AnimationSO animation)
@@ -25,9 +25,20 @@ public class DemonicsAnimator : MonoBehaviour
         SetAnimation("Idle");
     }
 
-    public void SetAnimation(string name)
+    public int GetMaxAnimationFrames(string name = "Idle")
     {
-        if (_animation != null)
+        int maxFrames = 0;
+        _group = _animation.GetGroupId(name);
+        for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
+        {
+            maxFrames += _animation.GetGroup(_group).animationCel[i].frames;
+        }
+        return maxFrames;
+    }
+
+    public virtual void SetAnimation(string name)
+    {
+        if (_animation != null && _animation.GetGroup(_group).celName != name)
         {
             _frame = 0;
             _cel = 0;
@@ -39,7 +50,48 @@ public class DemonicsAnimator : MonoBehaviour
         }
     }
 
-    private void PlayAnimation()
+    public bool IsAnimationFinished()
+    {
+        return _finished;
+    }
+    private bool _finished;
+    public void SetAnimation(string name, int frame)
+    {
+        _group = _animation.GetGroupId(name);
+        for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
+        {
+            if (frame > 0)
+            {
+                frame -= _animation.GetGroup(_group).animationCel[i].frames;
+                if (frame < 0)
+                {
+                    _finished = false;
+                    _frame = Mathf.Abs(frame);
+                    _cel = i;
+                    break;
+                }
+                if (frame > 0 && _animation.GetGroup(_group).loop)
+                {
+                    _finished = true;
+                    _frame = 0;
+                    _cel = 0;
+                }
+            }
+            else
+            {
+                _finished = false;
+                _frame = Mathf.Abs(frame);
+                _cel = i;
+                break;
+            }
+        }
+
+        CheckAnimationBoxes();
+        CheckEvents();
+        _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
+    }
+
+    public void PlayAnimation()
     {
         if (!_isPaused && !_frozen)
         {

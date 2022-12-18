@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9041336035022670366}
   - component: {fileID: 9041336035022670367}
-  - component: {fileID: 9041336035022670360}
   - component: {fileID: -2951490965923179341}
-  - component: {fileID: 6880573136802353289}
+  - component: {fileID: 3869431539950660115}
   m_Layer: 0
   m_Name: Jump_effect
   m_TagString: Untagged
@@ -87,26 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &9041336035022670360
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9041336035022670361}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b49bc52862cc50f4bbbed085da54c0a4, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &-2951490965923179341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baaf2fda5785ef3419c32f6c8e9db2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6880573136802353289
+--- !u!114 &3869431539950660115
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,6 +107,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9041336035022670361}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79d5daa63efee6c4b95e1953de0e2d82, type: 3}
+  m_Script: {fileID: 11500000, guid: eeaea74bc3298134ebdb63581e084405, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animation: {fileID: 11400000, guid: 6267088794dbf174eb493fe0dab17ca2, type: 2}
+  _spriteRenderer: {fileID: 9041336035022670367}
+  OnCurrentAnimationFinished:
+    m_PersistentCalls:
+      m_Calls: []

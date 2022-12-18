@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6330d5bbeabd1b14fa5a92f3bcaf733a, type: 3}
+  m_Name: EnmaEffectsLibrary
+  m_EditorClassIdentifier: 
+  _objectPools:
+  - groupName: Jump
+    prefab: {fileID: 9041336035022670361, guid: ad15da3df396bae498f8ee45fe235ca4, type: 3}
+    size: 2
+  - groupName: Dash
+    prefab: {fileID: 5833315189278568593, guid: d1a8205ac964ba545b3fc474fd11b27e, type: 3}
+    size: 5
+  - groupName: Fall
+    prefab: {fileID: 2476959653787158858, guid: b9da483ec4496e44ca336dffeebe0063, type: 3}
+    size: 4
+  - groupName: Ghost
+    prefab: {fileID: 904796691893738277, guid: 0cfcd7936a9c5c54294ba46e75c919d5, type: 3}
+    size: 8

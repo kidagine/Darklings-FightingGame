@@ -34,17 +34,17 @@ public class DashState : State
         _playerAnimator.Dash();
         _audio.Sound("Dash").Play();
         _dashFramesCurrent = _dashFrames;
-        Transform dashEffect = ObjectPoolingManager.Instance.Spawn(_dashPrefab, transform.root.position).transform;
-        if (DashDirection > 0)
-        {
-            dashEffect.localScale = new Vector2(1, transform.localScale.y);
-            dashEffect.position = new Vector2(dashEffect.position.x - 1, dashEffect.position.y);
-        }
-        else
-        {
-            dashEffect.localScale = new Vector2(-1, transform.localScale.y);
-            dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
-        }
+        //Transform dashEffect = ObjectPoolingManager.Instance.Spawn(_dashPrefab, transform.root.position).transform;
+        // if (DashDirection > 0)
+        // {
+        //     dashEffect.localScale = new Vector2(1, transform.localScale.y);
+        //     dashEffect.position = new Vector2(dashEffect.position.x - 1, dashEffect.position.y);
+        // }
+        // else
+        // {
+        //     dashEffect.localScale = new Vector2(-1, transform.localScale.y);
+        //     dashEffect.position = new Vector2(dashEffect.position.x + 1, dashEffect.position.y);
+        // }
         _physics.Velocity = new DemonicsVector2((DemonicsFloat)DashDirection * (DemonicsFloat)_player.playerStats.DashForce, _physics.Velocity.y);
     }
 
@@ -71,8 +71,8 @@ public class DashState : State
         {
             if (DemonicsWorld.WaitFramesOnce(ref _dashFramesCurrent))
             {
-                GameObject playerGhost = ObjectPoolingManager.Instance.Spawn(_playerGhostPrefab, transform.position);
-                playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.root.localScale.x, Color.white);
+                //GameObject playerGhost = ObjectPoolingManager.Instance.Spawn(_playerGhostPrefab, transform.position);
+                //playerGhost.GetComponent<PlayerGhost>().SetSprite(_playerAnimator.GetCurrentSprite(), transform.root.localScale.x, Color.white);
                 _dashFramesCurrent = _dashFrames;
                 _ghostsAmountCurrent++;
             }

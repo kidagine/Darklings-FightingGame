@@ -25,8 +25,8 @@ public class HurtState : HurtParentState
         _hurtFrame = _hurtAttack.hitStun;
         if (!_skipEnter)
         {
-            GameObject effect = ObjectPoolingManager.Instance.Spawn(_hurtAttack.hurtEffect);
-            effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
+            // GameObject effect = ObjectPoolingManager.Instance.Spawn(_hurtAttack.hurtEffect);
+            // effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
             base.Enter();
         }
     }

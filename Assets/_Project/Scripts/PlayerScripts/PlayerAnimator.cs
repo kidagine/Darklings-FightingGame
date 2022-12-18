@@ -1,5 +1,4 @@
 using System.Collections;
-using Demonics.Sounds;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -100,7 +99,7 @@ public class PlayerAnimator : DemonicsAnimator
         return false;
     }
 
-    public AttackSO GetFramedate(AttackSO attack)
+    public AttackSO GetFramedata(AttackSO attack)
     {
         int startUpFrames = 0;
         int activeFrames = 0;

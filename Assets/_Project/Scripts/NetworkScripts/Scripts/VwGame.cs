@@ -4,69 +4,169 @@ using System.IO;
 using Unity.Collections;
 using UnityEngine;
 
-
 [Serializable]
-public struct PlayerNetwork
+public struct EffectGroupNetwork
 {
     public Vector2 position;
-    public bool start;
-    public bool skip;
-    public bool up;
-    public bool down;
-    public bool left;
-    public bool right;
-    public bool light;
-    public bool medium;
-    public bool heavy;
-    public bool arcana;
-    public bool shadow;
-    public bool grab;
-    public bool blueFrenzy;
-    public bool redFrenzy;
-    public bool dashForward;
-    public bool dashBackward;
+    public int animationFrames;
+    public bool active;
+    public bool flip;
+
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(position.x);
         bw.Write(position.y);
-        bw.Write(start);
-        bw.Write(skip);
-        bw.Write(up);
-        bw.Write(down);
-        bw.Write(left);
-        bw.Write(right);
-        bw.Write(light);
-        bw.Write(medium);
-        bw.Write(heavy);
-        bw.Write(arcana);
-        bw.Write(shadow);
-        bw.Write(grab);
-        bw.Write(blueFrenzy);
-        bw.Write(redFrenzy);
-        bw.Write(dashForward);
-        bw.Write(dashBackward);
+        bw.Write(animationFrames);
+        bw.Write(active);
+        bw.Write(flip);
     }
 
     public void Deserialize(BinaryReader br)
     {
         position.x = br.ReadSingle();
         position.y = br.ReadSingle();
+        animationFrames = br.ReadInt32();
+        active = br.ReadBoolean();
+        flip = br.ReadBoolean();
+    }
+};
+[Serializable]
+public struct EffectNetwork
+{
+    public string name;
+    public int animationMaxFrames;
+    public EffectGroupNetwork[] effectGroups;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(name);
+        bw.Write(animationMaxFrames);
+        for (int i = 0; i < effectGroups.Length; ++i)
+        {
+            effectGroups[i].Serialize(bw);
+        }
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        name = br.ReadString();
+        animationMaxFrames = br.ReadInt32();
+        for (int i = 0; i < effectGroups.Length; ++i)
+        {
+            effectGroups[i].Deserialize(br);
+        }
+    }
+};
+[Serializable]
+public class PlayerNetwork
+{
+    public PlayerStatsSO playerStats;
+    public Vector2 position;
+    public Vector2 velocity;
+    public Vector2 direction;
+    public string animation;
+    public int animationFrames;
+    public int flip;
+    public string sound;
+    public float speed;
+    public float gravity;
+    public float jump;
+    public int dashFrames;
+    public bool canDash;
+    public bool hasJumped;
+    public bool canJump;
+    public bool canDoubleJump;
+    public bool start;
+    public bool skip;
+    public States CurrentState;
+    public EffectNetwork[] effects;
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(position.x);
+        bw.Write(position.y);
+        bw.Write(velocity.x);
+        bw.Write(velocity.y);
+        bw.Write(direction.x);
+        bw.Write(direction.y);
+        bw.Write(animation);
+        bw.Write(animationFrames);
+        bw.Write(sound);
+        bw.Write(speed);
+        bw.Write(gravity);
+        bw.Write(canDash);
+        bw.Write(jump);
+        bw.Write(hasJumped);
+        bw.Write(canJump);
+        bw.Write(canDoubleJump);
+        bw.Write(dashFrames);
+        bw.Write(start);
+        bw.Write(skip);
+        bw.Write(flip);
+        CurrentState.Serialize(bw);
+        for (int i = 0; i < effects.Length; ++i)
+        {
+            effects[i].Serialize(bw);
+        }
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        position.x = br.ReadSingle();
+        position.y = br.ReadSingle();
+        velocity.x = br.ReadSingle();
+        velocity.y = br.ReadSingle();
+        direction.x = br.ReadSingle();
+        direction.y = br.ReadSingle();
+        animation = br.ReadString();
+        animationFrames = br.ReadInt32();
+        sound = br.ReadString();
+        speed = br.ReadSingle();
+        gravity = br.ReadSingle();
+        canDash = br.ReadBoolean();
+        jump = br.ReadSingle();
+        hasJumped = br.ReadBoolean();
+        canJump = br.ReadBoolean();
+        canDoubleJump = br.ReadBoolean();
+        dashFrames = br.ReadInt32();
         start = br.ReadBoolean();
         skip = br.ReadBoolean();
-        up = br.ReadBoolean();
-        down = br.ReadBoolean();
-        left = br.ReadBoolean();
-        right = br.ReadBoolean();
-        light = br.ReadBoolean();
-        medium = br.ReadBoolean();
-        heavy = br.ReadBoolean();
-        arcana = br.ReadBoolean();
-        shadow = br.ReadBoolean();
-        grab = br.ReadBoolean();
-        blueFrenzy = br.ReadBoolean();
-        redFrenzy = br.ReadBoolean();
-        dashForward = br.ReadBoolean();
-        dashBackward = br.ReadBoolean();
+        flip = br.ReadInt32();
+        CurrentState.Deserialize(br);
+        for (int i = 0; i < effects.Length; ++i)
+        {
+            effects[i].Deserialize(br);
+        }
+    }
+
+    public override int GetHashCode()
+    {
+        int hashCode = 1858597544;
+        hashCode = hashCode * -1521134295 + position.GetHashCode();
+        hashCode = hashCode * -1521134295 + start.GetHashCode();
+        hashCode = hashCode * -1521134295 + animation.GetHashCode();
+        hashCode = hashCode * -1521134295 + sound.GetHashCode();
+        hashCode = hashCode * -1521134295 + skip.GetHashCode();
+        return hashCode;
+    }
+
+    public void SetEffect(string name, Vector2 position, bool flip = false)
+    {
+        for (int i = 0; i < effects.Length; i++)
+        {
+            if (name == effects[i].name)
+            {
+                for (int j = 0; j < effects[i].effectGroups.Length; j++)
+                {
+                    if (!effects[i].effectGroups[j].active)
+                    {
+                        effects[i].effectGroups[j].flip = flip;
+                        effects[i].effectGroups[j].active = true;
+                        effects[i].effectGroups[j].position = position;
+                        break;
+                    }
+                }
+            }
+        }
     }
 };
 
@@ -74,16 +174,15 @@ public struct PlayerNetwork
 public struct VwGame : IGame
 {
     public int Framenumber { get; private set; }
-
+    public int NextFramenumber { get; private set; }
     public int Checksum => GetHashCode();
 
     public PlayerNetwork[] _players;
 
-    public static Rect _bounds = new Rect(0, 0, 640, 480);
-
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(Framenumber);
+        bw.Write(NextFramenumber);
         bw.Write(_players.Length);
         for (int i = 0; i < _players.Length; ++i)
         {
@@ -94,6 +193,7 @@ public struct VwGame : IGame
     public void Deserialize(BinaryReader br)
     {
         Framenumber = br.ReadInt32();
+        NextFramenumber = br.ReadInt32();
         int length = br.ReadInt32();
         if (length != _players.Length)
         {
@@ -134,13 +234,31 @@ public struct VwGame : IGame
      * Initialize our game state.
      */
 
-    public VwGame(int num_players)
+    public VwGame(PlayerStatsSO[] playerStats)
     {
         Framenumber = 0;
-        _players = new PlayerNetwork[num_players];
+        NextFramenumber = 1;
+        _players = new PlayerNetwork[playerStats.Length];
+        ObjectPoolingManager.Instance.PoolInitialize(playerStats[0]._effectsLibrary, playerStats[1]._effectsLibrary);
         for (int i = 0; i < _players.Length; i++)
         {
             _players[i] = new PlayerNetwork();
+            _players[i].CurrentState = new IdleStates();
+            _players[i].position = new Vector2(GameplayManager.Instance.GetSpawnPositions()[i], (float)DemonicsPhysics.GROUND_POINT);
+            _players[i].playerStats = playerStats[i];
+            _players[i].animation = "Idle";
+            _players[i].sound = "";
+            _players[i].gravity = 0.018f;
+            _players[i].canJump = true;
+            _players[i].canDoubleJump = true;
+            _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
+            for (int j = 0; j < _players[i].effects.Length; j++)
+            {
+                _players[i].effects[j] = new EffectNetwork();
+                _players[i].effects[j].name = playerStats[i]._effectsLibrary._objectPools[j].groupName;
+                _players[i].effects[j].animationMaxFrames = ObjectPoolingManager.Instance.GetObjectAnimation(i, _players[i].effects[j].name).GetMaxAnimationFrames();
+                _players[i].effects[j].effectGroups = new EffectGroupNetwork[playerStats[i]._effectsLibrary._objectPools[j].size];
+            }
         }
     }
 
@@ -272,23 +390,172 @@ public struct VwGame : IGame
     public void PlayerLogic(int index, bool skip, bool up, bool down, bool left, bool right, bool light, bool medium, bool heavy,
     bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy, bool dashForward, bool dashBackward)
     {
-        var player = _players[index];
-        _players[index].skip = skip;
-        _players[index].up = up;
-        _players[index].down = down;
-        _players[index].left = left;
-        _players[index].right = right;
-        _players[index].light = light;
-        _players[index].medium = medium;
-        _players[index].heavy = heavy;
-        _players[index].arcana = arcana;
-        _players[index].grab = grab;
-        _players[index].shadow = shadow;
-        _players[index].blueFrenzy = blueFrenzy;
-        _players[index].redFrenzy = redFrenzy;
-        _players[index].dashForward = dashForward;
-        _players[index].dashBackward = dashBackward;
+        if (up)
+        {
+            _players[index].direction = new Vector2(0, 1);
+        }
+        if (down)
+        {
+            _players[index].direction = new Vector2(0, -1);
+        }
+        if (right)
+        {
+            _players[index].direction = new Vector2(1, _players[index].direction.y);
+        }
+        if (left)
+        {
+            _players[index].direction = new Vector2(-1, _players[index].direction.y);
+        }
+        if (!left && !right)
+        {
+            _players[index].direction = new Vector2(0, _players[index].direction.y);
+        }
+        if (!up && !down)
+        {
+            _players[index].direction = new Vector2(_players[index].direction.x, 0);
+        }
+        if (dashForward)
+        {
+            if (_players[index].CurrentState.ToDashState(_players[index]))
+            {
+                _players[index].dashFrames = 15;
+                _players[index].direction = new Vector2(1, 0);
+                _players[index].CurrentState = _players[index].CurrentState.NextState;
+                _players[index].CurrentState.Enter(_players[index]);
+                _players[index].gravity = _players[index].CurrentState.Gravity;
+                _players[index].sound = _players[index].CurrentState.Sound;
+                NextFramenumber = Framenumber + 1;
+            }
+        }
+        if (dashBackward)
+        {
+            if (_players[index].CurrentState.ToDashState(_players[index]))
+            {
+                _players[index].dashFrames = 15;
+                _players[index].direction = new Vector2(-1, 0);
+                _players[index].CurrentState = _players[index].CurrentState.NextState;
+                _players[index].CurrentState.Enter(_players[index]);
+                _players[index].gravity = _players[index].CurrentState.Gravity;
+                _players[index].sound = _players[index].CurrentState.Sound;
+                NextFramenumber = Framenumber + 1;
+            }
+        }
+        _players[index].CurrentState.UpdateLogic(_players[index]);
+        if (_players[index].CurrentState.NextState != null && _players[index].CurrentState.NextState != _players[index].CurrentState)
+        {
+            _players[index].CurrentState = _players[index].CurrentState.NextState;
+            _players[index].CurrentState.Enter(_players[index]);
+            _players[index].gravity = _players[index].CurrentState.Gravity;
+            if (_players[index].CurrentState.Sound != "")
+            {
+                _players[index].sound = _players[index].CurrentState.Sound;
+                NextFramenumber = Framenumber + 1;
+            }
+        }
+        _players[index].velocity = new Vector2(_players[index].velocity.x, _players[index].velocity.y - _players[index].gravity);
+
+        if (index == 0)
+        {
+            if (!Collision(_players[0], _players[1]))
+            {
+                _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
+            }
+
+            if (GameplayManager.Instance.PlayerOne)
+            {
+                if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
+                {
+                    _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
+                }
+                if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
+                {
+                    _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
+                }
+            }
+        }
+        else
+        {
+            if (!Collision(_players[1], _players[0]))
+            {
+                _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
+            }
+
+
+            if (GameplayManager.Instance.PlayerOne)
+            {
+                if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
+                {
+                    _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
+                }
+                if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
+                {
+                    _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
+                }
+            }
+        }
+        if ((DemonicsFloat)_players[index].position.y <= DemonicsPhysics.GROUND_POINT)
+        {
+            _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
+        }
+
+
+        _players[index].dashFrames--;
+        if (GameplayManager.Instance.PlayerOne)
+        {
+            _players[0].flip = GameplayManager.Instance.PlayerOne.IsFlip();
+            _players[1].flip = GameplayManager.Instance.PlayerTwo.IsFlip();
+            if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
+            {
+                _players[0].animationFrames = 0;
+            }
+        }
+        if (GameplayManager.Instance.PlayerTwo)
+        {
+            if (GameplayManager.Instance.PlayerTwo.IsAnimationFinished())
+            {
+                _players[1].animationFrames = 0;
+            }
+        }
+        for (int i = 0; i < _players[index].effects.Length; i++)
+        {
+            for (int j = 0; j < _players[index].effects[i].effectGroups.Length; j++)
+            {
+                if (_players[index].effects[i].effectGroups[j].active)
+                {
+                    _players[index].effects[i].effectGroups[j].animationFrames++;
+                    if (_players[index].effects[i].effectGroups[j].animationFrames >= _players[index].effects[i].animationMaxFrames)
+                    {
+                        _players[index].effects[i].effectGroups[j].animationFrames = 0;
+                        _players[index].effects[i].effectGroups[j].active = false;
+                    }
+                }
+            }
+        }
+        NextFrameReset(index);
     }
+
+    private void NextFrameReset(int index)
+    {
+        if (NextFramenumber <= Framenumber)
+        {
+            if (!string.IsNullOrEmpty(_players[index].sound))
+            {
+                if (index == 0)
+                {
+                    GameplayManager.Instance.PlayerOne.PlaySound(_players[index].sound);
+                    _players[index].sound = "";
+                    NextFramenumber = 0;
+                }
+                else
+                {
+                    GameplayManager.Instance.PlayerTwo.PlaySound(_players[index].sound);
+                    _players[index].sound = "";
+                    NextFramenumber = 0;
+                }
+            }
+        }
+    }
+
     public void Update(long[] inputs, int disconnect_flags)
     {
         Framenumber++;
@@ -333,71 +600,144 @@ public struct VwGame : IGame
             {
                 input |= NetworkInput.SKIP_BYTE;
             }
-            if (NetworkInput.UP_INPUT)
+            if (NetworkInput.ONE_UP_INPUT)
             {
                 input |= NetworkInput.UP_BYTE;
             }
-            if (NetworkInput.DOWN_INPUT)
+            if (NetworkInput.ONE_DOWN_INPUT)
             {
                 input |= NetworkInput.DOWN_BYTE;
             }
-            if (NetworkInput.LEFT_INPUT)
+            if (NetworkInput.ONE_LEFT_INPUT)
             {
                 input |= NetworkInput.LEFT_BYTE;
             }
-            if (NetworkInput.RIGHT_INPUT)
+            if (NetworkInput.ONE_RIGHT_INPUT)
             {
                 input |= NetworkInput.RIGHT_BYTE;
             }
-            if (NetworkInput.LIGHT_INPUT)
+            if (NetworkInput.ONE_LIGHT_INPUT)
             {
                 input |= NetworkInput.LIGHT_BYTE;
-                NetworkInput.LIGHT_INPUT = false;
+                NetworkInput.ONE_LIGHT_INPUT = false;
             }
-            if (NetworkInput.MEDIUM_INPUT)
+            if (NetworkInput.ONE_MEDIUM_INPUT)
             {
                 input |= NetworkInput.MEDIUM_BYTE;
-                NetworkInput.MEDIUM_INPUT = false;
+                NetworkInput.ONE_MEDIUM_INPUT = false;
             }
-            if (NetworkInput.HEAVY_INPUT)
+            if (NetworkInput.ONE_HEAVY_INPUT)
             {
                 input |= NetworkInput.HEAVY_BYTE;
-                NetworkInput.HEAVY_INPUT = false;
+                NetworkInput.ONE_HEAVY_INPUT = false;
             }
-            if (NetworkInput.ARCANA_INPUT)
+            if (NetworkInput.ONE_ARCANA_INPUT)
             {
                 input |= NetworkInput.ARCANA_BYTE;
-                NetworkInput.ARCANA_INPUT = false;
+                NetworkInput.ONE_ARCANA_INPUT = false;
             }
-            if (NetworkInput.SHADOW_INPUT)
+            if (NetworkInput.ONE_SHADOW_INPUT)
             {
                 input |= NetworkInput.SHADOW_BYTE;
-                NetworkInput.SHADOW_INPUT = false;
+                NetworkInput.ONE_SHADOW_INPUT = false;
             }
-            if (NetworkInput.GRAB_INPUT)
+            if (NetworkInput.ONE_GRAB_INPUT)
             {
                 input |= NetworkInput.GRAB_BYTE;
-                NetworkInput.GRAB_INPUT = false;
+                NetworkInput.ONE_GRAB_INPUT = false;
             }
-            if (NetworkInput.BLUE_FRENZY_INPUT)
+            if (NetworkInput.ONE_BLUE_FRENZY_INPUT)
             {
                 input |= NetworkInput.BLUE_FRENZY_BYTE;
-                NetworkInput.BLUE_FRENZY_INPUT = false;
+                NetworkInput.ONE_BLUE_FRENZY_INPUT = false;
             }
-            if (NetworkInput.RED_FRENZY_INPUT)
+            if (NetworkInput.ONE_RED_FRENZY_INPUT)
             {
                 input |= NetworkInput.RED_FRENZY_BYTE;
-                NetworkInput.RED_FRENZY_INPUT = false;
+                NetworkInput.ONE_RED_FRENZY_INPUT = false;
             }
-            if (NetworkInput.DASH_FORWARD_INPUT)
+            if (NetworkInput.ONE_DASH_FORWARD_INPUT)
             {
                 input |= NetworkInput.DASH_FORWARD_BYTE;
-                NetworkInput.DASH_FORWARD_INPUT = false;
+                NetworkInput.ONE_DASH_FORWARD_INPUT = false;
             }
-            if (NetworkInput.DASH_BACKWARD_INPUT)
+            if (NetworkInput.ONE_DASH_BACKWARD_INPUT)
             {
                 input |= NetworkInput.DASH_BACKWARD_BYTE;
-                NetworkInput.DASH_BACKWARD_INPUT = false;
+                NetworkInput.ONE_DASH_BACKWARD_INPUT = false;
+            }
+        }
+        if (id == 1)
+        {
+            if (Input.anyKeyDown)
+            {
+                input |= NetworkInput.SKIP_BYTE;
+            }
+            if (NetworkInput.TWO_UP_INPUT)
+            {
+                input |= NetworkInput.UP_BYTE;
+            }
+            if (NetworkInput.TWO_DOWN_INPUT)
+            {
+                input |= NetworkInput.DOWN_BYTE;
+            }
+            if (NetworkInput.TWO_LEFT_INPUT)
+            {
+                input |= NetworkInput.LEFT_BYTE;
+            }
+            if (NetworkInput.TWO_RIGHT_INPUT)
+            {
+                input |= NetworkInput.RIGHT_BYTE;
+            }
+            if (NetworkInput.TWO_LIGHT_INPUT)
+            {
+                input |= NetworkInput.LIGHT_BYTE;
+                NetworkInput.TWO_LIGHT_INPUT = false;
+            }
+            if (NetworkInput.TWO_MEDIUM_INPUT)
+            {
+                input |= NetworkInput.MEDIUM_BYTE;
+                NetworkInput.TWO_MEDIUM_INPUT = false;
+            }
+            if (NetworkInput.TWO_HEAVY_INPUT)
+            {
+                input |= NetworkInput.HEAVY_BYTE;
+                NetworkInput.TWO_HEAVY_INPUT = false;
+            }
+            if (NetworkInput.TWO_ARCANA_INPUT)
+            {
+                input |= NetworkInput.ARCANA_BYTE;
+                NetworkInput.TWO_ARCANA_INPUT = false;
+            }
+            if (NetworkInput.TWO_SHADOW_INPUT)
+            {
+                input |= NetworkInput.SHADOW_BYTE;
+                NetworkInput.TWO_SHADOW_INPUT = false;
+            }
+            if (NetworkInput.TWO_GRAB_INPUT)
+            {
+                input |= NetworkInput.GRAB_BYTE;
+                NetworkInput.TWO_GRAB_INPUT = false;
+            }
+            if (NetworkInput.TWO_BLUE_FRENZY_INPUT)
+            {
+                input |= NetworkInput.BLUE_FRENZY_BYTE;
+                NetworkInput.TWO_BLUE_FRENZY_INPUT = false;
+            }
+            if (NetworkInput.TWO_RED_FRENZY_INPUT)
+            {
+                input |= NetworkInput.RED_FRENZY_BYTE;
+                NetworkInput.TWO_RED_FRENZY_INPUT = false;
+            }
+            if (NetworkInput.TWO_DASH_FORWARD_INPUT)
+            {
+                input |= NetworkInput.DASH_FORWARD_BYTE;
+                NetworkInput.TWO_DASH_FORWARD_INPUT = false;
+            }
+            if (NetworkInput.TWO_DASH_BACKWARD_INPUT)
+            {
+                input |= NetworkInput.DASH_BACKWARD_BYTE;
+                NetworkInput.TWO_DASH_BACKWARD_INPUT = false;
             }
         }
         return input;
@@ -425,5 +765,623 @@ public struct VwGame : IGame
     public void LogInfo(string filename)
     {
         //Log
+    }
+    private bool Collision(PlayerNetwork player, PlayerNetwork otherPlayer)
+    {
+        if (Colliding(player, otherPlayer))
+        {
+            if (player.position.y > otherPlayer.position.y)
+            {
+                if (player.velocity.y < otherPlayer.velocity.y)
+                {
+                    float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
+                    float pushDistance = (1.35f - difference) / (2);
+                    if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
+                    {
+                        player.position = new Vector2(player.position.x + pushDistance, player.position.y);
+                    }
+                    else if (player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
+                    {
+                        player.position = new Vector2(player.position.x - pushDistance, player.position.y);
+                    }
+                }
+            }
+            Vector2 main = player.velocity;
+            Vector2 second = otherPlayer.velocity;
+            if (otherPlayer.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT && player.velocity.x >= 0 || otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT && player.velocity.x <= 0)
+            {
+                main = new Vector2(0, player.velocity.y);
+                second = new Vector2(0, otherPlayer.velocity.y);
+                otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
+                player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                Intersects(player, otherPlayer);
+                return true;
+            }
+            if (Mathf.Abs(player.velocity.x) > Mathf.Abs(otherPlayer.velocity.x))
+            {
+                float totalVelocity;
+                if (player.velocity.x > 0 && otherPlayer.velocity.x < 0)
+                {
+                    totalVelocity = Mathf.Abs(player.velocity.x) - Mathf.Abs(otherPlayer.velocity.x);
+                }
+                else
+                {
+                    totalVelocity = Mathf.Abs(player.velocity.x);
+                }
+                if (player.position.x < otherPlayer.position.x && player.velocity.x > 0)
+                {
+                    main = new Vector2(totalVelocity, player.velocity.y);
+                    second = new Vector2(totalVelocity, otherPlayer.velocity.y);
+                    otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
+                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    Intersects(player, otherPlayer);
+                    return true;
+                }
+                else if (player.position.x > otherPlayer.position.x && player.velocity.x < 0)
+                {
+                    main = new Vector2(-totalVelocity, player.velocity.y);
+                    second = new Vector2(-totalVelocity, otherPlayer.velocity.y);
+                    otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
+                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    Intersects(player, otherPlayer);
+                    return true;
+                }
+                if (player.velocity.x == 0 || otherPlayer.velocity.x == 0)
+                {
+                    Intersects(player, otherPlayer);
+                }
+                return false;
+            }
+            else if (Mathf.Abs(player.velocity.x) == Mathf.Abs(otherPlayer.velocity.x))
+            {
+                if (player.position.x < otherPlayer.position.x && player.velocity.x > 0 || player.position.x > otherPlayer.position.x && player.velocity.x < 0)
+                {
+                    main = new Vector2(0, player.velocity.y);
+                    second = new Vector2(0, otherPlayer.velocity.y);
+                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    Intersects(player, otherPlayer);
+                    return true;
+                }
+                Intersects(player, otherPlayer);
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+    private void Intersects(PlayerNetwork player, PlayerNetwork otherPlayer)
+    {
+        if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT || player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
+        {
+            return;
+        }
+        if (player.position.x < otherPlayer.position.x)
+        {
+            if (player.position.x + 1.35f >= otherPlayer.position.x)
+            {
+                float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
+                float pushDistance = (1.35f - difference) / (2);
+                player.position = new Vector2((player.position.x - pushDistance), player.position.y);
+            }
+        }
+        else
+        {
+            if (player.position.x <= otherPlayer.position.x + 1.35f)
+            {
+                float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
+                float pushDistance = (1.35f - difference) / (2);
+                player.position = new Vector2((player.position.x + pushDistance), player.position.y);
+            }
+        }
+    }
+    private bool valueInRange(float value, float min, float max)
+    { return (value >= min) && (value <= max); }
+    private bool Colliding(PlayerNetwork a, PlayerNetwork b)
+    {
+        bool xOverlap = valueInRange(a.position.x - (1.35f / 2), b.position.x - (1.35f / 2), b.position.x + (1.35f / 2)) ||
+                    valueInRange(b.position.x - (1.35f / 2), a.position.x - (1.35f / 2), a.position.x + (1.35f / 2));
+        bool yOverlap = valueInRange(a.position.y - (1.5f / 2), b.position.y - (1.5f / 2), b.position.y + (1.5f / 2)) ||
+                    valueInRange(b.position.y - (1.5f / 2), a.position.y - (1.5f / 2), a.position.y + (1.5f / 2));
+        return xOverlap && yOverlap;
+    }
+}
+public class States
+{
+    public States NextState;
+    public float Gravity;
+    public string Sound;
+    public virtual void Enter(PlayerNetwork player)
+    {
+        player.animationFrames = 0;
+        Sound = "";
+        Gravity = 0.018f;
+    }
+    public virtual void UpdateLogic(PlayerNetwork player) { }
+    public virtual void Exit() { }
+    public virtual bool ToAttackState() { return false; }
+    public virtual bool ToDashState(PlayerNetwork player) { return false; }
+    public void Serialize(BinaryWriter bw)
+    {
+
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+
+    }
+};
+public class GroundParentStates : States
+{
+    //TODO
+}
+public class IdleStates : GroundParentStates
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        player.canDoubleJump = true;
+        base.Enter(player);
+        player.animation = "Idle";
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        player.velocity = Vector2.zero;
+        ToWalkState(player.direction.x);
+        ToJumpForwardState(player);
+        ToJumpState(player);
+        ToCrouchState(player.direction.y);
+        player.animationFrames++;
+    }
+
+    private void ToWalkState(float directionX)
+    {
+        if (directionX != 0)
+        {
+            NextState = new WalkStates();
+        }
+    }
+
+    private void ToJumpState(PlayerNetwork player)
+    {
+        if (player.direction.y > 0)
+        {
+            if (player.canJump)
+            {
+                player.hasJumped = true;
+                player.canJump = false;
+                NextState = new JumpStates();
+            }
+        }
+    }
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.direction.y > 0 && player.direction.x != 0)
+        {
+            if (player.canJump)
+            {
+                player.hasJumped = true;
+                player.canJump = false;
+                NextState = new JumpForwardStates();
+            }
+        }
+    }
+    private void ToCrouchState(float directionY)
+    {
+        if (directionY < 0)
+        {
+            NextState = new CrouchStates();
+        }
+    }
+    public override bool ToAttackState()
+    {
+        NextState = new AttackStates();
+        return true;
+    }
+    public override bool ToDashState(PlayerNetwork player)
+    {
+        NextState = new DashStates();
+        return true;
+    }
+}
+public class CrouchStates : GroundParentStates
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        player.animation = "Crouch";
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        player.velocity = Vector2.zero;
+        ToIdleState(player.direction.y);
+    }
+
+    private void ToIdleState(float directionY)
+    {
+        if (directionY >= 0)
+        {
+            NextState = new IdleStates();
+        }
+    }
+}
+public class WalkStates : GroundParentStates
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        player.animation = "Walk";
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        player.velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedWalk, 0);
+        ToIdleState(player);
+        ToJumpForwardState(player);
+        ToCrouchState(player.direction.y);
+        player.animationFrames++;
+    }
+
+    private void ToIdleState(PlayerNetwork player)
+    {
+        if (player.direction.x == 0)
+        {
+            NextState = new IdleStates();
+        }
+    }
+
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.direction.y > 0 && player.direction.x != 0)
+        {
+            if (player.canJump)
+            {
+                player.hasJumped = true;
+                player.canJump = false;
+                NextState = new JumpForwardStates();
+            }
+        }
+    }
+
+    private void ToCrouchState(float directionY)
+    {
+        if (directionY < 0)
+        {
+            NextState = new CrouchStates();
+        }
+    }
+}
+
+public class DashStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        player.animation = "Dash";
+        Sound = "Dash";
+        if (player.direction.x > 0)
+        {
+            Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
+            player.SetEffect("Dash", effectPosition, false);
+        }
+        else
+        {
+            Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
+            player.SetEffect("Dash", effectPosition, true);
+        }
+        player.velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
+        NextState = null;
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        Dash(player);
+    }
+
+    private void Dash(PlayerNetwork player)
+    {
+        if (player.dashFrames > 0)
+        {
+            if (player.dashFrames % 5 == 0)
+            {
+                if (player.flip > 0)
+                {
+                    Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
+                    player.SetEffect("Ghost", player.position, false);
+                }
+                else
+                {
+                    Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
+                    player.SetEffect("Ghost", player.position, true);
+                }
+            }
+        }
+        else
+        {
+            if (player.direction.x * player.flip > 0)
+            {
+                NextState = new RunStates();
+            }
+            else
+            {
+                NextState = new WalkStates();
+            }
+        }
+    }
+}
+
+public class DashAirState : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        player.animationFrames = 0;
+        player.animation = "Fall";
+        Sound = "Dash";
+        if (player.direction.x > 0)
+        {
+            Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
+            player.SetEffect("Dash", effectPosition, false);
+        }
+        else
+        {
+            Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
+            player.SetEffect("Dash", effectPosition, true);
+        }
+        player.velocity = new Vector2(player.direction.x * (float)player.playerStats.DashForce, 0);
+        Gravity = 0;
+        NextState = null;
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        Dash(player);
+    }
+
+    private void Dash(PlayerNetwork player)
+    {
+        if (player.dashFrames > 0)
+        {
+            if (player.dashFrames % 5 == 0)
+            {
+                if (player.flip > 0)
+                {
+                    Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
+                    player.SetEffect("Ghost", player.position, false);
+                }
+                else
+                {
+                    Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
+                    player.SetEffect("Ghost", player.position, true);
+                }
+            }
+        }
+        else
+        {
+            player.velocity = Vector2.zero;
+            NextState = new FallStates();
+        }
+    }
+}
+
+public class RunStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        player.animation = "Run";
+    }
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        player.velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedRun, 0);
+        ToIdleState(player.direction.x);
+        ToJumpForwardState(player);
+    }
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.direction.y > 0 && player.direction.x != 0)
+        {
+            if (player.canJump)
+            {
+                player.hasJumped = true;
+                player.canJump = false;
+                NextState = new JumpForwardStates();
+            }
+        }
+    }
+
+    private void ToIdleState(float directionX)
+    {
+        if (directionX == 0)
+        {
+            NextState = new IdleStates();
+        }
+    }
+}
+
+public class AirParentStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        ToJumpForwardState(player);
+        ToJumpState(player);
+        ToFallState(player);
+    }
+
+    private void ToJumpState(PlayerNetwork player)
+    {
+        if (player.canDoubleJump)
+        {
+            if (player.direction.y > 0 && !player.hasJumped)
+            {
+                player.hasJumped = true;
+                player.canDoubleJump = false;
+                NextState = new JumpStates();
+            }
+            else if (player.direction.y <= 0 && player.hasJumped)
+            {
+                player.hasJumped = false;
+            }
+        }
+    }
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.canDoubleJump)
+        {
+            if (player.direction.y > 0 && player.direction.x != 0 && !player.hasJumped)
+            {
+                player.hasJumped = true;
+                player.canDoubleJump = false;
+                NextState = new JumpForwardStates();
+            }
+            else if (player.direction.y <= 0 && player.hasJumped)
+            {
+                player.hasJumped = false;
+            }
+        }
+    }
+    private void ToFallState(PlayerNetwork player)
+    {
+        if (player.velocity.y <= 0)
+        {
+            player.hasJumped = false;
+            NextState = new FallStates();
+        }
+    }
+    public override bool ToDashState(PlayerNetwork player)
+    {
+        if (player.canDash)
+        {
+            player.canDash = false;
+            NextState = new DashAirState();
+            return true;
+        }
+        return false;
+    }
+}
+public class JumpStates : AirParentStates
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        player.animation = "Jump";
+        Sound = "Jump";
+        player.SetEffect("Jump", player.position);
+        player.velocity = new Vector2(0, (float)player.playerStats.JumpForce);
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        player.animationFrames++;
+    }
+}
+
+public class JumpForwardStates : AirParentStates
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        player.animation = "JumpForward";
+        Sound = "Jump";
+        player.SetEffect("Jump", player.position);
+        player.velocity = new Vector2(0.14f * player.direction.x, (float)player.playerStats.JumpForce);
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        player.animationFrames++;
+    }
+}
+public class FallStates : AirParentStates
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        player.animation = "Fall";
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        ToIdleState(player);
+        ToJumpForwardState(player);
+        ToJumpState(player);
+    }
+
+    private void ToJumpState(PlayerNetwork player)
+    {
+        if (player.canDoubleJump)
+        {
+            if (player.direction.y > 0 && !player.hasJumped)
+            {
+                player.hasJumped = true;
+                player.canDoubleJump = false;
+                NextState = new JumpStates();
+            }
+            else if (player.direction.y <= 0 && player.hasJumped)
+            {
+                player.hasJumped = false;
+            }
+        }
+    }
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.canDoubleJump)
+        {
+            if (player.direction.y > 0 && player.direction.x != 0 && !player.hasJumped)
+            {
+                player.hasJumped = true;
+                player.canDoubleJump = false;
+                NextState = new JumpForwardStates();
+            }
+            else if (player.direction.y <= 0 && player.hasJumped)
+            {
+                player.hasJumped = false;
+            }
+        }
+    }
+    private void ToIdleState(PlayerNetwork player)
+    {
+        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+        {
+            player.canDash = true;
+            player.hasJumped = false;
+            player.canJump = true;
+            Sound = "Jump";
+            player.SetEffect("Fall", player.position);
+            NextState = new IdleStates();
+        }
+    }
+}
+public class AttackStates : States
+{
+    public override void Enter(PlayerNetwork player)
+    {
+        base.Enter(player);
+        player.animation = "5M";
+    }
+
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        base.UpdateLogic(player);
+        ToIdleState(player);
+        player.animationFrames++;
+    }
+
+    private void ToIdleState(PlayerNetwork player)
+    {
+
     }
 }

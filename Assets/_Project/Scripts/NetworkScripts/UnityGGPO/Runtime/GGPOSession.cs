@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Unity.Collections;
 
-namespace UnityGGPO {
+namespace UnityGGPO
+{
 
     // @TODO Move
-    public interface IPerfUpdate {
+    public interface IPerfUpdate
+    {
 
         void ggpoutil_perfmon_update(GGPONetworkStats[] statss);
     }
 
-    public static partial class GGPO {
+    public static partial class GGPO
+    {
 
-        public static class Session {
+        public static class Session
+        {
             // Pass throughs
 
             public delegate bool OnEventConnectedToPeerDelegate(int connected_player);
@@ -68,11 +72,13 @@ namespace UnityGGPO {
             private static IntPtr _freeBufferCallback;
             private static IntPtr _onEventCallback;
 
-            public static void Init(LogDelegate log) {
+            public static void Init(LogDelegate log)
+            {
                 GGPO.SetLogDelegate(log);
             }
 
-            public static bool IsStarted() {
+            public static bool IsStarted()
+            {
                 return ggpo != IntPtr.Zero;
             }
 
@@ -91,7 +97,8 @@ namespace UnityGGPO {
                     OnEventConnectionResumedDelegate onEventConnectionResumed,
                     OnEventDisconnectedFromPeerDelegate onEventDisconnectedFromPeer,
                     OnEventEventcodeTimesyncDelegate onEventTimesync,
-                    string gameName, int numPlayers, int localport) {
+                    string gameName, int numPlayers, int localport)
+            {
                 beginGameCallback = beginGame;
                 advanceFrameCallback = advanceFrame;
                 loadGameStateCallback = loadGameState;
@@ -108,7 +115,8 @@ namespace UnityGGPO {
                 Session.onEventDisconnectedFromPeer = onEventDisconnectedFromPeer;
                 Session.onEventTimesync = onEventTimesync;
 
-                unsafe {
+                unsafe
+                {
                     _beginGameCallback = Marshal.GetFunctionPointerForDelegate<BeginGameDelegate>(OnBeginGame);
                     _advanceFrameCallback = Marshal.GetFunctionPointerForDelegate<AdvanceFrameDelegate>(OnAdvanceFrame);
                     _loadGameStateCallback = Marshal.GetFunctionPointerForDelegate<LoadGameStateDelegate>(LoadGameState);
@@ -145,7 +153,8 @@ namespace UnityGGPO {
                     OnEventConnectionResumedDelegate onEventConnectionResumed,
                     OnEventDisconnectedFromPeerDelegate onEventDisconnectedFromPeer,
                     OnEventEventcodeTimesyncDelegate onEventTimesync,
-                    string gameName, int numPlayers, int localport, string hostIp, int hostPort) {
+                    string gameName, int numPlayers, int localport, string hostIp, int hostPort)
+            {
                 beginGameCallback = beginGame;
                 advanceFrameCallback = advanceFrame;
                 loadGameStateCallback = loadGameState;
@@ -162,7 +171,8 @@ namespace UnityGGPO {
                 Session.onEventDisconnectedFromPeer = onEventDisconnectedFromPeer;
                 Session.onEventTimesync = onEventTimesync;
 
-                unsafe {
+                unsafe
+                {
                     _beginGameCallback = Marshal.GetFunctionPointerForDelegate<BeginGameDelegate>(OnBeginGame);
                     _advanceFrameCallback = Marshal.GetFunctionPointerForDelegate<AdvanceFrameDelegate>(OnAdvanceFrame);
                     _loadGameStateCallback = Marshal.GetFunctionPointerForDelegate<LoadGameStateDelegate>(LoadGameState);
@@ -184,7 +194,8 @@ namespace UnityGGPO {
                 return result;
             }
 
-            public static int GetNetworkStats(int phandle, out GGPONetworkStats stats) {
+            public static int GetNetworkStats(int phandle, out GGPONetworkStats stats)
+            {
                 stats = new GGPONetworkStats();
                 var result = GGPO.GetNetworkStats(ggpo, phandle,
                     out stats.send_queue_len,
@@ -197,27 +208,33 @@ namespace UnityGGPO {
                 return result;
             }
 
-            public static int SetDisconnectNotifyStart(int timeout) {
+            public static int SetDisconnectNotifyStart(int timeout)
+            {
                 var result = GGPO.SetDisconnectNotifyStart(ggpo, timeout);
                 return result;
             }
 
-            public static int SetDisconnectTimeout(int timeout) {
+            public static int SetDisconnectTimeout(int timeout)
+            {
                 var result = GGPO.SetDisconnectTimeout(ggpo, timeout);
                 return result;
             }
 
-            public static long[] SynchronizeInput(int length, out int disconnect_flags) {
+            public static long[] SynchronizeInput(int length, out int disconnect_flags)
+            {
                 return GGPO.SynchronizeInput(ggpo, length, out disconnect_flags);
             }
 
-            public static int AddLocalInput(int local_player_handle, long inputs) {
+            public static int AddLocalInput(int local_player_handle, long inputs)
+            {
                 var result = GGPO.AddLocalInput(ggpo, local_player_handle, inputs);
                 return result;
             }
 
-            public static int CloseSession() {
-                foreach (var data in cache.Values) {
+            public static int CloseSession()
+            {
+                foreach (var data in cache.Values)
+                {
                     freeBufferCallback(data);
                 }
                 cache.Clear();
@@ -226,12 +243,14 @@ namespace UnityGGPO {
                 return result;
             }
 
-            public static int Idle(int time) {
+            public static int Idle(int time)
+            {
                 var result = GGPO.Idle(ggpo, time);
                 return result;
             }
 
-            public static int AddPlayer(GGPOPlayer player, out int phandle) {
+            public static int AddPlayer(GGPOPlayer player, out int phandle)
+            {
                 var result = GGPO.AddPlayer(ggpo,
                     (int)player.type,
                     player.player_num,
@@ -241,41 +260,50 @@ namespace UnityGGPO {
                 return result;
             }
 
-            public static int DisconnectPlayer(int phandle) {
+            public static int DisconnectPlayer(int phandle)
+            {
                 var result = GGPO.DisconnectPlayer(ggpo, phandle);
                 return result;
             }
 
-            public static int SetFrameDelay(int phandle, int frame_delay) {
+            public static int SetFrameDelay(int phandle, int frame_delay)
+            {
                 var result = GGPO.SetFrameDelay(ggpo, phandle, frame_delay);
                 return result;
             }
 
-            public static int AdvanceFrame() {
+            public static int AdvanceFrame()
+            {
                 var result = GGPO.AdvanceFrame(ggpo);
                 return result;
             }
 
-            public static void Log(string v) {
+            public static void Log(string v)
+            {
                 GGPO.Log(ggpo, v);
             }
 
-            public static void OnDispose() {
-                if (ggpo != IntPtr.Zero) {
+            public static void OnDispose()
+            {
+                if (ggpo != IntPtr.Zero)
+                {
                     CloseSession();
                 }
             }
 
             // Callbacks
 
-            private static unsafe void FreeBuffer(void* dataPtr) {
-                if (cache.TryGetValue((long)dataPtr, out var data)) {
+            private static unsafe void FreeBuffer(void* dataPtr)
+            {
+                if (cache.TryGetValue((long)dataPtr, out var data))
+                {
                     freeBufferCallback(data);
                     cache.Remove((long)dataPtr);
                 }
             }
 
-            private static unsafe bool SaveGameState(void** buffer, int* outLen, int* outChecksum, int frame) {
+            private static unsafe bool SaveGameState(void** buffer, int* outLen, int* outChecksum, int frame)
+            {
                 var result = saveGameStateCallback(out var data, out int checksum, frame);
                 var ptr = Utils.ToPtr(data);
                 cache[(long)ptr] = data;
@@ -286,23 +314,28 @@ namespace UnityGGPO {
                 return result;
             }
 
-            private static unsafe bool LogGameState(string filename, void* buffer, int length) {
+            private static unsafe bool LogGameState(string filename, void* buffer, int length)
+            {
                 return logGameStateCallback(filename, Utils.ToArray(buffer, length));
             }
 
-            private static unsafe bool LoadGameState(void* buffer, int length) {
+            private static unsafe bool LoadGameState(void* buffer, int length)
+            {
                 return loadGameStateCallback(Utils.ToArray(buffer, length));
             }
 
-            private static bool OnAdvanceFrame(int flags) {
+            private static bool OnAdvanceFrame(int flags)
+            {
                 return advanceFrameCallback.Invoke(flags);
             }
 
-            private static bool OnBeginGame(string name) {
+            private static bool OnBeginGame(string name)
+            {
                 return beginGameCallback.Invoke(name);
             }
 
-            private static bool OnEvent(IntPtr evtPtr) {
+            private static bool OnEvent(IntPtr evtPtr)
+            {
                 /*
                 code = data[0];
                 connected.player = data[1];
@@ -319,7 +352,8 @@ namespace UnityGGPO {
 
                 int[] data = new int[4];
                 Marshal.Copy(evtPtr, data, 0, 4);
-                switch (data[0]) {
+                switch (data[0])
+                {
                     case EVENTCODE_CONNECTED_TO_PEER:
                         return onEventConnectedToPeer(data[1]);
 

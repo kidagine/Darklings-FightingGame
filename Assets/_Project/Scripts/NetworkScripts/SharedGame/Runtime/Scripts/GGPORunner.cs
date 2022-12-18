@@ -11,8 +11,6 @@ namespace SharedGame
     {
         private bool verbose;
 
-        public int PlayerIndex { get; set; }
-
         public const int MAX_PLAYERS = 2;
         private const int FRAME_DELAY = 2;
 

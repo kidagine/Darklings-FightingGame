@@ -18,14 +18,14 @@ public class JumpState : AirParentState
         Instantiate(_jumpPrefab, transform.position, Quaternion.identity);
         _audio.Sound("Jump").Play();
         _playerAnimator.Jump();
-        _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)0);
+        // _physics.Velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)0);
         if (_playerMovement.HasDoubleJumped)
         {
-            _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce / _jumpDoubleDivider);
+            //_physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce / _jumpDoubleDivider);
         }
         else
         {
-            _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce);
+            // _physics.Velocity = new DemonicsVector2(_physics.Velocity.x, _player.playerStats.JumpForce);
         }
         if (_jumpCancel)
         {

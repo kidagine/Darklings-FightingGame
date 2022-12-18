@@ -82,7 +82,7 @@ public class RedFrenzyState : State
     private void StartTeleportToOpponent()
     {
         _player.SetInvinsible(true);
-        ObjectPoolingManager.Instance.Spawn(_teleportDisappearEffect, transform.root.position);
+        //ObjectPoolingManager.Instance.Spawn(_teleportDisappearEffect, transform.root.position);
         _midTeleportFrame = 15;
         GameplayManager.Instance.GlobalHitstop(26);
     }
@@ -98,7 +98,7 @@ public class RedFrenzyState : State
             _physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)_player.OtherPlayerMovement.Physics.Position.x + 1.5, (DemonicsFloat)_player.OtherPlayerMovement.Physics.Position.y));
         }
         _physics.SetFreeze(true);
-        ObjectPoolingManager.Instance.Spawn(_teleportAppearEffect, transform.root.position);
+        // ObjectPoolingManager.Instance.Spawn(_teleportAppearEffect, transform.root.position);
         _endTeleportFrame = 11;
     }
 

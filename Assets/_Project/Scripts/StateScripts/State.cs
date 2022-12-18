@@ -1,4 +1,3 @@
-using Demonics.Sounds;
 using UnityEngine;
 
 public class State : MonoBehaviour
@@ -15,7 +14,6 @@ public class State : MonoBehaviour
     protected PlayerComboSystem _playerComboSystem;
     protected InputBuffer _inputBuffer;
     protected Audio _audio;
-
 
     public void Initialize(StateMachine stateMachine, DemonicsPhysics physics, PlayerAnimator playerAnimator, Player player, PlayerMovement playerMovement,
         PlayerUI playerUI, PlayerComboSystem playerComboSystem, InputBuffer inputBuffer, Audio audio)

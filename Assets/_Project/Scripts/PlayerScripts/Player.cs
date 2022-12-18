@@ -4,7 +4,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityGGPO;
-
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
     [SerializeField] private PlayerStateManager _playerStateManager = default;
@@ -15,6 +14,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [SerializeField] protected Transform _effectsParent = default;
     [SerializeField] private Transform _cameraPoint = default;
     [SerializeField] private Transform _keepFlip = default;
+    [SerializeField] private Audio _audio = default;
     [SerializeField] private GameObject[] _playerIcons = default;
     protected PlayerUI _playerUI;
     private PlayerMovement _playerMovement;
@@ -32,7 +32,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
-
+    public PlayerAnimator PlayerAnimator { get { return _playerAnimator; } private set { } }
     public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
     public PlayerStateManager OtherPlayerStateManager { get; private set; }
     public Player OtherPlayer { get; private set; }
@@ -105,7 +105,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         RecallAssist();
         _playerMovement.StopKnockback();
         _playerMovement.Physics.ResetSkipWall();
-        _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
+        // _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
         _playerMovement.Physics.Velocity = DemonicsVector2.Zero;
         _playerStateManager.ResetToInitialState();
         SetInvinsible(false);
@@ -122,7 +122,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         StopAllCoroutines();
         StopComboTimer();
         _playerMovement.StopAllCoroutines();
-        _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
+        PlayerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
         _playerUI.SetArcana((float)ArcanaGauge);
         _playerUI.SetAssist((float)AssistGauge);
         _playerUI.ResetHealthDamaged();
@@ -244,9 +244,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         while (true)
         {
             yield return new WaitForSeconds(0.075f);
-            _playerAnimator.transform.localPosition = new Vector2(_playerAnimator.transform.localPosition.x - 0.03f, _playerAnimator.transform.localPosition.y);
+            PlayerAnimator.transform.localPosition = new Vector2(PlayerAnimator.transform.localPosition.x - 0.03f, PlayerAnimator.transform.localPosition.y);
             yield return new WaitForSeconds(0.075f);
-            _playerAnimator.transform.localPosition = Vector2.zero;
+            PlayerAnimator.transform.localPosition = Vector2.zero;
         }
     }
 
@@ -260,6 +260,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             Flip(-1);
         }
+    }
+
+    public int IsFlip()
+    {
+        return (int)transform.localScale.x;
     }
 
     public void Flip(int xDirection)
@@ -433,26 +438,26 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         if (CurrentAttack.hitEffect != null)
         {
-            GameObject hitEffect;
-            hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
-            hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
-            hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
-            hitEffect.transform.localScale = new Vector2(-1, 1);
-            if (isProjectile)
-            {
-                hitEffect.transform.SetParent(null);
-                hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
-                hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition, false);
-                hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
-                hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
-            }
+            // GameObject hitEffect;
+            // hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
+            // hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
+            // hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
+            // hitEffect.transform.localScale = new Vector2(-1, 1);
+            // if (isProjectile)
+            // {
+            //     hitEffect.transform.SetParent(null);
+            //     hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
+            //     hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition, false);
+            //     hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
+            //     hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
+            // }
         }
     }
 
     public void SetInvinsible(bool state)
     {
         Invisible = state;
-        _playerAnimator.SetInvinsible(state);
+        PlayerAnimator.SetInvinsible(state);
         SetHurtbox(!state);
         SetPushboxTrigger(state);
     }
@@ -482,22 +487,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void SetSpriteOrderPriority()
     {
-        _playerAnimator.SetSpriteOrder(1);
-        OtherPlayer._playerAnimator.SetSpriteOrder(0);
+        PlayerAnimator.SetSpriteOrder(1);
+        OtherPlayer.PlayerAnimator.SetSpriteOrder(0);
     }
 
     public void EnterHitstop()
     {
         _playerMovement.EnterHitstop();
-        _playerAnimator.Pause();
+        PlayerAnimator.Pause();
     }
 
     public void ExitHitstop()
     {
         StopShakeCoroutine();
         _playerMovement.ExitHitstop();
-        _playerAnimator.Resume();
-        _playerAnimator.SpriteNormalEffect();
+        PlayerAnimator.Resume();
+        PlayerAnimator.SpriteNormalEffect();
         hitstopEvent?.Invoke();
         hitstopEvent.RemoveAllListeners();
     }
@@ -512,13 +517,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         SetHealth(CalculateDamage(attack));
         _playerUI.Damaged();
         _playerUI.UpdateHealthDamaged();
-        _playerAnimator.SpriteSuperArmorEffect();
+        PlayerAnimator.SpriteSuperArmorEffect();
         GameplayManager.Instance.HitStop(attack.hitstop);
     }
 
     public bool CanTakeSuperArmorHit(AttackSO attack)
     {
-        if (CurrentAttack.hasSuperArmor && !_playerAnimator.InRecovery() && !CanSkipAttack)
+        if (CurrentAttack.hasSuperArmor && !PlayerAnimator.InRecovery() && !CanSkipAttack)
         {
             return true;
         }
@@ -609,78 +614,29 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             _playerUI.ClosePauseHold();
         }
     }
+    public void PlaySound(string sound)
+    {
+        if (!string.IsNullOrEmpty(sound))
+        {
+            _audio.Sound(sound).Play();
+        }
+    }
+    public bool IsAnimationFinished()
+    {
+        return PlayerAnimator.IsAnimationFinished();
+    }
     public string ConnectionStatus { get; private set; }
     public int ConnectionProgress { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        if (playerGs.skip)
-        {
-            GameplayManager.Instance.SkipIntro();
-        }
-        if (playerGs.up)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
-        }
-        if (playerGs.down)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-        }
-        if (playerGs.left)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
-        }
-        if (playerGs.right)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
-        }
-        if (!playerGs.left && !playerGs.right && _controller.ActiveController.InputDirection.x != 0)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
-        }
-        if (!playerGs.up && !playerGs.down && _controller.ActiveController.InputDirection.y != 0)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
-        }
-        if (playerGs.light)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Light);
-        }
-        if (playerGs.medium)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Medium);
-        }
-        if (playerGs.heavy)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
-        }
-        if (playerGs.arcana)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Special);
-        }
-        if (playerGs.grab)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Throw);
-        }
-        if (playerGs.shadow)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Assist);
-        }
-        if (playerGs.blueFrenzy)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Parry);
-        }
-        if (playerGs.redFrenzy)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
-        }
-        if (playerGs.dashForward)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
-        }
-        if (playerGs.dashBackward)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.BackDash);
-        }
+        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
+        PlayerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
+        NetworkDebug(info);
+    }
+
+    private void NetworkDebug(PlayerConnectionInfo info)
+    {
+#if UNITY_EDITOR
         switch (info.state)
         {
             case PlayerConnectState.Connecting:
@@ -698,5 +654,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 ConnectionProgress = (Utils.TimeGetTime() - info.disconnect_start) * 100 / info.disconnect_timeout;
                 break;
         }
+#endif
     }
 }
