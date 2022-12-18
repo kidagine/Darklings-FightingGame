@@ -239,9 +239,9 @@ public struct VwGame : IGame
         Framenumber = 0;
         NextFramenumber = 1;
         _players = new PlayerNetwork[playerStats.Length];
+        ObjectPoolingManager.Instance.PoolInitialize(playerStats[0]._effectsLibrary, playerStats[1]._effectsLibrary);
         for (int i = 0; i < _players.Length; i++)
         {
-            ObjectPoolingManager.Instance.PoolInitialize(i, playerStats[i]._effectsLibrary);
             _players[i] = new PlayerNetwork();
             _players[i].CurrentState = new IdleStates();
             _players[i].position = new Vector2(GameplayManager.Instance.GetSpawnPositions()[i], (float)DemonicsPhysics.GROUND_POINT);
@@ -460,10 +460,6 @@ public struct VwGame : IGame
             {
                 _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
             }
-            if ((DemonicsFloat)_players[index].position.y <= DemonicsPhysics.GROUND_POINT)
-            {
-                _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
-            }
 
             if (GameplayManager.Instance.PlayerOne)
             {
@@ -483,10 +479,6 @@ public struct VwGame : IGame
             {
                 _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
             }
-            if ((DemonicsFloat)_players[index].position.y <= DemonicsPhysics.GROUND_POINT)
-            {
-                _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
-            }
 
 
             if (GameplayManager.Instance.PlayerOne)
@@ -500,6 +492,10 @@ public struct VwGame : IGame
                     _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
                 }
             }
+        }
+        if ((DemonicsFloat)_players[index].position.y <= DemonicsPhysics.GROUND_POINT)
+        {
+            _players[index].position = new Vector2(_players[index].position.x, (float)DemonicsPhysics.GROUND_POINT);
         }
 
 
@@ -780,16 +776,13 @@ public struct VwGame : IGame
                 {
                     float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
                     float pushDistance = (1.35f - difference) / (2);
-                    if (player.position.x <= otherPlayer.position.x)
+                    if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
                     {
-                        if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
-                        {
-                            player.position = new Vector2(player.position.x + pushDistance, player.position.y);
-                        }
-                        if (player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
-                        {
-                            player.position = new Vector2(player.position.x - pushDistance, player.position.y);
-                        }
+                        player.position = new Vector2(player.position.x + pushDistance, player.position.y);
+                    }
+                    else if (player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
+                    {
+                        player.position = new Vector2(player.position.x - pushDistance, player.position.y);
                     }
                 }
             }
@@ -799,7 +792,7 @@ public struct VwGame : IGame
             {
                 main = new Vector2(0, player.velocity.y);
                 second = new Vector2(0, otherPlayer.velocity.y);
-                otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y));
+                otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
                 player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
                 Intersects(player, otherPlayer);
                 return true;
@@ -833,6 +826,10 @@ public struct VwGame : IGame
                     Intersects(player, otherPlayer);
                     return true;
                 }
+                if (player.velocity.x == 0 || otherPlayer.velocity.x == 0)
+                {
+                    Intersects(player, otherPlayer);
+                }
                 return false;
             }
             else if (Mathf.Abs(player.velocity.x) == Mathf.Abs(otherPlayer.velocity.x))
@@ -841,7 +838,6 @@ public struct VwGame : IGame
                 {
                     main = new Vector2(0, player.velocity.y);
                     second = new Vector2(0, otherPlayer.velocity.y);
-                    otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
                     player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
                     Intersects(player, otherPlayer);
                     return true;
@@ -861,7 +857,7 @@ public struct VwGame : IGame
         }
         if (player.position.x < otherPlayer.position.x)
         {
-            if (player.position.x + 1.35f > otherPlayer.position.x)
+            if (player.position.x + 1.35f >= otherPlayer.position.x)
             {
                 float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
                 float pushDistance = (1.35f - difference) / (2);
@@ -870,7 +866,7 @@ public struct VwGame : IGame
         }
         else
         {
-            if (player.position.x < otherPlayer.position.x + 1.35f)
+            if (player.position.x <= otherPlayer.position.x + 1.35f)
             {
                 float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
                 float pushDistance = (1.35f - difference) / (2);
@@ -1358,7 +1354,7 @@ public class FallStates : AirParentStates
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if ((DemonicsFloat)player.position.y == DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
             player.canDash = true;
             player.hasJumped = false;

@@ -11,37 +11,36 @@ public class ObjectPoolingManager : MonoBehaviour
     private List<GameObject> _jumpTwoEffects = new List<GameObject>();
     private List<ObjectPoolGroup> _objectsPoolOne = new List<ObjectPoolGroup>();
     private List<ObjectPoolGroup> _objectsPoolTwo = new List<ObjectPoolGroup>();
+    private bool hasPooled;
 
     void Awake()
     {
         CheckInstance();
     }
 
-    public void PoolInitialize(int index, EffectsLibrarySO effectsLibrary)
+    public void PoolInitialize(EffectsLibrarySO effectsLibraryOne, EffectsLibrarySO effectsLibraryTwo)
     {
-        if (index == 0)
+        if (!hasPooled)
         {
-            for (int i = 0; i < effectsLibrary._objectPools.Count; i++)
+            for (int i = 0; i < effectsLibraryOne._objectPools.Count; i++)
             {
-                _objectsPoolOne.Add(new ObjectPoolGroup() { groupName = effectsLibrary._objectPools[i].groupName, objects = new List<GameObject>() });
-                for (int j = 0; j < effectsLibrary._objectPools[i].size; ++j)
+                _objectsPoolOne.Add(new ObjectPoolGroup() { groupName = effectsLibraryOne._objectPools[i].groupName, objects = new List<GameObject>() });
+                for (int j = 0; j < effectsLibraryOne._objectPools[i].size; ++j)
                 {
-                    GameObject effect = Instantiate(effectsLibrary._objectPools[i].prefab, _playerOnePool).gameObject;
+                    GameObject effect = Instantiate(effectsLibraryOne._objectPools[i].prefab, _playerOnePool).gameObject;
                     _objectsPoolOne[i].objects.Add(effect);
                 }
             }
-        }
-        else
-        {
-            for (int i = 0; i < effectsLibrary._objectPools.Count; i++)
+            for (int i = 0; i < effectsLibraryTwo._objectPools.Count; i++)
             {
-                _objectsPoolTwo.Add(new ObjectPoolGroup() { groupName = effectsLibrary._objectPools[i].groupName, objects = new List<GameObject>() });
-                for (int j = 0; j < effectsLibrary._objectPools[i].size; ++j)
+                _objectsPoolTwo.Add(new ObjectPoolGroup() { groupName = effectsLibraryTwo._objectPools[i].groupName, objects = new List<GameObject>() });
+                for (int j = 0; j < effectsLibraryTwo._objectPools[i].size; ++j)
                 {
-                    GameObject effect = Instantiate(effectsLibrary._objectPools[i].prefab, _playerTwoPool).gameObject;
+                    GameObject effect = Instantiate(effectsLibraryTwo._objectPools[i].prefab, _playerTwoPool).gameObject;
                     _objectsPoolTwo[i].objects.Add(effect);
                 }
             }
+            hasPooled = true;
         }
     }
 
