@@ -31,7 +31,7 @@ public class DemonicsWorld : MonoBehaviour
     {
         if (GameplayManager.Instance.HasGameStarted)
         {
-            //Frame++;
+            //  Frame++;
         }
     }
 

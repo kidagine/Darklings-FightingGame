@@ -629,6 +629,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
+        if (playerGs.direction.x == 1)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+        }
+        if (playerGs.direction.x == -1)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+        }
+        if (playerGs.direction.y == 1)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+        }
+        if (playerGs.direction.y == -1)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+        }
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
         PlayerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         NetworkDebug(info);

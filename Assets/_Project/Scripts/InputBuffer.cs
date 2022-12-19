@@ -205,27 +205,27 @@ public class InputBuffer : MonoBehaviour
     private bool ExecuteMovementBuffer(InputDirectionEnum inputDirectionEnum)
     {
         _lastInputDirection = inputDirectionEnum;
-        switch (inputDirectionEnum)
-        {
-            case InputDirectionEnum.NoneVertical:
-                _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, 0);
-                break;
-            case InputDirectionEnum.NoneHorizontal:
-                _controller.ActiveController.InputDirection = new Vector2Int(0, _controller.ActiveController.InputDirection.y);
-                break;
-            case InputDirectionEnum.Up:
-                _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, 1);
-                break;
-            case InputDirectionEnum.Down:
-                _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, -1);
-                break;
-            case InputDirectionEnum.Left:
-                _controller.ActiveController.InputDirection = new Vector2Int(-1, _controller.ActiveController.InputDirection.y);
-                break;
-            case InputDirectionEnum.Right:
-                _controller.ActiveController.InputDirection = new Vector2Int(1, _controller.ActiveController.InputDirection.y);
-                break;
-        }
+        // switch (inputDirectionEnum)
+        // {
+        //     case InputDirectionEnum.NoneVertical:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, 0);
+        //         break;
+        //     case InputDirectionEnum.NoneHorizontal:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(0, _controller.ActiveController.InputDirection.y);
+        //         break;
+        //     case InputDirectionEnum.Up:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, 1);
+        //         break;
+        //     case InputDirectionEnum.Down:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, -1);
+        //         break;
+        //     case InputDirectionEnum.Left:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(-1, _controller.ActiveController.InputDirection.y);
+        //         break;
+        //     case InputDirectionEnum.Right:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(1, _controller.ActiveController.InputDirection.y);
+        //         break;
+        // }
         return true;
     }
 
