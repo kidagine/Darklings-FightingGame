@@ -552,27 +552,24 @@ public struct VwGame : IGame
                 }
             }
         }
-        // NextFrameReset(index);
+        NextFrameReset(index);
     }
 
     private void NextFrameReset(int index)
     {
-        if (NextFramenumber <= Framenumber)
+        if (!string.IsNullOrEmpty(_players[index].sound))
         {
-            if (!string.IsNullOrEmpty(_players[index].sound))
+            if (index == 0)
             {
-                if (index == 0)
-                {
-                    GameplayManager.Instance.PlayerOne.PlaySound(_players[index].sound);
-                    _players[index].sound = "";
-                    NextFramenumber = 0;
-                }
-                else
-                {
-                    GameplayManager.Instance.PlayerTwo.PlaySound(_players[index].sound);
-                    _players[index].sound = "";
-                    NextFramenumber = 0;
-                }
+                GameplayManager.Instance.PlayerOne.PlaySound(_players[index].sound);
+                _players[index].sound = "";
+                NextFramenumber = 0;
+            }
+            else
+            {
+                GameplayManager.Instance.PlayerTwo.PlaySound(_players[index].sound);
+                _players[index].sound = "";
+                NextFramenumber = 0;
             }
         }
     }
@@ -910,11 +907,9 @@ public struct VwGame : IGame
 public class States
 {
     public float Gravity;
-    public string Sound;
     public virtual void Enter(PlayerNetwork player)
     {
         player.animationFrames = 0;
-        Sound = "";
         Gravity = 0.018f;
     }
     public virtual void UpdateLogic(PlayerNetwork player) { }
@@ -1111,6 +1106,17 @@ public class DashStates : States
     {
         if (player.skip == false)
         {
+            player.sound = "Dash";
+            if (player.dashDirection > 0)
+            {
+                Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
+                player.SetEffect("Dash", effectPosition, false);
+            }
+            else
+            {
+                Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
+                player.SetEffect("Dash", effectPosition, true);
+            }
             player.dashFrames = 15;
             player.skip = true;
             player.velocity = new Vector2(player.dashDirection * (float)player.playerStats.DashForce, 0);
@@ -1124,6 +1130,19 @@ public class DashStates : States
         {
             player.animationFrames = 0;
             player.animation = "Dash";
+            if (player.dashFrames % 5 == 0)
+            {
+                if (player.flip > 0)
+                {
+                    Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
+                    player.SetEffect("Ghost", player.position, false);
+                }
+                else
+                {
+                    Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
+                    player.SetEffect("Ghost", player.position, true);
+                }
+            }
             player.position = new Vector2(player.position.x + player.velocity.x, (float)DemonicsPhysics.GROUND_POINT);
             player.dashFrames--;
         }
@@ -1154,6 +1173,17 @@ public class DashAirState : States
     {
         if (player.skip == false)
         {
+            player.sound = "Dash";
+            if (player.dashDirection > 0)
+            {
+                Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
+                player.SetEffect("Dash", effectPosition, false);
+            }
+            else
+            {
+                Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
+                player.SetEffect("Dash", effectPosition, true);
+            }
             player.canDash = false;
             player.dashFrames = 15;
             player.skip = true;
@@ -1168,6 +1198,19 @@ public class DashAirState : States
         {
             player.animationFrames = 0;
             player.animation = "Fall";
+            if (player.dashFrames % 5 == 0)
+            {
+                if (player.flip > 0)
+                {
+                    Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
+                    player.SetEffect("Ghost", player.position, false);
+                }
+                else
+                {
+                    Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
+                    player.SetEffect("Ghost", player.position, true);
+                }
+            }
             player.position = new Vector2(player.position.x + player.velocity.x, player.position.y);
             player.dashFrames--;
         }
@@ -1259,10 +1302,11 @@ public class JumpStates : AirParentStates
     {
         if (player.skip == false)
         {
+            player.sound = "Jump";
+            player.SetEffect("Jump", player.position);
             player.hasJumped = true;
             player.animationFrames = 0;
             player.skip = true;
-            Debug.Log(player.velocity);
             player.velocity = new Vector2(0, (float)player.playerStats.JumpForce);
         }
         player.animation = "Jump";
@@ -1288,6 +1332,8 @@ public class JumpForwardStates : AirParentStates
     {
         if (player.skip == false)
         {
+            player.sound = "Jump";
+            player.SetEffect("Jump", player.position);
             player.hasJumped = true;
             player.animationFrames = 0;
             player.skip = true;
@@ -1328,6 +1374,8 @@ public class FallStates : AirParentStates
     {
         if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
+            player.sound = "Landed";
+            player.SetEffect("Fall", player.position);
             player.state = "Idle";
         }
     }
