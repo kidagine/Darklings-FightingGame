@@ -13,7 +13,7 @@ public class PlayerUIRender : DemonicsAnimator
 
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
+        PlayAnimation();
         _image.sprite = _spriteRenderer.sprite;
     }
 

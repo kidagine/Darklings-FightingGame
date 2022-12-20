@@ -15,6 +15,7 @@ public class ObjectPoolingManager : MonoBehaviour
 
     void Awake()
     {
+        DontDestroyOnLoad(this.gameObject);
         CheckInstance();
     }
 

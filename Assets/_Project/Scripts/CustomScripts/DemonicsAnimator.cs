@@ -16,7 +16,6 @@ public class DemonicsAnimator : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        // PlayAnimation();
     }
 
     public void SetAnimator(AnimationSO animation)
