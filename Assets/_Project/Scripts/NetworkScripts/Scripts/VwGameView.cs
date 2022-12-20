@@ -6,6 +6,7 @@ using UnityEngine;
 public class VwGameView : MonoBehaviour, IGameView
 {
     [SerializeField] private Player _player = default;
+    [SerializeField] private TrainingMenu _trainingMenu = default;
     private Player[] playerViews = Array.Empty<Player>();
     private GameManager gameManager => GameManager.Instance;
 
@@ -32,6 +33,8 @@ public class VwGameView : MonoBehaviour, IGameView
         {
             playerViews[i].Populate(playersGss[i], gameInfo.players[i]);
             UpdateEffects(i, playersGss[i].effects);
+            _trainingMenu.SetState(true, playersGss[0].state);
+            _trainingMenu.SetState(false, playersGss[1].state);
         }
     }
     private void UpdateEffects(int index, EffectNetwork[] effects)
