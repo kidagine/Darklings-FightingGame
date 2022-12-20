@@ -44,6 +44,7 @@ public class PlayerAnimator : DemonicsAnimator
         }
         if (GetEvent().footstep)
         {
+            Debug.Log(_cel);
             _audio.SoundGroup("Footsteps").PlayInRandom();
         }
         if (GetEvent().throwEnd)

@@ -84,7 +84,6 @@ public class DemonicsAnimator : MonoBehaviour
                 break;
             }
         }
-
         CheckAnimationBoxes();
         CheckEvents();
         _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);

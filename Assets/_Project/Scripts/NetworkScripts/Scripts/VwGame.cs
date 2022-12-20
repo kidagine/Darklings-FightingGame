@@ -68,6 +68,7 @@ public class PlayerNetwork
     public int animationFrames;
     public int flip;
     public string sound;
+    public string soundStop;
     public float gravity;
     public float jump;
     public int dashDirection;
@@ -92,6 +93,7 @@ public class PlayerNetwork
         bw.Write(animation);
         bw.Write(animationFrames);
         bw.Write(sound);
+        bw.Write(soundStop);
         bw.Write(gravity);
         bw.Write(canDash);
         bw.Write(jump);
@@ -121,6 +123,7 @@ public class PlayerNetwork
         animation = br.ReadString();
         animationFrames = br.ReadInt32();
         sound = br.ReadString();
+        soundStop = br.ReadString();
         gravity = br.ReadSingle();
         canDash = br.ReadBoolean();
         jump = br.ReadSingle();
@@ -256,6 +259,7 @@ public struct VwGame : IGame
             _players[i].playerStats = playerStats[i];
             _players[i].animation = "Idle";
             _players[i].sound = "";
+            _players[i].soundStop = "";
             _players[i].gravity = 0.018f;
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
@@ -552,60 +556,43 @@ public struct VwGame : IGame
                 }
             }
         }
-        NextFrameReset(index);
-    }
-
-    private void NextFrameReset(int index)
-    {
-        if (!string.IsNullOrEmpty(_players[index].sound))
-        {
-            if (index == 0)
-            {
-                GameplayManager.Instance.PlayerOne.PlaySound(_players[index].sound);
-                _players[index].sound = "";
-                NextFramenumber = 0;
-            }
-            else
-            {
-                GameplayManager.Instance.PlayerTwo.PlaySound(_players[index].sound);
-                _players[index].sound = "";
-                NextFramenumber = 0;
-            }
-        }
     }
 
     public void Update(long[] inputs, int disconnect_flags)
     {
-        Framenumber++;
-        DemonicsWorld.Frame = Framenumber;
-        for (int i = 0; i < _players.Length; i++)
+        if (Time.timeScale > 0)
         {
-            bool skip = false;
-            bool up = false;
-            bool down = false;
-            bool left = false;
-            bool right = false;
-            bool light = false;
-            bool medium = false;
-            bool heavy = false;
-            bool arcana = false;
-            bool grab = false;
-            bool shadow = false;
-            bool blueFrenzy = false;
-            bool redFrenzy = false;
-            bool dashForward = false;
-            bool dashBackward = false;
-            if ((disconnect_flags & (1 << i)) != 0)
+            Framenumber++;
+            DemonicsWorld.Frame = Framenumber;
+            for (int i = 0; i < _players.Length; i++)
             {
-                //AI
+                bool skip = false;
+                bool up = false;
+                bool down = false;
+                bool left = false;
+                bool right = false;
+                bool light = false;
+                bool medium = false;
+                bool heavy = false;
+                bool arcana = false;
+                bool grab = false;
+                bool shadow = false;
+                bool blueFrenzy = false;
+                bool redFrenzy = false;
+                bool dashForward = false;
+                bool dashBackward = false;
+                if ((disconnect_flags & (1 << i)) != 0)
+                {
+                    //AI
+                }
+                else
+                {
+                    ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
+                     out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
+                }
+                PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
+                _players[i].start = true;
             }
-            else
-            {
-                ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
-                 out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
-            }
-            PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
-            _players[i].start = true;
         }
     }
 
@@ -1084,6 +1071,19 @@ public class RunStates : GroundParentStates
         player.animationFrames++;
         player.velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedRun, 0);
         player.position = new Vector2(player.position.x + player.velocity.x, (float)DemonicsPhysics.GROUND_POINT);
+        if (DemonicsWorld.Frame % 5 == 0)
+        {
+            if (player.flip > 0)
+            {
+                Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
+                player.SetEffect("Ghost", player.position, false);
+            }
+            else
+            {
+                Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
+                player.SetEffect("Ghost", player.position, true);
+            }
+        }
         ToIdleState(player);
     }
 
@@ -1091,6 +1091,7 @@ public class RunStates : GroundParentStates
     {
         if (player.direction.x == 0)
         {
+            player.soundStop = "Run";
             player.state = "Idle";
         }
     }
@@ -1150,15 +1151,15 @@ public class DashStates : States
         {
             player.velocity = Vector2.zero;
             player.skip = false;
-            player.state = "Idle";
-            // if (player.direction.x * player.flip > 0)
-            // {
-            //     player.state = "Run";
-            // }
-            // else
-            // {
-            //     player.state = "Idle";
-            // }
+            if (player.direction.x * player.flip > 0)
+            {
+                player.sound = "Run";
+                player.state = "Run";
+            }
+            else
+            {
+                player.state = "Idle";
+            }
         }
     }
 }

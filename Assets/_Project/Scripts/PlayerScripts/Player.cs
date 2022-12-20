@@ -629,6 +629,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
+        if (!string.IsNullOrEmpty(playerGs.sound))
+        {
+            _audio.Sound(playerGs.sound).Play();
+            playerGs.sound = "";
+        }
+        if (!string.IsNullOrEmpty(playerGs.soundStop))
+        {
+            _audio.Sound(playerGs.soundStop).Stop();
+            playerGs.soundStop = "";
+        }
         if (playerGs.direction.x == 1)
         {
             _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
