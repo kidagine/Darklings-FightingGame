@@ -12,7 +12,7 @@ public class VwGameView : MonoBehaviour, IGameView
 
     private void SetGame(VwGame gs)
     {
-        var playersGss = gs._players;
+        var playersGss = VwGame._players;
         playerViews = new Player[playersGss.Length];
         playerViews[0] = Instantiate(_player);
         playerViews[1] = Instantiate(_player);
@@ -24,7 +24,7 @@ public class VwGameView : MonoBehaviour, IGameView
     {
         VwGame game = (VwGame)runner.Game;
         GameInfo gameInfo = runner.GameInfo;
-        var playersGss = game._players;
+        var playersGss = VwGame._players;
         if (playerViews.Length != playersGss.Length)
         {
             SetGame(game);

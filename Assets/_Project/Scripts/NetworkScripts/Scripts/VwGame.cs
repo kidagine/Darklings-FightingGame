@@ -188,7 +188,7 @@ public struct VwGame : IGame
     public int NextFramenumber { get; private set; }
     public int Checksum => GetHashCode();
 
-    public PlayerNetwork[] _players;
+    public static PlayerNetwork[] _players;
 
     public void Serialize(BinaryWriter bw)
     {

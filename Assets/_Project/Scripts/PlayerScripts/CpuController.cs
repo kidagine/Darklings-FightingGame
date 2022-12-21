@@ -26,16 +26,31 @@ public class CpuController : BaseController
             {
                 _reset = false;
                 Movement();
-                if (_distance <= 4f)
-                {
-                    Attack();
-                }
-                Specials();
+                // if (_distance <= 4f)
+                // {
+                //     Attack();
+                // }
+                //Specials();
             }
             else
             {
                 if (!_reset)
                 {
+                    if (_player.IsPlayerOne)
+                    {
+                        NetworkInput.ONE_UP_INPUT = false;
+                        NetworkInput.ONE_DOWN_INPUT = false;
+                        NetworkInput.ONE_RIGHT_INPUT = false;
+                        NetworkInput.ONE_LEFT_INPUT = false;
+                    }
+                    else
+                    {
+                        NetworkInput.TWO_UP_INPUT = false;
+                        NetworkInput.TWO_DOWN_INPUT = false;
+                        NetworkInput.TWO_RIGHT_INPUT = false;
+                        NetworkInput.TWO_LEFT_INPUT = false;
+                    }
+
                     _reset = true;
                     InputDirection = Vector2Int.zero;
                     _playerStateMachine.ResetToInitialState();
@@ -68,32 +83,77 @@ public class CpuController : BaseController
             int crouchRandom = Random.Range(0, 12);
             int standingRandom = Random.Range(0, 4);
             int dashRandom = Random.Range(0, 8);
+            if (_player.IsPlayerOne)
+            {
+                NetworkInput.ONE_UP_INPUT = false;
+            }
+            else
+            {
+                NetworkInput.TWO_UP_INPUT = false;
+            }
             switch (movementRandom)
             {
                 case 0:
-                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
+                    if (_player.IsPlayerOne)
+                    {
+                        NetworkInput.ONE_RIGHT_INPUT = false;
+                        NetworkInput.ONE_LEFT_INPUT = false;
+                    }
+                    else
+                    {
+                        NetworkInput.TWO_RIGHT_INPUT = false;
+                        NetworkInput.TWO_LEFT_INPUT = false;
+                    }
                     _movementInputX = 0;
                     break;
                 case > 0 and <= 4:
                     _movementInputX = (int)(transform.localScale.x * -1);
                     if (_movementInputX == 1.0f)
                     {
-                        _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_LEFT_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_LEFT_INPUT = true;
+                        }
                     }
                     else if (_movementInputX == -1.0f)
                     {
-                        _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_RIGHT_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_RIGHT_INPUT = true;
+                        }
                     }
                     break;
                 case > 5:
                     _movementInputX = (int)(transform.localScale.x * 1);
                     if (_movementInputX == 1.0f)
                     {
-                        _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_LEFT_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_LEFT_INPUT = true;
+                        }
                     }
                     else if (_movementInputX == -1.0f)
                     {
-                        _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_RIGHT_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_RIGHT_INPUT = true;
+                        }
                     }
                     break;
             }
@@ -101,16 +161,37 @@ public class CpuController : BaseController
             {
                 _jump = true;
                 _movementInputX = (int)(transform.localScale.x * 1.0f);
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+                if (_player.IsPlayerOne)
+                {
+                    NetworkInput.ONE_UP_INPUT = false;
+                }
+                else
+                {
+                    NetworkInput.TWO_UP_INPUT = false;
+                }
             }
             if (crouchRandom == 2)
             {
                 _crouch = true;
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+                if (_player.IsPlayerOne)
+                {
+                    NetworkInput.ONE_UP_INPUT = true;
+                }
+                else
+                {
+                    NetworkInput.TWO_UP_INPUT = true;
+                }
             }
             if (standingRandom == 2)
             {
-                _crouch = false;
+                if (_player.IsPlayerOne)
+                {
+                    NetworkInput.ONE_DOWN_INPUT = false;
+                }
+                else
+                {
+                    NetworkInput.TWO_DOWN_INPUT = false;
+                }
             }
             InputDirection = new Vector2Int(_movementInputX, 0);
             _movementTimer = Random.Range(0.2f, 0.35f);

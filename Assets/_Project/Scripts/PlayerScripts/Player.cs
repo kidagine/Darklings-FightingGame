@@ -105,8 +105,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         RecallAssist();
         _playerMovement.StopKnockback();
         _playerMovement.Physics.ResetSkipWall();
-        // _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
-        _playerMovement.Physics.Velocity = DemonicsVector2.Zero;
+        int index = IsPlayerOne ? 0 : 1;
+        VwGame._players[index].position = resetPosition;
+        VwGame._players[index].velocity = Vector2.zero;
+        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)VwGame._players[index].position.x, (DemonicsFloat)VwGame._players[index].position.y));
         _playerStateManager.ResetToInitialState();
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;

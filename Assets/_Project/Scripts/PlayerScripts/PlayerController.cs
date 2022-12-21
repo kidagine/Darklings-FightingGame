@@ -331,7 +331,14 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed)
         {
-            GameplayManager.Instance.ResetRound(InputDirection);
+            if (_player.IsPlayerOne)
+            {
+                GameplayManager.Instance.ResetRound(VwGame._players[0].direction);
+            }
+            else
+            {
+                GameplayManager.Instance.ResetRound(VwGame._players[1].direction);
+            }
         }
     }
 
