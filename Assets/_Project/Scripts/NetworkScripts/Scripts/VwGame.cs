@@ -67,6 +67,7 @@ public class PlayerNetwork
     public string animation;
     public int animationFrames;
     public int attackFrames;
+    public int stunFrames;
     public InputEnum attackInput;
     public int flip;
     public string sound;
@@ -97,6 +98,7 @@ public class PlayerNetwork
         bw.Write(animation);
         bw.Write(animationFrames);
         bw.Write(attackFrames);
+        bw.Write(stunFrames);
         bw.Write((int)attackInput);
         bw.Write(sound);
         bw.Write(soundStop);
@@ -131,6 +133,7 @@ public class PlayerNetwork
         animation = br.ReadString();
         animationFrames = br.ReadInt32();
         attackFrames = br.ReadInt32();
+        stunFrames = br.ReadInt32();
         attackInput = (InputEnum)br.ReadInt32();
         sound = br.ReadString();
         soundStop = br.ReadString();
@@ -512,7 +515,10 @@ public struct VwGame : IGame
         {
             _players[index].CurrentState = new AttackStates();
         }
-
+        if (_players[index].state == "Hurt")
+        {
+            _players[index].CurrentState = new HurtStates();
+        }
 
         _players[index].CurrentState.UpdateLogic(_players[index]);
         if (index == 0)
@@ -1392,17 +1398,12 @@ public class FallStates : AirParentStates
 }
 public class AttackStates : States
 {
-    public override void Enter(PlayerNetwork player)
-    {
-        base.Enter(player);
-    }
-
     public override void UpdateLogic(PlayerNetwork player)
     {
         AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
         if (!player.skip)
         {
-            //GameplayManager.Instance.PlayerOne.CurrentAttack = attack;
+            GameplayManager.Instance.PlayerOne.CurrentAttack = attack;
             player.animation = attack.name;
             player.sound = attack.attackSound;
             player.animationFrames = 0;
@@ -1440,7 +1441,6 @@ public class AttackStates : States
         {
             if (player.isAir)
             {
-                Debug.Log("A");
                 player.isCrouch = false;
                 player.isAir = false;
                 player.attackInput = InputEnum.Direction;
@@ -1467,6 +1467,31 @@ public class AttackStates : States
                 }
             }
 
+        }
+    }
+}
+public class HurtStates : States
+{
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        if (!player.skip)
+        {
+            player.skip = true;
+            // CameraShake.Instance.Shake(GameplayManager.Instance.PlayerOne.CurrentAttack.cameraShaker);
+            player.animationFrames = 0;
+            player.stunFrames = 10;
+        }
+        player.animation = "Hurt";
+        player.animationFrames++;
+        ToIdleState(player);
+        player.stunFrames--;
+    }
+    private void ToIdleState(PlayerNetwork player)
+    {
+        if (player.stunFrames <= 0)
+        {
+            player.skip = false;
+            player.state = "Idle";
         }
     }
 }

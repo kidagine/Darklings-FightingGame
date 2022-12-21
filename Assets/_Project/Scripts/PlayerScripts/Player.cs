@@ -466,25 +466,27 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool TakeDamage(AttackSO attack)
     {
-        GameplayManager.Instance.AddHitstop(this);
-        if (attack.attackTypeEnum == AttackTypeEnum.Throw)
-        {
-            return _playerStateManager.TryToGrabbedState();
-        }
-        if (Invincible)
-        {
-            return false;
-        }
-        if (CanBlock(attack))
-        {
-            bool blockSuccesful = _playerStateManager.TryToBlockState(attack);
-            if (!blockSuccesful)
-            {
-                return _playerStateManager.TryToHurtState(attack);
-            }
-            return true;
-        }
-        return _playerStateManager.TryToHurtState(attack);
+        VwGame._players[1].state = "Hurt";
+        return true;
+        // GameplayManager.Instance.AddHitstop(this);
+        // if (attack.attackTypeEnum == AttackTypeEnum.Throw)
+        // {
+        //     return _playerStateManager.TryToGrabbedState();
+        // }
+        // if (Invincible)
+        // {
+        //     return false;
+        // }
+        // if (CanBlock(attack))
+        // {
+        //     bool blockSuccesful = _playerStateManager.TryToBlockState(attack);
+        //     if (!blockSuccesful)
+        //     {
+        //         return _playerStateManager.TryToHurtState(attack);
+        //     }
+        //     return true;
+        // }
+        // return _playerStateManager.TryToHurtState(attack);
     }
 
     public void SetSpriteOrderPriority()
