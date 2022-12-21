@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityGGPO;
 
-public class VwGameManager : GameManager
+public class SimulationManager : GameManager
 {
     public override void StartLocalGame()
     {

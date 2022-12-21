@@ -460,21 +460,21 @@ public struct VwGame : IGame
         {
             _players[index].direction = new Vector2(_players[index].direction.x, 0);
         }
-        if (light)
-        {
-            _players[index].attackInput = InputEnum.Light;
-            _players[index].CurrentState.ToAttackState(_players[index]);
-        }
-        if (medium)
-        {
-            _players[index].attackInput = InputEnum.Medium;
-            _players[index].CurrentState.ToAttackState(_players[index]);
-        }
-        if (heavy)
-        {
-            _players[index].attackInput = InputEnum.Heavy;
-            _players[index].CurrentState.ToAttackState(_players[index]);
-        }
+        // if (light)
+        // {
+        //     _players[index].attackInput = InputEnum.Light;
+        //     _players[index].CurrentState.ToAttackState(_players[index]);
+        // }
+        // if (medium)
+        // {
+        //     _players[index].attackInput = InputEnum.Medium;
+        //     _players[index].CurrentState.ToAttackState(_players[index]);
+        // }
+        // if (heavy)
+        // {
+        //     _players[index].attackInput = InputEnum.Heavy;
+        //     _players[index].CurrentState.ToAttackState(_players[index]);
+        // }
         if (_players[index].state == "Idle")
         {
             _players[index].CurrentState = new IdleStates();

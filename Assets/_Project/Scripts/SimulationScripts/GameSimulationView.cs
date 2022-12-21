@@ -3,7 +3,7 @@ using SharedGame;
 using System;
 using UnityEngine;
 
-public class VwGameView : MonoBehaviour, IGameView
+public class GameSimulationView : MonoBehaviour, IGameView
 {
     [SerializeField] private Player _player = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
