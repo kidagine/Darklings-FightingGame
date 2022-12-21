@@ -106,9 +106,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerMovement.StopKnockback();
         _playerMovement.Physics.ResetSkipWall();
         int index = IsPlayerOne ? 0 : 1;
-        VwGame._players[index].position = resetPosition;
-        VwGame._players[index].velocity = Vector2.zero;
-        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)VwGame._players[index].position.x, (DemonicsFloat)VwGame._players[index].position.y));
+        GameSimulation._players[index].position = resetPosition;
+        GameSimulation._players[index].velocity = Vector2.zero;
+        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)GameSimulation._players[index].position.x, (DemonicsFloat)GameSimulation._players[index].position.y));
         _playerStateManager.ResetToInitialState();
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;
@@ -466,7 +466,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool TakeDamage(AttackSO attack)
     {
-        VwGame._players[1].state = "Hurt";
+        GameSimulation._players[1].state = "Hurt";
         return true;
         // GameplayManager.Instance.AddHitstop(this);
         // if (attack.attackTypeEnum == AttackTypeEnum.Throw)

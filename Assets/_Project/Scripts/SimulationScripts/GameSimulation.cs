@@ -197,10 +197,9 @@ public class PlayerNetwork
 };
 
 [Serializable]
-public struct VwGame : IGame
+public struct GameSimulation : IGame
 {
     public int Framenumber { get; private set; }
-    public int NextFramenumber { get; private set; }
     public int Checksum => GetHashCode();
 
     public static PlayerNetwork[] _players;
@@ -208,7 +207,6 @@ public struct VwGame : IGame
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(Framenumber);
-        bw.Write(NextFramenumber);
         bw.Write(_players.Length);
         for (int i = 0; i < _players.Length; ++i)
         {
@@ -219,7 +217,6 @@ public struct VwGame : IGame
     public void Deserialize(BinaryReader br)
     {
         Framenumber = br.ReadInt32();
-        NextFramenumber = br.ReadInt32();
         int length = br.ReadInt32();
         if (length != _players.Length)
         {
@@ -254,16 +251,9 @@ public struct VwGame : IGame
         }
     }
 
-    /*
-     * InitGameState --
-     *
-     * Initialize our game state.
-     */
-
-    public VwGame(PlayerStatsSO[] playerStats)
+    public GameSimulation(PlayerStatsSO[] playerStats)
     {
         Framenumber = 0;
-        NextFramenumber = 1;
         _players = new PlayerNetwork[playerStats.Length];
         ObjectPoolingManager.Instance.PoolInitialize(playerStats[0]._effectsLibrary, playerStats[1]._effectsLibrary);
         for (int i = 0; i < _players.Length; i++)
@@ -475,62 +465,19 @@ public struct VwGame : IGame
         //     _players[index].attackInput = InputEnum.Heavy;
         //     _players[index].CurrentState.ToAttackState(_players[index]);
         // }
-        if (_players[index].state == "Idle")
-        {
-            _players[index].CurrentState = new IdleStates();
-        }
-        if (_players[index].state == "Walk")
-        {
-            _players[index].CurrentState = new WalkStates();
-        }
-        if (_players[index].state == "Dash")
-        {
-            _players[index].CurrentState = new DashStates();
-        }
-        if (_players[index].state == "DashAir")
-        {
-            _players[index].CurrentState = new DashAirState();
-        }
-        if (_players[index].state == "Run")
-        {
-            _players[index].CurrentState = new RunStates();
-        }
-        if (_players[index].state == "JumpForward")
-        {
-            _players[index].CurrentState = new JumpForwardStates();
-        }
-        if (_players[index].state == "Jump")
-        {
-            _players[index].CurrentState = new JumpStates();
-        }
-        if (_players[index].state == "Fall")
-        {
-            _players[index].CurrentState = new FallStates();
-        }
-        if (_players[index].state == "Crouch")
-        {
-            _players[index].CurrentState = new CrouchStates();
-        }
-        if (_players[index].state == "Attack")
-        {
-            _players[index].CurrentState = new AttackStates();
-        }
-        if (_players[index].state == "Hurt")
-        {
-            _players[index].CurrentState = new HurtStates();
-        }
+        SetState(index);
 
         _players[index].CurrentState.UpdateLogic(_players[index]);
         if (index == 0)
         {
-            if (!Collision(_players[0], _players[1]))
+            if (!DemonicsPhysics.Collision(_players[0], _players[1]))
             {
                 _players[index].position = new Vector2(_players[index].position.x, _players[index].position.y);
             }
         }
         else
         {
-            if (!Collision(_players[1], _players[0]))
+            if (!DemonicsPhysics.Collision(_players[1], _players[0]))
             {
                 _players[index].position = new Vector2(_players[index].position.x, _players[index].position.y);
             }
@@ -614,6 +561,54 @@ public struct VwGame : IGame
                 PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
                 _players[i].start = true;
             }
+        }
+    }
+
+    private void SetState(int index)
+    {
+        if (_players[index].state == "Idle")
+        {
+            _players[index].CurrentState = new IdleStates();
+        }
+        if (_players[index].state == "Walk")
+        {
+            _players[index].CurrentState = new WalkStates();
+        }
+        if (_players[index].state == "Dash")
+        {
+            _players[index].CurrentState = new DashStates();
+        }
+        if (_players[index].state == "DashAir")
+        {
+            _players[index].CurrentState = new DashAirState();
+        }
+        if (_players[index].state == "Run")
+        {
+            _players[index].CurrentState = new RunStates();
+        }
+        if (_players[index].state == "JumpForward")
+        {
+            _players[index].CurrentState = new JumpForwardStates();
+        }
+        if (_players[index].state == "Jump")
+        {
+            _players[index].CurrentState = new JumpStates();
+        }
+        if (_players[index].state == "Fall")
+        {
+            _players[index].CurrentState = new FallStates();
+        }
+        if (_players[index].state == "Crouch")
+        {
+            _players[index].CurrentState = new CrouchStates();
+        }
+        if (_players[index].state == "Attack")
+        {
+            _players[index].CurrentState = new AttackStates();
+        }
+        if (_players[index].state == "Hurt")
+        {
+            _players[index].CurrentState = new HurtStates();
         }
     }
 
@@ -792,124 +787,6 @@ public struct VwGame : IGame
     {
         //Log
     }
-    private bool Collision(PlayerNetwork player, PlayerNetwork otherPlayer)
-    {
-        if (Colliding(player, otherPlayer))
-        {
-            if (player.position.y > otherPlayer.position.y)
-            {
-                if (player.velocity.y < otherPlayer.velocity.y)
-                {
-                    float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
-                    float pushDistance = (1.35f - difference) / (2);
-                    if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
-                    {
-                        player.position = new Vector2(player.position.x + pushDistance, player.position.y);
-                    }
-                    else if (player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
-                    {
-                        player.position = new Vector2(player.position.x - pushDistance, player.position.y);
-                    }
-                }
-            }
-            Vector2 main = player.velocity;
-            Vector2 second = otherPlayer.velocity;
-            if (otherPlayer.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT && player.velocity.x >= 0 || otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT && player.velocity.x <= 0)
-            {
-                main = new Vector2(0, player.velocity.y);
-                second = new Vector2(0, otherPlayer.velocity.y);
-                otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
-                player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
-                Intersects(player, otherPlayer);
-                return true;
-            }
-            if (Mathf.Abs(player.velocity.x) > Mathf.Abs(otherPlayer.velocity.x))
-            {
-                float totalVelocity;
-                if (player.velocity.x > 0 && otherPlayer.velocity.x < 0)
-                {
-                    totalVelocity = Mathf.Abs(player.velocity.x) - Mathf.Abs(otherPlayer.velocity.x);
-                }
-                else
-                {
-                    totalVelocity = Mathf.Abs(player.velocity.x);
-                }
-                if (player.position.x < otherPlayer.position.x && player.velocity.x > 0)
-                {
-                    main = new Vector2(totalVelocity, player.velocity.y);
-                    second = new Vector2(totalVelocity, otherPlayer.velocity.y);
-                    otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
-                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
-                    Intersects(player, otherPlayer);
-                    return true;
-                }
-                else if (player.position.x > otherPlayer.position.x && player.velocity.x < 0)
-                {
-                    main = new Vector2(-totalVelocity, player.velocity.y);
-                    second = new Vector2(-totalVelocity, otherPlayer.velocity.y);
-                    otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
-                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
-                    Intersects(player, otherPlayer);
-                    return true;
-                }
-                if (player.velocity.x == 0 || otherPlayer.velocity.x == 0)
-                {
-                    Intersects(player, otherPlayer);
-                }
-                return false;
-            }
-            else if (Mathf.Abs(player.velocity.x) == Mathf.Abs(otherPlayer.velocity.x))
-            {
-                if (player.position.x < otherPlayer.position.x && player.velocity.x > 0 || player.position.x > otherPlayer.position.x && player.velocity.x < 0)
-                {
-                    main = new Vector2(0, player.velocity.y);
-                    second = new Vector2(0, otherPlayer.velocity.y);
-                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
-                    Intersects(player, otherPlayer);
-                    return true;
-                }
-                Intersects(player, otherPlayer);
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-    private void Intersects(PlayerNetwork player, PlayerNetwork otherPlayer)
-    {
-        if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT || player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
-        {
-            return;
-        }
-        if (player.position.x < otherPlayer.position.x)
-        {
-            if (player.position.x + 1.35f >= otherPlayer.position.x)
-            {
-                float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
-                float pushDistance = (1.35f - difference) / (2);
-                player.position = new Vector2((player.position.x - pushDistance), player.position.y);
-            }
-        }
-        else
-        {
-            if (player.position.x <= otherPlayer.position.x + 1.35f)
-            {
-                float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
-                float pushDistance = (1.35f - difference) / (2);
-                player.position = new Vector2((player.position.x + pushDistance), player.position.y);
-            }
-        }
-    }
-    private bool valueInRange(float value, float min, float max)
-    { return (value >= min) && (value <= max); }
-    private bool Colliding(PlayerNetwork a, PlayerNetwork b)
-    {
-        bool xOverlap = valueInRange(a.position.x - (1.35f / 2), b.position.x - (1.35f / 2), b.position.x + (1.35f / 2)) ||
-                    valueInRange(b.position.x - (1.35f / 2), a.position.x - (1.35f / 2), a.position.x + (1.35f / 2));
-        bool yOverlap = valueInRange(a.position.y - (1.5f / 2), b.position.y - (1.5f / 2), b.position.y + (1.5f / 2)) ||
-                    valueInRange(b.position.y - (1.5f / 2), a.position.y - (1.5f / 2), a.position.y + (1.5f / 2));
-        return xOverlap && yOverlap;
-    }
 }
 [Serializable]
 public class States
@@ -918,7 +795,6 @@ public class States
     public virtual void Enter(PlayerNetwork player)
     {
         player.animationFrames = 0;
-        Gravity = 0.018f;
     }
     public virtual void UpdateLogic(PlayerNetwork player) { }
     public virtual void Exit() { }

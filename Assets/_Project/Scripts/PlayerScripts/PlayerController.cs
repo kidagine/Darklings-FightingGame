@@ -333,11 +333,11 @@ public class PlayerController : BaseController
         {
             if (_player.IsPlayerOne)
             {
-                GameplayManager.Instance.ResetRound(VwGame._players[0].direction);
+                GameplayManager.Instance.ResetRound(GameSimulation._players[0].direction);
             }
             else
             {
-                GameplayManager.Instance.ResetRound(VwGame._players[1].direction);
+                GameplayManager.Instance.ResetRound(GameSimulation._players[1].direction);
             }
         }
     }

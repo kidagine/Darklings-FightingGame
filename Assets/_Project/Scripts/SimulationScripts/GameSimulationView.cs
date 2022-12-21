@@ -10,9 +10,9 @@ public class GameSimulationView : MonoBehaviour, IGameView
     private Player[] playerViews = Array.Empty<Player>();
     private GameManager gameManager => GameManager.Instance;
 
-    private void SetGame(VwGame gs)
+    private void SetGame(GameSimulation gs)
     {
-        var playersGss = VwGame._players;
+        var playersGss = GameSimulation._players;
         playerViews = new Player[playersGss.Length];
         playerViews[0] = Instantiate(_player);
         playerViews[1] = Instantiate(_player);
@@ -22,9 +22,9 @@ public class GameSimulationView : MonoBehaviour, IGameView
 
     public void UpdateGameView(IGameRunner runner)
     {
-        VwGame game = (VwGame)runner.Game;
+        GameSimulation game = (GameSimulation)runner.Game;
         GameInfo gameInfo = runner.GameInfo;
-        var playersGss = VwGame._players;
+        var playersGss = GameSimulation._players;
         if (playerViews.Length != playersGss.Length)
         {
             SetGame(game);
