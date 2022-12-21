@@ -47,7 +47,7 @@ public class AttackState : State
         base.Enter();
         _player.CheckFlip();
         _player.SetSpriteOrderPriority();
-        _player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
+        //_player.CurrentAttack = _playerComboSystem.GetComboAttack(_inputEnum, _crouch, _air);
         _audio.Sound(_player.CurrentAttack.attackSound).Play();
         _playerAnimator.Attack(_player.CurrentAttack.name);
         _player.CurrentAttack = _playerAnimator.GetFramedata(_player.CurrentAttack);
