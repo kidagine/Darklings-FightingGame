@@ -84,6 +84,7 @@ public class PlayerNetwork
     public bool canDoubleJump;
     public bool start;
     public bool skip;
+    public bool enter;
     public string state;
     public States CurrentState;
     public EffectNetwork[] effects;
@@ -114,6 +115,7 @@ public class PlayerNetwork
         bw.Write(dashFrames);
         bw.Write(start);
         bw.Write(skip);
+        bw.Write(enter);
         bw.Write(flip);
         bw.Write(state);
         for (int i = 0; i < effects.Length; ++i)
@@ -149,6 +151,7 @@ public class PlayerNetwork
         dashFrames = br.ReadInt32();
         start = br.ReadBoolean();
         skip = br.ReadBoolean();
+        enter = br.ReadBoolean();
         flip = br.ReadInt32();
         state = br.ReadString();
         for (int i = 0; i < effects.Length; ++i)
@@ -1004,8 +1007,9 @@ public class DashStates : States
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (player.skip == false)
+        if (!player.enter)
         {
+            player.enter = true;
             player.sound = "Dash";
             if (player.dashDirection > 0)
             {
@@ -1018,7 +1022,6 @@ public class DashStates : States
                 player.SetEffect("Dash", effectPosition, true);
             }
             player.dashFrames = 15;
-            player.skip = true;
             player.velocity = new Vector2(player.dashDirection * (float)player.playerStats.DashForce, 0);
         }
         Dash(player);
@@ -1049,7 +1052,7 @@ public class DashStates : States
         else
         {
             player.velocity = Vector2.zero;
-            player.skip = false;
+            player.enter = false;
             if (player.direction.x * player.flip > 0)
             {
                 player.sound = "Run";
@@ -1067,8 +1070,9 @@ public class DashAirState : States
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (player.skip == false)
+        if (!player.enter)
         {
+            player.enter = true;
             player.sound = "Dash";
             if (player.dashDirection > 0)
             {
@@ -1082,7 +1086,6 @@ public class DashAirState : States
             }
             player.canDash = false;
             player.dashFrames = 15;
-            player.skip = true;
             player.velocity = new Vector2(player.dashDirection * (float)player.playerStats.DashForce, 0);
         }
         Dash(player);
@@ -1113,7 +1116,7 @@ public class DashAirState : States
         else
         {
             player.velocity = Vector2.zero;
-            player.skip = false;
+            player.enter = false;
             player.state = "Fall";
         }
     }
@@ -1133,7 +1136,7 @@ public class AirParentStates : States
         {
             if (player.direction.y > 0 && !player.hasJumped)
             {
-                player.skip = false;
+                player.enter = false;
                 player.hasJumped = true;
                 player.canDoubleJump = false;
                 player.state = "Jump";
@@ -1150,7 +1153,7 @@ public class AirParentStates : States
         {
             if (player.direction.y > 0 && player.direction.x != 0 && !player.hasJumped)
             {
-                player.skip = false;
+                player.enter = false;
                 player.hasJumped = true;
                 player.canDoubleJump = false;
                 player.state = "JumpForward";
@@ -1165,7 +1168,6 @@ public class AirParentStates : States
     {
         if (player.velocity.y <= 0)
         {
-            player.skip = false;
             player.state = "Fall";
         }
     }
@@ -1173,7 +1175,7 @@ public class AirParentStates : States
     {
         if (player.canDash)
         {
-            player.skip = false;
+            player.enter = false;
             player.velocity = Vector2.zero;
             player.state = "DashAir";
             return true;
@@ -1184,7 +1186,7 @@ public class AirParentStates : States
     {
         if (player.attackInput != InputEnum.Direction)
         {
-            player.skip = false;
+            player.enter = false;
             player.isAir = true;
             player.state = "Attack";
             return true;
@@ -1196,13 +1198,13 @@ public class JumpStates : AirParentStates
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (player.skip == false)
+        if (!player.enter)
         {
+            player.enter = true;
             player.sound = "Jump";
             player.SetEffect("Jump", player.position);
             player.hasJumped = true;
             player.animationFrames = 0;
-            player.skip = true;
             player.velocity = new Vector2(0, (float)player.playerStats.JumpForce);
         }
         player.animation = "Jump";
@@ -1216,7 +1218,7 @@ public class JumpStates : AirParentStates
     {
         if (player.velocity.y <= 0)
         {
-            player.skip = false;
+            player.enter = false;
             player.state = "Fall";
         }
     }
@@ -1226,13 +1228,13 @@ public class JumpForwardStates : AirParentStates
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (player.skip == false)
+        if (!player.enter)
         {
+            player.enter = true;
             player.sound = "Jump";
             player.SetEffect("Jump", player.position);
             player.hasJumped = true;
             player.animationFrames = 0;
-            player.skip = true;
             player.velocity = new Vector2(0.14f * player.direction.x, (float)player.playerStats.JumpForce);
         }
         player.animation = "JumpForward";
@@ -1246,7 +1248,7 @@ public class JumpForwardStates : AirParentStates
     {
         if (player.velocity.y <= 0)
         {
-            player.skip = false;
+            player.enter = false;
             player.state = "Fall";
         }
     }
@@ -1277,14 +1279,14 @@ public class AttackStates : States
     public override void UpdateLogic(PlayerNetwork player)
     {
         AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
-        if (!player.skip)
+        if (!player.enter)
         {
+            player.enter = true;
             GameplayManager.Instance.PlayerOne.CurrentAttack = attack;
             player.animation = attack.name;
             player.sound = attack.attackSound;
             player.animationFrames = 0;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
-            player.skip = true;
         }
         if (!player.isAir)
         {
@@ -1307,7 +1309,7 @@ public class AttackStates : States
             player.isCrouch = false;
             player.isAir = false;
             player.attackInput = InputEnum.Direction;
-            player.skip = false;
+            player.enter = false;
             player.state = "Idle";
         }
     }
@@ -1315,12 +1317,12 @@ public class AttackStates : States
     {
         if (player.attackFrames <= 0)
         {
+            player.enter = false;
             if (player.isAir)
             {
                 player.isCrouch = false;
                 player.isAir = false;
                 player.attackInput = InputEnum.Direction;
-                player.skip = false;
                 player.state = "Fall";
             }
             else
@@ -1330,7 +1332,6 @@ public class AttackStates : States
                     player.isCrouch = false;
                     player.isAir = false;
                     player.attackInput = InputEnum.Direction;
-                    player.skip = false;
                     player.state = "Crouch";
                 }
                 else
@@ -1338,7 +1339,6 @@ public class AttackStates : States
                     player.isCrouch = false;
                     player.isAir = false;
                     player.attackInput = InputEnum.Direction;
-                    player.skip = false;
                     player.state = "Idle";
                 }
             }
@@ -1350,9 +1350,9 @@ public class HurtStates : States
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (!player.skip)
+        if (!player.enter)
         {
-            player.skip = true;
+            player.enter = true;
             // CameraShake.Instance.Shake(GameplayManager.Instance.PlayerOne.CurrentAttack.cameraShaker);
             player.animationFrames = 0;
             player.stunFrames = 10;
@@ -1366,7 +1366,7 @@ public class HurtStates : States
     {
         if (player.stunFrames <= 0)
         {
-            player.skip = false;
+            player.enter = false;
             player.state = "Idle";
         }
     }
