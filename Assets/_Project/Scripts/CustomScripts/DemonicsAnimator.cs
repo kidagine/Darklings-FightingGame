@@ -16,7 +16,6 @@ public class DemonicsAnimator : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        // PlayAnimation();
     }
 
     public void SetAnimator(AnimationSO animation)
@@ -32,6 +31,16 @@ public class DemonicsAnimator : MonoBehaviour
         for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
         {
             maxFrames += _animation.GetGroup(_group).animationCel[i].frames;
+        }
+        return maxFrames;
+    }
+    public static int GetMaxAnimationFrames(AnimationSO animation, string name = "Idle")
+    {
+        int maxFrames = 0;
+        int group = animation.GetGroupId(name);
+        for (int i = 0; i < animation.GetGroup(group).animationCel.Count; i++)
+        {
+            maxFrames += animation.GetGroup(group).animationCel[i].frames;
         }
         return maxFrames;
     }
@@ -85,7 +94,6 @@ public class DemonicsAnimator : MonoBehaviour
                 break;
             }
         }
-
         CheckAnimationBoxes();
         CheckEvents();
         _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);

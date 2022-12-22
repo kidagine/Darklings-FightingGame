@@ -360,8 +360,11 @@ public class GameplayManager : MonoBehaviour
 
     public void ActivateCpus()
     {
-        _playerOneController.ActivateCpu();
-        _playerTwoController.ActivateCpu();
+        if (IsTrainingMode && PlayerOne != null)
+        {
+            _playerOneController.ActivateCpu();
+            _playerTwoController.ActivateCpu();
+        }
     }
 
     public void DeactivateCpus()

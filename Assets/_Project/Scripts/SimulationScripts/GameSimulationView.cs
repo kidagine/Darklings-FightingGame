@@ -3,15 +3,16 @@ using SharedGame;
 using System;
 using UnityEngine;
 
-public class VwGameView : MonoBehaviour, IGameView
+public class GameSimulationView : MonoBehaviour, IGameView
 {
     [SerializeField] private Player _player = default;
+    [SerializeField] private TrainingMenu _trainingMenu = default;
     private Player[] playerViews = Array.Empty<Player>();
     private GameManager gameManager => GameManager.Instance;
 
-    private void SetGame(VwGame gs)
+    private void SetGame(GameSimulation gs)
     {
-        var playersGss = gs._players;
+        var playersGss = GameSimulation._players;
         playerViews = new Player[playersGss.Length];
         playerViews[0] = Instantiate(_player);
         playerViews[1] = Instantiate(_player);
@@ -21,9 +22,9 @@ public class VwGameView : MonoBehaviour, IGameView
 
     public void UpdateGameView(IGameRunner runner)
     {
-        VwGame game = (VwGame)runner.Game;
+        GameSimulation game = (GameSimulation)runner.Game;
         GameInfo gameInfo = runner.GameInfo;
-        var playersGss = game._players;
+        var playersGss = GameSimulation._players;
         if (playerViews.Length != playersGss.Length)
         {
             SetGame(game);
@@ -32,6 +33,8 @@ public class VwGameView : MonoBehaviour, IGameView
         {
             playerViews[i].Populate(playersGss[i], gameInfo.players[i]);
             UpdateEffects(i, playersGss[i].effects);
+            _trainingMenu.SetState(true, playersGss[0].state);
+            _trainingMenu.SetState(false, playersGss[1].state);
         }
     }
     private void UpdateEffects(int index, EffectNetwork[] effects)

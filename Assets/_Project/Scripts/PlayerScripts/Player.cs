@@ -105,8 +105,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         RecallAssist();
         _playerMovement.StopKnockback();
         _playerMovement.Physics.ResetSkipWall();
-        // _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
-        _playerMovement.Physics.Velocity = DemonicsVector2.Zero;
+        int index = IsPlayerOne ? 0 : 1;
+        GameSimulation._players[index].position = resetPosition;
+        GameSimulation._players[index].velocity = Vector2.zero;
+        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)GameSimulation._players[index].position.x, (DemonicsFloat)GameSimulation._players[index].position.y));
         _playerStateManager.ResetToInitialState();
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;
@@ -464,25 +466,27 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool TakeDamage(AttackSO attack)
     {
-        GameplayManager.Instance.AddHitstop(this);
-        if (attack.attackTypeEnum == AttackTypeEnum.Throw)
-        {
-            return _playerStateManager.TryToGrabbedState();
-        }
-        if (Invincible)
-        {
-            return false;
-        }
-        if (CanBlock(attack))
-        {
-            bool blockSuccesful = _playerStateManager.TryToBlockState(attack);
-            if (!blockSuccesful)
-            {
-                return _playerStateManager.TryToHurtState(attack);
-            }
-            return true;
-        }
-        return _playerStateManager.TryToHurtState(attack);
+        GameSimulation._players[1].state = "Hurt";
+        return true;
+        // GameplayManager.Instance.AddHitstop(this);
+        // if (attack.attackTypeEnum == AttackTypeEnum.Throw)
+        // {
+        //     return _playerStateManager.TryToGrabbedState();
+        // }
+        // if (Invincible)
+        // {
+        //     return false;
+        // }
+        // if (CanBlock(attack))
+        // {
+        //     bool blockSuccesful = _playerStateManager.TryToBlockState(attack);
+        //     if (!blockSuccesful)
+        //     {
+        //         return _playerStateManager.TryToHurtState(attack);
+        //     }
+        //     return true;
+        // }
+        // return _playerStateManager.TryToHurtState(attack);
     }
 
     public void SetSpriteOrderPriority()
@@ -629,6 +633,32 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
+        if (!string.IsNullOrEmpty(playerGs.sound))
+        {
+            _audio.Sound(playerGs.sound).Play();
+            playerGs.sound = "";
+        }
+        if (!string.IsNullOrEmpty(playerGs.soundStop))
+        {
+            _audio.Sound(playerGs.soundStop).Stop();
+            playerGs.soundStop = "";
+        }
+        if (playerGs.direction.x == 1)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+        }
+        if (playerGs.direction.x == -1)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+        }
+        if (playerGs.direction.y == 1)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+        }
+        if (playerGs.direction.y == -1)
+        {
+            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+        }
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
         PlayerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         NetworkDebug(info);
