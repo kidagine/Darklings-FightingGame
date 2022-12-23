@@ -70,6 +70,7 @@ public class PlayerNetwork
     public int attackFrames;
     public int stunFrames;
     public InputEnum attackInput;
+    public int health;
     public int flip;
     public string sound;
     public string soundStop;
@@ -102,6 +103,7 @@ public class PlayerNetwork
         bw.Write(attackFrames);
         bw.Write(stunFrames);
         bw.Write((int)attackInput);
+        bw.Write(health);
         bw.Write(sound);
         bw.Write(soundStop);
         bw.Write(gravity);
@@ -138,6 +140,7 @@ public class PlayerNetwork
         attackFrames = br.ReadInt32();
         stunFrames = br.ReadInt32();
         attackInput = (InputEnum)br.ReadInt32();
+        health = br.ReadInt32();
         sound = br.ReadString();
         soundStop = br.ReadString();
         gravity = br.ReadSingle();
@@ -270,6 +273,7 @@ public struct GameSimulation : IGame
             _players[i].state = "Idle";
             _players[i].position = new Vector2(GameplayManager.Instance.GetSpawnPositions()[i], (float)DemonicsPhysics.GROUND_POINT);
             _players[i].playerStats = playerStats[i];
+            _players[i].health = playerStats[i].maxHealth;
             _players[i].attackInput = InputEnum.Direction;
             _players[i].animation = "Idle";
             _players[i].sound = "";
@@ -458,25 +462,25 @@ public struct GameSimulation : IGame
         {
             _players[index].direction = new Vector2(_players[index].direction.x, 0);
         }
-        // if (light)
-        // {
-        //     _players[index].attackInput = InputEnum.Light;
-        //     _players[index].CurrentState.ToAttackState(_players[index]);
-        // }
-        // if (medium)
-        // {
-        //     _players[index].attackInput = InputEnum.Medium;
-        //     _players[index].CurrentState.ToAttackState(_players[index]);
-        // }
-        // if (heavy)
-        // {
-        //     _players[index].attackInput = InputEnum.Heavy;
-        //     _players[index].CurrentState.ToAttackState(_players[index]);
-        // }
-        // if (arcana)
-        // {
-        //     _players[index].CurrentState.ToArcanaState(_players[index]);
-        // }
+        if (light)
+        {
+            _players[index].attackInput = InputEnum.Light;
+            _players[index].CurrentState.ToAttackState(_players[index]);
+        }
+        if (medium)
+        {
+            _players[index].attackInput = InputEnum.Medium;
+            _players[index].CurrentState.ToAttackState(_players[index]);
+        }
+        if (heavy)
+        {
+            _players[index].attackInput = InputEnum.Heavy;
+            _players[index].CurrentState.ToAttackState(_players[index]);
+        }
+        if (arcana)
+        {
+            _players[index].CurrentState.ToArcanaState(_players[index]);
+        }
         SetState(index);
 
         _players[index].CurrentState.UpdateLogic(_players[index]);
@@ -622,6 +626,10 @@ public struct GameSimulation : IGame
         if (_players[index].state == "Hurt")
         {
             _players[index].CurrentState = new HurtStates();
+        }
+        if (_players[index].state == "Airborne")
+        {
+            _players[index].CurrentState = new AirborneHurtStates();
         }
     }
 
@@ -1392,7 +1400,9 @@ public class HurtStates : States
         AttackSO hurtAttack = player.player.OtherPlayer.CurrentAttack;
         if (!player.enter)
         {
-            // GameplayManager.Instance.PlayerTwo.StartShakeContact();
+            player.health -= hurtAttack.damage;
+            player.player.SetHealth(player.health);
+            player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();
             player.enter = true;
@@ -1410,6 +1420,7 @@ public class HurtStates : States
         player.animation = "Hurt";
         if (GameSimulation.Hitstop <= 0)
         {
+            player.player.StopShakeCoroutine();
             player.animationFrames++;
             player.stunFrames--;
         }
@@ -1419,6 +1430,50 @@ public class HurtStates : States
     {
         if (player.stunFrames <= 0)
         {
+            player.player.PlayerUI.UpdateHealthDamaged();
+            player.enter = false;
+            player.state = "Idle";
+        }
+    }
+}
+public class AirborneHurtStates : States
+{
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        AttackSO hurtAttack = player.player.OtherPlayer.CurrentAttack;
+        if (!player.enter)
+        {
+            player.health -= hurtAttack.damage;
+            player.player.SetHealth(player.health);
+            player.player.StartShakeContact();
+            player.player.PlayerUI.Damaged();
+            player.player.OtherPlayerUI.IncreaseCombo();
+            player.enter = true;
+            GameSimulation.Hitstop = hurtAttack.hitstop;
+            player.sound = hurtAttack.impactSound;
+            player.SetEffect(hurtAttack.hurtEffect, hurtAttack.hurtEffectPosition);
+            if (hurtAttack.cameraShaker != null && !hurtAttack.causesSoftKnockdown)
+            {
+                CameraShake.Instance.Shake(hurtAttack.cameraShaker);
+            }
+            player.animationFrames = 0;
+            player.stunFrames = hurtAttack.hitStun;
+        }
+        // player.velocity = new Vector2(hurtAttack.knockbackForce.x, hurtAttack.knockbackForce.y);
+        player.animation = "Fall";
+        if (GameSimulation.Hitstop <= 0)
+        {
+            player.player.StopShakeCoroutine();
+            player.animationFrames++;
+            player.stunFrames--;
+        }
+        ToIdleState(player);
+    }
+    private void ToIdleState(PlayerNetwork player)
+    {
+        if (player.stunFrames <= 0)
+        {
+            player.player.PlayerUI.UpdateHealthDamaged();
             player.enter = false;
             player.state = "Idle";
         }

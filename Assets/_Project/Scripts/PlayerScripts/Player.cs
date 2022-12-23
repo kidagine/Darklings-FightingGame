@@ -214,14 +214,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void SetHealth(int value, bool noRecoverable = false)
     {
-        Health -= value;
+        Health = value;
         if (noRecoverable)
         {
-            HealthRecoverable -= value;
+            HealthRecoverable = value;
         }
         else
         {
-            HealthRecoverable -= (int)((DemonicsFloat)value / _whiteHealthDivider);
+            HealthRecoverable = (int)((DemonicsFloat)value / _whiteHealthDivider);
         }
         _playerUI.SetHealth(Health);
         _playerUI.SetRecoverableHealth(HealthRecoverable);
@@ -238,6 +238,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             _playerAnimator.transform.localPosition = Vector2.zero;
             StopCoroutine(_shakeContactCoroutine);
+            _shakeContactCoroutine = null;
         }
     }
 
@@ -378,10 +379,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _assist.Recall();
     }
 
-    public int CalculateDamage(AttackSO hurtAttack)
+    public int CalculateDamage(int damage)
     {
         int comboCount = OtherPlayerUI.CurrentComboCount;
-        DemonicsFloat calculatedDamage = ((DemonicsFloat)hurtAttack.damage / (DemonicsFloat)playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
+        DemonicsFloat calculatedDamage = ((DemonicsFloat)damage / (DemonicsFloat)playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
         if (comboCount > 1)
         {
             DemonicsFloat damageScale = (DemonicsFloat)1;
@@ -392,7 +393,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             calculatedDamage *= damageScale;
         }
         int calculatedIntDamage = (int)calculatedDamage;
-        OtherPlayer.SetResultAttack(calculatedIntDamage, hurtAttack);
+        //OtherPlayer.SetResultAttack(calculatedIntDamage, hurtAttack);
         return calculatedIntDamage;
     }
 
@@ -466,8 +467,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool TakeDamage(AttackSO attack)
     {
-        GameSimulation._players[1].enter = false;
-        GameSimulation._players[1].state = "Hurt";
+        if (attack.causesKnockdown || attack.causesSoftKnockdown && !_playerMovement.IsGrounded)
+        {
+            GameSimulation._players[1].enter = false;
+            GameSimulation._players[1].state = "Airborne";
+        }
+        else
+        {
+            GameSimulation._players[1].enter = false;
+            GameSimulation._players[1].state = "Hurt";
+        }
         return true;
         // GameplayManager.Instance.AddHitstop(this);
         // if (attack.attackTypeEnum == AttackTypeEnum.Throw)
@@ -519,7 +528,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void HurtOnSuperArmor(AttackSO attack)
     {
-        SetHealth(CalculateDamage(attack));
+        //SetHealth(CalculateDamage(attack));
         _playerUI.Damaged();
         _playerUI.UpdateHealthDamaged();
         PlayerAnimator.SpriteSuperArmorEffect();

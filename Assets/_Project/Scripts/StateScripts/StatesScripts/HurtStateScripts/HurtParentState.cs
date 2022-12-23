@@ -69,7 +69,7 @@ public class HurtParentState : State
         {
             CameraShake.Instance.Shake(_hurtAttack.cameraShaker);
         }
-        _player.SetHealth(_player.CalculateDamage(_hurtAttack));
+        // _player.SetHealth(_player.CalculateDamage(_hurtAttack));
         _playerUI.Damaged();
         _player.RecallAssist();
         GameplayManager.Instance.HitStop(_hurtAttack.hitstop);
