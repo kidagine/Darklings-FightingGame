@@ -23,8 +23,8 @@ public class AirHurtState : HurtParentState
         _player.OtherPlayer.UnfreezeComboTimer();
         _player.CheckFlip();
         _playerAnimator.HurtAir();
-        GameObject effect = Instantiate(_hurtAttack.hurtEffect);
-        effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
+        // GameObject effect = Instantiate(_hurtAttack.hurtEffect);
+        // effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
         base.Enter();
         _player.hitstopEvent.AddListener(() => _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)0.18)));
     }

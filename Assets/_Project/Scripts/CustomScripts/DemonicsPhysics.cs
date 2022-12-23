@@ -199,10 +199,27 @@ public class DemonicsPhysics : MonoBehaviour
     public void SetPositionWithRender(DemonicsVector2 position)
     {
         Position = position;
-        //Bounds();
         transform.position = new Vector2((float)Position.x, (float)Position.y);
     }
-
+    public static void Bounds(PlayerNetwork player)
+    {
+        if (player.position.y <= (float)GROUND_POINT)
+        {
+            player.position = new Vector2(player.position.x, (float)GROUND_POINT);
+        }
+        if (player.position.y >= (float)CELLING_POINT && player.velocity.y > 0)
+        {
+            player.velocity = new Vector2(player.velocity.x, 0);
+        }
+        if (player.position.x >= (float)WALL_RIGHT_POINT && player.velocity.x >= 0)
+        {
+            player.position = new Vector2((float)WALL_RIGHT_POINT, player.position.y);
+        }
+        if (player.position.x <= (float)WALL_LEFT_POINT && player.velocity.x <= 0)
+        {
+            player.position = new Vector2((float)WALL_LEFT_POINT, player.position.y);
+        }
+    }
     public void EnableGravity(bool state)
     {
         if (state)

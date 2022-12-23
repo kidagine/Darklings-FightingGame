@@ -388,6 +388,8 @@ public class GameplayManager : MonoBehaviour
 
     public void SetupGame()
     {
+        GameSimulation._players[0].player = GameplayManager.Instance.PlayerOne;
+        GameSimulation._players[1].player = GameplayManager.Instance.PlayerTwo;
         _uiInput.gameObject.SetActive(true);
         if (SceneSettings.MusicName == "Random")
         {

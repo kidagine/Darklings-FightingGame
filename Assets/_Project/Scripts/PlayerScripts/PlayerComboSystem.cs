@@ -120,4 +120,16 @@ public class PlayerComboSystem : MonoBehaviour
         }
         return _player.playerStats.m5Arcana;
     }
+    public static ArcanaSO GetArcana(PlayerStatsSO playerStats, bool isCrouching = false, bool isAir = false)
+    {
+        if (isAir)
+        {
+            return playerStats.jArcana;
+        }
+        if (isCrouching)
+        {
+            return playerStats.m2Arcana;
+        }
+        return playerStats.m5Arcana;
+    }
 }

@@ -232,7 +232,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _shakeContactCoroutine = StartCoroutine(ShakeContactCoroutine());
     }
 
-    private void StopShakeCoroutine()
+    public void StopShakeCoroutine()
     {
         if (_shakeContactCoroutine != null)
         {
@@ -438,22 +438,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public virtual void CreateEffect(Vector2 projectilePosition, bool isProjectile = false)
     {
-        if (CurrentAttack.hitEffect != null)
-        {
-            // GameObject hitEffect;
-            // hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
-            // hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
-            // hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
-            // hitEffect.transform.localScale = new Vector2(-1, 1);
-            // if (isProjectile)
-            // {
-            //     hitEffect.transform.SetParent(null);
-            //     hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
-            //     hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition, false);
-            //     hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
-            //     hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
-            // }
-        }
+        // if (CurrentAttack.hitEffect != null)
+        // {
+        //     // GameObject hitEffect;
+        //     // hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
+        //     // hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
+        //     // hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
+        //     // hitEffect.transform.localScale = new Vector2(-1, 1);
+        //     // if (isProjectile)
+        //     // {
+        //     //     hitEffect.transform.SetParent(null);
+        //     //     hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
+        //     //     hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition, false);
+        //     //     hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
+        //     //     hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
+        //     // }
+        // }
     }
 
     public void SetInvinsible(bool state)
@@ -466,6 +466,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool TakeDamage(AttackSO attack)
     {
+        GameSimulation._players[1].enter = false;
         GameSimulation._players[1].state = "Hurt";
         return true;
         // GameplayManager.Instance.AddHitstop(this);
