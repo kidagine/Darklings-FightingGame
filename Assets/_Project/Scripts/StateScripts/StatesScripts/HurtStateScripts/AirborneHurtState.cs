@@ -39,12 +39,12 @@ public class AirborneHurtState : HurtParentState
         if (WallSplat)
         {
             GameplayManager.Instance.AddHitstop(_player);
-            _player.Flip((int)-_player.transform.localScale.x);
+            //_player.Flip((int)-_player.transform.localScale.x);
             _playerMovement.Knockback(new Vector2(_hurtAttack.knockbackForce.x, (float)DemonicsPhysics.GROUND_POINT), 30, (int)(-_player.transform.localScale.x), 3, ground: true);
         }
         else
         {
-            _player.Flip((int)-_player.OtherPlayer.transform.localScale.x);
+            //_player.Flip((int)-_player.OtherPlayer.transform.localScale.x);
             // GameObject effect = Instantiate(_hurtAttack.hurtEffect);
             // effect.transform.localPosition = _hurtAttack.hurtEffectPosition;
             _playerMovement.Knockback(_hurtAttack.knockbackForce, _hurtAttack.knockbackDuration, (int)(_player.OtherPlayer.transform.localScale.x), _hurtAttack.knockbackArc);

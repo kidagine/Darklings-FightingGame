@@ -26,7 +26,7 @@ public class ThrowState : State
         _player.SetSpriteOrderPriority();
         if (_flip)
         {
-            _player.Flip((int)transform.root.localScale.x * -1);
+            //_player.Flip((int)transform.root.localScale.x * -1);
         }
         _playerAnimator.OnCurrentAnimationFinished.AddListener(ToIdleState);
         _playerAnimator.Throw();

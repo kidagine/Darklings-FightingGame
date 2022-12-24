@@ -255,19 +255,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void CheckFlip()
     {
-        if (OtherPlayerMovement.Physics.Position.x > _playerMovement.Physics.Position.x)
-        {
-            Flip(1);
-        }
-        else if (OtherPlayerMovement.Physics.Position.x < _playerMovement.Physics.Position.x)
-        {
-            Flip(-1);
-        }
-    }
-
-    public int IsFlip()
-    {
-        return (int)transform.localScale.x;
+        // if (OtherPlayerMovement.Physics.Position.x > _playerMovement.Physics.Position.x)
+        // {
+        //     Flip(1);
+        // }
+        // else if (OtherPlayerMovement.Physics.Position.x < _playerMovement.Physics.Position.x)
+        // {
+        //     Flip(-1);
+        // }
     }
 
     public void Flip(int xDirection)
