@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class CpuController : BaseController
 {
-    [SerializeField] private PlayerStateManager _playerStateMachine = default;
     private Transform _otherPlayer;
     private int _movementInputX;
     private float _distance;
@@ -53,7 +52,6 @@ public class CpuController : BaseController
 
                     _reset = true;
                     InputDirection = Vector2Int.zero;
-                    _playerStateMachine.ResetToInitialState();
                 }
             }
         }

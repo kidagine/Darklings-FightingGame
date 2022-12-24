@@ -6,7 +6,6 @@ using UnityEngine.Events;
 using UnityGGPO;
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
-    [SerializeField] private PlayerStateManager _playerStateManager = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Assist _assist = default;
     [SerializeField] private Pushbox _groundPushbox = default;
@@ -33,8 +32,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
     public PlayerAnimator PlayerAnimator { get { return _playerAnimator; } private set { } }
-    public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
-    public PlayerStateManager OtherPlayerStateManager { get; private set; }
     public Player OtherPlayer { get; private set; }
     public PlayerMovement OtherPlayerMovement { get; private set; }
     public PlayerUI OtherPlayerUI { get; private set; }
@@ -97,7 +94,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         OtherPlayer = otherPlayer;
         OtherPlayerMovement = otherPlayer.GetComponent<PlayerMovement>();
         OtherPlayerUI = otherPlayer.PlayerUI;
-        OtherPlayerStateManager = otherPlayer.PlayerStateManager;
     }
 
     public void ResetPlayer(Vector2 resetPosition)
@@ -109,7 +105,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         GameSimulation._players[index].position = resetPosition;
         GameSimulation._players[index].velocity = Vector2.zero;
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)GameSimulation._players[index].position.x, (DemonicsFloat)GameSimulation._players[index].position.y));
-        _playerStateManager.ResetToInitialState();
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;
         _effectsParent.gameObject.SetActive(true);
@@ -337,7 +332,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             _comboTimerFrames++;
             if (_comboTimerFrames == _comboTimerWaitFrames)
             {
-                OtherPlayer._playerStateManager.TryToIdleState();
                 _playerUI.SetComboTimerActive(false);
             }
         }
@@ -549,10 +543,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             }
             return false;
         }
-        if (_playerStateManager.CurrentState is BlockParentState)
-        {
-            return true;
-        }
+
         if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && TrainingSettings.CpuOff)
         {
             return true;

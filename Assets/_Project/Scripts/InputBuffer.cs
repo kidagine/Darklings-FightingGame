@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class InputBuffer : MonoBehaviour
 {
-    [SerializeField] private PlayerStateManager _playerStateManager = default;
     private readonly Queue<InputBufferItem> _inputBuffer = new();
     private readonly Queue<InputBufferItem> _inputBufferAttacks = new();
     private List<InputBufferItem> _inputBufferItems = new List<InputBufferItem>();
@@ -158,48 +157,7 @@ public class InputBuffer : MonoBehaviour
 
     public bool ExecuteInputBuffer(InputEnum inputEnum)
     {
-        if (inputEnum == InputEnum.Parry)
-        {
-            return _playerStateManager.TryToParryState();
-        }
-        if (inputEnum == InputEnum.RedFrenzy)
-        {
-            return _playerStateManager.TryToRedFrenzyState();
-        }
-        if (inputEnum == InputEnum.Throw)
-        {
-            return _playerStateManager.TryToGrabState();
-        }
-        if (inputEnum == InputEnum.ForwardDash)
-        {
-            return _playerStateManager.TryToDashState(1);
-        }
-        if (inputEnum == InputEnum.BackDash)
-        {
-            return _playerStateManager.TryToDashState(-1);
-        }
-        if (inputEnum == InputEnum.Assist)
-        {
-            return _playerStateManager.TryToAssistCall();
-        }
-        else if (inputEnum == InputEnum.Special)
-        {
-            bool value = _playerStateManager.TryToArcanaState(_lastInputDirection);
-            if (value)
-            {
-                _lastInputDirection = InputDirectionEnum.NoneVertical;
-            }
-            return value;
-        }
-        else
-        {
-            bool value = _playerStateManager.TryToAttackState(inputEnum, _lastInputDirection);
-            if (value)
-            {
-                _lastInputDirection = InputDirectionEnum.NoneVertical;
-            }
-            return value;
-        }
+        return false;
     }
 
     private bool ExecuteMovementBuffer(InputDirectionEnum inputDirectionEnum)

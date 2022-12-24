@@ -58,6 +58,45 @@ public struct EffectNetwork
     }
 };
 [Serializable]
+public struct InputItemNetwork
+{
+    public int frame;
+    public InputEnum inputEnum;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(frame);
+        bw.Write((int)inputEnum);
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        frame = br.ReadInt32();
+        inputEnum = (InputEnum)br.ReadInt32();
+    }
+};
+[Serializable]
+public struct InputBufferNetwork
+{
+    public InputItemNetwork[] inputItems;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        for (int i = 0; i < inputItems.Length; ++i)
+        {
+            inputItems[i].Serialize(bw);
+        }
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        for (int i = 0; i < inputItems.Length; ++i)
+        {
+            inputItems[i].Deserialize(br);
+        }
+    }
+};
+[Serializable]
 public class PlayerNetwork
 {
     public Player player;
@@ -90,6 +129,7 @@ public class PlayerNetwork
     public bool enter;
     public string state;
     public States CurrentState;
+    public InputBufferNetwork inputBuffer;
     public EffectNetwork[] effects;
     public void Serialize(BinaryWriter bw)
     {
@@ -122,6 +162,7 @@ public class PlayerNetwork
         bw.Write(enter);
         bw.Write(flip);
         bw.Write(state);
+        inputBuffer.Serialize(bw);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Serialize(bw);
@@ -159,6 +200,7 @@ public class PlayerNetwork
         enter = br.ReadBoolean();
         flip = br.ReadInt32();
         state = br.ReadString();
+        inputBuffer.Deserialize(br);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Deserialize(br);
@@ -271,6 +313,7 @@ public struct GameSimulation : IGame
         for (int i = 0; i < _players.Length; i++)
         {
             _players[i] = new PlayerNetwork();
+            _players[i].inputBuffer.inputItems = new InputItemNetwork[20];
             _players[i].state = "Idle";
             _players[i].position = new Vector2(GameplayManager.Instance.GetSpawnPositions()[i], (float)DemonicsPhysics.GROUND_POINT);
             _players[i].playerStats = playerStats[i];
@@ -467,18 +510,27 @@ public struct GameSimulation : IGame
         }
         if (light)
         {
-            _players[index].attackInput = InputEnum.Light;
-            _players[index].CurrentState.ToAttackState(_players[index]);
+            _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, frame = DemonicsWorld.Frame };
+            if (_players[index].CurrentState.ToAttackState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
         }
         if (medium)
         {
-            _players[index].attackInput = InputEnum.Medium;
-            _players[index].CurrentState.ToAttackState(_players[index]);
+            _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, frame = DemonicsWorld.Frame };
+            if (_players[index].CurrentState.ToAttackState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
         }
         if (heavy)
         {
-            _players[index].attackInput = InputEnum.Heavy;
-            _players[index].CurrentState.ToAttackState(_players[index]);
+            _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = DemonicsWorld.Frame };
+            if (_players[index].CurrentState.ToAttackState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
         }
         if (arcana)
         {
@@ -538,6 +590,10 @@ public struct GameSimulation : IGame
                 }
             }
         }
+        // if (_players[index].inputBuffer.inputItems[0].frame > 0)
+        // {
+        //     _players[index].inputBuffer.inputItems[0].frame--;
+        // }
     }
 
     public void Update(long[] inputs, int disconnect_flags)
@@ -859,12 +915,8 @@ public class GroundParentStates : States
     }
     public override bool ToAttackState(PlayerNetwork player)
     {
-        if (player.attackInput != InputEnum.Direction)
-        {
-            player.state = "Attack";
-            return true;
-        }
-        return false;
+        player.state = "Attack";
+        return true;
     }
     public override bool ToArcanaState(PlayerNetwork player)
     {
@@ -875,10 +927,6 @@ public class GroundParentStates : States
 [Serializable]
 public class IdleStates : GroundParentStates
 {
-    public override void Enter(PlayerNetwork player)
-    {
-    }
-
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
@@ -889,7 +937,6 @@ public class IdleStates : GroundParentStates
         ToJumpState(player);
         ToJumpForwardState(player);
         ToCrouchState(player);
-        ToAttackState(player);
     }
 
     private void ToCrouchState(PlayerNetwork player)
@@ -1238,14 +1285,10 @@ public class AirParentStates : States
     }
     public override bool ToAttackState(PlayerNetwork player)
     {
-        if (player.attackInput != InputEnum.Direction)
-        {
-            player.enter = false;
-            player.isAir = true;
-            player.state = "Attack";
-            return true;
-        }
-        return false;
+        player.enter = false;
+        player.isAir = true;
+        player.state = "Attack";
+        return true;
     }
     public override bool ToArcanaState(PlayerNetwork player)
     {
@@ -1316,7 +1359,6 @@ public class FallStates : AirParentStates
     public override void UpdateLogic(PlayerNetwork player)
     {
         CheckFlip(player);
-
         player.animationFrames = 0;
         player.animation = "Fall";
         player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
@@ -1340,6 +1382,8 @@ public class AttackStates : States
         AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
         if (!player.enter)
         {
+            player.inputBuffer.inputItems[0].frame = 0;
+            player.player.CanSkipAttack = false;
             player.enter = true;
             player.player.CurrentAttack = attack;
             player.animation = attack.name;
@@ -1359,6 +1403,23 @@ public class AttackStates : States
         {
             player.animationFrames++;
             player.attackFrames--;
+            if (player.otherPlayer.state == "Hurt")
+            {
+                if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
+                {
+                    Debug.Log("A");
+                    player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
+                    player.isCrouch = false;
+                    player.isAir = false;
+                    if (player.direction.y < 0)
+                    {
+                        player.isCrouch = true;
+                    }
+                    player.enter = false;
+                    player.state = "Attack";
+                }
+            }
+
         }
         ToIdleState(player);
         ToIdleFallState(player);
@@ -1405,16 +1466,6 @@ public class AttackStates : States
             }
         }
     }
-    public override bool ToAttackState(PlayerNetwork player)
-    {
-        if (player.attackInput != InputEnum.Direction)
-        {
-            player.enter = false;
-            player.state = "Attack";
-            return true;
-        }
-        return false;
-    }
 }
 public class HurtStates : States
 {
@@ -1432,7 +1483,7 @@ public class HurtStates : States
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();
             player.enter = true;
-            GameSimulation.Hitstop = hurtAttack.hitstop;
+            GameSimulation.Hitstop = 30;
             player.sound = hurtAttack.impactSound;
             player.SetEffect(hurtAttack.hurtEffect, hurtAttack.hurtEffectPosition);
             if (hurtAttack.cameraShaker != null && !hurtAttack.causesSoftKnockdown)

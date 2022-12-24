@@ -53,13 +53,11 @@ public class PlayerAnimator : DemonicsAnimator
             {
                 _audio.Sound("Impact6").Play();
                 CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
-                _player.OtherPlayerStateManager.TryToKnockdownState();
             }
             if (GetEvent().throwArcanaEnd)
             {
                 _audio.Sound("Impact6").Play();
                 CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
-                _player.OtherPlayerStateManager.TryToHurtState(_player.CurrentAttack);
             }
             _player.Parrying = GetEvent().parry;
             _player.Invincible = GetEvent().invisibile;
