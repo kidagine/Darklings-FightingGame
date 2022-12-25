@@ -456,16 +456,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool TakeDamage(AttackSO attack)
     {
-        if (attack.causesKnockdown || attack.causesSoftKnockdown && !_playerMovement.IsGrounded)
-        {
-            GameSimulation._players[1].enter = false;
-            GameSimulation._players[1].state = "Airborne";
-        }
-        else
-        {
-            GameSimulation._players[1].enter = false;
-            GameSimulation._players[1].state = "Hurt";
-        }
+        // if (attack.causesKnockdown || attack.causesSoftKnockdown && !_playerMovement.IsGrounded)
+        // {
+        //     GameSimulation._players[1].enter = false;
+        //     GameSimulation._players[1].state = "Airborne";
+        // }
+        // else
+        // {
+        //     GameSimulation._players[1].enter = false;
+        //     GameSimulation._players[1].state = "Hurt";
+        // }
         return true;
         // GameplayManager.Instance.AddHitstop(this);
         // if (attack.attackTypeEnum == AttackTypeEnum.Throw)
@@ -657,6 +657,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
         PlayerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
+        PlayerAnimator.SetSpriteOrder(playerGs.spriteOrder);
         NetworkDebug(info);
     }
 
