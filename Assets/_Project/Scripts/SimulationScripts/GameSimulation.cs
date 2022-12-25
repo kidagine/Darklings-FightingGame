@@ -536,6 +536,10 @@ public struct GameSimulation : IGame
         {
             _players[index].CurrentState.ToArcanaState(_players[index]);
         }
+        if (_players[index].health <= 0)
+        {
+            _players[index].state = "Death";
+        }
         SetState(index);
 
         _players[index].CurrentState.UpdateLogic(_players[index]);
@@ -696,6 +700,10 @@ public struct GameSimulation : IGame
         if (_players[index].state == "WakeUp")
         {
             _players[index].CurrentState = new WakeUpStates();
+        }
+        if (_players[index].state == "Death")
+        {
+            _players[index].CurrentState = new DeathStates();
         }
     }
 
@@ -998,13 +1006,9 @@ public class CrouchStates : GroundParentStates
     }
     public override bool ToAttackState(PlayerNetwork player)
     {
-        if (player.attackInput != InputEnum.Direction)
-        {
-            player.isCrouch = true;
-            player.state = "Attack";
-            return true;
-        }
-        return false;
+        player.isCrouch = true;
+        player.state = "Attack";
+        return true;
     }
     public override bool ToArcanaState(PlayerNetwork player)
     {
@@ -1403,7 +1407,7 @@ public class AttackStates : States
         {
             player.animationFrames++;
             player.attackFrames--;
-            if (player.otherPlayer.state == "Hurt")
+            if (player.otherPlayer.animation == "Hurt")
             {
                 if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
                 {
@@ -1477,13 +1481,13 @@ public class HurtStates : States
         AttackSO hurtAttack = player.player.OtherPlayer.CurrentAttack;
         if (!player.enter)
         {
-            player.health -= hurtAttack.damage;
-            player.player.SetHealth(player.health);
+            player.health -= player.player.CalculateDamage(hurtAttack);
+            player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
             player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();
             player.enter = true;
-            GameSimulation.Hitstop = 30;
+            GameSimulation.Hitstop = hurtAttack.hitstop;
             player.sound = hurtAttack.impactSound;
             player.SetEffect(hurtAttack.hurtEffect, hurtAttack.hurtEffectPosition);
             if (hurtAttack.cameraShaker != null && !hurtAttack.causesSoftKnockdown)
@@ -1494,7 +1498,7 @@ public class HurtStates : States
             player.stunFrames = hurtAttack.hitStun;
             knockbackFrame = 0;
             start = player.position;
-            end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), player.position.y + end.y);
+            end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
         }
         player.animation = "Hurt";
         if (GameSimulation.Hitstop <= 0)
@@ -1507,6 +1511,18 @@ public class HurtStates : States
                 float baseY = Mathf.Lerp(start.y, end.y, (nextX - start.x) / distance);
                 float arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
                 Vector2 nextPosition = new Vector2(nextX, baseY + arc);
+                if (hurtAttack.causesSoftKnockdown)
+                {
+                    nextPosition = new Vector2(nextX, player.position.y);
+                }
+                else
+                {
+                    nextPosition = new Vector2(nextX, baseY + arc);
+                }
+                if (player.position.x == (float)DemonicsPhysics.WALL_LEFT_POINT || player.position.x == (float)DemonicsPhysics.WALL_RIGHT_POINT)
+                {
+                    nextPosition = new Vector2(player.position.x, nextPosition.y);
+                }
                 player.position = nextPosition;
                 knockbackFrame++;
             }
@@ -1520,6 +1536,7 @@ public class HurtStates : States
     {
         if (player.stunFrames <= 0)
         {
+            player.player.OtherPlayer.StopComboTimer();
             player.player.PlayerUI.UpdateHealthDamaged();
             player.enter = false;
             player.state = "Idle";
@@ -1622,6 +1639,20 @@ public class WakeUpStates : States
             player.enter = false;
             player.state = "Idle";
         }
+    }
+}
+public class DeathStates : States
+{
+    public override void UpdateLogic(PlayerNetwork player)
+    {
+        if (!player.enter)
+        {
+            player.enter = true;
+            player.animationFrames = 0;
+            player.player.StopShakeCoroutine();
+        }
+        player.animation = "Knockdown";
+        player.animationFrames++;
     }
 }
 public class ArcanaStates : States

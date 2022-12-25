@@ -209,14 +209,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void SetHealth(int value, bool noRecoverable = false)
     {
-        Health = value;
+        Health -= value;
         if (noRecoverable)
         {
-            HealthRecoverable = value;
+            HealthRecoverable -= value;
         }
         else
         {
-            HealthRecoverable = (int)((DemonicsFloat)value / _whiteHealthDivider);
+            HealthRecoverable -= (int)((DemonicsFloat)value / _whiteHealthDivider);
         }
         _playerUI.SetHealth(Health);
         _playerUI.SetRecoverableHealth(HealthRecoverable);
@@ -368,10 +368,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _assist.Recall();
     }
 
-    public int CalculateDamage(int damage)
+    public int CalculateDamage(AttackSO attack)
     {
         int comboCount = OtherPlayerUI.CurrentComboCount;
-        DemonicsFloat calculatedDamage = ((DemonicsFloat)damage / (DemonicsFloat)playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
+        DemonicsFloat calculatedDamage = ((DemonicsFloat)attack.damage / (DemonicsFloat)playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
         if (comboCount > 1)
         {
             DemonicsFloat damageScale = (DemonicsFloat)1;
@@ -382,7 +382,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             calculatedDamage *= damageScale;
         }
         int calculatedIntDamage = (int)calculatedDamage;
-        //OtherPlayer.SetResultAttack(calculatedIntDamage, hurtAttack);
+        OtherPlayer.SetResultAttack(calculatedIntDamage, attack);
         return calculatedIntDamage;
     }
 
