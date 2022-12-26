@@ -652,7 +652,7 @@ public struct GameSimulation : IGame
 
         if (index == 0)
         {
-            if (_players[0].hitbox.active && _players[1].state != "Hurt")
+            if (_players[0].hitbox.active && !_players[0].canChainAttack && _players[0].animationFrames > 1)
             {
                 if (DemonicsCollider.Colliding(_players[0].hitbox, _players[1].hurtbox))
                 {
@@ -722,6 +722,7 @@ public struct GameSimulation : IGame
     {
         if (_players[index].state == "Idle")
         {
+            _players[index].state = "Idle";
             _players[index].CurrentState = new IdleState();
         }
         if (_players[index].state == "Walk")

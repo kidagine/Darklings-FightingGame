@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class HurtState : State
 {
+    private static AttackSO hurtAttack;
     public static Vector2 start;
     private static Vector2 end;
     private static int knockbackFrame;
     public override void UpdateLogic(PlayerNetwork player)
     {
-        AttackSO hurtAttack = PlayerComboSystem.GetComboAttack(player.playerStats, player.otherPlayer.attackInput, player.isCrouch, player.isAir);
         if (!player.enter)
         {
-            player.health -= player.player.CalculateDamage(hurtAttack);
+            hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
+            // player.health -= player.player.CalculateDamage(hurtAttack);
             player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
             player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
@@ -27,6 +28,7 @@ public class HurtState : State
             player.stunFrames = hurtAttack.hitStun;
             knockbackFrame = 0;
             start = player.position;
+            //end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), player.position.y + hurtAttack.knockbackForce.y);
             end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
         }
         player.animation = "Hurt";
@@ -40,18 +42,8 @@ public class HurtState : State
                 float baseY = Mathf.Lerp(start.y, end.y, (nextX - start.x) / distance);
                 float arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
                 Vector2 nextPosition = new Vector2(nextX, baseY + arc);
-                if (hurtAttack.causesSoftKnockdown)
-                {
-                    nextPosition = new Vector2(nextX, player.position.y);
-                }
-                else
-                {
-                    nextPosition = new Vector2(nextX, baseY + arc);
-                }
-                if (IsInCorner(player))
-                {
-                    nextPosition = new Vector2(player.position.x, nextPosition.y);
-                }
+                nextPosition = new Vector2(nextX, baseY + arc);
+                Debug.Log(end);
                 player.position = nextPosition;
                 knockbackFrame++;
             }

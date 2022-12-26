@@ -220,6 +220,15 @@ public class DemonicsPhysics : MonoBehaviour
             player.position = new Vector2((float)WALL_LEFT_POINT, player.position.y);
         }
     }
+    public static bool IsInCorner(PlayerNetwork player)
+    {
+        if (player.position.x == (float)DemonicsPhysics.WALL_LEFT_POINT || player.position.x == (float)DemonicsPhysics.WALL_RIGHT_POINT)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void EnableGravity(bool state)
     {
         if (state)

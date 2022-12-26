@@ -22,14 +22,6 @@ public class State
             player.flip = -1;
         }
     }
-    public bool IsInCorner(PlayerNetwork player)
-    {
-        if (player.position.x == (float)DemonicsPhysics.WALL_LEFT_POINT || player.position.x == (float)DemonicsPhysics.WALL_RIGHT_POINT)
-        {
-            return true;
-        }
-        return false;
-    }
     public void SetTopPriority(PlayerNetwork player)
     {
         player.spriteOrder = 1;
