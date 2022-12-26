@@ -101,6 +101,7 @@ public struct ColliderNetwork
 {
     public Vector2 position;
     public Vector2 size;
+    public Vector2 offset;
     public bool active;
 
     public void Serialize(BinaryWriter bw)
@@ -109,6 +110,8 @@ public struct ColliderNetwork
         bw.Write(position.y);
         bw.Write(size.x);
         bw.Write(size.y);
+        bw.Write(offset.x);
+        bw.Write(offset.y);
         bw.Write(active);
     }
 
@@ -118,6 +121,8 @@ public struct ColliderNetwork
         position.y = br.ReadSingle();
         size.x = br.ReadSingle();
         size.y = br.ReadSingle();
+        offset.x = br.ReadSingle();
+        offset.y = br.ReadSingle();
         active = br.ReadBoolean();
     }
 
@@ -365,7 +370,7 @@ public struct GameSimulation : IGame
             _players[i].canDoubleJump = true;
             _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
             _players[i].hitbox = new ColliderNetwork() { active = false };
-            _players[i].hurtbox = new ColliderNetwork() { active = false };
+            _players[i].hurtbox = new ColliderNetwork() { active = true };
             for (int j = 0; j < _players[i].effects.Length; j++)
             {
                 _players[i].effects[j] = new EffectNetwork();
@@ -584,10 +589,7 @@ public struct GameSimulation : IGame
         }
         SetState(index);
         _players[index].CurrentState.UpdateLogic(_players[index]);
-        _players[index].hurtbox.position = _players[index].position;
-        _players[index].hitbox.position = _players[index].position;
-        _players[index].hurtbox.size = new Vector2(2, 2);
-        _players[index].hitbox.size = new Vector2(2, 2);
+
         if (GameSimulation.Hitstop <= 0)
         {
             _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
@@ -608,21 +610,15 @@ public struct GameSimulation : IGame
         }
         DemonicsPhysics.Bounds(_players[index]);
 
-        if (GameplayManager.Instance.PlayerOne)
+        GameplayManager.Instance.PlayerOne.Flip(_players[0].flip);
+        GameplayManager.Instance.PlayerTwo.Flip(_players[1].flip);
+        if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
         {
-            GameplayManager.Instance.PlayerOne.Flip(_players[0].flip);
-            GameplayManager.Instance.PlayerTwo.Flip(_players[1].flip);
-            if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
-            {
-                _players[0].animationFrames = 0;
-            }
+            _players[0].animationFrames = 0;
         }
-        if (GameplayManager.Instance.PlayerTwo)
+        if (GameplayManager.Instance.PlayerTwo.IsAnimationFinished())
         {
-            if (GameplayManager.Instance.PlayerTwo.IsAnimationFinished())
-            {
-                _players[1].animationFrames = 0;
-            }
+            _players[1].animationFrames = 0;
         }
         for (int i = 0; i < _players[index].effects.Length; i++)
         {
@@ -639,68 +635,84 @@ public struct GameSimulation : IGame
                 }
             }
         }
+        AnimationBox[] animationBoxes = _players[index].player.PlayerAnimator.GetHitboxes();
+        if (animationBoxes.Length == 0)
+        {
+            _players[index].hitbox.active = false;
+        }
+        else
+        {
+            _players[index].hitbox.size = animationBoxes[0].size;
+            _players[index].hitbox.offset = animationBoxes[0].offset;
+            _players[index].hitbox.position = new Vector2(_players[index].position.x + (_players[index].hitbox.offset.x * _players[index].flip), _players[index].position.y + _players[index].hitbox.offset.y);
+            _players[index].hitbox.active = true;
+        }
+        _players[index].hurtbox.position = new Vector2(_players[index].position.x, _players[index].position.y + 1);
+        _players[index].hurtbox.size = new Vector2(1.5f, 2);
+
         if (index == 0)
         {
-            if (_players[0].hitbox.active)
+            if (_players[0].hitbox.active && _players[1].state != "Hurt")
             {
                 if (DemonicsCollider.Colliding(_players[0].hitbox, _players[1].hurtbox))
                 {
                     _players[0].canChainAttack = true;
-                    _players[0].hitbox.active = false;
                     GameSimulation._players[1].enter = false;
                     GameSimulation._players[1].state = "Hurt";
                 }
             }
         }
-        if (index == 1)
-        {
-            if (_players[1].hitbox.active)
-            {
-                if (DemonicsCollider.Colliding(_players[1].hitbox, _players[0].hurtbox))
-                {
-                    _players[1].canChainAttack = true;
-                    _players[1].hitbox.active = false;
-                    GameSimulation._players[0].enter = false;
-                    GameSimulation._players[0].state = "Hurt";
-                }
-            }
-        }
+        // if (index == 1)
+        // {
+        //     if (_players[1].hitbox.active && _players[0].state != "Hurt")
+        //     {
+        //         if (DemonicsCollider.Colliding(_players[1].hitbox, _players[0].hurtbox))
+        //         {
+        //             _players[1].canChainAttack = true;
+        //             GameSimulation._players[0].enter = false;
+        //             GameSimulation._players[0].state = "Hurt";
+        //         }
+        //     }
+        // }
     }
 
     public void Update(long[] inputs, int disconnect_flags)
     {
-        if (Time.timeScale > 0)
+        if (Time.timeScale > 0 && GameplayManager.Instance)
         {
             Framenumber++;
             DemonicsWorld.Frame = Framenumber;
-            for (int i = 0; i < _players.Length; i++)
+            if (_players[0].player != null)
             {
-                bool skip = false;
-                bool up = false;
-                bool down = false;
-                bool left = false;
-                bool right = false;
-                bool light = false;
-                bool medium = false;
-                bool heavy = false;
-                bool arcana = false;
-                bool grab = false;
-                bool shadow = false;
-                bool blueFrenzy = false;
-                bool redFrenzy = false;
-                bool dashForward = false;
-                bool dashBackward = false;
-                if ((disconnect_flags & (1 << i)) != 0)
+                for (int i = 0; i < _players.Length; i++)
                 {
-                    //AI
+                    bool skip = false;
+                    bool up = false;
+                    bool down = false;
+                    bool left = false;
+                    bool right = false;
+                    bool light = false;
+                    bool medium = false;
+                    bool heavy = false;
+                    bool arcana = false;
+                    bool grab = false;
+                    bool shadow = false;
+                    bool blueFrenzy = false;
+                    bool redFrenzy = false;
+                    bool dashForward = false;
+                    bool dashBackward = false;
+                    if ((disconnect_flags & (1 << i)) != 0)
+                    {
+                        //AI
+                    }
+                    else
+                    {
+                        ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
+                         out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
+                    }
+                    PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
+                    _players[i].start = true;
                 }
-                else
-                {
-                    ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
-                     out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
-                }
-                PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
-                _players[i].start = true;
             }
             Hitstop--;
         }
@@ -1018,7 +1030,6 @@ public class IdleStates : GroundParentStates
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        player.hitbox.active = false;
         base.UpdateLogic(player);
         player.animation = "Idle";
         player.animationFrames++;
@@ -1089,6 +1100,7 @@ public class CrouchStates : GroundParentStates
     }
     public override bool ToAttackState(PlayerNetwork player)
     {
+        player.enter = false;
         player.isCrouch = true;
         player.state = "Attack";
         return true;
@@ -1487,7 +1499,6 @@ public class AttackStates : States
         if (!player.enter)
         {
             SetTopPriority(player);
-            player.hitbox.active = true;
             player.canChainAttack = false;
             player.inputBuffer.inputItems[0].frame = 0;
             player.enter = true;
@@ -1542,7 +1553,6 @@ public class AttackStates : States
     {
         if (player.attackFrames <= 0)
         {
-            player.hitbox.active = false;
             if (player.isAir)
             {
                 player.isCrouch = false;
@@ -1635,6 +1645,7 @@ public class HurtStates : States
     {
         if (player.stunFrames <= 0)
         {
+            player.player.StopShakeCoroutine();
             player.player.OtherPlayer.StopComboTimer();
             player.player.PlayerUI.UpdateHealthDamaged();
             player.enter = false;

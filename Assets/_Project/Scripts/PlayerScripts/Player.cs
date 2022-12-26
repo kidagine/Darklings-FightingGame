@@ -14,6 +14,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [SerializeField] private Transform _cameraPoint = default;
     [SerializeField] private Transform _keepFlip = default;
     [SerializeField] private Audio _audio = default;
+    [SerializeField] private CollisionVisualizer _hurtBoxVisualizer = default;
+    [SerializeField] private CollisionVisualizer _hitBoxVisualizer = default;
+    [SerializeField] private CollisionVisualizer _pushBoxVisualizer = default;
     [SerializeField] private GameObject[] _playerIcons = default;
     protected PlayerUI _playerUI;
     private PlayerMovement _playerMovement;
@@ -658,6 +661,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
         PlayerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         PlayerAnimator.SetSpriteOrder(playerGs.spriteOrder);
+        _hitBoxVisualizer.ShowBox(playerGs.hitbox);
+        _hurtBoxVisualizer.ShowBox(playerGs.hurtbox);
         NetworkDebug(info);
     }
 
