@@ -614,6 +614,7 @@ GameObject:
   - component: {fileID: 8073473790702501994}
   - component: {fileID: 7171796573308583996}
   - component: {fileID: 6371053321382070875}
+  - component: {fileID: 3127622633484732809}
   - component: {fileID: 8743540751678485471}
   - component: {fileID: 3247643240904518811}
   - component: {fileID: 4664395619888274278}
@@ -678,9 +679,6 @@ MonoBehaviour:
   _cameraPoint: {fileID: 3775412804825945539}
   _keepFlip: {fileID: 4489081760178489291}
   _audio: {fileID: 7611394710214668632}
-  _hurtBoxVisualizer: {fileID: 607065318714514336}
-  _hitBoxVisualizer: {fileID: 5491236174710387130}
-  _pushBoxVisualizer: {fileID: 5470316766750224333}
   _playerIcons:
   - {fileID: 7759221523502482170}
   - {fileID: 3488833446598643948}
@@ -742,6 +740,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0086d4419d1d449b979602e6ea7745, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3127622633484732809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073473790702501986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa5d37f0b56ceb48ae197c1955210c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player: {fileID: 8073473790702501988}
+  _playerAnimator: {fileID: 8073473789928578677}
+  _audio: {fileID: 7611394710214668632}
+  _hurtBoxVisualizer: {fileID: 607065318714514336}
+  _hitBoxVisualizer: {fileID: 5491236174710387130}
+  _pushBoxVisualizer: {fileID: 5470316766750224333}
 --- !u!114 &8743540751678485471
 MonoBehaviour:
   m_ObjectHideFlags: 0

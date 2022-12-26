@@ -14,9 +14,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [SerializeField] private Transform _cameraPoint = default;
     [SerializeField] private Transform _keepFlip = default;
     [SerializeField] private Audio _audio = default;
-    [SerializeField] private CollisionVisualizer _hurtBoxVisualizer = default;
-    [SerializeField] private CollisionVisualizer _hitBoxVisualizer = default;
-    [SerializeField] private CollisionVisualizer _pushBoxVisualizer = default;
     [SerializeField] private GameObject[] _playerIcons = default;
     protected PlayerUI _playerUI;
     private PlayerMovement _playerMovement;
@@ -34,6 +31,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
+    public PlayerSimulation PlayerSimulation { get; private set; }
     public PlayerAnimator PlayerAnimator { get { return _playerAnimator; } private set { } }
     public Player OtherPlayer { get; private set; }
     public PlayerMovement OtherPlayerMovement { get; private set; }
@@ -68,6 +66,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _inputBuffer = GetComponent<InputBuffer>();
         _playerMovement = GetComponent<PlayerMovement>();
         _playerComboSystem = GetComponent<PlayerComboSystem>();
+        PlayerSimulation = GetComponent<PlayerSimulation>();
         ResultAttack = new ResultAttack();
     }
 
@@ -617,52 +616,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             _playerUI.ClosePauseHold();
         }
     }
-    public void PlaySound(string sound)
-    {
-        if (!string.IsNullOrEmpty(sound))
-        {
-            _audio.Sound(sound).Play();
-        }
-    }
+
     public bool IsAnimationFinished()
     {
         return PlayerAnimator.IsAnimationFinished();
     }
     public string ConnectionStatus { get; private set; }
     public int ConnectionProgress { get; private set; }
-    public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
+    public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        if (!string.IsNullOrEmpty(playerGs.sound))
-        {
-            _audio.Sound(playerGs.sound).Play();
-            playerGs.sound = "";
-        }
-        if (!string.IsNullOrEmpty(playerGs.soundStop))
-        {
-            _audio.Sound(playerGs.soundStop).Stop();
-            playerGs.soundStop = "";
-        }
-        if (playerGs.direction.x == 1)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
-        }
-        if (playerGs.direction.x == -1)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
-        }
-        if (playerGs.direction.y == 1)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
-        }
-        if (playerGs.direction.y == -1)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-        }
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
-        PlayerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
-        PlayerAnimator.SetSpriteOrder(playerGs.spriteOrder);
-        _hitBoxVisualizer.ShowBox(playerGs.hitbox);
-        _hurtBoxVisualizer.ShowBox(playerGs.hurtbox);
         NetworkDebug(info);
     }
 
