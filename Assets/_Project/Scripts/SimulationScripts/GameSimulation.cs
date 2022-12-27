@@ -655,10 +655,12 @@ public struct GameSimulation : IGame
             _players[index].hitbox.active = true;
         }
         AnimationBox[] animationHurtboxes = _players[index].player.PlayerAnimator.GetHurtboxes();
-        _players[index].hurtbox.size = animationHurtboxes[0].size;
-        _players[index].hurtbox.offset = animationHurtboxes[0].offset;
+        if (animationHurtboxes.Length > 0)
+        {
+            _players[index].hurtbox.size = animationHurtboxes[0].size;
+            _players[index].hurtbox.offset = animationHurtboxes[0].offset;
+        }
         _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
-
         _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
 
         if (index == 0)
@@ -667,9 +669,10 @@ public struct GameSimulation : IGame
             {
                 if (DemonicsCollider.Colliding(_players[0].hitbox, _players[1].hurtbox))
                 {
+                    AttackSO attack = PlayerComboSystem.GetComboAttack(_players[0].playerStats, _players[0].attackInput, _players[0].isCrouch, _players[0].isAir);
                     _players[0].canChainAttack = true;
                     _players[1].enter = false;
-                    if (_players[0].state == "Arcana")
+                    if ((attack.causesSoftKnockdown && _players[1].position.y > (float)DemonicsPhysics.GROUND_POINT) || attack.causesKnockdown)
                     {
                         _players[1].state = "Airborne";
                     }

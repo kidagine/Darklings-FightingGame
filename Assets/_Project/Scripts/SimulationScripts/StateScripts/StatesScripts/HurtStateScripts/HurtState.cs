@@ -19,7 +19,17 @@ public class HurtState : State
             player.enter = true;
             GameSimulation.Hitstop = hurtAttack.hitstop;
             player.sound = hurtAttack.impactSound;
-            player.SetEffect(hurtAttack.hurtEffect, player.position);
+            if (player.otherPlayer.isAir)
+            {
+                Vector2 hurtEffectPosition = new Vector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
+                hurtAttack.hurtEffectPosition = hurtEffectPosition;
+            }
+            else
+            {
+                Vector2 hurtEffectPosition = new Vector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
+                hurtAttack.hurtEffectPosition = hurtEffectPosition;
+            }
+            player.SetEffect(hurtAttack.hurtEffect, hurtAttack.hurtEffectPosition);
             if (hurtAttack.cameraShaker != null && !hurtAttack.causesSoftKnockdown)
             {
                 CameraShake.Instance.Shake(hurtAttack.cameraShaker);

@@ -7,7 +7,7 @@ public class HurtAirborneState : State
     private static int knockbackFrame;
     public override void UpdateLogic(PlayerNetwork player)
     {
-        AttackSO hurtAttack = PlayerComboSystem.GetArcana(player.otherPlayer.playerStats, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
+        AttackSO hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
         if (!player.enter)
         {
             //player.health -= hurtAttack.damage;

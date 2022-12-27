@@ -5,7 +5,7 @@ public class ArcanaState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        AttackSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir);
+        AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Special, player.isCrouch, player.isAir);
         if (!player.enter)
         {
             player.enter = true;

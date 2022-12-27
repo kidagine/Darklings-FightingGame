@@ -44,16 +44,16 @@ public class AttackState : State
             player.attackFrames--;
             if (player.canChainAttack)
             {
+                if (!b)
+                {
+                    b = true;
+                    knockbackFrame = 0;
+                    start = player.position;
+                    end = new Vector2(player.position.x + (attack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
+                }
+                knock = true;
                 if ((!(player.attackInput == InputEnum.Medium && player.isCrouch || player.attackInput == InputEnum.Heavy)) || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
                 {
-                    if (!b)
-                    {
-                        b = true;
-                        knockbackFrame = 0;
-                        start = player.position;
-                        end = new Vector2(player.position.x + (attack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
-                    }
-                    knock = true;
                     if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
                     {
                         player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
