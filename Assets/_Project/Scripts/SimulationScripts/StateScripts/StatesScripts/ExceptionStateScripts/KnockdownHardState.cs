@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class KnockdownHardState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
