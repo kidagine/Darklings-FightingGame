@@ -4,7 +4,6 @@ public class ObjectPoolingManager : MonoBehaviour
 {
     [SerializeField] private Transform _playerOnePool = default;
     [SerializeField] private Transform _playerTwoPool = default;
-    [SerializeField] private List<ObjectPool> _objectPools;
     private List<GameObject> _objects = new List<GameObject>();
     public static ObjectPoolingManager Instance { get; private set; }
     private List<GameObject> _jumpOneEffects = new List<GameObject>();
@@ -29,6 +28,7 @@ public class ObjectPoolingManager : MonoBehaviour
                 for (int j = 0; j < effectsLibraryOne._objectPools[i].size; ++j)
                 {
                     GameObject effect = Instantiate(effectsLibraryOne._objectPools[i].prefab, _playerOnePool).gameObject;
+                    effect.gameObject.SetActive(false);
                     _objectsPoolOne[i].objects.Add(effect);
                 }
             }
@@ -38,6 +38,7 @@ public class ObjectPoolingManager : MonoBehaviour
                 for (int j = 0; j < effectsLibraryTwo._objectPools[i].size; ++j)
                 {
                     GameObject effect = Instantiate(effectsLibraryTwo._objectPools[i].prefab, _playerTwoPool).gameObject;
+                    effect.gameObject.SetActive(false);
                     _objectsPoolTwo[i].objects.Add(effect);
                 }
             }

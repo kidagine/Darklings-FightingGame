@@ -2,24 +2,16 @@ using UnityEngine;
 
 public class CollisionVisualizer : MonoBehaviour
 {
-    private DemonicsCollider _collider;
-    private SpriteRenderer _spriteRenderer;
+    [SerializeField] private SpriteRenderer _spriteRenderer = default;
 
 
-    void Awake()
-    {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _collider = transform.parent.GetComponent<DemonicsCollider>();
-    }
-
-    void LateUpdate()
+    public void ShowBox(ColliderNetwork collider)
     {
         if (TrainingSettings.ShowHitboxes)
         {
-            transform.position = new Vector2((float)_collider.Position.x, (float)_collider.Position.y);
-            _spriteRenderer.size = new Vector2((float)_collider.Size.x, (float)_collider.Size.y);
-            _spriteRenderer.color = _collider.GizmoColor;
-            _spriteRenderer.enabled = _collider.enabled;
+            transform.position = new Vector2((float)collider.position.x, (float)collider.position.y);
+            _spriteRenderer.size = new Vector2((float)collider.size.x, (float)collider.size.y);
+            _spriteRenderer.enabled = collider.active;
         }
         else
         {

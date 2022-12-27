@@ -31,7 +31,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
         }
         for (int i = 0; i < playersGss.Length; ++i)
         {
-            playerViews[i].Populate(playersGss[i], gameInfo.players[i]);
+            playerViews[i].PlayerSimulation.Simulate(playersGss[i], gameInfo.players[i]);
             UpdateEffects(i, playersGss[i].effects);
             _trainingMenu.SetState(true, playersGss[0].state);
             _trainingMenu.SetState(false, playersGss[1].state);

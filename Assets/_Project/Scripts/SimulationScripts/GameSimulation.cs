@@ -58,8 +58,80 @@ public struct EffectNetwork
     }
 };
 [Serializable]
+public struct InputItemNetwork
+{
+    public int frame;
+    public InputEnum inputEnum;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(frame);
+        bw.Write((int)inputEnum);
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        frame = br.ReadInt32();
+        inputEnum = (InputEnum)br.ReadInt32();
+    }
+};
+[Serializable]
+public struct InputBufferNetwork
+{
+    public InputItemNetwork[] inputItems;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        for (int i = 0; i < inputItems.Length; ++i)
+        {
+            inputItems[i].Serialize(bw);
+        }
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        for (int i = 0; i < inputItems.Length; ++i)
+        {
+            inputItems[i].Deserialize(br);
+        }
+    }
+};
+[Serializable]
+public struct ColliderNetwork
+{
+    public Vector2 position;
+    public Vector2 size;
+    public Vector2 offset;
+    public bool active;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(position.x);
+        bw.Write(position.y);
+        bw.Write(size.x);
+        bw.Write(size.y);
+        bw.Write(offset.x);
+        bw.Write(offset.y);
+        bw.Write(active);
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        position.x = br.ReadSingle();
+        position.y = br.ReadSingle();
+        size.x = br.ReadSingle();
+        size.y = br.ReadSingle();
+        offset.x = br.ReadSingle();
+        offset.y = br.ReadSingle();
+        active = br.ReadBoolean();
+    }
+
+};
+[Serializable]
 public class PlayerNetwork
 {
+    public Player player;
+    public PlayerNetwork otherPlayer;
     public PlayerStatsSO playerStats;
     public Vector2 position;
     public Vector2 velocity;
@@ -69,6 +141,7 @@ public class PlayerNetwork
     public int attackFrames;
     public int stunFrames;
     public InputEnum attackInput;
+    public int health;
     public int flip;
     public string sound;
     public string soundStop;
@@ -85,8 +158,14 @@ public class PlayerNetwork
     public bool start;
     public bool skip;
     public bool enter;
+    public bool canChainAttack;
     public string state;
-    public States CurrentState;
+    public int spriteOrder;
+    public State CurrentState;
+    public ColliderNetwork hurtbox;
+    public ColliderNetwork hitbox;
+    public ColliderNetwork pushbox;
+    public InputBufferNetwork inputBuffer;
     public EffectNetwork[] effects;
     public void Serialize(BinaryWriter bw)
     {
@@ -101,6 +180,7 @@ public class PlayerNetwork
         bw.Write(attackFrames);
         bw.Write(stunFrames);
         bw.Write((int)attackInput);
+        bw.Write(health);
         bw.Write(sound);
         bw.Write(soundStop);
         bw.Write(gravity);
@@ -116,8 +196,13 @@ public class PlayerNetwork
         bw.Write(start);
         bw.Write(skip);
         bw.Write(enter);
+        bw.Write(canChainAttack);
         bw.Write(flip);
+        bw.Write(spriteOrder);
         bw.Write(state);
+        inputBuffer.Serialize(bw);
+        hurtbox.Serialize(bw);
+        hitbox.Serialize(bw);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Serialize(bw);
@@ -137,6 +222,7 @@ public class PlayerNetwork
         attackFrames = br.ReadInt32();
         stunFrames = br.ReadInt32();
         attackInput = (InputEnum)br.ReadInt32();
+        health = br.ReadInt32();
         sound = br.ReadString();
         soundStop = br.ReadString();
         gravity = br.ReadSingle();
@@ -152,8 +238,13 @@ public class PlayerNetwork
         start = br.ReadBoolean();
         skip = br.ReadBoolean();
         enter = br.ReadBoolean();
+        canChainAttack = br.ReadBoolean();
         flip = br.ReadInt32();
+        spriteOrder = br.ReadInt32();
         state = br.ReadString();
+        inputBuffer.Deserialize(br);
+        hurtbox.Deserialize(br);
+        hitbox.Deserialize(br);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Deserialize(br);
@@ -203,6 +294,7 @@ public class PlayerNetwork
 public struct GameSimulation : IGame
 {
     public int Framenumber { get; private set; }
+    public static int Hitstop { get; set; }
     public int Checksum => GetHashCode();
 
     public static PlayerNetwork[] _players;
@@ -210,6 +302,7 @@ public struct GameSimulation : IGame
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(Framenumber);
+        bw.Write(Hitstop);
         bw.Write(_players.Length);
         for (int i = 0; i < _players.Length; ++i)
         {
@@ -220,6 +313,7 @@ public struct GameSimulation : IGame
     public void Deserialize(BinaryReader br)
     {
         Framenumber = br.ReadInt32();
+        Hitstop = br.ReadInt32();
         int length = br.ReadInt32();
         if (length != _players.Length)
         {
@@ -257,14 +351,17 @@ public struct GameSimulation : IGame
     public GameSimulation(PlayerStatsSO[] playerStats)
     {
         Framenumber = 0;
+        Hitstop = 0;
         _players = new PlayerNetwork[playerStats.Length];
         ObjectPoolingManager.Instance.PoolInitialize(playerStats[0]._effectsLibrary, playerStats[1]._effectsLibrary);
         for (int i = 0; i < _players.Length; i++)
         {
             _players[i] = new PlayerNetwork();
+            _players[i].inputBuffer.inputItems = new InputItemNetwork[20];
             _players[i].state = "Idle";
             _players[i].position = new Vector2(GameplayManager.Instance.GetSpawnPositions()[i], (float)DemonicsPhysics.GROUND_POINT);
             _players[i].playerStats = playerStats[i];
+            _players[i].health = playerStats[i].maxHealth;
             _players[i].attackInput = InputEnum.Direction;
             _players[i].animation = "Idle";
             _players[i].sound = "";
@@ -273,6 +370,10 @@ public struct GameSimulation : IGame
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
             _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
+            _players[i].hitbox = new ColliderNetwork() { active = false };
+            _players[i].hurtbox = new ColliderNetwork() { active = true, size = new Vector2(1.5f, 2) };
+            _players[i].pushbox = new ColliderNetwork() { active = true, size = new Vector2(1.35f, 1.5f), offset = new Vector2(0, 0.8f) };
+
             for (int j = 0; j < _players[i].effects.Length; j++)
             {
                 _players[i].effects[j] = new EffectNetwork();
@@ -281,6 +382,10 @@ public struct GameSimulation : IGame
                 _players[i].effects[j].effectGroups = new EffectGroupNetwork[playerStats[i]._effectsLibrary._objectPools[j].size];
             }
         }
+        _players[0].spriteOrder = 1;
+        _players[1].spriteOrder = 0;
+        _players[0].otherPlayer = _players[1];
+        _players[1].otherPlayer = _players[0];
     }
 
     public void ParseInputs(long inputs, int i, out bool skip, out bool up, out bool down, out bool left, out bool right, out bool light, out bool medium,
@@ -453,64 +558,74 @@ public struct GameSimulation : IGame
         {
             _players[index].direction = new Vector2(_players[index].direction.x, 0);
         }
-        // if (light)
-        // {
-        //     _players[index].attackInput = InputEnum.Light;
-        //     _players[index].CurrentState.ToAttackState(_players[index]);
-        // }
-        // if (medium)
-        // {
-        //     _players[index].attackInput = InputEnum.Medium;
-        //     _players[index].CurrentState.ToAttackState(_players[index]);
-        // }
-        // if (heavy)
-        // {
-        //     _players[index].attackInput = InputEnum.Heavy;
-        //     _players[index].CurrentState.ToAttackState(_players[index]);
-        // }
+        if (light)
+        {
+            _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, frame = DemonicsWorld.Frame };
+            if (_players[index].CurrentState.ToAttackState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
+        }
+        if (medium)
+        {
+            _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, frame = DemonicsWorld.Frame };
+            if (_players[index].CurrentState.ToAttackState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
+        }
+        if (heavy)
+        {
+            _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = DemonicsWorld.Frame };
+            if (_players[index].CurrentState.ToAttackState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
+        }
+        if (arcana)
+        {
+            _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, frame = DemonicsWorld.Frame };
+            if (_players[index].CurrentState.ToArcanaState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
+        }
+        if (_players[index].health <= 0)
+        {
+            _players[index].state = "Death";
+        }
         SetState(index);
-
         _players[index].CurrentState.UpdateLogic(_players[index]);
-        if (index == 0)
+
+        if (GameSimulation.Hitstop <= 0)
         {
-            if (!DemonicsPhysics.Collision(_players[0], _players[1]))
+            _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
+            if (index == 0)
             {
-                _players[index].position = new Vector2(_players[index].position.x, _players[index].position.y);
+                if (!DemonicsPhysics.Collision(_players[0], _players[1]))
+                {
+                    _players[index].position = new Vector2(_players[index].position.x, _players[index].position.y);
+                }
+            }
+            else
+            {
+                if (!DemonicsPhysics.Collision(_players[1], _players[0]))
+                {
+                    _players[index].position = new Vector2(_players[index].position.x, _players[index].position.y);
+                }
             }
         }
-        else
+        DemonicsPhysics.Bounds(_players[index]);
+
+        GameplayManager.Instance.PlayerOne.Flip(_players[0].flip);
+        GameplayManager.Instance.PlayerTwo.Flip(_players[1].flip);
+        if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
         {
-            if (!DemonicsPhysics.Collision(_players[1], _players[0]))
-            {
-                _players[index].position = new Vector2(_players[index].position.x, _players[index].position.y);
-            }
+            _players[0].animationFrames = 0;
         }
-        if (GameplayManager.Instance.PlayerOne)
+        if (GameplayManager.Instance.PlayerTwo.IsAnimationFinished())
         {
-            if ((DemonicsFloat)_players[index].position.x >= DemonicsPhysics.WALL_RIGHT_POINT && (DemonicsFloat)_players[index].velocity.x >= (DemonicsFloat)0)
-            {
-                _players[index].position = new Vector2((float)DemonicsPhysics.WALL_RIGHT_POINT, _players[index].position.y);
-            }
-            if ((DemonicsFloat)_players[index].position.x <= DemonicsPhysics.WALL_LEFT_POINT && (DemonicsFloat)_players[index].velocity.x <= (DemonicsFloat)0)
-            {
-                _players[index].position = new Vector2((float)DemonicsPhysics.WALL_LEFT_POINT, _players[index].position.y);
-            }
-        }
-        if (GameplayManager.Instance.PlayerOne)
-        {
-            _players[0].flip = GameplayManager.Instance.PlayerOne.IsFlip();
-            _players[1].flip = GameplayManager.Instance.PlayerTwo.IsFlip();
-            if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
-            {
-                _players[0].animationFrames = 0;
-            }
-        }
-        if (GameplayManager.Instance.PlayerTwo)
-        {
-            if (GameplayManager.Instance.PlayerTwo.IsAnimationFinished())
-            {
-                _players[1].animationFrames = 0;
-            }
+            _players[1].animationFrames = 0;
         }
         for (int i = 0; i < _players[index].effects.Length; i++)
         {
@@ -527,43 +642,104 @@ public struct GameSimulation : IGame
                 }
             }
         }
+        AnimationBox[] animationHitboxes = _players[index].player.PlayerAnimator.GetHitboxes();
+        if (animationHitboxes.Length == 0)
+        {
+            _players[index].hitbox.active = false;
+        }
+        else
+        {
+            _players[index].hitbox.size = animationHitboxes[0].size;
+            _players[index].hitbox.offset = animationHitboxes[0].offset;
+            _players[index].hitbox.position = new Vector2(_players[index].position.x + (_players[index].hitbox.offset.x * _players[index].flip), _players[index].position.y + _players[index].hitbox.offset.y);
+            _players[index].hitbox.active = true;
+        }
+        AnimationBox[] animationHurtboxes = _players[index].player.PlayerAnimator.GetHurtboxes();
+        _players[index].hurtbox.size = animationHurtboxes[0].size;
+        _players[index].hurtbox.offset = animationHurtboxes[0].offset;
+        _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
+
+        _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
+
+        if (index == 0)
+        {
+            if (_players[0].hitbox.active && _players[1].hurtbox.active && !_players[0].canChainAttack && _players[0].animationFrames > 1)
+            {
+                if (DemonicsCollider.Colliding(_players[0].hitbox, _players[1].hurtbox))
+                {
+                    _players[0].canChainAttack = true;
+                    _players[1].enter = false;
+                    if (_players[0].state == "Arcana")
+                    {
+                        _players[1].state = "Airborne";
+                    }
+                    else
+                    {
+                        _players[1].state = "Hurt";
+                    }
+                }
+            }
+        }
+        if (index == 1)
+        {
+            if (_players[1].hitbox.active && _players[0].hurtbox.active && !_players[1].canChainAttack && _players[1].animationFrames > 1)
+            {
+                if (DemonicsCollider.Colliding(_players[1].hitbox, _players[0].hurtbox))
+                {
+                    _players[1].canChainAttack = true;
+                    _players[0].enter = false;
+                    if (_players[1].state == "Arcana")
+                    {
+                        _players[0].state = "Airborne";
+                    }
+                    else
+                    {
+                        _players[0].state = "Hurt";
+                    }
+                }
+            }
+        }
     }
 
     public void Update(long[] inputs, int disconnect_flags)
     {
-        if (Time.timeScale > 0)
+        if (Time.timeScale > 0 && GameplayManager.Instance)
         {
             Framenumber++;
             DemonicsWorld.Frame = Framenumber;
-            for (int i = 0; i < _players.Length; i++)
+            if (_players[0].player != null)
             {
-                bool skip = false;
-                bool up = false;
-                bool down = false;
-                bool left = false;
-                bool right = false;
-                bool light = false;
-                bool medium = false;
-                bool heavy = false;
-                bool arcana = false;
-                bool grab = false;
-                bool shadow = false;
-                bool blueFrenzy = false;
-                bool redFrenzy = false;
-                bool dashForward = false;
-                bool dashBackward = false;
-                if ((disconnect_flags & (1 << i)) != 0)
+                for (int i = 0; i < _players.Length; i++)
                 {
-                    //AI
+                    bool skip = false;
+                    bool up = false;
+                    bool down = false;
+                    bool left = false;
+                    bool right = false;
+                    bool light = false;
+                    bool medium = false;
+                    bool heavy = false;
+                    bool arcana = false;
+                    bool grab = false;
+                    bool shadow = false;
+                    bool blueFrenzy = false;
+                    bool redFrenzy = false;
+                    bool dashForward = false;
+                    bool dashBackward = false;
+                    if ((disconnect_flags & (1 << i)) != 0)
+                    {
+                        //AI
+                    }
+                    else
+                    {
+                        ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
+                         out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
+                    }
+                    PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
+                    _players[i].start = true;
                 }
-                else
-                {
-                    ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
-                     out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
-                }
-                PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
-                _players[i].start = true;
             }
+            Hitstop--;
         }
     }
 
@@ -571,15 +747,16 @@ public struct GameSimulation : IGame
     {
         if (_players[index].state == "Idle")
         {
-            _players[index].CurrentState = new IdleStates();
+            _players[index].state = "Idle";
+            _players[index].CurrentState = new IdleState();
         }
         if (_players[index].state == "Walk")
         {
-            _players[index].CurrentState = new WalkStates();
+            _players[index].CurrentState = new WalkState();
         }
         if (_players[index].state == "Dash")
         {
-            _players[index].CurrentState = new DashStates();
+            _players[index].CurrentState = new DashState();
         }
         if (_players[index].state == "DashAir")
         {
@@ -587,31 +764,51 @@ public struct GameSimulation : IGame
         }
         if (_players[index].state == "Run")
         {
-            _players[index].CurrentState = new RunStates();
+            _players[index].CurrentState = new RunState();
         }
         if (_players[index].state == "JumpForward")
         {
-            _players[index].CurrentState = new JumpForwardStates();
+            _players[index].CurrentState = new JumpForwardState();
         }
         if (_players[index].state == "Jump")
         {
-            _players[index].CurrentState = new JumpStates();
+            _players[index].CurrentState = new JumpState();
         }
         if (_players[index].state == "Fall")
         {
-            _players[index].CurrentState = new FallStates();
+            _players[index].CurrentState = new FallState();
         }
         if (_players[index].state == "Crouch")
         {
-            _players[index].CurrentState = new CrouchStates();
+            _players[index].CurrentState = new CrouchState();
         }
         if (_players[index].state == "Attack")
         {
-            _players[index].CurrentState = new AttackStates();
+            _players[index].CurrentState = new AttackState();
+        }
+        if (_players[index].state == "Arcana")
+        {
+            _players[index].CurrentState = new ArcanaState();
         }
         if (_players[index].state == "Hurt")
         {
-            _players[index].CurrentState = new HurtStates();
+            _players[index].CurrentState = new HurtState();
+        }
+        if (_players[index].state == "Airborne")
+        {
+            _players[index].CurrentState = new HurtAirborneState();
+        }
+        if (_players[index].state == "Knockdown")
+        {
+            _players[index].CurrentState = new KnockdownState();
+        }
+        if (_players[index].state == "WakeUp")
+        {
+            _players[index].CurrentState = new WakeUpState();
+        }
+        if (_players[index].state == "Death")
+        {
+            _players[index].CurrentState = new DeathState();
         }
     }
 
@@ -789,585 +986,5 @@ public struct GameSimulation : IGame
     public void LogInfo(string filename)
     {
         //Log
-    }
-}
-[Serializable]
-public class States
-{
-    public float Gravity;
-    public virtual void Enter(PlayerNetwork player)
-    {
-        player.animationFrames = 0;
-    }
-    public virtual void UpdateLogic(PlayerNetwork player) { }
-    public virtual void Exit() { }
-    public virtual bool ToAttackState() { return false; }
-    public virtual bool ToDashState(PlayerNetwork player) { return false; }
-    public virtual bool ToAttackState(PlayerNetwork player) { return false; }
-};
-[Serializable]
-public class GroundParentStates : States
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        base.UpdateLogic(player);
-        player.canDoubleJump = true;
-        player.canDash = true;
-        player.hasJumped = false;
-        player.canJump = true;
-    }
-    public override bool ToAttackState(PlayerNetwork player)
-    {
-        if (player.attackInput != InputEnum.Direction)
-        {
-            player.state = "Attack";
-            return true;
-        }
-        return false;
-    }
-}
-[Serializable]
-public class IdleStates : GroundParentStates
-{
-    public override void Enter(PlayerNetwork player)
-    {
-    }
-
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        player.canDash = true;
-        player.canDoubleJump = true;
-        player.animation = "Idle";
-        player.animationFrames++;
-        player.velocity = new Vector2(0, 0);
-        player.position = new Vector2(player.position.x + player.velocity.x, (float)DemonicsPhysics.GROUND_POINT);
-        ToWalkState(player);
-        ToJumpState(player);
-        ToJumpForwardState(player);
-        ToCrouchState(player);
-        ToAttackState(player);
-    }
-
-    private void ToCrouchState(PlayerNetwork player)
-    {
-        if (player.direction.y < 0)
-        {
-            player.state = "Crouch";
-        }
-    }
-    private void ToJumpState(PlayerNetwork player)
-    {
-        if (player.direction.y > 0)
-        {
-            player.state = "Jump";
-        }
-    }
-    private void ToJumpForwardState(PlayerNetwork player)
-    {
-        if (player.direction.y > 0 && player.direction.x != 0)
-        {
-            player.state = "JumpForward";
-        }
-    }
-    private void ToWalkState(PlayerNetwork player)
-    {
-        if (player.direction.x != 0)
-        {
-            player.state = "Walk";
-        }
-    }
-    public override bool ToDashState(PlayerNetwork player)
-    {
-        if (player.canDash)
-        {
-            player.state = "Dash";
-            return true;
-        }
-        return false;
-    }
-}
-public class CrouchStates : GroundParentStates
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        player.canDoubleJump = true;
-        player.dashFrames = 0;
-        player.animationFrames = 0;
-        player.animation = "Crouch";
-        player.velocity = new Vector2(0, 0);
-        player.position = new Vector2(player.position.x + player.velocity.x, (float)DemonicsPhysics.GROUND_POINT);
-        ToIdleState(player);
-    }
-
-    private void ToIdleState(PlayerNetwork player)
-    {
-        if (player.direction.y >= 0)
-        {
-            player.state = "Idle";
-        }
-    }
-    public override bool ToAttackState(PlayerNetwork player)
-    {
-        if (player.attackInput != InputEnum.Direction)
-        {
-            player.isCrouch = true;
-            player.state = "Attack";
-            return true;
-        }
-        return false;
-    }
-}
-public class WalkStates : GroundParentStates
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        player.canDoubleJump = true;
-        player.animation = "Walk";
-        player.animationFrames++;
-        player.velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedWalk, 0);
-        player.position = new Vector2(player.position.x + player.velocity.x, (float)DemonicsPhysics.GROUND_POINT);
-        ToIdleState(player);
-        ToJumpState(player);
-        ToJumpForwardState(player);
-        ToCrouchState(player);
-    }
-    private void ToCrouchState(PlayerNetwork player)
-    {
-        if (player.direction.y < 0)
-        {
-            player.state = "Crouch";
-        }
-    }
-    private void ToJumpState(PlayerNetwork player)
-    {
-        if (player.direction.y > 0)
-        {
-            player.state = "Jump";
-        }
-    }
-    private void ToJumpForwardState(PlayerNetwork player)
-    {
-        if (player.direction.y > 0 && player.direction.x != 0)
-        {
-            player.state = "JumpForward";
-        }
-    }
-    private void ToIdleState(PlayerNetwork player)
-    {
-        if (player.direction.x == 0)
-        {
-            player.state = "Idle";
-        }
-    }
-    public override bool ToDashState(PlayerNetwork player)
-    {
-        if (player.canDash)
-        {
-            player.state = "Dash";
-            return true;
-        }
-        return false;
-    }
-}
-public class RunStates : GroundParentStates
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        player.animation = "Run";
-        player.animationFrames++;
-        player.velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedRun, 0);
-        player.position = new Vector2(player.position.x + player.velocity.x, (float)DemonicsPhysics.GROUND_POINT);
-        if (DemonicsWorld.Frame % 5 == 0)
-        {
-            if (player.flip > 0)
-            {
-                Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
-                player.SetEffect("Ghost", player.position, false);
-            }
-            else
-            {
-                Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
-                player.SetEffect("Ghost", player.position, true);
-            }
-        }
-        ToIdleState(player);
-    }
-
-    private void ToIdleState(PlayerNetwork player)
-    {
-        if (player.direction.x == 0)
-        {
-            player.soundStop = "Run";
-            player.state = "Idle";
-        }
-    }
-}
-[Serializable]
-public class DashStates : States
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        if (!player.enter)
-        {
-            player.enter = true;
-            player.sound = "Dash";
-            if (player.dashDirection > 0)
-            {
-                Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
-                player.SetEffect("Dash", effectPosition, false);
-            }
-            else
-            {
-                Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
-                player.SetEffect("Dash", effectPosition, true);
-            }
-            player.dashFrames = 15;
-            player.velocity = new Vector2(player.dashDirection * (float)player.playerStats.DashForce, 0);
-        }
-        Dash(player);
-    }
-
-    private void Dash(PlayerNetwork player)
-    {
-        if (player.dashFrames > 0)
-        {
-            player.animationFrames = 0;
-            player.animation = "Dash";
-            if (player.dashFrames % 5 == 0)
-            {
-                if (player.flip > 0)
-                {
-                    Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
-                    player.SetEffect("Ghost", player.position, false);
-                }
-                else
-                {
-                    Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
-                    player.SetEffect("Ghost", player.position, true);
-                }
-            }
-            player.position = new Vector2(player.position.x + player.velocity.x, (float)DemonicsPhysics.GROUND_POINT);
-            player.dashFrames--;
-        }
-        else
-        {
-            player.velocity = Vector2.zero;
-            player.enter = false;
-            if (player.direction.x * player.flip > 0)
-            {
-                player.sound = "Run";
-                player.state = "Run";
-            }
-            else
-            {
-                player.state = "Idle";
-            }
-        }
-    }
-}
-
-public class DashAirState : States
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        if (!player.enter)
-        {
-            player.enter = true;
-            player.sound = "Dash";
-            if (player.dashDirection > 0)
-            {
-                Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
-                player.SetEffect("Dash", effectPosition, false);
-            }
-            else
-            {
-                Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
-                player.SetEffect("Dash", effectPosition, true);
-            }
-            player.canDash = false;
-            player.dashFrames = 15;
-            player.velocity = new Vector2(player.dashDirection * (float)player.playerStats.DashForce, 0);
-        }
-        Dash(player);
-    }
-
-    private void Dash(PlayerNetwork player)
-    {
-        if (player.dashFrames > 0)
-        {
-            player.animationFrames = 0;
-            player.animation = "Fall";
-            if (player.dashFrames % 5 == 0)
-            {
-                if (player.flip > 0)
-                {
-                    Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
-                    player.SetEffect("Ghost", player.position, false);
-                }
-                else
-                {
-                    Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
-                    player.SetEffect("Ghost", player.position, true);
-                }
-            }
-            player.position = new Vector2(player.position.x + player.velocity.x, player.position.y);
-            player.dashFrames--;
-        }
-        else
-        {
-            player.velocity = Vector2.zero;
-            player.enter = false;
-            player.state = "Fall";
-        }
-    }
-}
-
-public class AirParentStates : States
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        ToJumpForwardState(player);
-        ToJumpState(player);
-        //ToFallState(player);
-    }
-    private void ToJumpState(PlayerNetwork player)
-    {
-        if (player.canDoubleJump)
-        {
-            if (player.direction.y > 0 && !player.hasJumped)
-            {
-                player.enter = false;
-                player.hasJumped = true;
-                player.canDoubleJump = false;
-                player.state = "Jump";
-            }
-            else if (player.direction.y <= 0 && player.hasJumped)
-            {
-                player.hasJumped = false;
-            }
-        }
-    }
-    private void ToJumpForwardState(PlayerNetwork player)
-    {
-        if (player.canDoubleJump)
-        {
-            if (player.direction.y > 0 && player.direction.x != 0 && !player.hasJumped)
-            {
-                player.enter = false;
-                player.hasJumped = true;
-                player.canDoubleJump = false;
-                player.state = "JumpForward";
-            }
-            else if (player.direction.y <= 0 && player.hasJumped)
-            {
-                player.hasJumped = false;
-            }
-        }
-    }
-    private void ToFallState(PlayerNetwork player)
-    {
-        if (player.velocity.y <= 0)
-        {
-            player.state = "Fall";
-        }
-    }
-    public override bool ToDashState(PlayerNetwork player)
-    {
-        if (player.canDash)
-        {
-            player.enter = false;
-            player.velocity = Vector2.zero;
-            player.state = "DashAir";
-            return true;
-        }
-        return false;
-    }
-    public override bool ToAttackState(PlayerNetwork player)
-    {
-        if (player.attackInput != InputEnum.Direction)
-        {
-            player.enter = false;
-            player.isAir = true;
-            player.state = "Attack";
-            return true;
-        }
-        return false;
-    }
-}
-public class JumpStates : AirParentStates
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        if (!player.enter)
-        {
-            player.enter = true;
-            player.sound = "Jump";
-            player.SetEffect("Jump", player.position);
-            player.hasJumped = true;
-            player.animationFrames = 0;
-            player.velocity = new Vector2(0, (float)player.playerStats.JumpForce);
-        }
-        player.animation = "Jump";
-        player.animationFrames++;
-        player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
-        player.position = new Vector2(player.position.x, player.position.y + player.velocity.y);
-        base.UpdateLogic(player);
-        ToFallState(player);
-    }
-    private void ToFallState(PlayerNetwork player)
-    {
-        if (player.velocity.y <= 0)
-        {
-            player.enter = false;
-            player.state = "Fall";
-        }
-    }
-}
-
-public class JumpForwardStates : AirParentStates
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        if (!player.enter)
-        {
-            player.enter = true;
-            player.sound = "Jump";
-            player.SetEffect("Jump", player.position);
-            player.hasJumped = true;
-            player.animationFrames = 0;
-            player.velocity = new Vector2(0.14f * player.direction.x, (float)player.playerStats.JumpForce);
-        }
-        player.animation = "JumpForward";
-        player.animationFrames++;
-        player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
-        player.position = new Vector2(player.position.x + player.velocity.x, player.position.y + player.velocity.y);
-        base.UpdateLogic(player);
-        ToFallState(player);
-    }
-    private void ToFallState(PlayerNetwork player)
-    {
-        if (player.velocity.y <= 0)
-        {
-            player.enter = false;
-            player.state = "Fall";
-        }
-    }
-}
-public class FallStates : AirParentStates
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        player.animationFrames = 0;
-        player.animation = "Fall";
-        player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
-        player.position = new Vector2(player.position.x + player.velocity.x, player.position.y + player.velocity.y);
-        base.UpdateLogic(player);
-        ToIdleState(player);
-    }
-    private void ToIdleState(PlayerNetwork player)
-    {
-        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
-        {
-            player.sound = "Landed";
-            player.SetEffect("Fall", player.position);
-            player.state = "Idle";
-        }
-    }
-}
-public class AttackStates : States
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
-        if (!player.enter)
-        {
-            player.enter = true;
-            GameplayManager.Instance.PlayerOne.CurrentAttack = attack;
-            player.animation = attack.name;
-            player.sound = attack.attackSound;
-            player.animationFrames = 0;
-            player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
-        }
-        if (!player.isAir)
-        {
-            player.velocity = new Vector2(attack.travelDistance.x * player.flip, attack.travelDistance.y);
-        }
-        else
-        {
-            player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
-        }
-        player.position = new Vector2(player.position.x + player.velocity.x, player.position.y + player.velocity.y);
-        ToIdleState(player);
-        ToIdleFallState(player);
-        player.animationFrames++;
-        player.attackFrames--;
-    }
-    private void ToIdleFallState(PlayerNetwork player)
-    {
-        if (player.isAir && (DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
-        {
-            player.isCrouch = false;
-            player.isAir = false;
-            player.attackInput = InputEnum.Direction;
-            player.enter = false;
-            player.state = "Idle";
-        }
-    }
-    private void ToIdleState(PlayerNetwork player)
-    {
-        if (player.attackFrames <= 0)
-        {
-            player.enter = false;
-            if (player.isAir)
-            {
-                player.isCrouch = false;
-                player.isAir = false;
-                player.attackInput = InputEnum.Direction;
-                player.state = "Fall";
-            }
-            else
-            {
-                if (player.direction.y < 0)
-                {
-                    player.isCrouch = false;
-                    player.isAir = false;
-                    player.attackInput = InputEnum.Direction;
-                    player.state = "Crouch";
-                }
-                else
-                {
-                    player.isCrouch = false;
-                    player.isAir = false;
-                    player.attackInput = InputEnum.Direction;
-                    player.state = "Idle";
-                }
-            }
-
-        }
-    }
-}
-public class HurtStates : States
-{
-    public override void UpdateLogic(PlayerNetwork player)
-    {
-        if (!player.enter)
-        {
-            player.enter = true;
-            // CameraShake.Instance.Shake(GameplayManager.Instance.PlayerOne.CurrentAttack.cameraShaker);
-            player.animationFrames = 0;
-            player.stunFrames = 10;
-        }
-        player.animation = "Hurt";
-        player.animationFrames++;
-        ToIdleState(player);
-        player.stunFrames--;
-    }
-    private void ToIdleState(PlayerNetwork player)
-    {
-        if (player.stunFrames <= 0)
-        {
-            player.enter = false;
-            player.state = "Idle";
-        }
     }
 }

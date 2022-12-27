@@ -34,15 +34,15 @@ public class DemonicsCollider : MonoBehaviour
     }
 
 
-    private bool valueInRange(DemonicsFloat value, DemonicsFloat min, DemonicsFloat max)
+    private static bool valueInRange(float value, float min, float max)
     { return (value >= min) && (value <= max); }
 
-    protected virtual bool Colliding(DemonicsCollider a, DemonicsCollider b)
+    public static bool Colliding(ColliderNetwork a, ColliderNetwork b)
     {
-        bool xOverlap = valueInRange(a.Position.x - (a.Size.x / (DemonicsFloat)2), b.Position.x - (b.Size.x / (DemonicsFloat)2), b.Position.x + (b.Size.x / (DemonicsFloat)2)) ||
-                    valueInRange(b.Position.x - (b.Size.x / (DemonicsFloat)2), a.Position.x - (a.Size.x / (DemonicsFloat)2), a.Position.x + (a.Size.x / (DemonicsFloat)2));
-        bool yOverlap = valueInRange(a.Position.y - (a.Size.y / (DemonicsFloat)2), b.Position.y - (b.Size.y / (DemonicsFloat)2), b.Position.y + (b.Size.y / (DemonicsFloat)2)) ||
-                    valueInRange(b.Position.y - (b.Size.y / (DemonicsFloat)2), a.Position.y - (a.Size.y / (DemonicsFloat)2), a.Position.y + (a.Size.y / (DemonicsFloat)2));
+        bool xOverlap = valueInRange(a.position.x - (a.size.x / (float)2), b.position.x - (b.size.x / (float)2), b.position.x + (b.size.x / (float)2)) ||
+                    valueInRange(b.position.x - (b.size.x / (float)2), a.position.x - (a.size.x / (float)2), a.position.x + (a.size.x / (float)2));
+        bool yOverlap = valueInRange(a.position.y - (a.size.y / (float)2), b.position.y - (b.size.y / (float)2), b.position.y + (b.size.y / (float)2)) ||
+                    valueInRange(b.position.y - (b.size.y / (float)2), a.position.y - (a.size.y / (float)2), a.position.y + (a.size.y / (float)2));
         return xOverlap && yOverlap;
     }
 
@@ -70,19 +70,19 @@ public class DemonicsCollider : MonoBehaviour
         bool colliding = false;
         for (int i = 0; i < _demonicsColliders.Count; i++)
         {
-            if (Colliding(this, _demonicsColliders[i]))
-            {
-                colliding = true;
-                if (!_ignoreCollision)
-                {
-                    if (_demonicsColliders[i].transform.root.TryGetComponent(out DemonicsPhysics demonicsPhysics))
-                    {
-                        _physics.OnCollision(demonicsPhysics);
-                    }
-                }
-                EnterCollision(_demonicsColliders[i]);
-                return;
-            }
+            // if (Colliding(this, _demonicsColliders[i]))
+            // {
+            //     colliding = true;
+            //     if (!_ignoreCollision)
+            //     {
+            //         if (_demonicsColliders[i].transform.root.TryGetComponent(out DemonicsPhysics demonicsPhysics))
+            //         {
+            //             _physics.OnCollision(demonicsPhysics);
+            //         }
+            //     }
+            //     EnterCollision(_demonicsColliders[i]);
+            //     return;
+            // }
         }
         if (WasColliding && !colliding)
         {

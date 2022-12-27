@@ -6,7 +6,6 @@ using UnityEngine.Events;
 using UnityGGPO;
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
-    [SerializeField] private PlayerStateManager _playerStateManager = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Assist _assist = default;
     [SerializeField] private Pushbox _groundPushbox = default;
@@ -32,9 +31,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
+    public PlayerSimulation PlayerSimulation { get; private set; }
     public PlayerAnimator PlayerAnimator { get { return _playerAnimator; } private set { } }
-    public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
-    public PlayerStateManager OtherPlayerStateManager { get; private set; }
     public Player OtherPlayer { get; private set; }
     public PlayerMovement OtherPlayerMovement { get; private set; }
     public PlayerUI OtherPlayerUI { get; private set; }
@@ -68,6 +66,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _inputBuffer = GetComponent<InputBuffer>();
         _playerMovement = GetComponent<PlayerMovement>();
         _playerComboSystem = GetComponent<PlayerComboSystem>();
+        PlayerSimulation = GetComponent<PlayerSimulation>();
         ResultAttack = new ResultAttack();
     }
 
@@ -97,7 +96,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         OtherPlayer = otherPlayer;
         OtherPlayerMovement = otherPlayer.GetComponent<PlayerMovement>();
         OtherPlayerUI = otherPlayer.PlayerUI;
-        OtherPlayerStateManager = otherPlayer.PlayerStateManager;
     }
 
     public void ResetPlayer(Vector2 resetPosition)
@@ -109,7 +107,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         GameSimulation._players[index].position = resetPosition;
         GameSimulation._players[index].velocity = Vector2.zero;
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)GameSimulation._players[index].position.x, (DemonicsFloat)GameSimulation._players[index].position.y));
-        _playerStateManager.ResetToInitialState();
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;
         _effectsParent.gameObject.SetActive(true);
@@ -232,12 +229,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _shakeContactCoroutine = StartCoroutine(ShakeContactCoroutine());
     }
 
-    private void StopShakeCoroutine()
+    public void StopShakeCoroutine()
     {
         if (_shakeContactCoroutine != null)
         {
             _playerAnimator.transform.localPosition = Vector2.zero;
             StopCoroutine(_shakeContactCoroutine);
+            _shakeContactCoroutine = null;
         }
     }
 
@@ -254,19 +252,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void CheckFlip()
     {
-        if (OtherPlayerMovement.Physics.Position.x > _playerMovement.Physics.Position.x)
-        {
-            Flip(1);
-        }
-        else if (OtherPlayerMovement.Physics.Position.x < _playerMovement.Physics.Position.x)
-        {
-            Flip(-1);
-        }
-    }
-
-    public int IsFlip()
-    {
-        return (int)transform.localScale.x;
+        // if (OtherPlayerMovement.Physics.Position.x > _playerMovement.Physics.Position.x)
+        // {
+        //     Flip(1);
+        // }
+        // else if (OtherPlayerMovement.Physics.Position.x < _playerMovement.Physics.Position.x)
+        // {
+        //     Flip(-1);
+        // }
     }
 
     public void Flip(int xDirection)
@@ -341,7 +334,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             _comboTimerFrames++;
             if (_comboTimerFrames == _comboTimerWaitFrames)
             {
-                OtherPlayer._playerStateManager.TryToIdleState();
                 _playerUI.SetComboTimerActive(false);
             }
         }
@@ -378,10 +370,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _assist.Recall();
     }
 
-    public int CalculateDamage(AttackSO hurtAttack)
+    public int CalculateDamage(AttackSO attack)
     {
         int comboCount = OtherPlayerUI.CurrentComboCount;
-        DemonicsFloat calculatedDamage = ((DemonicsFloat)hurtAttack.damage / (DemonicsFloat)playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
+        DemonicsFloat calculatedDamage = ((DemonicsFloat)attack.damage / (DemonicsFloat)playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
         if (comboCount > 1)
         {
             DemonicsFloat damageScale = (DemonicsFloat)1;
@@ -392,7 +384,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             calculatedDamage *= damageScale;
         }
         int calculatedIntDamage = (int)calculatedDamage;
-        OtherPlayer.SetResultAttack(calculatedIntDamage, hurtAttack);
+        OtherPlayer.SetResultAttack(calculatedIntDamage, attack);
         return calculatedIntDamage;
     }
 
@@ -438,22 +430,22 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public virtual void CreateEffect(Vector2 projectilePosition, bool isProjectile = false)
     {
-        if (CurrentAttack.hitEffect != null)
-        {
-            // GameObject hitEffect;
-            // hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
-            // hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
-            // hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
-            // hitEffect.transform.localScale = new Vector2(-1, 1);
-            // if (isProjectile)
-            // {
-            //     hitEffect.transform.SetParent(null);
-            //     hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
-            //     hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition, false);
-            //     hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
-            //     hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
-            // }
-        }
+        // if (CurrentAttack.hitEffect != null)
+        // {
+        //     // GameObject hitEffect;
+        //     // hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
+        //     // hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
+        //     // hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
+        //     // hitEffect.transform.localScale = new Vector2(-1, 1);
+        //     // if (isProjectile)
+        //     // {
+        //     //     hitEffect.transform.SetParent(null);
+        //     //     hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
+        //     //     hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition, false);
+        //     //     hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
+        //     //     hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
+        //     // }
+        // }
     }
 
     public void SetInvinsible(bool state)
@@ -466,7 +458,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool TakeDamage(AttackSO attack)
     {
-        GameSimulation._players[1].state = "Hurt";
+        // if (attack.causesKnockdown || attack.causesSoftKnockdown && !_playerMovement.IsGrounded)
+        // {
+        //     GameSimulation._players[1].enter = false;
+        //     GameSimulation._players[1].state = "Airborne";
+        // }
+        // else
+        // {
+        //     GameSimulation._players[1].enter = false;
+        //     GameSimulation._players[1].state = "Hurt";
+        // }
         return true;
         // GameplayManager.Instance.AddHitstop(this);
         // if (attack.attackTypeEnum == AttackTypeEnum.Throw)
@@ -518,7 +519,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void HurtOnSuperArmor(AttackSO attack)
     {
-        SetHealth(CalculateDamage(attack));
+        //SetHealth(CalculateDamage(attack));
         _playerUI.Damaged();
         _playerUI.UpdateHealthDamaged();
         PlayerAnimator.SpriteSuperArmorEffect();
@@ -544,10 +545,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             }
             return false;
         }
-        if (_playerStateManager.CurrentState is BlockParentState)
-        {
-            return true;
-        }
+
         if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && TrainingSettings.CpuOff)
         {
             return true;
@@ -618,49 +616,16 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             _playerUI.ClosePauseHold();
         }
     }
-    public void PlaySound(string sound)
-    {
-        if (!string.IsNullOrEmpty(sound))
-        {
-            _audio.Sound(sound).Play();
-        }
-    }
+
     public bool IsAnimationFinished()
     {
         return PlayerAnimator.IsAnimationFinished();
     }
     public string ConnectionStatus { get; private set; }
     public int ConnectionProgress { get; private set; }
-    public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
+    public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        if (!string.IsNullOrEmpty(playerGs.sound))
-        {
-            _audio.Sound(playerGs.sound).Play();
-            playerGs.sound = "";
-        }
-        if (!string.IsNullOrEmpty(playerGs.soundStop))
-        {
-            _audio.Sound(playerGs.soundStop).Stop();
-            playerGs.soundStop = "";
-        }
-        if (playerGs.direction.x == 1)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
-        }
-        if (playerGs.direction.x == -1)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
-        }
-        if (playerGs.direction.y == 1)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
-        }
-        if (playerGs.direction.y == -1)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-        }
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
-        PlayerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         NetworkDebug(info);
     }
 

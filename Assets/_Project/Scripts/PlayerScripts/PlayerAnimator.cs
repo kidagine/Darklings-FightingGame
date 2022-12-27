@@ -53,13 +53,11 @@ public class PlayerAnimator : DemonicsAnimator
             {
                 _audio.Sound("Impact6").Play();
                 CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
-                _player.OtherPlayerStateManager.TryToKnockdownState();
             }
             if (GetEvent().throwArcanaEnd)
             {
                 _audio.Sound("Impact6").Play();
                 CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
-                _player.OtherPlayerStateManager.TryToHurtState(_player.CurrentAttack);
             }
             _player.Parrying = GetEvent().parry;
             _player.Invincible = GetEvent().invisibile;
@@ -138,132 +136,6 @@ public class PlayerAnimator : DemonicsAnimator
         attack.activeFrames = activeFrames;
         attack.recoveryFrames = recoveryFrames;
         return attack;
-    }
-
-    public void Walk()
-    {
-        SetAnimation("Walk");
-    }
-
-    public void Idle()
-    {
-        SetAnimation("Idle");
-    }
-
-    public void Crouch()
-    {
-        SetAnimation("Crouch");
-    }
-
-    public void Jump()
-    {
-        SetAnimation("Jump");
-    }
-
-    public void JumpForward()
-    {
-        SetAnimation("JumpForward");
-    }
-
-    public void Attack(string attackType)
-    {
-        SetAnimation(attackType);
-    }
-
-    public void Shadowbreak()
-    {
-        SetAnimation("Shadowbreak");
-    }
-
-    public void Grab()
-    {
-        SetAnimation("Grab");
-    }
-
-    public void WallSplat()
-    {
-        transform.localPosition = new Vector2(0, 1);
-        transform.localRotation = Quaternion.Euler(0, 0, -90);
-        SetAnimation("Wallsplat");
-    }
-
-    public void Throw()
-    {
-        SetAnimation("Throw");
-    }
-
-    public void BlueFrenzy()
-    {
-        SetAnimation("Parry");
-    }
-
-    public void RedFrenzy()
-    {
-        SetAnimation("RedFrenzy");
-    }
-
-    public void Arcana(string arcanaType)
-    {
-        SetAnimation(arcanaType);
-    }
-
-    public void ArcanaThrow()
-    {
-        SetAnimation("5AEnd");
-    }
-
-    public void Hurt()
-    {
-        SetAnimation("Hurt");
-    }
-
-    public void HurtAir()
-    {
-        SetAnimation("HurtAir");
-    }
-
-    public void Block()
-    {
-        SetAnimation("Block");
-    }
-
-    public void BlockLow()
-    {
-        SetAnimation("BlockLow");
-    }
-    public void BlockAir()
-    {
-        SetAnimation("BlockAir");
-    }
-
-    public void Dash()
-    {
-        SetAnimation("Dash");
-    }
-
-    public void AirDash()
-    {
-        SetAnimation("Jump");
-    }
-
-    public void Run()
-    {
-        SetAnimation("Run");
-    }
-
-    public void Taunt()
-    {
-        SetAnimation("Taunt");
-    }
-
-    public void Knockdown()
-    {
-        SetAnimation("Knockdown");
-    }
-
-    public void WakeUp()
-    {
-        SetAnimation("WakeUp");
     }
 
     public void ResetPosition()

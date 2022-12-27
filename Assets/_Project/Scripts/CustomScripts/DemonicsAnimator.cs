@@ -139,12 +139,12 @@ public class DemonicsAnimator : MonoBehaviour
         OnCurrentAnimationFinished.RemoveAllListeners();
     }
 
-    protected AnimationBox[] GetHurtboxes()
+    public AnimationBox[] GetHurtboxes()
     {
         return _animation.GetCel(_group, _cel).hurtboxes.ToArray();
     }
 
-    protected AnimationBox[] GetHitboxes()
+    public AnimationBox[] GetHitboxes()
     {
         return _animation.GetCel(_group, _cel).hitboxes.ToArray();
     }

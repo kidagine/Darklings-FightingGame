@@ -235,8 +235,6 @@ public class GameplayManager : MonoBehaviour
             }
         }
         _playerTwoAnimator.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
-        PlayerOne.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerOneUI, _trainingMenu);
-        PlayerTwo.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerTwoUI, _trainingMenu);
         _trainingMenu.ConfigurePlayers(PlayerOne, PlayerTwo);
         _playerOneController.IsPlayerOne = true;
         PlayerOne.SetPlayerUI(_playerOneUI);
@@ -388,6 +386,8 @@ public class GameplayManager : MonoBehaviour
 
     public void SetupGame()
     {
+        GameSimulation._players[0].player = GameplayManager.Instance.PlayerOne;
+        GameSimulation._players[1].player = GameplayManager.Instance.PlayerTwo;
         _uiInput.gameObject.SetActive(true);
         if (SceneSettings.MusicName == "Random")
         {
@@ -531,8 +531,6 @@ public class GameplayManager : MonoBehaviour
         PlayerTwo.ResetPlayer(new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT));
         PlayerOne.StopComboTimer();
         PlayerTwo.StopComboTimer();
-        PlayerOne.PlayerStateManager.TryToTauntState();
-        PlayerTwo.PlayerStateManager.TryToTauntState();
         _showFrame = 30;
         _readyFrame = 60;
         _readyEndFrame = 60;
@@ -764,19 +762,16 @@ public class GameplayManager : MonoBehaviour
                         if (_playerOneWon)
                         {
                             StartCoroutine(CameraCenterCoroutine(1));
-                            PlayerOne.PlayerStateManager.TryToTauntState();
-                            PlayerTwo.PlayerStateManager.TryToGiveUpState();
+
                         }
                         else if (_playerTwoWon)
                         {
                             StartCoroutine(CameraCenterCoroutine(0));
-                            PlayerOne.PlayerStateManager.TryToGiveUpState();
-                            PlayerTwo.PlayerStateManager.TryToTauntState();
+
                         }
                         else
                         {
-                            PlayerOne.PlayerStateManager.TryToGiveUpState();
-                            PlayerTwo.PlayerStateManager.TryToGiveUpState();
+
                         }
                         _roundOverThird = true;
                     }
