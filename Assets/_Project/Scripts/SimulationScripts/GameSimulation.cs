@@ -678,7 +678,14 @@ public struct GameSimulation : IGame
                     }
                     else
                     {
-                        _players[1].state = "Hurt";
+                        if (_players[1].position.y > (float)DemonicsPhysics.GROUND_POINT)
+                        {
+                            _players[1].state = "HurtAir";
+                        }
+                        else
+                        {
+                            _players[1].state = "Hurt";
+                        }
                     }
                 }
             }
@@ -796,6 +803,10 @@ public struct GameSimulation : IGame
         if (_players[index].state == "Hurt")
         {
             _players[index].CurrentState = new HurtState();
+        }
+        if (_players[index].state == "HurtAir")
+        {
+            _players[index].CurrentState = new HurtAirState();
         }
         if (_players[index].state == "Airborne")
         {
