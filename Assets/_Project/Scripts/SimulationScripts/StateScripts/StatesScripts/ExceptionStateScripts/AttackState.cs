@@ -88,14 +88,7 @@ public class AttackState : State
                             float baseY = Mathf.Lerp(start.y, end.y, (nextX - start.x) / distance);
                             float arc = attack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
                             Vector2 nextPosition = new Vector2(nextX, baseY + arc);
-                            if (attack.causesSoftKnockdown)
-                            {
-                                nextPosition = new Vector2(nextX, player.position.y);
-                            }
-                            else
-                            {
-                                nextPosition = new Vector2(nextX, baseY + arc);
-                            }
+                            nextPosition = new Vector2(nextX, player.position.y);
                             player.position = nextPosition;
                             knockbackFrame++;
                         }

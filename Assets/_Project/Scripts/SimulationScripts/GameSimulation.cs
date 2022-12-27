@@ -801,9 +801,13 @@ public struct GameSimulation : IGame
         {
             _players[index].CurrentState = new HurtAirborneState();
         }
-        if (_players[index].state == "Knockdown")
+        if (_players[index].state == "KnockdownSoft")
         {
-            _players[index].CurrentState = new KnockdownState();
+            _players[index].CurrentState = new KnockdownSoftState();
+        }
+        if (_players[index].state == "KnockdownHard")
+        {
+            _players[index].CurrentState = new KnockdownHardState();
         }
         if (_players[index].state == "WakeUp")
         {

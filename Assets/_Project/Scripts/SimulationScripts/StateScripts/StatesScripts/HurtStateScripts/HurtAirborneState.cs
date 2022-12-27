@@ -2,21 +2,21 @@ using UnityEngine;
 
 public class HurtAirborneState : State
 {
+    private static AttackSO hurtAttack;
     public static Vector2 start;
     private static Vector2 end;
     private static int knockbackFrame;
     public override void UpdateLogic(PlayerNetwork player)
     {
-        AttackSO hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
         if (!player.enter)
         {
+            hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
             //player.health -= hurtAttack.damage;
             player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();
             player.sound = hurtAttack.impactSound;
-            player.SetEffect(hurtAttack.hurtEffect, hurtAttack.hurtEffectPosition);
-            if (hurtAttack.cameraShaker != null && !hurtAttack.causesSoftKnockdown)
+            if (hurtAttack.cameraShaker != null)
             {
                 CameraShake.Instance.Shake(hurtAttack.cameraShaker);
             }
@@ -25,6 +25,17 @@ public class HurtAirborneState : State
             player.enter = true;
             player.velocity = Vector2.zero;
             player.animationFrames = 0;
+            if (player.otherPlayer.isAir)
+            {
+                Vector2 hurtEffectPosition = new Vector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
+                hurtAttack.hurtEffectPosition = hurtEffectPosition;
+            }
+            else
+            {
+                Vector2 hurtEffectPosition = new Vector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
+                hurtAttack.hurtEffectPosition = hurtEffectPosition;
+            }
+            player.SetEffect(hurtAttack.hurtEffect, hurtAttack.hurtEffectPosition);
             GameSimulation.Hitstop = hurtAttack.hitstop;
             knockbackFrame = 0;
             start = player.position;
@@ -50,7 +61,14 @@ public class HurtAirborneState : State
         if (ratio >= 1)
         {
             player.enter = false;
-            player.state = "Knockdown";
+            if (hurtAttack.causesSoftKnockdown)
+            {
+                player.state = "KnockdownSoft";
+            }
+            else
+            {
+                player.state = "KnockdownHard";
+            }
         }
     }
 }
