@@ -44,30 +44,39 @@ public class AttackState : State
             player.attackFrames--;
             if (player.canChainAttack)
             {
-                if (!b)
+                if ((!(player.attackInput == InputEnum.Medium && player.isCrouch || player.attackInput == InputEnum.Heavy)) || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
                 {
-                    b = true;
-                    knockbackFrame = 0;
-                    start = player.position;
-                    end = new Vector2(player.position.x + (attack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
-                }
-                knock = true;
-                if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
-                {
-                    player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
-                    player.isCrouch = false;
-                    player.isAir = false;
-                    if (player.direction.y < 0)
+                    if (!b)
                     {
-                        player.isCrouch = true;
+                        b = true;
+                        knockbackFrame = 0;
+                        start = player.position;
+                        end = new Vector2(player.position.x + (attack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
                     }
-                    player.enter = false;
-                    player.state = "Attack";
+                    knock = true;
+                    if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
+                    {
+                        player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
+                        player.isCrouch = false;
+                        if (player.direction.y < 0)
+                        {
+                            player.isCrouch = true;
+                        }
+                        player.enter = false;
+                        if (player.attackInput == InputEnum.Special)
+                        {
+                            player.state = "Arcana";
+                        }
+                        else
+                        {
+                            player.state = "Attack";
+                        }
+                    }
                 }
             }
             if (knock)
             {
-                if (opponentInCorner)
+                if (opponentInCorner && !player.isAir)
                 {
                     if (attack.knockbackDuration > 0)
                     {
@@ -94,8 +103,36 @@ public class AttackState : State
                 }
             }
         }
+        ToJumpForwardState(player);
+        ToJumpState(player);
         ToIdleState(player);
         ToIdleFallState(player);
+    }
+    private void ToJumpState(PlayerNetwork player)
+    {
+        if (player.attackInput == InputEnum.Heavy && player.isCrouch)
+        {
+            if (player.direction.y > 0)
+            {
+                player.isCrouch = false;
+                player.isAir = false;
+                GameSimulation.Hitstop = 0;
+                player.state = "Jump";
+            }
+        }
+    }
+    private void ToJumpForwardState(PlayerNetwork player)
+    {
+        if (player.attackInput == InputEnum.Heavy && player.isCrouch)
+        {
+            if (player.direction.y > 0 && player.direction.x != 0)
+            {
+                player.isCrouch = false;
+                player.isAir = false;
+                GameSimulation.Hitstop = 0;
+                player.state = "JumpForward";
+            }
+        }
     }
     private void ToIdleFallState(PlayerNetwork player)
     {

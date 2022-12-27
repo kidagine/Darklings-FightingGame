@@ -9,6 +9,7 @@ public class ArcanaState : State
         if (!player.enter)
         {
             player.enter = true;
+            player.canChainAttack = false;
             GameplayManager.Instance.PlayerOne.CurrentAttack = attack;
             player.animation = attack.name;
             player.sound = attack.attackSound;
@@ -16,14 +17,14 @@ public class ArcanaState : State
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.velocity = new Vector2(attack.travelDistance.x * player.flip, attack.travelDistance.y);
         }
-        if (attack.travelDistance.y > 0)
-        {
-            player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
-            ToIdleFallState(player);
-        }
         ToIdleState(player);
         if (GameSimulation.Hitstop <= 0)
         {
+            if (attack.travelDistance.y > 0)
+            {
+                player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
+                ToIdleFallState(player);
+            }
             player.animationFrames++;
             player.attackFrames--;
         }

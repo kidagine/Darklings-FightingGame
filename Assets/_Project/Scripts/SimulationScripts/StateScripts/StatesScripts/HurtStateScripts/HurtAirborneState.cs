@@ -7,11 +7,11 @@ public class HurtAirborneState : State
     private static int knockbackFrame;
     public override void UpdateLogic(PlayerNetwork player)
     {
-        AttackSO hurtAttack = player.player.OtherPlayer.CurrentAttack;
+        AttackSO hurtAttack = PlayerComboSystem.GetArcana(player.otherPlayer.playerStats, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
         if (!player.enter)
         {
-            player.health -= hurtAttack.damage;
-            player.player.SetHealth(player.health);
+            //player.health -= hurtAttack.damage;
+            player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();
             player.sound = hurtAttack.impactSound;
@@ -26,8 +26,9 @@ public class HurtAirborneState : State
             player.velocity = Vector2.zero;
             player.animationFrames = 0;
             GameSimulation.Hitstop = hurtAttack.hitstop;
+            knockbackFrame = 0;
             start = player.position;
-            end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), player.position.y + end.y);
+            end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
         }
         if (GameSimulation.Hitstop <= 0)
         {

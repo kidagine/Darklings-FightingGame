@@ -27,5 +27,6 @@ public class PlayerSimulation : MonoBehaviour
         _playerAnimator.SetSpriteOrder(playerGs.spriteOrder);
         _hitBoxVisualizer.ShowBox(playerGs.hitbox);
         _hurtBoxVisualizer.ShowBox(playerGs.hurtbox);
+        _pushBoxVisualizer.ShowBox(playerGs.pushbox);
     }
 }

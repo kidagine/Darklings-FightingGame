@@ -32,6 +32,7 @@ public class HurtState : State
             end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
         }
         player.animation = "Hurt";
+        player.animationFrames++;
         if (GameSimulation.Hitstop <= 0)
         {
             if (hurtAttack.knockbackDuration > 0)
@@ -43,12 +44,18 @@ public class HurtState : State
                 float arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
                 Vector2 nextPosition = new Vector2(nextX, baseY + arc);
                 nextPosition = new Vector2(nextX, baseY + arc);
-                Debug.Log(end);
+                if (hurtAttack.causesSoftKnockdown)
+                {
+                    nextPosition = new Vector2(nextX, player.position.y);
+                }
+                else
+                {
+                    nextPosition = new Vector2(nextX, baseY + arc);
+                }
                 player.position = nextPosition;
                 knockbackFrame++;
             }
             player.player.StopShakeCoroutine();
-            player.animationFrames++;
             player.stunFrames--;
         }
         ToIdleState(player);
