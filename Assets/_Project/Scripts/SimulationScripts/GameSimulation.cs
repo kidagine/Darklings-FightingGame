@@ -592,19 +592,9 @@ public struct GameSimulation : IGame
         if (GameSimulation.Hitstop <= 0)
         {
             _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
-            if (index == 0)
+            if (!DemonicsPhysics.Collision(_players[index], _players[index].otherPlayer))
             {
-                if (!DemonicsPhysics.Collision(_players[0], _players[1]))
-                {
-                    _players[0].position = new Vector2(_players[0].position.x, _players[0].position.y);
-                }
-            }
-            else
-            {
-                if (!DemonicsPhysics.Collision(_players[1], _players[0]))
-                {
-                    _players[1].position = new Vector2(_players[1].position.x, _players[1].position.y);
-                }
+                _players[index].position = new Vector2(_players[index].position.x, _players[index].position.y);
             }
         }
         DemonicsPhysics.Bounds(_players[index]);
@@ -655,73 +645,70 @@ public struct GameSimulation : IGame
         _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
         _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
 
-        if (index == 0)
+        if (_players[index].hitbox.active && _players[index].otherPlayer.hurtbox.active && !_players[index].canChainAttack && _players[index].animationFrames > 1)
         {
-            if (_players[0].hitbox.active && _players[1].hurtbox.active && !_players[0].canChainAttack && _players[0].animationFrames > 1)
+            if (DemonicsCollider.Colliding(_players[index].hitbox, _players[index].otherPlayer.hurtbox))
             {
-                if (DemonicsCollider.Colliding(_players[0].hitbox, _players[1].hurtbox))
+                AttackSO attack = PlayerComboSystem.GetComboAttack(_players[index].playerStats, _players[index].attackInput, _players[index].isCrouch, _players[index].isAir);
+                _players[index].canChainAttack = true;
+                _players[index].otherPlayer.enter = false;
+                if ((attack.causesSoftKnockdown && _players[index].otherPlayer.position.y > (float)DemonicsPhysics.GROUND_POINT) || attack.causesKnockdown)
                 {
-                    AttackSO attack = PlayerComboSystem.GetComboAttack(_players[0].playerStats, _players[0].attackInput, _players[0].isCrouch, _players[0].isAir);
-                    _players[0].canChainAttack = true;
-                    _players[1].enter = false;
-                    if ((attack.causesSoftKnockdown && _players[1].position.y > (float)DemonicsPhysics.GROUND_POINT) || attack.causesKnockdown)
+                    if (_players[index].flip == 1 && _players[index].otherPlayer.flip == -1 & _players[index].otherPlayer.direction.x > 0
+                        || _players[index].flip == -1 && _players[index].otherPlayer.flip == 1 & _players[index].otherPlayer.direction.x < 0)
                     {
-                        if (_players[0].flip == 1 && _players[1].flip == -1 & _players[1].direction.x > 0
-                            || _players[0].flip == -1 && _players[1].flip == 1 & _players[1].direction.x < 0)
+                        if (_players[index].otherPlayer.position.y > (float)DemonicsPhysics.GROUND_POINT)
                         {
-                            if (_players[1].position.y > (float)DemonicsPhysics.GROUND_POINT)
-                            {
-                                _players[1].state = "BlockAir";
-                            }
-                            else
-                            {
-                                _players[1].state = "Block";
-                            }
+                            _players[index].otherPlayer.state = "BlockAir";
                         }
                         else
                         {
-                            _players[1].state = "Airborne";
+                            _players[index].otherPlayer.state = "Block";
                         }
                     }
                     else
                     {
-                        if (_players[1].position.y > (float)DemonicsPhysics.GROUND_POINT)
+                        _players[index].otherPlayer.state = "Airborne";
+                    }
+                }
+                else
+                {
+                    if (_players[index].otherPlayer.position.y > (float)DemonicsPhysics.GROUND_POINT)
+                    {
+                        if (_players[index].flip == 1 && _players[index].otherPlayer.flip == -1 & _players[index].otherPlayer.direction.x > 0
+                        || _players[index].flip == -1 && _players[index].otherPlayer.flip == 1 & _players[index].otherPlayer.direction.x < 0)
                         {
-                            if (_players[0].flip == 1 && _players[1].flip == -1 & _players[1].direction.x > 0
-                            || _players[0].flip == -1 && _players[1].flip == 1 & _players[1].direction.x < 0)
+                            _players[index].otherPlayer.state = "BlockAir";
+                        }
+                        else
+                        {
+                            _players[index].otherPlayer.state = "HurtAir";
+                        }
+                    }
+                    else
+                    {
+                        if (_players[index].flip == 1 && _players[index].otherPlayer.flip == -1 & _players[index].otherPlayer.direction.x > 0
+                        || _players[index].flip == -1 && _players[index].otherPlayer.flip == 1 & _players[index].otherPlayer.direction.x < 0)
+                        {
+                            if (attack.attackTypeEnum == AttackTypeEnum.Low)
                             {
-                                _players[1].state = "BlockAir";
+                                if (_players[index].otherPlayer.direction.y < 0)
+                                {
+                                    _players[index].otherPlayer.state = "BlockLow";
+                                }
+                                else
+                                {
+                                    _players[index].otherPlayer.state = "Hurt";
+                                }
                             }
                             else
                             {
-                                _players[1].state = "HurtAir";
+                                _players[index].otherPlayer.state = "Block";
                             }
                         }
                         else
                         {
-                            if (_players[0].flip == 1 && _players[1].flip == -1 & _players[1].direction.x > 0
-                            || _players[0].flip == -1 && _players[1].flip == 1 & _players[1].direction.x < 0)
-                            {
-                                if (attack.attackTypeEnum == AttackTypeEnum.Low)
-                                {
-                                    if (_players[1].direction.y < 0)
-                                    {
-                                        _players[1].state = "BlockLow";
-                                    }
-                                    else
-                                    {
-                                        _players[1].state = "Hurt";
-                                    }
-                                }
-                                else
-                                {
-                                    _players[1].state = "Block";
-                                }
-                            }
-                            else
-                            {
-                                _players[1].state = "Hurt";
-                            }
+                            _players[index].otherPlayer.state = "Hurt";
                         }
                     }
                 }
