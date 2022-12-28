@@ -591,10 +591,9 @@ public struct GameSimulation : IGame
 
         if (GameSimulation.Hitstop <= 0)
         {
-            _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
             if (!DemonicsPhysics.Collision(_players[index], _players[index].otherPlayer))
             {
-                _players[index].position = new Vector2(_players[index].position.x, _players[index].position.y);
+                _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
             }
         }
         DemonicsPhysics.Bounds(_players[index]);
