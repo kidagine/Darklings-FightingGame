@@ -28,6 +28,7 @@ public class RunState : GroundParentState
     {
         if (player.direction.y > 0)
         {
+            player.soundStop = "Run";
             player.state = "Jump";
         }
     }
@@ -35,6 +36,7 @@ public class RunState : GroundParentState
     {
         if (player.direction.y > 0 && player.direction.x != 0)
         {
+            player.soundStop = "Run";
             player.state = "JumpForward";
         }
     }

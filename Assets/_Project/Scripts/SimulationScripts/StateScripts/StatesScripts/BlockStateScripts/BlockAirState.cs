@@ -1,18 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockAirState : MonoBehaviour
+public class BlockAirState : BlockParentState
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void UpdateLogic(PlayerNetwork player)
     {
-        
+        base.UpdateLogic(player);
+        player.animation = "BlockAir";
+        player.animationFrames++;
+        ToFallState(player);
+        ToIdleState(player);
+        ToBlockState(player);
+    }
+    private void ToFallState(PlayerNetwork player)
+    {
+        if (player.stunFrames <= 0)
+        {
+            player.player.StopShakeCoroutine();
+            player.enter = false;
+            player.state = "Fall";
+        }
+    }
+    private void ToIdleState(PlayerNetwork player)
+    {
+        if (player.stunFrames <= 0)
+        {
+            if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+            {
+                player.player.StopShakeCoroutine();
+                player.sound = "Landed";
+                player.SetEffect("Fall", player.position);
+                player.enter = false;
+                player.state = "Idle";
+            }
+        }
+    }
+    private void ToBlockState(PlayerNetwork player)
+    {
+        if (player.stunFrames > 0)
+        {
+            if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+            {
+                BlockParentState.skipKnockback = true;
+                player.player.StopShakeCoroutine();
+                player.sound = "Landed";
+                player.SetEffect("Fall", player.position);
+                player.enter = true;
+                player.state = "Block";
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnEnter(PlayerNetwork player)
     {
-        
+        base.OnEnter(player);
+        end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), player.position.y);
+    }
+    protected override void AfterHitstop(PlayerNetwork player)
+    {
+        base.AfterHitstop(player);
+        player.velocity = new Vector2(player.velocity.x, player.velocity.y - 0.013f);
     }
 }

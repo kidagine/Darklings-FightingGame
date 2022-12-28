@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HurtState : State
 {
+    public static bool skipKnockback;
     private static AttackSO hurtAttack;
     public static Vector2 start;
     private static Vector2 end;
@@ -10,6 +11,7 @@ public class HurtState : State
     {
         if (!player.enter)
         {
+            //player.player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
             hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
             // player.health -= player.player.CalculateDamage(hurtAttack);
             player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
@@ -38,32 +40,34 @@ public class HurtState : State
             player.stunFrames = hurtAttack.hitStun;
             knockbackFrame = 0;
             start = player.position;
-            //end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), player.position.y + hurtAttack.knockbackForce.y);
             end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
         }
         player.animation = "Hurt";
         player.animationFrames++;
         if (GameSimulation.Hitstop <= 0)
         {
-            if (hurtAttack.knockbackDuration > 0)
+            if (!skipKnockback)
             {
-                float ratio = (float)knockbackFrame / (float)hurtAttack.knockbackDuration;
-                float distance = end.x - start.x;
-                float nextX = Mathf.Lerp(start.x, end.x, ratio);
-                float baseY = Mathf.Lerp(start.y, end.y, (nextX - start.x) / distance);
-                float arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
-                Vector2 nextPosition = new Vector2(nextX, baseY + arc);
-                nextPosition = new Vector2(nextX, baseY + arc);
-                if (hurtAttack.causesSoftKnockdown)
+                if (hurtAttack.knockbackDuration > 0)
                 {
-                    nextPosition = new Vector2(nextX, player.position.y);
-                }
-                else
-                {
+                    float ratio = (float)knockbackFrame / (float)hurtAttack.knockbackDuration;
+                    float distance = end.x - start.x;
+                    float nextX = Mathf.Lerp(start.x, end.x, ratio);
+                    float baseY = Mathf.Lerp(start.y, end.y, (nextX - start.x) / distance);
+                    float arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
+                    Vector2 nextPosition = new Vector2(nextX, baseY + arc);
                     nextPosition = new Vector2(nextX, baseY + arc);
+                    if (hurtAttack.causesSoftKnockdown)
+                    {
+                        nextPosition = new Vector2(nextX, player.position.y);
+                    }
+                    else
+                    {
+                        nextPosition = new Vector2(nextX, baseY + arc);
+                    }
+                    player.position = nextPosition;
+                    knockbackFrame++;
                 }
-                player.position = nextPosition;
-                knockbackFrame++;
             }
             player.player.StopShakeCoroutine();
             player.stunFrames--;
@@ -74,6 +78,7 @@ public class HurtState : State
     {
         if (player.stunFrames <= 0)
         {
+            skipKnockback = false;
             player.player.StopShakeCoroutine();
             player.player.OtherPlayer.StopComboTimer();
             player.player.PlayerUI.UpdateHealthDamaged();

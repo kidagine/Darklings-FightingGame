@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockState : MonoBehaviour
+public class BlockState : BlockParentState
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void UpdateLogic(PlayerNetwork player)
     {
-        
+        base.UpdateLogic(player);
+        player.animation = "Block";
+        player.animationFrames++;
+        ToIdleState(player);
     }
-
-    // Update is called once per frame
-    void Update()
+    private void ToIdleState(PlayerNetwork player)
     {
-        
+        if (player.stunFrames <= 0)
+        {
+            BlockParentState.skipKnockback = false;
+            player.player.StopShakeCoroutine();
+            player.enter = false;
+            player.state = "Idle";
+        }
+    }
+    protected override void OnEnter(PlayerNetwork player)
+    {
+        base.OnEnter(player);
+        end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
     }
 }

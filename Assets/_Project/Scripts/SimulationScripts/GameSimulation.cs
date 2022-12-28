@@ -158,6 +158,7 @@ public class PlayerNetwork
     public bool start;
     public bool skip;
     public bool enter;
+    public bool wasWallSplatted;
     public bool canChainAttack;
     public string state;
     public int spriteOrder;
@@ -195,6 +196,7 @@ public class PlayerNetwork
         bw.Write(dashFrames);
         bw.Write(start);
         bw.Write(skip);
+        bw.Write(wasWallSplatted);
         bw.Write(enter);
         bw.Write(canChainAttack);
         bw.Write(flip);
@@ -237,6 +239,7 @@ public class PlayerNetwork
         dashFrames = br.ReadInt32();
         start = br.ReadBoolean();
         skip = br.ReadBoolean();
+        wasWallSplatted = br.ReadBoolean();
         enter = br.ReadBoolean();
         canChainAttack = br.ReadBoolean();
         flip = br.ReadInt32();
@@ -255,17 +258,6 @@ public class PlayerNetwork
     {
         int hashCode = 1858597544;
         hashCode = hashCode * -1521134295 + position.GetHashCode();
-        hashCode = hashCode * -1521134295 + velocity.GetHashCode();
-        hashCode = hashCode * -1521134295 + direction.GetHashCode();
-        hashCode = hashCode * -1521134295 + start.GetHashCode();
-        hashCode = hashCode * -1521134295 + animation.GetHashCode();
-        hashCode = hashCode * -1521134295 + hasJumped.GetHashCode();
-        hashCode = hashCode * -1521134295 + canJump.GetHashCode();
-        hashCode = hashCode * -1521134295 + canDoubleJump.GetHashCode();
-        hashCode = hashCode * -1521134295 + dashFrames.GetHashCode();
-        hashCode = hashCode * -1521134295 + flip.GetHashCode();
-        hashCode = hashCode * -1521134295 + sound.GetHashCode();
-        hashCode = hashCode * -1521134295 + skip.GetHashCode();
         return hashCode;
     }
 
@@ -604,14 +596,14 @@ public struct GameSimulation : IGame
             {
                 if (!DemonicsPhysics.Collision(_players[0], _players[1]))
                 {
-                    _players[index].position = new Vector2(_players[index].position.x, _players[index].position.y);
+                    _players[0].position = new Vector2(_players[0].position.x, _players[0].position.y);
                 }
             }
             else
             {
                 if (!DemonicsPhysics.Collision(_players[1], _players[0]))
                 {
-                    _players[index].position = new Vector2(_players[index].position.x, _players[index].position.y);
+                    _players[1].position = new Vector2(_players[1].position.x, _players[1].position.y);
                 }
             }
         }
@@ -674,37 +666,63 @@ public struct GameSimulation : IGame
                     _players[1].enter = false;
                     if ((attack.causesSoftKnockdown && _players[1].position.y > (float)DemonicsPhysics.GROUND_POINT) || attack.causesKnockdown)
                     {
-                        _players[1].state = "Airborne";
+                        if (_players[0].flip == 1 && _players[1].flip == -1 & _players[1].direction.x > 0
+                            || _players[0].flip == -1 && _players[1].flip == 1 & _players[1].direction.x < 0)
+                        {
+                            if (_players[1].position.y > (float)DemonicsPhysics.GROUND_POINT)
+                            {
+                                _players[1].state = "BlockAir";
+                            }
+                            else
+                            {
+                                _players[1].state = "Block";
+                            }
+                        }
+                        else
+                        {
+                            _players[1].state = "Airborne";
+                        }
                     }
                     else
                     {
                         if (_players[1].position.y > (float)DemonicsPhysics.GROUND_POINT)
                         {
-                            _players[1].state = "HurtAir";
+                            if (_players[0].flip == 1 && _players[1].flip == -1 & _players[1].direction.x > 0
+                            || _players[0].flip == -1 && _players[1].flip == 1 & _players[1].direction.x < 0)
+                            {
+                                _players[1].state = "BlockAir";
+                            }
+                            else
+                            {
+                                _players[1].state = "HurtAir";
+                            }
                         }
                         else
                         {
-                            _players[1].state = "Hurt";
+                            if (_players[0].flip == 1 && _players[1].flip == -1 & _players[1].direction.x > 0
+                            || _players[0].flip == -1 && _players[1].flip == 1 & _players[1].direction.x < 0)
+                            {
+                                if (attack.attackTypeEnum == AttackTypeEnum.Low)
+                                {
+                                    if (_players[1].direction.y < 0)
+                                    {
+                                        _players[1].state = "BlockLow";
+                                    }
+                                    else
+                                    {
+                                        _players[1].state = "Hurt";
+                                    }
+                                }
+                                else
+                                {
+                                    _players[1].state = "Block";
+                                }
+                            }
+                            else
+                            {
+                                _players[1].state = "Hurt";
+                            }
                         }
-                    }
-                }
-            }
-        }
-        if (index == 1)
-        {
-            if (_players[1].hitbox.active && _players[0].hurtbox.active && !_players[1].canChainAttack && _players[1].animationFrames > 1)
-            {
-                if (DemonicsCollider.Colliding(_players[1].hitbox, _players[0].hurtbox))
-                {
-                    _players[1].canChainAttack = true;
-                    _players[0].enter = false;
-                    if (_players[1].state == "Arcana")
-                    {
-                        _players[0].state = "Airborne";
-                    }
-                    else
-                    {
-                        _players[0].state = "Hurt";
                     }
                 }
             }
@@ -800,6 +818,18 @@ public struct GameSimulation : IGame
         {
             _players[index].CurrentState = new ArcanaState();
         }
+        if (_players[index].state == "Block")
+        {
+            _players[index].CurrentState = new BlockState();
+        }
+        if (_players[index].state == "BlockLow")
+        {
+            _players[index].CurrentState = new BlockLowState();
+        }
+        if (_players[index].state == "BlockAir")
+        {
+            _players[index].CurrentState = new BlockAirState();
+        }
         if (_players[index].state == "Hurt")
         {
             _players[index].CurrentState = new HurtState();
@@ -819,6 +849,10 @@ public struct GameSimulation : IGame
         if (_players[index].state == "KnockdownHard")
         {
             _players[index].CurrentState = new KnockdownHardState();
+        }
+        if (_players[index].state == "WallSplat")
+        {
+            _players[index].CurrentState = new WallSplatState();
         }
         if (_players[index].state == "WakeUp")
         {

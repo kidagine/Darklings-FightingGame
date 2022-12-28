@@ -222,7 +222,7 @@ public class DemonicsPhysics : MonoBehaviour
     }
     public static bool IsInCorner(PlayerNetwork player)
     {
-        if (player.position.x == (float)DemonicsPhysics.WALL_LEFT_POINT || player.position.x == (float)DemonicsPhysics.WALL_RIGHT_POINT)
+        if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT || player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
         {
             return true;
         }

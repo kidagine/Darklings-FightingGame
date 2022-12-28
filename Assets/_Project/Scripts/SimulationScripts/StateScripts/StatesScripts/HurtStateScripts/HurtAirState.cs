@@ -41,7 +41,6 @@ public class HurtAirState : State
             knockbackFrame = 0;
             start = player.position;
             end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), player.position.y);
-            //end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
         }
         player.animation = "HurtAir";
         player.animationFrames++;
@@ -65,6 +64,7 @@ public class HurtAirState : State
         }
         ToFallState(player);
         ToIdleState(player);
+        ToHurtState(player);
     }
     private void ToFallState(PlayerNetwork player)
     {
@@ -79,15 +79,35 @@ public class HurtAirState : State
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+        if (player.stunFrames <= 0)
         {
-            player.player.StopShakeCoroutine();
-            player.player.OtherPlayer.StopComboTimer();
-            player.player.PlayerUI.UpdateHealthDamaged();
-            player.sound = "Landed";
-            player.SetEffect("Fall", player.position);
-            player.enter = false;
-            player.state = "Idle";
+            if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+            {
+                player.player.StopShakeCoroutine();
+                player.player.OtherPlayer.StopComboTimer();
+                player.player.PlayerUI.UpdateHealthDamaged();
+                player.sound = "Landed";
+                player.SetEffect("Fall", player.position);
+                player.enter = false;
+                player.state = "Idle";
+            }
+        }
+    }
+    private void ToHurtState(PlayerNetwork player)
+    {
+        if (player.stunFrames > 0)
+        {
+            if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+            {
+                HurtState.skipKnockback = true;
+                player.player.StopShakeCoroutine();
+                player.player.OtherPlayer.StopComboTimer();
+                player.player.PlayerUI.UpdateHealthDamaged();
+                player.sound = "Landed";
+                player.SetEffect("Fall", player.position);
+                player.enter = true;
+                player.state = "Hurt";
+            }
         }
     }
 }

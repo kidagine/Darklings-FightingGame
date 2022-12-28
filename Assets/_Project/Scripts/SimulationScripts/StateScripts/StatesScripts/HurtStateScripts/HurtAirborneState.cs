@@ -10,7 +10,25 @@ public class HurtAirborneState : State
     {
         if (!player.enter)
         {
-            hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
+            if (!player.wasWallSplatted)
+            {
+                hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
+                if (player.otherPlayer.isAir)
+                {
+                    Vector2 hurtEffectPosition = new Vector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
+                    hurtAttack.hurtEffectPosition = hurtEffectPosition;
+                }
+                else
+                {
+                    Vector2 hurtEffectPosition = new Vector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
+                    hurtAttack.hurtEffectPosition = hurtEffectPosition;
+                }
+                player.SetEffect(hurtAttack.hurtEffect, hurtAttack.hurtEffectPosition);
+            }
+            else
+            {
+                player.flip = -player.flip;
+            }
             //player.health -= hurtAttack.damage;
             player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
             player.player.PlayerUI.Damaged();
@@ -25,17 +43,6 @@ public class HurtAirborneState : State
             player.enter = true;
             player.velocity = Vector2.zero;
             player.animationFrames = 0;
-            if (player.otherPlayer.isAir)
-            {
-                Vector2 hurtEffectPosition = new Vector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
-                hurtAttack.hurtEffectPosition = hurtEffectPosition;
-            }
-            else
-            {
-                Vector2 hurtEffectPosition = new Vector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
-                hurtAttack.hurtEffectPosition = hurtEffectPosition;
-            }
-            player.SetEffect(hurtAttack.hurtEffect, hurtAttack.hurtEffectPosition);
             GameSimulation.Hitstop = hurtAttack.hitstop;
             knockbackFrame = 0;
             start = player.position;
@@ -51,15 +58,26 @@ public class HurtAirborneState : State
             Vector2 nextPosition = new Vector2(nextX, baseY + arc);
             player.position = nextPosition;
             knockbackFrame++;
-            ToIdleState(ratio, player);
+            ToWallSplatState(player);
+            ToKnockdownState(ratio, player);
         }
         player.animation = "HurtAir";
         player.animationFrames++;
     }
-    private void ToIdleState(float ratio, PlayerNetwork player)
+    private void ToWallSplatState(PlayerNetwork player)
+    {
+        if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT && player.flip == 1
+        || player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT && player.flip == -1)
+        {
+            player.enter = false;
+            player.state = "WallSplat";
+        }
+    }
+    private void ToKnockdownState(float ratio, PlayerNetwork player)
     {
         if (ratio >= 1)
         {
+            player.wasWallSplatted = false;
             player.enter = false;
             if (hurtAttack.causesSoftKnockdown)
             {
