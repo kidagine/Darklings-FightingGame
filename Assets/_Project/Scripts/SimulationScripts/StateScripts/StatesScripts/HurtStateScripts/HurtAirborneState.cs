@@ -46,7 +46,7 @@ public class HurtAirborneState : State
             GameSimulation.Hitstop = hurtAttack.hitstop;
             knockbackFrame = 0;
             start = player.position;
-            end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
+            end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT);
         }
         if (GameSimulation.Hitstop <= 0)
         {
@@ -81,11 +81,11 @@ public class HurtAirborneState : State
             player.enter = false;
             if (hurtAttack.causesSoftKnockdown)
             {
-                player.state = "KnockdownSoft";
+                player.state = "SoftKnockdown";
             }
             else
             {
-                player.state = "KnockdownHard";
+                player.state = "HardKnockdown";
             }
         }
     }

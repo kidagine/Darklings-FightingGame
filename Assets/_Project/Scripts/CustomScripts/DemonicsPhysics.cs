@@ -13,12 +13,14 @@ public class DemonicsPhysics : MonoBehaviour
     private DemonicsFloat _gravity;
     private Camera _camera;
     private bool _freeze;
-    public static DemonicsFloat GROUND_POINT = (DemonicsFloat)(-4.485);
-    public static DemonicsFloat CELLING_POINT = (DemonicsFloat)(7);
+    public static DemonicsFloat GROUND_POINT = (DemonicsFloat)(-72);
+    public static DemonicsFloat CELLING_POINT = (DemonicsFloat)(120);
     public static DemonicsFloat WALL_RIGHT_POINT;
     public static DemonicsFloat WALL_LEFT_POINT;
+    public static DemonicsFloat GRAVITY = (DemonicsFloat)0.288f;
+    public static DemonicsFloat JUGGLE_GRAVITY = (DemonicsFloat)1.1f;
     private int _skipWallFrame = 1;
-    private readonly DemonicsFloat _wallPointOffset = (DemonicsFloat)0.6;
+    private readonly DemonicsFloat _wallPointOffset = (DemonicsFloat)10;
     public DemonicsPhysics OtherPhysics { get; set; }
     public bool IgnoreWalls { get { return _ignoreWalls; } set { _ignoreWalls = value; } }
 
@@ -49,19 +51,13 @@ public class DemonicsPhysics : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Stop physics if frozen
         if (_freeze)
         {
             Position = _freezePosition;
             return;
         }
-        // Set horizontal wall points
         CameraHorizontalBounds();
-        // Sets physics
         Velocity = new DemonicsVector2(Velocity.x, Velocity.y - _gravity);
-        // Check collision
-
-
     }
     public static bool Collision(PlayerNetwork player, PlayerNetwork otherPlayer)
     {
@@ -72,7 +68,7 @@ public class DemonicsPhysics : MonoBehaviour
                 if (player.velocity.y < otherPlayer.velocity.y)
                 {
                     float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
-                    float pushDistance = (1.35f - difference) / (2);
+                    float pushDistance = (player.pushbox.size.x - difference) / (2);
                     if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
                     {
                         player.position = new Vector2(player.position.x + pushDistance, player.position.y);
@@ -154,19 +150,19 @@ public class DemonicsPhysics : MonoBehaviour
         }
         if (player.position.x < otherPlayer.position.x)
         {
-            if (player.position.x + 1.35f >= otherPlayer.position.x)
+            if (player.position.x + player.pushbox.size.x >= otherPlayer.position.x)
             {
-                float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
-                float pushDistance = (1.35f - difference) / (2);
+                float difference = (int)Mathf.Abs(player.position.x - otherPlayer.position.x);
+                int pushDistance = (int)(player.pushbox.size.x - difference) / (2);
                 player.position = new Vector2((player.position.x - pushDistance), player.position.y);
             }
         }
         else
         {
-            if (player.position.x <= otherPlayer.position.x + 1.35f)
+            if (player.position.x <= otherPlayer.position.x + player.pushbox.size.x)
             {
-                float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
-                float pushDistance = (1.35f - difference) / (2);
+                float difference = (int)Mathf.Abs(player.position.x - otherPlayer.position.x);
+                int pushDistance = (int)(player.pushbox.size.x - difference) / (2);
                 player.position = new Vector2((player.position.x + pushDistance), player.position.y);
             }
         }
@@ -175,10 +171,10 @@ public class DemonicsPhysics : MonoBehaviour
     { return (value >= min) && (value <= max); }
     private static bool Colliding(PlayerNetwork a, PlayerNetwork b)
     {
-        bool xOverlap = valueInRange(a.position.x - (1.35f / 2), b.position.x - (1.35f / 2), b.position.x + (1.35f / 2)) ||
-                    valueInRange(b.position.x - (1.35f / 2), a.position.x - (1.35f / 2), a.position.x + (1.35f / 2));
-        bool yOverlap = valueInRange(a.position.y - (1.5f / 2), b.position.y - (1.5f / 2), b.position.y + (1.5f / 2)) ||
-                    valueInRange(b.position.y - (1.5f / 2), a.position.y - (1.5f / 2), a.position.y + (1.5f / 2));
+        bool xOverlap = valueInRange(a.position.x - (a.pushbox.size.x / 2), b.position.x - (b.pushbox.size.x / 2), b.position.x + (b.pushbox.size.x / 2)) ||
+                    valueInRange(b.position.x - (b.pushbox.size.x / 2), a.position.x - (a.pushbox.size.x / 2), a.position.x + (a.pushbox.size.x / 2));
+        bool yOverlap = valueInRange(a.position.y - (a.pushbox.size.y / 2), b.position.y - (b.pushbox.size.y / 2), b.position.y + (b.pushbox.size.y / 2)) ||
+                    valueInRange(b.position.y - (b.pushbox.size.y / 2), a.position.y - (a.pushbox.size.y / 2), a.position.y + (a.pushbox.size.y / 2));
         return xOverlap && yOverlap;
     }
     private void CameraHorizontalBounds()
@@ -213,11 +209,11 @@ public class DemonicsPhysics : MonoBehaviour
         }
         if (player.position.x >= (float)WALL_RIGHT_POINT && player.velocity.x >= 0)
         {
-            player.position = new Vector2((float)WALL_RIGHT_POINT, player.position.y);
+            player.position = new Vector2((int)WALL_RIGHT_POINT, player.position.y);
         }
         if (player.position.x <= (float)WALL_LEFT_POINT && player.velocity.x <= 0)
         {
-            player.position = new Vector2((float)WALL_LEFT_POINT, player.position.y);
+            player.position = new Vector2((int)WALL_LEFT_POINT, player.position.y);
         }
     }
     public static bool IsInCorner(PlayerNetwork player)
@@ -228,7 +224,6 @@ public class DemonicsPhysics : MonoBehaviour
         }
         return false;
     }
-
     public void EnableGravity(bool state)
     {
         if (state)
@@ -238,18 +233,6 @@ public class DemonicsPhysics : MonoBehaviour
         else
         {
             _gravity = (DemonicsFloat)0;
-        }
-    }
-
-    public void SetJuggleGravity(bool state)
-    {
-        if (state)
-        {
-            _gravity = (DemonicsFloat)0.013;
-        }
-        else
-        {
-            _gravity = (DemonicsFloat)0.018;
         }
     }
 }

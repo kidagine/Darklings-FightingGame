@@ -15,7 +15,7 @@ public class JumpState : AirParentState
         }
         player.animation = "Jump";
         player.animationFrames++;
-        player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
+        player.velocity = new Vector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
         base.UpdateLogic(player);
         ToFallState(player);
     }

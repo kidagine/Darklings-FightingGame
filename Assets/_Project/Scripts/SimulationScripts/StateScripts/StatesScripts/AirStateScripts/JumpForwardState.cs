@@ -11,11 +11,11 @@ public class JumpForwardState : AirParentState
             player.SetEffect("Jump", player.position);
             player.hasJumped = true;
             player.animationFrames = 0;
-            player.velocity = new Vector2(0.14f * player.direction.x, (float)player.playerStats.JumpForce);
+            player.velocity = new Vector2(2 * player.direction.x, (float)player.playerStats.JumpForce);
         }
         player.animation = "JumpForward";
         player.animationFrames++;
-        player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
+        player.velocity = new Vector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
         base.UpdateLogic(player);
         ToFallState(player);
     }

@@ -145,7 +145,6 @@ public class PlayerNetwork
     public int flip;
     public string sound;
     public string soundStop;
-    public float gravity;
     public float jump;
     public bool isCrouch;
     public bool isAir;
@@ -184,7 +183,6 @@ public class PlayerNetwork
         bw.Write(health);
         bw.Write(sound);
         bw.Write(soundStop);
-        bw.Write(gravity);
         bw.Write(canDash);
         bw.Write(jump);
         bw.Write(isCrouch);
@@ -227,7 +225,6 @@ public class PlayerNetwork
         health = br.ReadInt32();
         sound = br.ReadString();
         soundStop = br.ReadString();
-        gravity = br.ReadSingle();
         canDash = br.ReadBoolean();
         jump = br.ReadSingle();
         isCrouch = br.ReadBoolean();
@@ -358,13 +355,12 @@ public struct GameSimulation : IGame
             _players[i].animation = "Idle";
             _players[i].sound = "";
             _players[i].soundStop = "";
-            _players[i].gravity = 0.018f;
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
             _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
             _players[i].hitbox = new ColliderNetwork() { active = false };
-            _players[i].hurtbox = new ColliderNetwork() { active = true, size = new Vector2(1.5f, 2) };
-            _players[i].pushbox = new ColliderNetwork() { active = true, size = new Vector2(1.35f, 1.5f), offset = new Vector2(0, 0.8f) };
+            _players[i].hurtbox = new ColliderNetwork() { active = true };
+            _players[i].pushbox = new ColliderNetwork() { active = true, size = new Vector2(22, 25), offset = new Vector2(0, 12.5f) };
 
             for (int j = 0; j < _players[i].effects.Length; j++)
             {
@@ -508,6 +504,7 @@ public struct GameSimulation : IGame
     public void PlayerLogic(int index, bool skip, bool up, bool down, bool left, bool right, bool light, bool medium, bool heavy,
     bool arcana, bool grab, bool shadow, bool blueFrenzy, bool redFrenzy, bool dashForward, bool dashBackward)
     {
+
         if (up)
         {
             _players[index].direction = new Vector2(0, 1);
@@ -582,6 +579,18 @@ public struct GameSimulation : IGame
                 _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
             }
         }
+        if (blueFrenzy)
+        {
+            _players[index].CurrentState.ToBlueFrenzyState(_players[index]);
+        }
+        if (redFrenzy)
+        {
+            _players[index].CurrentState.ToRedFrenzyState(_players[index]);
+        }
+        if (shadow)
+        {
+            Debug.Log("S");
+        }
         if (_players[index].health <= 0)
         {
             _players[index].state = "Death";
@@ -595,6 +604,7 @@ public struct GameSimulation : IGame
             {
                 _players[index].position = new Vector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
             }
+            _players[index].player.PlayerAnimator.SpriteNormalEffect();
         }
         DemonicsPhysics.Bounds(_players[index]);
 
@@ -707,7 +717,28 @@ public struct GameSimulation : IGame
                         }
                         else
                         {
-                            _players[index].otherPlayer.state = "Hurt";
+                            if (attack.knockbackArc > 0 && !attack.causesSoftKnockdown)
+                            {
+                                _players[index].otherPlayer.state = "HurtAir";
+                            }
+                            else
+                            {
+                                AttackSO otherAttack = PlayerComboSystem.GetComboAttack(_players[index].otherPlayer.playerStats,
+                                _players[index].otherPlayer.attackInput, _players[index].otherPlayer.isCrouch, _players[index].otherPlayer.isAir);
+                                if (_players[index].otherPlayer.state == "Attack" && otherAttack.hasSuperArmor)
+                                {
+                                    GameSimulation.Hitstop = attack.hitstop;
+                                    _players[index].otherPlayer.player.PlayerAnimator.SpriteSuperArmorEffect();
+                                    _players[index].otherPlayer.player.SetHealth(_players[index].otherPlayer.player.CalculateDamage(attack));
+                                    _players[index].otherPlayer.player.StartShakeContact();
+                                    _players[index].otherPlayer.player.PlayerUI.Damaged();
+                                    _players[index].otherPlayer.player.OtherPlayerUI.IncreaseCombo();
+                                }
+                                else
+                                {
+                                    _players[index].otherPlayer.state = "Hurt";
+                                }
+                            }
                         }
                     }
                 }
@@ -828,11 +859,11 @@ public struct GameSimulation : IGame
         {
             _players[index].CurrentState = new HurtAirborneState();
         }
-        if (_players[index].state == "KnockdownSoft")
+        if (_players[index].state == "SoftKnockdown")
         {
             _players[index].CurrentState = new KnockdownSoftState();
         }
-        if (_players[index].state == "KnockdownHard")
+        if (_players[index].state == "HardKnockdown")
         {
             _players[index].CurrentState = new KnockdownHardState();
         }
@@ -843,6 +874,14 @@ public struct GameSimulation : IGame
         if (_players[index].state == "WakeUp")
         {
             _players[index].CurrentState = new WakeUpState();
+        }
+        if (_players[index].state == "BlueFrenzy")
+        {
+            _players[index].CurrentState = new BlueFrenzyState();
+        }
+        if (_players[index].state == "RedFrenzy")
+        {
+            _players[index].CurrentState = new RedFrenzyState();
         }
         if (_players[index].state == "Death")
         {

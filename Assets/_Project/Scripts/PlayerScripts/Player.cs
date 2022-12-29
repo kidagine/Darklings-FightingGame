@@ -450,10 +450,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void SetInvinsible(bool state)
     {
-        Invisible = state;
-        PlayerAnimator.SetInvinsible(state);
-        SetHurtbox(!state);
-        SetPushboxTrigger(state);
+        // Invisible = state;
+        // PlayerAnimator.SetInvinsible(state);
+        // SetHurtbox(!state);
+        // SetPushboxTrigger(state);
     }
 
     public bool TakeDamage(AttackSO attack)
@@ -625,7 +625,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
+        Vector2Int fixedPosition = new Vector2Int(Mathf.FloorToInt(playerGs.position.x * 1) / 1, Mathf.FloorToInt(playerGs.position.y * 1) / 1);
+        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)fixedPosition.x, (DemonicsFloat)fixedPosition.y));
         NetworkDebug(info);
     }
 

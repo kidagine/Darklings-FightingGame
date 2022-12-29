@@ -68,7 +68,7 @@ public class PlayerAnimator : DemonicsAnimator
     {
         if (name == "Wallsplat")
         {
-            transform.localPosition = new Vector2(0.5f * -transform.localScale.x, 0);
+            transform.localPosition = new Vector2(10 * -transform.localScale.x, 0);
             transform.localRotation = Quaternion.Euler(0, 0, -90);
         }
         else

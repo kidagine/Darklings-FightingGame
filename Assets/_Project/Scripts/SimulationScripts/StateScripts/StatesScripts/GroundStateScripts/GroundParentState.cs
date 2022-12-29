@@ -20,7 +20,26 @@ public class GroundParentState : State
     }
     public override bool ToArcanaState(PlayerNetwork player)
     {
+        player.enter = false;
         player.state = "Arcana";
+        return true;
+    }
+    public override bool ToBlueFrenzyState(PlayerNetwork player)
+    {
+        player.enter = false;
+        player.state = "BlueFrenzy";
+        return true;
+    }
+    public override bool ToRedFrenzyState(PlayerNetwork player)
+    {
+        player.enter = false;
+        player.state = "RedFrenzy";
+        return true;
+    }
+    public override bool ToHurtState(PlayerNetwork player)
+    {
+        player.enter = false;
+        player.state = "Hurt";
         return true;
     }
 }

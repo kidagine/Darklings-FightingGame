@@ -6,7 +6,6 @@ public class AirParentState : State
     {
         ToJumpForwardState(player);
         ToJumpState(player);
-        //ToFallState(player);
     }
     private void ToJumpState(PlayerNetwork player)
     {
@@ -42,13 +41,7 @@ public class AirParentState : State
             }
         }
     }
-    private void ToFallState(PlayerNetwork player)
-    {
-        if (player.velocity.y <= 0)
-        {
-            player.state = "Fall";
-        }
-    }
+
     public override bool ToDashState(PlayerNetwork player)
     {
         if (player.canDash)
@@ -69,6 +62,7 @@ public class AirParentState : State
     }
     public override bool ToArcanaState(PlayerNetwork player)
     {
+        player.enter = false;
         player.isAir = true;
         player.state = "Arcana";
         return true;

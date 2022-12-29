@@ -12,6 +12,7 @@ public class HurtAirState : State
     {
         if (!player.enter)
         {
+            player.velocity = Vector2.zero;
             hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
             // player.health -= player.player.CalculateDamage(hurtAttack);
             player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
@@ -42,6 +43,7 @@ public class HurtAirState : State
             start = player.position;
             end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), player.position.y);
         }
+        player.velocity = new Vector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
         player.animation = "HurtAir";
         player.animationFrames++;
         if (GameSimulation.Hitstop <= 0)
@@ -54,17 +56,27 @@ public class HurtAirState : State
                 float baseY = Mathf.Lerp(start.y, end.y, (nextX - start.x) / distance);
                 float arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
                 Vector2 nextPosition = new Vector2(nextX, baseY + arc);
-                nextPosition = new Vector2(nextX, player.position.y);
+                if (hurtAttack.knockbackArc == 0)
+                {
+                    nextPosition = new Vector2(nextX, player.position.y);
+                }
+                else
+                {
+                    nextPosition = new Vector2(nextX, baseY + arc);
+                }
                 player.position = nextPosition;
                 knockbackFrame++;
             }
             player.velocity = new Vector2(player.velocity.x, player.velocity.y - 0.013f);
             player.player.StopShakeCoroutine();
             player.stunFrames--;
+            if (hurtAttack.knockbackArc == 0)
+            {
+                ToHurtState(player);
+            }
         }
-        ToFallState(player);
         ToIdleState(player);
-        ToHurtState(player);
+        ToFallState(player);
     }
     private void ToFallState(PlayerNetwork player)
     {

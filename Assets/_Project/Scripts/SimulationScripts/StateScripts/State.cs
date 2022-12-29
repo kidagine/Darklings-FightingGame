@@ -11,6 +11,9 @@ public class State
     public virtual bool ToDashState(PlayerNetwork player) { return false; }
     public virtual bool ToAttackState(PlayerNetwork player) { return false; }
     public virtual bool ToArcanaState(PlayerNetwork player) { return false; }
+    public virtual bool ToRedFrenzyState(PlayerNetwork player) { return false; }
+    public virtual bool ToBlueFrenzyState(PlayerNetwork player) { return false; }
+    public virtual bool ToHurtState(PlayerNetwork player) { return false; }
     public void CheckFlip(PlayerNetwork player)
     {
         if (player.otherPlayer.position.x > player.position.x)

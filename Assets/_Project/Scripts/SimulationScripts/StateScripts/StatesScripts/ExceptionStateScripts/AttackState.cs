@@ -35,7 +35,7 @@ public class AttackState : State
         }
         else
         {
-            player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
+            player.velocity = new Vector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
         }
 
         if (GameSimulation.Hitstop <= 0)

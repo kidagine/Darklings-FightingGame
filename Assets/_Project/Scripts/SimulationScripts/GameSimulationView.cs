@@ -56,7 +56,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
                     }
                     else
                     {
-                        effectObjects[j].transform.position = effects[i].effectGroups[j].position;
+                        effectObjects[j].transform.position = new Vector2((int)effects[i].effectGroups[j].position.x, (int)effects[i].effectGroups[j].position.y);
                         effectObjects[j].GetComponent<SpriteRenderer>().flipX = effects[i].effectGroups[j].flip;
                         if (!effectObjects[j].TryGetComponent(out PlayerGhost playerGhost))
                         {
