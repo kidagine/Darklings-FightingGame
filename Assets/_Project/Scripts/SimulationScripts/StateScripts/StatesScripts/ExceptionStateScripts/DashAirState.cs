@@ -8,6 +8,7 @@ public class DashAirState : State
         {
             player.enter = true;
             player.sound = "Dash";
+            player.animationFrames = 0;
             if (player.dashDirection > 0)
             {
                 Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);

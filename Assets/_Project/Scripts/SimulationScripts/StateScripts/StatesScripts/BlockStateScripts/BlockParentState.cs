@@ -5,10 +5,10 @@ using UnityEngine;
 public class BlockParentState : State
 {
     public static bool skipKnockback;
-    protected static AttackSO hurtAttack;
-    protected static Vector2 start;
-    protected static Vector2 end;
-    protected static int knockbackFrame;
+    protected AttackSO hurtAttack;
+    protected Vector2 start;
+    protected Vector2 end;
+    protected int knockbackFrame;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
@@ -24,6 +24,7 @@ public class BlockParentState : State
 
     protected virtual void OnEnter(PlayerNetwork player)
     {
+        Debug.Log("A");
         hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
         player.player.StartShakeContact();
         player.enter = true;

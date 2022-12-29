@@ -7,7 +7,7 @@ public class BlockAirState : BlockParentState
         base.UpdateLogic(player);
         player.animation = "BlockAir";
         player.animationFrames++;
-        player.velocity = new Vector2(player.velocity.x, player.velocity.y - 0.013f);
+        player.velocity = new Vector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.JUGGLE_GRAVITY);
         ToFallState(player);
         ToIdleState(player);
         ToBlockState(player);

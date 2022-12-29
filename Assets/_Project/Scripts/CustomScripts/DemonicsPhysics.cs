@@ -18,7 +18,7 @@ public class DemonicsPhysics : MonoBehaviour
     public static DemonicsFloat WALL_RIGHT_POINT;
     public static DemonicsFloat WALL_LEFT_POINT;
     public static DemonicsFloat GRAVITY = (DemonicsFloat)0.288f;
-    public static DemonicsFloat JUGGLE_GRAVITY = (DemonicsFloat)1.1f;
+    public static DemonicsFloat JUGGLE_GRAVITY = (DemonicsFloat)0.208f;
     private int _skipWallFrame = 1;
     private readonly DemonicsFloat _wallPointOffset = (DemonicsFloat)10;
     public DemonicsPhysics OtherPhysics { get; set; }

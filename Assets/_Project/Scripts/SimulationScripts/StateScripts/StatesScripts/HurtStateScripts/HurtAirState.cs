@@ -68,7 +68,7 @@ public class HurtAirState : HurtParentState
                 player.position = nextPosition;
                 knockbackFrame++;
             }
-            player.velocity = new Vector2(player.velocity.x, player.velocity.y - 0.013f);
+            player.velocity = new Vector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.JUGGLE_GRAVITY);
             player.player.StopShakeCoroutine();
             player.stunFrames--;
             if (hurtAttack.knockbackArc == 0)
@@ -112,13 +112,13 @@ public class HurtAirState : HurtParentState
         {
             if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
             {
-                HurtState.skipKnockback = true;
+                HurtState.skipKnockback = false;
                 player.player.StopShakeCoroutine();
                 player.player.OtherPlayer.StopComboTimer();
                 player.player.PlayerUI.UpdateHealthDamaged();
                 player.sound = "Landed";
                 player.SetEffect("Fall", player.position);
-                player.enter = true;
+                player.enter = false;
                 player.state = "Hurt";
             }
         }

@@ -4,6 +4,7 @@ public class WalkState : GroundParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        player.enter = true;
         player.canDoubleJump = true;
         player.animation = "Walk";
         player.animationFrames++;
@@ -17,6 +18,7 @@ public class WalkState : GroundParentState
     {
         if (player.direction.y < 0)
         {
+            player.enter = false;
             player.state = "Crouch";
         }
     }
@@ -24,6 +26,7 @@ public class WalkState : GroundParentState
     {
         if (player.direction.y > 0)
         {
+            player.enter = false;
             player.state = "Jump";
         }
     }
@@ -31,6 +34,7 @@ public class WalkState : GroundParentState
     {
         if (player.direction.y > 0 && player.direction.x != 0)
         {
+            player.enter = false;
             player.state = "JumpForward";
         }
     }
@@ -38,6 +42,7 @@ public class WalkState : GroundParentState
     {
         if (player.direction.x == 0)
         {
+            player.enter = false;
             player.state = "Idle";
         }
     }

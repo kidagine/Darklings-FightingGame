@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    private static AttackSO _attack;
-    public static Vector2 start;
-    private static Vector2 end;
-    private static int knockbackFrame;
-    private static bool knock;
+    private AttackSO _attack;
+    public Vector2 start;
+    private Vector2 end;
+    private int knockbackFrame;
+    private bool knock;
     private static bool b;
-    private static bool opponentInCorner;
+    private bool opponentInCorner;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
@@ -104,10 +104,11 @@ public class AttackState : State
     }
     private void ToJumpState(PlayerNetwork player)
     {
-        if (player.attackInput == InputEnum.Heavy && player.isCrouch)
+        if (_attack.jumpCancelable)
         {
             if (player.direction.y > 0)
             {
+                player.enter = false;
                 player.isCrouch = false;
                 player.isAir = false;
                 GameSimulation.Hitstop = 0;
@@ -117,10 +118,11 @@ public class AttackState : State
     }
     private void ToJumpForwardState(PlayerNetwork player)
     {
-        if (player.attackInput == InputEnum.Heavy && player.isCrouch)
+        if (_attack.jumpCancelable)
         {
             if (player.direction.y > 0 && player.direction.x != 0)
             {
+                player.enter = false;
                 player.isCrouch = false;
                 player.isAir = false;
                 GameSimulation.Hitstop = 0;

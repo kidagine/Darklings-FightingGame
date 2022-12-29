@@ -4,6 +4,7 @@ public class CrouchState : GroundParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        player.enter = true;
         player.canDoubleJump = true;
         player.dashFrames = 0;
         player.animationFrames = 0;
@@ -16,6 +17,7 @@ public class CrouchState : GroundParentState
     {
         if (player.direction.y >= 0)
         {
+            player.enter = false;
             player.state = "Idle";
         }
     }
@@ -28,6 +30,7 @@ public class CrouchState : GroundParentState
     }
     public override bool ToArcanaState(PlayerNetwork player)
     {
+        player.enter = false;
         player.isCrouch = true;
         player.state = "Arcana";
         return true;

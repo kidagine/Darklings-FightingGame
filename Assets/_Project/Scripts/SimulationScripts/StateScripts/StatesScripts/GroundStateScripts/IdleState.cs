@@ -4,6 +4,7 @@ public class IdleState : GroundParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        player.enter = true;
         base.UpdateLogic(player);
         player.animation = "Idle";
         player.animationFrames++;
@@ -18,6 +19,7 @@ public class IdleState : GroundParentState
     {
         if (player.direction.y < 0)
         {
+            player.enter = false;
             player.state = "Crouch";
         }
     }
@@ -25,6 +27,7 @@ public class IdleState : GroundParentState
     {
         if (player.direction.y > 0)
         {
+            player.enter = false;
             player.state = "Jump";
         }
     }
@@ -32,6 +35,7 @@ public class IdleState : GroundParentState
     {
         if (player.direction.y > 0 && player.direction.x != 0)
         {
+            player.enter = false;
             player.state = "JumpForward";
         }
     }
@@ -39,6 +43,7 @@ public class IdleState : GroundParentState
     {
         if (player.direction.x != 0)
         {
+            player.enter = false;
             player.state = "Walk";
         }
     }

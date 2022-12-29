@@ -4,6 +4,7 @@ public class RunState : GroundParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        player.enter = true;
         player.animation = "Run";
         player.animationFrames++;
         player.velocity = new Vector2(player.direction.x * (float)player.playerStats.SpeedRun, 0);
@@ -28,6 +29,7 @@ public class RunState : GroundParentState
     {
         if (player.direction.y > 0)
         {
+            player.enter = false;
             player.soundStop = "Run";
             player.state = "Jump";
         }
@@ -36,6 +38,7 @@ public class RunState : GroundParentState
     {
         if (player.direction.y > 0 && player.direction.x != 0)
         {
+            player.enter = false;
             player.soundStop = "Run";
             player.state = "JumpForward";
         }
@@ -44,6 +47,7 @@ public class RunState : GroundParentState
     {
         if (player.direction.x == 0)
         {
+            player.enter = false;
             player.soundStop = "Run";
             player.state = "Idle";
         }

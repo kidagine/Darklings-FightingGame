@@ -597,7 +597,6 @@ public struct GameSimulation : IGame
         }
         SetState(index);
         _players[index].CurrentState.UpdateLogic(_players[index]);
-
         if (GameSimulation.Hitstop <= 0)
         {
             if (!DemonicsPhysics.Collision(_players[index], _players[index].otherPlayer))
@@ -677,26 +676,6 @@ public struct GameSimulation : IGame
                 {
                     _players[index].otherPlayer.CurrentState.ToHurtState(_players[index].otherPlayer, attack);
                 }
-
-                //                 AttackSO otherAttack = PlayerComboSystem.GetComboAttack(_players[index].otherPlayer.playerStats,
-                //                 _players[index].otherPlayer.attackInput, _players[index].otherPlayer.isCrouch, _players[index].otherPlayer.isAir);
-                //                 if (_players[index].otherPlayer.state == "Attack" && otherAttack.hasSuperArmor)
-                //                 {
-                //                     GameSimulation.Hitstop = attack.hitstop;
-                //                     _players[index].otherPlayer.player.PlayerAnimator.SpriteSuperArmorEffect();
-                //                     _players[index].otherPlayer.player.SetHealth(_players[index].otherPlayer.player.CalculateDamage(attack));
-                //                     _players[index].otherPlayer.player.StartShakeContact();
-                //                     _players[index].otherPlayer.player.PlayerUI.Damaged();
-                //                     _players[index].otherPlayer.player.OtherPlayerUI.IncreaseCombo();
-                //                 }
-                //                 else
-                //                 {
-                //                     _players[index].otherPlayer.state = "Hurt";
-                //                 }
-                //             }
-                //         }
-                //     }
-                // }
             }
         }
     }
@@ -747,104 +726,123 @@ public struct GameSimulation : IGame
     {
         if (_players[index].state == "Idle")
         {
-            if (_players[index].state != "Idle")
-            {
-                _players[index].state = "Idle";
-                Debug.Log("a");
+            if (!_players[index].enter)
                 _players[index].CurrentState = new IdleState();
-            }
         }
         if (_players[index].state == "Walk")
         {
-            _players[index].CurrentState = new WalkState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new WalkState();
         }
         if (_players[index].state == "Dash")
         {
-            _players[index].CurrentState = new DashState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new DashState();
         }
         if (_players[index].state == "DashAir")
         {
-            _players[index].CurrentState = new DashAirState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new DashAirState();
         }
         if (_players[index].state == "Run")
         {
-            _players[index].CurrentState = new RunState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new RunState();
         }
         if (_players[index].state == "JumpForward")
         {
-            _players[index].CurrentState = new JumpForwardState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new JumpForwardState();
         }
         if (_players[index].state == "Jump")
         {
-            _players[index].CurrentState = new JumpState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new JumpState();
         }
         if (_players[index].state == "Fall")
         {
-            _players[index].CurrentState = new FallState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new FallState();
         }
         if (_players[index].state == "Crouch")
         {
-            _players[index].CurrentState = new CrouchState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new CrouchState();
         }
         if (_players[index].state == "Attack")
         {
-            _players[index].CurrentState = new AttackState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new AttackState();
         }
         if (_players[index].state == "Arcana")
         {
-            _players[index].CurrentState = new ArcanaState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new ArcanaState();
         }
         if (_players[index].state == "Block")
         {
-            _players[index].CurrentState = new BlockState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new BlockState();
         }
         if (_players[index].state == "BlockLow")
         {
-            _players[index].CurrentState = new BlockLowState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new BlockLowState();
         }
         if (_players[index].state == "BlockAir")
         {
-            _players[index].CurrentState = new BlockAirState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new BlockAirState();
         }
         if (_players[index].state == "Hurt")
         {
-            _players[index].CurrentState = new HurtState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new HurtState();
         }
         if (_players[index].state == "HurtAir")
         {
-            _players[index].CurrentState = new HurtAirState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new HurtAirState();
         }
         if (_players[index].state == "Airborne")
         {
-            _players[index].CurrentState = new HurtAirborneState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new HurtAirborneState();
         }
         if (_players[index].state == "SoftKnockdown")
         {
-            _players[index].CurrentState = new KnockdownSoftState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new KnockdownSoftState();
         }
         if (_players[index].state == "HardKnockdown")
         {
-            _players[index].CurrentState = new KnockdownHardState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new KnockdownHardState();
         }
         if (_players[index].state == "WallSplat")
         {
-            _players[index].CurrentState = new WallSplatState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new WallSplatState();
         }
         if (_players[index].state == "WakeUp")
         {
-            _players[index].CurrentState = new WakeUpState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new WakeUpState();
         }
         if (_players[index].state == "BlueFrenzy")
         {
-            _players[index].CurrentState = new BlueFrenzyState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new BlueFrenzyState();
         }
         if (_players[index].state == "RedFrenzy")
         {
-            _players[index].CurrentState = new RedFrenzyState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new RedFrenzyState();
         }
         if (_players[index].state == "Death")
         {
-            _players[index].CurrentState = new DeathState();
+            if (!_players[index].enter)
+                _players[index].CurrentState = new DeathState();
         }
     }
 
