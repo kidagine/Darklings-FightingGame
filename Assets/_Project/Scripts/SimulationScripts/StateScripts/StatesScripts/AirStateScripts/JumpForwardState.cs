@@ -11,7 +11,14 @@ public class JumpForwardState : AirParentState
             player.SetEffect("Jump", player.position);
             player.hasJumped = true;
             player.animationFrames = 0;
-            player.velocity = new Vector2(2 * player.direction.x, (float)player.playerStats.JumpForce);
+            if (player.velocity.x > 0)
+            {
+                player.velocity = new Vector2(2, (float)player.playerStats.JumpForce);
+            }
+            else
+            {
+                player.velocity = new Vector2(-2, (float)player.playerStats.JumpForce);
+            }
         }
         player.animation = "JumpForward";
         player.animationFrames++;
