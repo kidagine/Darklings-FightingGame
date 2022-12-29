@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class AttackState : State
 {
+    private static AttackSO _attack;
     public static Vector2 start;
     private static Vector2 end;
     private static int knockbackFrame;
@@ -11,17 +12,17 @@ public class AttackState : State
     private static bool opponentInCorner;
     public override void UpdateLogic(PlayerNetwork player)
     {
-        AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
         if (!player.enter)
         {
+            _attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
             b = false;
             SetTopPriority(player);
             player.animationFrames = 0;
             player.canChainAttack = false;
             player.inputBuffer.inputItems[0].frame = 0;
             player.enter = true;
-            player.animation = attack.name;
-            player.sound = attack.attackSound;
+            player.animation = _attack.name;
+            player.sound = _attack.attackSound;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             opponentInCorner = false;
             if (DemonicsPhysics.IsInCorner(player.otherPlayer))
@@ -31,7 +32,7 @@ public class AttackState : State
         }
         if (!player.isAir)
         {
-            player.velocity = new Vector2(attack.travelDistance.x * player.flip, attack.travelDistance.y);
+            player.velocity = new Vector2(_attack.travelDistance.x * player.flip, _attack.travelDistance.y);
         }
         else
         {
@@ -49,7 +50,7 @@ public class AttackState : State
                     b = true;
                     knockbackFrame = 0;
                     start = player.position;
-                    end = new Vector2(player.position.x + (attack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
+                    end = new Vector2(player.position.x + (_attack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
                 }
                 knock = true;
                 if ((!(player.attackInput == InputEnum.Medium && player.isCrouch || player.attackInput == InputEnum.Heavy)) || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
@@ -78,15 +79,15 @@ public class AttackState : State
             {
                 if (opponentInCorner && !player.isAir)
                 {
-                    if (attack.knockbackDuration > 0)
+                    if (_attack.knockbackDuration > 0)
                     {
-                        if (knockbackFrame <= attack.knockbackDuration)
+                        if (knockbackFrame <= _attack.knockbackDuration)
                         {
-                            float ratio = (float)knockbackFrame / (float)attack.knockbackDuration;
+                            float ratio = (float)knockbackFrame / (float)_attack.knockbackDuration;
                             float distance = end.x - start.x;
                             float nextX = Mathf.Lerp(start.x, end.x, ratio);
                             float baseY = Mathf.Lerp(start.y, end.y, (nextX - start.x) / distance);
-                            float arc = attack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
+                            float arc = _attack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
                             Vector2 nextPosition = new Vector2(nextX, baseY + arc);
                             nextPosition = new Vector2(nextX, player.position.y);
                             player.position = nextPosition;
@@ -170,5 +171,36 @@ public class AttackState : State
                 }
             }
         }
+    }
+    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
+    {
+        player.enter = false;
+        Debug.Log(attack);
+        if (_attack.hasSuperArmor)
+        {
+            GameSimulation.Hitstop = attack.hitstop;
+            player.player.PlayerAnimator.SpriteSuperArmorEffect();
+            player.player.SetHealth(player.player.CalculateDamage(attack));
+            player.player.StartShakeContact();
+            player.player.PlayerUI.Damaged();
+            player.player.OtherPlayerUI.IncreaseCombo();
+            return false;
+        }
+        if (attack.causesKnockdown)
+        {
+            player.state = "Airborne";
+        }
+        else
+        {
+            if (attack.knockbackArc == 0 || attack.causesSoftKnockdown)
+            {
+                player.state = "Hurt";
+            }
+            else
+            {
+                player.state = "HurtAir";
+            }
+        }
+        return true;
     }
 }

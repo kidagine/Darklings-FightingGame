@@ -78,4 +78,23 @@ public class BlockParentState : State
         player.player.StopShakeCoroutine();
         player.stunFrames--;
     }
+    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
+    {
+        player.enter = false;
+        player.state = "Hurt";
+        return true;
+    }
+    public override bool ToBlockState(PlayerNetwork player, AttackSO attack)
+    {
+        player.enter = false;
+        if (player.direction.y < 0)
+        {
+            player.state = "BlockLow";
+        }
+        else
+        {
+            player.state = "Block";
+        }
+        return true;
+    }
 }

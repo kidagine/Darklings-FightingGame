@@ -3,14 +3,15 @@ using UnityEngine;
 
 public class ArcanaState : State
 {
+    private static AttackSO attack;
     public override void UpdateLogic(PlayerNetwork player)
     {
-        AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Special, player.isCrouch, player.isAir);
         if (!player.enter)
         {
+            attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Special, player.isCrouch, player.isAir);
             player.enter = true;
             player.canChainAttack = false;
-            GameplayManager.Instance.PlayerOne.CurrentAttack = attack;
+            //  GameplayManager.Instance.PlayerOne.CurrentAttack = attack;
             player.animation = attack.name;
             player.sound = attack.attackSound;
             player.animationFrames = 0;

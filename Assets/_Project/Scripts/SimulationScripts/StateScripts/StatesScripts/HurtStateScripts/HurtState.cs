@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HurtState : State
+public class HurtState : HurtParentState
 {
     public static bool skipKnockback;
     private static AttackSO hurtAttack;
@@ -12,6 +12,7 @@ public class HurtState : State
         if (!player.enter)
         {
             //player.player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
+            CheckFlip(player);
             hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
             // player.health -= player.player.CalculateDamage(hurtAttack);
             player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
@@ -85,5 +86,26 @@ public class HurtState : State
             player.enter = false;
             player.state = "Idle";
         }
+    }
+
+    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
+    {
+        player.enter = false;
+        if (attack.causesKnockdown)
+        {
+            player.state = "Airborne";
+        }
+        else
+        {
+            if (attack.knockbackArc == 0 || attack.causesSoftKnockdown)
+            {
+                player.state = "Hurt";
+            }
+            else
+            {
+                player.state = "HurtAir";
+            }
+        }
+        return true;
     }
 }

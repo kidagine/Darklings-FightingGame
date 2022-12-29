@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HurtAirborneState : State
+public class HurtAirborneState : HurtParentState
 {
     private static AttackSO hurtAttack;
     public static Vector2 start;
@@ -88,5 +88,18 @@ public class HurtAirborneState : State
                 player.state = "HardKnockdown";
             }
         }
+    }
+    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
+    {
+        player.enter = false;
+        if (attack.causesKnockdown)
+        {
+            player.state = "Airborne";
+        }
+        else
+        {
+            player.state = "Hurt";
+        }
+        return true;
     }
 }

@@ -660,88 +660,43 @@ public struct GameSimulation : IGame
             {
                 AttackSO attack = PlayerComboSystem.GetComboAttack(_players[index].playerStats, _players[index].attackInput, _players[index].isCrouch, _players[index].isAir);
                 _players[index].canChainAttack = true;
-                _players[index].otherPlayer.enter = false;
-                if ((attack.causesSoftKnockdown && _players[index].otherPlayer.position.y > (float)DemonicsPhysics.GROUND_POINT) || attack.causesKnockdown)
+                if (_players[index].flip == 1 && _players[index].otherPlayer.flip == -1 & _players[index].otherPlayer.direction.x > 0
+                    || _players[index].flip == -1 && _players[index].otherPlayer.flip == 1 & _players[index].otherPlayer.direction.x < 0)
                 {
-                    if (_players[index].flip == 1 && _players[index].otherPlayer.flip == -1 & _players[index].otherPlayer.direction.x > 0
-                        || _players[index].flip == -1 && _players[index].otherPlayer.flip == 1 & _players[index].otherPlayer.direction.x < 0)
+                    if (attack.attackTypeEnum == AttackTypeEnum.Break ||
+                    attack.attackTypeEnum == AttackTypeEnum.Low && _players[index].otherPlayer.direction.y >= 0)
                     {
-                        if (_players[index].otherPlayer.position.y > (float)DemonicsPhysics.GROUND_POINT)
-                        {
-                            _players[index].otherPlayer.state = "BlockAir";
-                        }
-                        else
-                        {
-                            _players[index].otherPlayer.state = "Block";
-                        }
+                        _players[index].otherPlayer.CurrentState.ToHurtState(_players[index].otherPlayer, attack);
                     }
                     else
                     {
-                        _players[index].otherPlayer.state = "Airborne";
+                        _players[index].otherPlayer.CurrentState.ToBlockState(_players[index].otherPlayer, attack);
                     }
                 }
                 else
                 {
-                    if (_players[index].otherPlayer.position.y > (float)DemonicsPhysics.GROUND_POINT)
-                    {
-                        if (_players[index].flip == 1 && _players[index].otherPlayer.flip == -1 & _players[index].otherPlayer.direction.x > 0
-                        || _players[index].flip == -1 && _players[index].otherPlayer.flip == 1 & _players[index].otherPlayer.direction.x < 0)
-                        {
-                            _players[index].otherPlayer.state = "BlockAir";
-                        }
-                        else
-                        {
-                            _players[index].otherPlayer.state = "HurtAir";
-                        }
-                    }
-                    else
-                    {
-                        if (_players[index].flip == 1 && _players[index].otherPlayer.flip == -1 & _players[index].otherPlayer.direction.x > 0
-                        || _players[index].flip == -1 && _players[index].otherPlayer.flip == 1 & _players[index].otherPlayer.direction.x < 0)
-                        {
-                            if (attack.attackTypeEnum == AttackTypeEnum.Low)
-                            {
-                                if (_players[index].otherPlayer.direction.y < 0)
-                                {
-                                    _players[index].otherPlayer.state = "BlockLow";
-                                }
-                                else
-                                {
-                                    _players[index].otherPlayer.state = "Hurt";
-                                }
-                            }
-                            else
-                            {
-                                _players[index].otherPlayer.state = "Block";
-                            }
-                        }
-                        else
-                        {
-                            if (attack.knockbackArc > 0 && !attack.causesSoftKnockdown)
-                            {
-                                _players[index].otherPlayer.state = "HurtAir";
-                            }
-                            else
-                            {
-                                AttackSO otherAttack = PlayerComboSystem.GetComboAttack(_players[index].otherPlayer.playerStats,
-                                _players[index].otherPlayer.attackInput, _players[index].otherPlayer.isCrouch, _players[index].otherPlayer.isAir);
-                                if (_players[index].otherPlayer.state == "Attack" && otherAttack.hasSuperArmor)
-                                {
-                                    GameSimulation.Hitstop = attack.hitstop;
-                                    _players[index].otherPlayer.player.PlayerAnimator.SpriteSuperArmorEffect();
-                                    _players[index].otherPlayer.player.SetHealth(_players[index].otherPlayer.player.CalculateDamage(attack));
-                                    _players[index].otherPlayer.player.StartShakeContact();
-                                    _players[index].otherPlayer.player.PlayerUI.Damaged();
-                                    _players[index].otherPlayer.player.OtherPlayerUI.IncreaseCombo();
-                                }
-                                else
-                                {
-                                    _players[index].otherPlayer.state = "Hurt";
-                                }
-                            }
-                        }
-                    }
+                    _players[index].otherPlayer.CurrentState.ToHurtState(_players[index].otherPlayer, attack);
                 }
+
+                //                 AttackSO otherAttack = PlayerComboSystem.GetComboAttack(_players[index].otherPlayer.playerStats,
+                //                 _players[index].otherPlayer.attackInput, _players[index].otherPlayer.isCrouch, _players[index].otherPlayer.isAir);
+                //                 if (_players[index].otherPlayer.state == "Attack" && otherAttack.hasSuperArmor)
+                //                 {
+                //                     GameSimulation.Hitstop = attack.hitstop;
+                //                     _players[index].otherPlayer.player.PlayerAnimator.SpriteSuperArmorEffect();
+                //                     _players[index].otherPlayer.player.SetHealth(_players[index].otherPlayer.player.CalculateDamage(attack));
+                //                     _players[index].otherPlayer.player.StartShakeContact();
+                //                     _players[index].otherPlayer.player.PlayerUI.Damaged();
+                //                     _players[index].otherPlayer.player.OtherPlayerUI.IncreaseCombo();
+                //                 }
+                //                 else
+                //                 {
+                //                     _players[index].otherPlayer.state = "Hurt";
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
             }
         }
     }
@@ -792,8 +747,12 @@ public struct GameSimulation : IGame
     {
         if (_players[index].state == "Idle")
         {
-            _players[index].state = "Idle";
-            _players[index].CurrentState = new IdleState();
+            if (_players[index].state != "Idle")
+            {
+                _players[index].state = "Idle";
+                Debug.Log("a");
+                _players[index].CurrentState = new IdleState();
+            }
         }
         if (_players[index].state == "Walk")
         {

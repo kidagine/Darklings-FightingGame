@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HurtAirState : State
+public class HurtAirState : HurtParentState
 {
     private static AttackSO hurtAttack;
     public static Vector2 start;
@@ -13,6 +13,7 @@ public class HurtAirState : State
         if (!player.enter)
         {
             player.velocity = Vector2.zero;
+            CheckFlip(player);
             hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
             // player.health -= player.player.CalculateDamage(hurtAttack);
             player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
@@ -41,16 +42,16 @@ public class HurtAirState : State
             player.stunFrames = hurtAttack.hitStun;
             knockbackFrame = 0;
             start = player.position;
-            end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), player.position.y);
+            end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * player.otherPlayer.flip), player.position.y);
         }
-        player.velocity = new Vector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
         player.animation = "HurtAir";
         player.animationFrames++;
         if (GameSimulation.Hitstop <= 0)
         {
+            float ratio = 0;
             if (hurtAttack.knockbackDuration > 0)
             {
-                float ratio = (float)knockbackFrame / (float)hurtAttack.knockbackDuration;
+                ratio = (float)knockbackFrame / (float)hurtAttack.knockbackDuration;
                 float distance = end.x - start.x;
                 float nextX = Mathf.Lerp(start.x, end.x, ratio);
                 float baseY = Mathf.Lerp(start.y, end.y, (nextX - start.x) / distance);
@@ -74,35 +75,35 @@ public class HurtAirState : State
             {
                 ToHurtState(player);
             }
+            ToIdleState(player, ratio);
         }
-        ToIdleState(player);
         ToFallState(player);
     }
     private void ToFallState(PlayerNetwork player)
     {
         if (player.stunFrames <= 0)
         {
-            player.player.StopShakeCoroutine();
-            player.player.OtherPlayer.StopComboTimer();
-            player.player.PlayerUI.UpdateHealthDamaged();
-            player.enter = false;
-            player.state = "Fall";
-        }
-    }
-    private void ToIdleState(PlayerNetwork player)
-    {
-        if (player.stunFrames <= 0)
-        {
-            if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+            if ((int)player.position.y > (int)DemonicsPhysics.GROUND_POINT)
             {
                 player.player.StopShakeCoroutine();
                 player.player.OtherPlayer.StopComboTimer();
                 player.player.PlayerUI.UpdateHealthDamaged();
-                player.sound = "Landed";
-                player.SetEffect("Fall", player.position);
                 player.enter = false;
-                player.state = "Idle";
+                player.state = "Fall";
             }
+        }
+    }
+    private void ToIdleState(PlayerNetwork player, float ratio)
+    {
+        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && ratio >= 0.5f)
+        {
+            player.player.StopShakeCoroutine();
+            player.player.OtherPlayer.StopComboTimer();
+            player.player.PlayerUI.UpdateHealthDamaged();
+            player.sound = "Landed";
+            player.SetEffect("Fall", player.position);
+            player.enter = false;
+            player.state = "Idle";
         }
     }
     private void ToHurtState(PlayerNetwork player)
@@ -121,6 +122,19 @@ public class HurtAirState : State
                 player.state = "Hurt";
             }
         }
+    }
+    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
+    {
+        player.enter = false;
+        if (attack.causesKnockdown || attack.causesSoftKnockdown)
+        {
+            player.state = "Airborne";
+        }
+        else
+        {
+            player.state = "HurtAir";
+        }
+        return true;
     }
 }
 

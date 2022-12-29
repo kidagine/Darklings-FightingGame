@@ -36,10 +36,37 @@ public class GroundParentState : State
         player.state = "RedFrenzy";
         return true;
     }
-    public override bool ToHurtState(PlayerNetwork player)
+    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
     {
         player.enter = false;
-        player.state = "Hurt";
+        if (attack.causesKnockdown)
+        {
+            player.state = "Airborne";
+        }
+        else
+        {
+            if (attack.knockbackArc == 0 || attack.causesSoftKnockdown)
+            {
+                player.state = "Hurt";
+            }
+            else
+            {
+                player.state = "HurtAir";
+            }
+        }
+        return true;
+    }
+    public override bool ToBlockState(PlayerNetwork player, AttackSO attack)
+    {
+        player.enter = false;
+        if (player.direction.y < 0)
+        {
+            player.state = "BlockLow";
+        }
+        else
+        {
+            player.state = "Block";
+        }
         return true;
     }
 }

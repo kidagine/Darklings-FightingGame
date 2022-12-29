@@ -67,4 +67,23 @@ public class AirParentState : State
         player.state = "Arcana";
         return true;
     }
+    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
+    {
+        player.enter = false;
+        if (attack.causesKnockdown || attack.causesSoftKnockdown)
+        {
+            player.state = "Airborne";
+        }
+        else
+        {
+            player.state = "HurtAir";
+        }
+        return true;
+    }
+    public override bool ToBlockState(PlayerNetwork player, AttackSO attack)
+    {
+        player.enter = false;
+        player.state = "BlockAir";
+        return true;
+    }
 }
