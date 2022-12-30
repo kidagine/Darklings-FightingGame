@@ -4,7 +4,13 @@ public class WalkState : GroundParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        player.enter = true;
+        if (!player.enter)
+        {
+            player.enter = true;
+            player.animationFrames = 0;
+        }
+        player.position = new Vector2(player.position.x, (float)DemonicsPhysics.GROUND_POINT);
+        CheckFlip(player);
         player.canDoubleJump = true;
         player.animation = "Walk";
         player.animationFrames++;

@@ -4,6 +4,7 @@ public class DashState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        player.position = new Vector2(player.position.x, (float)DemonicsPhysics.GROUND_POINT);
         if (!player.enter)
         {
             player.enter = true;

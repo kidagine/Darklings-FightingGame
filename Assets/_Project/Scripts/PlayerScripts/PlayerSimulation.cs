@@ -8,6 +8,7 @@ public class PlayerSimulation : MonoBehaviour
     [SerializeField] private CollisionVisualizer _hurtBoxVisualizer = default;
     [SerializeField] private CollisionVisualizer _hitBoxVisualizer = default;
     [SerializeField] private CollisionVisualizer _pushBoxVisualizer = default;
+    [SerializeField] private DisconnectMenu _disconnectMenu = default;
 
 
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
@@ -23,6 +24,10 @@ public class PlayerSimulation : MonoBehaviour
             playerGs.soundStop = "";
         }
         _player.Simulate(playerGs, info);
+        if (info.state == PlayerConnectState.Disconnected)
+        {
+            _player.PlayerUI.Disconnected();
+        }
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         _playerAnimator.SetSpriteOrder(playerGs.spriteOrder);
         _hitBoxVisualizer.ShowBox(playerGs.hitbox);

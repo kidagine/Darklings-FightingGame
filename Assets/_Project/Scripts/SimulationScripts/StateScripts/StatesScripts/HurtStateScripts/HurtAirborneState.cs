@@ -66,11 +66,14 @@ public class HurtAirborneState : HurtParentState
     }
     private void ToWallSplatState(PlayerNetwork player)
     {
-        if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT && player.flip == 1
-        || player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT && player.flip == -1)
+        if (hurtAttack.causesKnockdown)
         {
-            player.enter = false;
-            player.state = "WallSplat";
+            if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT && player.flip == 1
+            || player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT && player.flip == -1)
+            {
+                player.enter = false;
+                player.state = "WallSplat";
+            }
         }
     }
     private void ToKnockdownState(float ratio, PlayerNetwork player)

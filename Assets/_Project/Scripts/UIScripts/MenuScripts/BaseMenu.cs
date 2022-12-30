@@ -20,7 +20,7 @@ public class BaseMenu : MonoBehaviour
         menu.gameObject.SetActive(true);
     }
 
-    public void Show()
+    public virtual void Show()
     {
         gameObject.SetActive(true);
         StartCoroutine(ActivateCoroutine());

@@ -178,7 +178,7 @@ public class AttackState : State
     public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
     {
         player.enter = false;
-        if (_attack.hasSuperArmor)
+        if (_attack.hasSuperArmor && !player.player.PlayerAnimator.InRecovery())
         {
             GameSimulation.Hitstop = attack.hitstop;
             player.player.PlayerAnimator.SpriteSuperArmorEffect();
