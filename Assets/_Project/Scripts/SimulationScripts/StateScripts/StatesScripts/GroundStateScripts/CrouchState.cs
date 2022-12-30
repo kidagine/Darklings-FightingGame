@@ -4,6 +4,8 @@ public class CrouchState : GroundParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        CheckFlip(player);
+
         player.enter = true;
         player.canDoubleJump = true;
         player.dashFrames = 0;

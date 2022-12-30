@@ -35,6 +35,7 @@ public class IdleState : GroundParentState
     {
         if (player.direction.y > 0 && player.direction.x != 0)
         {
+            player.dashDirection = (int)player.direction.x;
             player.enter = false;
             player.state = "JumpForward";
         }

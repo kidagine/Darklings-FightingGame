@@ -94,7 +94,6 @@ public class HurtAirborneState : HurtParentState
         player.enter = false;
         if (attack.causesKnockdown)
         {
-            player.wasWallSplatted = false;
             player.state = "Airborne";
         }
         else

@@ -30,6 +30,7 @@ public class AirParentState : State
         {
             if (player.direction.y > 0 && player.direction.x != 0 && !player.hasJumped)
             {
+                player.dashDirection = (int)player.direction.x;
                 player.enter = false;
                 player.hasJumped = true;
                 player.canDoubleJump = false;

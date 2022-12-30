@@ -24,22 +24,13 @@ public class BlockParentState : State
 
     protected virtual void OnEnter(PlayerNetwork player)
     {
-        Debug.Log("A");
         hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
         player.player.StartShakeContact();
         player.enter = true;
         GameSimulation.Hitstop = hurtAttack.hitstop;
         player.sound = "Block";
-        if (player.otherPlayer.isAir)
-        {
-            Vector2 hurtEffectPosition = new Vector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
-            hurtAttack.hurtEffectPosition = hurtEffectPosition;
-        }
-        else
-        {
-            Vector2 hurtEffectPosition = new Vector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
-            hurtAttack.hurtEffectPosition = hurtEffectPosition;
-        }
+        Vector2 hurtEffectPosition = new Vector2(player.position.x + (5 * player.flip), player.otherPlayer.hitbox.position.y);
+        hurtAttack.hurtEffectPosition = hurtEffectPosition;
         if (hurtAttack.isArcana)
         {
             player.SetEffect("Chip", hurtAttack.hurtEffectPosition);

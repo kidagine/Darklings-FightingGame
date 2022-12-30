@@ -4,12 +4,12 @@ using UnityEngine;
 public class AttackState : State
 {
     private AttackSO _attack;
-    public Vector2 start;
-    private Vector2 end;
-    private int knockbackFrame;
-    private bool knock;
+    public static Vector2 start;
+    private static Vector2 end;
+    private static int knockbackFrame;
+    private static bool knock;
     private static bool b;
-    private bool opponentInCorner;
+    private static bool opponentInCorner;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
@@ -97,8 +97,8 @@ public class AttackState : State
                 }
             }
         }
-        ToJumpForwardState(player);
         ToJumpState(player);
+        ToJumpForwardState(player);
         ToIdleState(player);
         ToIdleFallState(player);
     }
@@ -122,6 +122,7 @@ public class AttackState : State
         {
             if (player.direction.y > 0 && player.direction.x != 0)
             {
+                player.dashDirection = (int)player.direction.x;
                 player.enter = false;
                 player.isCrouch = false;
                 player.isAir = false;
@@ -177,7 +178,6 @@ public class AttackState : State
     public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
     {
         player.enter = false;
-        Debug.Log(attack);
         if (_attack.hasSuperArmor)
         {
             GameSimulation.Hitstop = attack.hitstop;
