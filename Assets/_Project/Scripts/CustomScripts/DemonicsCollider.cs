@@ -34,7 +34,7 @@ public class DemonicsCollider : MonoBehaviour
     }
 
 
-    private static bool valueInRange(float value, float min, float max)
+    private static bool valueInRange(DemonicsFloat value, DemonicsFloat min, DemonicsFloat max)
     { return (value >= min) && (value <= max); }
 
     public static bool Colliding(ColliderNetwork a, ColliderNetwork b)

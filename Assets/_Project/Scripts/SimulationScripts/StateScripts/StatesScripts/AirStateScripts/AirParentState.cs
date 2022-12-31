@@ -4,6 +4,7 @@ public class AirParentState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        ToDashAirState(player);
         ToJumpForwardState(player);
         ToJumpState(player);
     }
@@ -30,7 +31,7 @@ public class AirParentState : State
         {
             if (player.direction.y > 0 && player.direction.x != 0 && !player.hasJumped)
             {
-                player.dashDirection = (int)player.direction.x;
+                player.jumpDirection = (int)player.direction.x;
                 player.enter = false;
                 player.hasJumped = true;
                 player.canDoubleJump = false;
@@ -42,17 +43,14 @@ public class AirParentState : State
             }
         }
     }
-
-    public override bool ToDashState(PlayerNetwork player)
+    private void ToDashAirState(PlayerNetwork player)
     {
-        if (player.canDash)
+        if (player.dashDirection != 0 && player.canDash)
         {
             player.enter = false;
-            player.velocity = Vector2.zero;
+            player.velocity = DemonicsVector2.Zero;
             player.state = "DashAir";
-            return true;
         }
-        return false;
     }
     public override bool ToAttackState(PlayerNetwork player)
     {

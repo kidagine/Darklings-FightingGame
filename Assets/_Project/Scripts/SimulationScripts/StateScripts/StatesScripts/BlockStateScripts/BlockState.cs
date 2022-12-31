@@ -22,6 +22,6 @@ public class BlockState : BlockParentState
     protected override void OnEnter(PlayerNetwork player)
     {
         base.OnEnter(player);
-        end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
+        end = new DemonicsVector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT - 0.5f);
     }
 }

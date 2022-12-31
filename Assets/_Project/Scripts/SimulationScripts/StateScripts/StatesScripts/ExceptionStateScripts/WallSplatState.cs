@@ -7,7 +7,7 @@ public class WallSplatState : State
         CheckFlip(player);
         if (!player.enter)
         {
-            Vector2 effectPosition = new Vector2(player.position.x + (2.25f * player.flip), player.position.y);
+            DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + ((DemonicsFloat)2.25 * player.flip), player.position.y);
             if (player.flip == 1)
             {
                 player.SetEffect("WallSplat", effectPosition, true);
@@ -20,7 +20,7 @@ public class WallSplatState : State
             player.enter = true;
             player.animationFrames = 0;
         }
-        player.velocity = Vector2.zero;
+        player.velocity = DemonicsVector2.Zero;
         player.hurtbox.active = false;
         player.animation = "Wallsplat";
         player.animationFrames++;

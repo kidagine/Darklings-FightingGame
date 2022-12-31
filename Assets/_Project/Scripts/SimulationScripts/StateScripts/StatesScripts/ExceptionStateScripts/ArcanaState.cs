@@ -16,14 +16,14 @@ public class ArcanaState : State
             player.sound = attack.attackSound;
             player.animationFrames = 0;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
-            player.velocity = new Vector2(attack.travelDistance.x * player.flip, attack.travelDistance.y);
+            player.velocity = new DemonicsVector2(attack.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)attack.travelDistance.y);
         }
         ToIdleState(player);
         if (GameSimulation.Hitstop <= 0)
         {
             if (attack.travelDistance.y > 0)
             {
-                player.velocity = new Vector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
+                player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
                 ToIdleFallState(player);
             }
             player.animationFrames++;

@@ -10,14 +10,15 @@ public class IdleState : GroundParentState
             player.enter = true;
             player.animationFrames = 0;
         }
-        player.position = new Vector2(player.position.x, (float)DemonicsPhysics.GROUND_POINT);
         player.animation = "Idle";
         player.animationFrames++;
-        player.velocity = Vector2.zero;
+        player.velocity = DemonicsVector2.Zero;
         ToWalkState(player);
         ToJumpState(player);
         ToJumpForwardState(player);
         ToCrouchState(player);
+        ToDashState(player);
+        ToAttackStates(player);
     }
 
     private void ToCrouchState(PlayerNetwork player)
@@ -40,7 +41,7 @@ public class IdleState : GroundParentState
     {
         if (player.direction.y > 0 && player.direction.x != 0)
         {
-            player.dashDirection = (int)player.direction.x;
+            player.jumpDirection = (int)player.direction.x;
             player.enter = false;
             player.state = "JumpForward";
         }
@@ -53,14 +54,20 @@ public class IdleState : GroundParentState
             player.state = "Walk";
         }
     }
-    public override bool ToDashState(PlayerNetwork player)
+    private void ToDashState(PlayerNetwork player)
     {
-        if (player.canDash)
+        if (player.dashDirection != 0)
         {
             player.enter = false;
             player.state = "Dash";
-            return true;
         }
-        return false;
+    }
+    private void ToAttackStates(PlayerNetwork player)
+    {
+        if (player.attackInput == InputEnum.Light)
+        {
+            player.enter = false;
+            player.state = "Attack";
+        }
     }
 }

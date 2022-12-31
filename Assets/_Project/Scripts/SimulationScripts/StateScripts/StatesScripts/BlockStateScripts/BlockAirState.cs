@@ -7,7 +7,7 @@ public class BlockAirState : BlockParentState
         base.UpdateLogic(player);
         player.animation = "BlockAir";
         player.animationFrames++;
-        player.velocity = new Vector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.JUGGLE_GRAVITY);
+        player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.JUGGLE_GRAVITY);
         ToFallState(player);
         ToIdleState(player);
         ToBlockState(player);
@@ -54,11 +54,11 @@ public class BlockAirState : BlockParentState
     protected override void OnEnter(PlayerNetwork player)
     {
         base.OnEnter(player);
-        end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), player.position.y);
+        end = new DemonicsVector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), player.position.y);
     }
     protected override void AfterHitstop(PlayerNetwork player)
     {
         base.AfterHitstop(player);
-        player.velocity = new Vector2(player.velocity.x, player.velocity.y - 0.013f);
+        player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - 0.013f);
     }
 }

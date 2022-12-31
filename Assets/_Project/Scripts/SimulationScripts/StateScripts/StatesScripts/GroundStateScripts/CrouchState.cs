@@ -9,13 +9,13 @@ public class CrouchState : GroundParentState
             player.enter = true;
             player.animationFrames = 0;
         }
-        player.position = new Vector2(player.position.x, (float)DemonicsPhysics.GROUND_POINT);
+        player.position = new DemonicsVector2(player.position.x, DemonicsPhysics.GROUND_POINT);
         CheckFlip(player);
         player.canDoubleJump = true;
         player.dashFrames = 0;
         player.animationFrames = 0;
         player.animation = "Crouch";
-        player.velocity = new Vector2(0, 0);
+        player.velocity = DemonicsVector2.Zero;
         ToIdleState(player);
     }
 
@@ -40,15 +40,5 @@ public class CrouchState : GroundParentState
         player.isCrouch = true;
         player.state = "Arcana";
         return true;
-    }
-    public override bool ToDashState(PlayerNetwork player)
-    {
-        if (player.canDash)
-        {
-            player.enter = false;
-            player.state = "Dash";
-            return true;
-        }
-        return false;
     }
 }

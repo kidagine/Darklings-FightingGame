@@ -4,7 +4,6 @@ public class DashState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        player.position = new Vector2(player.position.x, (float)DemonicsPhysics.GROUND_POINT);
         if (!player.enter)
         {
             player.enter = true;
@@ -12,17 +11,18 @@ public class DashState : State
             player.animationFrames = 0;
             if (player.dashDirection > 0)
             {
-                Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
+                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x - 1, player.position.y);
                 player.SetEffect("Dash", effectPosition, false);
             }
             else
             {
-                Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
+                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
                 player.SetEffect("Dash", effectPosition, true);
             }
             player.dashFrames = 15;
-            player.velocity = new Vector2(player.dashDirection * (float)player.playerStats.DashForce, 0);
+            player.velocity = new DemonicsVector2(player.dashDirection * player.playerStats.DashForce, 0);
         }
+        player.dashDirection = 0;
         Dash(player);
     }
 
@@ -36,20 +36,20 @@ public class DashState : State
             {
                 if (player.flip > 0)
                 {
-                    Vector2 effectPosition = new Vector2(player.position.x - 1, player.position.y);
-                    player.SetEffect("Ghost", player.position, false);
+                    DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x - 1, player.position.y);
+                    player.SetEffect("Ghost", effectPosition, false);
                 }
                 else
                 {
-                    Vector2 effectPosition = new Vector2(player.position.x + 1, player.position.y);
-                    player.SetEffect("Ghost", player.position, true);
+                    DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
+                    player.SetEffect("Ghost", effectPosition, true);
                 }
             }
             player.dashFrames--;
         }
         else
         {
-            player.velocity = Vector2.zero;
+            player.velocity = DemonicsVector2.Zero;
             player.enter = false;
             if (player.direction.x * player.flip > 0)
             {

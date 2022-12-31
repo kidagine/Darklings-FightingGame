@@ -11,7 +11,7 @@ public class FallState : AirParentState
             player.animationFrames = 0;
         }
         player.animation = "Fall";
-        player.velocity = new Vector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
+        player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         base.UpdateLogic(player);
         ToIdleState(player);
     }

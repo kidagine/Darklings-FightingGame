@@ -6,8 +6,8 @@ public class BlockParentState : State
 {
     public static bool skipKnockback;
     protected AttackSO hurtAttack;
-    protected Vector2 start;
-    protected Vector2 end;
+    protected DemonicsVector2 start;
+    protected DemonicsVector2 end;
     protected int knockbackFrame;
     public override void UpdateLogic(PlayerNetwork player)
     {
@@ -29,25 +29,25 @@ public class BlockParentState : State
         player.enter = true;
         GameSimulation.Hitstop = hurtAttack.hitstop;
         player.sound = "Block";
-        Vector2 hurtEffectPosition = new Vector2(player.position.x + (5 * player.flip), player.otherPlayer.hitbox.position.y);
-        hurtAttack.hurtEffectPosition = hurtEffectPosition;
+        DemonicsVector2 hurtEffectPosition = new DemonicsVector2(player.position.x + (5 * player.flip), player.otherPlayer.hitbox.position.y);
+        hurtAttack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
         if (hurtAttack.isArcana)
         {
-            player.SetEffect("Chip", hurtAttack.hurtEffectPosition);
+            player.SetEffect("Chip", hurtEffectPosition);
             player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
             player.player.PlayerUI.Damaged();
             player.player.PlayerUI.UpdateHealthDamaged();
         }
         else
         {
-            player.SetEffect("Block", hurtAttack.hurtEffectPosition);
+            player.SetEffect("Block", hurtEffectPosition);
         }
         player.animationFrames = 0;
         player.stunFrames = hurtAttack.hitStun;
         knockbackFrame = 0;
         start = player.position;
-        end = new Vector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), (float)DemonicsPhysics.GROUND_POINT - 0.5f);
-        player.velocity = Vector2.zero;
+        end = new DemonicsVector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT - 0.5f);
+        player.velocity = DemonicsVector2.Zero;
     }
 
     protected virtual void AfterHitstop(PlayerNetwork player)
@@ -56,13 +56,13 @@ public class BlockParentState : State
         {
             if (hurtAttack.knockbackDuration > 0)
             {
-                float ratio = (float)knockbackFrame / (float)hurtAttack.knockbackDuration;
-                float distance = end.x - start.x;
-                float nextX = Mathf.Lerp(start.x, end.x, ratio);
-                float baseY = Mathf.Lerp(start.y, end.y, (nextX - start.x) / distance);
-                float arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
-                Vector2 nextPosition = new Vector2(nextX, baseY + arc);
-                nextPosition = new Vector2(nextX, player.position.y);
+                DemonicsFloat ratio = (DemonicsFloat)knockbackFrame / (DemonicsFloat)hurtAttack.knockbackDuration;
+                DemonicsFloat distance = end.x - start.x;
+                DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
+                DemonicsFloat baseY = DemonicsFloat.Lerp(start.y, end.y, (nextX - start.x) / distance);
+                DemonicsFloat arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
+                DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
+                nextPosition = new DemonicsVector2(nextX, player.position.y);
                 player.position = nextPosition;
                 knockbackFrame++;
             }
