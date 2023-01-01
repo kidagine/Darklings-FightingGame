@@ -175,10 +175,27 @@ public class DemonicsPhysics : MonoBehaviour
                     valueInRange(b.position.y - (b.pushbox.size.y / 2), a.position.y - (a.pushbox.size.y / 2), a.position.y + (a.pushbox.size.y / 2));
         return xOverlap && yOverlap;
     }
-    private static void CameraHorizontalBounds()
+    public static void CameraHorizontalBounds(PlayerNetwork player, PlayerNetwork otherPlayer)
     {
-        WALL_LEFT_POINT = (DemonicsFloat)_camera.ScreenToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane)).x + WALL_OFFSET;
-        WALL_RIGHT_POINT = (DemonicsFloat)_camera.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, 0, Camera.main.nearClipPlane)).x - WALL_OFFSET;
+        DemonicsFloat distance = DemonicsFloat.Abs((DemonicsFloat)player.position.x - (DemonicsFloat)otherPlayer.position.x);
+        if (distance >= (DemonicsFloat)220)
+        {
+            if (player.position.x > otherPlayer.position.x)
+            {
+                WALL_LEFT_POINT = (DemonicsFloat)(otherPlayer.position.x);
+                WALL_RIGHT_POINT = (DemonicsFloat)(player.position.x);
+            }
+            else
+            {
+                WALL_LEFT_POINT = (DemonicsFloat)(player.position.x);
+                WALL_RIGHT_POINT = (DemonicsFloat)(otherPlayer.position.x);
+            }
+        }
+        else
+        {
+            WALL_LEFT_POINT = (DemonicsFloat)(-169);
+            WALL_RIGHT_POINT = (DemonicsFloat)(169);
+        }
     }
 
     public void SetPositionWithRender(DemonicsVector2 position)
@@ -188,23 +205,39 @@ public class DemonicsPhysics : MonoBehaviour
     }
     public static DemonicsVector2 Bounds(PlayerNetwork player)
     {
-        CameraHorizontalBounds();
         DemonicsVector2 position = player.position;
-        if (player.position.y <= GROUND_POINT)
-        {
-            position = new DemonicsVector2(player.position.x, GROUND_POINT);
-        }
         if (player.position.y >= CELLING_POINT && player.velocity.y > 0)
         {
             //return new DemonicsVector2(player.velocity.x, 0);
         }
-        if (player.position.x >= WALL_RIGHT_POINT && player.velocity.x >= (DemonicsFloat)0)
+        if (player.position.x >= WALL_RIGHT_POINT && player.velocity.x > (DemonicsFloat)0)
         {
-            position = new DemonicsVector2(WALL_RIGHT_POINT, player.position.y);
+            if (player.position.y <= GROUND_POINT)
+            {
+                position = new DemonicsVector2(WALL_RIGHT_POINT, GROUND_POINT);
+            }
+            else
+            {
+                position = new DemonicsVector2(WALL_RIGHT_POINT, player.position.y);
+            }
         }
-        if (player.position.x <= WALL_LEFT_POINT && player.velocity.x <= (DemonicsFloat)0)
+        else if (player.position.x <= WALL_LEFT_POINT && player.velocity.x < (DemonicsFloat)0)
         {
-            position = new DemonicsVector2(WALL_LEFT_POINT, player.position.y);
+            if (player.position.y <= GROUND_POINT)
+            {
+                position = new DemonicsVector2(WALL_LEFT_POINT, GROUND_POINT);
+            }
+            else
+            {
+                position = new DemonicsVector2(WALL_LEFT_POINT, player.position.y);
+            }
+        }
+        else
+        {
+            if (player.position.y <= GROUND_POINT)
+            {
+                position = new DemonicsVector2(player.position.x, GROUND_POINT);
+            }
         }
         return position;
     }

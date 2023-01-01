@@ -630,42 +630,6 @@ public struct GameSimulation : IGame
             _players[index].enter = false;
             _players[index].state = "Death";
         }
-        SetState(index);
-        _players[index].CurrentState.UpdateLogic(_players[index]);
-        GameplayManager.Instance.PlayerOne.Flip(_players[0].flip);
-        GameplayManager.Instance.PlayerTwo.Flip(_players[1].flip);
-        if (GameSimulation.Hitstop <= 0)
-        {
-            if (!DemonicsPhysics.Collision(_players[index], _players[index].otherPlayer))
-            {
-                _players[index].position = new DemonicsVector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
-            }
-            _players[index].player.PlayerAnimator.SpriteNormalEffect();
-        }
-        _players[index].position = DemonicsPhysics.Bounds(_players[index]);
-        if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
-        {
-            _players[0].animationFrames = 0;
-        }
-        if (GameplayManager.Instance.PlayerTwo.IsAnimationFinished())
-        {
-            _players[1].animationFrames = 0;
-        }
-        for (int i = 0; i < _players[index].effects.Length; i++)
-        {
-            for (int j = 0; j < _players[index].effects[i].effectGroups.Length; j++)
-            {
-                if (_players[index].effects[i].effectGroups[j].active)
-                {
-                    _players[index].effects[i].effectGroups[j].animationFrames++;
-                    if (_players[index].effects[i].effectGroups[j].animationFrames >= _players[index].effects[i].animationMaxFrames)
-                    {
-                        _players[index].effects[i].effectGroups[j].animationFrames = 0;
-                        _players[index].effects[i].effectGroups[j].active = false;
-                    }
-                }
-            }
-        }
         AnimationBox[] animationHitboxes = _players[index].player.PlayerAnimator.GetHitboxes();
         if (animationHitboxes.Length == 0)
         {
@@ -686,7 +650,6 @@ public struct GameSimulation : IGame
         }
         _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
         _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
-
         if (_players[index].hitbox.active && _players[index].otherPlayer.hurtbox.active && !_players[index].canChainAttack && _players[index].animationFrames > 1)
         {
             if (DemonicsCollider.Colliding(_players[index].hitbox, _players[index].otherPlayer.hurtbox))
@@ -712,6 +675,45 @@ public struct GameSimulation : IGame
                 }
             }
         }
+        SetState(index);
+        _players[index].CurrentState.UpdateLogic(_players[index]);
+        GameplayManager.Instance.PlayerOne.Flip(_players[0].flip);
+        GameplayManager.Instance.PlayerTwo.Flip(_players[1].flip);
+        if (GameSimulation.Hitstop <= 0)
+        {
+            if (!DemonicsPhysics.Collision(_players[index], _players[index].otherPlayer))
+            {
+                _players[index].position = new DemonicsVector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
+            }
+            _players[index].player.PlayerAnimator.SpriteNormalEffect();
+        }
+        _players[index].position = DemonicsPhysics.Bounds(_players[index]);
+        DemonicsPhysics.CameraHorizontalBounds(_players[0], _players[1]);
+        if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
+        {
+            _players[0].animationFrames = 0;
+        }
+        if (GameplayManager.Instance.PlayerTwo.IsAnimationFinished())
+        {
+            _players[1].animationFrames = 0;
+        }
+        for (int i = 0; i < _players[index].effects.Length; i++)
+        {
+            for (int j = 0; j < _players[index].effects[i].effectGroups.Length; j++)
+            {
+                if (_players[index].effects[i].effectGroups[j].active)
+                {
+                    _players[index].effects[i].effectGroups[j].animationFrames++;
+                    if (_players[index].effects[i].effectGroups[j].animationFrames >= _players[index].effects[i].animationMaxFrames)
+                    {
+                        _players[index].effects[i].effectGroups[j].animationFrames = 0;
+                        _players[index].effects[i].effectGroups[j].active = false;
+                    }
+                }
+            }
+        }
+
+
     }
     public void Update(long[] inputs, int disconnect_flags)
     {
