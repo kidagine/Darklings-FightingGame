@@ -162,7 +162,8 @@ public class GameplayManager : MonoBehaviour
             else
             {
                 _isTrainingMode = false;
-                _connectionWidget.StartGGPO(SceneSettings.OnlineOneIp, SceneSettings.OnlineTwoIp, SceneSettings.OnlineIndex);
+                _connectionWidget.StartGGPO(SceneSettings.OnlineOneIp, SceneSettings.OnlineTwoIp, SceneSettings.PrivateOneIp, SceneSettings.PrivateTwoIp,
+                SceneSettings.PortOne, SceneSettings.PortTwo, SceneSettings.OnlineIndex);
             }
         }
         CheckSceneSettings();

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Net;
 using System;
+using System.Net.Sockets;
 
 namespace SharedGame
 {
@@ -25,20 +26,31 @@ namespace SharedGame
             var connections = new List<Connections>();
             connections.Add(new Connections()
             {
-                ip = "192.168.0.104",
+                ip = PrivateIP(),
                 port = 7000,
                 spectator = false,
             });
             connections.Add(new Connections()
             {
-                ip = "192.168.0.108",
+                ip = PrivateIP(),
                 port = 7001,
                 spectator = false,
             });
             inpPlayerIndex.text = "0";
             LoadConnectionInfo(connections);
         }
-
+        private string PrivateIP()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            return "127.0.0.1";
+        }
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -88,19 +100,26 @@ namespace SharedGame
             }
         }
 
-        public void StartGGPO(string ipOne, string ipTwo, int index)
+        public void StartGGPO(string ipOne, string ipTwo, string privateIpOne, string privateIpTwo, int portOne, int portTwo, int index)
         {
+            string ipOneUsed = ipOne;
+            string ipTwoUsed = ipTwo;
+            if (ipOne == ipTwo)
+            {
+                ipOneUsed = privateIpOne;
+                ipTwoUsed = privateIpTwo;
+            }
             var connections = new List<Connections>();
             connections.Add(new Connections()
             {
-                ip = ipOne,
-                port = 7000,
+                ip = ipOneUsed,
+                port = (ushort)portOne,
                 spectator = false,
             });
             connections.Add(new Connections()
             {
-                ip = ipTwo,
-                port = 7001,
+                ip = ipTwoUsed,
+                port = (ushort)portTwo,
                 spectator = false,
             });
             LoadConnectionInfo(connections);

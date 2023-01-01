@@ -69,7 +69,9 @@ public class OnlineHostMenu : BaseMenu
                 character = int.Parse(lobby.Players[i].Data["Character"].Value),
                 assist = int.Parse(lobby.Players[i].Data["Assist"].Value),
                 color = int.Parse(lobby.Players[i].Data["Color"].Value),
-                ip = lobby.Players[i].Data["Ip"].Value
+                ip = lobby.Players[i].Data["Ip"].Value,
+                port = int.Parse(lobby.Players[i].Data["Port"].Value),
+                privateIp = lobby.Players[i].Data["PrivateIp"].Value,
             });
             readyList.Add(bool.Parse(lobby.Players[i].Data["Ready"].Value));
             _nameplates[i].SetDemonData(demonDatas[i]);
@@ -144,6 +146,10 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.NameTwo = demonDatas[1].demonName;
         SceneSettings.OnlineOneIp = demonDatas[0].ip;
         SceneSettings.OnlineTwoIp = demonDatas[1].ip;
+        SceneSettings.PortOne = demonDatas[0].port;
+        SceneSettings.PortTwo = demonDatas[1].port;
+        SceneSettings.PrivateOneIp = demonDatas[0].privateIp;
+        SceneSettings.PrivateTwoIp = demonDatas[1].privateIp;
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.ControllerOne = _playerInput.devices[0];
         SceneSettings.ControllerTwo = _playerInput.devices[0];
