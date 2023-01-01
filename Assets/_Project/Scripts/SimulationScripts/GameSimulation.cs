@@ -386,6 +386,33 @@ public struct GameSimulation : IGame
         _players[1].otherPlayer = _players[0];
     }
 
+    public static void Reset()
+    {
+        for (int i = 0; i < _players.Length; i++)
+        {
+            _players[i] = new PlayerNetwork();
+            _players[i].inputBuffer.inputItems = new InputItemNetwork[20];
+            _players[i].state = "Idle";
+            _players[i].flip = 1;
+            _players[i].position = new DemonicsVector2((DemonicsFloat)GameplayManager.Instance.GetSpawnPositions()[i], DemonicsPhysics.GROUND_POINT);
+            _players[i].health = 10000;
+            _players[i].attackInput = InputEnum.Direction;
+            _players[i].animation = "Idle";
+            _players[i].sound = "";
+            _players[i].soundStop = "";
+            _players[i].canJump = true;
+            _players[i].canDoubleJump = true;
+            _players[i].hitbox = new ColliderNetwork() { active = false };
+            _players[i].hurtbox = new ColliderNetwork() { active = true };
+            _players[i].pushbox = new ColliderNetwork() { active = true, size = new DemonicsVector2(22, 25), offset = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)12.5) };
+
+        }
+        _players[0].spriteOrder = 1;
+        _players[1].spriteOrder = 0;
+        _players[0].otherPlayer = _players[1];
+        _players[1].otherPlayer = _players[0];
+    }
+
     public void ParseInputs(long inputs, int i, out bool skip, out bool up, out bool down, out bool left, out bool right, out bool light, out bool medium,
     out bool heavy, out bool arcana, out bool grab, out bool shadow, out bool blueFrenzy, out bool redFrenzy, out bool dashForward, out bool dashBackward)
     {
@@ -600,11 +627,11 @@ public struct GameSimulation : IGame
         }
         if (_players[index].health <= 0)
         {
+            _players[index].enter = false;
             _players[index].state = "Death";
         }
         SetState(index);
         _players[index].CurrentState.UpdateLogic(_players[index]);
-        _players[index].position = DemonicsPhysics.Bounds(_players[index]);
         GameplayManager.Instance.PlayerOne.Flip(_players[0].flip);
         GameplayManager.Instance.PlayerTwo.Flip(_players[1].flip);
         if (GameSimulation.Hitstop <= 0)
@@ -615,6 +642,7 @@ public struct GameSimulation : IGame
             }
             _players[index].player.PlayerAnimator.SpriteNormalEffect();
         }
+        _players[index].position = DemonicsPhysics.Bounds(_players[index]);
         if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
         {
             _players[0].animationFrames = 0;
@@ -813,6 +841,10 @@ public struct GameSimulation : IGame
         if (_players[index].state == "WakeUp")
         {
             _players[index].CurrentState = new WakeUpState();
+        }
+        if (_players[index].state == "Death")
+        {
+            _players[index].CurrentState = new DeathState();
         }
     }
 

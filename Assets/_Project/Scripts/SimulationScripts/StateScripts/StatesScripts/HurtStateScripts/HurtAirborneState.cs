@@ -30,7 +30,7 @@ public class HurtAirborneState : HurtParentState
             {
                 player.flip = -player.flip;
             }
-            //player.health -= hurtAttack.damage;
+            player.health -= player.player.CalculateDamage(hurtAttack);
             player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();

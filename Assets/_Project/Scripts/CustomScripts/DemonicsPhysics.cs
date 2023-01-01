@@ -189,9 +189,10 @@ public class DemonicsPhysics : MonoBehaviour
     public static DemonicsVector2 Bounds(PlayerNetwork player)
     {
         CameraHorizontalBounds();
+        DemonicsVector2 position = player.position;
         if (player.position.y <= GROUND_POINT)
         {
-            return new DemonicsVector2(player.position.x, GROUND_POINT);
+            position = new DemonicsVector2(player.position.x, GROUND_POINT);
         }
         if (player.position.y >= CELLING_POINT && player.velocity.y > 0)
         {
@@ -199,13 +200,13 @@ public class DemonicsPhysics : MonoBehaviour
         }
         if (player.position.x >= WALL_RIGHT_POINT && player.velocity.x >= (DemonicsFloat)0)
         {
-            //  return new DemonicsVector2(WALL_RIGHT_POINT, player.position.y);
+            position = new DemonicsVector2(WALL_RIGHT_POINT, player.position.y);
         }
         if (player.position.x <= WALL_LEFT_POINT && player.velocity.x <= (DemonicsFloat)0)
         {
-            // return new DemonicsVector2(WALL_LEFT_POINT, player.position.y);
+            position = new DemonicsVector2(WALL_LEFT_POINT, player.position.y);
         }
-        return player.position;
+        return position;
     }
     public static bool IsInCorner(PlayerNetwork player)
     {

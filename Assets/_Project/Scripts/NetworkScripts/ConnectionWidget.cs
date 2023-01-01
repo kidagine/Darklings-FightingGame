@@ -31,7 +31,7 @@ namespace SharedGame
             });
             connections.Add(new Connections()
             {
-                ip = "192.168.0.104",
+                ip = "192.168.0.108",
                 port = 7001,
                 spectator = false,
             });

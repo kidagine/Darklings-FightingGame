@@ -15,7 +15,7 @@ public class HurtAirState : HurtParentState
             player.velocity = DemonicsVector2.Zero;
             CheckFlip(player);
             hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
-            // player.health -= player.player.CalculateDamage(hurtAttack);
+            player.health -= player.player.CalculateDamage(hurtAttack);
             player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
             player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
