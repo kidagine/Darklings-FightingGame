@@ -155,16 +155,12 @@ public class GameplayManager : MonoBehaviour
             _debugNetwork.SetActive(false);
             if (!SceneSettings.IsOnline)
             {
-                Debug.Log("A");
                 NetworkInput.IS_LOCAL = true;
                 GameManager.Instance.StartLocalGame();
                 _isTrainingMode = SceneSettings.IsTrainingMode;
-
-                //InitializePlayers(playerOne, playerTwo);
             }
             else
             {
-                Debug.Log("B");
                 _isTrainingMode = false;
                 _connectionWidget.StartGGPO(SceneSettings.OnlineOneIp, SceneSettings.OnlineTwoIp, SceneSettings.OnlineIndex);
             }
@@ -409,6 +405,7 @@ public class GameplayManager : MonoBehaviour
             _trainingPrompts.gameObject.SetActive(true);
             HasGameStarted = true;
             StartTrainingRound();
+            GameSimulation.Run = true;
         }
         else
         {
@@ -617,6 +614,7 @@ public class GameplayManager : MonoBehaviour
                                 ReplayManager.Instance.StartLoadReplay();
                             }
                         }
+                        GameSimulation.Run = true;
                     }
                 }
             }

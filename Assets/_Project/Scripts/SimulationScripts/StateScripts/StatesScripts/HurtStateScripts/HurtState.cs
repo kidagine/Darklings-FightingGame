@@ -11,6 +11,7 @@ public class HurtState : HurtParentState
     {
         if (!player.enter)
         {
+            player.animationFrames = 0;
             //player.player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
             CheckFlip(player);
             hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
@@ -20,7 +21,7 @@ public class HurtState : HurtParentState
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();
             player.enter = true;
-            // GameSimulation.Hitstop = hurtAttack.hitstop;
+            GameSimulation.Hitstop = hurtAttack.hitstop;
             player.sound = hurtAttack.impactSound;
             DemonicsVector2 hurtEffectPosition = DemonicsVector2.Zero;
             if (player.otherPlayer.isAir)
@@ -38,7 +39,6 @@ public class HurtState : HurtParentState
             {
                 CameraShake.Instance.Shake(hurtAttack.cameraShaker);
             }
-            player.animationFrames = 0;
             player.stunFrames = hurtAttack.hitStun;
             knockbackFrame = 0;
             start = player.position;
@@ -47,33 +47,33 @@ public class HurtState : HurtParentState
         player.velocity = DemonicsVector2.Zero;
         player.animation = "Hurt";
         player.animationFrames++;
-        // if (GameSimulation.Hitstop <= 0)
-        // {
-        //     if (!skipKnockback)
-        //     {
-        //         if (hurtAttack.knockbackDuration > 0 && knockbackFrame <= hurtAttack.knockbackDuration)
-        //         {
-        //             DemonicsFloat ratio = (DemonicsFloat)knockbackFrame / (DemonicsFloat)hurtAttack.knockbackDuration;
-        //             DemonicsFloat distance = end.x - start.x;
-        //             DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
-        //             DemonicsFloat baseY = DemonicsFloat.Lerp(start.y, end.y, (nextX - start.x) / distance);
-        //             DemonicsFloat arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
-        //             DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
-        //             if (hurtAttack.causesSoftKnockdown)
-        //             {
-        //                 nextPosition = new DemonicsVector2(nextX, player.position.y);
-        //             }
-        //             else
-        //             {
-        //                 nextPosition = new DemonicsVector2(nextX, baseY + arc);
-        //             }
-        //             player.position = nextPosition;
-        //             knockbackFrame++;
-        //         }
-        //     }
-        //     player.player.StopShakeCoroutine();
-        //     player.stunFrames--;
-        // }
+        if (GameSimulation.Hitstop <= 0)
+        {
+            if (!skipKnockback)
+            {
+                if (hurtAttack.knockbackDuration > 0 && knockbackFrame <= hurtAttack.knockbackDuration)
+                {
+                    DemonicsFloat ratio = (DemonicsFloat)knockbackFrame / (DemonicsFloat)hurtAttack.knockbackDuration;
+                    DemonicsFloat distance = end.x - start.x;
+                    DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
+                    DemonicsFloat baseY = DemonicsFloat.Lerp(start.y, end.y, (nextX - start.x) / distance);
+                    DemonicsFloat arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
+                    DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
+                    if (hurtAttack.causesSoftKnockdown)
+                    {
+                        nextPosition = new DemonicsVector2(nextX, player.position.y);
+                    }
+                    else
+                    {
+                        nextPosition = new DemonicsVector2(nextX, baseY + arc);
+                    }
+                    player.position = nextPosition;
+                    knockbackFrame++;
+                }
+            }
+            player.player.StopShakeCoroutine();
+            player.stunFrames--;
+        }
         player.stunFrames--;
         ToIdleState(player);
     }

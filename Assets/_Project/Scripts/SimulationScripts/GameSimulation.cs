@@ -287,6 +287,8 @@ public struct GameSimulation : IGame
 {
     public int Framenumber { get; private set; }
     public static int Hitstop { get; set; }
+    public static bool Start { get; set; }
+    public static bool Run { get; set; }
     public int Checksum => GetHashCode();
 
     public static PlayerNetwork[] _players;
@@ -295,6 +297,8 @@ public struct GameSimulation : IGame
     {
         bw.Write(Framenumber);
         bw.Write(Hitstop);
+        bw.Write(Start);
+        bw.Write(Run);
         bw.Write(_players.Length);
         for (int i = 0; i < _players.Length; ++i)
         {
@@ -306,6 +310,8 @@ public struct GameSimulation : IGame
     {
         Framenumber = br.ReadInt32();
         Hitstop = br.ReadInt32();
+        Start = br.ReadBoolean();
+        Run = br.ReadBoolean();
         int length = br.ReadInt32();
         if (length != _players.Length)
         {
@@ -551,33 +557,46 @@ public struct GameSimulation : IGame
         if (light)
         {
             _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, frame = DemonicsWorld.Frame };
-            _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            if (_players[index].CurrentState.ToAttackState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
         }
-        // if (medium)
-        // {
-        //     _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, frame = DemonicsWorld.Frame };
-        //     if (_players[index].CurrentState.ToAttackState(_players[index]))
-        //     {
-        //         _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
-        //     }
-        // }
-        // if (heavy)
-        // {
-        //     _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = DemonicsWorld.Frame };
-        //     if (_players[index].CurrentState.ToAttackState(_players[index]))
-        //     {
-        //         _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
-        //     }
-        // }
+        if (medium)
+        {
+            _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, frame = DemonicsWorld.Frame };
+            if (_players[index].CurrentState.ToAttackState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
+        }
+        if (heavy)
+        {
+            _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = DemonicsWorld.Frame };
+            if (_players[index].CurrentState.ToAttackState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
+        }
         if (arcana)
         {
             _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, frame = DemonicsWorld.Frame };
-
+            if (_players[index].CurrentState.ToArcanaState(_players[index]))
+            {
+                _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
+            }
+        }
+        if (blueFrenzy)
+        {
+            //_players[index].CurrentState.ToBlueFrenzyState(_players[index]);
+        }
+        if (redFrenzy)
+        {
+            //_players[index].CurrentState.ToRedFrenzyState(_players[index]);
         }
 
         if (shadow)
         {
-            Debug.Log("S");
         }
         if (_players[index].health <= 0)
         {
@@ -586,7 +605,8 @@ public struct GameSimulation : IGame
         SetState(index);
         _players[index].CurrentState.UpdateLogic(_players[index]);
         _players[index].position = DemonicsPhysics.Bounds(_players[index]);
-
+        GameplayManager.Instance.PlayerOne.Flip(_players[0].flip);
+        GameplayManager.Instance.PlayerTwo.Flip(_players[1].flip);
         if (GameSimulation.Hitstop <= 0)
         {
             if (!DemonicsPhysics.Collision(_players[index], _players[index].otherPlayer))
@@ -595,9 +615,6 @@ public struct GameSimulation : IGame
             }
             _players[index].player.PlayerAnimator.SpriteNormalEffect();
         }
-
-        GameplayManager.Instance.PlayerOne.Flip(_players[0].flip);
-        GameplayManager.Instance.PlayerTwo.Flip(_players[1].flip);
         if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
         {
             _players[0].animationFrames = 0;
@@ -672,46 +689,71 @@ public struct GameSimulation : IGame
     {
         if (Time.timeScale > 0 && GameplayManager.Instance)
         {
+            if (Framenumber == 0)
+            {
+                GameSimulation.Start = true;
+            }
             Framenumber++;
             DemonicsWorld.Frame = Framenumber;
-            if (_players[0].player != null)
+
+            if (!GameSimulation.Run)
             {
-                for (int i = 0; i < _players.Length; i++)
-                {
-                    bool skip = false;
-                    bool up = false;
-                    bool down = false;
-                    bool left = false;
-                    bool right = false;
-                    bool light = false;
-                    bool medium = false;
-                    bool heavy = false;
-                    bool arcana = false;
-                    bool grab = false;
-                    bool shadow = false;
-                    bool blueFrenzy = false;
-                    bool redFrenzy = false;
-                    bool dashForward = false;
-                    bool dashBackward = false;
-                    if ((disconnect_flags & (1 << i)) != 0)
-                    {
-                        //AI
-                    }
-                    else
-                    {
-                        ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
-                         out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
-                    }
-                    PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
-                    _players[i].start = true;
-                }
+                if ((inputs[0] & NetworkInput.SKIP_BYTE) != 0)
+                    GameplayManager.Instance.SkipIntro();
             }
-            Hitstop--;
+            if (GameSimulation.Run)
+            {
+                if (_players[0].player != null)
+                {
+                    for (int i = 0; i < _players.Length; i++)
+                    {
+                        bool skip = false;
+                        bool up = false;
+                        bool down = false;
+                        bool left = false;
+                        bool right = false;
+                        bool light = false;
+                        bool medium = false;
+                        bool heavy = false;
+                        bool arcana = false;
+                        bool grab = false;
+                        bool shadow = false;
+                        bool blueFrenzy = false;
+                        bool redFrenzy = false;
+                        bool dashForward = false;
+                        bool dashBackward = false;
+                        if ((disconnect_flags & (1 << i)) != 0)
+                        {
+                            //AI
+                        }
+                        else
+                        {
+                            ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
+                             out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
+                        }
+                        PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
+                        _players[i].start = true;
+                    }
+                }
+                Hitstop--;
+            }
         }
     }
 
     private void SetState(int index)
     {
+        if (_players[index].state == "Attack")
+        {
+            _players[index].CurrentState = new AttackState();
+        }
+        if (_players[index].state == "Arcana")
+        {
+            _players[index].CurrentState = new ArcanaState();
+        }
+        if (_players[index].state == "Hurt")
+        {
+            _players[index].CurrentState = new HurtState();
+        }
         if (_players[index].state == "DashAir")
         {
             _players[index].CurrentState = new DashAirState();
@@ -748,22 +790,30 @@ public struct GameSimulation : IGame
         {
             _players[index].CurrentState = new FallState();
         }
-        if (_players[index].state == "Attack")
+        if (_players[index].state == "HurtAir")
         {
-            _players[index].CurrentState = new AttackState();
+            _players[index].CurrentState = new HurtAirState();
         }
-        if (_players[index].state == "Hurt")
+        if (_players[index].state == "Airborne")
         {
-            _players[index].CurrentState = new HurtState();
+            _players[index].CurrentState = new HurtAirborneState();
         }
-        // if (_players[index].state == "HurtAir")
-        // {
-        //     _players[index].CurrentState = new HurtAirState();
-        // }
-        // if (_players[index].state == "Airborne")
-        // {
-        //     _players[index].CurrentState = new HurtAirborneState();
-        // }
+        if (_players[index].state == "WallSplat")
+        {
+            _players[index].CurrentState = new WallSplatState();
+        }
+        if (_players[index].state == "SoftKnockdown")
+        {
+            _players[index].CurrentState = new KnockdownSoftState();
+        }
+        if (_players[index].state == "HardKnockdown")
+        {
+            _players[index].CurrentState = new KnockdownHardState();
+        }
+        if (_players[index].state == "WakeUp")
+        {
+            _players[index].CurrentState = new WakeUpState();
+        }
     }
 
     public long ReadInputs(int id)

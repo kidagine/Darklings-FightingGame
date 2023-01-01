@@ -17,7 +17,6 @@ public class GameSimulationView : MonoBehaviour, IGameView
         playerViews[0] = Instantiate(_player);
         playerViews[1] = Instantiate(_player);
         GameplayManager.Instance.InitializePlayers(playerViews[0].gameObject, playerViews[1].gameObject);
-        GameplayManager.Instance.SetupGame();
     }
 
     public void UpdateGameView(IGameRunner runner)
@@ -28,6 +27,11 @@ public class GameSimulationView : MonoBehaviour, IGameView
         if (playerViews.Length != playersGss.Length)
         {
             SetGame(game);
+        }
+        if (GameSimulation.Start)
+        {
+            GameplayManager.Instance.SetupGame();
+            GameSimulation.Start = false;
         }
         for (int i = 0; i < playersGss.Length; ++i)
         {

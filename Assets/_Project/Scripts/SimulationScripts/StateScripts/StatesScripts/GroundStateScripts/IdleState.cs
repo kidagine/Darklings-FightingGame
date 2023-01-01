@@ -18,7 +18,8 @@ public class IdleState : GroundParentState
         ToJumpForwardState(player);
         ToCrouchState(player);
         ToDashState(player);
-        ToAttackStates(player);
+        //  ToAttackStates(player);
+        //ToHurtState(player);
     }
 
     private void ToCrouchState(PlayerNetwork player)
@@ -64,10 +65,18 @@ public class IdleState : GroundParentState
     }
     private void ToAttackStates(PlayerNetwork player)
     {
-        if (player.attackInput == InputEnum.Light)
+        if (player.dashDirection != 0)
         {
             player.enter = false;
             player.state = "Attack";
+        }
+    }
+    private void ToHurtState(PlayerNetwork player)
+    {
+        if (player.otherPlayer.state == "Attack")
+        {
+            player.enter = false;
+            player.state = "Hurt";
         }
     }
 }

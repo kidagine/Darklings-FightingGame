@@ -55,7 +55,6 @@ public class WalkState : GroundParentState
     }
     private void ToDashState(PlayerNetwork player)
     {
-        Debug.Log(player.dashDirection);
         if (player.dashDirection != 0)
         {
             player.enter = false;
