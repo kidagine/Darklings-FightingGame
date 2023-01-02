@@ -271,7 +271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7684445122000850538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0, y: 40, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -493,7 +493,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8073473790341886577}
-  - component: {fileID: 516655848589572334}
   m_Layer: 11
   m_Name: Ground_pushbox
   m_TagString: Untagged
@@ -517,22 +516,6 @@ Transform:
   m_Father: {fileID: 1761475174765221373}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &516655848589572334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8073473790341886576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e76ff7b740f08d448752457ed88e2aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _showGizmo: 1
-  _ignoreCollision: 0
-  _offset: {x: 0, y: 0.8}
-  _size: {x: 1.35, y: 1.5}
 --- !u!1 &8073473790437601073
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,7 +656,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerAnimator: {fileID: 8073473789928578677}
   _assist: {fileID: 8780121904732240358}
-  _groundPushbox: {fileID: 516655848589572334}
+  _groundPushbox: {fileID: 0}
   _hurtbox: {fileID: 8073473791272386160}
   _effectsParent: {fileID: 2017372758765848807}
   _cameraPoint: {fileID: 3775412804825945539}
@@ -1739,14 +1722,6 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 6291948109849223289, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
-      propertyPath: _showGizmo
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6291948109849223289, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
-      propertyPath: _ignoreCollision
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6291948109849223294, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1797,7 +1772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6291948109849223295, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
@@ -1836,18 +1811,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8073473791272386160}
     m_Modifications:
-    - target: {fileID: 3820304870352819292, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
-      propertyPath: _showGizmo
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3820304870352819292, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
-      propertyPath: _ignoreCollision
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3820304870352819292, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
-      propertyPath: _hurtboxResponderObject
-      value: 
-      objectReference: {fileID: 8073473790702501986}
     - target: {fileID: 3820304870352819293, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1898,7 +1861,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3820304870352819294, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4898812605033455692, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
       propertyPath: m_Name

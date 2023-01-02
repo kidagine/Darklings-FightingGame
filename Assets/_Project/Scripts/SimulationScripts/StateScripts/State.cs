@@ -1,16 +1,17 @@
+using System;
+
+[Serializable]
 public class State
 {
-    public float Gravity;
-    public virtual void Enter(PlayerNetwork player)
-    {
-        player.animationFrames = 0;
-    }
     public virtual void UpdateLogic(PlayerNetwork player) { }
     public virtual void Exit() { }
     public virtual bool ToAttackState() { return false; }
-    public virtual bool ToDashState(PlayerNetwork player) { return false; }
     public virtual bool ToAttackState(PlayerNetwork player) { return false; }
     public virtual bool ToArcanaState(PlayerNetwork player) { return false; }
+    public virtual bool ToRedFrenzyState(PlayerNetwork player) { return false; }
+    public virtual bool ToBlueFrenzyState(PlayerNetwork player) { return false; }
+    public virtual bool ToHurtState(PlayerNetwork player, AttackSO attack) { return false; }
+    public virtual bool ToBlockState(PlayerNetwork player, AttackSO attack) { return false; }
     public void CheckFlip(PlayerNetwork player)
     {
         if (player.otherPlayer.position.x > player.position.x)

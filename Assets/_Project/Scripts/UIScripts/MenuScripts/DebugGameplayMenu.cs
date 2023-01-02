@@ -15,16 +15,16 @@ public class DebugGameplayMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _p2ConnectionText = default;
     [SerializeField] private Slider _p1ConnectionSlider = default;
     [SerializeField] private Slider _p2ConnectionSlider = default;
-
-
+    [SerializeField] private Canvas _debugLocalCanvas = default;
+    [SerializeField] private Canvas _debugOnlineCanvas = default;
     private readonly string _versionSplit = "Version:";
     private readonly string _patchNotesSplit = "Patch Notes:";
     private int _fpsFrame;
     void Awake()
     {
-        gameObject.SetActive(false);
+        transform.parent.gameObject.SetActive(false);
 #if UNITY_EDITOR
-        gameObject.SetActive(true);
+        transform.parent.gameObject.SetActive(true);
         string versionText = _versionTextAsset.text;
         int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
         string versionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
@@ -35,6 +35,11 @@ public class DebugGameplayMenu : MonoBehaviour
 #if UNITY_EDITOR
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            _debugLocalCanvas.enabled = !_debugLocalCanvas.enabled;
+            _debugOnlineCanvas.enabled = !_debugOnlineCanvas.enabled;
+        }
         if (_fpsFrame == 4)
         {
             _fpsText.text = "FPS: " + Mathf.FloorToInt(1f / Time.deltaTime);
@@ -50,10 +55,10 @@ public class DebugGameplayMenu : MonoBehaviour
             _p1ConnectionText.text = GameplayManager.Instance.PlayerOne.ConnectionStatus;
             _p2ConnectionText.text = GameplayManager.Instance.PlayerTwo.ConnectionStatus;
 
-            string p1X = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.x).ToString("0.00");
-            string p1Y = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.y).ToString("0.00");
-            string p2X = ((float)GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.x).ToString("0.00");
-            string p2Y = ((float)GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.y).ToString("0.00");
+            string p1X = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.x).ToString();
+            string p1Y = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.y).ToString();
+            string p2X = ((float)GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.x).ToString();
+            string p2Y = ((float)GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.y).ToString();
             _p1PositionText.text = $"P1 ({p1X}, {p1Y})";
             _p2PositionText.text = $"P2 ({p2X}, {p2Y})";
 

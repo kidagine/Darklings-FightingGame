@@ -11,14 +11,16 @@ public class DemonicsPhysics : MonoBehaviour
     public bool OnWall { get { return Position.x >= WALL_RIGHT_POINT || Position.x <= WALL_LEFT_POINT ? true : false; } private set { } }
     private DemonicsVector2 _freezePosition;
     private DemonicsFloat _gravity;
-    private Camera _camera;
+    private static Camera _camera;
     private bool _freeze;
-    public static DemonicsFloat GROUND_POINT = (DemonicsFloat)(-4.485);
-    public static DemonicsFloat CELLING_POINT = (DemonicsFloat)(7);
+    public static DemonicsFloat GROUND_POINT = (DemonicsFloat)(-72);
+    public static DemonicsFloat CELLING_POINT = (DemonicsFloat)(120);
     public static DemonicsFloat WALL_RIGHT_POINT;
     public static DemonicsFloat WALL_LEFT_POINT;
+    public static DemonicsFloat GRAVITY = (DemonicsFloat)0.288f;
+    public static DemonicsFloat JUGGLE_GRAVITY = (DemonicsFloat)0.208f;
+    private static DemonicsFloat WALL_OFFSET = (DemonicsFloat)10;
     private int _skipWallFrame = 1;
-    private readonly DemonicsFloat _wallPointOffset = (DemonicsFloat)0.6;
     public DemonicsPhysics OtherPhysics { get; set; }
     public bool IgnoreWalls { get { return _ignoreWalls; } set { _ignoreWalls = value; } }
 
@@ -49,19 +51,11 @@ public class DemonicsPhysics : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Stop physics if frozen
         if (_freeze)
         {
             Position = _freezePosition;
             return;
         }
-        // Set horizontal wall points
-        CameraHorizontalBounds();
-        // Sets physics
-        Velocity = new DemonicsVector2(Velocity.x, Velocity.y - _gravity);
-        // Check collision
-
-
     }
     public static bool Collision(PlayerNetwork player, PlayerNetwork otherPlayer)
     {
@@ -71,71 +65,71 @@ public class DemonicsPhysics : MonoBehaviour
             {
                 if (player.velocity.y < otherPlayer.velocity.y)
                 {
-                    float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
-                    float pushDistance = (1.35f - difference) / (2);
-                    if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT)
+                    DemonicsFloat difference = DemonicsFloat.Abs(player.position.x - otherPlayer.position.x);
+                    DemonicsFloat pushDistance = (player.pushbox.size.x - difference) / (2);
+                    if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
                     {
-                        player.position = new Vector2(player.position.x + pushDistance, player.position.y);
+                        player.position = new DemonicsVector2(player.position.x + pushDistance, player.position.y);
                     }
-                    else if (player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
+                    else if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
                     {
-                        player.position = new Vector2(player.position.x - pushDistance, player.position.y);
+                        player.position = new DemonicsVector2(player.position.x - pushDistance, player.position.y);
                     }
                 }
             }
-            Vector2 main = player.velocity;
-            Vector2 second = otherPlayer.velocity;
-            if (otherPlayer.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT && player.velocity.x >= 0 || otherPlayer.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT && player.velocity.x <= 0)
+            DemonicsVector2 main = player.velocity;
+            DemonicsVector2 second = otherPlayer.velocity;
+            if (otherPlayer.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.velocity.x >= (DemonicsFloat)0 || otherPlayer.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.velocity.x <= (DemonicsFloat)0)
             {
-                main = new Vector2(0, player.velocity.y);
-                second = new Vector2(0, otherPlayer.velocity.y);
-                otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
-                player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                main = new DemonicsVector2((DemonicsFloat)0, player.velocity.y);
+                second = new DemonicsVector2((DemonicsFloat)0, otherPlayer.velocity.y);
+                otherPlayer.position = (new DemonicsVector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
+                player.position = (new DemonicsVector2(player.position.x + main.x, player.position.y + main.y));
                 Intersects(player, otherPlayer);
                 return true;
             }
-            if (Mathf.Abs(player.velocity.x) > Mathf.Abs(otherPlayer.velocity.x))
+            if (DemonicsFloat.Abs(player.velocity.x) > DemonicsFloat.Abs(otherPlayer.velocity.x))
             {
-                float totalVelocity;
+                DemonicsFloat totalVelocity;
                 if (player.velocity.x > 0 && otherPlayer.velocity.x < 0)
                 {
-                    totalVelocity = Mathf.Abs(player.velocity.x) - Mathf.Abs(otherPlayer.velocity.x);
+                    totalVelocity = DemonicsFloat.Abs(player.velocity.x) - DemonicsFloat.Abs(otherPlayer.velocity.x);
                 }
                 else
                 {
-                    totalVelocity = Mathf.Abs(player.velocity.x);
+                    totalVelocity = DemonicsFloat.Abs(player.velocity.x);
                 }
                 if (player.position.x < otherPlayer.position.x && player.velocity.x > 0)
                 {
-                    main = new Vector2(totalVelocity, player.velocity.y);
-                    second = new Vector2(totalVelocity, otherPlayer.velocity.y);
-                    otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
-                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    main = new DemonicsVector2(totalVelocity, player.velocity.y);
+                    second = new DemonicsVector2(totalVelocity, otherPlayer.velocity.y);
+                    otherPlayer.position = (new DemonicsVector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
+                    player.position = (new DemonicsVector2(player.position.x + main.x, player.position.y + main.y));
                     Intersects(player, otherPlayer);
                     return true;
                 }
                 else if (player.position.x > otherPlayer.position.x && player.velocity.x < 0)
                 {
-                    main = new Vector2(-totalVelocity, player.velocity.y);
-                    second = new Vector2(-totalVelocity, otherPlayer.velocity.y);
-                    otherPlayer.position = (new Vector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
-                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    main = new DemonicsVector2(-totalVelocity, player.velocity.y);
+                    second = new DemonicsVector2(-totalVelocity, otherPlayer.velocity.y);
+                    otherPlayer.position = (new DemonicsVector2(otherPlayer.position.x + second.x, otherPlayer.position.y + second.y));
+                    player.position = (new DemonicsVector2(player.position.x + main.x, player.position.y + main.y));
                     Intersects(player, otherPlayer);
                     return true;
                 }
-                if (player.velocity.x == 0 || otherPlayer.velocity.x == 0)
+                if (player.velocity.x == (DemonicsFloat)0 || otherPlayer.velocity.x == (DemonicsFloat)0)
                 {
                     Intersects(player, otherPlayer);
                 }
                 return false;
             }
-            else if (Mathf.Abs(player.velocity.x) == Mathf.Abs(otherPlayer.velocity.x))
+            else if (DemonicsFloat.Abs(player.velocity.x) == DemonicsFloat.Abs(otherPlayer.velocity.x))
             {
                 if (player.position.x < otherPlayer.position.x && player.velocity.x > 0 || player.position.x > otherPlayer.position.x && player.velocity.x < 0)
                 {
-                    main = new Vector2(0, player.velocity.y);
-                    second = new Vector2(0, otherPlayer.velocity.y);
-                    player.position = (new Vector2(player.position.x + main.x, player.position.y + main.y));
+                    main = new DemonicsVector2((DemonicsFloat)0, player.velocity.y);
+                    second = new DemonicsVector2((DemonicsFloat)0, otherPlayer.velocity.y);
+                    player.position = (new DemonicsVector2(player.position.x + main.x, player.position.y + main.y));
                     Intersects(player, otherPlayer);
                     return true;
                 }
@@ -148,51 +142,59 @@ public class DemonicsPhysics : MonoBehaviour
     }
     private static void Intersects(PlayerNetwork player, PlayerNetwork otherPlayer)
     {
-        if (player.position.x <= (float)DemonicsPhysics.WALL_LEFT_POINT || player.position.x >= (float)DemonicsPhysics.WALL_RIGHT_POINT)
+        if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT || player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
             return;
         }
         if (player.position.x < otherPlayer.position.x)
         {
-            if (player.position.x + 1.35f >= otherPlayer.position.x)
+            if (player.position.x + player.pushbox.size.x >= otherPlayer.position.x)
             {
-                float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
-                float pushDistance = (1.35f - difference) / (2);
-                player.position = new Vector2((player.position.x - pushDistance), player.position.y);
+                DemonicsFloat difference = DemonicsFloat.Abs(player.position.x - otherPlayer.position.x);
+                int pushDistance = (int)(player.pushbox.size.x - difference) / (2);
+                player.position = new DemonicsVector2((player.position.x - pushDistance), player.position.y);
             }
         }
         else
         {
-            if (player.position.x <= otherPlayer.position.x + 1.35f)
+            if (player.position.x <= otherPlayer.position.x + player.pushbox.size.x)
             {
-                float difference = Mathf.Abs(player.position.x - otherPlayer.position.x);
-                float pushDistance = (1.35f - difference) / (2);
-                player.position = new Vector2((player.position.x + pushDistance), player.position.y);
+                DemonicsFloat difference = DemonicsFloat.Abs(player.position.x - otherPlayer.position.x);
+                int pushDistance = (int)(player.pushbox.size.x - difference) / (2);
+                player.position = new DemonicsVector2((player.position.x + pushDistance), player.position.y);
             }
         }
     }
-    private static bool valueInRange(float value, float min, float max)
+    private static bool valueInRange(DemonicsFloat value, DemonicsFloat min, DemonicsFloat max)
     { return (value >= min) && (value <= max); }
     private static bool Colliding(PlayerNetwork a, PlayerNetwork b)
     {
-        bool xOverlap = valueInRange(a.position.x - (1.35f / 2), b.position.x - (1.35f / 2), b.position.x + (1.35f / 2)) ||
-                    valueInRange(b.position.x - (1.35f / 2), a.position.x - (1.35f / 2), a.position.x + (1.35f / 2));
-        bool yOverlap = valueInRange(a.position.y - (1.5f / 2), b.position.y - (1.5f / 2), b.position.y + (1.5f / 2)) ||
-                    valueInRange(b.position.y - (1.5f / 2), a.position.y - (1.5f / 2), a.position.y + (1.5f / 2));
+        bool xOverlap = valueInRange(a.position.x - (a.pushbox.size.x / 2), b.position.x - (b.pushbox.size.x / 2), b.position.x + (b.pushbox.size.x / 2)) ||
+                    valueInRange(b.position.x - (b.pushbox.size.x / 2), a.position.x - (a.pushbox.size.x / 2), a.position.x + (a.pushbox.size.x / 2));
+        bool yOverlap = valueInRange(a.position.y - (a.pushbox.size.y / 2), b.position.y - (b.pushbox.size.y / 2), b.position.y + (b.pushbox.size.y / 2)) ||
+                    valueInRange(b.position.y - (b.pushbox.size.y / 2), a.position.y - (a.pushbox.size.y / 2), a.position.y + (a.pushbox.size.y / 2));
         return xOverlap && yOverlap;
     }
-    private void CameraHorizontalBounds()
+    public static void CameraHorizontalBounds(PlayerNetwork player, PlayerNetwork otherPlayer)
     {
-        if (_skipWallFrame > 0)
+        DemonicsFloat distance = DemonicsFloat.Abs((DemonicsFloat)player.position.x - (DemonicsFloat)otherPlayer.position.x);
+        if (distance >= (DemonicsFloat)220)
         {
-            _skipWallFrame--;
-            WALL_LEFT_POINT = (DemonicsFloat)(-1000);
-            WALL_RIGHT_POINT = (DemonicsFloat)(1000);
+            if (player.position.x > otherPlayer.position.x)
+            {
+                WALL_LEFT_POINT = (DemonicsFloat)(otherPlayer.position.x);
+                WALL_RIGHT_POINT = (DemonicsFloat)(player.position.x);
+            }
+            else
+            {
+                WALL_LEFT_POINT = (DemonicsFloat)(player.position.x);
+                WALL_RIGHT_POINT = (DemonicsFloat)(otherPlayer.position.x);
+            }
         }
         else
         {
-            WALL_LEFT_POINT = (DemonicsFloat)_camera.ScreenToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane)).x + _wallPointOffset;
-            WALL_RIGHT_POINT = (DemonicsFloat)_camera.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, 0, Camera.main.nearClipPlane)).x - _wallPointOffset;
+            WALL_LEFT_POINT = (DemonicsFloat)(-169);
+            WALL_RIGHT_POINT = (DemonicsFloat)(169);
         }
     }
 
@@ -201,34 +203,52 @@ public class DemonicsPhysics : MonoBehaviour
         Position = position;
         transform.position = new Vector2((float)Position.x, (float)Position.y);
     }
-    public static void Bounds(PlayerNetwork player)
+    public static DemonicsVector2 Bounds(PlayerNetwork player)
     {
-        if (player.position.y <= (float)GROUND_POINT)
+        DemonicsVector2 position = player.position;
+        if (player.position.y >= CELLING_POINT && player.velocity.y > 0)
         {
-            player.position = new Vector2(player.position.x, (float)GROUND_POINT);
+            //return new DemonicsVector2(player.velocity.x, 0);
         }
-        if (player.position.y >= (float)CELLING_POINT && player.velocity.y > 0)
+        if (player.position.x >= WALL_RIGHT_POINT && player.velocity.x > (DemonicsFloat)0)
         {
-            player.velocity = new Vector2(player.velocity.x, 0);
+            if (player.position.y <= GROUND_POINT)
+            {
+                position = new DemonicsVector2(WALL_RIGHT_POINT, GROUND_POINT);
+            }
+            else
+            {
+                position = new DemonicsVector2(WALL_RIGHT_POINT, player.position.y);
+            }
         }
-        if (player.position.x >= (float)WALL_RIGHT_POINT && player.velocity.x >= 0)
+        else if (player.position.x <= WALL_LEFT_POINT && player.velocity.x < (DemonicsFloat)0)
         {
-            player.position = new Vector2((float)WALL_RIGHT_POINT, player.position.y);
+            if (player.position.y <= GROUND_POINT)
+            {
+                position = new DemonicsVector2(WALL_LEFT_POINT, GROUND_POINT);
+            }
+            else
+            {
+                position = new DemonicsVector2(WALL_LEFT_POINT, player.position.y);
+            }
         }
-        if (player.position.x <= (float)WALL_LEFT_POINT && player.velocity.x <= 0)
+        else
         {
-            player.position = new Vector2((float)WALL_LEFT_POINT, player.position.y);
+            if (player.position.y <= GROUND_POINT)
+            {
+                position = new DemonicsVector2(player.position.x, GROUND_POINT);
+            }
         }
+        return position;
     }
     public static bool IsInCorner(PlayerNetwork player)
     {
-        if (player.position.x == (float)DemonicsPhysics.WALL_LEFT_POINT || player.position.x == (float)DemonicsPhysics.WALL_RIGHT_POINT)
+        if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT || player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
             return true;
         }
         return false;
     }
-
     public void EnableGravity(bool state)
     {
         if (state)
@@ -238,18 +258,6 @@ public class DemonicsPhysics : MonoBehaviour
         else
         {
             _gravity = (DemonicsFloat)0;
-        }
-    }
-
-    public void SetJuggleGravity(bool state)
-    {
-        if (state)
-        {
-            _gravity = (DemonicsFloat)0.013;
-        }
-        else
-        {
-            _gravity = (DemonicsFloat)0.018;
         }
     }
 }

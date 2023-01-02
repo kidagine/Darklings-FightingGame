@@ -46,11 +46,11 @@ public class PlayerStatsSO : ScriptableObject
             switch (speedLevel)
             {
                 case 1:
-                    return (DemonicsFloat)0.03;
+                    return (DemonicsFloat)0.48;
                 case 2:
-                    return (DemonicsFloat)0.05;
+                    return (DemonicsFloat)0.8;
                 case 3:
-                    return (DemonicsFloat)0.07;
+                    return (DemonicsFloat)1.12;
                 default:
                     return (DemonicsFloat)0;
             }
@@ -64,11 +64,11 @@ public class PlayerStatsSO : ScriptableObject
             switch (speedLevel)
             {
                 case 1:
-                    return (DemonicsFloat)0.15;
+                    return (DemonicsFloat)2.4;
                 case 2:
-                    return (DemonicsFloat)0.18;
+                    return (DemonicsFloat)2.88;
                 case 3:
-                    return (DemonicsFloat)0.21;
+                    return (DemonicsFloat)3.36;
                 default:
                     return (DemonicsFloat)0;
             }
@@ -82,11 +82,11 @@ public class PlayerStatsSO : ScriptableObject
             switch (jumpLevel)
             {
                 case 1:
-                    return (DemonicsFloat)0.34;
+                    return (DemonicsFloat)5.44;
                 case 2:
-                    return (DemonicsFloat)0.35;
+                    return (DemonicsFloat)5.6;
                 case 3:
-                    return (DemonicsFloat)0.37;
+                    return (DemonicsFloat)5.92;
                 default:
                     return (DemonicsFloat)0;
             }
@@ -100,11 +100,11 @@ public class PlayerStatsSO : ScriptableObject
             switch (dashLevel)
             {
                 case 1:
-                    return (DemonicsFloat)0.22;
+                    return (DemonicsFloat)3.52;
                 case 2:
-                    return (DemonicsFloat)0.25;
+                    return (DemonicsFloat)4;
                 case 3:
-                    return (DemonicsFloat)0.28;
+                    return (DemonicsFloat)4.48;
                 default:
                     return (DemonicsFloat)0;
             }

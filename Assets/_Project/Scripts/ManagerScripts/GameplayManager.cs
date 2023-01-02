@@ -155,18 +155,15 @@ public class GameplayManager : MonoBehaviour
             _debugNetwork.SetActive(false);
             if (!SceneSettings.IsOnline)
             {
-                Debug.Log("A");
                 NetworkInput.IS_LOCAL = true;
                 GameManager.Instance.StartLocalGame();
                 _isTrainingMode = SceneSettings.IsTrainingMode;
-
-                //InitializePlayers(playerOne, playerTwo);
             }
             else
             {
-                Debug.Log("B");
                 _isTrainingMode = false;
-                _connectionWidget.StartGGPO(SceneSettings.OnlineOneIp, SceneSettings.OnlineTwoIp, SceneSettings.OnlineIndex);
+                _connectionWidget.StartGGPO(SceneSettings.OnlineOneIp, SceneSettings.OnlineTwoIp, SceneSettings.PrivateOneIp, SceneSettings.PrivateTwoIp,
+                SceneSettings.PortOne, SceneSettings.PortTwo, SceneSettings.OnlineIndex);
             }
         }
         CheckSceneSettings();
@@ -409,6 +406,7 @@ public class GameplayManager : MonoBehaviour
             _trainingPrompts.gameObject.SetActive(true);
             HasGameStarted = true;
             StartTrainingRound();
+            GameSimulation.Run = true;
         }
         else
         {
@@ -541,6 +539,7 @@ public class GameplayManager : MonoBehaviour
 
     private void StartTrainingRound()
     {
+        //  GameSimulation.Reset();
         PlayerOne.ResetPlayer(new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT));
         PlayerTwo.ResetPlayer(new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT));
         PlayerOne.ResetLives();
@@ -617,6 +616,7 @@ public class GameplayManager : MonoBehaviour
                                 ReplayManager.Instance.StartLoadReplay();
                             }
                         }
+                        GameSimulation.Run = true;
                     }
                 }
             }

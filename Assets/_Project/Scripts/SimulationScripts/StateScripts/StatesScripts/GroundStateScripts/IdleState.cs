@@ -5,19 +5,28 @@ public class IdleState : GroundParentState
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
+        if (!player.enter)
+        {
+            player.enter = true;
+            player.animationFrames = 0;
+        }
         player.animation = "Idle";
         player.animationFrames++;
-        player.velocity = Vector2.zero;
+        player.velocity = DemonicsVector2.Zero;
         ToWalkState(player);
         ToJumpState(player);
         ToJumpForwardState(player);
         ToCrouchState(player);
+        ToDashState(player);
+        //  ToAttackStates(player);
+        //ToHurtState(player);
     }
 
     private void ToCrouchState(PlayerNetwork player)
     {
         if (player.direction.y < 0)
         {
+            player.enter = false;
             player.state = "Crouch";
         }
     }
@@ -25,6 +34,7 @@ public class IdleState : GroundParentState
     {
         if (player.direction.y > 0)
         {
+            player.enter = false;
             player.state = "Jump";
         }
     }
@@ -32,6 +42,8 @@ public class IdleState : GroundParentState
     {
         if (player.direction.y > 0 && player.direction.x != 0)
         {
+            player.jumpDirection = (int)player.direction.x;
+            player.enter = false;
             player.state = "JumpForward";
         }
     }
@@ -39,17 +51,32 @@ public class IdleState : GroundParentState
     {
         if (player.direction.x != 0)
         {
+            player.enter = false;
             player.state = "Walk";
         }
     }
-    public override bool ToDashState(PlayerNetwork player)
+    private void ToDashState(PlayerNetwork player)
     {
-        if (player.canDash)
+        if (player.dashDirection != 0)
         {
             player.enter = false;
             player.state = "Dash";
-            return true;
         }
-        return false;
+    }
+    private void ToAttackStates(PlayerNetwork player)
+    {
+        if (player.dashDirection != 0)
+        {
+            player.enter = false;
+            player.state = "Attack";
+        }
+    }
+    private void ToHurtState(PlayerNetwork player)
+    {
+        if (player.otherPlayer.state == "Attack")
+        {
+            player.enter = false;
+            player.state = "Hurt";
+        }
     }
 }

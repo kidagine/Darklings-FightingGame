@@ -104,8 +104,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerMovement.StopKnockback();
         _playerMovement.Physics.ResetSkipWall();
         int index = IsPlayerOne ? 0 : 1;
-        GameSimulation._players[index].position = resetPosition;
-        GameSimulation._players[index].velocity = Vector2.zero;
+        GameSimulation._players[index].position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
+        GameSimulation._players[index].velocity = DemonicsVector2.Zero;
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)GameSimulation._players[index].position.x, (DemonicsFloat)GameSimulation._players[index].position.y));
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;
@@ -450,10 +450,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public void SetInvinsible(bool state)
     {
-        Invisible = state;
-        PlayerAnimator.SetInvinsible(state);
-        SetHurtbox(!state);
-        SetPushboxTrigger(state);
+        // Invisible = state;
+        // PlayerAnimator.SetInvinsible(state);
+        // SetHurtbox(!state);
+        // SetPushboxTrigger(state);
     }
 
     public bool TakeDamage(AttackSO attack)
@@ -625,7 +625,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
+        Vector2Int fixedPosition = new Vector2Int((int)(playerGs.position.x * 1) / 1, (int)(playerGs.position.y * 1) / 1);
+        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)fixedPosition.x, (DemonicsFloat)fixedPosition.y));
         NetworkDebug(info);
     }
 

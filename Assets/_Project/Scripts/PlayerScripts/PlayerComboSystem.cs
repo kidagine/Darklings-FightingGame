@@ -9,31 +9,13 @@ public class PlayerComboSystem : MonoBehaviour
         _player = GetComponent<Player>();
     }
 
-    // public AttackSO GetComboAttack(InputEnum inputEnum, bool isCrouching, bool isAir)
-    // {
-    //     if (inputEnum == InputEnum.Throw)
-    //     {
-    //         return _player.playerStats.mThrow;
-    //     }
-    //     if (isCrouching)
-    //     {
-    //         return GetCrouchingAttackType(inputEnum);
-    //     }
-    //     else
-    //     {
-    //         if (isAir)
-    //         {
-    //             return GetJumpAttackType(inputEnum);
-    //         }
-    //         else
-    //         {
-    //             return GetStandingAttackType(inputEnum);
-    //         }
-    //     }
-    // }
 
     public static AttackSO GetComboAttack(PlayerStatsSO playerStats, InputEnum inputEnum, bool isCrouching, bool isAir)
     {
+        if (inputEnum == InputEnum.Special)
+        {
+            return GetArcana(playerStats, isCrouching, isAir);
+        }
         if (inputEnum == InputEnum.Throw)
         {
             return playerStats.mThrow;
@@ -108,19 +90,7 @@ public class PlayerComboSystem : MonoBehaviour
         return _player.playerStats.mThrow;
     }
 
-    public ArcanaSO GetArcana(bool isCrouching = false, bool isAir = false)
-    {
-        if (isAir)
-        {
-            return _player.playerStats.jArcana;
-        }
-        if (isCrouching)
-        {
-            return _player.playerStats.m2Arcana;
-        }
-        return _player.playerStats.m5Arcana;
-    }
-    public static ArcanaSO GetArcana(PlayerStatsSO playerStats, bool isCrouching = false, bool isAir = false)
+    private static ArcanaSO GetArcana(PlayerStatsSO playerStats, bool isCrouching = false, bool isAir = false)
     {
         if (isAir)
         {

@@ -64,7 +64,7 @@ public class DemonicsAnimator : MonoBehaviour
         return _finished;
     }
     private bool _finished;
-    public void SetAnimation(string name, int frame)
+    public virtual void SetAnimation(string name, int frame)
     {
         _group = _animation.GetGroupId(name);
         for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)

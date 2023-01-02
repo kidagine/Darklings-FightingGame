@@ -3,26 +3,27 @@ using UnityEngine;
 
 public class ArcanaState : State
 {
+    private static AttackSO attack;
     public override void UpdateLogic(PlayerNetwork player)
     {
-        AttackSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir);
         if (!player.enter)
         {
+            attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Special, player.isCrouch, player.isAir);
             player.enter = true;
             player.canChainAttack = false;
-            GameplayManager.Instance.PlayerOne.CurrentAttack = attack;
+            //  GameplayManager.Instance.PlayerOne.CurrentAttack = attack;
             player.animation = attack.name;
             player.sound = attack.attackSound;
             player.animationFrames = 0;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
-            player.velocity = new Vector2(attack.travelDistance.x * player.flip, attack.travelDistance.y);
+            player.velocity = new DemonicsVector2(attack.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)attack.travelDistance.y);
         }
         ToIdleState(player);
         if (GameSimulation.Hitstop <= 0)
         {
             if (attack.travelDistance.y > 0)
             {
-                player.velocity = new Vector2(player.velocity.x, player.velocity.y - player.gravity);
+                player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
                 ToIdleFallState(player);
             }
             player.animationFrames++;

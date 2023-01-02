@@ -11,6 +11,8 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine.SceneManagement;
 using Unity.Netcode.Transports.UTP;
+using STUN.Attributes;
+using STUN;
 
 public class NetworkManagerLobby : MonoBehaviour
 {
@@ -139,6 +141,9 @@ public class NetworkManagerLobby : MonoBehaviour
 
     private Unity.Services.Lobbies.Models.Player GetPlayer(DemonData demonData)
     {
+        string address = "";
+        string port = "";
+        PublicIp(out address, out port);
         return new Unity.Services.Lobbies.Models.Player
         {
             Data = new Dictionary<string, PlayerDataObject>{
@@ -147,11 +152,13 @@ public class NetworkManagerLobby : MonoBehaviour
                 { "Assist", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.assist.ToString())},
                 { "Color", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.color.ToString())},
                 { "Ready", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, "False")},
-                { "Ip", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, GetLocalIPAddress())},
+                { "Ip", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, address)},
+                { "Port", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public,port)},
+                { "PrivateIp", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, PrivateIp())},
             }
         };
     }
-    private string GetLocalIPAddress()
+    private string PrivateIp()
     {
         var host = Dns.GetHostEntry(Dns.GetHostName());
         foreach (var ip in host.AddressList)
@@ -161,6 +168,21 @@ public class NetworkManagerLobby : MonoBehaviour
                 return ip.ToString();
             }
         }
-        throw new System.Exception("No network adapters with an IPv4 address in the system!");
+        return "127.0.0.1";
+    }
+
+    private void PublicIp(out string address, out string port)
+    {
+        if (!STUNUtils.TryParseHostAndPort("stun1.l.google.com:19302", out IPEndPoint stunEndPoint))
+            throw new Exception("Failed to resolve STUN server address");
+
+        STUNClient.ReceiveTimeout = 500;
+        var queryResult = STUNClient.Query(stunEndPoint, STUNQueryType.ExactNAT, true, NATTypeDetectionRFC.Rfc3489);
+
+        if (queryResult.QueryError != STUNQueryError.Success)
+            throw new Exception("Query Error: " + queryResult.QueryError.ToString());
+
+        address = queryResult.PublicEndPoint.Address.ToString();
+        port = queryResult.PublicEndPoint.Port.ToString();
     }
 }

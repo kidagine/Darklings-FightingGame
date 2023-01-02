@@ -38,6 +38,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private PauseMenu _trainingPauseMenu = default;
     [SerializeField] private PauseMenu _replayPauseMenu = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
+    [SerializeField] private DisconnectMenu _disconnectMenu = default;
     [SerializeField] private Color _healthNormalColor = default;
     [SerializeField] private Color _healthLimitColor = default;
     [SerializeField] private Color _healthDamagedColor = default;
@@ -254,6 +255,13 @@ public class PlayerUI : MonoBehaviour
             StopCoroutine(_healthCoroutine);
         }
         _healthCoroutine = StartCoroutine(SetHealthCoroutine());
+    }
+    public void Disconnected()
+    {
+        Time.timeScale = 0;
+        GameplayManager.Instance.DisableAllInput(true);
+        GameplayManager.Instance.PauseMusic();
+        _disconnectMenu.Show();
     }
 
     IEnumerator SetHealthCoroutine()
