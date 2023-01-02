@@ -44,38 +44,38 @@ public class AttackState : State
         {
             player.animationFrames++;
             player.attackFrames--;
-            if (player.canChainAttack)
-            {
-                if (!b)
-                {
-                    b = true;
-                    knockbackFrame = 0;
-                    start = player.position;
-                    end = new DemonicsVector2(player.position.x + (_attack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT);
-                }
-                knock = true;
-                if ((!(player.attackInput == InputEnum.Medium && player.isCrouch || player.attackInput == InputEnum.Heavy)) || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
-                {
-                    if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
-                    {
-                        player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
-                        player.isCrouch = false;
-                        if (player.direction.y < 0)
-                        {
-                            player.isCrouch = true;
-                        }
-                        player.enter = false;
-                        if (player.attackInput == InputEnum.Special)
-                        {
-                            player.state = "Arcana";
-                        }
-                        else
-                        {
-                            player.state = "Attack";
-                        }
-                    }
-                }
-            }
+            // if (player.canChainAttack)
+            // {
+            //     if (!b)
+            //     {
+            //         b = true;
+            //         knockbackFrame = 0;
+            //         start = player.position;
+            //         end = new DemonicsVector2(player.position.x + (_attack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT);
+            //     }
+            //     knock = true;
+            //     if ((!(player.attackInput == InputEnum.Medium && player.isCrouch || player.attackInput == InputEnum.Heavy)) || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
+            //     {
+            //         if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
+            //         {
+            //             player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
+            //             player.isCrouch = false;
+            //             if (player.direction.y < 0)
+            //             {
+            //                 player.isCrouch = true;
+            //             }
+            //             player.enter = false;
+            //             if (player.attackInput == InputEnum.Special)
+            //             {
+            //                 player.state = "Arcana";
+            //             }
+            //             else
+            //             {
+            //                 player.state = "Attack";
+            //             }
+            //         }
+            //     }
+            // }
             if (knock)
             {
                 if (opponentInCorner && !player.isAir)
@@ -148,7 +148,6 @@ public class AttackState : State
     {
         if (player.attackFrames <= 0)
         {
-            Debug.Log("A");
             knock = false;
             player.enter = false;
             if (player.isAir)
