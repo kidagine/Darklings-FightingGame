@@ -17,8 +17,17 @@ public class DeathState : State
                 GameSimulation.Run = false;
             }
         }
+        player.velocity = DemonicsVector2.Zero;
         player.animation = "Knockdown";
         player.animationFrames++;
+        if (player.animationFrames >= 250)
+        {
+            if (player.otherPlayer.state != "Taunt")
+            {
+                player.otherPlayer.enter = false;
+                player.otherPlayer.state = "Taunt";
+            }
+        }
         if (SceneSettings.IsTrainingMode)
         {
             if (player.animationFrames >= 105)
@@ -31,8 +40,10 @@ public class DeathState : State
         {
             if (player.animationFrames >= 370)
             {
+                player.otherPlayer.enter = false;
+                player.otherPlayer.state = "Taunt";
                 player.enter = false;
-                player.state = "Idle";
+                player.state = "Taunt";
             }
         }
     }

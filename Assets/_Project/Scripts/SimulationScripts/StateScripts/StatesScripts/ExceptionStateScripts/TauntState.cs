@@ -10,6 +10,7 @@ public class TauntState : State
             player.animationFrames = 0;
             player.animation = "Taunt";
         }
+        player.velocity = DemonicsVector2.Zero;
         player.animationFrames++;
         ToIdleState(player);
     }

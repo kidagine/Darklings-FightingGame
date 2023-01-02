@@ -288,7 +288,7 @@ public struct GameSimulation : IGame
     public static bool Start { get; set; }
     public static bool Run { get; set; }
     public int Checksum => GetHashCode();
-
+    public static bool _introPlayed;
     public static PlayerNetwork[] _players;
 
     public void Serialize(BinaryWriter bw)
@@ -548,14 +548,6 @@ public struct GameSimulation : IGame
             {
                 _players[index].direction = new Vector2(_players[index].direction.x, 0);
             }
-            if (!left && !right)
-            {
-                _players[index].direction = new Vector2(0, _players[index].direction.y);
-            }
-            if (!up && !down)
-            {
-                _players[index].direction = new Vector2(_players[index].direction.x, 0);
-            }
             if (light)
             {
                 _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, frame = DemonicsWorld.Frame };
@@ -600,12 +592,14 @@ public struct GameSimulation : IGame
             {
             }
         }
+        else
+        {
+            _players[index].direction = Vector2.zero;
+        }
 
 
         if (_players[index].health <= 0)
         {
-            // _players[index].otherPlayer.enter = false;
-            // _players[index].otherPlayer.state = "Taunt";
             _players[index].enter = false;
             _players[index].state = "Death";
         }
@@ -710,8 +704,9 @@ public struct GameSimulation : IGame
             }
             if (!GameSimulation.Run)
             {
-                if ((inputs[0] & NetworkInput.SKIP_BYTE) != 0 && Framenumber > 200 && _players[0].state != "Taunt")
+                if ((inputs[0] & NetworkInput.SKIP_BYTE) != 0 && Framenumber > 200 && !_introPlayed)
                 {
+                    _introPlayed = true;
                     _players[0].enter = false;
                     _players[1].enter = false;
                     _players[0].state = "Taunt";
