@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class DeathState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
@@ -9,15 +11,29 @@ public class DeathState : State
             player.player.StopShakeCoroutine();
             GameplayManager.Instance.RoundOver(false);
             GameSimulation.IntroFrame = 360;
-            GameSimulation.Run = false;
             player.health = 1;
+            if (!SceneSettings.IsTrainingMode)
+            {
+                GameSimulation.Run = false;
+            }
         }
         player.animation = "Knockdown";
         player.animationFrames++;
-        if (player.animationFrames >= 370)
+        if (SceneSettings.IsTrainingMode)
         {
-            player.enter = false;
-            player.state = "Idle";
+            if (player.animationFrames >= 105)
+            {
+                player.enter = false;
+                player.state = "Idle";
+            }
+        }
+        else
+        {
+            if (player.animationFrames >= 370)
+            {
+                player.enter = false;
+                player.state = "Idle";
+            }
         }
     }
 }

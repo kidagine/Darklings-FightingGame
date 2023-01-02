@@ -156,7 +156,6 @@ public class PlayerNetwork
     public bool canJump;
     public bool canDoubleJump;
     public bool start;
-    public bool skip;
     public bool enter;
     public bool wasWallSplatted;
     public bool canChainAttack;
@@ -195,7 +194,6 @@ public class PlayerNetwork
         bw.Write(jumpDirection);
         bw.Write(dashFrames);
         bw.Write(start);
-        bw.Write(skip);
         bw.Write(wasWallSplatted);
         bw.Write(enter);
         bw.Write(canChainAttack);
@@ -238,7 +236,6 @@ public class PlayerNetwork
         jumpDirection = br.ReadInt32();
         dashFrames = br.ReadInt32();
         start = br.ReadBoolean();
-        skip = br.ReadBoolean();
         wasWallSplatted = br.ReadBoolean();
         enter = br.ReadBoolean();
         canChainAttack = br.ReadBoolean();
@@ -607,6 +604,8 @@ public struct GameSimulation : IGame
 
         if (_players[index].health <= 0)
         {
+            // _players[index].otherPlayer.enter = false;
+            // _players[index].otherPlayer.state = "Taunt";
             _players[index].enter = false;
             _players[index].state = "Death";
         }
@@ -711,7 +710,7 @@ public struct GameSimulation : IGame
             }
             if (!GameSimulation.Run)
             {
-                if ((inputs[0] & NetworkInput.SKIP_BYTE) != 0 && Framenumber > 200)
+                if ((inputs[0] & NetworkInput.SKIP_BYTE) != 0 && Framenumber > 200 && _players[0].state != "Taunt")
                 {
                     _players[0].enter = false;
                     _players[1].enter = false;

@@ -457,7 +457,7 @@ public class GameplayManager : MonoBehaviour
     }
     public void SkipIntro()
     {
-        if (IsDialogueRunning && !SceneSettings.ReplayMode)
+        if (IsDialogueRunning && !SceneSettings.ReplayMode || !NetworkInput.IS_LOCAL)
         {
             ReplayManager.Instance.Skip = DemonicsWorld.Frame;
             _playerOneDialogue.StopDialogue();
