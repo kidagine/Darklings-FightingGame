@@ -177,9 +177,9 @@ public class PlayerUI : MonoBehaviour
     {
         float arcanaSliderWidth = _arcanaSlider.GetComponent<RectTransform>().sizeDelta.x;
         _arcanaSlider.maxValue = value;
-        float increaseValue = arcanaSliderWidth / value;
+        float increaseValue = arcanaSliderWidth / (value / PlayerStatsSO.ARCANA_MULTIPLIER);
         float currentPositionX = increaseValue;
-        for (int i = 0; i < value - 1; i++)
+        for (int i = 0; i < (value / PlayerStatsSO.ARCANA_MULTIPLIER) - 1; i++)
         {
             GameObject arcanaDivider = Instantiate(_arcanaDividerPrefab, _arcanaDividerPivot);
             arcanaDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
@@ -205,7 +205,7 @@ public class PlayerUI : MonoBehaviour
     public void SetArcana(float value)
     {
         _arcanaSlider.value = value;
-        _arcanaAmountText.text = Mathf.Floor(value).ToString();
+        _arcanaAmountText.text = Mathf.Floor(value / PlayerStatsSO.ARCANA_MULTIPLIER).ToString();
     }
 
     public void SetAssist(float value)

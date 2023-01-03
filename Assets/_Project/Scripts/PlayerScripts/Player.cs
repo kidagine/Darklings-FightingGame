@@ -162,7 +162,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     void FixedUpdate()
     {
-        ArcanaCharge();
         AssistCharge();
         ComboTimer();
     }
@@ -177,19 +176,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 AssistGauge = (DemonicsFloat)1.0f;
             }
             _playerUI.SetAssist((float)AssistGauge);
-        }
-    }
-
-    private void ArcanaCharge()
-    {
-        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameplayManager.Instance.HasGameStarted)
-        {
-            ArcanaGauge += (DemonicsFloat)(Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge));
-            if (GameplayManager.Instance.InfiniteArcana)
-            {
-                ArcanaGauge = (DemonicsFloat)playerStats.Arcana;
-            }
-            _playerUI.SetArcana((float)ArcanaGauge);
         }
     }
 
@@ -625,6 +611,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
+        Health = playerGs.health;
         Vector2Int fixedPosition = new Vector2Int((int)(playerGs.position.x * 1) / 1, (int)(playerGs.position.y * 1) / 1);
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)fixedPosition.x, (DemonicsFloat)fixedPosition.y));
         NetworkDebug(info);

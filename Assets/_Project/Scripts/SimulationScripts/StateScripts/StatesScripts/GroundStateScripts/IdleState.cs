@@ -18,8 +18,8 @@ public class IdleState : GroundParentState
         ToJumpForwardState(player);
         ToCrouchState(player);
         ToDashState(player);
-        //  ToAttackStates(player);
-        //ToHurtState(player);
+        ToAttackStates(player);
+        ToHurtState(player);
     }
 
     private void ToCrouchState(PlayerNetwork player)
@@ -65,16 +65,20 @@ public class IdleState : GroundParentState
     }
     private void ToAttackStates(PlayerNetwork player)
     {
-        if (player.dashDirection != 0)
+        if (player.start && player.state != "Attack")
         {
+            player.canChainAttack = false;
+            player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
             player.enter = false;
             player.state = "Attack";
         }
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (player.otherPlayer.state == "Attack")
+        if (player.otherPlayer.start && !player.otherPlayer.canChainAttack && player.animationFrames >= 5)
         {
+            player.otherPlayer.start = false;
+            player.otherPlayer.canChainAttack = true;
             player.enter = false;
             player.state = "Hurt";
         }

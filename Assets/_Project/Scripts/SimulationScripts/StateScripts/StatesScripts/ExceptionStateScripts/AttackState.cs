@@ -19,7 +19,7 @@ public class AttackState : State
             _attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
             b = false;
             SetTopPriority(player);
-            player.canChainAttack = false;
+            // player.canChainAttack = false;
             player.inputBuffer.inputItems[0].frame = 0;
             player.enter = true;
             player.sound = _attack.attackSound;

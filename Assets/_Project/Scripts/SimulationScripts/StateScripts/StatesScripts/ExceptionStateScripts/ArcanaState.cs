@@ -8,6 +8,7 @@ public class ArcanaState : State
     {
         if (!player.enter)
         {
+            player.arcana -= PlayerStatsSO.ARCANA_MULTIPLIER;
             attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Special, player.isCrouch, player.isAir);
             player.enter = true;
             player.canChainAttack = false;

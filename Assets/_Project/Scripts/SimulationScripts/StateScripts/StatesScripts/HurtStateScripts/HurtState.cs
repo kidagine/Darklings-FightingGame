@@ -11,12 +11,13 @@ public class HurtState : HurtParentState
     {
         if (!player.enter)
         {
+            Debug.Log("Ba");
             player.animationFrames = 0;
             //player.player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
             CheckFlip(player);
-            hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
-            player.health -= 5000;
-            player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
+            hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, InputEnum.Light, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
+            player.health -= hurtAttack.damage;
+            // player.player.SetHealth(200);
             player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();
@@ -44,37 +45,40 @@ public class HurtState : HurtParentState
             start = player.position;
             end = new DemonicsVector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT - 0.5f);
         }
-        player.velocity = DemonicsVector2.Zero;
         player.animation = "Hurt";
-        player.animationFrames++;
+        if (player.animationFrames < 4)
+        {
+            player.animationFrames++;
+        }
         if (GameSimulation.Hitstop <= 0)
         {
-            if (!skipKnockback)
+            DemonicsFloat ratio = (DemonicsFloat)knockbackFrame / (DemonicsFloat)hurtAttack.knockbackDuration;
+            DemonicsFloat distance = end.x - start.x;
+            DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
+            DemonicsFloat baseY = DemonicsFloat.Lerp(start.y, end.y, (nextX - start.x) / distance);
+            DemonicsFloat arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
+            DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
+            if (hurtAttack.causesSoftKnockdown)
             {
-                if (hurtAttack.knockbackDuration > 0 && knockbackFrame <= hurtAttack.knockbackDuration)
-                {
-                    DemonicsFloat ratio = (DemonicsFloat)knockbackFrame / (DemonicsFloat)hurtAttack.knockbackDuration;
-                    DemonicsFloat distance = end.x - start.x;
-                    DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
-                    DemonicsFloat baseY = DemonicsFloat.Lerp(start.y, end.y, (nextX - start.x) / distance);
-                    DemonicsFloat arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
-                    DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
-                    if (hurtAttack.causesSoftKnockdown)
-                    {
-                        nextPosition = new DemonicsVector2(nextX, player.position.y);
-                    }
-                    else
-                    {
-                        nextPosition = new DemonicsVector2(nextX, baseY + arc);
-                    }
-                    player.position = nextPosition;
-                    knockbackFrame++;
-                }
+                nextPosition = new DemonicsVector2(nextX, player.position.y);
             }
+            else
+            {
+                nextPosition = new DemonicsVector2(nextX, baseY + arc);
+            }
+            player.position = nextPosition;
+            knockbackFrame++;
+            // if (!skipKnockback && !DemonicsPhysics.IsInCorner(player))
+            // {
+            //     if (hurtAttack.knockbackDuration > 0 && knockbackFrame <= hurtAttack.knockbackDuration)
+            //     {
+
+            //     }
+            // }
             player.player.StopShakeCoroutine();
             player.stunFrames--;
         }
-        player.stunFrames--;
+        ToHurtState(player);
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)
@@ -89,7 +93,16 @@ public class HurtState : HurtParentState
             player.state = "Idle";
         }
     }
-
+    private void ToHurtState(PlayerNetwork player)
+    {
+        if (player.otherPlayer.start && !player.otherPlayer.canChainAttack && player.animationFrames >= 5)
+        {
+            player.otherPlayer.start = false;
+            player.otherPlayer.canChainAttack = true;
+            player.enter = false;
+            player.state = "Hurt";
+        }
+    }
     public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
     {
         player.enter = false;
