@@ -66,12 +66,10 @@ public class IdleState : GroundParentState
     {
         if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
-            Debug.Log("b" + player.hurtAttack.name + "|" + player.otherPlayer.attack.damage);
             player.hurtAttack = player.otherPlayer.attack;
-            player.hurtAttack.damage = player.otherPlayer.attack.damage;
             player.enter = false;
             player.otherPlayer.canChainAttack = true;
-            if (player.hurtAttack.isArcana)
+            if (player.otherPlayer.attack.isArcana)
             {
                 player.state = "Airborne";
             }

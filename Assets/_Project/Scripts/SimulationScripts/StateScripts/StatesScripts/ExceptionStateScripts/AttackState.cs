@@ -13,7 +13,7 @@ public class AttackState : State
         {
             player.animationFrames = 0;
             player.attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.inputBuffer.inputItems[0].inputEnum, player.isCrouch, player.isAir);
-            player.attack.damage = 200;
+            Debug.Log(player.attack.name + "|" + player.attack.damage);
             b = false;
             SetTopPriority(player);
             player.canChainAttack = false;

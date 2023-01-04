@@ -11,7 +11,6 @@ public class HurtState : HurtParentState
             player.animationFrames = 0;
             //player.player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
             CheckFlip(player);
-            Debug.Log("A" + player.hurtAttack.name);
             player.health -= player.hurtAttack.damage;
             // player.player.SetHealth(200);
             player.player.StartShakeContact();
@@ -24,12 +23,12 @@ public class HurtState : HurtParentState
             if (player.otherPlayer.isAir)
             {
                 hurtEffectPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
-                player.hurtAttack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
+                player.otherPlayer.attack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
             }
             else
             {
                 hurtEffectPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
-                player.hurtAttack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
+                player.otherPlayer.attack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
             }
             player.SetEffect(player.hurtAttack.hurtEffect, hurtEffectPosition);
             if (player.hurtAttack.cameraShaker != null && !player.hurtAttack.causesSoftKnockdown)
@@ -85,7 +84,7 @@ public class HurtState : HurtParentState
             player.hurtAttack = player.otherPlayer.attack;
             player.enter = false;
             player.otherPlayer.canChainAttack = true;
-            if (player.hurtAttack.isArcana)
+            if (player.otherPlayer.attack.isArcana)
             {
                 player.state = "Airborne";
             }

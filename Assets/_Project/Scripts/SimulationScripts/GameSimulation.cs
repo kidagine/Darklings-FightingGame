@@ -211,8 +211,6 @@ public class PlayerNetwork
         inputBuffer.Serialize(bw);
         hurtbox.Serialize(bw);
         hitbox.Serialize(bw);
-        attack.Serialize(bw);
-        hurtAttack.Serialize(bw);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Serialize(bw);
@@ -258,8 +256,6 @@ public class PlayerNetwork
         inputBuffer.Deserialize(br);
         hurtbox.Deserialize(br);
         hitbox.Deserialize(br);
-        attack.Deserialize(br);
-        hurtAttack.Deserialize(br);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Deserialize(br);
@@ -383,8 +379,6 @@ public struct GameSimulation : IGame
             _players[i].soundStop = "";
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
-            _players[i].attack = new AttackSO();
-            _players[i].hurtAttack = new AttackSO();
             _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
             _players[i].hitbox = new ColliderNetwork() { active = false };
             _players[i].hurtbox = new ColliderNetwork() { active = true };

@@ -1,7 +1,7 @@
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Video;
-
 [CreateAssetMenu(fileName = "Attack", menuName = "Scriptable Objects/Attack", order = 2)]
 public class AttackSO : ScriptableObject
 {
