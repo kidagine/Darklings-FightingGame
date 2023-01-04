@@ -39,6 +39,10 @@ public class DemonicsCollider : MonoBehaviour
 
     public static bool Colliding(ColliderNetwork a, ColliderNetwork b)
     {
+        if (!a.active || !b.active)
+        {
+            return false;
+        }
         bool xOverlap = valueInRange(a.position.x - (a.size.x / (float)2), b.position.x - (b.size.x / (float)2), b.position.x + (b.size.x / (float)2)) ||
                     valueInRange(b.position.x - (b.size.x / (float)2), a.position.x - (a.size.x / (float)2), a.position.x + (a.size.x / (float)2));
         bool yOverlap = valueInRange(a.position.y - (a.size.y / (float)2), b.position.y - (b.size.y / (float)2), b.position.y + (b.size.y / (float)2)) ||

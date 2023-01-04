@@ -12,18 +12,7 @@ public class GroundParentState : State
         player.hasJumped = false;
         player.canJump = true;
     }
-    public override bool ToAttackState(PlayerNetwork player)
-    {
-        player.enter = false;
-        player.state = "Attack";
-        return true;
-    }
-    public override bool ToArcanaState(PlayerNetwork player)
-    {
-        player.enter = false;
-        player.state = "Arcana";
-        return true;
-    }
+
     public override bool ToBlueFrenzyState(PlayerNetwork player)
     {
         player.enter = false;

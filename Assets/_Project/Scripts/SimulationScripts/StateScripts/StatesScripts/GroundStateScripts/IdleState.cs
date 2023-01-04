@@ -18,7 +18,6 @@ public class IdleState : GroundParentState
         ToJumpForwardState(player);
         ToCrouchState(player);
         ToDashState(player);
-        ToAttackStates(player);
         ToHurtState(player);
     }
 
@@ -63,24 +62,42 @@ public class IdleState : GroundParentState
             player.state = "Dash";
         }
     }
-    private void ToAttackStates(PlayerNetwork player)
-    {
-        if (player.start && player.state != "Attack")
-        {
-            player.canChainAttack = false;
-            player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
-            player.enter = false;
-            player.state = "Attack";
-        }
-    }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (player.otherPlayer.start && !player.otherPlayer.canChainAttack && player.animationFrames >= 5)
+        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
-            player.otherPlayer.start = false;
-            player.otherPlayer.canChainAttack = true;
+            Debug.Log("b" + player.hurtAttack.name + "|" + player.otherPlayer.attack.damage);
+            player.hurtAttack = player.otherPlayer.attack;
+            player.hurtAttack.damage = player.otherPlayer.attack.damage;
             player.enter = false;
-            player.state = "Hurt";
+            player.otherPlayer.canChainAttack = true;
+            if (player.hurtAttack.isArcana)
+            {
+                player.state = "Airborne";
+            }
+            else
+            {
+                player.state = "Hurt";
+            }
+        }
+    }
+    public override void ToAttackState(PlayerNetwork player)
+    {
+        player.isCrouch = false;
+        player.isAir = false;
+        player.canChainAttack = false;
+        player.enter = false;
+        player.state = "Attack";
+    }
+    public override void ToArcanaState(PlayerNetwork player)
+    {
+        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
+        {
+            player.isCrouch = false;
+            player.isAir = false;
+            player.canChainAttack = false;
+            player.enter = false;
+            player.state = "Arcana";
         }
     }
 }

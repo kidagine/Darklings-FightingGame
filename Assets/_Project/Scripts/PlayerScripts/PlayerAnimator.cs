@@ -82,8 +82,8 @@ public class PlayerAnimator : DemonicsAnimator
     protected override void CheckAnimationBoxes()
     {
         base.CheckAnimationBoxes();
-        _playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
-        _playerCollisionBoxes.SetHitboxes(GetHitboxes());
+        //_playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
+        //_playerCollisionBoxes.SetHitboxes(GetHitboxes());
     }
 
     public void SetInvinsible(bool state)
@@ -109,10 +109,10 @@ public class PlayerAnimator : DemonicsAnimator
 
     public bool InActive()
     {
-        if (GetHitboxes().Length > 0)
-        {
-            return true;
-        }
+        // if (GetHitboxes().Length > 0)
+        // {
+        //     return true;
+        // }
         return false;
     }
 

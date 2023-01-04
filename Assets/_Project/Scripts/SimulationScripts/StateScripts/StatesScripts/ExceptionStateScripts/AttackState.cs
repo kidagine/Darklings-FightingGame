@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    private static AttackSO _attack;
-    public static DemonicsVector2 start;
-    private static DemonicsVector2 end;
-    private static int knockbackFrame;
     private static bool knock;
     private static bool b;
     private static bool opponentInCorner;
@@ -16,14 +12,15 @@ public class AttackState : State
         if (!player.enter)
         {
             player.animationFrames = 0;
-            _attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
+            player.attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.inputBuffer.inputItems[0].inputEnum, player.isCrouch, player.isAir);
+            player.attack.damage = 200;
             b = false;
             SetTopPriority(player);
-            // player.canChainAttack = false;
+            player.canChainAttack = false;
             player.inputBuffer.inputItems[0].frame = 0;
             player.enter = true;
-            player.sound = _attack.attackSound;
-            player.animation = _attack.name;
+            player.sound = player.attack.attackSound;
+            player.animation = player.attack.name;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             opponentInCorner = false;
             if (DemonicsPhysics.IsInCorner(player.otherPlayer))
@@ -33,7 +30,7 @@ public class AttackState : State
         }
         if (!player.isAir)
         {
-            player.velocity = new DemonicsVector2(_attack.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)_attack.travelDistance.y);
+            player.velocity = new DemonicsVector2(player.attack.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attack.travelDistance.y);
         }
         else
         {
@@ -44,59 +41,63 @@ public class AttackState : State
         {
             player.animationFrames++;
             player.attackFrames--;
-            // if (player.canChainAttack)
-            // {
-            //     if (!b)
-            //     {
-            //         b = true;
-            //         knockbackFrame = 0;
-            //         start = player.position;
-            //         end = new DemonicsVector2(player.position.x + (_attack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT);
-            //     }
-            //     knock = true;
-            //     if ((!(player.attackInput == InputEnum.Medium && player.isCrouch || player.attackInput == InputEnum.Heavy)) || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
-            //     {
-            //         if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
-            //         {
-            //             player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
-            //             player.isCrouch = false;
-            //             if (player.direction.y < 0)
-            //             {
-            //                 player.isCrouch = true;
-            //             }
-            //             player.enter = false;
-            //             if (player.attackInput == InputEnum.Special)
-            //             {
-            //                 player.state = "Arcana";
-            //             }
-            //             else
-            //             {
-            //                 player.state = "Attack";
-            //             }
-            //         }
-            //     }
-            // }
-            if (knock)
+            if (player.canChainAttack)
             {
-                if (opponentInCorner && !player.isAir)
+                // if (!b)
+                // {
+                //     b = true;
+                //     knockbackFrame = 0;
+                //     start = player.position;
+                //     end = new DemonicsVector2(player.position.x + (player.attack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT);
+                // }
+                // knock = true;
+                if ((!(player.attackInput == InputEnum.Medium && player.isCrouch || player.attackInput == InputEnum.Heavy)))
                 {
-                    if (_attack.knockbackDuration > 0)
+                    if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
                     {
-                        if (knockbackFrame <= _attack.knockbackDuration)
+                        player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
+                        player.isCrouch = false;
+                        if (player.direction.y < 0)
                         {
-                            DemonicsFloat ratio = (DemonicsFloat)knockbackFrame / (DemonicsFloat)_attack.knockbackDuration;
-                            DemonicsFloat distance = end.x - start.x;
-                            DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
-                            DemonicsFloat baseY = DemonicsFloat.Lerp(start.y, end.y, (nextX - start.x) / distance);
-                            DemonicsFloat arc = _attack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
-                            DemonicsVector2 nextPosition = new DemonicsVector2((DemonicsFloat)nextX, (DemonicsFloat)baseY + arc);
-                            nextPosition = new DemonicsVector2((DemonicsFloat)nextX, (DemonicsFloat)player.position.y);
-                            player.position = nextPosition;
-                            knockbackFrame++;
+                            player.isCrouch = true;
+                        }
+                        player.enter = false;
+                        if (player.attackInput == InputEnum.Special)
+                        {
+                            player.state = "Arcana";
+                        }
+                        else
+                        {
+                            player.state = "Attack";
+                        }
+                        if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
+                        {
+
                         }
                     }
                 }
             }
+            // if (knock)
+            // {
+            //     if (opponentInCorner && !player.isAir)
+            //     {
+            //         if (player.attack.knockbackDuration > 0)
+            //         {
+            //             if (knockbackFrame <= player.attack.knockbackDuration)
+            //             {
+            //                 DemonicsFloat ratio = (DemonicsFloat)knockbackFrame / (DemonicsFloat)player.attack.knockbackDuration;
+            //                 DemonicsFloat distance = end.x - start.x;
+            //                 DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
+            //                 DemonicsFloat baseY = DemonicsFloat.Lerp(start.y, end.y, (nextX - start.x) / distance);
+            //                 DemonicsFloat arc = player.attack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
+            //                 DemonicsVector2 nextPosition = new DemonicsVector2((DemonicsFloat)nextX, (DemonicsFloat)baseY + arc);
+            //                 nextPosition = new DemonicsVector2((DemonicsFloat)nextX, (DemonicsFloat)player.position.y);
+            //                 player.position = nextPosition;
+            //                 knockbackFrame++;
+            //             }
+            //         }
+            //     }
+            // }
         }
         ToJumpState(player);
         ToJumpForwardState(player);
@@ -105,7 +106,7 @@ public class AttackState : State
     }
     private void ToJumpState(PlayerNetwork player)
     {
-        if (_attack.jumpCancelable)
+        if (player.attack.jumpCancelable)
         {
             if (player.direction.y > 0)
             {
@@ -119,7 +120,7 @@ public class AttackState : State
     }
     private void ToJumpForwardState(PlayerNetwork player)
     {
-        if (_attack.jumpCancelable)
+        if (player.attack.jumpCancelable)
         {
             if (player.direction.y > 0 && player.direction.x != 0)
             {
@@ -136,10 +137,10 @@ public class AttackState : State
     {
         if (player.isAir && (DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
+            player.attackInput = InputEnum.Direction;
             knock = false;
             player.isCrouch = false;
             player.isAir = false;
-            player.attackInput = InputEnum.Direction;
             player.enter = false;
             player.state = "Idle";
         }
@@ -152,25 +153,25 @@ public class AttackState : State
             player.enter = false;
             if (player.isAir)
             {
+                player.attackInput = InputEnum.Direction;
                 player.isCrouch = false;
                 player.isAir = false;
-                player.attackInput = InputEnum.Direction;
                 player.state = "Fall";
             }
             else
             {
                 if (player.direction.y < 0)
                 {
+                    player.attackInput = InputEnum.Direction;
                     player.isCrouch = false;
                     player.isAir = false;
-                    player.attackInput = InputEnum.Direction;
                     player.state = "Crouch";
                 }
                 else
                 {
+                    player.attackInput = InputEnum.Direction;
                     player.isCrouch = false;
                     player.isAir = false;
-                    player.attackInput = InputEnum.Direction;
                     player.state = "Idle";
                 }
             }
@@ -179,7 +180,7 @@ public class AttackState : State
     public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
     {
         player.enter = false;
-        if (_attack.hasSuperArmor && !player.player.PlayerAnimator.InRecovery())
+        if (player.attack.hasSuperArmor && !player.player.PlayerAnimator.InRecovery())
         {
             GameSimulation.Hitstop = attack.hitstop;
             player.player.PlayerAnimator.SpriteSuperArmorEffect();

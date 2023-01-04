@@ -603,9 +603,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
-    public bool IsAnimationFinished()
+    public bool IsAnimationFinished(string name, int frames)
     {
-        return PlayerAnimator.IsAnimationFinished();
+        return PlayerAnimator.IsAnimationFinished(name, frames);
+    }
+    public bool IsAnimationLoop(string name)
+    {
+        return PlayerAnimator.IsAnimationLoop(name);
     }
     public string ConnectionStatus { get; private set; }
     public int ConnectionProgress { get; private set; }

@@ -27,18 +27,23 @@ public class CrouchState : GroundParentState
             player.state = "Idle";
         }
     }
-    public override bool ToAttackState(PlayerNetwork player)
+    public override void ToAttackState(PlayerNetwork player)
     {
-        player.enter = false;
         player.isCrouch = true;
+        player.isAir = false;
+        player.canChainAttack = false;
+        player.enter = false;
         player.state = "Attack";
-        return true;
     }
-    public override bool ToArcanaState(PlayerNetwork player)
+    public override void ToArcanaState(PlayerNetwork player)
     {
-        player.enter = false;
-        player.isCrouch = true;
-        player.state = "Arcana";
-        return true;
+        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
+        {
+            player.isCrouch = true;
+            player.isAir = false;
+            player.canChainAttack = false;
+            player.enter = false;
+            player.state = "Arcana";
+        }
     }
 }

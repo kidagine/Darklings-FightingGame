@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -46,6 +47,20 @@ public class AttackSO : ScriptableObject
     [TextArea(5, 7)]
     public string moveDescription;
     public VideoClip moveVideo;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(travelDistance.x);
+        bw.Write(travelDistance.y);
+        bw.Write(damage);
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        travelDistance.x = br.ReadSingle();
+        travelDistance.y = br.ReadSingle();
+        damage = br.ReadInt32();
+    }
 }
 
 public class ResultAttack

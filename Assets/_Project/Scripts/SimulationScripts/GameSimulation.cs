@@ -135,6 +135,8 @@ public class PlayerNetwork
     public PlayerStatsSO playerStats;
     public DemonicsVector2 position;
     public DemonicsVector2 velocity;
+    public AttackSO attack;
+    public AttackSO hurtAttack;
     public Vector2 direction;
     public string animation;
     public int animationFrames;
@@ -145,6 +147,7 @@ public class PlayerNetwork
     public int arcana;
     public int shadow;
     public int flip;
+    public int knockback;
     public string sound;
     public string soundStop;
     public float jump;
@@ -189,6 +192,7 @@ public class PlayerNetwork
         bw.Write(soundStop);
         bw.Write(canDash);
         bw.Write(jump);
+        bw.Write(knockback);
         bw.Write(isCrouch);
         bw.Write(isAir);
         bw.Write(hasJumped);
@@ -207,6 +211,8 @@ public class PlayerNetwork
         inputBuffer.Serialize(bw);
         hurtbox.Serialize(bw);
         hitbox.Serialize(bw);
+        attack.Serialize(bw);
+        hurtAttack.Serialize(bw);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Serialize(bw);
@@ -233,6 +239,7 @@ public class PlayerNetwork
         soundStop = br.ReadString();
         canDash = br.ReadBoolean();
         jump = br.ReadSingle();
+        knockback = br.ReadInt32();
         isCrouch = br.ReadBoolean();
         isAir = br.ReadBoolean();
         hasJumped = br.ReadBoolean();
@@ -251,6 +258,8 @@ public class PlayerNetwork
         inputBuffer.Deserialize(br);
         hurtbox.Deserialize(br);
         hitbox.Deserialize(br);
+        attack.Deserialize(br);
+        hurtAttack.Deserialize(br);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Deserialize(br);
@@ -374,6 +383,8 @@ public struct GameSimulation : IGame
             _players[i].soundStop = "";
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
+            _players[i].attack = new AttackSO();
+            _players[i].hurtAttack = new AttackSO();
             _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
             _players[i].hitbox = new ColliderNetwork() { active = false };
             _players[i].hurtbox = new ColliderNetwork() { active = true };
@@ -556,41 +567,23 @@ public struct GameSimulation : IGame
             }
             if (light)
             {
-                _players[index].start = true;
                 _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, frame = DemonicsWorld.Frame };
-                // if (_players[index].CurrentState.ToAttackState(_players[index]))
-                // {
-                //     _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
-                // }
+                _players[index].CurrentState.ToAttackState(_players[index]);
             }
             if (medium)
             {
-                _players[index].start = true;
                 _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, frame = DemonicsWorld.Frame };
-                // if (_players[index].CurrentState.ToAttackState(_players[index]))
-                // {
-                //     _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
-                // }
+                _players[index].CurrentState.ToAttackState(_players[index]);
             }
             if (heavy)
             {
-                _players[index].start = true;
                 _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = DemonicsWorld.Frame };
-                // if (_players[index].CurrentState.ToAttackState(_players[index]))
-                // {
-                //     _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
-                // }
+                _players[index].CurrentState.ToAttackState(_players[index]);
             }
             if (arcana)
             {
-                // _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, frame = DemonicsWorld.Frame };
-                // if (_players[index].arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
-                // {
-                //     if (_players[index].CurrentState.ToArcanaState(_players[index]))
-                //     {
-                //         _players[index].attackInput = _players[index].inputBuffer.inputItems[0].inputEnum;
-                //     }
-                // }
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, frame = DemonicsWorld.Frame };
+                _players[index].CurrentState.ToArcanaState(_players[index]);
             }
             if (blueFrenzy)
             {
@@ -609,7 +602,8 @@ public struct GameSimulation : IGame
             }
             else
             {
-                _players[index].arcana += _players[index].playerStats.arcanaRecharge;
+                _players[index].arcana = _players[index].playerStats.Arcana;
+                //_players[index].arcana += _players[index].playerStats.arcanaRecharge;
             }
         }
         else
@@ -626,25 +620,27 @@ public struct GameSimulation : IGame
 
         SetState(index);
         _players[index].CurrentState.UpdateLogic(_players[index]);
-        GameplayManager.Instance.PlayerOne.Flip(_players[0].flip);
-        GameplayManager.Instance.PlayerTwo.Flip(_players[1].flip);
+        _players[index].player.Flip(_players[index].flip);
         if (GameSimulation.Hitstop <= 0)
         {
             if (!DemonicsPhysics.Collision(_players[index], _players[index].otherPlayer))
             {
                 _players[index].position = new DemonicsVector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
             }
-            _players[index].player.PlayerAnimator.SpriteNormalEffect();
         }
+        _players[index].player.PlayerAnimator.SpriteNormalEffect();
         _players[index].position = DemonicsPhysics.Bounds(_players[index]);
         DemonicsPhysics.CameraHorizontalBounds(_players[0], _players[1]);
-        if (GameplayManager.Instance.PlayerOne.IsAnimationFinished())
+        if (_players[index].player.IsAnimationFinished(_players[index].animation, _players[index].animationFrames))
         {
-            _players[0].animationFrames = 0;
-        }
-        if (GameplayManager.Instance.PlayerTwo.IsAnimationFinished())
-        {
-            _players[1].animationFrames = 0;
+            if (_players[index].player.IsAnimationLoop(_players[index].animation))
+            {
+                _players[index].animationFrames = 0;
+            }
+            else
+            {
+                _players[index].animationFrames = _players[index].animationFrames + 1;
+            }
         }
         for (int i = 0; i < _players[index].effects.Length; i++)
         {
@@ -661,51 +657,27 @@ public struct GameSimulation : IGame
                 }
             }
         }
-        AnimationBox[] animationHitboxes = _players[index].player.PlayerAnimator.GetHitboxes();
-        if (_players[index].animationFrames > 3)
+        AnimationBox[] animationHitboxes = _players[index].player.PlayerAnimator.GetHitboxes(_players[index].animation, _players[index].animationFrames);
+        if (animationHitboxes.Length == 0)
         {
             _players[index].hitbox.active = false;
         }
         else
         {
-            //_players[index].hitbox.size = new DemonicsVector2((DemonicsFloat)animationHitboxes[0].size.x, (DemonicsFloat)animationHitboxes[0].size.y);
-            //_players[index].hitbox.offset = new DemonicsVector2((DemonicsFloat)animationHitboxes[0].offset.x, (DemonicsFloat)animationHitboxes[0].offset.y);
-            //_players[index].hitbox.position = new DemonicsVector2(_players[index].position.x + (_players[index].hitbox.offset.x * _players[index].flip), _players[index].position.y + _players[index].hitbox.offset.y);
+            _players[index].hitbox.size = new DemonicsVector2((DemonicsFloat)animationHitboxes[0].size.x, (DemonicsFloat)animationHitboxes[0].size.y);
+            _players[index].hitbox.offset = new DemonicsVector2((DemonicsFloat)animationHitboxes[0].offset.x, (DemonicsFloat)animationHitboxes[0].offset.y);
+            _players[index].hitbox.position = new DemonicsVector2(_players[index].position.x + (_players[index].hitbox.offset.x * _players[index].flip), _players[index].position.y + _players[index].hitbox.offset.y);
             _players[index].hitbox.active = true;
         }
-        AnimationBox[] animationHurtboxes = _players[index].player.PlayerAnimator.GetHurtboxes();
+        AnimationBox[] animationHurtboxes = _players[index].player.PlayerAnimator.GetHurtboxes(_players[index].animation, _players[index].animationFrames);
         if (animationHurtboxes.Length > 0)
         {
+            _players[index].hurtbox.active = true;
             _players[index].hurtbox.size = new DemonicsVector2((DemonicsFloat)animationHurtboxes[0].size.x, (DemonicsFloat)animationHurtboxes[0].size.y);
             _players[index].hurtbox.offset = new DemonicsVector2((DemonicsFloat)animationHurtboxes[0].offset.x, (DemonicsFloat)animationHurtboxes[0].offset.y);
         }
-        // _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
-        // _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
-        // if (_players[index].hitbox.active && _players[index].otherPlayer.hurtbox.active && !_players[index].canChainAttack && _players[index].animationFrames > 1)
-        // {
-        //     if (DemonicsCollider.Colliding(_players[index].hitbox, _players[index].otherPlayer.hurtbox))
-        //     {
-        //         AttackSO attack = PlayerComboSystem.GetComboAttack(_players[index].playerStats, _players[index].attackInput, _players[index].isCrouch, _players[index].isAir);
-        //         _players[index].canChainAttack = true;
-        //         if (_players[index].flip == 1 && _players[index].otherPlayer.flip == -1 & _players[index].otherPlayer.direction.x > 0
-        //             || _players[index].flip == -1 && _players[index].otherPlayer.flip == 1 & _players[index].otherPlayer.direction.x < 0)
-        //         {
-        //             if (attack.attackTypeEnum == AttackTypeEnum.Break ||
-        //             attack.attackTypeEnum == AttackTypeEnum.Low && _players[index].otherPlayer.direction.y >= 0)
-        //             {
-        //                 _players[index].otherPlayer.CurrentState.ToHurtState(_players[index].otherPlayer, attack);
-        //             }
-        //             else
-        //             {
-        //                 _players[index].otherPlayer.CurrentState.ToBlockState(_players[index].otherPlayer, attack);
-        //             }
-        //         }
-        //         else
-        //         {
-        //             _players[index].otherPlayer.CurrentState.ToHurtState(_players[index].otherPlayer, attack);
-        //         }
-        //     }
-        // }
+        _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
+        _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
     }
     public void Update(long[] inputs, int disconnect_flags)
     {

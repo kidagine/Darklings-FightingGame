@@ -58,10 +58,27 @@ public class DemonicsAnimator : MonoBehaviour
             _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
         }
     }
-
-    public bool IsAnimationFinished()
+    public bool IsAnimationLoop(string name)
     {
-        return _finished;
+        _group = _animation.GetGroupId(name);
+        return _animation.GetGroup(_group).loop;
+    }
+    public bool IsAnimationFinished(string name, int frames)
+    {
+        _group = _animation.GetGroupId(name);
+        int totalFrames = 0;
+        for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
+        {
+            totalFrames += _animation.GetGroup(_group).animationCel[i].frames;
+        }
+        if (frames >= totalFrames)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     private bool _finished;
     public virtual void SetAnimation(string name, int frame)
@@ -79,11 +96,16 @@ public class DemonicsAnimator : MonoBehaviour
                     _cel = i;
                     break;
                 }
-                if (frame > 0 && _animation.GetGroup(_group).loop)
+                else if (frame > 0 && _animation.GetGroup(_group).loop)
                 {
                     _finished = true;
                     _frame = 0;
                     _cel = 0;
+                }
+                else
+                {
+                    _frame = 0;
+                    _cel = _animation.GetGroup(_group).animationCel.Count - 1;
                 }
             }
             else
@@ -139,19 +161,50 @@ public class DemonicsAnimator : MonoBehaviour
         OnCurrentAnimationFinished.RemoveAllListeners();
     }
 
-    public AnimationBox[] GetHurtboxes()
+    public AnimationBox[] GetHurtboxes(string name, int frame)
     {
+        _group = _animation.GetGroupId(name);
+        _cel = GetCellByFrame(frame);
         return _animation.GetCel(_group, _cel).hurtboxes.ToArray();
     }
 
-    public AnimationBox[] GetHitboxes()
+    public AnimationBox[] GetHitboxes(string name, int frame)
     {
+        _group = _animation.GetGroupId(name);
+        _cel = GetCellByFrame(frame);
         return _animation.GetCel(_group, _cel).hitboxes.ToArray();
     }
 
     protected AnimationEvent GetEvent()
     {
         return _animation.GetCel(_group, _cel).animationEvent;
+    }
+
+    private int GetCellByFrame(int frame)
+    {
+        int cel = 0;
+        for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
+        {
+            if (frame > 0)
+            {
+                frame -= _animation.GetGroup(_group).animationCel[i].frames;
+                if (frame < 0)
+                {
+                    cel = i;
+                    break;
+                }
+                if (frame > 0 && _animation.GetGroup(_group).loop)
+                {
+                    cel = 0;
+                }
+            }
+            else
+            {
+                cel = i;
+                break;
+            }
+        }
+        return cel;
     }
 
     public void Pause()

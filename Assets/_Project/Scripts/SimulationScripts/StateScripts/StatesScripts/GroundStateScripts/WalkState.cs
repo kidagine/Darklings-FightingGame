@@ -61,4 +61,23 @@ public class WalkState : GroundParentState
             player.state = "Dash";
         }
     }
+    public override void ToAttackState(PlayerNetwork player)
+    {
+        player.isCrouch = false;
+        player.isAir = false;
+        player.canChainAttack = false;
+        player.enter = false;
+        player.state = "Attack";
+    }
+    public override void ToArcanaState(PlayerNetwork player)
+    {
+        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
+        {
+            player.isCrouch = false;
+            player.isAir = false;
+            player.canChainAttack = false;
+            player.enter = false;
+            player.state = "Arcana";
+        }
+    }
 }
