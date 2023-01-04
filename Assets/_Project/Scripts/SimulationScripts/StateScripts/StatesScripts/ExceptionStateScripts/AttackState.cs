@@ -13,7 +13,7 @@ public class AttackState : State
         {
             player.animationFrames = 0;
             player.attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.inputBuffer.inputItems[0].inputEnum, player.isCrouch, player.isAir);
-            Debug.Log(player.attack.name + "|" + player.attack.damage);
+            player.attackNetwork.travelDistance = (DemonicsFloat)player.attack.travelDistance.x;
             b = false;
             SetTopPriority(player);
             player.canChainAttack = false;
@@ -21,7 +21,7 @@ public class AttackState : State
             player.enter = true;
             player.sound = player.attack.attackSound;
             player.animation = player.attack.name;
-            player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
+            player.attackFrames = 20;
             opponentInCorner = false;
             if (DemonicsPhysics.IsInCorner(player.otherPlayer))
             {
@@ -30,12 +30,12 @@ public class AttackState : State
         }
         if (!player.isAir)
         {
-            player.velocity = new DemonicsVector2(player.attack.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attack.travelDistance.y);
         }
         else
         {
-            player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
+            // player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
         }
+        player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance * (DemonicsFloat)player.flip, (DemonicsFloat)player.attack.travelDistance.y);
 
         if (GameSimulation.Hitstop <= 0)
         {
@@ -51,31 +51,30 @@ public class AttackState : State
                 //     end = new DemonicsVector2(player.position.x + (player.attack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT);
                 // }
                 // knock = true;
-                if ((!(player.attackInput == InputEnum.Medium && player.isCrouch || player.attackInput == InputEnum.Heavy)))
-                {
-                    if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
-                    {
-                        player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
-                        player.isCrouch = false;
-                        if (player.direction.y < 0)
-                        {
-                            player.isCrouch = true;
-                        }
-                        player.enter = false;
-                        if (player.attackInput == InputEnum.Special)
-                        {
-                            player.state = "Arcana";
-                        }
-                        else
-                        {
-                            player.state = "Attack";
-                        }
-                        if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
-                        {
-
-                        }
-                    }
-                }
+                // if ((!(player.attackInput == InputEnum.Medium && player.isCrouch || player.attackInput == InputEnum.Heavy)))
+                // {
+                //     if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
+                //     {
+                //         if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
+                //         {
+                //             player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
+                //             player.isCrouch = false;
+                //             if (player.direction.y < 0)
+                //             {
+                //                 player.isCrouch = true;
+                //             }
+                //             player.enter = false;
+                //             if (player.attackInput == InputEnum.Special)
+                //             {
+                //                 player.state = "Arcana";
+                //             }
+                //             else
+                //             {
+                //                 player.state = "Attack";
+                //             }
+                //         }
+                //     }
+                // }
             }
             // if (knock)
             // {
@@ -99,10 +98,10 @@ public class AttackState : State
             //     }
             // }
         }
-        ToJumpState(player);
-        ToJumpForwardState(player);
+        //ToJumpState(player);
+        // ToJumpForwardState(player);
         ToIdleState(player);
-        ToIdleFallState(player);
+        // ToIdleFallState(player);
     }
     private void ToJumpState(PlayerNetwork player)
     {
@@ -149,32 +148,35 @@ public class AttackState : State
     {
         if (player.attackFrames <= 0)
         {
-            knock = false;
+            // knock = false;
             player.enter = false;
-            if (player.isAir)
-            {
-                player.attackInput = InputEnum.Direction;
-                player.isCrouch = false;
-                player.isAir = false;
-                player.state = "Fall";
-            }
-            else
-            {
-                if (player.direction.y < 0)
-                {
-                    player.attackInput = InputEnum.Direction;
-                    player.isCrouch = false;
-                    player.isAir = false;
-                    player.state = "Crouch";
-                }
-                else
-                {
-                    player.attackInput = InputEnum.Direction;
-                    player.isCrouch = false;
-                    player.isAir = false;
-                    player.state = "Idle";
-                }
-            }
+            player.isCrouch = false;
+            player.isAir = false;
+            player.state = "Idle";
+            // if (player.isAir)
+            // {
+            //     player.attackInput = InputEnum.Direction;
+            //     player.isCrouch = false;
+            //     player.isAir = false;
+            //     player.state = "Fall";
+            // }
+            // else
+            // {
+            //     if (player.direction.y < 0)
+            //     {
+            //         player.attackInput = InputEnum.Direction;
+            //         player.isCrouch = false;
+            //         player.isAir = false;
+            //         player.state = "Crouch";
+            //     }
+            //     else
+            //     {
+            //         player.attackInput = InputEnum.Direction;
+            //         player.isCrouch = false;
+            //         player.isAir = false;
+            //         player.state = "Idle";
+            //     }
+            // }
         }
     }
     public override bool ToHurtState(PlayerNetwork player, AttackSO attack)

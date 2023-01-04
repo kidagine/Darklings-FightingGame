@@ -97,6 +97,21 @@ public struct InputBufferNetwork
     }
 };
 [Serializable]
+public struct AttackNetwork
+{
+    public DemonicsFloat travelDistance;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write((float)travelDistance);
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        travelDistance = (DemonicsFloat)br.ReadSingle();
+    }
+};
+[Serializable]
 public struct ColliderNetwork
 {
     public DemonicsVector2 position;
@@ -137,6 +152,7 @@ public class PlayerNetwork
     public DemonicsVector2 velocity;
     public AttackSO attack;
     public AttackSO hurtAttack;
+    public AttackNetwork attackNetwork;
     public Vector2 direction;
     public string animation;
     public int animationFrames;
@@ -211,6 +227,7 @@ public class PlayerNetwork
         inputBuffer.Serialize(bw);
         hurtbox.Serialize(bw);
         hitbox.Serialize(bw);
+        attackNetwork.Serialize(bw);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Serialize(bw);
@@ -256,6 +273,7 @@ public class PlayerNetwork
         inputBuffer.Deserialize(br);
         hurtbox.Deserialize(br);
         hitbox.Deserialize(br);
+        attackNetwork.Deserialize(br);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Deserialize(br);
@@ -561,24 +579,26 @@ public struct GameSimulation : IGame
             }
             if (light)
             {
+                _players[index].start = true;
                 _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, frame = DemonicsWorld.Frame };
-                _players[index].CurrentState.ToAttackState(_players[index]);
+                //_players[index].CurrentState.ToAttackState(_players[index]);
             }
             if (medium)
             {
+                _players[index].start = true;
                 _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, frame = DemonicsWorld.Frame };
-                _players[index].CurrentState.ToAttackState(_players[index]);
+                // _players[index].CurrentState.ToAttackState(_players[index]);
             }
-            if (heavy)
-            {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = DemonicsWorld.Frame };
-                _players[index].CurrentState.ToAttackState(_players[index]);
-            }
-            if (arcana)
-            {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, frame = DemonicsWorld.Frame };
-                _players[index].CurrentState.ToArcanaState(_players[index]);
-            }
+            // if (heavy)
+            // {
+            //     _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = DemonicsWorld.Frame };
+            //     // _players[index].CurrentState.ToAttackState(_players[index]);
+            // }
+            // if (arcana)
+            // {
+            //     _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, frame = DemonicsWorld.Frame };
+            //     _players[index].CurrentState.ToArcanaState(_players[index]);
+            // }
             if (blueFrenzy)
             {
                 //_players[index].CurrentState.ToBlueFrenzyState(_players[index]);

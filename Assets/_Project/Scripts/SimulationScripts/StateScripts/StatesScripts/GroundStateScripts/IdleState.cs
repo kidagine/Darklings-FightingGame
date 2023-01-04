@@ -19,6 +19,7 @@ public class IdleState : GroundParentState
         ToCrouchState(player);
         ToDashState(player);
         ToHurtState(player);
+        ToAttackState(player);
     }
 
     private void ToCrouchState(PlayerNetwork player)
@@ -81,11 +82,15 @@ public class IdleState : GroundParentState
     }
     public override void ToAttackState(PlayerNetwork player)
     {
-        player.isCrouch = false;
-        player.isAir = false;
-        player.canChainAttack = false;
-        player.enter = false;
-        player.state = "Attack";
+        if (player.start)
+        {
+            player.start = false;
+            player.isCrouch = false;
+            player.isAir = false;
+            player.canChainAttack = false;
+            player.enter = false;
+            player.state = "Attack";
+        }
     }
     public override void ToArcanaState(PlayerNetwork player)
     {

@@ -23,12 +23,12 @@ public class HurtState : HurtParentState
             if (player.otherPlayer.isAir)
             {
                 hurtEffectPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
-                player.otherPlayer.attack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
+                player.hurtAttack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
             }
             else
             {
                 hurtEffectPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
-                player.otherPlayer.attack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
+                player.hurtAttack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
             }
             player.SetEffect(player.hurtAttack.hurtEffect, hurtEffectPosition);
             if (player.hurtAttack.cameraShaker != null && !player.hurtAttack.causesSoftKnockdown)
@@ -48,18 +48,18 @@ public class HurtState : HurtParentState
         }
         if (GameSimulation.Hitstop <= 0)
         {
-            // if (!DemonicsPhysics.IsInCorner(player))
-            // {
-            //     if (player.hurtAttack.knockbackDuration > 0 && player.knockback <= player.hurtAttack.knockbackDuration)
-            //     {
-            //         DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.hurtAttack.knockbackDuration;
-            //         DemonicsFloat distance = end.x - start.x;
-            //         DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
-            //         DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
-            //         player.position = nextPosition;
-            //         player.knockback++;
-            //     }
-            // }
+            if (!DemonicsPhysics.IsInCorner(player))
+            {
+                if (player.hurtAttack.knockbackDuration > 0 && player.knockback <= player.hurtAttack.knockbackDuration)
+                {
+                    DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.hurtAttack.knockbackDuration;
+                    DemonicsFloat distance = end.x - start.x;
+                    DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
+                    DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
+                    player.position = nextPosition;
+                    player.knockback++;
+                }
+            }
             player.player.StopShakeCoroutine();
         }
         player.stunFrames--;
