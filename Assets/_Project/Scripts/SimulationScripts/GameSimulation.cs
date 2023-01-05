@@ -99,16 +99,71 @@ public struct InputBufferNetwork
 [Serializable]
 public struct AttackNetwork
 {
+    public CameraShakerNetwork cameraShakerNetwork;
+    public DemonicsVector2 knockbackStart;
+    public DemonicsVector2 knockbackEnd;
     public DemonicsFloat travelDistance;
+    public DemonicsFloat knockbackForce;
+    public int knockbackDuration;
+    public int hitstop;
+    public int damage;
+    public string name;
+    public string attackSound;
+    public string impactSound;
+    public string hurtEffect;
 
     public void Serialize(BinaryWriter bw)
     {
+        bw.Write((float)knockbackStart.x);
+        bw.Write((float)knockbackStart.y);
+        bw.Write((float)knockbackEnd.x);
+        bw.Write((float)knockbackEnd.y);
         bw.Write((float)travelDistance);
+        bw.Write((float)knockbackForce);
+        bw.Write(knockbackDuration);
+        bw.Write(hitstop);
+        bw.Write(damage);
+        bw.Write(name);
+        bw.Write(attackSound);
+        bw.Write(impactSound);
+        bw.Write(hurtEffect);
+        cameraShakerNetwork.Serialize(bw);
     }
 
     public void Deserialize(BinaryReader br)
     {
+        knockbackStart.x = (DemonicsFloat)br.ReadSingle();
+        knockbackStart.y = (DemonicsFloat)br.ReadSingle();
+        knockbackEnd.x = (DemonicsFloat)br.ReadSingle();
+        knockbackEnd.y = (DemonicsFloat)br.ReadSingle();
         travelDistance = (DemonicsFloat)br.ReadSingle();
+        knockbackForce = (DemonicsFloat)br.ReadSingle();
+        knockbackDuration = br.ReadInt32();
+        hitstop = br.ReadInt32();
+        damage = br.ReadInt32();
+        name = br.ReadString();
+        attackSound = br.ReadString();
+        impactSound = br.ReadString();
+        hurtEffect = br.ReadString();
+        cameraShakerNetwork.Deserialize(br);
+    }
+};
+[Serializable]
+public struct CameraShakerNetwork
+{
+    public float intensity;
+    public float timer;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(intensity);
+        bw.Write(timer);
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        intensity = br.ReadSingle();
+        timer = br.ReadSingle();
     }
 };
 [Serializable]
@@ -151,8 +206,8 @@ public class PlayerNetwork
     public DemonicsVector2 position;
     public DemonicsVector2 velocity;
     public AttackSO attack;
-    public AttackSO hurtAttack;
     public AttackNetwork attackNetwork;
+    public AttackNetwork attackHurtNetwork;
     public Vector2 direction;
     public string animation;
     public int animationFrames;
@@ -228,6 +283,7 @@ public class PlayerNetwork
         hurtbox.Serialize(bw);
         hitbox.Serialize(bw);
         attackNetwork.Serialize(bw);
+        attackHurtNetwork.Serialize(bw);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Serialize(bw);
@@ -274,6 +330,7 @@ public class PlayerNetwork
         hurtbox.Deserialize(br);
         hitbox.Deserialize(br);
         attackNetwork.Deserialize(br);
+        attackHurtNetwork.Deserialize(br);
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Deserialize(br);
@@ -397,6 +454,8 @@ public struct GameSimulation : IGame
             _players[i].soundStop = "";
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
+            _players[i].attackNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "" };
+            _players[i].attackHurtNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "" };
             _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
             _players[i].hitbox = new ColliderNetwork() { active = false };
             _players[i].hurtbox = new ColliderNetwork() { active = true };
@@ -579,21 +638,22 @@ public struct GameSimulation : IGame
             }
             if (light)
             {
+                //_players[index].attackInput = InputEnum.Light;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, frame = Framenumber };
                 _players[index].start = true;
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, frame = DemonicsWorld.Frame };
-                //_players[index].CurrentState.ToAttackState(_players[index]);
             }
             if (medium)
             {
+                // _players[index].attackInput = InputEnum.Medium;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, frame = Framenumber };
                 _players[index].start = true;
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, frame = DemonicsWorld.Frame };
-                // _players[index].CurrentState.ToAttackState(_players[index]);
             }
-            // if (heavy)
-            // {
-            //     _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = DemonicsWorld.Frame };
-            //     // _players[index].CurrentState.ToAttackState(_players[index]);
-            // }
+            if (heavy)
+            {
+                //_players[index].attackInput = InputEnum.Heavy;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = Framenumber };
+                _players[index].start = true;
+            }
             // if (arcana)
             // {
             //     _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, frame = DemonicsWorld.Frame };

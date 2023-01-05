@@ -617,7 +617,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         Health = playerGs.health;
         Vector2Int fixedPosition = new Vector2Int((int)(playerGs.position.x * 1) / 1, (int)(playerGs.position.y * 1) / 1);
-        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)fixedPosition.x, (DemonicsFloat)fixedPosition.y));
+        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
         NetworkDebug(info);
     }
 

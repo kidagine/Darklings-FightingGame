@@ -11,36 +11,35 @@ public class HurtState : HurtParentState
             player.animationFrames = 0;
             //player.player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
             CheckFlip(player);
-            player.health -= player.hurtAttack.damage;
+            player.health -= player.attackHurtNetwork.damage;
             // player.player.SetHealth(200);
             player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();
             player.enter = true;
-            GameSimulation.Hitstop = player.hurtAttack.hitstop;
-            player.sound = player.hurtAttack.impactSound;
+            GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+            player.otherPlayer.canChainAttack = true;
+            player.sound = player.attackHurtNetwork.impactSound;
             DemonicsVector2 hurtEffectPosition = DemonicsVector2.Zero;
             if (player.otherPlayer.isAir)
             {
                 hurtEffectPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
-                player.hurtAttack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
             }
             else
             {
                 hurtEffectPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
-                player.hurtAttack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
             }
-            player.SetEffect(player.hurtAttack.hurtEffect, hurtEffectPosition);
-            if (player.hurtAttack.cameraShaker != null && !player.hurtAttack.causesSoftKnockdown)
+            player.SetEffect(player.attackHurtNetwork.hurtEffect, hurtEffectPosition);
+            if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
             {
-                CameraShake.Instance.Shake(player.hurtAttack.cameraShaker);
+                CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
             }
-            player.stunFrames = player.hurtAttack.hitStun;
+            player.stunFrames = 10;
             player.knockback = 0;
-            start = player.position;
-            end = new DemonicsVector2(player.position.x + (player.hurtAttack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT - 0.5f);
+            player.attackHurtNetwork.knockbackStart = player.position;
+            player.attackHurtNetwork.knockbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         }
-        player.velocity = DemonicsVector2.Zero;
+        //player.velocity = DemonicsVector2.Zero;
         player.animation = "Hurt";
         if (player.animationFrames < 4)
         {
@@ -48,21 +47,22 @@ public class HurtState : HurtParentState
         }
         if (GameSimulation.Hitstop <= 0)
         {
+            //player.velocity = new DemonicsVector2((player.attackHurtNetwork.travdelDistance) * (DemonicsFloat)(-player.flip), (DemonicsFloat)0);
             if (!DemonicsPhysics.IsInCorner(player))
             {
-                if (player.hurtAttack.knockbackDuration > 0 && player.knockback <= player.hurtAttack.knockbackDuration)
+                if (player.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.attackHurtNetwork.knockbackDuration)
                 {
-                    DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.hurtAttack.knockbackDuration;
-                    DemonicsFloat distance = end.x - start.x;
-                    DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
+                    DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackHurtNetwork.knockbackDuration;
+                    DemonicsFloat distance = player.attackHurtNetwork.knockbackEnd.x - player.attackHurtNetwork.knockbackStart.x;
+                    DemonicsFloat nextX = DemonicsFloat.Lerp(player.attackHurtNetwork.knockbackStart.x, player.attackHurtNetwork.knockbackEnd.x, ratio);
                     DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
                     player.position = nextPosition;
                     player.knockback++;
                 }
             }
-            player.player.StopShakeCoroutine();
+            // player.player.StopShakeCoroutine();
+            player.stunFrames--;
         }
-        player.stunFrames--;
         ToHurtState(player);
         ToIdleState(player);
     }
@@ -70,28 +70,19 @@ public class HurtState : HurtParentState
     {
         if (player.stunFrames <= 0)
         {
-            player.player.StopShakeCoroutine();
-            player.player.OtherPlayer.StopComboTimer();
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.velocity = DemonicsVector2.Zero;
             player.enter = false;
             player.state = "Idle";
         }
     }
     private void ToHurtState(PlayerNetwork player)
     {
+        //DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
-            player.hurtAttack = player.otherPlayer.attack;
+            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             player.enter = false;
-            player.otherPlayer.canChainAttack = true;
-            if (player.otherPlayer.attack.isArcana)
-            {
-                player.state = "Airborne";
-            }
-            else
-            {
-                player.state = "Hurt";
-            }
+            player.state = "Hurt";
         }
     }
 }

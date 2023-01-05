@@ -17,6 +17,7 @@ public class CrouchState : GroundParentState
         player.animation = "Crouch";
         player.velocity = DemonicsVector2.Zero;
         ToIdleState(player);
+        ToAttackState(player);
     }
 
     private void ToIdleState(PlayerNetwork player)
@@ -27,19 +28,35 @@ public class CrouchState : GroundParentState
             player.state = "Idle";
         }
     }
-    public override void ToAttackState(PlayerNetwork player)
+    private void ToAttackState(PlayerNetwork player)
     {
-        player.isCrouch = true;
-        player.isAir = false;
-        player.canChainAttack = false;
-        player.enter = false;
-        player.state = "Attack";
+        if (player.start)
+        {
+            player.start = false;
+            player.isAir = false;
+            player.isCrouch = true;
+            AttackSO atk = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, false);
+            player.attackNetwork = new AttackNetwork()
+            {
+                damage = atk.damage,
+                travelDistance = (DemonicsFloat)atk.travelDistance.x,
+                name = atk.name,
+                attackSound = atk.attackSound,
+                hurtEffect = atk.hurtEffect,
+                knockbackForce = (DemonicsFloat)atk.knockbackForce.x,
+                knockbackDuration = atk.knockbackDuration,
+                hitstop = atk.hitstop,
+                impactSound = atk.impactSound
+            };
+            player.canChainAttack = false;
+            player.enter = false;
+            player.state = "Attack";
+        }
     }
     public override void ToArcanaState(PlayerNetwork player)
     {
         if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
         {
-            player.isCrouch = true;
             player.isAir = false;
             player.canChainAttack = false;
             player.enter = false;

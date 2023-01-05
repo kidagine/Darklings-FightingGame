@@ -67,26 +67,36 @@ public class IdleState : GroundParentState
     {
         if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
-            player.hurtAttack = player.otherPlayer.attack;
+            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             player.enter = false;
-            player.otherPlayer.canChainAttack = true;
-            if (player.otherPlayer.attack.isArcana)
-            {
-                player.state = "Airborne";
-            }
-            else
-            {
-                player.state = "Hurt";
-            }
+            player.state = "Hurt";
         }
     }
-    public override void ToAttackState(PlayerNetwork player)
+    public void ToAttackState(PlayerNetwork player)
     {
         if (player.start)
         {
+            player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
             player.start = false;
-            player.isCrouch = false;
             player.isAir = false;
+            player.isCrouch = false;
+            if (player.direction.y < 0)
+            {
+                player.isCrouch = true;
+            }
+            AttackSO atk = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, false);
+            player.attackNetwork = new AttackNetwork()
+            {
+                damage = atk.damage,
+                travelDistance = (DemonicsFloat)atk.travelDistance.x,
+                name = atk.name,
+                attackSound = atk.attackSound,
+                hurtEffect = atk.hurtEffect,
+                knockbackForce = (DemonicsFloat)atk.knockbackForce.x,
+                knockbackDuration = atk.knockbackDuration,
+                hitstop = atk.hitstop,
+                impactSound = atk.impactSound
+            };
             player.canChainAttack = false;
             player.enter = false;
             player.state = "Attack";
@@ -96,7 +106,6 @@ public class IdleState : GroundParentState
     {
         if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
         {
-            player.isCrouch = false;
             player.isAir = false;
             player.canChainAttack = false;
             player.enter = false;

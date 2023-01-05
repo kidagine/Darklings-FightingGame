@@ -59,14 +59,7 @@ public class AirParentState : State
         player.state = "BlockAir";
         return true;
     }
-    public override void ToAttackState(PlayerNetwork player)
-    {
-        player.isCrouch = false;
-        player.isAir = true;
-        player.canChainAttack = false;
-        player.enter = false;
-        player.state = "Attack";
-    }
+
     public override void ToArcanaState(PlayerNetwork player)
     {
         if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
@@ -80,7 +73,8 @@ public class AirParentState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        //DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox)
+        if (!player.otherPlayer.canChainAttack && player.otherPlayer.state == "Attack")
         {
             player.enter = false;
             player.otherPlayer.canChainAttack = true;

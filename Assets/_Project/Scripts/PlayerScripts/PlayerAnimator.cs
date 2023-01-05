@@ -52,12 +52,12 @@ public class PlayerAnimator : DemonicsAnimator
             if (GetEvent().throwEnd)
             {
                 _audio.Sound("Impact6").Play();
-                CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+                // CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
             }
             if (GetEvent().throwArcanaEnd)
             {
                 _audio.Sound("Impact6").Play();
-                CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+                //  CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
             }
             _player.Parrying = GetEvent().parry;
             _player.Invincible = GetEvent().invisibile;

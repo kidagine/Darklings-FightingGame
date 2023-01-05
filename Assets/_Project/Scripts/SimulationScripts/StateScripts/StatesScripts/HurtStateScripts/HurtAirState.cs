@@ -32,10 +32,10 @@ public class HurtAirState : HurtParentState
                 player.otherPlayer.attack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
             }
             player.SetEffect(player.otherPlayer.attack.hurtEffect, hurtEffectPosition);
-            if (player.otherPlayer.attack.cameraShaker != null && !player.otherPlayer.attack.causesSoftKnockdown)
-            {
-                CameraShake.Instance.Shake(player.otherPlayer.attack.cameraShaker);
-            }
+            // if (player.otherPlayer.attack.cameraShaker != null && !player.otherPlayer.attack.causesSoftKnockdown)
+            // {
+            //     CameraShake.Instance.Shake(player.otherPlayer.attack.cameraShaker);
+            // }
             player.animationFrames = 0;
             player.stunFrames = player.otherPlayer.attack.hitStun;
             player.knockback = 0;
@@ -108,7 +108,6 @@ public class HurtAirState : HurtParentState
     {
         if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
-            player.otherPlayer.attack = player.otherPlayer.attack;
             player.enter = false;
             player.otherPlayer.canChainAttack = true;
             if (player.otherPlayer.attack.isArcana)

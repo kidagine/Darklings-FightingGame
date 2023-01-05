@@ -32,10 +32,10 @@ public class HurtAirborneState : HurtParentState
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();
             player.sound = player.otherPlayer.attack.impactSound;
-            if (player.otherPlayer.attack.cameraShaker != null)
-            {
-                CameraShake.Instance.Shake(player.otherPlayer.attack.cameraShaker);
-            }
+            // if (player.otherPlayer.attack.cameraShaker != null)
+            // {
+            //     CameraShake.Instance.Shake(player.otherPlayer.attack.cameraShaker);
+            // }
             player.animationFrames = 0;
             player.stunFrames = player.otherPlayer.attack.hitStun;
             player.enter = true;
