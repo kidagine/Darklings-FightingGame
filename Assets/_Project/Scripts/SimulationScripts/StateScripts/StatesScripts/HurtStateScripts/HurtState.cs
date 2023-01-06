@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class HurtState : HurtParentState
 {
-    public static DemonicsVector2 start;
-    private static DemonicsVector2 end;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
@@ -11,8 +9,8 @@ public class HurtState : HurtParentState
             player.animationFrames = 0;
             //player.player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
             CheckFlip(player);
-            player.health -= player.attackHurtNetwork.damage;
-            // player.player.SetHealth(200);
+            player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
+            player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
             player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
             player.player.OtherPlayerUI.IncreaseCombo();
@@ -39,7 +37,6 @@ public class HurtState : HurtParentState
             player.attackHurtNetwork.knockbackStart = player.position;
             player.attackHurtNetwork.knockbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         }
-        //player.velocity = DemonicsVector2.Zero;
         player.animation = "Hurt";
         if (player.animationFrames < 4)
         {
@@ -47,7 +44,6 @@ public class HurtState : HurtParentState
         }
         if (GameSimulation.Hitstop <= 0)
         {
-            //player.velocity = new DemonicsVector2((player.attackHurtNetwork.travdelDistance) * (DemonicsFloat)(-player.flip), (DemonicsFloat)0);
             if (!DemonicsPhysics.IsInCorner(player))
             {
                 if (player.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.attackHurtNetwork.knockbackDuration)
@@ -60,7 +56,6 @@ public class HurtState : HurtParentState
                     player.knockback++;
                 }
             }
-            // player.player.StopShakeCoroutine();
             player.stunFrames--;
         }
         ToHurtState(player);
@@ -70,6 +65,8 @@ public class HurtState : HurtParentState
     {
         if (player.stunFrames <= 0)
         {
+            player.player.StopShakeCoroutine();
+            player.player.PlayerUI.UpdateHealthDamaged();
             player.velocity = DemonicsVector2.Zero;
             player.enter = false;
             player.state = "Idle";
@@ -77,9 +74,10 @@ public class HurtState : HurtParentState
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        //DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
+            player.player.StopShakeCoroutine();
+            player.player.PlayerUI.UpdateHealthDamaged();
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             player.enter = false;
             player.state = "Hurt";

@@ -225,7 +225,7 @@ public class PlayerUI : MonoBehaviour
         _assistSlider.value = value;
     }
 
-    public void SetHealth(float value)
+    public void SetHealth(int value)
     {
         if (value <= 3000)
         {
@@ -280,7 +280,7 @@ public class PlayerUI : MonoBehaviour
         _healthSlider.value = endValue;
     }
 
-    public void SetRecoverableHealth(float value)
+    public void SetRecoverableHealth(int value)
     {
         _healthRecoverableSlider.value = value;
     }

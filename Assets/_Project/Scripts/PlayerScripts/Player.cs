@@ -27,7 +27,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     private Color _comboTimerColor;
     private Coroutine _shakeContactCoroutine;
     private readonly DemonicsFloat _damageDecay = (DemonicsFloat)0.97f;
-    private readonly DemonicsFloat _whiteHealthDivider = (DemonicsFloat)1.4f;
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
@@ -204,10 +203,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
         else
         {
-            HealthRecoverable -= (int)((DemonicsFloat)value / _whiteHealthDivider);
         }
-        _playerUI.SetHealth(Health);
-        _playerUI.SetRecoverableHealth(HealthRecoverable);
+        // _playerUI.SetHealth(Health);
+        // _playerUI.SetRecoverableHealth(HealthRecoverable);
     }
 
     public void StartShakeContact()
@@ -618,6 +616,8 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         Health = playerGs.health;
         Vector2Int fixedPosition = new Vector2Int((int)(playerGs.position.x * 1) / 1, (int)(playerGs.position.y * 1) / 1);
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
+        _playerUI.SetHealth(playerGs.health);
+        _playerUI.SetRecoverableHealth(playerGs.healthRecoverable);
         NetworkDebug(info);
     }
 

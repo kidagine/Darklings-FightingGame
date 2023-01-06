@@ -32,9 +32,14 @@ public class CrouchState : GroundParentState
     {
         if (player.start)
         {
+            player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
             player.start = false;
             player.isAir = false;
-            player.isCrouch = true;
+            player.isCrouch = false;
+            if (player.direction.y < 0)
+            {
+                player.isCrouch = true;
+            }
             AttackSO atk = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, false);
             player.attackNetwork = new AttackNetwork()
             {

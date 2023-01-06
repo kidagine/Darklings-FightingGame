@@ -59,7 +59,6 @@ public class AttackState : State
                         {
                             player.isCrouch = true;
                         }
-                        Debug.Log(player.isCrouch);
                         AttackSO atk = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, false);
                         player.attackNetwork = new AttackNetwork()
                         {

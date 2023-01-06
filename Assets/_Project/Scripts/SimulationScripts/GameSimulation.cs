@@ -215,6 +215,7 @@ public class PlayerNetwork
     public int stunFrames;
     public InputEnum attackInput;
     public int health;
+    public int healthRecoverable;
     public int arcana;
     public int shadow;
     public int flip;
@@ -257,6 +258,7 @@ public class PlayerNetwork
         bw.Write(stunFrames);
         bw.Write((int)attackInput);
         bw.Write(health);
+        bw.Write(healthRecoverable);
         bw.Write(arcana);
         bw.Write(shadow);
         bw.Write(sound);
@@ -304,6 +306,7 @@ public class PlayerNetwork
         stunFrames = br.ReadInt32();
         attackInput = (InputEnum)br.ReadInt32();
         health = br.ReadInt32();
+        healthRecoverable = br.ReadInt32();
         arcana = br.ReadInt32();
         shadow = br.ReadInt32();
         sound = br.ReadString();
@@ -374,6 +377,7 @@ public struct GameSimulation : IGame
     public static bool Start { get; set; }
     public static bool Run { get; set; }
     public int Checksum => GetHashCode();
+    public static int Frametime { get; set; }
     public static bool _introPlayed;
     public static PlayerNetwork[] _players;
 
@@ -448,6 +452,7 @@ public struct GameSimulation : IGame
             _players[i].position = new DemonicsVector2((DemonicsFloat)GameplayManager.Instance.GetSpawnPositions()[i], DemonicsPhysics.GROUND_POINT);
             _players[i].playerStats = playerStats[i];
             _players[i].health = playerStats[i].maxHealth;
+            _players[i].healthRecoverable = playerStats[i].maxHealth;
             _players[i].attackInput = InputEnum.Direction;
             _players[i].animation = "Idle";
             _players[i].sound = "";
@@ -762,6 +767,7 @@ public struct GameSimulation : IGame
                 GameSimulation.Start = true;
             }
             Framenumber++;
+            Frametime = Framenumber;
             DemonicsWorld.Frame = Framenumber;
             if (IntroFrame < 0 && IntroFrame > -1000)
             {
