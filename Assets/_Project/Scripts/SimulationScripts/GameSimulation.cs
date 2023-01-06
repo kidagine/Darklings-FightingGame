@@ -104,6 +104,7 @@ public struct AttackNetwork
     public DemonicsVector2 knockbackEnd;
     public DemonicsFloat travelDistance;
     public DemonicsFloat knockbackForce;
+    public ComboTimerStarterEnum comboTimerStarter;
     public int knockbackDuration;
     public int hitstop;
     public int damage;
@@ -121,6 +122,7 @@ public struct AttackNetwork
         bw.Write((float)knockbackEnd.y);
         bw.Write((float)travelDistance);
         bw.Write((float)knockbackForce);
+        bw.Write((int)comboTimerStarter);
         bw.Write(knockbackDuration);
         bw.Write(hitstop);
         bw.Write(damage);
@@ -140,6 +142,7 @@ public struct AttackNetwork
         knockbackEnd.y = (DemonicsFloat)br.ReadSingle();
         travelDistance = (DemonicsFloat)br.ReadSingle();
         knockbackForce = (DemonicsFloat)br.ReadSingle();
+        comboTimerStarter = (ComboTimerStarterEnum)br.ReadInt32();
         knockbackDuration = br.ReadInt32();
         hitstop = br.ReadInt32();
         damage = br.ReadInt32();
@@ -217,6 +220,7 @@ public class PlayerNetwork
     public int attackFrames;
     public int stunFrames;
     public int combo;
+    public int comboTimer;
     public InputEnum attackInput;
     public int health;
     public int healthRecoverable;
@@ -271,6 +275,7 @@ public class PlayerNetwork
         bw.Write(jump);
         bw.Write(knockback);
         bw.Write(combo);
+        bw.Write(comboTimer);
         bw.Write(isCrouch);
         bw.Write(isAir);
         bw.Write(hasJumped);
@@ -320,6 +325,7 @@ public class PlayerNetwork
         jump = br.ReadSingle();
         knockback = br.ReadInt32();
         combo = br.ReadInt32();
+        comboTimer = br.ReadInt32();
         isCrouch = br.ReadBoolean();
         isAir = br.ReadBoolean();
         hasJumped = br.ReadBoolean();

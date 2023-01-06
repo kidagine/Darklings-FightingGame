@@ -7,8 +7,12 @@ public class HurtState : HurtParentState
         if (!player.enter)
         {
             player.animationFrames = 0;
+            if (player.combo == 0)
+            {
+                player.comboTimer = ComboTimerStarterTypes.GetComboTimerStarterValue(player.attackHurtNetwork.comboTimerStarter);
+            }
+            player.player.OtherPlayerUI.SetComboTimerActive(true);
             player.combo++;
-            //player.player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
             CheckFlip(player);
             player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
             player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
@@ -57,18 +61,23 @@ public class HurtState : HurtParentState
                     player.knockback++;
                 }
             }
+            player.comboTimer--;
             player.stunFrames--;
+            player.player.OtherPlayerUI.SetComboTimer
+           (DemonicsFloat.Lerp((DemonicsFloat)1, (DemonicsFloat)0,
+            (DemonicsFloat)player.comboTimer / (DemonicsFloat)ComboTimerStarterTypes.GetComboTimerStarterValue(player.attackHurtNetwork.comboTimerStarter)), ComboTimerStarterTypes.GetComboTimerStarterColor(player.attackHurtNetwork.comboTimerStarter));
         }
         ToHurtState(player);
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if (player.stunFrames <= 0)
+        if (player.stunFrames <= 0 || player.comboTimer <= 0)
         {
             player.combo = 0;
             player.player.OtherPlayerUI.ResetCombo();
             player.player.StopShakeCoroutine();
+            player.player.PlayerUI.SetComboTimerActive(false);
             player.player.PlayerUI.UpdateHealthDamaged();
             player.velocity = DemonicsVector2.Zero;
             player.enter = false;

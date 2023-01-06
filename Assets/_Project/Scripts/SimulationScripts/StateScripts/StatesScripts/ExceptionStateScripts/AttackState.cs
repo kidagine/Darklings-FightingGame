@@ -47,7 +47,7 @@ public class AttackState : State
                 //     end = new DemonicsVector2(player.position.x + (player.attack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT);
                 // }
                 // knock = true;
-                if ((!(player.attackInput == InputEnum.Heavy || player.attackInput == InputEnum.Medium && player.isCrouch)))
+                if ((!(player.attackInput == InputEnum.Medium && player.isCrouch)))
                 {
                     if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
                     {
@@ -71,7 +71,8 @@ public class AttackState : State
                             knockbackDuration = atk.knockbackDuration,
                             hitstop = atk.hitstop,
                             impactSound = atk.impactSound,
-                            hitStun = atk.hitStun
+                            hitStun = atk.hitStun,
+                            comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow
                         };
                         player.enter = false;
                         player.state = "Attack";

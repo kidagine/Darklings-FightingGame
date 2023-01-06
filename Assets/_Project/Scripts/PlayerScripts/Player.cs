@@ -159,12 +159,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerUI.SetHealth(Health);
     }
 
-    void FixedUpdate()
-    {
-        AssistCharge();
-        ComboTimer();
-    }
-
     private void AssistCharge()
     {
         if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameplayManager.Instance.HasGameStarted)
@@ -234,18 +228,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
-    public void CheckFlip()
-    {
-        // if (OtherPlayerMovement.Physics.Position.x > _playerMovement.Physics.Position.x)
-        // {
-        //     Flip(1);
-        // }
-        // else if (OtherPlayerMovement.Physics.Position.x < _playerMovement.Physics.Position.x)
-        // {
-        //     Flip(-1);
-        // }
-    }
-
     public void Flip(int xDirection)
     {
         transform.localScale = new Vector2(xDirection, transform.localScale.y);
@@ -300,35 +282,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerUI.SetAssist((float)AssistGauge);
     }
 
-    public void StartComboTimer(ComboTimerStarterEnum comboTimerStarter)
-    {
-        _playerUI.SetComboTimerActive(true);
-        _comboTimerFrames = 0;
-        _comboTimerWaitFrames = ComboTimerStarterTypes.GetComboTimerStarterValue(comboTimerStarter);
-        _comboTimerColor = ComboTimerStarterTypes.GetComboTimerStarterColor(comboTimerStarter);
-        _playerUI.SetComboTimer((DemonicsFloat)1, _comboTimerColor);
-    }
-
-    private void ComboTimer()
-    {
-        if (_comboTimerWaitFrames > 0 && !_comboTimerPaused)
-        {
-            DemonicsFloat value = DemonicsFloat.Lerp((DemonicsFloat)1, (DemonicsFloat)0, (DemonicsFloat)_comboTimerFrames / (DemonicsFloat)_comboTimerWaitFrames);
-            _playerUI.SetComboTimer(value, _comboTimerColor);
-            _comboTimerFrames++;
-            if (_comboTimerFrames == _comboTimerWaitFrames)
-            {
-                _playerUI.SetComboTimerActive(false);
-            }
-        }
-    }
-
     public void StopComboTimer()
     {
-        _comboTimerWaitFrames = 0;
-        _playerUI.SetComboTimerActive(false);
-        _playerUI.ResetCombo();
-        _comboTimerPaused = false;
+        // _comboTimerWaitFrames = 0;
+        // _playerUI.SetComboTimerActive(false);
+        // _playerUI.ResetCombo();
+        // _comboTimerPaused = false;
     }
 
     public void FreezeComboTimer()

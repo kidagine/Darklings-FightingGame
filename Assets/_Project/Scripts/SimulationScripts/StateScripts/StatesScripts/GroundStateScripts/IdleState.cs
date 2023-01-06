@@ -96,7 +96,8 @@ public class IdleState : GroundParentState
                 knockbackDuration = atk.knockbackDuration,
                 hitstop = atk.hitstop,
                 impactSound = atk.impactSound,
-                hitStun = atk.hitStun
+                hitStun = atk.hitStun,
+                comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow
             };
             player.canChainAttack = false;
             player.enter = false;
