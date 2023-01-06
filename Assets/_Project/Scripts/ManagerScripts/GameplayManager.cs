@@ -188,6 +188,7 @@ public class GameplayManager : MonoBehaviour
 
     public void InitializePlayers(GameObject playerOneObject, GameObject playerTwoObject)
     {
+        _fadeHandler.StartFadeTransition(true);
         playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];
         playerTwoObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerTwo];
         Time.timeScale = GameplayManager.Instance.GameSpeed;
@@ -383,6 +384,7 @@ public class GameplayManager : MonoBehaviour
 
     public void SetupGame()
     {
+        _fadeHandler.StartFadeTransition(false);
         GameSimulation._players[0].player = GameplayManager.Instance.PlayerOne;
         GameSimulation._players[1].player = GameplayManager.Instance.PlayerTwo;
         _uiInput.gameObject.SetActive(true);
@@ -455,7 +457,7 @@ public class GameplayManager : MonoBehaviour
     }
     public void SkipIntro()
     {
-        if (IsDialogueRunning && !SceneSettings.ReplayMode)
+        if (IsDialogueRunning && !SceneSettings.ReplayMode || !NetworkInput.IS_LOCAL)
         {
             ReplayManager.Instance.Skip = DemonicsWorld.Frame;
             _playerOneDialogue.StopDialogue();
@@ -492,7 +494,18 @@ public class GameplayManager : MonoBehaviour
         }
         else
         {
-            _matchOverMenu.Show();
+            if (!NetworkInput.IS_LOCAL)
+            {
+                if (GameManager.Instance.IsRunning)
+                {
+                    GameManager.Instance.Shutdown();
+                }
+                SceneManager.LoadScene("2. MainMenuScene");
+            }
+            else
+            {
+                _matchOverMenu.Show();
+            }
             // if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
             // {
             //     if (_controllerTwoType != ControllerTypeEnum.Keyboard)
@@ -510,6 +523,7 @@ public class GameplayManager : MonoBehaviour
 
     public virtual void StartRound()
     {
+        GameSimulation.IntroFrame = 150;
         _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
         {
@@ -616,7 +630,6 @@ public class GameplayManager : MonoBehaviour
                                 ReplayManager.Instance.StartLoadReplay();
                             }
                         }
-                        GameSimulation.Run = true;
                     }
                 }
             }
@@ -1169,6 +1182,12 @@ public class GameplayManager : MonoBehaviour
         {
             InputSystem.RemoveDevice(keyboardTwo);
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        if (GameManager.Instance.IsRunning)
+            GameManager.Instance.Shutdown();
     }
 }
 

@@ -28,6 +28,7 @@ public class PlayerSimulation : MonoBehaviour
         {
             _player.PlayerUI.Disconnected();
         }
+        _player.PlayerUI.SetArcana(playerGs.arcana);
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         _playerAnimator.SetSpriteOrder(playerGs.spriteOrder);
         _hitBoxVisualizer.ShowBox(playerGs.hitbox);

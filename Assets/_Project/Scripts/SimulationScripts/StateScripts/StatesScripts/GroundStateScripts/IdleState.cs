@@ -18,8 +18,8 @@ public class IdleState : GroundParentState
         ToJumpForwardState(player);
         ToCrouchState(player);
         ToDashState(player);
-        //  ToAttackStates(player);
-        //ToHurtState(player);
+        ToHurtState(player);
+        ToAttackState(player);
     }
 
     private void ToCrouchState(PlayerNetwork player)
@@ -63,20 +63,55 @@ public class IdleState : GroundParentState
             player.state = "Dash";
         }
     }
-    private void ToAttackStates(PlayerNetwork player)
+    private void ToHurtState(PlayerNetwork player)
     {
-        if (player.dashDirection != 0)
+        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
+            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            player.enter = false;
+            player.state = "Hurt";
+        }
+    }
+    public void ToAttackState(PlayerNetwork player)
+    {
+        if (player.start)
+        {
+            player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
+            player.start = false;
+            player.isAir = false;
+            player.isCrouch = false;
+            if (player.direction.y < 0)
+            {
+                player.isCrouch = true;
+            }
+            AttackSO atk = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, false);
+            player.attackNetwork = new AttackNetwork()
+            {
+                damage = atk.damage,
+                travelDistance = (DemonicsFloat)atk.travelDistance.x,
+                name = atk.name,
+                attackSound = atk.attackSound,
+                hurtEffect = atk.hurtEffect,
+                knockbackForce = (DemonicsFloat)atk.knockbackForce.x,
+                knockbackDuration = atk.knockbackDuration,
+                hitstop = atk.hitstop,
+                impactSound = atk.impactSound,
+                hitStun = atk.hitStun,
+                comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow
+            };
+            player.canChainAttack = false;
             player.enter = false;
             player.state = "Attack";
         }
     }
-    private void ToHurtState(PlayerNetwork player)
+    public override void ToArcanaState(PlayerNetwork player)
     {
-        if (player.otherPlayer.state == "Attack")
+        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
         {
+            player.isAir = false;
+            player.canChainAttack = false;
             player.enter = false;
-            player.state = "Hurt";
+            player.state = "Arcana";
         }
     }
 }

@@ -52,8 +52,8 @@ public class DebugGameplayMenu : MonoBehaviour
         {
             _p1ConnectionSlider.value = GameplayManager.Instance.PlayerOne.ConnectionProgress;
             _p2ConnectionSlider.value = GameplayManager.Instance.PlayerTwo.ConnectionProgress;
-            _p1ConnectionText.text = GameplayManager.Instance.PlayerOne.ConnectionStatus;
-            _p2ConnectionText.text = GameplayManager.Instance.PlayerTwo.ConnectionStatus;
+            _p1ConnectionText.text = GameplayManager.Instance.PlayerOne.Health.ToString();
+            _p2ConnectionText.text = GameplayManager.Instance.PlayerTwo.Health.ToString();
 
             string p1X = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.x).ToString();
             string p1Y = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.y).ToString();

@@ -52,12 +52,12 @@ public class PlayerAnimator : DemonicsAnimator
             if (GetEvent().throwEnd)
             {
                 _audio.Sound("Impact6").Play();
-                CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+                // CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
             }
             if (GetEvent().throwArcanaEnd)
             {
                 _audio.Sound("Impact6").Play();
-                CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+                //  CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
             }
             _player.Parrying = GetEvent().parry;
             _player.Invincible = GetEvent().invisibile;
@@ -82,8 +82,8 @@ public class PlayerAnimator : DemonicsAnimator
     protected override void CheckAnimationBoxes()
     {
         base.CheckAnimationBoxes();
-        _playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
-        _playerCollisionBoxes.SetHitboxes(GetHitboxes());
+        //_playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
+        //_playerCollisionBoxes.SetHitboxes(GetHitboxes());
     }
 
     public void SetInvinsible(bool state)
@@ -109,10 +109,10 @@ public class PlayerAnimator : DemonicsAnimator
 
     public bool InActive()
     {
-        if (GetHitboxes().Length > 0)
-        {
-            return true;
-        }
+        // if (GetHitboxes().Length > 0)
+        // {
+        //     return true;
+        // }
         return false;
     }
 

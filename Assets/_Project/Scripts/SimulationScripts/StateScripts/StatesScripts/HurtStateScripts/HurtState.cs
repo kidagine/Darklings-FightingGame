@@ -2,112 +2,97 @@ using UnityEngine;
 
 public class HurtState : HurtParentState
 {
-    public static bool skipKnockback;
-    private static AttackSO hurtAttack;
-    public static DemonicsVector2 start;
-    private static DemonicsVector2 end;
-    private static int knockbackFrame;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
         {
             player.animationFrames = 0;
-            //player.player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
+            if (player.combo == 0)
+            {
+                player.comboTimer = ComboTimerStarterTypes.GetComboTimerStarterValue(player.attackHurtNetwork.comboTimerStarter);
+            }
+            player.player.OtherPlayerUI.SetComboTimerActive(true);
+            player.combo++;
             CheckFlip(player);
-            hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
-            player.health -= player.player.CalculateDamage(hurtAttack);
-            player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
+            player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
+            player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
             player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
-            player.player.OtherPlayerUI.IncreaseCombo();
+            player.player.OtherPlayerUI.IncreaseCombo(player.combo);
             player.enter = true;
-            GameSimulation.Hitstop = hurtAttack.hitstop;
-            player.sound = hurtAttack.impactSound;
+            GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+            player.otherPlayer.canChainAttack = true;
+            player.sound = player.attackHurtNetwork.impactSound;
             DemonicsVector2 hurtEffectPosition = DemonicsVector2.Zero;
             if (player.otherPlayer.isAir)
             {
                 hurtEffectPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
-                hurtAttack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
             }
             else
             {
                 hurtEffectPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
-                hurtAttack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
             }
-            player.SetEffect(hurtAttack.hurtEffect, hurtEffectPosition);
-            if (hurtAttack.cameraShaker != null && !hurtAttack.causesSoftKnockdown)
+            player.SetEffect(player.attackHurtNetwork.hurtEffect, hurtEffectPosition);
+            if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
             {
-                CameraShake.Instance.Shake(hurtAttack.cameraShaker);
+                CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
             }
-            player.stunFrames = hurtAttack.hitStun;
-            knockbackFrame = 0;
-            start = player.position;
-            end = new DemonicsVector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT - 0.5f);
+            player.stunFrames = player.attackHurtNetwork.hitStun;
+            player.knockback = 0;
+            player.attackHurtNetwork.knockbackStart = player.position;
+            player.attackHurtNetwork.knockbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         }
-        player.velocity = DemonicsVector2.Zero;
         player.animation = "Hurt";
-        player.animationFrames++;
+        if (player.animationFrames < 4)
+        {
+            player.animationFrames++;
+        }
         if (GameSimulation.Hitstop <= 0)
         {
-            if (!skipKnockback)
+            if (!DemonicsPhysics.IsInCorner(player))
             {
-                if (hurtAttack.knockbackDuration > 0 && knockbackFrame <= hurtAttack.knockbackDuration)
+                if (player.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.attackHurtNetwork.knockbackDuration)
                 {
-                    DemonicsFloat ratio = (DemonicsFloat)knockbackFrame / (DemonicsFloat)hurtAttack.knockbackDuration;
-                    DemonicsFloat distance = end.x - start.x;
-                    DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
-                    DemonicsFloat baseY = DemonicsFloat.Lerp(start.y, end.y, (nextX - start.x) / distance);
-                    DemonicsFloat arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
-                    DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
-                    if (hurtAttack.causesSoftKnockdown)
-                    {
-                        nextPosition = new DemonicsVector2(nextX, player.position.y);
-                    }
-                    else
-                    {
-                        nextPosition = new DemonicsVector2(nextX, baseY + arc);
-                    }
+                    DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackHurtNetwork.knockbackDuration;
+                    DemonicsFloat distance = player.attackHurtNetwork.knockbackEnd.x - player.attackHurtNetwork.knockbackStart.x;
+                    DemonicsFloat nextX = DemonicsFloat.Lerp(player.attackHurtNetwork.knockbackStart.x, player.attackHurtNetwork.knockbackEnd.x, ratio);
+                    DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
                     player.position = nextPosition;
-                    knockbackFrame++;
+                    player.knockback++;
                 }
             }
-            player.player.StopShakeCoroutine();
+            player.comboTimer--;
             player.stunFrames--;
+            player.player.OtherPlayerUI.SetComboTimer
+           (DemonicsFloat.Lerp((DemonicsFloat)1, (DemonicsFloat)0,
+            (DemonicsFloat)player.comboTimer / (DemonicsFloat)ComboTimerStarterTypes.GetComboTimerStarterValue(player.attackHurtNetwork.comboTimerStarter)), ComboTimerStarterTypes.GetComboTimerStarterColor(player.attackHurtNetwork.comboTimerStarter));
         }
-        player.stunFrames--;
+        ToHurtState(player);
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if (player.stunFrames <= 0)
+        if (player.stunFrames <= 0 || player.comboTimer <= 0)
         {
-            skipKnockback = false;
+            player.combo = 0;
+            player.player.OtherPlayerUI.ResetCombo();
             player.player.StopShakeCoroutine();
-            player.player.OtherPlayer.StopComboTimer();
+            player.player.PlayerUI.SetComboTimerActive(false);
             player.player.PlayerUI.UpdateHealthDamaged();
+            player.velocity = DemonicsVector2.Zero;
             player.enter = false;
             player.state = "Idle";
         }
     }
-
-    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
+    private void ToHurtState(PlayerNetwork player)
     {
-        player.enter = false;
-        if (attack.causesKnockdown)
+        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
-            player.state = "Airborne";
+            player.player.StopShakeCoroutine();
+            player.player.PlayerUI.UpdateHealthDamaged();
+            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            player.enter = false;
+            player.state = "Hurt";
         }
-        else
-        {
-            if (attack.knockbackArc == 0 || attack.causesSoftKnockdown)
-            {
-                player.state = "Hurt";
-            }
-            else
-            {
-                player.state = "HurtAir";
-            }
-        }
-        return true;
     }
 }

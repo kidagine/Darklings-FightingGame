@@ -27,7 +27,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     private Color _comboTimerColor;
     private Coroutine _shakeContactCoroutine;
     private readonly DemonicsFloat _damageDecay = (DemonicsFloat)0.97f;
-    private readonly DemonicsFloat _whiteHealthDivider = (DemonicsFloat)1.4f;
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
@@ -160,13 +159,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerUI.SetHealth(Health);
     }
 
-    void FixedUpdate()
-    {
-        ArcanaCharge();
-        AssistCharge();
-        ComboTimer();
-    }
-
     private void AssistCharge()
     {
         if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameplayManager.Instance.HasGameStarted)
@@ -177,19 +169,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 AssistGauge = (DemonicsFloat)1.0f;
             }
             _playerUI.SetAssist((float)AssistGauge);
-        }
-    }
-
-    private void ArcanaCharge()
-    {
-        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameplayManager.Instance.HasGameStarted)
-        {
-            ArcanaGauge += (DemonicsFloat)(Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge));
-            if (GameplayManager.Instance.InfiniteArcana)
-            {
-                ArcanaGauge = (DemonicsFloat)playerStats.Arcana;
-            }
-            _playerUI.SetArcana((float)ArcanaGauge);
         }
     }
 
@@ -218,10 +197,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
         else
         {
-            HealthRecoverable -= (int)((DemonicsFloat)value / _whiteHealthDivider);
         }
-        _playerUI.SetHealth(Health);
-        _playerUI.SetRecoverableHealth(HealthRecoverable);
+        // _playerUI.SetHealth(Health);
+        // _playerUI.SetRecoverableHealth(HealthRecoverable);
     }
 
     public void StartShakeContact()
@@ -248,18 +226,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             yield return new WaitForSeconds(0.075f);
             PlayerAnimator.transform.localPosition = Vector2.zero;
         }
-    }
-
-    public void CheckFlip()
-    {
-        // if (OtherPlayerMovement.Physics.Position.x > _playerMovement.Physics.Position.x)
-        // {
-        //     Flip(1);
-        // }
-        // else if (OtherPlayerMovement.Physics.Position.x < _playerMovement.Physics.Position.x)
-        // {
-        //     Flip(-1);
-        // }
     }
 
     public void Flip(int xDirection)
@@ -316,35 +282,12 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerUI.SetAssist((float)AssistGauge);
     }
 
-    public void StartComboTimer(ComboTimerStarterEnum comboTimerStarter)
-    {
-        _playerUI.SetComboTimerActive(true);
-        _comboTimerFrames = 0;
-        _comboTimerWaitFrames = ComboTimerStarterTypes.GetComboTimerStarterValue(comboTimerStarter);
-        _comboTimerColor = ComboTimerStarterTypes.GetComboTimerStarterColor(comboTimerStarter);
-        _playerUI.SetComboTimer((DemonicsFloat)1, _comboTimerColor);
-    }
-
-    private void ComboTimer()
-    {
-        if (_comboTimerWaitFrames > 0 && !_comboTimerPaused)
-        {
-            DemonicsFloat value = DemonicsFloat.Lerp((DemonicsFloat)1, (DemonicsFloat)0, (DemonicsFloat)_comboTimerFrames / (DemonicsFloat)_comboTimerWaitFrames);
-            _playerUI.SetComboTimer(value, _comboTimerColor);
-            _comboTimerFrames++;
-            if (_comboTimerFrames == _comboTimerWaitFrames)
-            {
-                _playerUI.SetComboTimerActive(false);
-            }
-        }
-    }
-
     public void StopComboTimer()
     {
-        _comboTimerWaitFrames = 0;
-        _playerUI.SetComboTimerActive(false);
-        _playerUI.ResetCombo();
-        _comboTimerPaused = false;
+        // _comboTimerWaitFrames = 0;
+        // _playerUI.SetComboTimerActive(false);
+        // _playerUI.ResetCombo();
+        // _comboTimerPaused = false;
     }
 
     public void FreezeComboTimer()
@@ -617,16 +560,23 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
-    public bool IsAnimationFinished()
+    public bool IsAnimationFinished(string name, int frames)
     {
-        return PlayerAnimator.IsAnimationFinished();
+        return PlayerAnimator.IsAnimationFinished(name, frames);
+    }
+    public bool IsAnimationLoop(string name)
+    {
+        return PlayerAnimator.IsAnimationLoop(name);
     }
     public string ConnectionStatus { get; private set; }
     public int ConnectionProgress { get; private set; }
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
+        Health = playerGs.health;
         Vector2Int fixedPosition = new Vector2Int((int)(playerGs.position.x * 1) / 1, (int)(playerGs.position.y * 1) / 1);
-        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)fixedPosition.x, (DemonicsFloat)fixedPosition.y));
+        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
+        _playerUI.SetHealth(playerGs.health);
+        _playerUI.SetRecoverableHealth(playerGs.healthRecoverable);
         NetworkDebug(info);
     }
 

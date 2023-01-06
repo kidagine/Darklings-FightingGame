@@ -17,6 +17,7 @@ public class CrouchState : GroundParentState
         player.animation = "Crouch";
         player.velocity = DemonicsVector2.Zero;
         ToIdleState(player);
+        ToAttackState(player);
     }
 
     private void ToIdleState(PlayerNetwork player)
@@ -27,18 +28,44 @@ public class CrouchState : GroundParentState
             player.state = "Idle";
         }
     }
-    public override bool ToAttackState(PlayerNetwork player)
+    private void ToAttackState(PlayerNetwork player)
     {
-        player.enter = false;
-        player.isCrouch = true;
-        player.state = "Attack";
-        return true;
+        if (player.start)
+        {
+            player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
+            player.start = false;
+            player.isAir = false;
+            player.isCrouch = false;
+            if (player.direction.y < 0)
+            {
+                player.isCrouch = true;
+            }
+            AttackSO atk = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, false);
+            player.attackNetwork = new AttackNetwork()
+            {
+                damage = atk.damage,
+                travelDistance = (DemonicsFloat)atk.travelDistance.x,
+                name = atk.name,
+                attackSound = atk.attackSound,
+                hurtEffect = atk.hurtEffect,
+                knockbackForce = (DemonicsFloat)atk.knockbackForce.x,
+                knockbackDuration = atk.knockbackDuration,
+                hitstop = atk.hitstop,
+                impactSound = atk.impactSound
+            };
+            player.canChainAttack = false;
+            player.enter = false;
+            player.state = "Attack";
+        }
     }
-    public override bool ToArcanaState(PlayerNetwork player)
+    public override void ToArcanaState(PlayerNetwork player)
     {
-        player.enter = false;
-        player.isCrouch = true;
-        player.state = "Arcana";
-        return true;
+        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
+        {
+            player.isAir = false;
+            player.canChainAttack = false;
+            player.enter = false;
+            player.state = "Arcana";
+        }
     }
 }

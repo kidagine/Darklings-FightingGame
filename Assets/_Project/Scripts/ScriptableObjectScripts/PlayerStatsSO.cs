@@ -18,7 +18,7 @@ public class PlayerStatsSO : ScriptableObject
     public int jumpLevel;
     public int dashLevel;
     public bool canDoubleJump = true;
-    public float arcanaRecharge = 1;
+    public int arcanaRecharge = 1;
     [Header("Moves")]
     public AttackSO m2L;
     public AttackSO m5L;
@@ -37,7 +37,7 @@ public class PlayerStatsSO : ScriptableObject
     public ArcanaSO jArcana;
     [HideInInspector] public int maxHealth = 10000;
 
-    public int Arcana { get { return arcanaLevel; } set { } }
+    public int Arcana { get { return arcanaLevel * ARCANA_MULTIPLIER; } set { } }
     public float Defense { get { return (defenseLevel - 1) * 0.05f + 0.95f; } set { } }
     public DemonicsFloat SpeedWalk
     {
@@ -111,4 +111,6 @@ public class PlayerStatsSO : ScriptableObject
         }
         set { }
     }
+
+    public const int ARCANA_MULTIPLIER = 1000;
 }

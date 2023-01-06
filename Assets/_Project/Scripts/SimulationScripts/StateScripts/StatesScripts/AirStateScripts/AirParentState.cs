@@ -7,6 +7,7 @@ public class AirParentState : State
         ToDashAirState(player);
         ToJumpForwardState(player);
         ToJumpState(player);
+        ToHurtState(player);
     }
     private void ToJumpState(PlayerNetwork player)
     {
@@ -52,37 +53,39 @@ public class AirParentState : State
             player.state = "DashAir";
         }
     }
-    public override bool ToAttackState(PlayerNetwork player)
-    {
-        player.enter = false;
-        player.isAir = true;
-        player.state = "Attack";
-        return true;
-    }
-    public override bool ToArcanaState(PlayerNetwork player)
-    {
-        player.enter = false;
-        player.isAir = true;
-        player.state = "Arcana";
-        return true;
-    }
-    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
-    {
-        player.enter = false;
-        if (attack.causesKnockdown || attack.causesSoftKnockdown)
-        {
-            player.state = "Airborne";
-        }
-        else
-        {
-            player.state = "HurtAir";
-        }
-        return true;
-    }
     public override bool ToBlockState(PlayerNetwork player, AttackSO attack)
     {
         player.enter = false;
         player.state = "BlockAir";
         return true;
+    }
+
+    public override void ToArcanaState(PlayerNetwork player)
+    {
+        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
+        {
+            player.isCrouch = false;
+            player.isAir = true;
+            player.canChainAttack = false;
+            player.enter = false;
+            player.state = "Arcana";
+        }
+    }
+    private void ToHurtState(PlayerNetwork player)
+    {
+        //DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox)
+        if (!player.otherPlayer.canChainAttack && player.otherPlayer.state == "Attack")
+        {
+            player.enter = false;
+            player.otherPlayer.canChainAttack = true;
+            if (player.otherPlayer.attack.isArcana)
+            {
+                player.state = "Airborne";
+            }
+            else
+            {
+                player.state = "HurtAir";
+            }
+        }
     }
 }

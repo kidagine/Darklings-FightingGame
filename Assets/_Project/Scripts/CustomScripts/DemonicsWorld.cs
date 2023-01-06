@@ -2,37 +2,17 @@ using UnityEngine;
 
 public class DemonicsWorld : MonoBehaviour
 {
+    [SerializeField] private int _frameRate = 60;
+    [SerializeField] private bool _vSync = true;
     public static int Frame;
-    private float _tick;
 
 
     void Awake()
     {
-        Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = _frameRate;
+        QualitySettings.vSyncCount = _vSync ? 1 : 0;
         Time.fixedDeltaTime = 0.01667f;
         Frame = 0;
-    }
-
-    void Update()
-    {
-        if (GameplayManager.Instance.HasGameStarted)
-        {
-            _tick += Time.deltaTime;
-            if (_tick >= Time.fixedDeltaTime)
-            {
-                _tick -= Time.fixedDeltaTime;
-                Physics2D.Simulate(Time.fixedDeltaTime);
-            }
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (GameplayManager.Instance.HasGameStarted)
-        {
-            //  Frame++;
-        }
     }
 
     public static bool WaitFrames(ref int frames)

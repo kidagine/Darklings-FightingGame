@@ -1,23 +1,23 @@
-public class WakeUpState : State
+using UnityEngine;
+
+public class TauntState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        CheckFlip(player);
         if (!player.enter)
         {
             player.enter = true;
             player.animationFrames = 0;
+            player.animation = "Taunt";
         }
-        player.hurtbox.active = false;
-        player.animation = "WakeUp";
+        player.velocity = DemonicsVector2.Zero;
         player.animationFrames++;
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if (player.animationFrames >= DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation))
+        if (player.animationFrames >= 160)
         {
-            player.hurtbox.active = true;
             player.enter = false;
             player.state = "Idle";
         }

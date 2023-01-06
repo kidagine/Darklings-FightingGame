@@ -317,13 +317,16 @@ public class PlayerController : BaseController
 
     public void Pause(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (NetworkInput.IS_LOCAL)
         {
-            _player.Pause(_brainController.IsPlayerOne);
-        }
-        if (callbackContext.canceled)
-        {
-            _player.UnPause();
+            if (callbackContext.performed)
+            {
+                _player.Pause(_brainController.IsPlayerOne);
+            }
+            if (callbackContext.canceled)
+            {
+                _player.UnPause();
+            }
         }
     }
     //TRAINING
