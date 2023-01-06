@@ -8,6 +8,7 @@ public class AirParentState : State
         ToJumpForwardState(player);
         ToJumpState(player);
         ToHurtState(player);
+        ToAttackState(player);
     }
     private void ToJumpState(PlayerNetwork player)
     {
@@ -69,6 +70,13 @@ public class AirParentState : State
             player.canChainAttack = false;
             player.enter = false;
             player.state = "Arcana";
+        }
+    }
+    public void ToAttackState(PlayerNetwork player)
+    {
+        if (player.start)
+        {
+            Attack(player, true);
         }
     }
     private void ToHurtState(PlayerNetwork player)

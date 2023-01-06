@@ -29,6 +29,7 @@ public class RunState : GroundParentState
         ToIdleState(player);
         ToJumpState(player);
         ToJumpForwardState(player);
+        ToAttackState(player);
     }
     private void ToJumpState(PlayerNetwork player)
     {
@@ -47,6 +48,13 @@ public class RunState : GroundParentState
             player.enter = false;
             player.soundStop = "Run";
             player.state = "JumpForward";
+        }
+    }
+    public void ToAttackState(PlayerNetwork player)
+    {
+        if (player.start)
+        {
+            Attack(player);
         }
     }
     private void ToIdleState(PlayerNetwork player)

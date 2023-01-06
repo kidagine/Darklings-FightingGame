@@ -19,6 +19,7 @@ public class WalkState : GroundParentState
         ToJumpForwardState(player);
         ToCrouchState(player);
         ToDashState(player);
+        ToAttackState(player);
     }
     private void ToCrouchState(PlayerNetwork player)
     {
@@ -61,7 +62,13 @@ public class WalkState : GroundParentState
             player.state = "Dash";
         }
     }
-
+    public void ToAttackState(PlayerNetwork player)
+    {
+        if (player.start)
+        {
+            Attack(player);
+        }
+    }
     public override void ToArcanaState(PlayerNetwork player)
     {
         if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)

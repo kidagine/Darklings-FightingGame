@@ -373,7 +373,6 @@ public class PlayerUI : MonoBehaviour
         _comboTimerLock.gameObject.SetActive(false);
         _comboTimerSlider.transform.GetChild(0).gameObject.SetActive(state);
         _comboTimerSlider.transform.GetChild(1).gameObject.SetActive(state);
-        Debug.Log("A");
     }
 
     public void SetComboTimerLock(bool state)
