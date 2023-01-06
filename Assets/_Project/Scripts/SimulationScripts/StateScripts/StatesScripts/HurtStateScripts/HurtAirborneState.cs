@@ -30,7 +30,6 @@ public class HurtAirborneState : HurtParentState
             player.health -= player.otherPlayer.attack.damage;
             player.player.SetHealth(player.otherPlayer.attack.damage);
             player.player.PlayerUI.Damaged();
-            player.player.OtherPlayerUI.IncreaseCombo();
             player.sound = player.otherPlayer.attack.impactSound;
             // if (player.otherPlayer.attack.cameraShaker != null)
             // {

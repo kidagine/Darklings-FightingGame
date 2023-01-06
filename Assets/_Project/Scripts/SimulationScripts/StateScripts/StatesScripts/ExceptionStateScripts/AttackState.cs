@@ -70,7 +70,8 @@ public class AttackState : State
                             knockbackForce = (DemonicsFloat)atk.knockbackForce.x,
                             knockbackDuration = atk.knockbackDuration,
                             hitstop = atk.hitstop,
-                            impactSound = atk.impactSound
+                            impactSound = atk.impactSound,
+                            hitStun = atk.hitStun
                         };
                         player.enter = false;
                         player.state = "Attack";
@@ -190,7 +191,6 @@ public class AttackState : State
             player.player.SetHealth(player.player.CalculateDamage(attack));
             player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
-            player.player.OtherPlayerUI.IncreaseCombo();
             return false;
         }
         if (attack.causesKnockdown)

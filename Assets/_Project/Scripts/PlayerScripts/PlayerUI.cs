@@ -467,28 +467,26 @@ public class PlayerUI : MonoBehaviour
         _replayPauseMenu.Hide();
     }
 
-    public void IncreaseCombo()
+    public void IncreaseCombo(int combo)
     {
         if (_hasComboEnded)
         {
             StopCoroutine(_resetComboCoroutine);
             _hasComboEnded = false;
             _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
-            CurrentComboCount = 0;
             _hitsNumberText.text = "0 Hits";
             if (_comboGroup.anchoredPosition.x == -110.0f)
             {
                 _comboGroup.anchoredPosition = new Vector2(-40.0f, _comboGroup.anchoredPosition.y);
             }
         }
-        CurrentComboCount++;
-        _hitsNumberText.text = CurrentComboCount.ToString();
-        if (CurrentComboCount > 1)
+        _hitsNumberText.text = combo.ToString();
+        if (combo > 1)
         {
             _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
             _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(true);
         }
-        if (CurrentComboCount >= 10 && _comboGroup.anchoredPosition.x == -40.0f)
+        if (combo >= 10 && _comboGroup.anchoredPosition.x == -40.0f)
         {
             _comboGroup.anchoredPosition = new Vector2(-110.0f, _comboGroup.anchoredPosition.y);
         }

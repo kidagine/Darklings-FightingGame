@@ -95,7 +95,8 @@ public class IdleState : GroundParentState
                 knockbackForce = (DemonicsFloat)atk.knockbackForce.x,
                 knockbackDuration = atk.knockbackDuration,
                 hitstop = atk.hitstop,
-                impactSound = atk.impactSound
+                impactSound = atk.impactSound,
+                hitStun = atk.hitStun
             };
             player.canChainAttack = false;
             player.enter = false;

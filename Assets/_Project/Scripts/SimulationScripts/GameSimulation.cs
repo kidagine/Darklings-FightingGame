@@ -107,6 +107,7 @@ public struct AttackNetwork
     public int knockbackDuration;
     public int hitstop;
     public int damage;
+    public int hitStun;
     public string name;
     public string attackSound;
     public string impactSound;
@@ -123,6 +124,7 @@ public struct AttackNetwork
         bw.Write(knockbackDuration);
         bw.Write(hitstop);
         bw.Write(damage);
+        bw.Write(hitStun);
         bw.Write(name);
         bw.Write(attackSound);
         bw.Write(impactSound);
@@ -141,6 +143,7 @@ public struct AttackNetwork
         knockbackDuration = br.ReadInt32();
         hitstop = br.ReadInt32();
         damage = br.ReadInt32();
+        hitStun = br.ReadInt32();
         name = br.ReadString();
         attackSound = br.ReadString();
         impactSound = br.ReadString();
@@ -213,6 +216,7 @@ public class PlayerNetwork
     public int animationFrames;
     public int attackFrames;
     public int stunFrames;
+    public int combo;
     public InputEnum attackInput;
     public int health;
     public int healthRecoverable;
@@ -266,6 +270,7 @@ public class PlayerNetwork
         bw.Write(canDash);
         bw.Write(jump);
         bw.Write(knockback);
+        bw.Write(combo);
         bw.Write(isCrouch);
         bw.Write(isAir);
         bw.Write(hasJumped);
@@ -314,6 +319,7 @@ public class PlayerNetwork
         canDash = br.ReadBoolean();
         jump = br.ReadSingle();
         knockback = br.ReadInt32();
+        combo = br.ReadInt32();
         isCrouch = br.ReadBoolean();
         isAir = br.ReadBoolean();
         hasJumped = br.ReadBoolean();

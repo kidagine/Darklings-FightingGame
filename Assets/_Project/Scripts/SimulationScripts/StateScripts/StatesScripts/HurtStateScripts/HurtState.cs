@@ -7,13 +7,14 @@ public class HurtState : HurtParentState
         if (!player.enter)
         {
             player.animationFrames = 0;
+            player.combo++;
             //player.player.OtherPlayer.StartComboTimer(ComboTimerStarterEnum.Yellow);
             CheckFlip(player);
             player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
             player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
             player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
-            player.player.OtherPlayerUI.IncreaseCombo();
+            player.player.OtherPlayerUI.IncreaseCombo(player.combo);
             player.enter = true;
             GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
             player.otherPlayer.canChainAttack = true;
@@ -32,7 +33,7 @@ public class HurtState : HurtParentState
             {
                 CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
             }
-            player.stunFrames = 10;
+            player.stunFrames = player.attackHurtNetwork.hitStun;
             player.knockback = 0;
             player.attackHurtNetwork.knockbackStart = player.position;
             player.attackHurtNetwork.knockbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
@@ -65,6 +66,8 @@ public class HurtState : HurtParentState
     {
         if (player.stunFrames <= 0)
         {
+            player.combo = 0;
+            player.player.OtherPlayerUI.ResetCombo();
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.UpdateHealthDamaged();
             player.velocity = DemonicsVector2.Zero;

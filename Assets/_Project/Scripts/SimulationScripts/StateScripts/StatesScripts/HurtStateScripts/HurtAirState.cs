@@ -16,7 +16,6 @@ public class HurtAirState : HurtParentState
             player.player.SetHealth(player.otherPlayer.attack.damage);
             player.player.StartShakeContact();
             player.player.PlayerUI.Damaged();
-            player.player.OtherPlayerUI.IncreaseCombo();
             player.enter = true;
             GameSimulation.Hitstop = player.otherPlayer.attack.hitstop;
             player.sound = player.otherPlayer.attack.impactSound;
