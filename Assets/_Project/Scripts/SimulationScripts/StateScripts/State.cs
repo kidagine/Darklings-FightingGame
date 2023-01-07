@@ -9,7 +9,6 @@ public class State
     public virtual bool ToBlueFrenzyState(PlayerNetwork player) { return false; }
     public virtual bool ToHurtState(PlayerNetwork player, AttackSO attack) { return false; }
     public virtual bool ToBlockState(PlayerNetwork player, AttackSO attack) { return false; }
-    public virtual void ToArcanaState(PlayerNetwork player) { }
     public void CheckFlip(PlayerNetwork player)
     {
         if (player.otherPlayer.position.x > player.position.x)
@@ -26,32 +25,101 @@ public class State
         player.spriteOrder = 1;
         player.otherPlayer.spriteOrder = 0;
     }
+    public bool IsBlocking(PlayerNetwork player)
+    {
+        if (player.attackHurtNetwork.attackType == AttackTypeEnum.Low && player.direction.y > 0)
+        {
+            return false;
+        }
+        if (player.attackHurtNetwork.attackType == AttackTypeEnum.Overhead && player.direction.y < 0)
+        {
+            return false;
+        }
+        if (player.attackHurtNetwork.attackType == AttackTypeEnum.Break)
+        {
+            return false;
+        }
+        if (player.flip == 1 && player.direction.x < 0 || player.flip == -1 && player.direction.x > 0)
+        {
+            return true;
+        }
+        return false;
+    }
     protected void Attack(PlayerNetwork player, bool air = false)
     {
         player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
-        player.start = false;
+        player.attackPress = false;
         player.isAir = air;
         player.isCrouch = false;
         if (player.direction.y < 0)
         {
             player.isCrouch = true;
         }
-        AttackSO atk = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
+        AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
         player.attackNetwork = new AttackNetwork()
         {
-            damage = atk.damage,
-            travelDistance = (DemonicsFloat)atk.travelDistance.x,
-            name = atk.name,
-            attackSound = atk.attackSound,
-            hurtEffect = atk.hurtEffect,
-            knockbackForce = (DemonicsFloat)atk.knockbackForce.x,
-            knockbackDuration = atk.knockbackDuration,
-            hitstop = atk.hitstop,
-            impactSound = atk.impactSound,
-            hitStun = atk.hitStun,
-            comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow
+            damage = attack.damage,
+            travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
+            name = attack.name,
+            attackSound = attack.attackSound,
+            hurtEffect = attack.hurtEffect,
+            knockbackForce = (DemonicsFloat)attack.knockbackForce.x,
+            knockbackDuration = attack.knockbackDuration,
+            hitstop = attack.hitstop,
+            impactSound = attack.impactSound,
+            hitStun = attack.hitStun,
+            knockbackArc = attack.knockbackArc,
+            jumpCancelable = attack.jumpCancelable,
+            softKnockdown = attack.causesSoftKnockdown,
+            hardKnockdown = attack.causesKnockdown,
+            comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
+            attackType = attack.attackTypeEnum
         };
+        if (attack.cameraShaker != null)
+        {
+            player.attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
+        }
         player.enter = false;
         player.state = "Attack";
+    }
+    protected void Arcana(PlayerNetwork player, bool air = false)
+    {
+        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
+        {
+            player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
+            player.arcanaPress = false;
+            player.isAir = air;
+            player.isCrouch = false;
+            if (player.direction.y < 0)
+            {
+                player.isCrouch = true;
+            }
+            AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
+            player.attackNetwork = new AttackNetwork()
+            {
+                damage = attack.damage,
+                travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
+                name = attack.name,
+                attackSound = attack.attackSound,
+                hurtEffect = attack.hurtEffect,
+                knockbackForce = (DemonicsFloat)attack.knockbackForce.x,
+                knockbackDuration = attack.knockbackDuration,
+                hitstop = attack.hitstop,
+                impactSound = attack.impactSound,
+                hitStun = attack.hitStun,
+                knockbackArc = attack.knockbackArc,
+                jumpCancelable = attack.jumpCancelable,
+                softKnockdown = attack.causesSoftKnockdown,
+                hardKnockdown = attack.causesKnockdown,
+                comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
+                attackType = attack.attackTypeEnum
+            };
+            if (attack.cameraShaker != null)
+            {
+                player.attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
+            }
+            player.enter = false;
+            player.state = "Arcana";
+        }
     }
 };

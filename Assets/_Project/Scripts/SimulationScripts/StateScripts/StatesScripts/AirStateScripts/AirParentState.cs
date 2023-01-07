@@ -9,6 +9,7 @@ public class AirParentState : State
         ToJumpState(player);
         ToHurtState(player);
         ToAttackState(player);
+        ToArcanaState(player);
     }
     private void ToJumpState(PlayerNetwork player)
     {
@@ -61,38 +62,40 @@ public class AirParentState : State
         return true;
     }
 
-    public override void ToArcanaState(PlayerNetwork player)
-    {
-        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
-        {
-            player.isCrouch = false;
-            player.isAir = true;
-            player.canChainAttack = false;
-            player.enter = false;
-            player.state = "Arcana";
-        }
-    }
     public void ToAttackState(PlayerNetwork player)
     {
-        if (player.start)
+        if (player.attackPress)
         {
             Attack(player, true);
         }
     }
+    public void ToArcanaState(PlayerNetwork player)
+    {
+        if (player.arcanaPress)
+        {
+            Arcana(player, true);
+        }
+    }
     private void ToHurtState(PlayerNetwork player)
     {
-        //DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox)
-        if (!player.otherPlayer.canChainAttack && player.otherPlayer.state == "Attack")
+        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
             player.enter = false;
-            player.otherPlayer.canChainAttack = true;
-            if (player.otherPlayer.attack.isArcana)
+            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (IsBlocking(player))
             {
-                player.state = "Airborne";
+                player.state = "BlockAir";
             }
             else
             {
-                player.state = "HurtAir";
+                if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown && (DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                {
+                    player.state = "Airborne";
+                }
+                else
+                {
+                    player.state = "HurtAir";
+                }
             }
         }
     }

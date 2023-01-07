@@ -4,7 +4,6 @@ public class IdleState : GroundParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        base.UpdateLogic(player);
         if (!player.enter)
         {
             player.enter = true;
@@ -13,13 +12,15 @@ public class IdleState : GroundParentState
         player.animation = "Idle";
         player.animationFrames++;
         player.velocity = DemonicsVector2.Zero;
+        CheckFlip(player);
+        base.UpdateLogic(player);
         ToWalkState(player);
         ToJumpState(player);
         ToJumpForwardState(player);
         ToCrouchState(player);
         ToDashState(player);
-        ToHurtState(player);
         ToAttackState(player);
+        ToArcanaState(player);
     }
 
     private void ToCrouchState(PlayerNetwork player)
@@ -63,30 +64,18 @@ public class IdleState : GroundParentState
             player.state = "Dash";
         }
     }
-    private void ToHurtState(PlayerNetwork player)
-    {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
-        {
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
-            player.enter = false;
-            player.state = "Hurt";
-        }
-    }
     public void ToAttackState(PlayerNetwork player)
     {
-        if (player.start)
+        if (player.attackPress)
         {
             Attack(player);
         }
     }
-    public override void ToArcanaState(PlayerNetwork player)
+    public void ToArcanaState(PlayerNetwork player)
     {
-        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
+        if (player.arcanaPress)
         {
-            player.isAir = false;
-            player.canChainAttack = false;
-            player.enter = false;
-            player.state = "Arcana";
+            Arcana(player);
         }
     }
 }

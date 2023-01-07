@@ -26,6 +26,7 @@ public class RunState : GroundParentState
                 player.SetEffect("Ghost", effectPosition, true);
             }
         }
+        base.UpdateLogic(player);
         ToIdleState(player);
         ToJumpState(player);
         ToJumpForwardState(player);
@@ -52,7 +53,7 @@ public class RunState : GroundParentState
     }
     public void ToAttackState(PlayerNetwork player)
     {
-        if (player.start)
+        if (player.attackPress)
         {
             Attack(player);
         }

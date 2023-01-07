@@ -3,16 +3,14 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    private static bool knock;
-    private static bool b;
     private static bool opponentInCorner;
     public override void UpdateLogic(PlayerNetwork player)
     {
         player.dashDirection = 0;
         if (!player.enter)
         {
+            player.onAttack = false;
             player.animationFrames = 0;
-            b = false;
             SetTopPriority(player);
             player.canChainAttack = false;
             player.enter = true;
@@ -25,12 +23,12 @@ public class AttackState : State
                 opponentInCorner = true;
             }
             player.knockback = 0;
-            player.attackNetwork.knockbackStart = player.position;
-            player.attackNetwork.knockbackEnd = new DemonicsVector2(player.position.x + (player.attackNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
+            player.pushbackStart = player.position;
+            player.pushbackEnd = new DemonicsVector2(player.position.x + (2 * -player.flip), DemonicsPhysics.GROUND_POINT);
         }
         if (!player.isAir)
         {
-            player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance * (DemonicsFloat)player.flip, (DemonicsFloat)0);
+            player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)0);
         }
         else
         {
@@ -40,45 +38,55 @@ public class AttackState : State
         {
             player.animationFrames++;
             player.attackFrames--;
+
             if (player.canChainAttack)
             {
-                if (!b)
+                if (!player.onAttack)
                 {
-                    b = true;
+                    player.onAttack = true;
                 }
-                if (player.start)
+                player.inPushback = true;
+                if (player.attackPress)
                 {
                     if ((!(player.attackInput == InputEnum.Medium && player.isCrouch)))
                     {
                         if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
                         {
                             Attack(player, player.isAir);
-                            player.attackNetwork.knockbackStart = player.position;
-                            player.attackNetwork.knockbackEnd = new DemonicsVector2(player.position.x + (player.attackNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
                         }
                     }
                 }
-            }
-            if (opponentInCorner && !player.isAir && b)
-            {
-                if (player.attackNetwork.knockbackDuration > 0 && player.knockback <= player.attackNetwork.knockbackDuration)
+                if (player.arcanaPress)
                 {
-                    DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackNetwork.knockbackDuration;
-                    DemonicsFloat nextX = DemonicsFloat.Lerp(player.attackNetwork.knockbackStart.x, player.attackNetwork.knockbackEnd.x, ratio);
-                    DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
-                    player.position = nextPosition;
-                    player.knockback++;
+                    if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
+                    {
+                        Arcana(player, player.isAir);
+                    }
+                }
+            }
+            if (player.inPushback)
+            {
+                if (!player.isAir)
+                {
+                    if (player.knockback <= 10)
+                    {
+                        DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)10;
+                        DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+                        DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
+                        player.position = nextPosition;
+                        player.knockback++;
+                    }
                 }
             }
         }
-        //ToJumpState(player);
-        // ToJumpForwardState(player);
+        ToJumpState(player);
+        ToJumpForwardState(player);
         ToIdleState(player);
         ToIdleFallState(player);
     }
     private void ToJumpState(PlayerNetwork player)
     {
-        if (player.attack.jumpCancelable)
+        if (player.attackNetwork.jumpCancelable)
         {
             if (player.direction.y > 0)
             {
@@ -92,7 +100,7 @@ public class AttackState : State
     }
     private void ToJumpForwardState(PlayerNetwork player)
     {
-        if (player.attack.jumpCancelable)
+        if (player.attackNetwork.jumpCancelable)
         {
             if (player.direction.y > 0 && player.direction.x != 0)
             {
@@ -109,7 +117,7 @@ public class AttackState : State
     {
         if (player.isAir && (DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
-            knock = false;
+            player.inPushback = false;
             player.isCrouch = false;
             player.isAir = false;
             player.enter = false;
@@ -120,7 +128,8 @@ public class AttackState : State
     {
         if (player.attackFrames <= 0)
         {
-            player.start = false;
+            player.inPushback = false;
+            player.attackPress = false;
             player.enter = false;
             if (player.isAir)
             {

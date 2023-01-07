@@ -16,8 +16,10 @@ public class CrouchState : GroundParentState
         player.animationFrames = 0;
         player.animation = "Crouch";
         player.velocity = DemonicsVector2.Zero;
+        base.UpdateLogic(player);
         ToIdleState(player);
         ToAttackState(player);
+        ToArcanaState(player);
     }
 
     private void ToIdleState(PlayerNetwork player)
@@ -30,19 +32,16 @@ public class CrouchState : GroundParentState
     }
     public void ToAttackState(PlayerNetwork player)
     {
-        if (player.start)
+        if (player.attackPress)
         {
             Attack(player);
         }
     }
-    public override void ToArcanaState(PlayerNetwork player)
+    public void ToArcanaState(PlayerNetwork player)
     {
-        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
+        if (player.arcanaPress)
         {
-            player.isAir = false;
-            player.canChainAttack = false;
-            player.enter = false;
-            player.state = "Arcana";
+            Arcana(player);
         }
     }
 }
