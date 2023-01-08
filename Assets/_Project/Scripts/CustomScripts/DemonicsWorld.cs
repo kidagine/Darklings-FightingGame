@@ -34,4 +34,10 @@ public class DemonicsWorld : MonoBehaviour
         }
         return false;
     }
+
+    public static void SetFramerate(int framerate, bool vSync = true)
+    {
+        Application.targetFrameRate = framerate;
+        QualitySettings.vSyncCount = vSync ? 1 : 0;
+    }
 }

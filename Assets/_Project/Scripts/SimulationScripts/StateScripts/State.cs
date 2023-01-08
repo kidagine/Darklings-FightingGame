@@ -47,11 +47,12 @@ public class State
     }
     protected void Attack(PlayerNetwork player, bool air = false)
     {
+        player.pushbackDuration = 0;
         player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
         player.attackPress = false;
         player.isAir = air;
         player.isCrouch = false;
-        if (player.direction.y < 0)
+        if (player.inputBuffer.inputItems[0].inputDirection.y < 0)
         {
             player.isCrouch = true;
         }
@@ -90,7 +91,7 @@ public class State
             player.arcanaPress = false;
             player.isAir = air;
             player.isCrouch = false;
-            if (player.direction.y < 0)
+            if (player.inputBuffer.inputItems[0].inputDirection.y < 0)
             {
                 player.isCrouch = true;
             }
@@ -121,5 +122,12 @@ public class State
             player.enter = false;
             player.state = "Arcana";
         }
+    }
+    public void ResetPlayer(PlayerNetwork player)
+    {
+        player.healthRecoverable = 10000;
+        player.health = 10000;
+        player.player.PlayerUI.CheckDemonLimit(player.health);
+        player.enter = false;
     }
 };

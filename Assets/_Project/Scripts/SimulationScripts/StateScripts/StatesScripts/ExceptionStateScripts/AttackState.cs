@@ -9,7 +9,6 @@ public class AttackState : State
         player.dashDirection = 0;
         if (!player.enter)
         {
-            player.onAttack = false;
             player.animationFrames = 0;
             SetTopPriority(player);
             player.canChainAttack = false;
@@ -22,9 +21,7 @@ public class AttackState : State
             {
                 opponentInCorner = true;
             }
-            player.knockback = 0;
-            player.pushbackStart = player.position;
-            player.pushbackEnd = new DemonicsVector2(player.position.x + (player.otherPlayer.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
+
         }
         if (!player.isAir)
         {
@@ -41,37 +38,6 @@ public class AttackState : State
 
             if (player.canChainAttack)
             {
-                player.inPushback = true;
-                if (!player.onAttack)
-                {
-                    // player.inPushback = true;
-                    // player.onAttack = true;
-                    // player.knockback = 0;
-                    // player.pushbackStart = player.position;
-                    // player.pushbackEnd = new DemonicsVector2(player.position.x + (player.otherPlayer.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
-                }
-                // if (player.otherPlayer.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.otherPlayer.attackHurtNetwork.knockbackDuration)
-                // {
-                //     DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.otherPlayer.attackHurtNetwork.knockbackDuration;
-                //     DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
-                //     DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
-                //     player.position = nextPosition;
-                //     player.knockback++;
-                // }
-                // if (player.inPushback)
-                // {
-                //     if (!player.isAir)
-                //     {
-                //         if (player.otherPlayer.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.otherPlayer.attackHurtNetwork.knockbackDuration)
-                //         {
-                //             DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.otherPlayer.attackHurtNetwork.knockbackDuration;
-                //             DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
-                //             DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
-                //             player.position = nextPosition;
-                //             player.knockback++;
-                //         }
-                //     }
-                // }
                 if (player.attackPress)
                 {
                     if ((!(player.attackInput == InputEnum.Medium && player.isCrouch)))
@@ -90,8 +56,19 @@ public class AttackState : State
                     }
                 }
             }
-
         }
+        if (!player.isAir)
+        {
+            if (player.pushbackDuration > 0 && player.knockback <= player.pushbackDuration)
+            {
+                DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackNetwork.knockbackDuration;
+                DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+                DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
+                player.position = nextPosition;
+                player.knockback++;
+            }
+        }
+
         ToJumpState(player);
         ToJumpForwardState(player);
         ToIdleState(player);
@@ -141,7 +118,6 @@ public class AttackState : State
     {
         if (player.attackFrames <= 0)
         {
-            player.inPushback = false;
             player.attackPress = false;
             player.enter = false;
             if (player.isAir)

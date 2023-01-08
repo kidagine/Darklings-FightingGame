@@ -31,6 +31,13 @@ public class GroundParentState : State
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (DemonicsPhysics.IsInCorner(player))
+            {
+                player.otherPlayer.knockback = 0;
+                player.otherPlayer.pushbackStart = player.otherPlayer.position;
+                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
+            }
             if (IsBlocking(player))
             {
                 if (player.direction.y < 0)

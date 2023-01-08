@@ -62,17 +62,22 @@ public struct InputItemNetwork
 {
     public int frame;
     public InputEnum inputEnum;
+    public Vector2Int inputDirection;
 
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(frame);
         bw.Write((int)inputEnum);
+        bw.Write((int)inputDirection.x);
+        bw.Write((int)inputDirection.y);
     }
 
     public void Deserialize(BinaryReader br)
     {
         frame = br.ReadInt32();
         inputEnum = (InputEnum)br.ReadInt32();
+        inputDirection.x = br.ReadInt32();
+        inputDirection.y = br.ReadInt32();
     }
 };
 [Serializable]
@@ -224,7 +229,7 @@ public class PlayerNetwork
     public AttackSO attack;
     public AttackNetwork attackNetwork;
     public AttackNetwork attackHurtNetwork;
-    public Vector2 direction;
+    public Vector2Int direction;
     public string animation;
     public int animationFrames;
     public int attackFrames;
@@ -247,7 +252,7 @@ public class PlayerNetwork
     public int dashDirection;
     public int jumpDirection;
     public int dashFrames;
-    public bool onAttack;
+    public int pushbackDuration;
     public bool inPushback;
     public bool canDash;
     public bool hasJumped;
@@ -298,6 +303,7 @@ public class PlayerNetwork
         bw.Write(isCrouch);
         bw.Write(isAir);
         bw.Write(hasJumped);
+        bw.Write(pushbackDuration);
         bw.Write(canJump);
         bw.Write(canDoubleJump);
         bw.Write(dashDirection);
@@ -307,7 +313,6 @@ public class PlayerNetwork
         bw.Write(arcanaPress);
         bw.Write(wasWallSplatted);
         bw.Write(enter);
-        bw.Write(onAttack);
         bw.Write(inPushback);
         bw.Write(canChainAttack);
         bw.Write(flip);
@@ -334,8 +339,8 @@ public class PlayerNetwork
         pushbackStart.y = (DemonicsFloat)br.ReadSingle();
         pushbackEnd.x = (DemonicsFloat)br.ReadSingle();
         pushbackEnd.y = (DemonicsFloat)br.ReadSingle();
-        direction.x = br.ReadSingle();
-        direction.y = br.ReadSingle();
+        direction.x = br.ReadInt32();
+        direction.y = br.ReadInt32();
         animation = br.ReadString();
         animationFrames = br.ReadInt32();
         attackFrames = br.ReadInt32();
@@ -356,6 +361,7 @@ public class PlayerNetwork
         isCrouch = br.ReadBoolean();
         isAir = br.ReadBoolean();
         hasJumped = br.ReadBoolean();
+        pushbackDuration = br.ReadInt32();
         canJump = br.ReadBoolean();
         canDoubleJump = br.ReadBoolean();
         dashDirection = br.ReadInt32();
@@ -366,7 +372,6 @@ public class PlayerNetwork
         wasWallSplatted = br.ReadBoolean();
         enter = br.ReadBoolean();
         inPushback = br.ReadBoolean();
-        onAttack = br.ReadBoolean();
         canChainAttack = br.ReadBoolean();
         flip = br.ReadInt32();
         spriteOrder = br.ReadInt32();
@@ -652,19 +657,19 @@ public struct GameSimulation : IGame
         {
             if (up)
             {
-                _players[index].direction = new Vector2(0, 1);
+                _players[index].direction = new Vector2Int(0, 1);
             }
             if (down)
             {
-                _players[index].direction = new Vector2(0, -1);
+                _players[index].direction = new Vector2Int(0, -1);
             }
             if (right)
             {
-                _players[index].direction = new Vector2(1, _players[index].direction.y);
+                _players[index].direction = new Vector2Int(1, _players[index].direction.y);
             }
             if (left)
             {
-                _players[index].direction = new Vector2(-1, _players[index].direction.y);
+                _players[index].direction = new Vector2Int(-1, _players[index].direction.y);
             }
             if (dashForward)
             {
@@ -676,30 +681,30 @@ public struct GameSimulation : IGame
             }
             if (!left && !right)
             {
-                _players[index].direction = new Vector2(0, _players[index].direction.y);
+                _players[index].direction = new Vector2Int(0, _players[index].direction.y);
             }
             if (!up && !down)
             {
-                _players[index].direction = new Vector2(_players[index].direction.x, 0);
+                _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
             }
             if (light)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, frame = Framenumber };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].direction, frame = Framenumber };
                 _players[index].attackPress = true;
             }
             if (medium)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, frame = Framenumber };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].direction, frame = Framenumber };
                 _players[index].attackPress = true;
             }
             if (heavy)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = Framenumber };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].direction, frame = Framenumber };
                 _players[index].attackPress = true;
             }
             if (arcana)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, frame = DemonicsWorld.Frame };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].direction, frame = DemonicsWorld.Frame };
                 _players[index].arcanaPress = true;
             }
             if (blueFrenzy)
@@ -725,7 +730,7 @@ public struct GameSimulation : IGame
         }
         else
         {
-            _players[index].direction = Vector2.zero;
+            _players[index].direction = Vector2Int.zero;
         }
 
         SetState(index);

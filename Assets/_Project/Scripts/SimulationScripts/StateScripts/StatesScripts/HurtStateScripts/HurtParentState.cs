@@ -56,11 +56,11 @@ public class HurtParentState : State
         player.knockback = 0;
         player.pushbackStart = player.position;
         player.pushbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
-        if (player.health <= 0)
-        {
-            player.enter = false;
-            player.state = "Death";
-        }
+        // if (player.health <= 0)
+        // {
+        //     player.enter = false;
+        //     player.state = "Death";
+        // }
     }
 
     protected virtual void AfterHitstop(PlayerNetwork player)

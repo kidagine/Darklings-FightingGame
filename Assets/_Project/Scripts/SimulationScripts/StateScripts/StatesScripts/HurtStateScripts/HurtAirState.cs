@@ -99,7 +99,6 @@ public class HurtAirState : HurtParentState
         player.position = nextPosition;
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
-            Debug.Log("A");
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
         }
         else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)

@@ -237,7 +237,7 @@ public class PlayerUI : MonoBehaviour
         _healthSlider.value = value;
     }
 
-    public void CheckDemonLimit(float value)
+    public void CheckDemonLimit(int value)
     {
         if (value > 3000)
         {

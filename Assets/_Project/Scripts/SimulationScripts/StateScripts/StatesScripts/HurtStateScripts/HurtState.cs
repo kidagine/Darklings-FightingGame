@@ -31,10 +31,17 @@ public class HurtState : HurtParentState
     {
         if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
+            player.enter = false;
+            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (DemonicsPhysics.IsInCorner(player))
+            {
+                player.otherPlayer.knockback = 0;
+                player.otherPlayer.pushbackStart = player.otherPlayer.position;
+                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
+            }
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.UpdateHealthDamaged();
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
-            player.enter = false;
             if (player.attackHurtNetwork.hardKnockdown)
             {
                 player.state = "Airborne";
@@ -59,7 +66,6 @@ public class HurtState : HurtParentState
     }
     protected override void Knockback(PlayerNetwork player)
     {
-
         DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackHurtNetwork.knockbackDuration;
         DemonicsFloat distance = player.pushbackEnd.x - player.pushbackStart.x;
         DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
@@ -78,7 +84,6 @@ public class HurtState : HurtParentState
         player.position = nextPosition;
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
-            Debug.Log("A");
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
         }
         else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
