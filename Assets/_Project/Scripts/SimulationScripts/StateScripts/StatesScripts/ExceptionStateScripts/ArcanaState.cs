@@ -30,7 +30,7 @@ public class ArcanaState : State
     }
     private void ToIdleFallState(PlayerNetwork player)
     {
-        if (player.isAir && (DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+        if (player.isAir && player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
             player.isCrouch = false;
             player.isAir = false;
@@ -43,7 +43,7 @@ public class ArcanaState : State
         if (player.attackFrames <= 0)
         {
             player.enter = false;
-            if (player.isAir)
+            if (player.isAir || player.position.y > DemonicsPhysics.GROUND_POINT)
             {
                 player.isCrouch = false;
                 player.isAir = false;
