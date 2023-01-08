@@ -50,11 +50,15 @@ public class State
         player.pushbackDuration = 0;
         player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
         player.attackPress = false;
-        player.isAir = air;
         player.isCrouch = false;
+        player.isAir = air;
         if (player.inputBuffer.inputItems[0].inputDirection.y < 0)
         {
             player.isCrouch = true;
+        }
+        if (player.isAir)
+        {
+            player.isCrouch = false;
         }
         AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
         player.attackNetwork = new AttackNetwork()
