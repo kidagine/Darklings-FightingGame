@@ -77,30 +77,36 @@ public class HurtAirState : HurtParentState
     }
     protected override void OnEnter(PlayerNetwork player)
     {
-        base.OnEnter(player);
         CheckFlip(player);
+        base.OnEnter(player);
     }
     protected override void Knockback(PlayerNetwork player)
     {
-        if (!DemonicsPhysics.IsInCorner(player))
+        DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackHurtNetwork.knockbackDuration;
+        DemonicsFloat distance = player.pushbackEnd.x - player.pushbackStart.x;
+        DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+        DemonicsFloat baseY = DemonicsFloat.Lerp(player.pushbackStart.y, player.pushbackEnd.y, (nextX - player.pushbackStart.x) / distance);
+        DemonicsFloat arc = player.attackHurtNetwork.knockbackArc * (nextX - player.pushbackStart.x) * (nextX - player.pushbackEnd.x) / ((-0.25f) * distance * distance);
+        DemonicsVector2 nextPosition = DemonicsVector2.Zero;
+        if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
         {
-            DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackHurtNetwork.knockbackDuration;
-            DemonicsFloat distance = player.pushbackEnd.x - player.pushbackStart.x;
-            DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
-            DemonicsFloat baseY = DemonicsFloat.Lerp(player.pushbackStart.y, player.pushbackEnd.y, (nextX - player.pushbackStart.x) / distance);
-            DemonicsFloat arc = player.attackHurtNetwork.knockbackArc * (nextX - player.pushbackStart.x) * (nextX - player.pushbackEnd.x) / ((-0.25f) * distance * distance);
-            DemonicsVector2 nextPosition = DemonicsVector2.Zero;
-            if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
-            {
-                nextPosition = new DemonicsVector2(nextX, player.position.y);
-            }
-            else
-            {
-                nextPosition = new DemonicsVector2(nextX, baseY + arc);
-            }
-            player.position = nextPosition;
-            player.knockback++;
+            nextPosition = new DemonicsVector2(nextX, player.position.y);
         }
+        else
+        {
+            nextPosition = new DemonicsVector2(nextX, baseY + arc);
+        }
+        player.position = nextPosition;
+        if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
+        {
+            Debug.Log("A");
+            player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+        }
+        else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
+        {
+            player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+        }
+        player.knockback++;
     }
 }
 

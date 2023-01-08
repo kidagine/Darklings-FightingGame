@@ -24,7 +24,7 @@ public class AttackState : State
             }
             player.knockback = 0;
             player.pushbackStart = player.position;
-            player.pushbackEnd = new DemonicsVector2(player.position.x + (2 * -player.flip), DemonicsPhysics.GROUND_POINT);
+            player.pushbackEnd = new DemonicsVector2(player.position.x + (player.otherPlayer.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         }
         if (!player.isAir)
         {
@@ -41,11 +41,37 @@ public class AttackState : State
 
             if (player.canChainAttack)
             {
+                player.inPushback = true;
                 if (!player.onAttack)
                 {
-                    player.onAttack = true;
+                    // player.inPushback = true;
+                    // player.onAttack = true;
+                    // player.knockback = 0;
+                    // player.pushbackStart = player.position;
+                    // player.pushbackEnd = new DemonicsVector2(player.position.x + (player.otherPlayer.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
                 }
-                player.inPushback = true;
+                // if (player.otherPlayer.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.otherPlayer.attackHurtNetwork.knockbackDuration)
+                // {
+                //     DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.otherPlayer.attackHurtNetwork.knockbackDuration;
+                //     DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+                //     DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
+                //     player.position = nextPosition;
+                //     player.knockback++;
+                // }
+                // if (player.inPushback)
+                // {
+                //     if (!player.isAir)
+                //     {
+                //         if (player.otherPlayer.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.otherPlayer.attackHurtNetwork.knockbackDuration)
+                //         {
+                //             DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.otherPlayer.attackHurtNetwork.knockbackDuration;
+                //             DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+                //             DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
+                //             player.position = nextPosition;
+                //             player.knockback++;
+                //         }
+                //     }
+                // }
                 if (player.attackPress)
                 {
                     if ((!(player.attackInput == InputEnum.Medium && player.isCrouch)))
@@ -64,20 +90,7 @@ public class AttackState : State
                     }
                 }
             }
-            if (player.inPushback)
-            {
-                if (!player.isAir)
-                {
-                    if (player.knockback <= 10)
-                    {
-                        DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)10;
-                        DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
-                        DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
-                        player.position = nextPosition;
-                        player.knockback++;
-                    }
-                }
-            }
+
         }
         ToJumpState(player);
         ToJumpForwardState(player);

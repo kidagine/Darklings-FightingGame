@@ -419,7 +419,6 @@ public struct GameSimulation : IGame
     public static bool Start { get; set; }
     public static bool Run { get; set; }
     public int Checksum => GetHashCode();
-    public static int Frametime { get; set; }
     public static bool _introPlayed;
     public static PlayerNetwork[] _players;
 
@@ -729,13 +728,6 @@ public struct GameSimulation : IGame
             _players[index].direction = Vector2.zero;
         }
 
-
-        // if (_players[index].health <= 0)
-        // {
-        //     _players[index].enter = false;
-        //     _players[index].state = "Death";
-        // }
-
         SetState(index);
         _players[index].CurrentState.UpdateLogic(_players[index]);
         _players[index].player.Flip(_players[index].flip);
@@ -806,7 +798,6 @@ public struct GameSimulation : IGame
                 GameSimulation.Start = true;
             }
             Framenumber++;
-            Frametime = Framenumber;
             DemonicsWorld.Frame = Framenumber;
             if (IntroFrame < 0 && IntroFrame > -1000)
             {

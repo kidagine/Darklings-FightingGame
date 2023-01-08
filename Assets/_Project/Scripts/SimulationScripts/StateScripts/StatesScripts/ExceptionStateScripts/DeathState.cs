@@ -12,15 +12,17 @@ public class DeathState : State
             GameplayManager.Instance.RoundOver(false);
             GameSimulation.IntroFrame = 360;
             player.health = 1;
+            player.healthRecoverable = 0;
+            player.player.PlayerUI.UpdateHealthDamaged();
             if (!SceneSettings.IsTrainingMode)
             {
                 GameSimulation.Run = false;
             }
         }
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         player.animation = "Knockdown";
         player.animationFrames++;
-        if (player.animationFrames >= 250)
+        if (player.animationFrames >= 510)
         {
             if (player.otherPlayer.state != "Taunt")
             {
@@ -30,7 +32,7 @@ public class DeathState : State
         }
         if (SceneSettings.IsTrainingMode)
         {
-            if (player.animationFrames >= 105)
+            if (player.animationFrames >= 210)
             {
                 player.enter = false;
                 player.state = "Idle";
@@ -38,8 +40,12 @@ public class DeathState : State
         }
         else
         {
-            if (player.animationFrames >= 370)
+            if (player.animationFrames >= 725)
             {
+                player.healthRecoverable = 10000;
+                player.otherPlayer.healthRecoverable = 10000;
+                player.health = 10000;
+                player.otherPlayer.health = 10000;
                 player.otherPlayer.enter = false;
                 player.otherPlayer.state = "Taunt";
                 player.enter = false;
