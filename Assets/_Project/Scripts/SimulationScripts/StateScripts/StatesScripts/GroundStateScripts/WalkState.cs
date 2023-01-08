@@ -9,16 +9,18 @@ public class WalkState : GroundParentState
             player.enter = true;
             player.animationFrames = 0;
         }
-        CheckFlip(player);
         player.canDoubleJump = true;
         player.animation = "Walk";
         player.animationFrames++;
         player.velocity = new DemonicsVector2(player.direction.x * player.playerStats.SpeedWalk, 0);
+        CheckFlip(player);
+        base.UpdateLogic(player);
         ToIdleState(player);
         ToJumpState(player);
         ToJumpForwardState(player);
         ToCrouchState(player);
         ToDashState(player);
+        ToAttackState(player);
     }
     private void ToCrouchState(PlayerNetwork player)
     {
@@ -61,8 +63,14 @@ public class WalkState : GroundParentState
             player.state = "Dash";
         }
     }
-
-    public override void ToArcanaState(PlayerNetwork player)
+    public void ToAttackState(PlayerNetwork player)
+    {
+        if (player.attackPress)
+        {
+            Attack(player);
+        }
+    }
+    public void ToArcanaState(PlayerNetwork player)
     {
         if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
         {

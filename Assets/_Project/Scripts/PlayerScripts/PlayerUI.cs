@@ -237,7 +237,7 @@ public class PlayerUI : MonoBehaviour
         _healthSlider.value = value;
     }
 
-    public void CheckDemonLimit(float value)
+    public void CheckDemonLimit(int value)
     {
         if (value > 3000)
         {
@@ -373,7 +373,6 @@ public class PlayerUI : MonoBehaviour
         _comboTimerLock.gameObject.SetActive(false);
         _comboTimerSlider.transform.GetChild(0).gameObject.SetActive(state);
         _comboTimerSlider.transform.GetChild(1).gameObject.SetActive(state);
-        Debug.Log("A");
     }
 
     public void SetComboTimerLock(bool state)

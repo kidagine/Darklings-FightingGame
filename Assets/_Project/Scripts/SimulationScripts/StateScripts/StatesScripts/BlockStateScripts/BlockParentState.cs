@@ -5,10 +5,6 @@ using UnityEngine;
 public class BlockParentState : State
 {
     public static bool skipKnockback;
-    protected AttackSO hurtAttack;
-    protected DemonicsVector2 start;
-    protected DemonicsVector2 end;
-    protected int knockbackFrame;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
@@ -20,21 +16,22 @@ public class BlockParentState : State
         {
             AfterHitstop(player);
         }
+        ToHurtState(player);
     }
 
     protected virtual void OnEnter(PlayerNetwork player)
     {
-        hurtAttack = PlayerComboSystem.GetComboAttack(player.otherPlayer.playerStats, player.otherPlayer.attackInput, player.otherPlayer.isCrouch, player.otherPlayer.isAir);
+        player.otherPlayer.canChainAttack = true;
         player.player.StartShakeContact();
         player.enter = true;
-        GameSimulation.Hitstop = hurtAttack.hitstop;
+        GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
         player.sound = "Block";
         DemonicsVector2 hurtEffectPosition = new DemonicsVector2(player.position.x + (5 * player.flip), player.otherPlayer.hitbox.position.y);
-        hurtAttack.hurtEffectPosition = new Vector2((float)hurtEffectPosition.x, (float)hurtEffectPosition.y);
-        if (hurtAttack.isArcana)
+        if (player.attackHurtNetwork.hardKnockdown)
         {
             player.SetEffect("Chip", hurtEffectPosition);
-            player.player.SetHealth(player.player.CalculateDamage(hurtAttack));
+            player.health -= 200;
+            player.healthRecoverable -= 200;
             player.player.PlayerUI.Damaged();
             player.player.PlayerUI.UpdateHealthDamaged();
         }
@@ -43,50 +40,70 @@ public class BlockParentState : State
             player.SetEffect("Block", hurtEffectPosition);
         }
         player.animationFrames = 0;
-        player.stunFrames = hurtAttack.hitStun;
-        knockbackFrame = 0;
-        start = player.position;
-        end = new DemonicsVector2(player.position.x + (hurtAttack.knockbackForce.x * -player.flip), DemonicsPhysics.GROUND_POINT - 0.5f);
+        player.stunFrames = player.attackHurtNetwork.hitStun;
+        player.knockback = 0;
+        player.pushbackStart = player.position;
+        player.pushbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         player.velocity = DemonicsVector2.Zero;
     }
 
     protected virtual void AfterHitstop(PlayerNetwork player)
     {
-        if (!skipKnockback)
+        player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+        if (player.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.attackHurtNetwork.knockbackDuration)
         {
-            if (hurtAttack.knockbackDuration > 0)
-            {
-                DemonicsFloat ratio = (DemonicsFloat)knockbackFrame / (DemonicsFloat)hurtAttack.knockbackDuration;
-                DemonicsFloat distance = end.x - start.x;
-                DemonicsFloat nextX = DemonicsFloat.Lerp(start.x, end.x, ratio);
-                DemonicsFloat baseY = DemonicsFloat.Lerp(start.y, end.y, (nextX - start.x) / distance);
-                DemonicsFloat arc = hurtAttack.knockbackArc * (nextX - start.x) * (nextX - end.x) / ((-0.25f) * distance * distance);
-                DemonicsVector2 nextPosition = new DemonicsVector2(nextX, baseY + arc);
-                nextPosition = new DemonicsVector2(nextX, player.position.y);
-                player.position = nextPosition;
-                knockbackFrame++;
-            }
+            DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackHurtNetwork.knockbackDuration;
+            DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+            DemonicsVector2 nextPosition = DemonicsVector2.Zero;
+            nextPosition = new DemonicsVector2(nextX, player.position.y);
+            player.position = nextPosition;
+            player.knockback++;
         }
         player.player.StopShakeCoroutine();
         player.stunFrames--;
     }
-    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
+    private void ToHurtState(PlayerNetwork player)
     {
-        player.enter = false;
-        player.state = "Hurt";
-        return true;
-    }
-    public override bool ToBlockState(PlayerNetwork player, AttackSO attack)
-    {
-        player.enter = false;
-        if (player.direction.y < 0)
+        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
-            player.state = "BlockLow";
+            player.enter = false;
+            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (IsBlocking(player))
+            {
+                if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+                {
+                    if (player.direction.y < 0)
+                    {
+                        player.state = "BlockLow";
+                    }
+                    else
+                    {
+                        player.state = "Block";
+                    }
+                }
+                else
+                {
+                    player.state = "BlockAir";
+                }
+            }
+            else
+            {
+                if (player.attackHurtNetwork.hardKnockdown)
+                {
+                    player.state = "Airborne";
+                }
+                else
+                {
+                    if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
+                    {
+                        player.state = "Hurt";
+                    }
+                    else
+                    {
+                        player.state = "HurtAir";
+                    }
+                }
+            }
         }
-        else
-        {
-            player.state = "Block";
-        }
-        return true;
     }
 }

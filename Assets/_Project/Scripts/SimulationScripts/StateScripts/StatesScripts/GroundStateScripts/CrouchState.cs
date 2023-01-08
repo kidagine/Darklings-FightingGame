@@ -16,8 +16,10 @@ public class CrouchState : GroundParentState
         player.animationFrames = 0;
         player.animation = "Crouch";
         player.velocity = DemonicsVector2.Zero;
+        base.UpdateLogic(player);
         ToIdleState(player);
         ToAttackState(player);
+        ToArcanaState(player);
     }
 
     private void ToIdleState(PlayerNetwork player)
@@ -28,44 +30,18 @@ public class CrouchState : GroundParentState
             player.state = "Idle";
         }
     }
-    private void ToAttackState(PlayerNetwork player)
+    public void ToAttackState(PlayerNetwork player)
     {
-        if (player.start)
+        if (player.attackPress)
         {
-            player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
-            player.start = false;
-            player.isAir = false;
-            player.isCrouch = false;
-            if (player.direction.y < 0)
-            {
-                player.isCrouch = true;
-            }
-            AttackSO atk = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, false);
-            player.attackNetwork = new AttackNetwork()
-            {
-                damage = atk.damage,
-                travelDistance = (DemonicsFloat)atk.travelDistance.x,
-                name = atk.name,
-                attackSound = atk.attackSound,
-                hurtEffect = atk.hurtEffect,
-                knockbackForce = (DemonicsFloat)atk.knockbackForce.x,
-                knockbackDuration = atk.knockbackDuration,
-                hitstop = atk.hitstop,
-                impactSound = atk.impactSound
-            };
-            player.canChainAttack = false;
-            player.enter = false;
-            player.state = "Attack";
+            Attack(player);
         }
     }
-    public override void ToArcanaState(PlayerNetwork player)
+    public void ToArcanaState(PlayerNetwork player)
     {
-        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
+        if (player.arcanaPress)
         {
-            player.isAir = false;
-            player.canChainAttack = false;
-            player.enter = false;
-            player.state = "Arcana";
+            Arcana(player);
         }
     }
 }

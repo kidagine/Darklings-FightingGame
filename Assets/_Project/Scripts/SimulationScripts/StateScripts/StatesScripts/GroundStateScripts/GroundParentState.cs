@@ -6,11 +6,11 @@ public class GroundParentState : State
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
-        CheckFlip(player);
         player.canDoubleJump = true;
         player.canDash = true;
         player.hasJumped = false;
         player.canJump = true;
+        ToHurtState(player);
     }
 
     public override bool ToBlueFrenzyState(PlayerNetwork player)
@@ -25,25 +25,49 @@ public class GroundParentState : State
         player.state = "RedFrenzy";
         return true;
     }
-    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
+    private void ToHurtState(PlayerNetwork player)
     {
-        player.enter = false;
-        if (attack.causesKnockdown)
+        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
-            player.state = "Airborne";
-        }
-        else
-        {
-            if (attack.knockbackArc == 0 || attack.causesSoftKnockdown)
+            player.enter = false;
+            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (DemonicsPhysics.IsInCorner(player))
             {
-                player.state = "Hurt";
+                player.otherPlayer.knockback = 0;
+                player.otherPlayer.pushbackStart = player.otherPlayer.position;
+                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
+            }
+            if (IsBlocking(player))
+            {
+                if (player.direction.y < 0)
+                {
+                    player.state = "BlockLow";
+                }
+                else
+                {
+                    player.state = "Block";
+                }
             }
             else
             {
-                player.state = "HurtAir";
+                if (player.attackHurtNetwork.hardKnockdown)
+                {
+                    player.state = "Airborne";
+                }
+                else
+                {
+                    if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
+                    {
+                        player.state = "Hurt";
+                    }
+                    else
+                    {
+                        player.state = "HurtAir";
+                    }
+                }
             }
         }
-        return true;
     }
     public override bool ToBlockState(PlayerNetwork player, AttackSO attack)
     {

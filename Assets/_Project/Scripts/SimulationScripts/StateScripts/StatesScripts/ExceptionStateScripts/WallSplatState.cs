@@ -7,6 +7,7 @@ public class WallSplatState : State
         CheckFlip(player);
         if (!player.enter)
         {
+            player.wasWallSplatted = true;
             DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + ((DemonicsFloat)2.25 * player.flip), player.position.y);
             if (player.flip == 1)
             {
@@ -30,7 +31,7 @@ public class WallSplatState : State
     {
         if (player.animationFrames >= 10)
         {
-            player.wasWallSplatted = true;
+            player.flip *= -1;
             player.hurtbox.active = true;
             player.enter = false;
             player.state = "Airborne";

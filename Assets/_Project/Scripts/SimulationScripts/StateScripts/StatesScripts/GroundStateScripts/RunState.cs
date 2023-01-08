@@ -26,9 +26,11 @@ public class RunState : GroundParentState
                 player.SetEffect("Ghost", effectPosition, true);
             }
         }
+        base.UpdateLogic(player);
         ToIdleState(player);
         ToJumpState(player);
         ToJumpForwardState(player);
+        ToAttackState(player);
     }
     private void ToJumpState(PlayerNetwork player)
     {
@@ -47,6 +49,13 @@ public class RunState : GroundParentState
             player.enter = false;
             player.soundStop = "Run";
             player.state = "JumpForward";
+        }
+    }
+    public void ToAttackState(PlayerNetwork player)
+    {
+        if (player.attackPress)
+        {
+            Attack(player);
         }
     }
     private void ToIdleState(PlayerNetwork player)

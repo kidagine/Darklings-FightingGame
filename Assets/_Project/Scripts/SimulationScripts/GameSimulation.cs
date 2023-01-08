@@ -62,17 +62,22 @@ public struct InputItemNetwork
 {
     public int frame;
     public InputEnum inputEnum;
+    public Vector2Int inputDirection;
 
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(frame);
         bw.Write((int)inputEnum);
+        bw.Write((int)inputDirection.x);
+        bw.Write((int)inputDirection.y);
     }
 
     public void Deserialize(BinaryReader br)
     {
         frame = br.ReadInt32();
         inputEnum = (InputEnum)br.ReadInt32();
+        inputDirection.x = br.ReadInt32();
+        inputDirection.y = br.ReadInt32();
     }
 };
 [Serializable]
@@ -100,12 +105,13 @@ public struct InputBufferNetwork
 public struct AttackNetwork
 {
     public CameraShakerNetwork cameraShakerNetwork;
-    public DemonicsVector2 knockbackStart;
-    public DemonicsVector2 knockbackEnd;
-    public DemonicsFloat travelDistance;
+
+    public DemonicsVector2 travelDistance;
     public DemonicsFloat knockbackForce;
+    public AttackTypeEnum attackType;
     public ComboTimerStarterEnum comboTimerStarter;
     public int knockbackDuration;
+    public int knockbackArc;
     public int hitstop;
     public int damage;
     public int hitStun;
@@ -113,44 +119,51 @@ public struct AttackNetwork
     public string attackSound;
     public string impactSound;
     public string hurtEffect;
+    public bool jumpCancelable;
+    public bool softKnockdown;
+    public bool hardKnockdown;
 
     public void Serialize(BinaryWriter bw)
     {
-        bw.Write((float)knockbackStart.x);
-        bw.Write((float)knockbackStart.y);
-        bw.Write((float)knockbackEnd.x);
-        bw.Write((float)knockbackEnd.y);
-        bw.Write((float)travelDistance);
+        bw.Write((float)travelDistance.x);
+        bw.Write((float)travelDistance.y);
         bw.Write((float)knockbackForce);
         bw.Write((int)comboTimerStarter);
+        bw.Write((int)attackType);
         bw.Write(knockbackDuration);
         bw.Write(hitstop);
         bw.Write(damage);
+        bw.Write(knockbackArc);
         bw.Write(hitStun);
         bw.Write(name);
         bw.Write(attackSound);
         bw.Write(impactSound);
         bw.Write(hurtEffect);
+        bw.Write(jumpCancelable);
+        bw.Write(softKnockdown);
+        bw.Write(hardKnockdown);
         cameraShakerNetwork.Serialize(bw);
     }
 
     public void Deserialize(BinaryReader br)
     {
-        knockbackStart.x = (DemonicsFloat)br.ReadSingle();
-        knockbackStart.y = (DemonicsFloat)br.ReadSingle();
-        knockbackEnd.x = (DemonicsFloat)br.ReadSingle();
-        knockbackEnd.y = (DemonicsFloat)br.ReadSingle();
-        travelDistance = (DemonicsFloat)br.ReadSingle();
+        travelDistance.x = (DemonicsFloat)br.ReadSingle();
+        travelDistance.y = (DemonicsFloat)br.ReadSingle();
         knockbackForce = (DemonicsFloat)br.ReadSingle();
         comboTimerStarter = (ComboTimerStarterEnum)br.ReadInt32();
+        attackType = (AttackTypeEnum)br.ReadInt32();
         knockbackDuration = br.ReadInt32();
         hitstop = br.ReadInt32();
         damage = br.ReadInt32();
+        knockbackArc = br.ReadInt32();
         hitStun = br.ReadInt32();
         name = br.ReadString();
         attackSound = br.ReadString();
         impactSound = br.ReadString();
         hurtEffect = br.ReadString();
+        jumpCancelable = br.ReadBoolean();
+        softKnockdown = br.ReadBoolean();
+        hardKnockdown = br.ReadBoolean();
         cameraShakerNetwork.Deserialize(br);
     }
 };
@@ -211,16 +224,19 @@ public class PlayerNetwork
     public PlayerStatsSO playerStats;
     public DemonicsVector2 position;
     public DemonicsVector2 velocity;
+    public DemonicsVector2 pushbackStart;
+    public DemonicsVector2 pushbackEnd;
     public AttackSO attack;
     public AttackNetwork attackNetwork;
     public AttackNetwork attackHurtNetwork;
-    public Vector2 direction;
+    public Vector2Int direction;
     public string animation;
     public int animationFrames;
     public int attackFrames;
     public int stunFrames;
     public int combo;
     public int comboTimer;
+    public ComboTimerStarterEnum comboTimerStarter;
     public InputEnum attackInput;
     public int health;
     public int healthRecoverable;
@@ -236,11 +252,14 @@ public class PlayerNetwork
     public int dashDirection;
     public int jumpDirection;
     public int dashFrames;
+    public int pushbackDuration;
+    public bool inPushback;
     public bool canDash;
     public bool hasJumped;
     public bool canJump;
     public bool canDoubleJump;
-    public bool start;
+    public bool attackPress;
+    public bool arcanaPress;
     public bool enter;
     public bool wasWallSplatted;
     public bool canChainAttack;
@@ -258,6 +277,10 @@ public class PlayerNetwork
         bw.Write((float)position.y);
         bw.Write((float)velocity.x);
         bw.Write((float)velocity.y);
+        bw.Write((float)pushbackStart.x);
+        bw.Write((float)pushbackStart.y);
+        bw.Write((float)pushbackEnd.x);
+        bw.Write((float)pushbackEnd.y);
         bw.Write(direction.x);
         bw.Write(direction.y);
         bw.Write(animation);
@@ -276,17 +299,21 @@ public class PlayerNetwork
         bw.Write(knockback);
         bw.Write(combo);
         bw.Write(comboTimer);
+        bw.Write((int)comboTimerStarter);
         bw.Write(isCrouch);
         bw.Write(isAir);
         bw.Write(hasJumped);
+        bw.Write(pushbackDuration);
         bw.Write(canJump);
         bw.Write(canDoubleJump);
         bw.Write(dashDirection);
         bw.Write(jumpDirection);
         bw.Write(dashFrames);
-        bw.Write(start);
+        bw.Write(attackPress);
+        bw.Write(arcanaPress);
         bw.Write(wasWallSplatted);
         bw.Write(enter);
+        bw.Write(inPushback);
         bw.Write(canChainAttack);
         bw.Write(flip);
         bw.Write(spriteOrder);
@@ -308,8 +335,12 @@ public class PlayerNetwork
         position.y = (DemonicsFloat)br.ReadSingle();
         velocity.x = (DemonicsFloat)br.ReadSingle();
         velocity.y = (DemonicsFloat)br.ReadSingle();
-        direction.x = br.ReadSingle();
-        direction.y = br.ReadSingle();
+        pushbackStart.x = (DemonicsFloat)br.ReadSingle();
+        pushbackStart.y = (DemonicsFloat)br.ReadSingle();
+        pushbackEnd.x = (DemonicsFloat)br.ReadSingle();
+        pushbackEnd.y = (DemonicsFloat)br.ReadSingle();
+        direction.x = br.ReadInt32();
+        direction.y = br.ReadInt32();
         animation = br.ReadString();
         animationFrames = br.ReadInt32();
         attackFrames = br.ReadInt32();
@@ -326,17 +357,21 @@ public class PlayerNetwork
         knockback = br.ReadInt32();
         combo = br.ReadInt32();
         comboTimer = br.ReadInt32();
+        comboTimerStarter = (ComboTimerStarterEnum)br.ReadInt32();
         isCrouch = br.ReadBoolean();
         isAir = br.ReadBoolean();
         hasJumped = br.ReadBoolean();
+        pushbackDuration = br.ReadInt32();
         canJump = br.ReadBoolean();
         canDoubleJump = br.ReadBoolean();
         dashDirection = br.ReadInt32();
         jumpDirection = br.ReadInt32();
         dashFrames = br.ReadInt32();
-        start = br.ReadBoolean();
+        attackPress = br.ReadBoolean();
+        arcanaPress = br.ReadBoolean();
         wasWallSplatted = br.ReadBoolean();
         enter = br.ReadBoolean();
+        inPushback = br.ReadBoolean();
         canChainAttack = br.ReadBoolean();
         flip = br.ReadInt32();
         spriteOrder = br.ReadInt32();
@@ -389,7 +424,6 @@ public struct GameSimulation : IGame
     public static bool Start { get; set; }
     public static bool Run { get; set; }
     public int Checksum => GetHashCode();
-    public static int Frametime { get; set; }
     public static bool _introPlayed;
     public static PlayerNetwork[] _players;
 
@@ -623,19 +657,19 @@ public struct GameSimulation : IGame
         {
             if (up)
             {
-                _players[index].direction = new Vector2(0, 1);
+                _players[index].direction = new Vector2Int(0, 1);
             }
             if (down)
             {
-                _players[index].direction = new Vector2(0, -1);
+                _players[index].direction = new Vector2Int(0, -1);
             }
             if (right)
             {
-                _players[index].direction = new Vector2(1, _players[index].direction.y);
+                _players[index].direction = new Vector2Int(1, _players[index].direction.y);
             }
             if (left)
             {
-                _players[index].direction = new Vector2(-1, _players[index].direction.y);
+                _players[index].direction = new Vector2Int(-1, _players[index].direction.y);
             }
             if (dashForward)
             {
@@ -647,35 +681,32 @@ public struct GameSimulation : IGame
             }
             if (!left && !right)
             {
-                _players[index].direction = new Vector2(0, _players[index].direction.y);
+                _players[index].direction = new Vector2Int(0, _players[index].direction.y);
             }
             if (!up && !down)
             {
-                _players[index].direction = new Vector2(_players[index].direction.x, 0);
+                _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
             }
             if (light)
             {
-                //_players[index].attackInput = InputEnum.Light;
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, frame = Framenumber };
-                _players[index].start = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].direction, frame = Framenumber };
+                _players[index].attackPress = true;
             }
             if (medium)
             {
-                // _players[index].attackInput = InputEnum.Medium;
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, frame = Framenumber };
-                _players[index].start = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].direction, frame = Framenumber };
+                _players[index].attackPress = true;
             }
             if (heavy)
             {
-                //_players[index].attackInput = InputEnum.Heavy;
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, frame = Framenumber };
-                _players[index].start = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].direction, frame = Framenumber };
+                _players[index].attackPress = true;
             }
-            // if (arcana)
-            // {
-            //     _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, frame = DemonicsWorld.Frame };
-            //     _players[index].CurrentState.ToArcanaState(_players[index]);
-            // }
+            if (arcana)
+            {
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].direction, frame = DemonicsWorld.Frame };
+                _players[index].arcanaPress = true;
+            }
             if (blueFrenzy)
             {
                 //_players[index].CurrentState.ToBlueFrenzyState(_players[index]);
@@ -693,21 +724,14 @@ public struct GameSimulation : IGame
             }
             else
             {
-                _players[index].arcana = _players[index].playerStats.Arcana;
-                //_players[index].arcana += _players[index].playerStats.arcanaRecharge;
+                //_players[index].arcana = _players[index].playerStats.Arcana;
+                _players[index].arcana += _players[index].playerStats.arcanaRecharge;
             }
         }
         else
         {
-            _players[index].direction = Vector2.zero;
+            _players[index].direction = Vector2Int.zero;
         }
-
-
-        // if (_players[index].health <= 0)
-        // {
-        //     _players[index].enter = false;
-        //     _players[index].state = "Death";
-        // }
 
         SetState(index);
         _players[index].CurrentState.UpdateLogic(_players[index]);
@@ -779,7 +803,6 @@ public struct GameSimulation : IGame
                 GameSimulation.Start = true;
             }
             Framenumber++;
-            Frametime = Framenumber;
             DemonicsWorld.Frame = Framenumber;
             if (IntroFrame < 0 && IntroFrame > -1000)
             {
@@ -882,6 +905,18 @@ public struct GameSimulation : IGame
         if (_players[index].state == "Fall")
         {
             _players[index].CurrentState = new FallState();
+        }
+        if (_players[index].state == "Block")
+        {
+            _players[index].CurrentState = new BlockState();
+        }
+        if (_players[index].state == "BlockLow")
+        {
+            _players[index].CurrentState = new BlockLowState();
+        }
+        if (_players[index].state == "BlockAir")
+        {
+            _players[index].CurrentState = new BlockAirState();
         }
         if (_players[index].state == "HurtAir")
         {

@@ -23,6 +23,7 @@ public class DashState : State
             player.velocity = new DemonicsVector2(player.dashDirection * player.playerStats.DashForce, 0);
         }
         player.dashDirection = 0;
+        ToHurtState(player);
         Dash(player);
     }
 
@@ -60,6 +61,15 @@ public class DashState : State
             {
                 player.state = "Idle";
             }
+        }
+    }
+    private void ToHurtState(PlayerNetwork player)
+    {
+        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        {
+            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            player.enter = false;
+            player.state = "Hurt";
         }
     }
 }
