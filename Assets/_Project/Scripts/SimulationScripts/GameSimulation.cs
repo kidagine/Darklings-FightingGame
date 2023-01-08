@@ -793,6 +793,8 @@ public struct GameSimulation : IGame
         }
         _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
         _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
+        _players[index].attackPress = false;
+        _players[index].arcanaPress = false;
     }
     public void Update(long[] inputs, int disconnect_flags)
     {
