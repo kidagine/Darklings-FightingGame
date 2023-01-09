@@ -67,7 +67,7 @@ public class AttackState : State
     }
     private void ToJumpState(PlayerNetwork player)
     {
-        if (player.attackNetwork.jumpCancelable)
+        if (player.attackNetwork.jumpCancelable && player.canChainAttack)
         {
             if (player.direction.y > 0)
             {
