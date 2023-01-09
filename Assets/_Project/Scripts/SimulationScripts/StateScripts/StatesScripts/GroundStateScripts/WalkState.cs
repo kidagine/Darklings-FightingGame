@@ -21,6 +21,7 @@ public class WalkState : GroundParentState
         ToCrouchState(player);
         ToDashState(player);
         ToAttackState(player);
+        ToArcanaState(player);
     }
     private void ToCrouchState(PlayerNetwork player)
     {
@@ -72,13 +73,9 @@ public class WalkState : GroundParentState
     }
     public void ToArcanaState(PlayerNetwork player)
     {
-        if (player.arcana >= PlayerStatsSO.ARCANA_MULTIPLIER)
+        if (player.arcanaPress)
         {
-            player.isCrouch = false;
-            player.isAir = false;
-            player.canChainAttack = false;
-            player.enter = false;
-            player.state = "Arcana";
+            Arcana(player);
         }
     }
 }

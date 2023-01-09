@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    private static bool opponentInCorner;
     public override void UpdateLogic(PlayerNetwork player)
     {
         player.dashDirection = 0;
@@ -17,12 +16,6 @@ public class AttackState : State
             player.sound = player.attackNetwork.attackSound;
             player.animation = player.attackNetwork.name;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
-            opponentInCorner = false;
-            if (DemonicsPhysics.IsInCorner(player.otherPlayer))
-            {
-                opponentInCorner = true;
-            }
-
         }
         if (!player.isAir)
         {
@@ -59,7 +52,7 @@ public class AttackState : State
         {
             if (player.pushbackDuration > 0 && player.knockback <= player.pushbackDuration)
             {
-                DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackNetwork.knockbackDuration;
+                DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.pushbackDuration;
                 DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
                 DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
                 player.position = nextPosition;
@@ -141,41 +134,28 @@ public class AttackState : State
             }
         }
     }
-    public override bool ToHurtState(PlayerNetwork player, AttackSO attack)
-    {
-        player.enter = false;
-        if (player.attack.hasSuperArmor && !player.player.PlayerAnimator.InRecovery())
-        {
-            GameSimulation.Hitstop = attack.hitstop;
-            player.player.PlayerAnimator.SpriteSuperArmorEffect();
-            player.player.SetHealth(player.player.CalculateDamage(attack));
-            player.player.StartShakeContact();
-            player.player.PlayerUI.Damaged();
-            return false;
-        }
-        if (attack.causesKnockdown)
-        {
-            player.state = "Airborne";
-        }
-        else
-        {
-            if (attack.knockbackArc == 0 || attack.causesSoftKnockdown)
-            {
-                player.state = "Hurt";
-            }
-            else
-            {
-                player.state = "HurtAir";
-            }
-        }
-        return true;
-    }
+
     private void ToHurtState(PlayerNetwork player)
     {
         if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (player.attackNetwork.superArmor && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
+            {
+                if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
+                {
+                    CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
+                }
+                player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.otherPlayer.canChainAttack = true;
+                GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                player.player.PlayerAnimator.SpriteSuperArmorEffect();
+                player.player.PlayerUI.Damaged();
+                player.player.PlayerUI.UpdateHealthDamaged();
+                return;
+            }
             if (DemonicsPhysics.IsInCorner(player))
             {
                 player.otherPlayer.knockback = 0;

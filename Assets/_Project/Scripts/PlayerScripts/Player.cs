@@ -121,8 +121,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         StopComboTimer();
         _playerMovement.StopAllCoroutines();
         PlayerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
-        _playerUI.SetArcana((float)ArcanaGauge);
-        _playerUI.SetAssist((float)AssistGauge);
         _playerUI.ResetHealthDamaged();
         InitializeStats();
         _playerUI.ShowPlayerIcon();
@@ -168,7 +166,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             {
                 AssistGauge = (DemonicsFloat)1.0f;
             }
-            _playerUI.SetAssist((float)AssistGauge);
         }
     }
 
@@ -279,7 +276,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void DecreaseArcana(DemonicsFloat value)
     {
         AssistGauge -= value;
-        _playerUI.SetAssist((float)AssistGauge);
     }
 
     public void StopComboTimer()
@@ -469,15 +465,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         GameplayManager.Instance.HitStop(attack.hitstop);
     }
 
-    public bool CanTakeSuperArmorHit(AttackSO attack)
-    {
-        if (CurrentAttack.hasSuperArmor && !PlayerAnimator.InRecovery() && !CanSkipAttack)
-        {
-            return true;
-        }
-        return false;
-    }
-
     private bool CanBlock(AttackSO attack)
     {
         if (attack.attackTypeEnum == AttackTypeEnum.Break)
@@ -577,6 +564,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
         _playerUI.SetHealth(playerGs.health);
         _playerUI.SetRecoverableHealth(playerGs.healthRecoverable);
+        _playerUI.SetAssist(playerGs.shadow);
         NetworkDebug(info);
     }
 

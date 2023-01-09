@@ -5,8 +5,6 @@ public class State
 {
     public virtual void UpdateLogic(PlayerNetwork player) { }
     public virtual void Exit() { }
-    public virtual bool ToRedFrenzyState(PlayerNetwork player) { return false; }
-    public virtual bool ToBlueFrenzyState(PlayerNetwork player) { return false; }
     public virtual bool ToHurtState(PlayerNetwork player, AttackSO attack) { return false; }
     public virtual bool ToBlockState(PlayerNetwork player, AttackSO attack) { return false; }
     public void CheckFlip(PlayerNetwork player)
@@ -61,25 +59,7 @@ public class State
             player.isCrouch = false;
         }
         AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
-        player.attackNetwork = new AttackNetwork()
-        {
-            damage = attack.damage,
-            travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
-            name = attack.name,
-            attackSound = attack.attackSound,
-            hurtEffect = attack.hurtEffect,
-            knockbackForce = (DemonicsFloat)attack.knockbackForce.x,
-            knockbackDuration = attack.knockbackDuration,
-            hitstop = attack.hitstop,
-            impactSound = attack.impactSound,
-            hitStun = attack.hitStun,
-            knockbackArc = attack.knockbackArc,
-            jumpCancelable = attack.jumpCancelable,
-            softKnockdown = attack.causesSoftKnockdown,
-            hardKnockdown = attack.causesKnockdown,
-            comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
-            attackType = attack.attackTypeEnum
-        };
+        SetAttack(player, attack);
         if (attack.cameraShaker != null)
         {
             player.attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
@@ -100,25 +80,7 @@ public class State
                 player.isCrouch = true;
             }
             AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
-            player.attackNetwork = new AttackNetwork()
-            {
-                damage = attack.damage,
-                travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
-                name = attack.name,
-                attackSound = attack.attackSound,
-                hurtEffect = attack.hurtEffect,
-                knockbackForce = (DemonicsFloat)attack.knockbackForce.x,
-                knockbackDuration = attack.knockbackDuration,
-                hitstop = attack.hitstop,
-                impactSound = attack.impactSound,
-                hitStun = attack.hitStun,
-                knockbackArc = attack.knockbackArc,
-                jumpCancelable = attack.jumpCancelable,
-                softKnockdown = attack.causesSoftKnockdown,
-                hardKnockdown = attack.causesKnockdown,
-                comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
-                attackType = attack.attackTypeEnum
-            };
+            SetAttack(player, attack);
             if (attack.cameraShaker != null)
             {
                 player.attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
@@ -127,11 +89,44 @@ public class State
             player.state = "Arcana";
         }
     }
+    protected void SetAttack(PlayerNetwork player, AttackSO attack)
+    {
+        player.attackNetwork = new AttackNetwork()
+        {
+            damage = attack.damage,
+            travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
+            name = attack.name,
+            attackSound = attack.attackSound,
+            hurtEffect = attack.hurtEffect,
+            knockbackForce = (DemonicsFloat)attack.knockbackForce.x,
+            knockbackDuration = attack.knockbackDuration,
+            hitstop = attack.hitstop,
+            impactSound = attack.impactSound,
+            hitStun = attack.hitStun,
+            knockbackArc = attack.knockbackArc,
+            jumpCancelable = attack.jumpCancelable,
+            softKnockdown = attack.causesSoftKnockdown,
+            hardKnockdown = attack.causesKnockdown,
+            comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
+            attackType = attack.attackTypeEnum,
+            superArmor = attack.hasSuperArmor
+        };
+    }
     public void ResetPlayer(PlayerNetwork player)
     {
         player.healthRecoverable = 10000;
         player.health = 10000;
         player.player.PlayerUI.CheckDemonLimit(player.health);
         player.enter = false;
+    }
+    protected int CalculateDamage(int damage, float defense)
+    {
+        int calculatedDamage = (int)((DemonicsFloat)damage / (DemonicsFloat)defense);
+        return calculatedDamage;
+    }
+    protected int CalculateRecoverableDamage(int damage, float defense)
+    {
+        int calculatedDamage = (int)((DemonicsFloat)damage / (DemonicsFloat)defense) - 100;
+        return calculatedDamage;
     }
 };

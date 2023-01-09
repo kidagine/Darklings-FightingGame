@@ -25,43 +25,47 @@ public class PlayerAnimator : DemonicsAnimator
 
     protected override void CheckGrab()
     {
-        if (GetEvent().grabPoint != Vector2.zero)
-        {
-            _player.OtherPlayer.GrabPoint = new DemonicsVector2((DemonicsFloat)GetEvent().grabPoint.x * (DemonicsFloat)(_player.transform.localScale.x), (DemonicsFloat)GetEvent().grabPoint.y);
-            _player.OtherPlayerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x + _player.OtherPlayer.GrabPoint.x, _playerMovement.Physics.Position.y + _player.OtherPlayer.GrabPoint.y));
-        }
+        // if (GetEvent().grabPoint != Vector2.zero)
+        // {
+        //     _player.OtherPlayer.GrabPoint = new DemonicsVector2((DemonicsFloat)GetEvent().grabPoint.x * (DemonicsFloat)(_player.transform.localScale.x), (DemonicsFloat)GetEvent().grabPoint.y);
+        //     _player.OtherPlayerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x + _player.OtherPlayer.GrabPoint.x, _playerMovement.Physics.Position.y + _player.OtherPlayer.GrabPoint.y));
+        // }
     }
     protected override void CheckEvents()
     {
         if (_celPrevious != _cel)
         {
-            _celPrevious = _cel;
-            base.CheckEvents();
-            if (GetEvent().projectile)
-            {
-                _player.CreateEffect(GetEvent().projectilePoint, true);
-            }
-            if (GetEvent().jump)
-            {
-                _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent().jumpDirection.y));
-            }
-            if (GetEvent().footstep)
-            {
-                _audio.SoundGroup("Footsteps").PlayInRandom();
-            }
-            if (GetEvent().throwEnd)
-            {
-                _audio.Sound("Impact6").Play();
-                // CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
-            }
-            if (GetEvent().throwArcanaEnd)
-            {
-                _audio.Sound("Impact6").Play();
-                //  CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
-            }
-            _player.Parrying = GetEvent().parry;
-            _player.Invincible = GetEvent().invisibile;
+            // _celPrevious = _cel;
+            // base.CheckEvents();
+            // if (GetEvent().projectile)
+            // {
+            //     _player.CreateEffect(GetEvent().projectilePoint, true);
+            // }
+            // if (GetEvent().jump)
+            // {
+            //     _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent().jumpDirection.y));
+            // }
+            // if (GetEvent().footstep)
+            // {
+            //     _audio.SoundGroup("Footsteps").PlayInRandom();
+            // }
+            // if (GetEvent().throwEnd)
+            // {
+            //     _audio.Sound("Impact6").Play();
+            //     // CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+            // }
+            // if (GetEvent().throwArcanaEnd)
+            // {
+            //     _audio.Sound("Impact6").Play();
+            //     //  CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+            // }
+            // _player.Parrying = GetEvent().parry;
+            // _player.Invincible = GetEvent().invisibile;
         }
+    }
+    public bool GetParrying(string name, int frame)
+    {
+        return GetEvent(name, frame).parry;
     }
 
     public override void SetAnimation(string name, int frame)
@@ -92,17 +96,13 @@ public class PlayerAnimator : DemonicsAnimator
         _shadow.SetInvinsible(state);
     }
 
-    public bool InRecovery()
+    public bool InRecovery(string name, int frame)
     {
-        for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
+        _group = _animation.GetGroupId(name);
+        _cel = GetCellByFrame(frame);
+        if (_animation.animationCelsGroup[_group].animationCel[_cel].hitboxes.Count > 0)
         {
-            if (i < _cel)
-            {
-                if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes.Count > 0)
-                {
-                    return true;
-                }
-            }
+            return true;
         }
         return false;
     }

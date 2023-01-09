@@ -122,6 +122,7 @@ public struct AttackNetwork
     public bool jumpCancelable;
     public bool softKnockdown;
     public bool hardKnockdown;
+    public bool superArmor;
 
     public void Serialize(BinaryWriter bw)
     {
@@ -142,6 +143,7 @@ public struct AttackNetwork
         bw.Write(jumpCancelable);
         bw.Write(softKnockdown);
         bw.Write(hardKnockdown);
+        bw.Write(superArmor);
         cameraShakerNetwork.Serialize(bw);
     }
 
@@ -164,6 +166,7 @@ public struct AttackNetwork
         jumpCancelable = br.ReadBoolean();
         softKnockdown = br.ReadBoolean();
         hardKnockdown = br.ReadBoolean();
+        superArmor = br.ReadBoolean();
         cameraShakerNetwork.Deserialize(br);
     }
 };
@@ -260,6 +263,9 @@ public class PlayerNetwork
     public bool canDoubleJump;
     public bool attackPress;
     public bool arcanaPress;
+    public bool grabPress;
+    public bool blueFrenzyPress;
+    public bool redFrenzyPress;
     public bool enter;
     public bool wasWallSplatted;
     public bool canChainAttack;
@@ -311,6 +317,9 @@ public class PlayerNetwork
         bw.Write(dashFrames);
         bw.Write(attackPress);
         bw.Write(arcanaPress);
+        bw.Write(grabPress);
+        bw.Write(blueFrenzyPress);
+        bw.Write(redFrenzyPress);
         bw.Write(wasWallSplatted);
         bw.Write(enter);
         bw.Write(inPushback);
@@ -369,6 +378,9 @@ public class PlayerNetwork
         dashFrames = br.ReadInt32();
         attackPress = br.ReadBoolean();
         arcanaPress = br.ReadBoolean();
+        grabPress = br.ReadBoolean();
+        blueFrenzyPress = br.ReadBoolean();
+        redFrenzyPress = br.ReadBoolean();
         wasWallSplatted = br.ReadBoolean();
         enter = br.ReadBoolean();
         inPushback = br.ReadBoolean();
@@ -709,14 +721,22 @@ public struct GameSimulation : IGame
             }
             if (blueFrenzy)
             {
-                //_players[index].CurrentState.ToBlueFrenzyState(_players[index]);
+                _players[index].blueFrenzyPress = true;
             }
             if (redFrenzy)
             {
-                //_players[index].CurrentState.ToRedFrenzyState(_players[index]);
+                _players[index].redFrenzyPress = true;
+            }
+            if (grab)
+            {
+                _players[index].grabPress = true;
             }
             if (shadow)
             {
+                if (_players[index].shadow > 1000)
+                {
+                    _players[index].shadow -= 1000;
+                }
             }
             if (_players[index].arcana >= _players[index].playerStats.Arcana)
             {
@@ -724,8 +744,15 @@ public struct GameSimulation : IGame
             }
             else
             {
-                //_players[index].arcana = _players[index].playerStats.Arcana;
                 _players[index].arcana += _players[index].playerStats.arcanaRecharge;
+            }
+            if (_players[index].shadow >= 2000)
+            {
+                _players[index].shadow = 2000;
+            }
+            else
+            {
+                _players[index].shadow += 3;
             }
         }
         else
@@ -738,12 +765,12 @@ public struct GameSimulation : IGame
         _players[index].player.Flip(_players[index].flip);
         if (GameSimulation.Hitstop <= 0)
         {
+            _players[index].player.PlayerAnimator.SpriteNormalEffect();
             if (!DemonicsPhysics.Collision(_players[index], _players[index].otherPlayer))
             {
                 _players[index].position = new DemonicsVector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
             }
         }
-        _players[index].player.PlayerAnimator.SpriteNormalEffect();
         _players[index].position = DemonicsPhysics.Bounds(_players[index]);
         DemonicsPhysics.CameraHorizontalBounds(_players[0], _players[1]);
         if (_players[index].player.IsAnimationFinished(_players[index].animation, _players[index].animationFrames))
@@ -795,6 +822,9 @@ public struct GameSimulation : IGame
         _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
         _players[index].attackPress = false;
         _players[index].arcanaPress = false;
+        _players[index].grabPress = false;
+        _players[index].blueFrenzyPress = false;
+        _players[index].redFrenzyPress = false;
     }
     public void Update(long[] inputs, int disconnect_flags)
     {
@@ -951,6 +981,26 @@ public struct GameSimulation : IGame
         if (_players[index].state == "Taunt")
         {
             _players[index].CurrentState = new TauntState();
+        }
+        if (_players[index].state == "BlueFrenzy")
+        {
+            _players[index].CurrentState = new BlueFrenzyState();
+        }
+        if (_players[index].state == "RedFrenzy")
+        {
+            _players[index].CurrentState = new RedFrenzyState();
+        }
+        if (_players[index].state == "Grab")
+        {
+            _players[index].CurrentState = new GrabState();
+        }
+        if (_players[index].state == "Grabbed")
+        {
+            _players[index].CurrentState = new GrabbedState();
+        }
+        if (_players[index].state == "Throw")
+        {
+            _players[index].CurrentState = new ThrowState();
         }
     }
 

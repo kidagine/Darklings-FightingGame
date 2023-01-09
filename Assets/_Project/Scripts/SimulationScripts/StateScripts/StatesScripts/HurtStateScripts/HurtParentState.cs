@@ -80,15 +80,4 @@ public class HurtParentState : State
     protected virtual void Knockback(PlayerNetwork player)
     {
     }
-
-    public int CalculateDamage(int damage, float defense)
-    {
-        int calculatedDamage = (int)((DemonicsFloat)damage / (DemonicsFloat)defense);
-        return calculatedDamage;
-    }
-    public int CalculateRecoverableDamage(int damage, float defense)
-    {
-        int calculatedDamage = (int)((DemonicsFloat)damage / (DemonicsFloat)defense) - 100;
-        return calculatedDamage;
-    }
 }

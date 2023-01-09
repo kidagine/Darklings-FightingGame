@@ -10,20 +10,28 @@ public class GroundParentState : State
         player.canDash = true;
         player.hasJumped = false;
         player.canJump = true;
+        ToBlueFrenzyState(player);
+        ToRedFrenzyState(player);
         ToHurtState(player);
     }
 
-    public override bool ToBlueFrenzyState(PlayerNetwork player)
+    private void ToBlueFrenzyState(PlayerNetwork player)
     {
-        player.enter = false;
-        player.state = "BlueFrenzy";
-        return true;
+        if (player.blueFrenzyPress)
+        {
+            player.enter = false;
+            player.state = "BlueFrenzy";
+        }
     }
-    public override bool ToRedFrenzyState(PlayerNetwork player)
+    private void ToRedFrenzyState(PlayerNetwork player)
     {
-        player.enter = false;
-        player.state = "RedFrenzy";
-        return true;
+        if (player.redFrenzyPress)
+        {
+            AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Heavy, false, player.isAir);
+            SetAttack(player, attack);
+            player.enter = false;
+            player.state = "RedFrenzy";
+        }
     }
     private void ToHurtState(PlayerNetwork player)
     {

@@ -38,10 +38,10 @@ public class Assist : DemonicsAnimator, IHitboxResponder
     protected override void CheckEvents()
     {
         base.CheckEvents();
-        if (GetEvent().projectile)
-        {
-            Projectile();
-        }
+        // if (GetEvent().projectile)
+        // {
+        //     Projectile();
+        // }
     }
 
     protected override void AnimationEnded()

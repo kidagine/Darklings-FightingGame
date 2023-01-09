@@ -208,13 +208,13 @@ public class PlayerUI : MonoBehaviour
         _arcanaAmountText.text = Mathf.Floor(value / PlayerStatsSO.ARCANA_MULTIPLIER).ToString();
     }
 
-    public void SetAssist(float value)
+    public void SetAssist(int value)
     {
-        if (value >= 1.0f)
+        if (value >= 2000)
         {
             _assistBorder.sprite = _assistFull;
         }
-        else if (value >= 0.5f)
+        else if (value >= 1000)
         {
             _assistBorder.sprite = _assistHalf;
         }
