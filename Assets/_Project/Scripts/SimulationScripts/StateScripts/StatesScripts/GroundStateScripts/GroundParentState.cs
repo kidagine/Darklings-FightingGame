@@ -12,6 +12,7 @@ public class GroundParentState : State
         player.canJump = true;
         ToBlueFrenzyState(player);
         ToRedFrenzyState(player);
+        ToGrabState(player);
         ToHurtState(player);
     }
 
@@ -33,12 +34,27 @@ public class GroundParentState : State
             player.state = "RedFrenzy";
         }
     }
+    private void ToGrabState(PlayerNetwork player)
+    {
+        if (player.grabPress)
+        {
+            AttackSO attack = PlayerComboSystem.GetThrow(player.playerStats);
+            SetAttack(player, attack);
+            player.enter = false;
+            player.state = "Grab";
+        }
+    }
     private void ToHurtState(PlayerNetwork player)
     {
         if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                player.state = "Grabbed";
+                return;
+            }
             if (DemonicsPhysics.IsInCorner(player))
             {
                 player.otherPlayer.knockback = 0;

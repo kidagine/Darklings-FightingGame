@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class BlueFrenzyState : State
 {
     public override void UpdateLogic(PlayerNetwork player)

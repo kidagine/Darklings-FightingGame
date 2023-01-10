@@ -8,6 +8,8 @@ public class KnockdownSoftState : State
             player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.SoftKnockdown);
             player.enter = true;
             player.animationFrames = 0;
+            player.sound = "Landed";
+            player.SetEffect("Fall", player.position);
         }
         player.hurtbox.active = false;
         player.animation = "Knockdown";

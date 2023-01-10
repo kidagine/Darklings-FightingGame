@@ -67,6 +67,11 @@ public class PlayerAnimator : DemonicsAnimator
     {
         return GetEvent(name, frame).parry;
     }
+    public DemonicsVector2 GetGrabPoint(string name, int frame)
+    {
+        Vector2 grabPoint = GetEvent(name, frame).grabPoint;
+        return new DemonicsVector2((DemonicsFloat)grabPoint.x, (DemonicsFloat)grabPoint.y);
+    }
 
     public override void SetAnimation(string name, int frame)
     {
@@ -100,7 +105,19 @@ public class PlayerAnimator : DemonicsAnimator
     {
         _group = _animation.GetGroupId(name);
         _cel = GetCellByFrame(frame);
-        if (_animation.animationCelsGroup[_group].animationCel[_cel].hitboxes.Count > 0)
+        for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
+        {
+            if (i < _cel)
+            {
+                if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes.Count > 0)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+        if (_animation.GetCel(_group, _cel).hitboxes.Count == 0)
         {
             return true;
         }

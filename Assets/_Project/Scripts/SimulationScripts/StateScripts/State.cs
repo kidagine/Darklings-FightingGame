@@ -60,10 +60,6 @@ public class State
         }
         AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
         SetAttack(player, attack);
-        if (attack.cameraShaker != null)
-        {
-            player.attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
-        }
         player.enter = false;
         player.state = "Attack";
     }
@@ -81,10 +77,6 @@ public class State
             }
             AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
             SetAttack(player, attack);
-            if (attack.cameraShaker != null)
-            {
-                player.attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
-            }
             player.enter = false;
             player.state = "Arcana";
         }
@@ -111,6 +103,10 @@ public class State
             attackType = attack.attackTypeEnum,
             superArmor = attack.hasSuperArmor
         };
+        if (attack.cameraShaker != null)
+        {
+            player.attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
+        }
     }
     public void ResetPlayer(PlayerNetwork player)
     {

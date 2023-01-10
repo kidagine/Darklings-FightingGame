@@ -330,8 +330,9 @@ public class PlayerUI : MonoBehaviour
         _healthDamagedSlider.value = value;
     }
 
-    public void UpdateHealthDamaged()
+    public void UpdateHealthDamaged(int healthRecoverable)
     {
+        SetRecoverableHealth(healthRecoverable);
         if (_damagedHealthCoroutine != null)
         {
             StopCoroutine(_damagedHealthCoroutine);

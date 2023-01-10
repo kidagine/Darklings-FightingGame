@@ -22,7 +22,7 @@ public class HurtAirborneState : HurtParentState
             player.wasWallSplatted = false;
             CheckFlip(player);
             player.player.StopShakeCoroutine();
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             player.enter = false;
             if (player.attackHurtNetwork.hardKnockdown)
@@ -56,7 +56,7 @@ public class HurtAirborneState : HurtParentState
             player.player.PlayerUI.SetComboTimerActive(false);
             player.player.OtherPlayerUI.ResetCombo();
             player.player.StopShakeCoroutine();
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.wasWallSplatted = false;
             player.enter = false;
             if (player.attackHurtNetwork.softKnockdown)

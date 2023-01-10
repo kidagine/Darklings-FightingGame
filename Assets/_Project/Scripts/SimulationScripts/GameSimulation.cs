@@ -729,6 +729,7 @@ public struct GameSimulation : IGame
             }
             if (grab)
             {
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].direction, frame = DemonicsWorld.Frame };
                 _players[index].grabPress = true;
             }
             if (shadow)

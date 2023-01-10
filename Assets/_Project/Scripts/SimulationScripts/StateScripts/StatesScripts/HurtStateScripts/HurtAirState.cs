@@ -31,7 +31,7 @@ public class HurtAirState : HurtParentState
                 player.combo = 0;
                 player.player.OtherPlayerUI.ResetCombo();
                 player.player.PlayerUI.SetComboTimerActive(false);
-                player.player.PlayerUI.UpdateHealthDamaged();
+                player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
                 player.enter = false;
                 player.state = "Idle";
             }
@@ -52,7 +52,7 @@ public class HurtAirState : HurtParentState
             player.player.OtherPlayerUI.ResetCombo();
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.SetComboTimerActive(false);
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.enter = false;
             player.state = "Fall";
         }
@@ -62,7 +62,7 @@ public class HurtAirState : HurtParentState
         if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
             player.player.StopShakeCoroutine();
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             player.enter = false;
             if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown)

@@ -456,15 +456,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return _playerMovement.IsInHitstop;
     }
 
-    public void HurtOnSuperArmor(AttackSO attack)
-    {
-        //SetHealth(CalculateDamage(attack));
-        _playerUI.Damaged();
-        _playerUI.UpdateHealthDamaged();
-        PlayerAnimator.SpriteSuperArmorEffect();
-        GameplayManager.Instance.HitStop(attack.hitstop);
-    }
-
     private bool CanBlock(AttackSO attack)
     {
         if (attack.attackTypeEnum == AttackTypeEnum.Break)

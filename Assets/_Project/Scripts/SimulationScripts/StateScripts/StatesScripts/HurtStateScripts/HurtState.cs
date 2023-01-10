@@ -21,7 +21,7 @@ public class HurtState : HurtParentState
             player.player.OtherPlayerUI.ResetCombo();
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.SetComboTimerActive(false);
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.velocity = DemonicsVector2.Zero;
             player.enter = false;
             player.state = "Idle";
@@ -41,7 +41,7 @@ public class HurtState : HurtParentState
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
             player.player.StopShakeCoroutine();
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             if (player.attackHurtNetwork.hardKnockdown)
             {
                 player.state = "Airborne";

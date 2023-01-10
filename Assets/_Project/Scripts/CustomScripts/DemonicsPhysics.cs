@@ -59,6 +59,10 @@ public class DemonicsPhysics : MonoBehaviour
     }
     public static bool Collision(PlayerNetwork player, PlayerNetwork otherPlayer)
     {
+        if (!player.pushbox.active || !otherPlayer.pushbox.active)
+        {
+            return false;
+        }
         if (Colliding(player, otherPlayer))
         {
             if (player.position.y > otherPlayer.position.y)

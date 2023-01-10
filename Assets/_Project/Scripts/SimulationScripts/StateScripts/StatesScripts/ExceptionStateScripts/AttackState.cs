@@ -29,7 +29,6 @@ public class AttackState : State
         {
             player.animationFrames++;
             player.attackFrames--;
-
             if (player.canChainAttack)
             {
                 if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
@@ -139,10 +138,10 @@ public class AttackState : State
     {
         if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
         {
-            player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             if (player.attackNetwork.superArmor && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
             {
+                player.sound = player.attackHurtNetwork.impactSound;
                 if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
                 {
                     CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
@@ -153,7 +152,7 @@ public class AttackState : State
                 GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
                 player.player.PlayerAnimator.SpriteSuperArmorEffect();
                 player.player.PlayerUI.Damaged();
-                player.player.PlayerUI.UpdateHealthDamaged();
+                player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
                 return;
             }
             if (DemonicsPhysics.IsInCorner(player))
@@ -165,6 +164,7 @@ public class AttackState : State
             }
             if (IsBlocking(player))
             {
+                player.enter = false;
                 if (player.direction.y < 0)
                 {
                     player.state = "BlockLow";
@@ -176,6 +176,7 @@ public class AttackState : State
             }
             else
             {
+                player.enter = false;
                 if (player.attackHurtNetwork.hardKnockdown)
                 {
                     player.state = "Airborne";

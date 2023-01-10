@@ -24,6 +24,7 @@ public class HurtParentState : State
             player.comboTimerStarter = player.attackHurtNetwork.comboTimerStarter;
             player.comboTimer = ComboTimerStarterTypes.GetComboTimerStarterValue(player.comboTimerStarter);
         }
+        Debug.Log(player.attackHurtNetwork.attackType);
         player.player.OtherPlayerUI.SetComboTimerActive(true);
         player.combo++;
         player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);

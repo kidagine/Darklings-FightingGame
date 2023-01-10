@@ -33,7 +33,7 @@ public class BlockParentState : State
             player.health -= 200;
             player.healthRecoverable -= 200;
             player.player.PlayerUI.Damaged();
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
         }
         else
         {

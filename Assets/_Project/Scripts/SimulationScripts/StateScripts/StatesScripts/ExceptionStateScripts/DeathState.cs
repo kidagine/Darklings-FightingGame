@@ -13,7 +13,7 @@ public class DeathState : State
             GameplayManager.Instance.RoundOver(false);
             GameSimulation.IntroFrame = 360;
             player.healthRecoverable = 0;
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             if (!SceneSettings.IsTrainingMode)
             {
                 GameSimulation.Run = false;
