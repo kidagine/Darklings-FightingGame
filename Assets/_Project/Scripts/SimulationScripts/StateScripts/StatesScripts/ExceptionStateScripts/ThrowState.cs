@@ -33,15 +33,7 @@ public class ThrowState : State
             player.enter = false;
             player.state = "Idle";
             player.sound = "Impact1";
-            player.otherPlayer.enter = false;
-            player.otherPlayer.state = "HardKnockdown";
-            player.otherPlayer.combo++;
-            player.otherPlayer.health -= CalculateDamage(player.otherPlayer.attackHurtNetwork.damage, player.otherPlayer.playerStats.Defense);
-            player.otherPlayer.healthRecoverable -= CalculateRecoverableDamage(player.otherPlayer.attackHurtNetwork.damage, player.otherPlayer.playerStats.Defense);
-            player.otherPlayer.player.PlayerUI.Damaged();
-            player.otherPlayer.player.PlayerUI.UpdateHealthDamaged(player.otherPlayer.healthRecoverable);
-            player.otherPlayer.player.OtherPlayerUI.IncreaseCombo(player.combo);
-            player.otherPlayer.pushbox.active = true;
+            ThrowEnd(player.otherPlayer);
         }
     }
 }

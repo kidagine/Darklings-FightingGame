@@ -125,4 +125,16 @@ public class State
         int calculatedDamage = (int)((DemonicsFloat)damage / (DemonicsFloat)defense) - 100;
         return calculatedDamage;
     }
+    protected void ThrowEnd(PlayerNetwork player)
+    {
+        player.enter = false;
+        player.state = "HardKnockdown";
+        player.combo++;
+        player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.player.PlayerUI.Damaged();
+        player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+        player.player.OtherPlayerUI.IncreaseCombo(player.combo);
+        player.pushbox.active = true;
+    }
 };

@@ -7,8 +7,6 @@ public class KnockdownHardState : State
         CheckFlip(player);
         if (!player.enter)
         {
-            SetTopPriority(player);
-            CheckFlip(player);
             player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.Knockdown);
             player.enter = true;
             player.animationFrames = 0;

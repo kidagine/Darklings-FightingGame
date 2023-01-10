@@ -13,5 +13,17 @@ public class GrabbedState : State
         player.velocity = DemonicsVector2.Zero;
         player.animation = "HurtAir";
         player.animationFrames++;
+        ThrowBreak(player);
+    }
+
+    private void ThrowBreak(PlayerNetwork player)
+    {
+        if (player.grabPress)
+        {
+            player.enter = false;
+            player.otherPlayer.enter = false;
+            player.state = "Knockback";
+            player.otherPlayer.state = "Knockback";
+        }
     }
 }

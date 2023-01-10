@@ -971,6 +971,10 @@ public struct GameSimulation : IGame
         {
             _players[index].CurrentState = new KnockdownHardState();
         }
+        if (_players[index].state == "Knockback")
+        {
+            _players[index].CurrentState = new KnockbackState();
+        }
         if (_players[index].state == "WakeUp")
         {
             _players[index].CurrentState = new WakeUpState();
