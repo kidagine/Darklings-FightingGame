@@ -26,9 +26,9 @@ public class GroundParentState : State
     }
     private void ToRedFrenzyState(PlayerNetwork player)
     {
-        if (player.redFrenzyPress)
+        if (player.redFrenzyPress && player.healthRecoverable > player.health)
         {
-            AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Heavy, false, player.isAir);
+            AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
             SetAttack(player, attack);
             player.enter = false;
             player.state = "RedFrenzy";

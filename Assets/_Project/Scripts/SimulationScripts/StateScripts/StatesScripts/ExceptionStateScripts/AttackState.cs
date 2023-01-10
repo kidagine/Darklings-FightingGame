@@ -56,6 +56,14 @@ public class AttackState : State
                 DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
                 player.position = nextPosition;
                 player.knockback++;
+                if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
+                {
+                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+                }
+                else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
+                {
+                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+                }
             }
         }
         ToJumpState(player);

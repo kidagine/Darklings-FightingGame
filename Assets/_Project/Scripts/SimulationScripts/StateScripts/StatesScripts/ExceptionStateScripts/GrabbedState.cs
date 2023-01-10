@@ -18,7 +18,7 @@ public class GrabbedState : State
 
     private void ThrowBreak(PlayerNetwork player)
     {
-        if (player.grabPress)
+        if (player.grabPress && player.animationFrames <= 6)
         {
             player.enter = false;
             player.otherPlayer.enter = false;

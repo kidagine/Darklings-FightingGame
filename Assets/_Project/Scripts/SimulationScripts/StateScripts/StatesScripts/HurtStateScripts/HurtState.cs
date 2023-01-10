@@ -81,7 +81,6 @@ public class HurtState : HurtParentState
             nextPosition = new DemonicsVector2(nextX, baseY + arc);
         }
         player.position = nextPosition;
-        player.position = nextPosition;
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);

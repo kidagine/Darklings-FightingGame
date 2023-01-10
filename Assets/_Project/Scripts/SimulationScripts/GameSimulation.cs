@@ -256,6 +256,7 @@ public class PlayerNetwork
     public int jumpDirection;
     public int dashFrames;
     public int pushbackDuration;
+    public bool invincible;
     public bool inPushback;
     public bool canDash;
     public bool hasJumped;
@@ -311,6 +312,7 @@ public class PlayerNetwork
         bw.Write(hasJumped);
         bw.Write(pushbackDuration);
         bw.Write(canJump);
+        bw.Write(invincible);
         bw.Write(canDoubleJump);
         bw.Write(dashDirection);
         bw.Write(jumpDirection);
@@ -372,6 +374,7 @@ public class PlayerNetwork
         hasJumped = br.ReadBoolean();
         pushbackDuration = br.ReadInt32();
         canJump = br.ReadBoolean();
+        invincible = br.ReadBoolean();
         canDoubleJump = br.ReadBoolean();
         dashDirection = br.ReadInt32();
         jumpDirection = br.ReadInt32();
