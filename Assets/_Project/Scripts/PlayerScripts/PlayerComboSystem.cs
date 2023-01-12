@@ -94,7 +94,7 @@ public class PlayerComboSystem : MonoBehaviour
         return playerStats.mRedFrenzy;
     }
 
-    private static ArcanaSO GetArcana(PlayerStatsSO playerStats, bool isCrouching = false, bool isAir = false)
+    public static ArcanaSO GetArcana(PlayerStatsSO playerStats, bool isCrouching = false, bool isAir = false)
     {
         if (isAir)
         {

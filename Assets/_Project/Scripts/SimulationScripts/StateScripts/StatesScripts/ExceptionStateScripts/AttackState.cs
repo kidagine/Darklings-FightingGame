@@ -25,7 +25,7 @@ public class AttackState : State
         {
             player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
         }
-        if (GameSimulation.Hitstop <= 0)
+        if (!player.hitstop)
         {
             player.animationFrames++;
             player.attackFrames--;
@@ -144,7 +144,7 @@ public class AttackState : State
 
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (!player.otherPlayer.canChainAttack && IsColliding(player))
         {
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             if (player.attackNetwork.superArmor && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class RedFrenzyState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
@@ -18,14 +20,14 @@ public class RedFrenzyState : State
         }
         player.velocity = DemonicsVector2.Zero;
         player.dashFrames++;
-        if (GameSimulation.Hitstop <= 0)
+        if (!player.hitstop)
         {
-            player.invincible = true;
             player.animationFrames++;
             player.attackFrames--;
         }
         if (player.dashFrames == 7)
         {
+            player.invinsible = true;
             player.SetEffect("VanishDisappear", player.position);
             GameSimulation.Hitstop = 26;
         }
@@ -36,7 +38,7 @@ public class RedFrenzyState : State
         }
         if (player.dashFrames == 33)
         {
-            player.invincible = false;
+            player.invinsible = false;
             player.sound = player.attackNetwork.attackSound;
         }
         ToIdleState(player);
@@ -53,7 +55,7 @@ public class RedFrenzyState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox) && !player.invincible)
+        if (!player.otherPlayer.canChainAttack && IsColliding(player) && !player.invinsible)
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;

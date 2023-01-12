@@ -47,7 +47,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool IsPlayerOne { get; set; }
     public DemonicsFloat AssistGauge { get; set; } = (DemonicsFloat)1;
     public DemonicsFloat ArcanaGauge { get; set; }
-    public DemonicsVector2 GrabPoint { get; set; }
+    public Assist Assist { get { return _assist; } private set { } }
     public int ArcaneSlowdown { get; set; } = 6;
     public bool CanShadowbreak { get; set; } = true;
     public bool BlockingLow { get; set; }
@@ -159,14 +159,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     private void AssistCharge()
     {
-        if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameplayManager.Instance.HasGameStarted)
-        {
-            AssistGauge += (DemonicsFloat)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
-            if (GameplayManager.Instance.InfiniteAssist)
-            {
-                AssistGauge = (DemonicsFloat)1.0f;
-            }
-        }
+        // if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameplayManager.Instance.HasGameStarted)
+        // {
+        //     AssistGauge += (DemonicsFloat)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
+        //     if (GameplayManager.Instance.InfiniteAssist)
+        //     {
+        //         AssistGauge = (DemonicsFloat)1.0f;
+        //     }
+        // }
     }
 
     public void ArcanaGain(DemonicsFloat arcana)
@@ -248,17 +248,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         float remainingRecoverableHealth = HealthRecoverable - Health;
         if (remainingRecoverableHealth > 0)
         {
-            return true;
-        }
-        return false;
-    }
-
-    public bool AssistAction()
-    {
-        if (AssistGauge >= (DemonicsFloat)0.5f && GameplayManager.Instance.HasGameStarted && !_assist.IsOnScreen)
-        {
-            _assist.Attack();
-            DecreaseArcana((DemonicsFloat)0.5f);
             return true;
         }
         return false;
@@ -555,7 +544,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
         _playerUI.SetHealth(playerGs.health);
         _playerUI.SetRecoverableHealth(playerGs.healthRecoverable);
-        _playerUI.SetAssist(playerGs.shadow);
+        _playerUI.SetAssist(playerGs.shadowGauge);
         NetworkDebug(info);
     }
 

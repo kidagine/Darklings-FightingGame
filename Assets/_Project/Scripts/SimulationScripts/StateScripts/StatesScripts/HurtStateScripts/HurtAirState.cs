@@ -59,7 +59,7 @@ public class HurtAirState : HurtParentState
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (!player.otherPlayer.canChainAttack && IsColliding(player))
         {
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);

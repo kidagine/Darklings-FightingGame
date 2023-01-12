@@ -50,7 +50,7 @@ public class DeathState : State
                 player.otherPlayer.state = "Taunt";
             }
         }
-        if (GameSimulation.Hitstop <= 0)
+        if (!player.hitstop)
         {
             Knockback(player);
         }

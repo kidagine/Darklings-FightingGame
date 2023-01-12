@@ -9,7 +9,6 @@ public class Assist : DemonicsAnimator, IHitboxResponder
     private GameObject _hitEffect;
 
     public AssistStatsSO AssistStats { get { return _assistStatsSO; } private set { } }
-    public bool IsOnScreen { get; set; }
 
 
     private void Awake()
@@ -23,43 +22,30 @@ public class Assist : DemonicsAnimator, IHitboxResponder
         _assistStatsSO = assistStats;
     }
 
-    public void Attack()
+    public void Attack(int frame)
     {
         gameObject.SetActive(true);
-        IsOnScreen = true;
         _audio.Sound("Attack").Play();
         transform.SetParent(_player);
-        SetAnimation("Attack");
         transform.localPosition = AssistStats.assistPosition;
         transform.SetParent(null);
         transform.localScale = _player.localScale;
     }
-
-    protected override void CheckEvents()
+    public bool GetProjectile(string name, int frame)
     {
-        base.CheckEvents();
-        // if (GetEvent().projectile)
-        // {
-        //     Projectile();
-        // }
+        return GetEvent(name, frame).projectile;
     }
-
     protected override void AnimationEnded()
     {
         base.AnimationEnded();
-        IsOnScreen = false;
         gameObject.SetActive(false);
     }
 
     public void Recall()
     {
-        if (IsOnScreen)
+        if (_hitEffect != null)
         {
-            IsOnScreen = false;
-            if (_hitEffect != null)
-            {
-                _hitEffect.SetActive(false);
-            }
+            _hitEffect.SetActive(false);
         }
         gameObject.SetActive(false);
     }

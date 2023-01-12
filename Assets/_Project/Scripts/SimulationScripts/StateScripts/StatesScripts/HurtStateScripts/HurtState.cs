@@ -29,7 +29,7 @@ public class HurtState : HurtParentState
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (!player.otherPlayer.canChainAttack && IsColliding(player))
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;

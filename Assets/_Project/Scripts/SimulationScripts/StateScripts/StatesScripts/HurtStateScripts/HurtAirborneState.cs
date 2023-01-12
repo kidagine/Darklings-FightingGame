@@ -17,7 +17,7 @@ public class HurtAirborneState : HurtParentState
 
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (!player.otherPlayer.canChainAttack && IsColliding(player))
         {
             player.wasWallSplatted = false;
             CheckFlip(player);

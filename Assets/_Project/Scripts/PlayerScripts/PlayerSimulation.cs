@@ -23,13 +23,34 @@ public class PlayerSimulation : MonoBehaviour
             _audio.Sound(playerGs.soundStop).Stop();
             playerGs.soundStop = "";
         }
-        _player.Simulate(playerGs, info);
         if (info.state == PlayerConnectState.Disconnected)
         {
             _player.PlayerUI.Disconnected();
         }
-        _player.PlayerUI.SetArcana(playerGs.arcana);
+        _player.Simulate(playerGs, info);
+        _player.PlayerUI.SetArcana(playerGs.arcanaGauge);
+        if (playerGs.shadow.isOnScreen)
+        {
+            if (playerGs.shadow.animationFrames >= 55)
+            {
+                playerGs.shadow.isOnScreen = false;
+                _player.Assist.Recall();
+            }
+            else
+            {
+                _player.Assist.Attack(playerGs.shadow.animationFrames);
+                _player.Assist.SetAnimation("Attack", playerGs.shadow.animationFrames);
+                bool isProjectile = _player.Assist.GetProjectile("Attack", playerGs.shadow.animationFrames);
+                if (isProjectile)
+                {
+                    playerGs.SetProjectile("Dark Quake",
+                               new DemonicsVector2(playerGs.position.x, playerGs.position.y), false);
+                    Debug.Log("aa");
+                }
+            }
+        }
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
+        _playerAnimator.SetInvinsible(playerGs.invinsible);
         _playerAnimator.SetSpriteOrder(playerGs.spriteOrder);
         _hitBoxVisualizer.ShowBox(playerGs.hitbox);
         _hurtBoxVisualizer.ShowBox(playerGs.hurtbox);

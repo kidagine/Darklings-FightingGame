@@ -15,7 +15,7 @@ public class BlueFrenzyState : State
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
         }
         player.velocity = DemonicsVector2.Zero;
-        if (GameSimulation.Hitstop <= 0)
+        if (!player.hitstop)
         {
             player.animationFrames++;
             player.attackFrames--;

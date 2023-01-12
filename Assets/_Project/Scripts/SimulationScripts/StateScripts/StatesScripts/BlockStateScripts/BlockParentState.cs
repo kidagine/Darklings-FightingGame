@@ -12,7 +12,7 @@ public class BlockParentState : State
             OnEnter(player);
         }
 
-        if (GameSimulation.Hitstop <= 0)
+        if (!player.hitstop)
         {
             AfterHitstop(player);
         }
@@ -26,7 +26,7 @@ public class BlockParentState : State
         player.enter = true;
         GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
         player.sound = "Block";
-        DemonicsVector2 hurtEffectPosition = new DemonicsVector2(player.position.x + (5 * player.flip), player.otherPlayer.hitbox.position.y);
+        DemonicsVector2 hurtEffectPosition = new DemonicsVector2(player.position.x + (5 * player.flip), player.hurtPosition.y);
         if (player.attackHurtNetwork.hardKnockdown)
         {
             player.SetEffect("Chip", hurtEffectPosition);
@@ -43,7 +43,14 @@ public class BlockParentState : State
         player.stunFrames = player.attackHurtNetwork.hitStun;
         player.knockback = 0;
         player.pushbackStart = player.position;
-        player.pushbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
+        if (player.attackHurtNetwork.hardKnockdown)
+        {
+            player.pushbackEnd = new DemonicsVector2((player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip) / 2), DemonicsPhysics.GROUND_POINT);
+        }
+        else
+        {
+            player.pushbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
+        }
         player.velocity = DemonicsVector2.Zero;
     }
 
@@ -57,6 +64,14 @@ public class BlockParentState : State
             DemonicsVector2 nextPosition = DemonicsVector2.Zero;
             nextPosition = new DemonicsVector2(nextX, player.position.y);
             player.position = nextPosition;
+            if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
+            {
+                player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+            }
+            else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
+            {
+                player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+            }
             player.knockback++;
         }
         player.player.StopShakeCoroutine();

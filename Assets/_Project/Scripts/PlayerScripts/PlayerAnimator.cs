@@ -23,14 +23,6 @@ public class PlayerAnimator : DemonicsAnimator
         _animation = _player.playerStats._animation;
     }
 
-    protected override void CheckGrab()
-    {
-        // if (GetEvent().grabPoint != Vector2.zero)
-        // {
-        //     _player.OtherPlayer.GrabPoint = new DemonicsVector2((DemonicsFloat)GetEvent().grabPoint.x * (DemonicsFloat)(_player.transform.localScale.x), (DemonicsFloat)GetEvent().grabPoint.y);
-        //     _player.OtherPlayerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x + _player.OtherPlayer.GrabPoint.x, _playerMovement.Physics.Position.y + _player.OtherPlayer.GrabPoint.y));
-        // }
-    }
     protected override void CheckEvents()
     {
         if (_celPrevious != _cel)
@@ -62,6 +54,10 @@ public class PlayerAnimator : DemonicsAnimator
             // _player.Parrying = GetEvent().parry;
             // _player.Invincible = GetEvent().invisibile;
         }
+    }
+    public bool GetProjectile(string name, int frame)
+    {
+        return GetEvent(name, frame).projectile;
     }
     public bool GetParrying(string name, int frame)
     {
