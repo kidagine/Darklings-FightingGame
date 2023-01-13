@@ -7,5 +7,6 @@ public class ArcanaSO : AttackSO
     public bool airOk;
     public bool reversal;
     public float projectileSpeed;
+    public int projectilePriority;
     public bool projectileDestroyOnHit;
 }

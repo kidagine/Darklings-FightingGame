@@ -164,6 +164,7 @@ public struct AttackNetwork
     public int hitstop;
     public int damage;
     public int hitStun;
+    public int projectilePriority;
     public DemonicsFloat projectileSpeed;
     public string name;
     public string moveName;
@@ -190,6 +191,7 @@ public struct AttackNetwork
         bw.Write(damage);
         bw.Write(knockbackArc);
         bw.Write(hitStun);
+        bw.Write(projectilePriority);
         bw.Write((float)projectileSpeed);
         bw.Write(projectileDestroyOnHit);
         bw.Write(name);
@@ -218,6 +220,7 @@ public struct AttackNetwork
         damage = br.ReadInt32();
         knockbackArc = br.ReadInt32();
         hitStun = br.ReadInt32();
+        projectilePriority = br.ReadInt32();
         projectileSpeed = (DemonicsFloat)br.ReadSingle();
         projectileDestroyOnHit = br.ReadBoolean();
         name = br.ReadString();
@@ -562,13 +565,14 @@ public class PlayerNetwork
             }
         }
     }
-    public void InitializeProjectile(string name, DemonicsFloat speed, bool destroyOnHit)
+    public void InitializeProjectile(string name, DemonicsFloat speed, int priority, bool destroyOnHit)
     {
         for (int i = 0; i < projectiles.Length; i++)
         {
             if (name == projectiles[i].name)
             {
                 projectiles[i].speed = speed;
+                projectiles[i].priority = priority;
                 projectiles[i].destroyOnHit = destroyOnHit;
             }
         }
@@ -1003,6 +1007,34 @@ public struct GameSimulation : IGame
         }
         for (int i = 0; i < _players[index].projectiles.Length; i++)
         {
+            for (int j = 0; j < _players[index].otherPlayer.projectiles.Length; j++)
+            {
+                if (DemonicsCollider.Colliding(_players[index].projectiles[i].hitbox, _players[index].otherPlayer.projectiles[j].hitbox))
+                {
+                    Debug.Log(_players[index].projectiles[i].priority);
+                    if (_players[index].projectiles[i].priority > _players[index].otherPlayer.projectiles[j].priority)
+                    {
+                        _players[index].otherPlayer.projectiles[j].animationFrames = 0;
+                        _players[index].otherPlayer.projectiles[j].active = false;
+                        _players[index].otherPlayer.projectiles[j].hitbox.active = false;
+                    }
+                    else if (_players[index].projectiles[i].priority < _players[index].otherPlayer.projectiles[j].priority)
+                    {
+                        _players[index].projectiles[i].animationFrames = 0;
+                        _players[index].projectiles[i].active = false;
+                        _players[index].projectiles[i].hitbox.active = false;
+                    }
+                    else
+                    {
+                        _players[index].otherPlayer.projectiles[j].animationFrames = 0;
+                        _players[index].otherPlayer.projectiles[j].active = false;
+                        _players[index].otherPlayer.projectiles[j].hitbox.active = false;
+                        _players[index].projectiles[i].animationFrames = 0;
+                        _players[index].projectiles[i].active = false;
+                        _players[index].projectiles[i].hitbox.active = false;
+                    }
+                }
+            }
             if (_players[index].projectiles[i].active)
             {
                 if (!_players[index].projectiles[i].hitstop)

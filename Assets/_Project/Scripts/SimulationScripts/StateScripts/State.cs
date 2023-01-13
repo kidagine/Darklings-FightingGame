@@ -104,7 +104,8 @@ public class State
             attackType = attack.attackTypeEnum,
             superArmor = attack.hasSuperArmor,
             projectileSpeed = (DemonicsFloat)attack.projectileSpeed,
-            projectileDestroyOnHit = attack.projectileDestroyOnHit
+            projectileDestroyOnHit = attack.projectileDestroyOnHit,
+            projectilePriority = attack.projectilePriority
         };
         if (attack.cameraShaker != null)
         {

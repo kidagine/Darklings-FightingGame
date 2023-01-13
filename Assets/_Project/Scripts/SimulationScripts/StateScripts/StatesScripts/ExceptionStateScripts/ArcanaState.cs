@@ -16,7 +16,7 @@ public class ArcanaState : State
             player.animationFrames = 0;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
-            player.InitializeProjectile(player.attackNetwork.moveName, player.attackNetwork.projectileSpeed, player.attackNetwork.projectileDestroyOnHit);
+            player.InitializeProjectile(player.attackNetwork.moveName, player.attackNetwork.projectileSpeed, player.attackNetwork.projectilePriority, player.attackNetwork.projectileDestroyOnHit);
         }
         ToIdleState(player);
         if (!player.hitstop)
