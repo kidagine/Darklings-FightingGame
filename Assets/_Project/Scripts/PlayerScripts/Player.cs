@@ -47,7 +47,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool IsPlayerOne { get; set; }
     public DemonicsFloat AssistGauge { get; set; } = (DemonicsFloat)1;
     public DemonicsFloat ArcanaGauge { get; set; }
-    public DemonicsVector2 GrabPoint { get; set; }
+    public Assist Assist { get { return _assist; } private set { } }
     public int ArcaneSlowdown { get; set; } = 6;
     public bool CanShadowbreak { get; set; } = true;
     public bool BlockingLow { get; set; }
@@ -121,8 +121,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         StopComboTimer();
         _playerMovement.StopAllCoroutines();
         PlayerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
-        _playerUI.SetArcana((float)ArcanaGauge);
-        _playerUI.SetAssist((float)AssistGauge);
         _playerUI.ResetHealthDamaged();
         InitializeStats();
         _playerUI.ShowPlayerIcon();
@@ -161,15 +159,14 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     private void AssistCharge()
     {
-        if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameplayManager.Instance.HasGameStarted)
-        {
-            AssistGauge += (DemonicsFloat)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
-            if (GameplayManager.Instance.InfiniteAssist)
-            {
-                AssistGauge = (DemonicsFloat)1.0f;
-            }
-            _playerUI.SetAssist((float)AssistGauge);
-        }
+        // if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameplayManager.Instance.HasGameStarted)
+        // {
+        //     AssistGauge += (DemonicsFloat)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
+        //     if (GameplayManager.Instance.InfiniteAssist)
+        //     {
+        //         AssistGauge = (DemonicsFloat)1.0f;
+        //     }
+        // }
     }
 
     public void ArcanaGain(DemonicsFloat arcana)
@@ -256,17 +253,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return false;
     }
 
-    public bool AssistAction()
-    {
-        if (AssistGauge >= (DemonicsFloat)0.5f && GameplayManager.Instance.HasGameStarted && !_assist.IsOnScreen)
-        {
-            _assist.Attack();
-            DecreaseArcana((DemonicsFloat)0.5f);
-            return true;
-        }
-        return false;
-    }
-
     public DemonicsFloat DemonLimitMultiplier()
     {
         if (Health < 3000)
@@ -279,7 +265,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void DecreaseArcana(DemonicsFloat value)
     {
         AssistGauge -= value;
-        _playerUI.SetAssist((float)AssistGauge);
     }
 
     public void StopComboTimer()
@@ -460,24 +445,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return _playerMovement.IsInHitstop;
     }
 
-    public void HurtOnSuperArmor(AttackSO attack)
-    {
-        //SetHealth(CalculateDamage(attack));
-        _playerUI.Damaged();
-        _playerUI.UpdateHealthDamaged();
-        PlayerAnimator.SpriteSuperArmorEffect();
-        GameplayManager.Instance.HitStop(attack.hitstop);
-    }
-
-    public bool CanTakeSuperArmorHit(AttackSO attack)
-    {
-        if (CurrentAttack.hasSuperArmor && !PlayerAnimator.InRecovery() && !CanSkipAttack)
-        {
-            return true;
-        }
-        return false;
-    }
-
     private bool CanBlock(AttackSO attack)
     {
         if (attack.attackTypeEnum == AttackTypeEnum.Break)
@@ -577,6 +544,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
         _playerUI.SetHealth(playerGs.health);
         _playerUI.SetRecoverableHealth(playerGs.healthRecoverable);
+        _playerUI.SetAssist(playerGs.shadowGauge);
         NetworkDebug(info);
     }
 

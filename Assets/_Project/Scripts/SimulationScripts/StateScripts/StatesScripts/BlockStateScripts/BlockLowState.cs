@@ -15,7 +15,14 @@ public class BlockLowState : BlockParentState
         {
             player.player.StopShakeCoroutine();
             player.enter = false;
-            player.state = "Idle";
+            if (player.direction.y < 0)
+            {
+                player.state = "Crouch";
+            }
+            else
+            {
+                player.state = "Idle";
+            }
         }
     }
 }

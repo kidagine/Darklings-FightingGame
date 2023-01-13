@@ -4,11 +4,26 @@ public class GrabState : State
     {
         if (!player.enter)
         {
+            SetTopPriority(player);
+            CheckFlip(player);
             player.enter = true;
+            player.canChainAttack = false;
             player.animationFrames = 0;
-            player.player.StopShakeCoroutine();
+            player.animation = "Grab";
+            player.sound = "Hit";
+            player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
         }
-        player.animation = "Knockdown";
+        player.velocity = DemonicsVector2.Zero;
         player.animationFrames++;
+        player.attackFrames--;
+        ToIdleState(player);
+    }
+    private void ToIdleState(PlayerNetwork player)
+    {
+        if (player.attackFrames <= 0)
+        {
+            player.enter = false;
+            player.state = "Idle";
+        }
     }
 }

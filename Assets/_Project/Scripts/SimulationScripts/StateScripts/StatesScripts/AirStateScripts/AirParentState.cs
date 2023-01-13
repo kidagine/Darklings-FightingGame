@@ -8,6 +8,7 @@ public class AirParentState : State
         ToJumpForwardState(player);
         ToJumpState(player);
         ToHurtState(player);
+        ToRedFrenzyState(player);
         ToAttackState(player);
         ToArcanaState(player);
     }
@@ -61,7 +62,16 @@ public class AirParentState : State
         player.state = "BlockAir";
         return true;
     }
-
+    private void ToRedFrenzyState(PlayerNetwork player)
+    {
+        if (player.redFrenzyPress && player.healthRecoverable > player.health)
+        {
+            AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
+            SetAttack(player, attack);
+            player.enter = false;
+            player.state = "RedFrenzy";
+        }
+    }
     public void ToAttackState(PlayerNetwork player)
     {
         if (player.attackPress)
@@ -78,7 +88,11 @@ public class AirParentState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (player.otherPlayer.attackNetwork.attackType == AttackTypeEnum.Throw)
+        {
+            return;
+        }
+        if (!player.otherPlayer.canChainAttack && IsColliding(player))
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;

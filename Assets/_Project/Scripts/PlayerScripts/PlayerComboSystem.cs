@@ -85,12 +85,16 @@ public class PlayerComboSystem : MonoBehaviour
         }
     }
 
-    public AttackSO GetThrow()
+    public static AttackSO GetThrow(PlayerStatsSO playerStats)
     {
-        return _player.playerStats.mThrow;
+        return playerStats.mThrow;
+    }
+    public static AttackSO GetRedFrenzy(PlayerStatsSO playerStats)
+    {
+        return playerStats.mRedFrenzy;
     }
 
-    private static ArcanaSO GetArcana(PlayerStatsSO playerStats, bool isCrouching = false, bool isAir = false)
+    public static ArcanaSO GetArcana(PlayerStatsSO playerStats, bool isCrouching = false, bool isAir = false)
     {
         if (isAir)
         {

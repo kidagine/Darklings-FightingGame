@@ -21,7 +21,7 @@ public class HurtState : HurtParentState
             player.player.OtherPlayerUI.ResetCombo();
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.SetComboTimerActive(false);
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.velocity = DemonicsVector2.Zero;
             player.enter = false;
             player.state = "Idle";
@@ -29,10 +29,15 @@ public class HurtState : HurtParentState
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (!player.otherPlayer.canChainAttack && IsColliding(player))
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                player.state = "Grabbed";
+                return;
+            }
             if (DemonicsPhysics.IsInCorner(player))
             {
                 player.otherPlayer.knockback = 0;
@@ -41,7 +46,7 @@ public class HurtState : HurtParentState
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
             player.player.StopShakeCoroutine();
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             if (player.attackHurtNetwork.hardKnockdown)
             {
                 player.state = "Airborne";
@@ -80,7 +85,6 @@ public class HurtState : HurtParentState
         {
             nextPosition = new DemonicsVector2(nextX, baseY + arc);
         }
-        player.position = nextPosition;
         player.position = nextPosition;
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {

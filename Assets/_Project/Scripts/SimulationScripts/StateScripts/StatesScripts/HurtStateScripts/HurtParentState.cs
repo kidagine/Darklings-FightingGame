@@ -10,7 +10,7 @@ public class HurtParentState : State
         {
             OnEnter(player);
         }
-        if (GameSimulation.Hitstop <= 0)
+        if (!player.hitstop)
         {
             AfterHitstop(player);
         }
@@ -32,21 +32,11 @@ public class HurtParentState : State
         player.player.PlayerUI.Damaged();
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
         player.enter = true;
-        GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
         player.otherPlayer.canChainAttack = true;
         player.sound = player.attackHurtNetwork.impactSound;
-        DemonicsVector2 hurtEffectPosition = DemonicsVector2.Zero;
-        if (player.otherPlayer.isAir)
-        {
-            hurtEffectPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
-        }
-        else
-        {
-            hurtEffectPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
-        }
         if (!player.wasWallSplatted)
         {
-            player.SetEffect(player.attackHurtNetwork.hurtEffect, hurtEffectPosition);
+            player.SetEffect(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
         }
         if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
         {
@@ -79,16 +69,5 @@ public class HurtParentState : State
 
     protected virtual void Knockback(PlayerNetwork player)
     {
-    }
-
-    public int CalculateDamage(int damage, float defense)
-    {
-        int calculatedDamage = (int)((DemonicsFloat)damage / (DemonicsFloat)defense);
-        return calculatedDamage;
-    }
-    public int CalculateRecoverableDamage(int damage, float defense)
-    {
-        int calculatedDamage = (int)((DemonicsFloat)damage / (DemonicsFloat)defense) - 100;
-        return calculatedDamage;
     }
 }

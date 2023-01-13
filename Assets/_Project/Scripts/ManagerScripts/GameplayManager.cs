@@ -177,6 +177,13 @@ public class GameplayManager : MonoBehaviour
         playerStats.Add(_playerStats[SceneSettings.PlayerTwo]);
         return playerStats.ToArray();
     }
+    public AssistStatsSO[] GetAssistStats()
+    {
+        List<AssistStatsSO> assistStats = new List<AssistStatsSO>();
+        assistStats.Add(_assists[SceneSettings.AssistOne]);
+        assistStats.Add(_assists[SceneSettings.AssistTwo]);
+        return assistStats.ToArray();
+    }
 
     public float[] GetSpawnPositions()
     {

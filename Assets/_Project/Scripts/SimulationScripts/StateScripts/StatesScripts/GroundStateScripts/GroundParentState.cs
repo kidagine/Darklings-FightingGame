@@ -10,27 +10,51 @@ public class GroundParentState : State
         player.canDash = true;
         player.hasJumped = false;
         player.canJump = true;
+        ToBlueFrenzyState(player);
+        ToRedFrenzyState(player);
+        ToGrabState(player);
         ToHurtState(player);
     }
 
-    public override bool ToBlueFrenzyState(PlayerNetwork player)
+    private void ToBlueFrenzyState(PlayerNetwork player)
     {
-        player.enter = false;
-        player.state = "BlueFrenzy";
-        return true;
+        if (player.blueFrenzyPress)
+        {
+            player.enter = false;
+            player.state = "BlueFrenzy";
+        }
     }
-    public override bool ToRedFrenzyState(PlayerNetwork player)
+    private void ToRedFrenzyState(PlayerNetwork player)
     {
-        player.enter = false;
-        player.state = "RedFrenzy";
-        return true;
+        if (player.redFrenzyPress && player.healthRecoverable > player.health)
+        {
+            AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
+            SetAttack(player, attack);
+            player.enter = false;
+            player.state = "RedFrenzy";
+        }
+    }
+    private void ToGrabState(PlayerNetwork player)
+    {
+        if (player.grabPress)
+        {
+            AttackSO attack = PlayerComboSystem.GetThrow(player.playerStats);
+            SetAttack(player, attack);
+            player.enter = false;
+            player.state = "Grab";
+        }
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (!player.otherPlayer.canChainAttack && IsColliding(player))
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                player.state = "Grabbed";
+                return;
+            }
             if (DemonicsPhysics.IsInCorner(player))
             {
                 player.otherPlayer.knockback = 0;

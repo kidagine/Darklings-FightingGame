@@ -6,14 +6,19 @@ public class Shadow : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private SpriteRenderer _shadowSpriteRenderer;
     private Transform _shadow;
+    private bool _activated;
 
 
     void OnEnable()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _shadow = Instantiate(_playerShadowPrefab).transform.GetChild(0);
-        _shadowSpriteRenderer = _shadow.GetComponent<SpriteRenderer>();
-        _shadow.localRotation = Quaternion.Euler(-45.0f, 0.0f, -180.0f - transform.root.eulerAngles.z);
+        if (!_activated)
+        {
+            _activated = true;
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _shadow = Instantiate(_playerShadowPrefab).transform.GetChild(0);
+            _shadowSpriteRenderer = _shadow.GetComponent<SpriteRenderer>();
+            _shadow.localRotation = Quaternion.Euler(-45.0f, 0.0f, -180.0f - transform.root.eulerAngles.z);
+        }
     }
 
     void LateUpdate()

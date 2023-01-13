@@ -13,7 +13,7 @@ public class DeathState : State
             GameplayManager.Instance.RoundOver(false);
             GameSimulation.IntroFrame = 360;
             player.healthRecoverable = 0;
-            player.player.PlayerUI.UpdateHealthDamaged();
+            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             if (!SceneSettings.IsTrainingMode)
             {
                 GameSimulation.Run = false;
@@ -50,7 +50,7 @@ public class DeathState : State
                 player.otherPlayer.state = "Taunt";
             }
         }
-        if (GameSimulation.Hitstop <= 0)
+        if (!player.hitstop)
         {
             Knockback(player);
         }
