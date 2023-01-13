@@ -33,6 +33,11 @@ public class HurtState : HurtParentState
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                player.state = "Grabbed";
+                return;
+            }
             if (DemonicsPhysics.IsInCorner(player))
             {
                 player.otherPlayer.knockback = 0;

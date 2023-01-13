@@ -38,6 +38,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
             playerViews[i].PlayerSimulation.Simulate(playersGss[i], gameInfo.players[i]);
             UpdateEffects(i, playersGss[i].effects);
             UpdateProjectiles(i, playersGss[i].projectiles);
+            UpdateAssists(i, playersGss[i].shadow);
             _trainingMenu.SetState(true, playersGss[0].state);
             _trainingMenu.SetState(false, playersGss[1].state);
         }
@@ -87,6 +88,21 @@ public class GameSimulationView : MonoBehaviour, IGameView
                     projectileObjects[i].GetComponent<DemonicsAnimator>().SetAnimation("Idle", projectiles[i].animationFrames);
                     projectileObjects[i].transform.GetChild(0).GetComponent<CollisionVisualizer>().ShowBox(projectiles[i].hitbox);
                 }
+            }
+        }
+    }
+    private void UpdateAssists(int index, ShadowNetwork shadow)
+    {
+        GameObject assistObject = ObjectPoolingManager.Instance.GetAssistPool(index, shadow.projectile.name);
+        if (assistObject != null)
+        {
+            assistObject.SetActive(shadow.projectile.active);
+            if (shadow.projectile.active)
+            {
+                assistObject.transform.position = new Vector2((int)shadow.projectile.position.x, (int)shadow.projectile.position.y);
+                assistObject.GetComponent<SpriteRenderer>().flipX = shadow.projectile.flip;
+                assistObject.GetComponent<DemonicsAnimator>().SetAnimation("Idle", shadow.projectile.animationFrames);
+                assistObject.transform.GetChild(0).GetComponent<CollisionVisualizer>().ShowBox(shadow.projectile.hitbox);
             }
         }
     }

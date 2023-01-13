@@ -43,9 +43,7 @@ public class PlayerSimulation : MonoBehaviour
                 bool isProjectile = _player.Assist.GetProjectile("Attack", playerGs.shadow.animationFrames);
                 if (isProjectile)
                 {
-                    playerGs.SetProjectile("Dark Quake",
-                               new DemonicsVector2(playerGs.position.x, playerGs.position.y), false);
-                    Debug.Log("aa");
+                    playerGs.SetAssist(playerGs.shadow.projectile.name, new DemonicsVector2(playerGs.position.x + playerGs.shadow.position.x, playerGs.position.y + playerGs.shadow.position.y), false);
                 }
             }
         }

@@ -103,7 +103,7 @@ public class State
             comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
             superArmor = attack.hasSuperArmor,
-            projectileSpeed = attack.projectileSpeed,
+            projectileSpeed = (DemonicsFloat)attack.projectileSpeed,
             projectileDestroyOnHit = attack.projectileDestroyOnHit
         };
         if (attack.cameraShaker != null)

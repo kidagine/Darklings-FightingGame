@@ -14,6 +14,8 @@ public class ObjectPoolingManager : MonoBehaviour
     private List<ObjectPoolGroup> _objectsPoolTwo = new List<ObjectPoolGroup>();
     private List<ObjectPoolGroup> _objectsProjectilePoolOne = new List<ObjectPoolGroup>();
     private List<ObjectPoolGroup> _objectsProjectilePoolTwo = new List<ObjectPoolGroup>();
+    private List<ObjectPoolGroup> _objectsAssistsPoolOne = new List<ObjectPoolGroup>();
+    private List<ObjectPoolGroup> _objectsAssistsPoolTwo = new List<ObjectPoolGroup>();
     public static bool HasPooled;
 
     void Awake()
@@ -74,6 +76,20 @@ public class ObjectPoolingManager : MonoBehaviour
             }
         }
     }
+    public void PoolAssistInitialize(ObjectPool assistOne, ObjectPool assistTwo)
+    {
+        if (!HasPooled)
+        {
+            _objectsAssistsPoolOne.Add(new ObjectPoolGroup() { groupName = assistOne.groupName, objects = new List<GameObject>() });
+            GameObject assistObjectOne = Instantiate(assistOne.prefab, _playerOneProjectilePool).gameObject;
+            assistObjectOne.gameObject.SetActive(false);
+            _objectsAssistsPoolOne[0].objects.Add(assistObjectOne);
+            _objectsAssistsPoolTwo.Add(new ObjectPoolGroup() { groupName = assistTwo.groupName, objects = new List<GameObject>() });
+            GameObject assistObjectTwo = Instantiate(assistTwo.prefab, _playerTwoProjectilePool).gameObject;
+            assistObjectTwo.gameObject.SetActive(false);
+            _objectsAssistsPoolTwo[0].objects.Add(assistObjectTwo);
+        }
+    }
 
     private void CheckInstance()
     {
@@ -130,6 +146,31 @@ public class ObjectPoolingManager : MonoBehaviour
                 if (_objectsProjectilePoolTwo[i].groupName == name)
                 {
                     return _objectsProjectilePoolTwo[i].objects.ToArray();
+                }
+            }
+        }
+        return null;
+    }
+    public GameObject GetAssistPool(int index, string name)
+    {
+        if (index == 0)
+        {
+            for (int i = 0; i < _objectsAssistsPoolOne.Count; i++)
+            {
+                if (_objectsAssistsPoolOne[i].groupName == name)
+                {
+                    return _objectsAssistsPoolOne[i].objects[0];
+                }
+            }
+        }
+        else
+        {
+
+            for (int i = 0; i < _objectsAssistsPoolTwo.Count; i++)
+            {
+                if (_objectsAssistsPoolTwo[i].groupName == name)
+                {
+                    return _objectsAssistsPoolTwo[i].objects[0];
                 }
             }
         }

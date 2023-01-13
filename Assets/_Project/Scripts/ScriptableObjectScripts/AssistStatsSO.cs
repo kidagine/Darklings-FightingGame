@@ -9,4 +9,5 @@ public class AssistStatsSO : ScriptableObject
     public Vector2 assistPosition = Vector2.zero;
     public AttackSO attackSO = default;
     public GameObject assistPrefab;
+    public ObjectPool assistProjectile;
 }

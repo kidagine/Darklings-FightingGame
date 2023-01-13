@@ -25,6 +25,11 @@ public class HurtAirborneState : HurtParentState
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             player.enter = false;
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                player.state = "Grabbed";
+                return;
+            }
             if (player.attackHurtNetwork.hardKnockdown)
             {
                 player.state = "Airborne";

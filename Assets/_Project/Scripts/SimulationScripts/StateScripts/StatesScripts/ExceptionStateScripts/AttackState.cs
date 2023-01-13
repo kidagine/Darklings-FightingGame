@@ -39,7 +39,7 @@ public class AttackState : State
                     }
                     else
                     {
-                        if ((!(player.attackInput == InputEnum.Medium && player.isCrouch)))
+                        if ((!(player.attackInput == InputEnum.Medium && player.isCrouch)) && player.inputBuffer.inputItems[0].inputEnum != InputEnum.Throw)
                         {
                             Attack(player, player.isAir);
                         }

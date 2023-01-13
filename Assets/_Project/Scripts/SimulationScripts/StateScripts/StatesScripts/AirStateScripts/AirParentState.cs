@@ -88,6 +88,10 @@ public class AirParentState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
+        if (player.otherPlayer.attackNetwork.attackType == AttackTypeEnum.Throw)
+        {
+            return;
+        }
         if (!player.otherPlayer.canChainAttack && IsColliding(player))
         {
             player.enter = false;
