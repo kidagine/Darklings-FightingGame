@@ -33,6 +33,7 @@ public struct EffectGroupNetwork
 [Serializable]
 public struct ProjectileNetwork
 {
+    public AttackNetwork attackNetwork;
     public DemonicsVector2 position;
     public bool active;
     public bool flip;
@@ -60,6 +61,7 @@ public struct ProjectileNetwork
         bw.Write(hitstop);
         bw.Write(destroyOnHit);
         hitbox.Serialize(bw);
+        attackNetwork.Serialize(bw);
     }
 
     public void Deserialize(BinaryReader br)
@@ -76,6 +78,7 @@ public struct ProjectileNetwork
         hitstop = br.ReadBoolean();
         destroyOnHit = br.ReadBoolean();
         hitbox.Deserialize(br);
+        attackNetwork.Deserialize(br);
     }
 };
 [Serializable]
@@ -947,7 +950,7 @@ public struct GameSimulation : IGame
             _players[index].direction = Vector2Int.zero;
         }
 
-        SetState(index);
+        StateSimulation.SetState(_players[index]);
         _players[index].CurrentState.UpdateLogic(_players[index]);
         _players[index].player.Flip(_players[index].flip);
         if (!_players[index].hitstop)
@@ -1186,7 +1189,7 @@ public struct GameSimulation : IGame
                     bool dashBackward = false;
                     if ((disconnect_flags & (1 << i)) != 0)
                     {
-                        //AI
+                        //Handle AI
                     }
                     else
                     {
@@ -1200,280 +1203,9 @@ public struct GameSimulation : IGame
         }
     }
 
-    private void SetState(int index)
-    {
-        if (_players[index].state == "Attack")
-        {
-            _players[index].CurrentState = new AttackState();
-        }
-        if (_players[index].state == "Arcana")
-        {
-            _players[index].CurrentState = new ArcanaState();
-        }
-        if (_players[index].state == "Hurt")
-        {
-            _players[index].CurrentState = new HurtState();
-        }
-        if (_players[index].state == "DashAir")
-        {
-            _players[index].CurrentState = new DashAirState();
-        }
-        if (_players[index].state == "Dash")
-        {
-            _players[index].CurrentState = new DashState();
-        }
-        if (_players[index].state == "Idle")
-        {
-            _players[index].CurrentState = new IdleState();
-        }
-        if (_players[index].state == "Walk")
-        {
-            _players[index].CurrentState = new WalkState();
-        }
-        if (_players[index].state == "Run")
-        {
-            _players[index].CurrentState = new RunState();
-        }
-        if (_players[index].state == "JumpForward")
-        {
-            _players[index].CurrentState = new JumpForwardState();
-        }
-        if (_players[index].state == "Crouch")
-        {
-            _players[index].CurrentState = new CrouchState();
-        }
-        if (_players[index].state == "Jump")
-        {
-            _players[index].CurrentState = new JumpState();
-        }
-        if (_players[index].state == "Fall")
-        {
-            _players[index].CurrentState = new FallState();
-        }
-        if (_players[index].state == "Block")
-        {
-            _players[index].CurrentState = new BlockState();
-        }
-        if (_players[index].state == "BlockLow")
-        {
-            _players[index].CurrentState = new BlockLowState();
-        }
-        if (_players[index].state == "BlockAir")
-        {
-            _players[index].CurrentState = new BlockAirState();
-        }
-        if (_players[index].state == "HurtAir")
-        {
-            _players[index].CurrentState = new HurtAirState();
-        }
-        if (_players[index].state == "Airborne")
-        {
-            _players[index].CurrentState = new HurtAirborneState();
-        }
-        if (_players[index].state == "WallSplat")
-        {
-            _players[index].CurrentState = new WallSplatState();
-        }
-        if (_players[index].state == "SoftKnockdown")
-        {
-            _players[index].CurrentState = new KnockdownSoftState();
-        }
-        if (_players[index].state == "HardKnockdown")
-        {
-            _players[index].CurrentState = new KnockdownHardState();
-        }
-        if (_players[index].state == "Knockback")
-        {
-            _players[index].CurrentState = new KnockbackState();
-        }
-        if (_players[index].state == "WakeUp")
-        {
-            _players[index].CurrentState = new WakeUpState();
-        }
-        if (_players[index].state == "Death")
-        {
-            _players[index].CurrentState = new DeathState();
-        }
-        if (_players[index].state == "Taunt")
-        {
-            _players[index].CurrentState = new TauntState();
-        }
-        if (_players[index].state == "BlueFrenzy")
-        {
-            _players[index].CurrentState = new BlueFrenzyState();
-        }
-        if (_players[index].state == "RedFrenzy")
-        {
-            _players[index].CurrentState = new RedFrenzyState();
-        }
-        if (_players[index].state == "Grab")
-        {
-            _players[index].CurrentState = new GrabState();
-        }
-        if (_players[index].state == "Grabbed")
-        {
-            _players[index].CurrentState = new GrabbedState();
-        }
-        if (_players[index].state == "Throw")
-        {
-            _players[index].CurrentState = new ThrowState();
-        }
-        if (_players[index].state == "Shadowbreak")
-        {
-            _players[index].CurrentState = new ShadowbreakState();
-        }
-    }
-
     public long ReadInputs(int id)
     {
-        long input = 0;
-        if (id == 0)
-        {
-            if (Input.anyKeyDown)
-            {
-                input |= NetworkInput.SKIP_BYTE;
-            }
-            if (NetworkInput.ONE_UP_INPUT)
-            {
-                input |= NetworkInput.UP_BYTE;
-            }
-            if (NetworkInput.ONE_DOWN_INPUT)
-            {
-                input |= NetworkInput.DOWN_BYTE;
-            }
-            if (NetworkInput.ONE_LEFT_INPUT)
-            {
-                input |= NetworkInput.LEFT_BYTE;
-            }
-            if (NetworkInput.ONE_RIGHT_INPUT)
-            {
-                input |= NetworkInput.RIGHT_BYTE;
-            }
-            if (NetworkInput.ONE_LIGHT_INPUT)
-            {
-                input |= NetworkInput.LIGHT_BYTE;
-                NetworkInput.ONE_LIGHT_INPUT = false;
-            }
-            if (NetworkInput.ONE_MEDIUM_INPUT)
-            {
-                input |= NetworkInput.MEDIUM_BYTE;
-                NetworkInput.ONE_MEDIUM_INPUT = false;
-            }
-            if (NetworkInput.ONE_HEAVY_INPUT)
-            {
-                input |= NetworkInput.HEAVY_BYTE;
-                NetworkInput.ONE_HEAVY_INPUT = false;
-            }
-            if (NetworkInput.ONE_ARCANA_INPUT)
-            {
-                input |= NetworkInput.ARCANA_BYTE;
-                NetworkInput.ONE_ARCANA_INPUT = false;
-            }
-            if (NetworkInput.ONE_SHADOW_INPUT)
-            {
-                input |= NetworkInput.SHADOW_BYTE;
-                NetworkInput.ONE_SHADOW_INPUT = false;
-            }
-            if (NetworkInput.ONE_GRAB_INPUT)
-            {
-                input |= NetworkInput.GRAB_BYTE;
-                NetworkInput.ONE_GRAB_INPUT = false;
-            }
-            if (NetworkInput.ONE_BLUE_FRENZY_INPUT)
-            {
-                input |= NetworkInput.BLUE_FRENZY_BYTE;
-                NetworkInput.ONE_BLUE_FRENZY_INPUT = false;
-            }
-            if (NetworkInput.ONE_RED_FRENZY_INPUT)
-            {
-                input |= NetworkInput.RED_FRENZY_BYTE;
-                NetworkInput.ONE_RED_FRENZY_INPUT = false;
-            }
-            if (NetworkInput.ONE_DASH_FORWARD_INPUT)
-            {
-                input |= NetworkInput.DASH_FORWARD_BYTE;
-                NetworkInput.ONE_DASH_FORWARD_INPUT = false;
-            }
-            if (NetworkInput.ONE_DASH_BACKWARD_INPUT)
-            {
-                input |= NetworkInput.DASH_BACKWARD_BYTE;
-                NetworkInput.ONE_DASH_BACKWARD_INPUT = false;
-            }
-        }
-        if (id == 1)
-        {
-            if (Input.anyKeyDown)
-            {
-                input |= NetworkInput.SKIP_BYTE;
-            }
-            if (NetworkInput.TWO_UP_INPUT)
-            {
-                input |= NetworkInput.UP_BYTE;
-            }
-            if (NetworkInput.TWO_DOWN_INPUT)
-            {
-                input |= NetworkInput.DOWN_BYTE;
-            }
-            if (NetworkInput.TWO_LEFT_INPUT)
-            {
-                input |= NetworkInput.LEFT_BYTE;
-            }
-            if (NetworkInput.TWO_RIGHT_INPUT)
-            {
-                input |= NetworkInput.RIGHT_BYTE;
-            }
-            if (NetworkInput.TWO_LIGHT_INPUT)
-            {
-                input |= NetworkInput.LIGHT_BYTE;
-                NetworkInput.TWO_LIGHT_INPUT = false;
-            }
-            if (NetworkInput.TWO_MEDIUM_INPUT)
-            {
-                input |= NetworkInput.MEDIUM_BYTE;
-                NetworkInput.TWO_MEDIUM_INPUT = false;
-            }
-            if (NetworkInput.TWO_HEAVY_INPUT)
-            {
-                input |= NetworkInput.HEAVY_BYTE;
-                NetworkInput.TWO_HEAVY_INPUT = false;
-            }
-            if (NetworkInput.TWO_ARCANA_INPUT)
-            {
-                input |= NetworkInput.ARCANA_BYTE;
-                NetworkInput.TWO_ARCANA_INPUT = false;
-            }
-            if (NetworkInput.TWO_SHADOW_INPUT)
-            {
-                input |= NetworkInput.SHADOW_BYTE;
-                NetworkInput.TWO_SHADOW_INPUT = false;
-            }
-            if (NetworkInput.TWO_GRAB_INPUT)
-            {
-                input |= NetworkInput.GRAB_BYTE;
-                NetworkInput.TWO_GRAB_INPUT = false;
-            }
-            if (NetworkInput.TWO_BLUE_FRENZY_INPUT)
-            {
-                input |= NetworkInput.BLUE_FRENZY_BYTE;
-                NetworkInput.TWO_BLUE_FRENZY_INPUT = false;
-            }
-            if (NetworkInput.TWO_RED_FRENZY_INPUT)
-            {
-                input |= NetworkInput.RED_FRENZY_BYTE;
-                NetworkInput.TWO_RED_FRENZY_INPUT = false;
-            }
-            if (NetworkInput.TWO_DASH_FORWARD_INPUT)
-            {
-                input |= NetworkInput.DASH_FORWARD_BYTE;
-                NetworkInput.TWO_DASH_FORWARD_INPUT = false;
-            }
-            if (NetworkInput.TWO_DASH_BACKWARD_INPUT)
-            {
-                input |= NetworkInput.DASH_BACKWARD_BYTE;
-                NetworkInput.TWO_DASH_BACKWARD_INPUT = false;
-            }
-        }
-        return input;
+        return InputSimulation.GetInput(id);
     }
 
     public void FreeBytes(NativeArray<byte> data)
@@ -1497,6 +1229,6 @@ public struct GameSimulation : IGame
 
     public void LogInfo(string filename)
     {
-        //Log
+        Debug.Log(filename);
     }
 }

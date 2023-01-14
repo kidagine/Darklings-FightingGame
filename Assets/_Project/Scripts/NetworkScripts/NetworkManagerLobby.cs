@@ -21,7 +21,9 @@ public class NetworkManagerLobby : MonoBehaviour
     private Lobby _clientLobby;
     private float _lobbyUpdateTimer;
     public Action OnLobbyUpdate;
-    private bool _connected;
+
+    //Initialize the Unity services and authenticate the user anonymously
+    //Will change when accounts are introduced
     public static async void Authenticate()
     {
         await UnityServices.InitializeAsync();
@@ -32,11 +34,7 @@ public class NetworkManagerLobby : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
-    void Update()
-    {
-        HandleLobbyPollForUpdates();
-    }
-
+    //Host a lobby
     public async Task<string> CreateLobby(DemonData demonData)
     {
         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
@@ -46,7 +44,6 @@ public class NetworkManagerLobby : MonoBehaviour
         };
         Lobby lobby = await LobbyService.Instance.CreateLobbyAsync("darklings", _maxPlayers, createLobbyOptions);
         _hostLobby = lobby;
-        NetworkManager.Singleton.StartHost();
         return lobby.LobbyCode;
     }
 
@@ -60,6 +57,7 @@ public class NetworkManagerLobby : MonoBehaviour
         return _clientLobby;
     }
 
+    //Join the lobby given a lobby Id
     public async Task<Lobby> JoinLobby(DemonData demonData, string lobbyId)
     {
         JoinLobbyByCodeOptions joinLobbyByCodeOptions = new JoinLobbyByCodeOptions
@@ -68,10 +66,10 @@ public class NetworkManagerLobby : MonoBehaviour
         };
         Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyId, joinLobbyByCodeOptions);
         _clientLobby = lobby;
-        NetworkManager.Singleton.StartClient();
         return lobby;
     }
 
+    //Update when a player is ready
     public async void UpdateLobbyReady(bool ready, bool isHost)
     {
         string lobbyId;
@@ -95,6 +93,7 @@ public class NetworkManagerLobby : MonoBehaviour
         });
     }
 
+    //Delete lobby as a host
     public async Task DeleteLobby()
     {
         string id = _hostLobby.Id;
@@ -102,11 +101,18 @@ public class NetworkManagerLobby : MonoBehaviour
         await LobbyService.Instance.DeleteLobbyAsync(id);
     }
 
+    //Leave lobby as a client
     public async Task LeaveLobby()
     {
         await LobbyService.Instance.RemovePlayerAsync(_clientLobby.Id, AuthenticationService.Instance.PlayerId);
     }
 
+    void Update()
+    {
+        HandleLobbyPollForUpdates();
+    }
+
+    //Poll for updates, because there is a certain limit given by Unity, we have to wait before we check for an update
     private async void HandleLobbyPollForUpdates()
     {
         if (_hostLobby != null)
@@ -123,6 +129,7 @@ public class NetworkManagerLobby : MonoBehaviour
                 }
                 catch (System.Exception)
                 {
+                    throw new Exception($"Failed to get lobby with Id:{_hostLobby.Id}");
                 }
             }
         }
@@ -139,6 +146,7 @@ public class NetworkManagerLobby : MonoBehaviour
         }
     }
 
+    //Get the Player data required for the lobby and P2P connection
     private Unity.Services.Lobbies.Models.Player GetPlayer(DemonData demonData)
     {
         string address = "";
@@ -152,12 +160,14 @@ public class NetworkManagerLobby : MonoBehaviour
                 { "Assist", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.assist.ToString())},
                 { "Color", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.color.ToString())},
                 { "Ready", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, "False")},
-                { "Ip", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, address)},
-                { "Port", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public,port)},
-                { "PrivateIp", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, PrivateIp())},
+                { "Ip", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Private, address)},
+                { "Port", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Private,port)},
+                { "PrivateIp", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Private, PrivateIp())},
             }
         };
     }
+
+    //Use DNS to get the private Ip, this is done for LAN P2P connections
     private string PrivateIp()
     {
         var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -171,6 +181,7 @@ public class NetworkManagerLobby : MonoBehaviour
         return "127.0.0.1";
     }
 
+    //Use a STUN server for port forwarding, this is done for WAN P2P connections
     private void PublicIp(out string address, out string port)
     {
         if (!STUNUtils.TryParseHostAndPort("stun1.l.google.com:19302", out IPEndPoint stunEndPoint))

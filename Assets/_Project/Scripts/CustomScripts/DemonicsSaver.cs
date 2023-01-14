@@ -13,6 +13,7 @@ public static class DemonicsSaver
     [DllImport("__Internal")]
     private static extern string LoadData(string str);
 
+    //If the current build is Webgl then we save using our custom jsLibrary plugin, otherwise save to player Prefs
     public static void Save(string key, string value, bool addOn = false)
     {
         string keyLower = key.ToLower();
@@ -40,7 +41,8 @@ public static class DemonicsSaver
 #endif
     }
 
-    public static string Load(string key, string defaultValue)
+    //If the current build is Webgl then we load using our custom jsLibrary plugin, otherwise load to player Prefs
+    public static string Load(string key, string defaultValue = "")
     {
         string keyLower = key.ToLower();
 #if UNITY_WEBGL && !UNITY_EDITOR

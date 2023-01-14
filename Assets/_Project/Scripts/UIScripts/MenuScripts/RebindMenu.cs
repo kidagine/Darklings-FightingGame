@@ -31,12 +31,14 @@ public class RebindMenu : BaseMenu
     private string _controlCancel;
 
 
+    //Load the bindings
     void Awake()
     {
-        string rebinds = PlayerPrefs.GetString(_controlRebindKey);
+        string rebinds = DemonicsSaver.Load(_controlRebindKey);
         _playerInput.actions.LoadBindingOverridesFromJson(rebinds);
     }
 
+    //Update the rebind visual images based on the bindings
     void Start()
     {
         for (int i = 0; i < _rebindContainer.childCount; i++)
@@ -49,6 +51,7 @@ public class RebindMenu : BaseMenu
         }
     }
 
+    //Set the binding rules based on the input device
     void OnEnable()
     {
         if (!_secondPlayer)
@@ -74,6 +77,7 @@ public class RebindMenu : BaseMenu
         _scrollView.anchoredPosition = Vector2.zero;
     }
 
+    //Called from UI, hide the menu and if none of the selectors are active then re-select the first character
     public void HideRebind()
     {
         Hide();
@@ -83,6 +87,7 @@ public class RebindMenu : BaseMenu
         }
     }
 
+    //Called from UI, rebind the given button
     public void AssignButton(RebindButton rebindButton)
     {
         _eventSystem.sendNavigationEvents = false;
@@ -99,24 +104,25 @@ public class RebindMenu : BaseMenu
         _rebindingOperation.Start();
     }
 
+    //Cancel rebind operation
     private void RebindCancelled(RebindButton rebindButton)
     {
-        Debug.Log("cancel");
         _rebindingOperation.Dispose();
         _assignButtonImage.SetActive(false);
         StartCoroutine(RebindCompleteCoroutine(rebindButton));
     }
 
+    //Complete rebind operation
     private void RebindComplete(RebindButton rebindButton)
     {
-        Debug.Log("complete");
         _rebindingOperation.Dispose();
         _assignButtonImage.SetActive(false);
         string rebinds = _playerInput.actions.SaveBindingOverridesAsJson();
-        PlayerPrefs.SetString(_controlRebindKey, rebinds);
+        DemonicsSaver.Save(_controlRebindKey, rebinds);
         StartCoroutine(RebindCompleteCoroutine(rebindButton));
     }
 
+    //Wait a small amount before updating the visuals and reselecting the button for better game-feel
     IEnumerator RebindCompleteCoroutine(RebindButton rebindButton)
     {
         yield return new WaitForSeconds(0.1f);
@@ -125,6 +131,7 @@ public class RebindMenu : BaseMenu
         rebindButton.GetComponent<Button>().Select();
     }
 
+    //Called from UI, reset all bindings to default
     public void ResetRebindToDefault()
     {
         if (_playerInput.devices[0].displayName.Contains(_deviceText.text))
@@ -136,7 +143,7 @@ public class RebindMenu : BaseMenu
                 _rebindButtons[i].UpdatePromptImage();
             }
             string rebinds = _playerInput.actions.SaveBindingOverridesAsJson();
-            PlayerPrefs.SetString(_controlRebindKey, rebinds);
+            DemonicsSaver.Save(_controlRebindKey, rebinds);
         }
     }
 }
