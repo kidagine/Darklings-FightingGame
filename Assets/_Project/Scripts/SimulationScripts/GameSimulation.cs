@@ -256,15 +256,24 @@ public struct CameraShakerNetwork
 [Serializable]
 public struct ShadowNetwork
 {
+    public AttackSO attack;
     public DemonicsVector2 position;
+    public DemonicsVector2 spawnPoint;
+    public DemonicsVector2 spawnRotation;
     public bool isOnScreen;
+    public int flip;
     public int animationFrames;
     public ProjectileNetwork projectile;
     public void Serialize(BinaryWriter bw)
     {
         bw.Write((float)position.x);
         bw.Write((float)position.y);
+        bw.Write((float)spawnPoint.x);
+        bw.Write((float)spawnPoint.y);
+        bw.Write((float)spawnRotation.x);
+        bw.Write((float)spawnRotation.y);
         bw.Write(isOnScreen);
+        bw.Write(flip);
         bw.Write(animationFrames);
         projectile.Serialize(bw);
     }
@@ -273,7 +282,12 @@ public struct ShadowNetwork
     {
         position.x = (DemonicsFloat)br.ReadSingle();
         position.y = (DemonicsFloat)br.ReadSingle();
+        spawnPoint.x = (DemonicsFloat)br.ReadSingle();
+        spawnPoint.y = (DemonicsFloat)br.ReadSingle();
+        spawnRotation.x = (DemonicsFloat)br.ReadSingle();
+        spawnRotation.y = (DemonicsFloat)br.ReadSingle();
         isOnScreen = br.ReadBoolean();
+        flip = br.ReadInt32();
         animationFrames = br.ReadInt32();
         projectile.Deserialize(br);
     }
@@ -285,6 +299,7 @@ public struct ColliderNetwork
     public DemonicsVector2 size;
     public DemonicsVector2 offset;
     public bool active;
+    public bool enter;
 
     public void Serialize(BinaryWriter bw)
     {
@@ -295,6 +310,7 @@ public struct ColliderNetwork
         bw.Write((float)offset.x);
         bw.Write((float)offset.y);
         bw.Write(active);
+        bw.Write(enter);
     }
 
     public void Deserialize(BinaryReader br)
@@ -306,6 +322,7 @@ public struct ColliderNetwork
         offset.x = (DemonicsFloat)br.ReadSingle();
         offset.y = (DemonicsFloat)br.ReadSingle();
         active = br.ReadBoolean();
+        enter = br.ReadBoolean();
     }
 
 };
@@ -321,7 +338,6 @@ public class PlayerNetwork
     public DemonicsVector2 pushbackStart;
     public DemonicsVector2 pushbackEnd;
     public DemonicsVector2 hurtPosition;
-    public AttackSO attack;
     public AttackNetwork attackNetwork;
     public AttackNetwork attackHurtNetwork;
     public Vector2Int direction;
@@ -359,6 +375,7 @@ public class PlayerNetwork
     public bool grabPress;
     public bool blueFrenzyPress;
     public bool redFrenzyPress;
+    public bool shadowPress;
     public bool enter;
     public bool wasWallSplatted;
     public bool canChainAttack;
@@ -418,6 +435,7 @@ public class PlayerNetwork
         bw.Write(grabPress);
         bw.Write(blueFrenzyPress);
         bw.Write(redFrenzyPress);
+        bw.Write(shadowPress);
         bw.Write(wasWallSplatted);
         bw.Write(enter);
         bw.Write(hitstop);
@@ -488,6 +506,7 @@ public class PlayerNetwork
         grabPress = br.ReadBoolean();
         blueFrenzyPress = br.ReadBoolean();
         redFrenzyPress = br.ReadBoolean();
+        shadowPress = br.ReadBoolean();
         wasWallSplatted = br.ReadBoolean();
         enter = br.ReadBoolean();
         hitstop = br.ReadBoolean();
@@ -554,7 +573,7 @@ public class PlayerNetwork
             }
         }
     }
-    public void SetAssist(string name, DemonicsVector2 position, bool flip = false)
+    public void SetAssist(string name, DemonicsVector2 position, DemonicsFloat speed, bool flip = false)
     {
         if (name == shadow.projectile.name)
         {
@@ -562,6 +581,7 @@ public class PlayerNetwork
             {
                 shadow.projectile.active = true;
                 shadow.projectile.position = position;
+                shadow.projectile.speed = speed;
             }
         }
     }
@@ -681,7 +701,12 @@ public struct GameSimulation : IGame
             _players[i].pushbox = new ColliderNetwork() { active = true, size = new DemonicsVector2(22, 25), offset = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)12.5) };
             _players[i].shadow = new ShadowNetwork();
             _players[i].shadow.projectile.name = assistStats[i].assistProjectile.groupName;
-            _players[i].shadow.position = new DemonicsVector2((DemonicsFloat)assistStats[i].assistPosition.x, (DemonicsFloat)assistStats[i].assistPosition.y);
+            _players[i].shadow.attack = assistStats[i].attackSO;
+            _players[i].shadow.spawnPoint = new DemonicsVector2((DemonicsFloat)assistStats[i].assistPosition.x, (DemonicsFloat)assistStats[i].assistPosition.y);
+            _players[i].shadow.spawnRotation = new DemonicsVector2((DemonicsFloat)assistStats[i].assistRotation.x, (DemonicsFloat)assistStats[i].assistRotation.y);
+            _players[i].shadow.projectile.animationMaxFrames = ObjectPoolingManager.Instance.GetAssistPoolAnimation(i, _players[i].shadow.projectile.name).GetMaxAnimationFrames();
+            _players[i].shadow.projectile.destroyOnHit = true;
+            _players[i].shadow.projectile.speed = (DemonicsFloat)assistStats[i].assistSpeed;
             for (int j = 0; j < _players[i].effects.Length; j++)
             {
                 _players[i].effects[j] = new EffectNetwork();
@@ -898,12 +923,7 @@ public struct GameSimulation : IGame
             }
             if (shadow)
             {
-                _players[index].shadow.animationFrames = 0;
-                _players[index].shadow.isOnScreen = true;
-                if (_players[index].shadowGauge > 1000)
-                {
-                    _players[index].shadowGauge -= 1000;
-                }
+                _players[index].shadowPress = true;
             }
             if (_players[index].arcanaGauge >= _players[index].playerStats.Arcana)
             {
@@ -944,6 +964,7 @@ public struct GameSimulation : IGame
             {
                 _players[index].projectiles[i].hitstop = false;
             }
+            _players[index].shadow.projectile.hitstop = false;
             _players[index].hitstop = false;
         }
         _players[index].position = DemonicsPhysics.Bounds(_players[index]);
@@ -974,7 +995,21 @@ public struct GameSimulation : IGame
                 }
             }
         }
-
+        if (_players[index].shadow.isOnScreen)
+        {
+            if (_players[index].shadow.animationFrames >= 55)
+            {
+                _players[index].shadow.isOnScreen = false;
+            }
+            else
+            {
+                bool isProjectile = _players[index].player.Assist.GetProjectile("Attack", _players[index].shadow.animationFrames);
+                if (isProjectile)
+                {
+                    _players[index].SetAssist(_players[index].shadow.projectile.name, _players[index].shadow.position, _players[index].shadow.projectile.speed, false);
+                }
+            }
+        }
         if (_players[index].shadow.projectile.active)
         {
             if (!_players[index].shadow.projectile.hitstop)
@@ -983,15 +1018,17 @@ public struct GameSimulation : IGame
             }
             if (_players[index].shadow.projectile.animationFrames >= _players[index].shadow.projectile.animationMaxFrames)
             {
+                _players[index].shadow.projectile.hitstop = false;
                 _players[index].shadow.projectile.animationFrames = 0;
                 _players[index].shadow.projectile.active = false;
                 _players[index].shadow.projectile.hitbox.active = false;
             }
             else
             {
-                _players[index].shadow.projectile.position = new DemonicsVector2(_players[index].shadow.projectile.position.x + (_players[index].shadow.projectile.speed * _players[index].flip), _players[index].shadow.projectile.position.y);
+                DemonicsVector2 t = (new DemonicsVector2((DemonicsFloat)_players[index].shadow.spawnRotation.x * (DemonicsFloat)_players[index].shadow.flip, (DemonicsFloat)_players[index].shadow.spawnRotation.y) * (DemonicsFloat)_players[index].shadow.projectile.speed);
+                _players[index].shadow.projectile.position = new DemonicsVector2(_players[index].shadow.projectile.position.x + t.x, _players[index].shadow.projectile.position.y + t.y);
                 AnimationBox[] hitboxes =
-                ObjectPoolingManager.Instance.GetObjectPoolAnimation(index, _players[index].shadow.projectile.name).GetHitboxes("Idle", _players[index].shadow.projectile.animationFrames);
+                ObjectPoolingManager.Instance.GetAssistPoolAnimation(index, _players[index].shadow.projectile.name).GetHitboxes("Idle", _players[index].shadow.projectile.animationFrames);
                 if (hitboxes.Length == 0)
                 {
                     _players[index].shadow.projectile.hitbox.active = false;
@@ -1011,24 +1048,27 @@ public struct GameSimulation : IGame
             {
                 if (DemonicsCollider.Colliding(_players[index].projectiles[i].hitbox, _players[index].otherPlayer.projectiles[j].hitbox))
                 {
-                    Debug.Log(_players[index].projectiles[i].priority);
                     if (_players[index].projectiles[i].priority > _players[index].otherPlayer.projectiles[j].priority)
                     {
+                        _players[index].otherPlayer.projectiles[j].hitbox.enter = false;
                         _players[index].otherPlayer.projectiles[j].animationFrames = 0;
                         _players[index].otherPlayer.projectiles[j].active = false;
                         _players[index].otherPlayer.projectiles[j].hitbox.active = false;
                     }
                     else if (_players[index].projectiles[i].priority < _players[index].otherPlayer.projectiles[j].priority)
                     {
+                        _players[index].projectiles[i].hitbox.enter = false;
                         _players[index].projectiles[i].animationFrames = 0;
                         _players[index].projectiles[i].active = false;
                         _players[index].projectiles[i].hitbox.active = false;
                     }
                     else
                     {
+                        _players[index].otherPlayer.projectiles[j].hitbox.enter = false;
                         _players[index].otherPlayer.projectiles[j].animationFrames = 0;
                         _players[index].otherPlayer.projectiles[j].active = false;
                         _players[index].otherPlayer.projectiles[j].hitbox.active = false;
+                        _players[index].projectiles[i].hitbox.enter = false;
                         _players[index].projectiles[i].animationFrames = 0;
                         _players[index].projectiles[i].active = false;
                         _players[index].projectiles[i].hitbox.active = false;
@@ -1092,6 +1132,7 @@ public struct GameSimulation : IGame
         _players[index].grabPress = false;
         _players[index].blueFrenzyPress = false;
         _players[index].redFrenzyPress = false;
+        _players[index].shadowPress = false;
         if (_players[index].shadow.isOnScreen)
         {
             _players[index].shadow.animationFrames++;
@@ -1276,6 +1317,10 @@ public struct GameSimulation : IGame
         if (_players[index].state == "Throw")
         {
             _players[index].CurrentState = new ThrowState();
+        }
+        if (_players[index].state == "Shadowbreak")
+        {
+            _players[index].CurrentState = new ShadowbreakState();
         }
     }
 

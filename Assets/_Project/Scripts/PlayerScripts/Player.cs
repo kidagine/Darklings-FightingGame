@@ -84,7 +84,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         InitializeStats();
     }
-
     public void SetPlayerUI(PlayerUI playerUI)
     {
         _playerUI = playerUI;

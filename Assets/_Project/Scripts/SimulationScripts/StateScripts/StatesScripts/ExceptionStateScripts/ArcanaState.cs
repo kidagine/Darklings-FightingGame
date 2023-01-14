@@ -14,6 +14,7 @@ public class ArcanaState : State
             player.animation = player.attackNetwork.name;
             player.sound = player.attackNetwork.attackSound;
             player.animationFrames = 0;
+            player.hitbox.enter = false;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
             player.InitializeProjectile(player.attackNetwork.moveName, player.attackNetwork.projectileSpeed, player.attackNetwork.projectilePriority, player.attackNetwork.projectileDestroyOnHit);
@@ -86,7 +87,7 @@ public class ArcanaState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (!player.otherPlayer.canChainAttack && IsColliding(player))
         {
             player.dashFrames = 0;
             player.enter = false;
@@ -97,6 +98,12 @@ public class ArcanaState : State
                 player.otherPlayer.pushbackStart = player.otherPlayer.position;
                 player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
+            }
+            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            {
+                player.enter = false;
+                player.state = "Knockback";
+                return;
             }
             if (IsBlocking(player))
             {

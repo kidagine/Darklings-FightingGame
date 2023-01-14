@@ -14,6 +14,7 @@ public class GroundParentState : State
         ToRedFrenzyState(player);
         ToGrabState(player);
         ToHurtState(player);
+        Shadow(player);
     }
 
     private void ToBlueFrenzyState(PlayerNetwork player)
@@ -46,7 +47,7 @@ public class GroundParentState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && IsColliding(player))
+        if (IsColliding(player))
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;

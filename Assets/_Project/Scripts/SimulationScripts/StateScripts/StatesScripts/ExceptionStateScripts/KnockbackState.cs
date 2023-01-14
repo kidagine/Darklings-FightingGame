@@ -16,7 +16,7 @@ public class KnockbackState : State
         player.animation = "HurtAir";
         player.animationFrames++;
 
-        DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)15;
+        DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)10;
         DemonicsFloat distance = player.pushbackEnd.x - player.pushbackStart.x;
         DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
         DemonicsFloat baseY = DemonicsFloat.Lerp(player.pushbackStart.y, player.pushbackEnd.y, (nextX - player.pushbackStart.x) / distance);

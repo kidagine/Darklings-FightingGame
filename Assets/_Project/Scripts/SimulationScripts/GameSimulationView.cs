@@ -80,13 +80,16 @@ public class GameSimulationView : MonoBehaviour, IGameView
             GameObject[] projectileObjects = ObjectPoolingManager.Instance.GetProjectilePool(index, projectiles[i].name);
             if (projectileObjects.Length > 0)
             {
-                projectileObjects[i].SetActive(projectiles[i].active);
-                if (projectiles[i].active)
+                for (int j = 0; j < projectileObjects.Length; j++)
                 {
-                    projectileObjects[i].transform.position = new Vector2((int)projectiles[i].position.x, (int)projectiles[i].position.y);
-                    projectileObjects[i].GetComponent<SpriteRenderer>().flipX = projectiles[i].flip;
-                    projectileObjects[i].GetComponent<DemonicsAnimator>().SetAnimation("Idle", projectiles[i].animationFrames);
-                    projectileObjects[i].transform.GetChild(0).GetComponent<CollisionVisualizer>().ShowBox(projectiles[i].hitbox);
+                    projectileObjects[j].SetActive(projectiles[i].active);
+                    if (projectiles[i].active)
+                    {
+                        projectileObjects[j].transform.position = new Vector2((int)projectiles[i].position.x, (int)projectiles[i].position.y);
+                        projectileObjects[j].GetComponent<SpriteRenderer>().flipX = projectiles[i].flip;
+                        projectileObjects[j].GetComponent<DemonicsAnimator>().SetAnimation("Idle", projectiles[i].animationFrames);
+                        projectileObjects[j].transform.GetChild(0).GetComponent<CollisionVisualizer>().ShowBox(projectiles[i].hitbox);
+                    }
                 }
             }
         }
@@ -100,6 +103,8 @@ public class GameSimulationView : MonoBehaviour, IGameView
             if (shadow.projectile.active)
             {
                 assistObject.transform.position = new Vector2((int)shadow.projectile.position.x, (int)shadow.projectile.position.y);
+                assistObject.transform.up = new Vector2((float)shadow.spawnRotation.x * shadow.flip, (float)shadow.spawnRotation.x);
+                Debug.Log(assistObject.transform.up);
                 assistObject.GetComponent<SpriteRenderer>().flipX = shadow.projectile.flip;
                 assistObject.GetComponent<DemonicsAnimator>().SetAnimation("Idle", shadow.projectile.animationFrames);
                 assistObject.transform.GetChild(0).GetComponent<CollisionVisualizer>().ShowBox(shadow.projectile.hitbox);

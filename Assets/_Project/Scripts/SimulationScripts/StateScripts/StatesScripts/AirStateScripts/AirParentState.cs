@@ -11,7 +11,9 @@ public class AirParentState : State
         ToRedFrenzyState(player);
         ToAttackState(player);
         ToArcanaState(player);
+        Shadow(player);
     }
+
     private void ToJumpState(PlayerNetwork player)
     {
         if (player.canDoubleJump)
