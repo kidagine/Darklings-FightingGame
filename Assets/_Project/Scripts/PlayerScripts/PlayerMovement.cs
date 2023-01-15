@@ -63,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (knockbackDuration > 0)
         {
-            Physics.EnableGravity(false);
             if (_knockbackDuration > 0)
             {
                 StopKnockback();
@@ -138,7 +137,6 @@ public class PlayerMovement : MonoBehaviour
             _knockbackFrame++;
             if (_knockbackFrame == _knockbackDuration)
             {
-                Physics.EnableGravity(true);
                 Physics.Velocity = DemonicsVector2.Zero;
                 StopKnockback();
             }

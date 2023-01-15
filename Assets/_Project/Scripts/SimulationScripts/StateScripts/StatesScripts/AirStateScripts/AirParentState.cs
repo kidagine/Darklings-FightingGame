@@ -69,7 +69,7 @@ public class AirParentState : State
         if (player.redFrenzyPress && player.healthRecoverable > player.health)
         {
             AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
-            SetAttack(player, attack);
+            player.attackNetwork = SetAttack(player.attackInput, attack);
             player.enter = false;
             player.state = "RedFrenzy";
         }
@@ -94,10 +94,9 @@ public class AirParentState : State
         {
             return;
         }
-        if (!player.otherPlayer.canChainAttack && IsColliding(player))
+        if (IsColliding(player))
         {
             player.enter = false;
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             if (IsBlocking(player))
             {
                 player.state = "BlockAir";

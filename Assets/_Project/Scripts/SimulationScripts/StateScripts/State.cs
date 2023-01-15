@@ -60,13 +60,12 @@ public class State
             player.isCrouch = false;
         }
         AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
-        SetAttack(player, attack);
+        player.attackNetwork = SetAttack(player.attackInput, attack);
         player.enter = false;
         player.state = "Attack";
     }
     protected void Arcana(PlayerNetwork player, bool air = false)
     {
-        //if (player.arcanaGauge >= PlayerStatsSO.ARCANA_MULTIPLIER)
         player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
         player.arcanaPress = false;
         player.isAir = air;
@@ -76,13 +75,13 @@ public class State
             player.isCrouch = true;
         }
         ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir);
-        SetArcana(player, attack);
+        player.attackNetwork = SetArcana(player.attackInput, attack);
         player.enter = false;
         player.state = "Arcana";
     }
-    protected void SetArcana(PlayerNetwork player, ArcanaSO attack)
+    protected AttackNetwork SetArcana(InputEnum input, ArcanaSO attack)
     {
-        player.attackNetwork = new AttackNetwork()
+        AttackNetwork attackNetwork = new AttackNetwork()
         {
             damage = attack.damage,
             travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
@@ -100,7 +99,7 @@ public class State
             softKnockdown = attack.causesSoftKnockdown,
             hardKnockdown = attack.causesKnockdown,
             projectilePosition = new DemonicsVector2((DemonicsFloat)attack.hitEffectPosition.x, (DemonicsFloat)attack.hitEffectPosition.y),
-            comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
+            comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
             superArmor = attack.hasSuperArmor,
             projectileSpeed = (DemonicsFloat)attack.projectileSpeed,
@@ -109,12 +108,13 @@ public class State
         };
         if (attack.cameraShaker != null)
         {
-            player.attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
+            attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
         }
+        return attackNetwork;
     }
-    protected void SetAttack(PlayerNetwork player, AttackSO attack)
+    protected AttackNetwork SetAttack(InputEnum input, AttackSO attack)
     {
-        player.attackNetwork = new AttackNetwork()
+        AttackNetwork attackNetwork = new AttackNetwork()
         {
             damage = attack.damage,
             travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
@@ -132,14 +132,15 @@ public class State
             softKnockdown = attack.causesSoftKnockdown,
             hardKnockdown = attack.causesKnockdown,
             projectilePosition = new DemonicsVector2((DemonicsFloat)attack.hitEffectPosition.x, (DemonicsFloat)attack.hitEffectPosition.y),
-            comboTimerStarter = player.attackInput == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
+            comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
             superArmor = attack.hasSuperArmor
         };
         if (attack.cameraShaker != null)
         {
-            player.attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
+            attackNetwork.cameraShakerNetwork = new CameraShakerNetwork() { intensity = attack.cameraShaker.intensity, timer = attack.cameraShaker.timer };
         }
+        return attackNetwork;
     }
     public void ResetPlayer(PlayerNetwork player)
     {
@@ -172,9 +173,10 @@ public class State
     }
     protected bool IsColliding(PlayerNetwork player)
     {
-        if (DemonicsCollider.Colliding(player.otherPlayer.shadow.projectile.hitbox, player.hurtbox) && !player.otherPlayer.shadow.projectile.hitbox.enter)
+        if (DemonicsCollider.Colliding(player.otherPlayer.shadow.projectile.hitbox, player.hurtbox))
         {
-            GameSimulation.Hitstop = player.otherPlayer.attackNetwork.hitstop;
+            player.attackHurtNetwork = player.otherPlayer.shadow.projectile.attackNetwork;
+            GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
             player.hitstop = true;
             player.hitbox.enter = true;
             player.otherPlayer.shadow.projectile.hitstop = true;
@@ -192,13 +194,15 @@ public class State
         {
             if (DemonicsCollider.Colliding(player.otherPlayer.projectiles[i].hitbox, player.hurtbox) && !player.otherPlayer.projectiles[i].hitbox.enter)
             {
-                GameSimulation.Hitstop = player.otherPlayer.attackNetwork.hitstop;
+                player.attackHurtNetwork = player.otherPlayer.projectiles[i].attackNetwork;
+                GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
                 player.hitstop = true;
-                player.hitbox.enter = true;
+                player.otherPlayer.projectiles[i].hitbox.enter = true;
                 player.otherPlayer.projectiles[i].hitstop = true;
                 player.hurtPosition = new DemonicsVector2(player.position.x, player.position.y + (player.pushbox.size.y / 2));
                 if (player.otherPlayer.projectiles[i].destroyOnHit)
                 {
+                    player.otherPlayer.projectiles[i].hitbox.enter = false;
                     player.otherPlayer.projectiles[i].hitstop = false;
                     player.otherPlayer.projectiles[i].animationFrames = 0;
                     player.otherPlayer.projectiles[i].active = false;
@@ -209,7 +213,8 @@ public class State
         }
         if (DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox) && !player.otherPlayer.hitbox.enter)
         {
-            GameSimulation.Hitstop = player.otherPlayer.attackNetwork.hitstop;
+            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
             player.hitstop = true;
             player.otherPlayer.hitbox.enter = true;
             player.otherPlayer.hitstop = true;
@@ -230,7 +235,7 @@ public class State
     {
         if (player.shadowPress && !player.shadow.isOnScreen)
         {
-            SetAttack(player, player.shadow.attack);
+            player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
             player.shadow.animationFrames = 0;
             player.shadow.isOnScreen = true;
             player.shadow.flip = player.flip;

@@ -212,7 +212,7 @@ public class DemonicsPhysics : MonoBehaviour
         DemonicsVector2 position = player.position;
         if (player.position.y >= CELLING_POINT && player.velocity.y > 0)
         {
-            //return new DemonicsVector2(player.velocity.x, 0);
+            //CHECK FOR CELLING
         }
         if (player.position.x >= WALL_RIGHT_POINT && player.velocity.x > (DemonicsFloat)0)
         {
@@ -252,16 +252,5 @@ public class DemonicsPhysics : MonoBehaviour
             return true;
         }
         return false;
-    }
-    public void EnableGravity(bool state)
-    {
-        if (state)
-        {
-            _gravity = (DemonicsFloat)0.018;
-        }
-        else
-        {
-            _gravity = (DemonicsFloat)0;
-        }
     }
 }

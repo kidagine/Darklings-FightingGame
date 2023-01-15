@@ -107,6 +107,7 @@ public struct GameSimulation : IGame
             _players[i].shadow = new ShadowNetwork();
             _players[i].shadow.projectile.name = assistStats[i].assistProjectile.groupName;
             _players[i].shadow.attack = assistStats[i].attackSO;
+            _players[i].shadow.projectile.attackNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
             _players[i].shadow.spawnPoint = new DemonicsVector2((DemonicsFloat)assistStats[i].assistPosition.x, (DemonicsFloat)assistStats[i].assistPosition.y);
             _players[i].shadow.spawnRotation = new DemonicsVector2((DemonicsFloat)assistStats[i].assistRotation.x, (DemonicsFloat)assistStats[i].assistRotation.y);
             _players[i].shadow.projectile.animationMaxFrames = ObjectPoolingManager.Instance.GetAssistPoolAnimation(i, _players[i].shadow.projectile.name).GetMaxAnimationFrames();
@@ -122,6 +123,7 @@ public struct GameSimulation : IGame
             for (int j = 0; j < _players[i].projectiles.Length; j++)
             {
                 _players[i].projectiles[j] = new ProjectileNetwork();
+                _players[i].projectiles[j].attackNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
                 _players[i].projectiles[j].name = playerStats[i]._projectilesLibrary._objectPools[j].groupName;
                 _players[i].projectiles[j].animationMaxFrames = ObjectPoolingManager.Instance.GetObjectPoolAnimation(i, _players[i].projectiles[j].name).GetMaxAnimationFrames();
             }
@@ -363,6 +365,7 @@ public struct GameSimulation : IGame
                 }
                 if (_players[index].projectiles[i].animationFrames >= _players[index].projectiles[i].animationMaxFrames)
                 {
+                    _players[index].projectiles[i].hitbox.enter = false;
                     _players[index].projectiles[i].animationFrames = 0;
                     _players[index].projectiles[i].active = false;
                     _players[index].projectiles[i].hitbox.active = false;

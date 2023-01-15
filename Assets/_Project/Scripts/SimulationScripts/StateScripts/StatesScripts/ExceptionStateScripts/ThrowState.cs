@@ -13,7 +13,6 @@ public class ThrowState : State
             player.enter = true;
             player.animationFrames = 0;
             player.animation = "Throw";
-            player.hitbox.enter = false;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
         }
         player.otherPlayer.pushbox.active = false;

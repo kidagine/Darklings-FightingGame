@@ -7,7 +7,7 @@ public class GrabState : State
             SetTopPriority(player);
             CheckFlip(player);
             player.enter = true;
-            player.canChainAttack = false;
+            player.hitbox.enter = false;
             player.animationFrames = 0;
             player.animation = "Grab";
             player.sound = "Hit";

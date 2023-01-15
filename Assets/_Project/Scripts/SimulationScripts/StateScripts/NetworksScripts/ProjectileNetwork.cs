@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public struct ProjectileNetwork
 {
+    public AttackNetwork attackNetwork;
     public DemonicsVector2 position;
     public bool active;
     public bool flip;
@@ -31,6 +32,7 @@ public struct ProjectileNetwork
         bw.Write(flip);
         bw.Write(hitstop);
         bw.Write(destroyOnHit);
+        attackNetwork.Serialize(bw);
         hitbox.Serialize(bw);
     }
 
@@ -47,6 +49,7 @@ public struct ProjectileNetwork
         flip = br.ReadBoolean();
         hitstop = br.ReadBoolean();
         destroyOnHit = br.ReadBoolean();
+        attackNetwork.Deserialize(br);
         hitbox.Deserialize(br);
     }
 };

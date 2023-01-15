@@ -261,7 +261,7 @@ public class PlayerNetwork
             }
         }
     }
-    public void InitializeProjectile(string name, DemonicsFloat speed, int priority, bool destroyOnHit)
+    public void InitializeProjectile(string name, AttackNetwork attackNetwork, DemonicsFloat speed, int priority, bool destroyOnHit)
     {
         for (int i = 0; i < projectiles.Length; i++)
         {
@@ -270,6 +270,7 @@ public class PlayerNetwork
                 projectiles[i].speed = speed;
                 projectiles[i].priority = priority;
                 projectiles[i].destroyOnHit = destroyOnHit;
+                projectiles[i].attackNetwork = attackNetwork;
             }
         }
     }

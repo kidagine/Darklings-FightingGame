@@ -115,7 +115,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             ArcanaGauge = (DemonicsFloat)0;
         }
-        _playerMovement.Physics.EnableGravity(true);
         StopAllCoroutines();
         StopComboTimer();
         _playerMovement.StopAllCoroutines();
