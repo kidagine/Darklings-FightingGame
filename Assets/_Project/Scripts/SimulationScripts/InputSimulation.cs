@@ -153,4 +153,129 @@ public class InputSimulation
         }
         return input;
     }
+
+    public static void ParseInputs(long inputs, int i, out bool skip, out bool up, out bool down, out bool left, out bool right, out bool light, out bool medium,
+    out bool heavy, out bool arcana, out bool grab, out bool shadow, out bool blueFrenzy, out bool redFrenzy, out bool dashForward, out bool dashBackward)
+    {
+        if ((inputs & NetworkInput.SKIP_BYTE) != 0)
+        {
+            skip = true;
+        }
+        else
+        {
+            skip = false;
+        }
+        if ((inputs & NetworkInput.UP_BYTE) != 0)
+        {
+            up = true;
+        }
+        else
+        {
+            up = false;
+        }
+        if ((inputs & NetworkInput.DOWN_BYTE) != 0)
+        {
+            down = true;
+        }
+        else
+        {
+            down = false;
+        }
+        if ((inputs & NetworkInput.LEFT_BYTE) != 0)
+        {
+            left = true;
+        }
+        else
+        {
+            left = false;
+        }
+        if ((inputs & NetworkInput.RIGHT_BYTE) != 0)
+        {
+            right = true;
+        }
+        else
+        {
+            right = false;
+        }
+        if ((inputs & NetworkInput.LIGHT_BYTE) != 0)
+        {
+            light = true;
+        }
+        else
+        {
+            light = false;
+        }
+        if ((inputs & NetworkInput.MEDIUM_BYTE) != 0)
+        {
+            medium = true;
+        }
+        else
+        {
+            medium = false;
+        }
+        if ((inputs & NetworkInput.HEAVY_BYTE) != 0)
+        {
+            heavy = true;
+        }
+        else
+        {
+            heavy = false;
+        }
+        if ((inputs & NetworkInput.ARCANA_BYTE) != 0)
+        {
+            arcana = true;
+        }
+        else
+        {
+            arcana = false;
+        }
+        if ((inputs & NetworkInput.GRAB_BYTE) != 0)
+        {
+            grab = true;
+        }
+        else
+        {
+            grab = false;
+        }
+        if ((inputs & NetworkInput.SHADOW_BYTE) != 0)
+        {
+            shadow = true;
+        }
+        else
+        {
+            shadow = false;
+        }
+        if ((inputs & NetworkInput.BLUE_FRENZY_BYTE) != 0)
+        {
+            blueFrenzy = true;
+        }
+        else
+        {
+            blueFrenzy = false;
+        }
+        if ((inputs & NetworkInput.RED_FRENZY_BYTE) != 0)
+        {
+            redFrenzy = true;
+        }
+        else
+        {
+            redFrenzy = false;
+        }
+        if ((inputs & NetworkInput.DASH_FORWARD_BYTE) != 0)
+        {
+            dashForward = true;
+        }
+        else
+        {
+            dashForward = false;
+        }
+        if ((inputs & NetworkInput.DASH_BACKWARD_BYTE) != 0)
+        {
+            dashBackward = true;
+        }
+        else
+        {
+            dashBackward = false;
+        }
+    }
 }
