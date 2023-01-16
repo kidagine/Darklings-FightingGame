@@ -48,6 +48,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void SetPosition(DemonicsVector2 position)
+    {
+        Vector2Int fixedPosition = new Vector2Int((int)(position.x * 1) / 1, (int)(position.y * 1) / 1);
+        Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)fixedPosition.x, (DemonicsFloat)fixedPosition.y));
+    }
+
     public void TravelDistance(DemonicsVector2 travelDistance)
     {
         Physics.Velocity = new DemonicsVector2((DemonicsFloat)travelDistance.x, (DemonicsFloat)travelDistance.y);
@@ -57,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (knockbackDuration > 0)
         {
-            Physics.EnableGravity(false);
             if (_knockbackDuration > 0)
             {
                 StopKnockback();
@@ -132,7 +137,6 @@ public class PlayerMovement : MonoBehaviour
             _knockbackFrame++;
             if (_knockbackFrame == _knockbackDuration)
             {
-                Physics.EnableGravity(true);
                 Physics.Velocity = DemonicsVector2.Zero;
                 StopKnockback();
             }

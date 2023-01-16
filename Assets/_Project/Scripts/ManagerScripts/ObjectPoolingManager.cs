@@ -224,6 +224,30 @@ public class ObjectPoolingManager : MonoBehaviour
         }
         return null;
     }
+    public DemonicsAnimator GetAssistPoolAnimation(int index, string name)
+    {
+        if (index == 0)
+        {
+            for (int i = 0; i < _objectsAssistsPoolOne.Count; i++)
+            {
+                if (_objectsAssistsPoolOne[i].groupName == name)
+                {
+                    return _objectsAssistsPoolOne[i].objects[0].GetComponent<DemonicsAnimator>();
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _objectsAssistsPoolTwo.Count; i++)
+            {
+                if (_objectsAssistsPoolTwo[i].groupName == name)
+                {
+                    return _objectsAssistsPoolTwo[i].objects[0].GetComponent<DemonicsAnimator>();
+                }
+            }
+        }
+        return null;
+    }
 
     public void DisableAllObjects()
     {

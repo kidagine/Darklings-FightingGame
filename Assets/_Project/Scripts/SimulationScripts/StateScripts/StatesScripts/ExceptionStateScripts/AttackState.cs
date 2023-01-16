@@ -13,6 +13,7 @@ public class AttackState : State
             SetTopPriority(player);
             player.canChainAttack = false;
             player.enter = true;
+            player.hitbox.enter = false;
             player.sound = player.attackNetwork.attackSound;
             player.animation = player.attackNetwork.name;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
@@ -71,10 +72,12 @@ public class AttackState : State
         ToIdleState(player);
         ToIdleFallState(player);
         ToHurtState(player);
+        Shadow(player);
     }
+
     private void ToJumpState(PlayerNetwork player)
     {
-        if (player.attackNetwork.jumpCancelable && player.canChainAttack)
+        if (player.attackNetwork.jumpCancelable && player.canChainAttack || player.isAir && player.canDoubleJump && player.canChainAttack)
         {
             if (player.direction.y > 0)
             {
@@ -88,7 +91,7 @@ public class AttackState : State
     }
     private void ToJumpForwardState(PlayerNetwork player)
     {
-        if (player.attackNetwork.jumpCancelable)
+        if (player.attackNetwork.jumpCancelable && player.canChainAttack || player.isAir && player.canDoubleJump && player.canChainAttack)
         {
             if (player.direction.y > 0 && player.direction.x != 0)
             {
@@ -169,6 +172,13 @@ public class AttackState : State
                 player.otherPlayer.pushbackStart = player.otherPlayer.position;
                 player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
+            }
+
+            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            {
+                player.enter = false;
+                player.state = "Knockback";
+                return;
             }
             if (IsBlocking(player))
             {

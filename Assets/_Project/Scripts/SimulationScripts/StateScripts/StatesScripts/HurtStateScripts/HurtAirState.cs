@@ -59,11 +59,10 @@ public class HurtAirState : HurtParentState
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && IsColliding(player))
+        if (IsColliding(player))
         {
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             player.enter = false;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {

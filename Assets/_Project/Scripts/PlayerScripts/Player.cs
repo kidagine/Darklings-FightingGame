@@ -84,7 +84,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         InitializeStats();
     }
-
     public void SetPlayerUI(PlayerUI playerUI)
     {
         _playerUI = playerUI;
@@ -116,7 +115,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             ArcanaGauge = (DemonicsFloat)0;
         }
-        _playerMovement.Physics.EnableGravity(true);
         StopAllCoroutines();
         StopComboTimer();
         _playerMovement.StopAllCoroutines();
@@ -225,7 +223,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
     }
 
-    public void Flip(int xDirection)
+    private void Flip(int xDirection)
     {
         transform.localScale = new Vector2(xDirection, transform.localScale.y);
         _keepFlip.localScale = transform.localScale;
@@ -540,11 +538,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
         Health = playerGs.health;
-        Vector2Int fixedPosition = new Vector2Int((int)(playerGs.position.x * 1) / 1, (int)(playerGs.position.y * 1) / 1);
-        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)playerGs.position.x, (DemonicsFloat)playerGs.position.y));
+        _playerMovement.SetPosition(playerGs.position);
         _playerUI.SetHealth(playerGs.health);
         _playerUI.SetRecoverableHealth(playerGs.healthRecoverable);
         _playerUI.SetAssist(playerGs.shadowGauge);
+        Flip(playerGs.flip);
         NetworkDebug(info);
     }
 

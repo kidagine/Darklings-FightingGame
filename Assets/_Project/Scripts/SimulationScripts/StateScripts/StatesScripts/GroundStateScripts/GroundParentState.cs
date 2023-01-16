@@ -14,6 +14,7 @@ public class GroundParentState : State
         ToRedFrenzyState(player);
         ToGrabState(player);
         ToHurtState(player);
+        Shadow(player);
     }
 
     private void ToBlueFrenzyState(PlayerNetwork player)
@@ -29,7 +30,7 @@ public class GroundParentState : State
         if (player.redFrenzyPress && player.healthRecoverable > player.health)
         {
             AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
-            SetAttack(player, attack);
+            player.attackNetwork = SetAttack(player.attackInput, attack);
             player.enter = false;
             player.state = "RedFrenzy";
         }
@@ -39,17 +40,16 @@ public class GroundParentState : State
         if (player.grabPress)
         {
             AttackSO attack = PlayerComboSystem.GetThrow(player.playerStats);
-            SetAttack(player, attack);
+            player.attackNetwork = SetAttack(player.attackInput, attack);
             player.enter = false;
             player.state = "Grab";
         }
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && IsColliding(player))
+        if (IsColliding(player))
         {
             player.enter = false;
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 player.state = "Grabbed";

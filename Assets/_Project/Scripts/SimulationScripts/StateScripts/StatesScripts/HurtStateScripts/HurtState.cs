@@ -29,10 +29,9 @@ public class HurtState : HurtParentState
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && IsColliding(player))
+        if (IsColliding(player))
         {
             player.enter = false;
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 player.state = "Grabbed";
