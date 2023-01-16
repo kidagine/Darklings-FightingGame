@@ -25,11 +25,11 @@ public class CpuController : BaseController
             {
                 _reset = false;
                 Movement();
-                // if (_distance <= 4f)
-                // {
-                //     Attack();
-                // }
-                //Specials();
+                if (_distance <= 30f)
+                {
+                    Attack();
+                }
+                Specials();
             }
             else
             {
@@ -198,27 +198,57 @@ public class CpuController : BaseController
 
     private void Attack()
     {
+
         if (IsControllerEnabled)
         {
             _attackTimer -= Time.deltaTime;
             if (_attackTimer < 0)
             {
-                int attackRandom = Random.Range(0, 8);
+                int attackRandom = Random.Range(0, 7);
                 if (attackRandom <= 2)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Light);
+                    Debug.Log("A");
+                    if (_player.IsPlayerOne)
+                    {
+                        NetworkInput.ONE_LIGHT_INPUT = true;
+                    }
+                    else
+                    {
+                        NetworkInput.TWO_LIGHT_INPUT = true;
+                    }
                 }
                 else if (attackRandom <= 4)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Medium);
+                    if (_player.IsPlayerOne)
+                    {
+                        NetworkInput.ONE_MEDIUM_INPUT = true;
+                    }
+                    else
+                    {
+                        NetworkInput.TWO_MEDIUM_INPUT = true;
+                    }
                 }
                 else if (attackRandom <= 6)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
+                    if (_player.IsPlayerOne)
+                    {
+                        NetworkInput.ONE_HEAVY_INPUT = true;
+                    }
+                    else
+                    {
+                        NetworkInput.TWO_HEAVY_INPUT = true;
+                    }
                 }
                 else
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Throw);
+                    if (_player.IsPlayerOne)
+                    {
+                        NetworkInput.ONE_GRAB_INPUT = true;
+                    }
+                    else
+                    {
+                        NetworkInput.TWO_GRAB_INPUT = true;
+                    }
                 }
                 _attackTimer = Random.Range(0.15f, 0.35f);
             }
@@ -235,11 +265,25 @@ public class CpuController : BaseController
                 int arcanaRandom = Random.Range(0, 2);
                 if (arcanaRandom == 0)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Assist);
+                    if (_player.IsPlayerOne)
+                    {
+                        NetworkInput.ONE_SHADOW_INPUT = true;
+                    }
+                    else
+                    {
+                        NetworkInput.TWO_SHADOW_INPUT = true;
+                    }
                 }
                 else if (arcanaRandom == 1)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Special);
+                    if (_player.IsPlayerOne)
+                    {
+                        NetworkInput.ONE_ARCANA_INPUT = true;
+                    }
+                    else
+                    {
+                        NetworkInput.TWO_ARCANA_INPUT = true;
+                    }
                 }
                 _attackTimer = Random.Range(0.15f, 0.35f);
                 _arcanaTimer = Random.Range(0.4f, 0.85f);

@@ -84,6 +84,7 @@ public struct GameSimulation : IGame
         for (int i = 0; i < _players.Length; i++)
         {
             _players[i] = new PlayerNetwork();
+            _players[i].resultAttack = new ResultAttack();
             _players[i].inputBuffer.inputItems = new InputItemNetwork[20];
             _players[i].state = "Idle";
             _players[i].flip = 1;

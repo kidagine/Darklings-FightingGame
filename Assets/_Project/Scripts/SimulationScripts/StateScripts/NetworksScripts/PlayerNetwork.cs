@@ -8,6 +8,7 @@ public class PlayerNetwork
     public Player player;
     public PlayerNetwork otherPlayer;
     public ShadowNetwork shadow;
+    public ResultAttack resultAttack;
     public PlayerStatsSO playerStats;
     public DemonicsVector2 position;
     public DemonicsVector2 velocity;

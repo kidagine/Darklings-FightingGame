@@ -56,7 +56,7 @@ public class CharacterMenu : BaseMenu
                 _playerUIRenderOne.gameObject.SetActive(true);
                 _iconsOne.gameObject.SetActive(true);
                 _playerOneName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-                _playerUIRenderOne.PlayerStats = playerStats;
+                _playerUIRenderOne.SetPlayerStat(playerStats);
                 _playerUIRenderOne.SetAnimator(_playerStats._animation);
                 _hpTextOne.text = $"LV{_playerStats.defenseLevel}";
                 _arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
@@ -80,7 +80,7 @@ public class CharacterMenu : BaseMenu
                 _playerUIRenderTwo.gameObject.SetActive(true);
                 _iconsTwo.gameObject.SetActive(true);
                 _playerTwoName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-                _playerUIRenderTwo.PlayerStats = playerStats;
+                _playerUIRenderTwo.SetPlayerStat(playerStats);
                 _playerUIRenderTwo.SetAnimator(_playerStats._animation);
                 _hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
                 _arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
@@ -112,7 +112,7 @@ public class CharacterMenu : BaseMenu
                 _playerStats = _playerStatsArray[randomPlayer];
                 string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
                 _playerOneName.text = characterName;
-                _playerUIRenderOne.PlayerStats = _playerStats;
+                _playerUIRenderOne.SetPlayerStat(_playerStats);
                 _playerUIRenderOne.SetAnimator(_playerStats._animation);
             }
             _hpTextOne.text = $"LV{_playerStats.defenseLevel}";
@@ -130,7 +130,7 @@ public class CharacterMenu : BaseMenu
                 _playerStats = _playerStatsArray[randomPlayer];
                 string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
                 _playerOneName.text = characterName;
-                _playerUIRenderTwo.PlayerStats = _playerStats;
+                _playerUIRenderTwo.SetPlayerStat(_playerStats);
                 _playerUIRenderTwo.SetAnimator(_playerStats._animation);
             }
             _hpTextTwo.text = $"LV{_playerStats.defenseLevel}";

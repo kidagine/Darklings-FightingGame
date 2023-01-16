@@ -41,6 +41,8 @@ public class GameSimulationView : MonoBehaviour, IGameView
             UpdateAssists(i, playersGss[i].shadow);
             _trainingMenu.SetState(true, playersGss[0].state);
             _trainingMenu.SetState(false, playersGss[1].state);
+            _trainingMenu.FramedataValue(true, playersGss[0].resultAttack);
+            _trainingMenu.FramedataValue(false, playersGss[1].resultAttack);
         }
     }
     private void UpdateEffects(int index, EffectNetwork[] effects)

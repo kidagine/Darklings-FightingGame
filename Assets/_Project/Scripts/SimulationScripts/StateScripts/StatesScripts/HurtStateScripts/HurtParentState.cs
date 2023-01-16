@@ -27,8 +27,8 @@ public class HurtParentState : State
         }
         player.player.OtherPlayerUI.SetComboTimerActive(true);
         player.combo++;
-        player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
-        player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.player.StartShakeContact();
         player.player.PlayerUI.Damaged();
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);

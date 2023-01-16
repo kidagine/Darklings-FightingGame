@@ -17,6 +17,12 @@ public class PlayerUIRender : DemonicsAnimator
         _image.sprite = _spriteRenderer.sprite;
     }
 
+    public void SetPlayerStat(PlayerStatsSO playerStats)
+    {
+        _cel = 0;
+        PlayerStats = playerStats;
+    }
+
     public void Taunt()
     {
         SetAnimation("Taunt");

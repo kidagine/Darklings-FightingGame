@@ -137,7 +137,10 @@ public class State
             projectilePosition = new DemonicsVector2((DemonicsFloat)attack.hitEffectPosition.x, (DemonicsFloat)attack.hitEffectPosition.y),
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
-            superArmor = attack.hasSuperArmor
+            superArmor = attack.hasSuperArmor,
+            startup = attack.startUpFrames,
+            active = attack.activeFrames,
+            recovery = attack.recoveryFrames
         };
         if (attack.cameraShaker != null)
         {
@@ -152,21 +155,53 @@ public class State
         player.player.PlayerUI.CheckDemonLimit(player.health);
         player.enter = false;
     }
-    protected int CalculateDamage(int damage, float defense)
+    protected int CalculateDamage(PlayerNetwork player, int damage, float defense)
     {
-        int calculatedDamage = (int)((DemonicsFloat)damage / (DemonicsFloat)defense);
-        return calculatedDamage;
+        DemonicsFloat calculatedDamage = (DemonicsFloat)damage / (DemonicsFloat)defense;
+        if (player.combo > 1)
+        {
+            DemonicsFloat damageScale = (DemonicsFloat)1;
+            for (int i = 0; i < player.combo; i++)
+            {
+                damageScale *= (DemonicsFloat)0.97;
+            }
+            calculatedDamage *= damageScale;
+        }
+        int calculatedIntDamage = (int)calculatedDamage;
+        SetResultAttack(player, calculatedIntDamage, player.attackHurtNetwork);
+        return calculatedIntDamage;
     }
-    protected int CalculateRecoverableDamage(int damage, float defense)
+    protected int CalculateRecoverableDamage(PlayerNetwork player, int damage, float defense)
     {
-        int calculatedDamage = (int)((DemonicsFloat)damage / (DemonicsFloat)defense) - 100;
-        return calculatedDamage;
+        DemonicsFloat calculatedDamage = ((DemonicsFloat)damage / (DemonicsFloat)defense) - 120;
+        if (player.combo > 1)
+        {
+            DemonicsFloat damageScale = (DemonicsFloat)1;
+            for (int i = 0; i < player.combo; i++)
+            {
+                damageScale *= (DemonicsFloat)0.97;
+            }
+            calculatedDamage *= damageScale;
+        }
+        int calculatedIntDamage = (int)calculatedDamage;
+        return calculatedIntDamage;
     }
+
+    private void SetResultAttack(PlayerNetwork player, int calculatedDamage, AttackNetwork attack)
+    {
+        player.otherPlayer.resultAttack.startUpFrames = attack.startup;
+        player.otherPlayer.resultAttack.activeFrames = attack.active;
+        player.otherPlayer.resultAttack.recoveryFrames = attack.recovery;
+        player.otherPlayer.resultAttack.attackTypeEnum = attack.attackType;
+        player.otherPlayer.resultAttack.damage = calculatedDamage;
+        player.otherPlayer.resultAttack.comboDamage += calculatedDamage;
+    }
+
     protected void ThrowEnd(PlayerNetwork player)
     {
         player.combo++;
-        player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
-        player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.player.PlayerUI.Damaged();
         player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);

@@ -18,6 +18,9 @@ public struct AttackNetwork
     public int damage;
     public int hitStun;
     public int projectilePriority;
+    public int startup;
+    public int active;
+    public int recovery;
     public DemonicsFloat projectileSpeed;
     public string name;
     public string moveName;

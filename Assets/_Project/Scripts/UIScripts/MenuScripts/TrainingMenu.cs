@@ -31,10 +31,7 @@ public class TrainingMenu : BaseMenu
 
     public void ConfigurePlayers(Player playerOne, Player playerTwo)
     {
-        playerOne.hitConnectsEvent.AddListener(() => FramedataValue(true, playerOne.ResultAttack));
-        playerTwo.hitConnectsEvent.AddListener(() => FramedataValue(false, playerTwo.ResultAttack));
-        playerOne.parryConnectsEvent.AddListener(() => FramedataValue(true, playerOne.ResultAttack));
-        playerTwo.parryConnectsEvent.AddListener(() => FramedataValue(false, playerTwo.ResultAttack));
+
     }
 
     public void ChangePage(bool left)
@@ -246,6 +243,10 @@ public class TrainingMenu : BaseMenu
 
     public void FramedataValue(bool isPlayerOne, ResultAttack attack)
     {
+        if (attack == null)
+        {
+            return;
+        }
         if (isPlayerOne)
         {
             if (_startupOneText.gameObject.activeSelf)

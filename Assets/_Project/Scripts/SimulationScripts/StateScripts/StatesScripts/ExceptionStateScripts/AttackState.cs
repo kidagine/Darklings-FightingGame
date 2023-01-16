@@ -154,6 +154,14 @@ public class AttackState : State
         if (!player.otherPlayer.canChainAttack && IsColliding(player))
         {
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+
+            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            {
+                player.enter = false;
+                player.state = "Knockback";
+                return;
+            }
+
             if (player.attackNetwork.superArmor && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
             {
                 player.sound = player.attackHurtNetwork.impactSound;
@@ -161,8 +169,8 @@ public class AttackState : State
                 {
                     CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
                 }
-                player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
-                player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
                 player.otherPlayer.canChainAttack = true;
                 GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
                 player.player.PlayerAnimator.SpriteSuperArmorEffect();
@@ -178,12 +186,7 @@ public class AttackState : State
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
 
-            if (player.attackHurtNetwork.moveName == "Shadowbreak")
-            {
-                player.enter = false;
-                player.state = "Knockback";
-                return;
-            }
+
             if (IsBlocking(player))
             {
                 player.enter = false;
