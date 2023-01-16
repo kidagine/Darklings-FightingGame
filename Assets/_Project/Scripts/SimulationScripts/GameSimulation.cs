@@ -298,6 +298,14 @@ public struct GameSimulation : IGame
             {
                 _players[index].shadow.projectile.animationFrames++;
             }
+            if (_players[index].shadow.projectile.position.y <= DemonicsPhysics.GROUND_POINT)
+            {
+                _players[index].SetEffect("Impact", _players[index].shadow.projectile.position);
+                _players[index].shadow.projectile.hitstop = false;
+                _players[index].shadow.projectile.animationFrames = 0;
+                _players[index].shadow.projectile.active = false;
+                _players[index].shadow.projectile.hitbox.active = false;
+            }
             if (_players[index].shadow.projectile.animationFrames >= _players[index].shadow.projectile.animationMaxFrames)
             {
                 _players[index].shadow.projectile.hitstop = false;

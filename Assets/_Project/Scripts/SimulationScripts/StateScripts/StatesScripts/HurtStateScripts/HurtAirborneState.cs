@@ -35,6 +35,7 @@ public class HurtAirborneState : HurtParentState
             }
             else
             {
+                player.comboLocked = false;
                 player.state = "HurtAir";
             }
         }
@@ -56,6 +57,7 @@ public class HurtAirborneState : HurtParentState
     {
         if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0 && player.knockback > 1)
         {
+            player.comboLocked = false;
             player.combo = 0;
             player.player.PlayerUI.SetComboTimerActive(false);
             player.player.OtherPlayerUI.ResetCombo();
@@ -90,6 +92,14 @@ public class HurtAirborneState : HurtParentState
             nextPosition = new DemonicsVector2(nextX, baseY + arc);
         }
         player.position = nextPosition;
+        if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
+        {
+            player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+        }
+        else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
+        {
+            player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+        }
         player.knockback++;
     }
 }

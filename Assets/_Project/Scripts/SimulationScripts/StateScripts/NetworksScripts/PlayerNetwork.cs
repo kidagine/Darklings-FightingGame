@@ -43,6 +43,7 @@ public class PlayerNetwork
     public bool invinsible;
     public bool inPushback;
     public bool canDash;
+    public bool comboLocked;
     public bool hasJumped;
     public bool canJump;
     public bool canDoubleJump;

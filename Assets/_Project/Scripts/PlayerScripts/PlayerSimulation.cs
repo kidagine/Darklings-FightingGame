@@ -29,24 +29,7 @@ public class PlayerSimulation : MonoBehaviour
         }
         _player.Simulate(playerGs, info);
         _player.PlayerUI.SetArcana(playerGs.arcanaGauge);
-        // if (playerGs.shadow.isOnScreen)
-        // {
-        //     if (playerGs.shadow.animationFrames >= 55)
-        //     {
-        //         playerGs.shadow.isOnScreen = false;
-        //         _player.Assist.Recall();
-        //     }
-        //     else
-        //     {
-        //         _player.Assist.Attack(playerGs.shadow.animationFrames);
-        //         _player.Assist.SetAnimation("Attack", playerGs.shadow.animationFrames);
-        //         bool isProjectile = _player.Assist.GetProjectile("Attack", playerGs.shadow.animationFrames);
-        //         if (isProjectile)
-        //         {
-        //             playerGs.SetAssist(playerGs.shadow.projectile.name, new DemonicsVector2(playerGs.position.x + (playerGs.shadow.position.x * playerGs.flip), playerGs.position.y + playerGs.shadow.position.y), false);
-        //         }
-        //     }
-        // }
+        _player.PlayerUI.SetComboTimerLock(playerGs.otherPlayer.comboLocked);
         _player.Assist.Simulate(playerGs.shadow);
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         _playerAnimator.SetInvinsible(playerGs.invinsible);

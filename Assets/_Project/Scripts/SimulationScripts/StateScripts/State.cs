@@ -75,9 +75,12 @@ public class State
             player.isCrouch = true;
         }
         ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir);
-        player.attackNetwork = SetArcana(player.attackInput, attack);
-        player.enter = false;
-        player.state = "Arcana";
+        if (attack != null)
+        {
+            player.attackNetwork = SetArcana(player.attackInput, attack);
+            player.enter = false;
+            player.state = "Arcana";
+        }
     }
     protected AttackNetwork SetArcana(InputEnum input, ArcanaSO attack)
     {
@@ -161,8 +164,6 @@ public class State
     }
     protected void ThrowEnd(PlayerNetwork player)
     {
-        player.enter = false;
-        player.state = "HardKnockdown";
         player.combo++;
         player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
@@ -170,6 +171,8 @@ public class State
         player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
         player.pushbox.active = true;
+        player.enter = false;
+        player.state = "HardKnockdown";
     }
     protected bool IsColliding(PlayerNetwork player)
     {
@@ -236,6 +239,7 @@ public class State
         if (player.shadowPress && !player.shadow.isOnScreen)
         {
             player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
+            player.shadow.projectile.flip = player.flip == 1 ? false : true;
             player.shadow.animationFrames = 0;
             player.shadow.isOnScreen = true;
             player.shadow.flip = player.flip;

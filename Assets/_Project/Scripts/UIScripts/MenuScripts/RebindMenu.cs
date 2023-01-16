@@ -19,6 +19,7 @@ public class RebindMenu : BaseMenu
     [SerializeField] private CharacterAssistSelector _characterAssistSelector = default;
     [SerializeField] private CharacterColorSelector _characterColorSelector = default;
     [SerializeField] private GameObject _assignButtonImage = default;
+    [SerializeField] private GameObject _backgroundDarken = default;
     [SerializeField] private RectTransform _scrollView = default;
     [SerializeField] private Transform _rebindContainer = default;
     [SerializeField] private bool _secondPlayer = default;
@@ -54,6 +55,7 @@ public class RebindMenu : BaseMenu
     //Set the binding rules based on the input device
     void OnEnable()
     {
+        _backgroundDarken.SetActive(true);
         if (!_secondPlayer)
         {
             _inputDevice = SceneSettings.ControllerOne;
@@ -81,6 +83,7 @@ public class RebindMenu : BaseMenu
     public void HideRebind()
     {
         Hide();
+        _backgroundDarken.SetActive(false);
         if (!_characterAssistSelector.gameObject.activeSelf && !_characterColorSelector.gameObject.activeSelf)
         {
             _firstCharacterButton.Select();

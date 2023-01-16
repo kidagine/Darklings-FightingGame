@@ -61,10 +61,13 @@ public class HurtParentState : State
         {
             Knockback(player);
         }
-        player.comboTimer--;
+        if (!player.comboLocked)
+        {
+            player.comboTimer--;
+        }
         player.stunFrames--;
         player.player.OtherPlayerUI.SetComboTimer
-       (DemonicsFloat.Lerp((DemonicsFloat)1, (DemonicsFloat)0,
+       (DemonicsFloat.Lerp((DemonicsFloat)0, (DemonicsFloat)1,
         (DemonicsFloat)player.comboTimer / (DemonicsFloat)ComboTimerStarterTypes.GetComboTimerStarterValue(player.comboTimerStarter)), ComboTimerStarterTypes.GetComboTimerStarterColor(player.comboTimerStarter));
     }
 

@@ -63,6 +63,19 @@ public class PlayerAnimator : DemonicsAnimator
     {
         return GetEvent(name, frame).parry;
     }
+    public bool GetThrowArcanaEnd(string name, int frame)
+    {
+        return GetEvent(name, frame).throwArcanaEnd;
+    }
+    public DemonicsVector2 GetJump(string name, int frame)
+    {
+        DemonicsVector2 jumpDirection = DemonicsVector2.Zero;
+        if (GetEvent(name, frame).jump)
+        {
+            jumpDirection = new DemonicsVector2((DemonicsFloat)GetEvent(name, frame).jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent(name, frame).jumpDirection.y);
+        }
+        return jumpDirection;
+    }
     public DemonicsVector2 GetGrabPoint(string name, int frame)
     {
         Vector2 grabPoint = GetEvent(name, frame).grabPoint;

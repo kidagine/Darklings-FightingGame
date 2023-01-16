@@ -1,31 +1,20 @@
 Description:
-	Red frenzy is a new move performed with the ";" key or "Right trigger", this move acts similar to a 5H, but it also makes you teleport in-front of the opponent and causes knockdown (Requires white health).
-	Every time damage is dealt to a small portion of it is turned to white health, you can use it to do Red Frenzy(RF) or gain it back by doing a Blue Frenzy(BF).
-	5H now has super armor meaning that you can take damage but not get stunned when performing it, you can conter 5H with another 5H or RF, or parry it with a BF.
-	Physics and animations are now deterministic, this will make the movement feel a bit different and is a big step for Rollback Netcode in the future.
-	With the addition of the deterministic features, the replay system is now consistent and should behave correctly.
-	The command list has now a better User Experience, and provides more information for common moves and normal moves.
-	Hitstop is now more consistent.
-	This change is done to discourage spamming on neutral.
-	Training mode info now also displays the combo damage, and the UI is centered to be more visually clear.
-	The new song can be accessed in the character select.
-	Now the camera centers when the round is over, there is also new VFX for hitting and wallsplat.
-	Fixed an issue where the sprite would flicker between the two players, also fixed the players not flipping correctly at times & more.
-
+	The first version of rollback for Darklings, this now allows multiplayer, note that this is still in an experimental stage and will improve and get added features later.
+	Private lobbies are currently the only way to play online, host or join a match using the host's lobby ID. Normal matchmaking will be added later.
+	New juggle system, you can now juggle the opponent in the air and really change the combo structure.
+	Soft knockdowns last 30 frames, whereas hard knockdowns last 60 frames, only jump heavies on aerial opponents cause soft knockdowns currently.
+	New universal attack move, jump and press the heavy button, this move is usually for soft knockdowns or used as an overhead.
+	Pixels are now fully pixel perfect and snap to the grid.
+	Fixes for the UI for rebinding and changing stage.
 
 Version:
-	0.2.9a
+	0.2.9
 
 Patch Notes:
-	Added red frenzy (RF)
-	Added white health system
-	Added super-armor on 5H
-	Updated physics and animations (Deterministic)
-	Initial fully functional replay system
-	Updated command list with more information
-	Improved hitstop
-	Input buffer now works only on hit
-	Minor improvements for training mode
-	Added new song "Looking for home"
-	Minor general polishing (Camera center on round over, few new VFX & more)
-	Minor general bug fixes (Sprite flickers, players not flipping, character select bug & more)
+	Added rollback
+	Added private lobbies
+	Added juggle system
+	Added soft knockdowns
+	Added heavy jump attacks (JH)
+	Added full pixel perfect
+	Minor UI fixes

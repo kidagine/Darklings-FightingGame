@@ -20,7 +20,7 @@ public class AttackState : State
         }
         if (!player.isAir)
         {
-            player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)0);
+            player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
         }
         else
         {
@@ -34,6 +34,10 @@ public class AttackState : State
             {
                 if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
                 {
+                    if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                    {
+                        player.isAir = true;
+                    }
                     if (player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
                     {
                         Arcana(player, player.isAir);
@@ -121,7 +125,7 @@ public class AttackState : State
         {
             player.attackPress = false;
             player.enter = false;
-            if (player.isAir)
+            if (player.isAir || (DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
             {
                 player.isCrouch = false;
                 player.isAir = false;

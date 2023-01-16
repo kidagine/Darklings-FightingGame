@@ -273,24 +273,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         // _comboTimerPaused = false;
     }
 
-    public void FreezeComboTimer()
-    {
-        if (_comboTimerWaitFrames > 0 && !_comboTimerPaused)
-        {
-            _playerUI.SetComboTimerLock(true);
-            _comboTimerPaused = true;
-        }
-    }
-
-    public void UnfreezeComboTimer()
-    {
-        if (_comboTimerWaitFrames > 0 && _comboTimerPaused)
-        {
-            _playerUI.SetComboTimerLock(false);
-            _comboTimerPaused = false;
-        }
-    }
-
     public void RecallAssist()
     {
         _assist.Recall();
