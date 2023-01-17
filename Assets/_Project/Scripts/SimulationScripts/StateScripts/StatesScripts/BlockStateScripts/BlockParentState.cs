@@ -45,6 +45,7 @@ public class BlockParentState : State
         player.pushbackStart = player.position;
         if (player.attackHurtNetwork.hardKnockdown)
         {
+            player.attackHurtNetwork.knockbackDuration /= 2;
             player.pushbackEnd = new DemonicsVector2((player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip) / 2), DemonicsPhysics.GROUND_POINT);
         }
         else
@@ -79,7 +80,7 @@ public class BlockParentState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (IsColliding(player))
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;

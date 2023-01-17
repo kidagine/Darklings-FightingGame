@@ -50,6 +50,12 @@ public class GroundParentState : State
         if (IsColliding(player))
         {
             player.enter = false;
+            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            {
+                player.enter = false;
+                player.state = "Knockback";
+                return;
+            }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 player.state = "Grabbed";

@@ -14,7 +14,6 @@ public class HurtParentState : State
         {
             AfterHitstop(player);
         }
-        ToShadowbreakState(player);
     }
     protected virtual void OnEnter(PlayerNetwork player)
     {
@@ -71,7 +70,7 @@ public class HurtParentState : State
         (DemonicsFloat)player.comboTimer / (DemonicsFloat)ComboTimerStarterTypes.GetComboTimerStarterValue(player.comboTimerStarter)), ComboTimerStarterTypes.GetComboTimerStarterColor(player.comboTimerStarter));
     }
 
-    private void ToShadowbreakState(PlayerNetwork player)
+    protected void ToShadowbreakState(PlayerNetwork player)
     {
         if (player.shadowPress)
         {

@@ -12,6 +12,8 @@ public class HurtState : HurtParentState
         }
         ToHurtState(player);
         ToIdleState(player);
+        ToShadowbreakState(player);
+
     }
     private void ToIdleState(PlayerNetwork player)
     {

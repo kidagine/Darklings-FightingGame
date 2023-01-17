@@ -97,6 +97,12 @@ public class AirParentState : State
         if (IsColliding(player))
         {
             player.enter = false;
+            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            {
+                player.enter = false;
+                player.state = "Knockback";
+                return;
+            }
             if (IsBlocking(player))
             {
                 player.state = "BlockAir";

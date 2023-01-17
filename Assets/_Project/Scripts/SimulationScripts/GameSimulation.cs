@@ -156,14 +156,6 @@ public struct GameSimulation : IGame
             {
                 _players[index].direction = new Vector2Int(-1, _players[index].direction.y);
             }
-            if (dashForward)
-            {
-                _players[index].dashDirection = 1;
-            }
-            if (dashBackward)
-            {
-                _players[index].dashDirection = -1;
-            }
             if (!left && !right)
             {
                 _players[index].direction = new Vector2Int(0, _players[index].direction.y);
@@ -171,6 +163,16 @@ public struct GameSimulation : IGame
             if (!up && !down)
             {
                 _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
+            }
+            if (dashForward)
+            {
+                _players[index].dashDirection = 1;
+                //_players[index].dashPress = true;
+            }
+            if (dashBackward)
+            {
+                _players[index].dashDirection = -1;
+                //_players[index].dashPress = true;
             }
             if (light)
             {

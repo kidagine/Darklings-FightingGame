@@ -14,6 +14,7 @@ public class HurtAirState : HurtParentState
         }
         ToHurtState(player);
         ToFallState(player);
+        ToShadowbreakState(player);
     }
 
     protected override void AfterHitstop(PlayerNetwork player)
