@@ -155,6 +155,12 @@ public class AttackState : State
         {
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
 
+            player.enter = false;
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                player.state = "Grabbed";
+                return;
+            }
             if (player.attackHurtNetwork.moveName == "Shadowbreak")
             {
                 player.enter = false;

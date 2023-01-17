@@ -72,7 +72,7 @@ public class HurtParentState : State
 
     protected void ToShadowbreakState(PlayerNetwork player)
     {
-        if (player.shadowPress)
+        if (player.shadowPress && player.shadowGauge == 2000)
         {
             player.combo = 0;
             player.player.OtherPlayerUI.ResetCombo();
@@ -82,6 +82,7 @@ public class HurtParentState : State
             player.velocity = DemonicsVector2.Zero;
             player.enter = false;
             player.state = "Shadowbreak";
+            player.shadowGauge -= 2000;
         }
     }
 

@@ -66,20 +66,23 @@ public class State
     }
     protected void Arcana(PlayerNetwork player, bool air = false)
     {
-        player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
-        player.arcanaPress = false;
-        player.isAir = air;
-        player.isCrouch = false;
-        if (player.inputBuffer.inputItems[0].inputDirection.y < 0)
+        if (player.arcanaGauge > 1000)
         {
-            player.isCrouch = true;
-        }
-        ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir);
-        if (attack != null)
-        {
-            player.attackNetwork = SetArcana(player.attackInput, attack);
-            player.enter = false;
-            player.state = "Arcana";
+            player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
+            player.arcanaPress = false;
+            player.isAir = air;
+            player.isCrouch = false;
+            if (player.inputBuffer.inputItems[0].inputDirection.y < 0)
+            {
+                player.isCrouch = true;
+            }
+            ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir);
+            if (attack != null)
+            {
+                player.attackNetwork = SetArcana(player.attackInput, attack);
+                player.enter = false;
+                player.state = "Arcana";
+            }
         }
     }
     protected AttackNetwork SetArcana(InputEnum input, ArcanaSO attack)
@@ -205,6 +208,8 @@ public class State
         player.player.PlayerUI.Damaged();
         player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
+        player.player.OtherPlayerUI.ResetCombo();
+        player.combo = 0;
         player.pushbox.active = true;
         player.enter = false;
         player.state = "HardKnockdown";
@@ -271,7 +276,7 @@ public class State
 
     protected void Shadow(PlayerNetwork player)
     {
-        if (player.shadowPress && !player.shadow.isOnScreen)
+        if (player.shadowPress && !player.shadow.isOnScreen && player.shadowGauge > 1000)
         {
             player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
             player.shadow.projectile.flip = player.flip == 1 ? false : true;
@@ -279,10 +284,7 @@ public class State
             player.shadow.isOnScreen = true;
             player.shadow.flip = player.flip;
             player.shadow.position = new DemonicsVector2(player.position.x + (player.shadow.spawnPoint.x * player.flip), player.position.y + player.shadow.spawnPoint.y);
-            if (player.shadowGauge > 1000)
-            {
-                player.shadowGauge -= 1000;
-            }
+            player.shadowGauge -= 1000;
         }
     }
 };

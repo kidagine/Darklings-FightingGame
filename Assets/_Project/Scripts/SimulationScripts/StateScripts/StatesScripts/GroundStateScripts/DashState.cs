@@ -65,11 +65,56 @@ public class DashState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (IsColliding(player))
         {
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             player.enter = false;
-            player.state = "Hurt";
+            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            {
+                player.enter = false;
+                player.state = "Knockback";
+                return;
+            }
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                player.state = "Grabbed";
+                return;
+            }
+            if (DemonicsPhysics.IsInCorner(player))
+            {
+                player.otherPlayer.knockback = 0;
+                player.otherPlayer.pushbackStart = player.otherPlayer.position;
+                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
+            }
+            if (IsBlocking(player))
+            {
+                if (player.direction.y < 0)
+                {
+                    player.state = "BlockLow";
+                }
+                else
+                {
+                    player.state = "Block";
+                }
+            }
+            else
+            {
+                if (player.attackHurtNetwork.hardKnockdown)
+                {
+                    player.state = "Airborne";
+                }
+                else
+                {
+                    if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
+                    {
+                        player.state = "Hurt";
+                    }
+                    else
+                    {
+                        player.state = "HurtAir";
+                    }
+                }
+            }
         }
     }
 }
