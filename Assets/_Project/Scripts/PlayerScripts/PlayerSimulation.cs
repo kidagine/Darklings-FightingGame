@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerSimulation : MonoBehaviour
 {
     [SerializeField] private Player _player = default;
+    [SerializeField] private InputBuffer _inputBuffer = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Audio _audio = default;
     [SerializeField] private CollisionVisualizer _hurtBoxVisualizer = default;
@@ -31,6 +32,10 @@ public class PlayerSimulation : MonoBehaviour
         _player.PlayerUI.SetArcana(playerGs.arcanaGauge);
         _player.PlayerUI.SetComboTimerLock(playerGs.otherPlayer.comboLocked);
         _player.Assist.Simulate(playerGs.shadow);
+        if (playerGs.inputBuffer.inputItems[0].pressed)
+        {
+            _inputBuffer.AddInputBufferItem(playerGs.inputBuffer.inputItems[0].inputEnum, InputDirectionEnum.NoneHorizontal);
+        }
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         _playerAnimator.SetInvinsible(playerGs.invinsible);
         _playerAnimator.SetSpriteOrder(playerGs.spriteOrder);

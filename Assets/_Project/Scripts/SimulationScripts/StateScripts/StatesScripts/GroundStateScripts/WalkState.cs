@@ -20,8 +20,6 @@ public class WalkState : GroundParentState
         ToJumpForwardState(player);
         ToCrouchState(player);
         ToDashState(player);
-        ToAttackState(player);
-        ToArcanaState(player);
     }
     private void ToCrouchState(PlayerNetwork player)
     {
@@ -58,24 +56,10 @@ public class WalkState : GroundParentState
     }
     private void ToDashState(PlayerNetwork player)
     {
-        if (player.dashDirection != 0)
-        {
-            player.enter = false;
-            player.state = "Dash";
-        }
-    }
-    public void ToAttackState(PlayerNetwork player)
-    {
-        if (player.attackPress)
-        {
-            Attack(player);
-        }
-    }
-    public void ToArcanaState(PlayerNetwork player)
-    {
-        if (player.arcanaPress)
-        {
-            Arcana(player);
-        }
+        // if (player.dashPress)
+        // {
+        //     player.enter = false;
+        //     player.state = "Dash";
+        // }
     }
 }

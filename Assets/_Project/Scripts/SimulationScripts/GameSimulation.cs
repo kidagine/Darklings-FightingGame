@@ -166,50 +166,43 @@ public struct GameSimulation : IGame
             }
             if (dashForward)
             {
-                _players[index].dashDirection = 1;
-                //_players[index].dashPress = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.ForwardDash, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
             }
             if (dashBackward)
             {
-                _players[index].dashDirection = -1;
-                //_players[index].dashPress = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.BackDash, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
             }
             if (light)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].direction, frame = Framenumber };
-                _players[index].attackPress = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
             }
             if (medium)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].direction, frame = Framenumber };
-                _players[index].attackPress = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
             }
             if (heavy)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].direction, frame = Framenumber };
-                _players[index].attackPress = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
             }
             if (arcana)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].direction, frame = DemonicsWorld.Frame };
-                _players[index].arcanaPress = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
             }
             if (blueFrenzy)
             {
-                _players[index].blueFrenzyPress = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Parry, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
             }
             if (redFrenzy)
             {
-                _players[index].redFrenzyPress = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.RedFrenzy, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
             }
             if (grab)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].direction, frame = DemonicsWorld.Frame };
-                _players[index].grabPress = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
             }
             if (shadow)
             {
-                _players[index].shadowPress = true;
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
             }
             if (_players[index].arcanaGauge >= _players[index].playerStats.Arcana)
             {
@@ -421,12 +414,14 @@ public struct GameSimulation : IGame
         }
         _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
         _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
-        _players[index].attackPress = false;
-        _players[index].arcanaPress = false;
-        _players[index].grabPress = false;
-        _players[index].blueFrenzyPress = false;
-        _players[index].redFrenzyPress = false;
-        _players[index].shadowPress = false;
+        if (_players[index].inputBuffer.inputItems[0].frame < Framenumber)
+        {
+            _players[index].inputBuffer.inputItems[0].pressed = false;
+        }
+        if (_players[index].inputBuffer.inputItems[0].frame + 20 < Framenumber)
+        {
+            _players[index].inputBuffer.inputItems[0].frame = 0;
+        }
         if (_players[index].shadow.isOnScreen)
         {
             _players[index].shadow.animationFrames++;

@@ -27,13 +27,16 @@ public class GrabbedState : State
 
     private void ThrowBreak(PlayerNetwork player)
     {
-        if (player.grabPress && player.otherPlayer.state != "Arcana" && player.animationFrames <= 6)
+        if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Throw)
         {
-            player.SetEffect("Impact", new DemonicsVector2((player.position.x + player.otherPlayer.position.x) / 2, player.position.y + (player.pushbox.size.y / 2)));
-            player.enter = false;
-            player.otherPlayer.enter = false;
-            player.state = "Knockback";
-            player.otherPlayer.state = "Knockback";
+            if (player.otherPlayer.state != "Arcana" && player.animationFrames <= 6)
+            {
+                player.SetEffect("Impact", new DemonicsVector2((player.position.x + player.otherPlayer.position.x) / 2, player.position.y + (player.pushbox.size.y / 2)));
+                player.enter = false;
+                player.otherPlayer.enter = false;
+                player.state = "Knockback";
+                player.otherPlayer.state = "Knockback";
+            }
         }
     }
 }

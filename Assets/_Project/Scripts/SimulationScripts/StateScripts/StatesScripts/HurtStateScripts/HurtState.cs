@@ -10,7 +10,10 @@ public class HurtState : HurtParentState
         {
             player.animationFrames++;
         }
-        ToHurtState(player);
+        if (ToHurtState(player))
+        {
+            return;
+        }
         ToIdleState(player);
         ToShadowbreakState(player);
     }
@@ -28,7 +31,7 @@ public class HurtState : HurtParentState
             player.state = "Idle";
         }
     }
-    private void ToHurtState(PlayerNetwork player)
+    private bool ToHurtState(PlayerNetwork player)
     {
         if (IsColliding(player))
         {
@@ -36,7 +39,7 @@ public class HurtState : HurtParentState
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 player.state = "Grabbed";
-                return;
+                return false;
             }
             if (DemonicsPhysics.IsInCorner(player))
             {
@@ -62,7 +65,9 @@ public class HurtState : HurtParentState
                     player.state = "HurtAir";
                 }
             }
+            return true;
         }
+        return false;
     }
     protected override void OnEnter(PlayerNetwork player)
     {

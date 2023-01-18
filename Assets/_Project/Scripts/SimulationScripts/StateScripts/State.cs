@@ -44,32 +44,47 @@ public class State
         }
         return false;
     }
+    protected void RedFrenzy(PlayerNetwork player)
+    {
+        if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.RedFrenzy)
+        {
+            if (player.healthRecoverable > player.health)
+            {
+                AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
+                player.attackNetwork = SetAttack(player.attackInput, attack);
+                player.enter = false;
+                player.state = "RedFrenzy";
+            }
+        }
+    }
     protected void Attack(PlayerNetwork player, bool air = false)
     {
-        player.pushbackDuration = 0;
-        player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
-        player.attackPress = false;
-        player.isCrouch = false;
-        player.isAir = air;
-        if (player.inputBuffer.inputItems[0].inputDirection.y < 0)
+        if (player.arcanaGauge > -1000000 &&
+        (player.inputBuffer.inputItems[0].inputEnum == InputEnum.Light || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Medium || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy))
         {
-            player.isCrouch = true;
-        }
-        if (player.isAir)
-        {
+            player.pushbackDuration = 0;
+            player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
             player.isCrouch = false;
+            player.isAir = air;
+            if (player.inputBuffer.inputItems[0].inputDirection.y < 0)
+            {
+                player.isCrouch = true;
+            }
+            if (player.isAir)
+            {
+                player.isCrouch = false;
+            }
+            AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
+            player.attackNetwork = SetAttack(player.attackInput, attack);
+            player.enter = false;
+            player.state = "Attack";
         }
-        AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
-        player.attackNetwork = SetAttack(player.attackInput, attack);
-        player.enter = false;
-        player.state = "Attack";
     }
     protected void Arcana(PlayerNetwork player, bool air = false)
     {
-        if (player.arcanaGauge > 1000)
+        if (player.arcanaGauge > -1000000 && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
         {
             player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
-            player.arcanaPress = false;
             player.isAir = air;
             player.isCrouch = false;
             if (player.inputBuffer.inputItems[0].inputDirection.y < 0)
@@ -276,15 +291,18 @@ public class State
 
     protected void Shadow(PlayerNetwork player)
     {
-        if (player.shadowPress && !player.shadow.isOnScreen && player.shadowGauge > 1000)
+        if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Assist)
         {
-            player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
-            player.shadow.projectile.flip = player.flip == 1 ? false : true;
-            player.shadow.animationFrames = 0;
-            player.shadow.isOnScreen = true;
-            player.shadow.flip = player.flip;
-            player.shadow.position = new DemonicsVector2(player.position.x + (player.shadow.spawnPoint.x * player.flip), player.position.y + player.shadow.spawnPoint.y);
-            player.shadowGauge -= 1000;
+            if (!player.shadow.isOnScreen && player.shadowGauge > 1000)
+            {
+                player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
+                player.shadow.projectile.flip = player.flip == 1 ? false : true;
+                player.shadow.animationFrames = 0;
+                player.shadow.isOnScreen = true;
+                player.shadow.flip = player.flip;
+                player.shadow.position = new DemonicsVector2(player.position.x + (player.shadow.spawnPoint.x * player.flip), player.position.y + player.shadow.spawnPoint.y);
+                player.shadowGauge -= 1000;
+            }
         }
     }
 };

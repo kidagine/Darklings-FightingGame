@@ -89,6 +89,9 @@ public class ReplayManager : MonoBehaviour
 
     void Start()
     {
+        string versionText = _versionTextAsset.text;
+        int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
+        VersionNumber = versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
         if (SceneSettings.ReplayMode)
         {
             LoadReplay();
@@ -97,9 +100,6 @@ public class ReplayManager : MonoBehaviour
 
     public void Setup()
     {
-        string versionText = _versionTextAsset.text;
-        int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
-        VersionNumber = versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
         if (GameplayManager.Instance != null)
         {
             _playerOneInputBuffer = GameplayManager.Instance.PlayerOne.GetComponent<InputBuffer>();
@@ -190,7 +190,7 @@ public class ReplayManager : MonoBehaviour
         {
             if (DemonicsWorld.Frame >= replayCardData.playerOneInputs[i].time)
             {
-                _playerOneInputBuffer.AddInputBufferItem(replayCardData.playerOneInputs[i].input, replayCardData.playerOneInputs[i].direction);
+                NetworkInput.ONE_LIGHT_INPUT = true;
                 i++;
                 NextReplayAction();
             }

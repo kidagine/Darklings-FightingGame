@@ -8,6 +8,7 @@ public struct InputItemNetwork
     public int frame;
     public InputEnum inputEnum;
     public Vector2Int inputDirection;
+    public bool pressed;
 
     public void Serialize(BinaryWriter bw)
     {
@@ -15,6 +16,7 @@ public struct InputItemNetwork
         bw.Write((int)inputEnum);
         bw.Write((int)inputDirection.x);
         bw.Write((int)inputDirection.y);
+        bw.Write(pressed);
     }
 
     public void Deserialize(BinaryReader br)
@@ -23,5 +25,6 @@ public struct InputItemNetwork
         inputEnum = (InputEnum)br.ReadInt32();
         inputDirection.x = br.ReadInt32();
         inputDirection.y = br.ReadInt32();
+        pressed = br.ReadBoolean();
     }
 };

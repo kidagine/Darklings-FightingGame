@@ -32,7 +32,7 @@ public class AttackState : State
             player.attackFrames--;
             if (player.canChainAttack)
             {
-                if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
+                if (player.inputBuffer.inputItems[0].frame != 0)
                 {
                     if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
                     {
@@ -44,10 +44,19 @@ public class AttackState : State
                     }
                     else
                     {
-                        if ((!(player.attackInput == InputEnum.Medium && player.isCrouch)) && player.inputBuffer.inputItems[0].inputEnum != InputEnum.Throw)
+                        if (player.attackInput == InputEnum.Medium && player.isCrouch)
                         {
-                            Attack(player, player.isAir);
+                            return;
                         }
+                        if (player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy && player.inputBuffer.inputItems[0].inputDirection.y >= 0)
+                        {
+                            return;
+                        }
+                        if (player.inputBuffer.inputItems[0].inputEnum == InputEnum.Throw)
+                        {
+                            return;
+                        }
+                        Attack(player, player.isAir);
                     }
                 }
             }
@@ -123,7 +132,6 @@ public class AttackState : State
     {
         if (player.attackFrames <= 0)
         {
-            player.attackPress = false;
             player.enter = false;
             if (player.isAir || (DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
             {

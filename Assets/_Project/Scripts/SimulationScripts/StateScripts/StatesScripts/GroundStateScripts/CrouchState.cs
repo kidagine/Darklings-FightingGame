@@ -18,8 +18,6 @@ public class CrouchState : GroundParentState
         player.velocity = DemonicsVector2.Zero;
         base.UpdateLogic(player);
         ToIdleState(player);
-        ToAttackState(player);
-        ToArcanaState(player);
     }
 
     private void ToIdleState(PlayerNetwork player)
@@ -28,20 +26,6 @@ public class CrouchState : GroundParentState
         {
             player.enter = false;
             player.state = "Idle";
-        }
-    }
-    public void ToAttackState(PlayerNetwork player)
-    {
-        if (player.attackPress)
-        {
-            Attack(player);
-        }
-    }
-    public void ToArcanaState(PlayerNetwork player)
-    {
-        if (player.arcanaPress)
-        {
-            Arcana(player);
         }
     }
 }

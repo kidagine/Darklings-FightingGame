@@ -4,13 +4,19 @@ public class AirParentState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (ToAttackState(player))
+        {
+            return;
+        }
+        ToArcanaState(player);
+        ToRedFrenzyState(player);
         ToDashAirState(player);
         ToJumpForwardState(player);
         ToJumpState(player);
-        ToHurtState(player);
-        ToRedFrenzyState(player);
-        ToAttackState(player);
-        ToArcanaState(player);
+        if (ToHurtState(player))
+        {
+            return;
+        }
         Shadow(player);
     }
 
@@ -51,11 +57,20 @@ public class AirParentState : State
     }
     private void ToDashAirState(PlayerNetwork player)
     {
-        if (player.dashDirection != 0 && player.canDash)
+        if (player.canDash && player.inputBuffer.inputItems[0].pressed)
         {
-            player.enter = false;
-            player.velocity = DemonicsVector2.Zero;
-            player.state = "DashAir";
+            if (player.inputBuffer.inputItems[0].inputEnum == InputEnum.ForwardDash)
+            {
+                player.dashDirection = 1;
+                player.enter = false;
+                player.state = "DashAir";
+            }
+            else if (player.inputBuffer.inputItems[0].inputEnum == InputEnum.BackDash)
+            {
+                player.dashDirection = -1;
+                player.enter = false;
+                player.state = "DashAir";
+            }
         }
     }
     public override bool ToBlockState(PlayerNetwork player, AttackSO attack)
@@ -66,33 +81,32 @@ public class AirParentState : State
     }
     private void ToRedFrenzyState(PlayerNetwork player)
     {
-        if (player.redFrenzyPress && player.healthRecoverable > player.health)
+        if (player.inputBuffer.inputItems[0].pressed)
         {
-            AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
-            player.attackNetwork = SetAttack(player.attackInput, attack);
-            player.enter = false;
-            player.state = "RedFrenzy";
+            RedFrenzy(player);
         }
     }
-    public void ToAttackState(PlayerNetwork player)
+    public bool ToAttackState(PlayerNetwork player)
     {
-        if (player.attackPress)
+        if (player.inputBuffer.inputItems[0].pressed)
         {
             Attack(player, true);
+            return false;
         }
+        return false;
     }
     public void ToArcanaState(PlayerNetwork player)
     {
-        if (player.arcanaPress)
+        if (player.inputBuffer.inputItems[0].pressed)
         {
             Arcana(player, true);
         }
     }
-    private void ToHurtState(PlayerNetwork player)
+    private bool ToHurtState(PlayerNetwork player)
     {
         if (player.otherPlayer.attackNetwork.attackType == AttackTypeEnum.Throw)
         {
-            return;
+            return false;
         }
         if (IsColliding(player))
         {
@@ -101,7 +115,6 @@ public class AirParentState : State
             {
                 player.enter = false;
                 player.state = "Knockback";
-                return;
             }
             if (IsBlocking(player))
             {
@@ -118,6 +131,8 @@ public class AirParentState : State
                     player.state = "HurtAir";
                 }
             }
+            return true;
         }
+        return false;
     }
 }

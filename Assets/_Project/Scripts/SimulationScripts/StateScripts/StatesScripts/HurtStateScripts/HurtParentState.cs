@@ -72,17 +72,20 @@ public class HurtParentState : State
 
     protected void ToShadowbreakState(PlayerNetwork player)
     {
-        if (player.shadowPress && player.shadowGauge == 2000)
+        if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Assist)
         {
-            player.combo = 0;
-            player.player.OtherPlayerUI.ResetCombo();
-            player.player.StopShakeCoroutine();
-            player.player.PlayerUI.SetComboTimerActive(false);
-            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-            player.velocity = DemonicsVector2.Zero;
-            player.enter = false;
-            player.state = "Shadowbreak";
-            player.shadowGauge -= 2000;
+            if (player.shadowGauge == 2000)
+            {
+                player.combo = 0;
+                player.player.OtherPlayerUI.ResetCombo();
+                player.player.StopShakeCoroutine();
+                player.player.PlayerUI.SetComboTimerActive(false);
+                player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+                player.velocity = DemonicsVector2.Zero;
+                player.enter = false;
+                player.state = "Shadowbreak";
+                player.shadowGauge -= 2000;
+            }
         }
     }
 

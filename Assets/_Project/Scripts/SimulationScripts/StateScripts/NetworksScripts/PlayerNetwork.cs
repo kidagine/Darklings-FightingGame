@@ -48,12 +48,6 @@ public class PlayerNetwork
     public bool hasJumped;
     public bool canJump;
     public bool canDoubleJump;
-    public bool attackPress;
-    public bool arcanaPress;
-    public bool grabPress;
-    public bool blueFrenzyPress;
-    public bool redFrenzyPress;
-    public bool shadowPress;
     public bool enter;
     public bool wasWallSplatted;
     public bool canChainAttack;
@@ -108,12 +102,6 @@ public class PlayerNetwork
         bw.Write(dashDirection);
         bw.Write(jumpDirection);
         bw.Write(dashFrames);
-        bw.Write(attackPress);
-        bw.Write(arcanaPress);
-        bw.Write(grabPress);
-        bw.Write(blueFrenzyPress);
-        bw.Write(redFrenzyPress);
-        bw.Write(shadowPress);
         bw.Write(wasWallSplatted);
         bw.Write(enter);
         bw.Write(hitstop);
@@ -179,12 +167,6 @@ public class PlayerNetwork
         dashDirection = br.ReadInt32();
         jumpDirection = br.ReadInt32();
         dashFrames = br.ReadInt32();
-        attackPress = br.ReadBoolean();
-        arcanaPress = br.ReadBoolean();
-        grabPress = br.ReadBoolean();
-        blueFrenzyPress = br.ReadBoolean();
-        redFrenzyPress = br.ReadBoolean();
-        shadowPress = br.ReadBoolean();
         wasWallSplatted = br.ReadBoolean();
         enter = br.ReadBoolean();
         hitstop = br.ReadBoolean();
