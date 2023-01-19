@@ -295,6 +295,7 @@ public class State
     }
     protected void ResetCombo(PlayerNetwork player)
     {
+        player.otherPlayer.resultAttack.comboDamage = 0;
         player.player.PlayerUI.SetComboTimerActive(false);
         player.player.StopShakeCoroutine();
         player.player.OtherPlayerUI.ResetCombo();
@@ -317,7 +318,7 @@ public class State
                 player.hitstop = true;
                 player.hitbox.enter = true;
                 player.otherPlayer.shadow.projectile.hitstop = true;
-                player.hurtPosition = new DemonicsVector2(player.position.x, player.position.y + (player.pushbox.size.y / 2));
+                player.hurtPosition = new DemonicsVector2(player.otherPlayer.shadow.projectile.hitbox.position.x + ((player.otherPlayer.shadow.projectile.hitbox.size.x / 2) * -player.flip), player.otherPlayer.shadow.projectile.hitbox.position.y);
                 if (player.otherPlayer.shadow.projectile.destroyOnHit)
                 {
                     player.otherPlayer.shadow.projectile.hitstop = false;

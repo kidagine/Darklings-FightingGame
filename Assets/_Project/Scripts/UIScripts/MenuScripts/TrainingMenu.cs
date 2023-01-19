@@ -270,7 +270,10 @@ public class TrainingMenu : BaseMenu
             }
             if (_damageComboOneText.gameObject.activeSelf)
             {
-                _damageComboOneText.text = attack.comboDamage.ToString();
+                if (attack.comboDamage > 0)
+                {
+                    _damageComboOneText.text = attack.comboDamage.ToString();
+                }
             }
         }
         else
@@ -297,7 +300,10 @@ public class TrainingMenu : BaseMenu
             }
             if (_damageComboTwoText.gameObject.activeSelf)
             {
-                _damageComboTwoText.text = attack.comboDamage.ToString();
+                if (attack.comboDamage > 0)
+                {
+                    _damageComboTwoText.text = attack.comboDamage.ToString();
+                }
             }
         }
     }

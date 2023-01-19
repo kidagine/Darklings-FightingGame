@@ -309,6 +309,67 @@ public struct GameSimulation : IGame
         }
         if (_players[index].shadow.projectile.active)
         {
+
+            if (DemonicsCollider.Colliding(_players[index].shadow.projectile.hitbox, _players[index].otherPlayer.shadow.projectile.hitbox))
+            {
+                if (_players[index].shadow.projectile.priority > _players[index].otherPlayer.shadow.projectile.priority)
+                {
+                    _players[index].otherPlayer.shadow.projectile.hitbox.enter = false;
+                    _players[index].otherPlayer.shadow.projectile.animationFrames = 0;
+                    _players[index].otherPlayer.shadow.projectile.active = false;
+                    _players[index].otherPlayer.shadow.projectile.hitbox.active = false;
+                }
+                else if (_players[index].shadow.projectile.priority < _players[index].otherPlayer.shadow.projectile.priority)
+                {
+                    _players[index].shadow.projectile.hitbox.enter = false;
+                    _players[index].shadow.projectile.animationFrames = 0;
+                    _players[index].shadow.projectile.active = false;
+                    _players[index].shadow.projectile.hitbox.active = false;
+                }
+                else
+                {
+                    _players[index].SetEffect("Impact", _players[index].shadow.projectile.position);
+                    _players[index].otherPlayer.shadow.projectile.hitbox.enter = false;
+                    _players[index].otherPlayer.shadow.projectile.animationFrames = 0;
+                    _players[index].otherPlayer.shadow.projectile.active = false;
+                    _players[index].otherPlayer.shadow.projectile.hitbox.active = false;
+                    _players[index].shadow.projectile.hitbox.enter = false;
+                    _players[index].shadow.projectile.animationFrames = 0;
+                    _players[index].shadow.projectile.active = false;
+                    _players[index].shadow.projectile.hitbox.active = false;
+                }
+            }
+            for (int i = 0; i < _players[index].otherPlayer.projectiles.Length; i++)
+            {
+                if (DemonicsCollider.Colliding(_players[index].shadow.projectile.hitbox, _players[index].otherPlayer.projectiles[i].hitbox))
+                {
+                    if (_players[index].shadow.projectile.priority > _players[index].otherPlayer.projectiles[i].priority)
+                    {
+                        _players[index].otherPlayer.projectiles[i].hitbox.enter = false;
+                        _players[index].otherPlayer.projectiles[i].animationFrames = 0;
+                        _players[index].otherPlayer.projectiles[i].active = false;
+                        _players[index].otherPlayer.projectiles[i].hitbox.active = false;
+                    }
+                    else if (_players[index].shadow.projectile.priority < _players[index].otherPlayer.projectiles[i].priority)
+                    {
+                        _players[index].shadow.projectile.hitbox.enter = false;
+                        _players[index].shadow.projectile.animationFrames = 0;
+                        _players[index].shadow.projectile.active = false;
+                        _players[index].shadow.projectile.hitbox.active = false;
+                    }
+                    else
+                    {
+                        _players[index].otherPlayer.projectiles[i].hitbox.enter = false;
+                        _players[index].otherPlayer.projectiles[i].animationFrames = 0;
+                        _players[index].otherPlayer.projectiles[i].active = false;
+                        _players[index].otherPlayer.projectiles[i].hitbox.active = false;
+                        _players[index].shadow.projectile.hitbox.enter = false;
+                        _players[index].shadow.projectile.animationFrames = 0;
+                        _players[index].shadow.projectile.active = false;
+                        _players[index].shadow.projectile.hitbox.active = false;
+                    }
+                }
+            }
             if (!_players[index].shadow.projectile.hitstop)
             {
                 _players[index].shadow.projectile.animationFrames++;
