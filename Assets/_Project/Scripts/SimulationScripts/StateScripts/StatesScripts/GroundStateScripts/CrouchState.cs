@@ -6,6 +6,8 @@ public class CrouchState : GroundParentState
     {
         if (!player.enter)
         {
+            player.velocity = DemonicsVector2.Zero;
+
             player.enter = true;
             player.animationFrames = 0;
         }

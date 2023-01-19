@@ -34,7 +34,7 @@ public class PlayerSimulation : MonoBehaviour
         _player.Assist.Simulate(playerGs.shadow);
         if (playerGs.inputBuffer.inputItems[0].pressed)
         {
-            _inputBuffer.AddInputBufferItem(playerGs.inputBuffer.inputItems[0].inputEnum, InputDirectionEnum.NoneHorizontal);
+            _inputBuffer.AddInputBufferItem(playerGs.inputBuffer.inputItems[0].inputEnum, playerGs.inputBuffer.inputItems[0].inputDirection);
         }
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         _playerAnimator.SetInvinsible(playerGs.invinsible);

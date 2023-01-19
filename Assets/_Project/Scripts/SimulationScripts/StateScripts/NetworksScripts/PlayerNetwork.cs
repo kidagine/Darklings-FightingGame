@@ -18,6 +18,7 @@ public class PlayerNetwork
     public AttackNetwork attackNetwork;
     public AttackNetwork attackHurtNetwork;
     public Vector2Int direction;
+    public InputDirectionEnum inputDirection;
     public string animation;
     public int animationFrames;
     public int attackFrames;
@@ -73,6 +74,7 @@ public class PlayerNetwork
         bw.Write((float)pushbackEnd.y);
         bw.Write((float)hurtPosition.x);
         bw.Write((float)hurtPosition.y);
+        bw.Write((int)inputDirection);
         bw.Write(direction.x);
         bw.Write(direction.y);
         bw.Write(animation);
@@ -140,6 +142,7 @@ public class PlayerNetwork
         hurtPosition.y = (DemonicsFloat)br.ReadSingle();
         direction.x = br.ReadInt32();
         direction.y = br.ReadInt32();
+        inputDirection = (InputDirectionEnum)br.ReadInt32();
         animation = br.ReadString();
         animationFrames = br.ReadInt32();
         attackFrames = br.ReadInt32();

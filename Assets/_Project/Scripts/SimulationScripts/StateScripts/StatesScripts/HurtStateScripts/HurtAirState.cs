@@ -24,7 +24,11 @@ public class HurtAirState : HurtParentState
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && player.knockback > 1)
+        if (player.attackHurtNetwork.knockbackArc > 0 && player.knockback <= 1)
+        {
+            return;
+        }
+        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
             player.player.StopShakeCoroutine();
             if (player.stunFrames <= 0 || player.comboTimer <= 0)

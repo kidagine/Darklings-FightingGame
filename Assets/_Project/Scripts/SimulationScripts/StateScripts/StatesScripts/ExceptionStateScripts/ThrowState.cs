@@ -6,7 +6,7 @@ public class ThrowState : State
     {
         if (!player.enter)
         {
-            if (player.inputBuffer.inputItems[0].inputDirection.x < 0 && player.flip == 1 || player.inputBuffer.inputItems[0].inputDirection.x > 0 && player.flip == -1)
+            if (player.inputBuffer.inputItems[0].inputDirection == InputDirectionEnum.Left && player.flip == 1 || player.inputBuffer.inputItems[0].inputDirection == InputDirectionEnum.Right && player.flip == -1)
             {
                 player.flip *= -1;
             }

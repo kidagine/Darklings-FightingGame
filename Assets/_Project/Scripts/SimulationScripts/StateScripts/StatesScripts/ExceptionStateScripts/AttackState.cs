@@ -48,7 +48,7 @@ public class AttackState : State
                         {
                             return;
                         }
-                        if (player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy && player.inputBuffer.inputItems[0].inputDirection.y >= 0)
+                        if (player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy && player.inputBuffer.inputItems[0].inputDirection != InputDirectionEnum.Down)
                         {
                             return;
                         }

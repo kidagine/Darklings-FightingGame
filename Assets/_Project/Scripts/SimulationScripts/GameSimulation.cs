@@ -92,6 +92,7 @@ public struct GameSimulation : IGame
             _players[i].playerStats = playerStats[i];
             _players[i].health = playerStats[i].maxHealth;
             _players[i].healthRecoverable = playerStats[i].maxHealth;
+            _players[i].shadowGauge = 2000;
             _players[i].attackInput = InputEnum.Direction;
             _players[i].animation = "Idle";
             _players[i].sound = "";
@@ -140,70 +141,85 @@ public struct GameSimulation : IGame
     {
         if (GameSimulation.Run)
         {
-            if (up)
-            {
-                _players[index].direction = new Vector2Int(0, 1);
-            }
-            if (down)
-            {
-                _players[index].direction = new Vector2Int(0, -1);
-            }
-            if (right)
-            {
-                _players[index].direction = new Vector2Int(1, _players[index].direction.y);
-            }
-            if (left)
-            {
-                _players[index].direction = new Vector2Int(-1, _players[index].direction.y);
-            }
             if (!left && !right)
             {
+                _players[index].inputDirection = InputDirectionEnum.NoneHorizontal;
+                //_players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
                 _players[index].direction = new Vector2Int(0, _players[index].direction.y);
             }
             if (!up && !down)
             {
+                _players[index].inputDirection = InputDirectionEnum.NoneVertical;
+                //_players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
                 _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
             }
+            if (up)
+            {
+                _players[index].inputDirection = InputDirectionEnum.Up;
+                //_players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].direction = new Vector2Int(0, 1);
+            }
+            if (down)
+            {
+                Debug.Log("A");
+                _players[index].inputDirection = InputDirectionEnum.Down;
+                // _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].direction = new Vector2Int(0, -1);
+            }
+            if (right)
+            {
+                _players[index].inputDirection = InputDirectionEnum.Right;
+                // _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].direction = new Vector2Int(1, _players[index].direction.y);
+            }
+            if (left)
+            {
+                _players[index].inputDirection = InputDirectionEnum.Left;
+                //_players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].direction = new Vector2Int(-1, _players[index].direction.y);
+            }
+
             if (dashForward)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.ForwardDash, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.ForwardDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
             }
             if (dashBackward)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.BackDash, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.BackDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
             }
             if (light)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
             }
             if (medium)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
             }
             if (heavy)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
             }
             if (arcana)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
             }
             if (blueFrenzy)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Parry, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Parry, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
             }
             if (redFrenzy)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.RedFrenzy, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.RedFrenzy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
             }
             if (grab)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
             }
             if (shadow)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].direction, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
             }
+
             if (_players[index].arcanaGauge >= _players[index].playerStats.Arcana)
             {
                 _players[index].arcanaGauge = _players[index].playerStats.Arcana;

@@ -66,7 +66,7 @@ public class State
             player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
             player.isCrouch = false;
             player.isAir = air;
-            if (player.inputBuffer.inputItems[0].inputDirection.y < 0)
+            if (player.inputBuffer.inputItems[0].inputDirection == InputDirectionEnum.Down)
             {
                 player.isCrouch = true;
             }
@@ -87,7 +87,7 @@ public class State
             player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
             player.isAir = air;
             player.isCrouch = false;
-            if (player.inputBuffer.inputItems[0].inputDirection.y < 0)
+            if (player.inputBuffer.inputItems[0].inputDirection == InputDirectionEnum.Down)
             {
                 player.isCrouch = true;
             }
@@ -170,6 +170,7 @@ public class State
     {
         player.healthRecoverable = 10000;
         player.health = 10000;
+        player.shadowGauge = 2000;
         player.player.PlayerUI.CheckDemonLimit(player.health);
         player.enter = false;
     }
@@ -231,42 +232,48 @@ public class State
     }
     protected bool IsColliding(PlayerNetwork player)
     {
-        if (DemonicsCollider.Colliding(player.otherPlayer.shadow.projectile.hitbox, player.hurtbox))
+        if (player.otherPlayer.shadow.projectile.active)
         {
-            player.attackHurtNetwork = player.otherPlayer.shadow.projectile.attackNetwork;
-            GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
-            player.hitstop = true;
-            player.hitbox.enter = true;
-            player.otherPlayer.shadow.projectile.hitstop = true;
-            player.hurtPosition = new DemonicsVector2(player.position.x, player.position.y + (player.pushbox.size.y / 2));
-            if (player.otherPlayer.shadow.projectile.destroyOnHit)
+            if (DemonicsCollider.Colliding(player.otherPlayer.shadow.projectile.hitbox, player.hurtbox))
             {
-                player.otherPlayer.shadow.projectile.hitstop = false;
-                player.otherPlayer.shadow.projectile.animationFrames = 0;
-                player.otherPlayer.shadow.projectile.active = false;
-                player.otherPlayer.shadow.projectile.hitbox.active = false;
+                player.attackHurtNetwork = player.otherPlayer.shadow.projectile.attackNetwork;
+                GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                player.hitstop = true;
+                player.hitbox.enter = true;
+                player.otherPlayer.shadow.projectile.hitstop = true;
+                player.hurtPosition = new DemonicsVector2(player.position.x, player.position.y + (player.pushbox.size.y / 2));
+                if (player.otherPlayer.shadow.projectile.destroyOnHit)
+                {
+                    player.otherPlayer.shadow.projectile.hitstop = false;
+                    player.otherPlayer.shadow.projectile.animationFrames = 0;
+                    player.otherPlayer.shadow.projectile.active = false;
+                    player.otherPlayer.shadow.projectile.hitbox.active = false;
+                }
+                return true;
             }
-            return true;
         }
         for (int i = 0; i < player.otherPlayer.projectiles.Length; i++)
         {
-            if (DemonicsCollider.Colliding(player.otherPlayer.projectiles[i].hitbox, player.hurtbox) && !player.otherPlayer.projectiles[i].hitbox.enter)
+            if (player.otherPlayer.projectiles[i].active)
             {
-                player.attackHurtNetwork = player.otherPlayer.projectiles[i].attackNetwork;
-                GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
-                player.hitstop = true;
-                player.otherPlayer.projectiles[i].hitbox.enter = true;
-                player.otherPlayer.projectiles[i].hitstop = true;
-                player.hurtPosition = new DemonicsVector2(player.position.x, player.position.y + (player.pushbox.size.y / 2));
-                if (player.otherPlayer.projectiles[i].destroyOnHit)
+                if (DemonicsCollider.Colliding(player.otherPlayer.projectiles[i].hitbox, player.hurtbox) && !player.otherPlayer.projectiles[i].hitbox.enter)
                 {
-                    player.otherPlayer.projectiles[i].hitbox.enter = false;
-                    player.otherPlayer.projectiles[i].hitstop = false;
-                    player.otherPlayer.projectiles[i].animationFrames = 0;
-                    player.otherPlayer.projectiles[i].active = false;
-                    player.otherPlayer.projectiles[i].hitbox.active = false;
+                    player.attackHurtNetwork = player.otherPlayer.projectiles[i].attackNetwork;
+                    GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                    player.hitstop = true;
+                    player.otherPlayer.projectiles[i].hitbox.enter = true;
+                    player.otherPlayer.projectiles[i].hitstop = true;
+                    player.hurtPosition = new DemonicsVector2(player.position.x, player.position.y + (player.pushbox.size.y / 2));
+                    if (player.otherPlayer.projectiles[i].destroyOnHit)
+                    {
+                        player.otherPlayer.projectiles[i].hitbox.enter = false;
+                        player.otherPlayer.projectiles[i].hitstop = false;
+                        player.otherPlayer.projectiles[i].animationFrames = 0;
+                        player.otherPlayer.projectiles[i].active = false;
+                        player.otherPlayer.projectiles[i].hitbox.active = false;
+                    }
+                    return true;
                 }
-                return true;
             }
         }
         if (DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox) && !player.otherPlayer.hitbox.enter)
@@ -293,7 +300,7 @@ public class State
     {
         if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Assist)
         {
-            if (!player.shadow.isOnScreen && player.shadowGauge > 1000)
+            if (!player.shadow.isOnScreen && player.shadowGauge > -1111000)
             {
                 player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
                 player.shadow.projectile.flip = player.flip == 1 ? false : true;
@@ -302,6 +309,24 @@ public class State
                 player.shadow.flip = player.flip;
                 player.shadow.position = new DemonicsVector2(player.position.x + (player.shadow.spawnPoint.x * player.flip), player.position.y + player.shadow.spawnPoint.y);
                 player.shadowGauge -= 1000;
+            }
+        }
+    }
+    protected void ToShadowbreakState(PlayerNetwork player)
+    {
+        if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Assist)
+        {
+            if (player.shadowGauge == 2000)
+            {
+                player.combo = 0;
+                player.player.OtherPlayerUI.ResetCombo();
+                player.player.StopShakeCoroutine();
+                player.player.PlayerUI.SetComboTimerActive(false);
+                player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+                player.velocity = DemonicsVector2.Zero;
+                player.enter = false;
+                player.state = "Shadowbreak";
+                player.shadowGauge -= 2000;
             }
         }
     }

@@ -17,7 +17,7 @@ public class FallState : AirParentState
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
             player.enter = false;
             player.sound = "Landed";

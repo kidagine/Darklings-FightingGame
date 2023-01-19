@@ -4,19 +4,19 @@ public class AirParentState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (ToAttackState(player))
+        if (ToHurtState(player))
         {
             return;
+        }
+        if (ToAttackState(player))
+        {
+            // return;
         }
         ToArcanaState(player);
         ToRedFrenzyState(player);
         ToDashAirState(player);
         ToJumpForwardState(player);
         ToJumpState(player);
-        if (ToHurtState(player))
-        {
-            return;
-        }
         Shadow(player);
     }
 
@@ -91,7 +91,7 @@ public class AirParentState : State
         if (player.inputBuffer.inputItems[0].pressed)
         {
             Attack(player, true);
-            return false;
+            return true;
         }
         return false;
     }
@@ -104,10 +104,6 @@ public class AirParentState : State
     }
     private bool ToHurtState(PlayerNetwork player)
     {
-        if (player.otherPlayer.attackNetwork.attackType == AttackTypeEnum.Throw)
-        {
-            return false;
-        }
         if (IsColliding(player))
         {
             player.enter = false;

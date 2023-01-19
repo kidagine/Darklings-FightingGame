@@ -17,6 +17,7 @@ public class HurtParentState : State
     }
     protected virtual void OnEnter(PlayerNetwork player)
     {
+        player.shadow.isOnScreen = false;
         player.velocity = DemonicsVector2.Zero;
         player.animationFrames = 0;
         if (player.combo == 0)
@@ -68,25 +69,6 @@ public class HurtParentState : State
         player.player.OtherPlayerUI.SetComboTimer
        (DemonicsFloat.Lerp((DemonicsFloat)0, (DemonicsFloat)1,
         (DemonicsFloat)player.comboTimer / (DemonicsFloat)ComboTimerStarterTypes.GetComboTimerStarterValue(player.comboTimerStarter)), ComboTimerStarterTypes.GetComboTimerStarterColor(player.comboTimerStarter));
-    }
-
-    protected void ToShadowbreakState(PlayerNetwork player)
-    {
-        if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Assist)
-        {
-            if (player.shadowGauge == 2000)
-            {
-                player.combo = 0;
-                player.player.OtherPlayerUI.ResetCombo();
-                player.player.StopShakeCoroutine();
-                player.player.PlayerUI.SetComboTimerActive(false);
-                player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-                player.velocity = DemonicsVector2.Zero;
-                player.enter = false;
-                player.state = "Shadowbreak";
-                player.shadowGauge -= 2000;
-            }
-        }
     }
 
     protected virtual void Knockback(PlayerNetwork player)

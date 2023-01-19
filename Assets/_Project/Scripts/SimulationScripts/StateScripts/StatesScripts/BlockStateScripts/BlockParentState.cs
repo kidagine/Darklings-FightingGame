@@ -17,6 +17,7 @@ public class BlockParentState : State
             AfterHitstop(player);
         }
         ToHurtState(player);
+        ToShadowbreakState(player);
     }
 
     protected virtual void OnEnter(PlayerNetwork player)
@@ -84,6 +85,18 @@ public class BlockParentState : State
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                player.state = "Grabbed";
+                return;
+            }
+            if (DemonicsPhysics.IsInCorner(player))
+            {
+                player.otherPlayer.knockback = 0;
+                player.otherPlayer.pushbackStart = player.otherPlayer.position;
+                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
+            }
             if (IsBlocking(player))
             {
                 if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
