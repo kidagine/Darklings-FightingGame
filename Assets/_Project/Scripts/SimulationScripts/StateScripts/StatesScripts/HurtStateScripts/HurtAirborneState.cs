@@ -58,10 +58,7 @@ public class HurtAirborneState : HurtParentState
         if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0 && player.knockback > 1)
         {
             player.comboLocked = false;
-            player.combo = 0;
-            player.player.PlayerUI.SetComboTimerActive(false);
-            player.player.OtherPlayerUI.ResetCombo();
-            player.player.StopShakeCoroutine();
+            ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.wasWallSplatted = false;
             player.enter = false;

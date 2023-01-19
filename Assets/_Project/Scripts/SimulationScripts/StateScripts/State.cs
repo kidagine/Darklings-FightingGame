@@ -26,15 +26,19 @@ public class State
     }
     public bool IsBlocking(PlayerNetwork player)
     {
+        if (player.attackHurtNetwork.attackType == AttackTypeEnum.Break)
+        {
+            return false;
+        }
+        if (AIBlocking(player))
+        {
+            return true;
+        }
         if (player.attackHurtNetwork.attackType == AttackTypeEnum.Low && player.direction.y > 0)
         {
             return false;
         }
         if (player.attackHurtNetwork.attackType == AttackTypeEnum.Overhead && player.direction.y < 0)
-        {
-            return false;
-        }
-        if (player.attackHurtNetwork.attackType == AttackTypeEnum.Break)
         {
             return false;
         }
@@ -59,14 +63,13 @@ public class State
     }
     protected void Attack(PlayerNetwork player, bool air = false)
     {
-        if (player.arcanaGauge > -1000000 &&
-        (player.inputBuffer.inputItems[0].inputEnum == InputEnum.Light || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Medium || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy))
+        if ((player.inputBuffer.inputItems[0].inputEnum == InputEnum.Light || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Medium || player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy))
         {
             player.pushbackDuration = 0;
             player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
             player.isCrouch = false;
             player.isAir = air;
-            if (player.inputBuffer.inputItems[0].inputDirection == InputDirectionEnum.Down)
+            if (player.direction.y < 0)
             {
                 player.isCrouch = true;
             }
@@ -82,12 +85,12 @@ public class State
     }
     protected void Arcana(PlayerNetwork player, bool air = false)
     {
-        if (player.arcanaGauge > -1000000 && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
+        if (player.arcanaGauge > 1000 && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
         {
             player.attackInput = player.inputBuffer.inputItems[0].inputEnum;
             player.isAir = air;
             player.isCrouch = false;
-            if (player.inputBuffer.inputItems[0].inputDirection == InputDirectionEnum.Down)
+            if (player.direction.y < 0)
             {
                 player.isCrouch = true;
             }
@@ -171,8 +174,22 @@ public class State
         player.healthRecoverable = 10000;
         player.health = 10000;
         player.shadowGauge = 2000;
+        player.arcanaGauge = 0;
         player.player.PlayerUI.CheckDemonLimit(player.health);
         player.enter = false;
+    }
+    public void ResetPlayerTraining(PlayerNetwork player)
+    {
+        ResetPlayer(player);
+        ResetCombo(player);
+        GameSimulation.Hitstop = 0;
+        player.shadow.isOnScreen = false;
+        player.shadow.projectile.active = false;
+        for (int i = 0; i < player.projectiles.Length; i++)
+        {
+            player.projectiles[i].active = false;
+        }
+        player.state = "Idle";
     }
     protected int CalculateDamage(PlayerNetwork player, int damage, float defense)
     {
@@ -224,11 +241,57 @@ public class State
         player.player.PlayerUI.Damaged();
         player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
-        player.player.OtherPlayerUI.ResetCombo();
-        player.combo = 0;
+        ResetCombo(player);
         player.pushbox.active = true;
         player.enter = false;
         player.state = "HardKnockdown";
+        if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
+        {
+            player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+        }
+        else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
+        {
+            player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+        }
+    }
+    public void CheckTraniningOptions(PlayerNetwork player)
+    {
+        if (SceneSettings.IsTrainingMode)
+        {
+            if (GameplayManager.Instance.InfiniteHealth)
+            {
+                player.health = 10000;
+                player.healthRecoverable = 10000;
+            }
+            if (GameplayManager.Instance.InfiniteArcana)
+            {
+                player.arcanaGauge = 2000;
+            }
+            if (GameplayManager.Instance.InfiniteAssist)
+            {
+                player.shadowGauge = 2000;
+            }
+        }
+        player.shadowGauge = 2000;
+    }
+    public bool AIBlocking(PlayerNetwork player)
+    {
+        if (SceneSettings.IsTrainingMode)
+        {
+            if (TrainingSettings.BlockAlways)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    protected void ResetCombo(PlayerNetwork player)
+    {
+        CheckTraniningOptions(player);
+        player.player.PlayerUI.SetComboTimerActive(false);
+        player.player.StopShakeCoroutine();
+        player.player.OtherPlayerUI.ResetCombo();
+        player.combo = 0;
     }
     protected bool IsColliding(PlayerNetwork player)
     {
@@ -300,7 +363,7 @@ public class State
     {
         if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Assist)
         {
-            if (!player.shadow.isOnScreen && player.shadowGauge > -1111000)
+            if (!player.shadow.isOnScreen && player.shadowGauge > 1000)
             {
                 player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
                 player.shadow.projectile.flip = player.flip == 1 ? false : true;

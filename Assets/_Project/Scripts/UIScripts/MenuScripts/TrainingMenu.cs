@@ -191,7 +191,6 @@ public class TrainingMenu : BaseMenu
                 GameplayManager.Instance.InfiniteHealth = false;
                 break;
             case 1:
-                GameplayManager.Instance.MaxHealths();
                 GameplayManager.Instance.InfiniteHealth = true;
                 break;
         }

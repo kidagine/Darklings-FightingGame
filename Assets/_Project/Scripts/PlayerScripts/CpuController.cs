@@ -17,7 +17,7 @@ public class CpuController : BaseController
         _otherPlayer = otherPlayer;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (GameplayManager.Instance.HasGameStarted)
         {
@@ -25,7 +25,7 @@ public class CpuController : BaseController
             {
                 _reset = false;
                 Movement();
-                if (_distance <= 30f)
+                if (_distance <= 80)
                 {
                     Attack();
                 }
@@ -69,7 +69,7 @@ public class CpuController : BaseController
         if (_movementTimer < 0)
         {
             int movementRandom;
-            if (_distance <= 6.5f)
+            if (_distance <= 80)
             {
                 movementRandom = Random.Range(0, 6);
             }
@@ -110,10 +110,12 @@ public class CpuController : BaseController
                     {
                         if (_player.IsPlayerOne)
                         {
+                            NetworkInput.ONE_RIGHT_INPUT = false;
                             NetworkInput.ONE_LEFT_INPUT = true;
                         }
                         else
                         {
+                            NetworkInput.TWO_RIGHT_INPUT = false;
                             NetworkInput.TWO_LEFT_INPUT = true;
                         }
                     }
@@ -121,10 +123,12 @@ public class CpuController : BaseController
                     {
                         if (_player.IsPlayerOne)
                         {
+                            NetworkInput.ONE_LEFT_INPUT = false;
                             NetworkInput.ONE_RIGHT_INPUT = true;
                         }
                         else
                         {
+                            NetworkInput.TWO_LEFT_INPUT = false;
                             NetworkInput.TWO_RIGHT_INPUT = true;
                         }
                     }
@@ -135,10 +139,12 @@ public class CpuController : BaseController
                     {
                         if (_player.IsPlayerOne)
                         {
+                            NetworkInput.ONE_RIGHT_INPUT = false;
                             NetworkInput.ONE_LEFT_INPUT = true;
                         }
                         else
                         {
+                            NetworkInput.TWO_RIGHT_INPUT = false;
                             NetworkInput.TWO_LEFT_INPUT = true;
                         }
                     }
@@ -146,10 +152,12 @@ public class CpuController : BaseController
                     {
                         if (_player.IsPlayerOne)
                         {
+                            NetworkInput.ONE_LEFT_INPUT = false;
                             NetworkInput.ONE_RIGHT_INPUT = true;
                         }
                         else
                         {
+                            NetworkInput.TWO_LEFT_INPUT = false;
                             NetworkInput.TWO_RIGHT_INPUT = true;
                         }
                     }
@@ -161,11 +169,11 @@ public class CpuController : BaseController
                 _movementInputX = (int)(transform.localScale.x * 1.0f);
                 if (_player.IsPlayerOne)
                 {
-                    NetworkInput.ONE_UP_INPUT = false;
+                    NetworkInput.ONE_UP_INPUT = true;
                 }
                 else
                 {
-                    NetworkInput.TWO_UP_INPUT = false;
+                    NetworkInput.TWO_UP_INPUT = true;
                 }
             }
             if (crouchRandom == 2)
@@ -173,11 +181,11 @@ public class CpuController : BaseController
                 _crouch = true;
                 if (_player.IsPlayerOne)
                 {
-                    NetworkInput.ONE_UP_INPUT = true;
+                    NetworkInput.ONE_DOWN_INPUT = true;
                 }
                 else
                 {
-                    NetworkInput.TWO_UP_INPUT = true;
+                    NetworkInput.TWO_DOWN_INPUT = true;
                 }
             }
             if (standingRandom == 2)
@@ -198,45 +206,98 @@ public class CpuController : BaseController
 
     private void Attack()
     {
-
         if (IsControllerEnabled)
         {
             _attackTimer -= Time.deltaTime;
             if (_attackTimer < 0)
             {
+                int lowRandom = Random.Range(0, 2);
                 int attackRandom = Random.Range(0, 7);
                 if (attackRandom <= 2)
                 {
-                    Debug.Log("A");
-                    if (_player.IsPlayerOne)
+                    if (lowRandom == 0)
                     {
-                        NetworkInput.ONE_LIGHT_INPUT = true;
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_DOWN_INPUT = false;
+                            NetworkInput.ONE_LIGHT_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_DOWN_INPUT = false;
+                            NetworkInput.TWO_LIGHT_INPUT = true;
+                        }
                     }
-                    else
+                    else if (lowRandom == 1)
                     {
-                        NetworkInput.TWO_LIGHT_INPUT = true;
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_DOWN_INPUT = true;
+                            NetworkInput.ONE_LIGHT_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_DOWN_INPUT = true;
+                            NetworkInput.TWO_LIGHT_INPUT = true;
+                        }
                     }
                 }
                 else if (attackRandom <= 4)
                 {
-                    if (_player.IsPlayerOne)
+                    if (lowRandom == 0)
                     {
-                        NetworkInput.ONE_MEDIUM_INPUT = true;
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_DOWN_INPUT = false;
+                            NetworkInput.ONE_MEDIUM_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_DOWN_INPUT = false;
+                            NetworkInput.TWO_MEDIUM_INPUT = true;
+                        }
                     }
-                    else
+                    else if (lowRandom == 1)
                     {
-                        NetworkInput.TWO_MEDIUM_INPUT = true;
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_DOWN_INPUT = false;
+                            NetworkInput.ONE_MEDIUM_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_DOWN_INPUT = true;
+                            NetworkInput.TWO_MEDIUM_INPUT = true;
+                        }
                     }
                 }
                 else if (attackRandom <= 6)
                 {
-                    if (_player.IsPlayerOne)
+                    if (lowRandom == 0)
                     {
-                        NetworkInput.ONE_HEAVY_INPUT = true;
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_DOWN_INPUT = false;
+                            NetworkInput.ONE_HEAVY_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_DOWN_INPUT = false;
+                            NetworkInput.TWO_HEAVY_INPUT = true;
+                        }
                     }
-                    else
+                    else if (lowRandom == 1)
                     {
-                        NetworkInput.TWO_HEAVY_INPUT = true;
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_DOWN_INPUT = true;
+                            NetworkInput.ONE_HEAVY_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_DOWN_INPUT = true;
+                            NetworkInput.TWO_HEAVY_INPUT = true;
+                        }
                     }
                 }
                 else
@@ -250,7 +311,7 @@ public class CpuController : BaseController
                         NetworkInput.TWO_GRAB_INPUT = true;
                     }
                 }
-                _attackTimer = Random.Range(0.15f, 0.35f);
+                _attackTimer = Random.Range(0.15f, 0.3f);
             }
         }
     }
@@ -263,6 +324,7 @@ public class CpuController : BaseController
             if (_arcanaTimer < 0)
             {
                 int arcanaRandom = Random.Range(0, 2);
+                int lowRandom = Random.Range(0, 2);
                 if (arcanaRandom == 0)
                 {
                     if (_player.IsPlayerOne)
@@ -276,17 +338,36 @@ public class CpuController : BaseController
                 }
                 else if (arcanaRandom == 1)
                 {
-                    if (_player.IsPlayerOne)
+                    if (lowRandom == 0)
                     {
-                        NetworkInput.ONE_ARCANA_INPUT = true;
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_DOWN_INPUT = false;
+                            NetworkInput.ONE_ARCANA_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_DOWN_INPUT = false;
+                            NetworkInput.TWO_ARCANA_INPUT = true;
+                        }
                     }
                     else
                     {
-                        NetworkInput.TWO_ARCANA_INPUT = true;
+                        if (_player.IsPlayerOne)
+                        {
+                            NetworkInput.ONE_DOWN_INPUT = true;
+                            NetworkInput.ONE_ARCANA_INPUT = true;
+                        }
+                        else
+                        {
+                            NetworkInput.TWO_DOWN_INPUT = true;
+                            NetworkInput.TWO_ARCANA_INPUT = true;
+                        }
+
                     }
+                    _attackTimer = Random.Range(0.15f, 0.35f);
+                    _arcanaTimer = Random.Range(0.4f, 0.85f);
                 }
-                _attackTimer = Random.Range(0.15f, 0.35f);
-                _arcanaTimer = Random.Range(0.4f, 0.85f);
             }
         }
     }

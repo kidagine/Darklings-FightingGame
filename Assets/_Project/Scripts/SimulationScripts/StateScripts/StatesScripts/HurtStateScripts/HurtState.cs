@@ -6,6 +6,7 @@ public class HurtState : HurtParentState
     {
         base.UpdateLogic(player);
         player.animation = "Hurt";
+        player.velocity = DemonicsVector2.Zero;
         if (player.animationFrames < 4)
         {
             player.animationFrames++;
@@ -21,10 +22,7 @@ public class HurtState : HurtParentState
     {
         if (player.stunFrames <= 0 || player.comboTimer <= 0)
         {
-            player.combo = 0;
-            player.player.OtherPlayerUI.ResetCombo();
-            player.player.StopShakeCoroutine();
-            player.player.PlayerUI.SetComboTimerActive(false);
+            ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.velocity = DemonicsVector2.Zero;
             player.enter = false;

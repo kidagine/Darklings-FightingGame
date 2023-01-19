@@ -161,7 +161,6 @@ public struct GameSimulation : IGame
             }
             if (down)
             {
-                Debug.Log("A");
                 _players[index].inputDirection = InputDirectionEnum.Down;
                 // _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
                 _players[index].direction = new Vector2Int(0, -1);

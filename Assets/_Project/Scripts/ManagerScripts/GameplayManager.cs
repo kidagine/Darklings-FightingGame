@@ -1015,6 +1015,8 @@ public class GameplayManager : MonoBehaviour
                     PlayerOne.ResetPlayer(new Vector2((float)playerOneResetPosition.x, (float)playerOneResetPosition.y));
                     PlayerTwo.ResetPlayer(new Vector2((float)playerTwoResetPosition.x, (float)playerTwoResetPosition.y));
                 }
+                GameSimulation._players[0].CurrentState.ResetPlayerTraining(GameSimulation._players[0]);
+                GameSimulation._players[1].CurrentState.ResetPlayerTraining(GameSimulation._players[1]);
                 _cachedOneResetPosition = playerOneResetPosition;
                 _cachedTwoResetPosition = playerTwoResetPosition;
 

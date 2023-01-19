@@ -84,7 +84,6 @@ public class BlockParentState : State
         if (IsColliding(player))
         {
             player.enter = false;
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 player.state = "Grabbed";

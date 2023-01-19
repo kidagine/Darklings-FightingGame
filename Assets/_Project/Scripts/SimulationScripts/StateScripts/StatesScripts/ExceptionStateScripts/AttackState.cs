@@ -48,7 +48,7 @@ public class AttackState : State
                         {
                             if (player.inputBuffer.inputItems[0].inputEnum != InputEnum.Throw)
                             {
-                                if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy && player.inputBuffer.inputItems[0].inputDirection != InputDirectionEnum.Down))
+                                if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy && player.direction.y >= 0))
                                 {
                                     Attack(player, player.isAir);
                                 }
