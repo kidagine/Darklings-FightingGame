@@ -37,7 +37,7 @@ public class PlayerSimulation : MonoBehaviour
             _inputBuffer.AddInputBufferItem(playerGs.inputBuffer.inputItems[0].inputEnum, playerGs.inputBuffer.inputItems[0].inputDirection);
         }
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
-        _playerAnimator.SetInvinsible(playerGs.invinsible);
+        _playerAnimator.SetInvinsible(playerGs.invisible);
         _playerAnimator.SetSpriteOrder(playerGs.spriteOrder);
         _hitBoxVisualizer.ShowBox(playerGs.hitbox);
         _hurtBoxVisualizer.ShowBox(playerGs.hurtbox);

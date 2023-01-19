@@ -177,6 +177,7 @@ public class State
         player.arcanaGauge = 0;
         player.player.PlayerUI.CheckDemonLimit(player.health);
         player.enter = false;
+        CheckTrainingGauges(player);
     }
     public void ResetPlayerTraining(PlayerNetwork player)
     {
@@ -254,7 +255,7 @@ public class State
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
         }
     }
-    public void CheckTraniningOptions(PlayerNetwork player)
+    public void CheckTrainingComboEnd(PlayerNetwork player)
     {
         if (SceneSettings.IsTrainingMode)
         {
@@ -263,17 +264,24 @@ public class State
                 player.health = 10000;
                 player.healthRecoverable = 10000;
             }
+            CheckTrainingGauges(player.otherPlayer);
+        }
+    }
+    public void CheckTrainingGauges(PlayerNetwork player)
+    {
+        if (SceneSettings.IsTrainingMode && player.otherPlayer.combo == 0)
+        {
             if (GameplayManager.Instance.InfiniteArcana)
             {
-                player.arcanaGauge = 2000;
+                player.arcanaGauge = player.playerStats.Arcana;
             }
             if (GameplayManager.Instance.InfiniteAssist)
             {
                 player.shadowGauge = 2000;
             }
         }
-        player.shadowGauge = 2000;
     }
+
     public bool AIBlocking(PlayerNetwork player)
     {
         if (SceneSettings.IsTrainingMode)
@@ -287,14 +295,19 @@ public class State
     }
     protected void ResetCombo(PlayerNetwork player)
     {
-        CheckTraniningOptions(player);
         player.player.PlayerUI.SetComboTimerActive(false);
         player.player.StopShakeCoroutine();
         player.player.OtherPlayerUI.ResetCombo();
         player.combo = 0;
+        player.comboLocked = false;
+        CheckTrainingComboEnd(player);
     }
     protected bool IsColliding(PlayerNetwork player)
     {
+        if (player.invincible)
+        {
+            return false;
+        }
         if (player.otherPlayer.shadow.projectile.active)
         {
             if (DemonicsCollider.Colliding(player.otherPlayer.shadow.projectile.hitbox, player.hurtbox))
@@ -381,10 +394,7 @@ public class State
         {
             if (player.shadowGauge == 2000)
             {
-                player.combo = 0;
-                player.player.OtherPlayerUI.ResetCombo();
-                player.player.StopShakeCoroutine();
-                player.player.PlayerUI.SetComboTimerActive(false);
+                ResetCombo(player);
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
                 player.velocity = DemonicsVector2.Zero;
                 player.enter = false;

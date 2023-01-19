@@ -67,6 +67,10 @@ public class PlayerAnimator : DemonicsAnimator
     {
         return GetEvent(name, frame).throwArcanaEnd;
     }
+    public bool GetInvincible(string name, int frame)
+    {
+        return GetEvent(name, frame).invisibile;
+    }
     public DemonicsVector2 GetJump(string name, int frame)
     {
         DemonicsVector2 jumpDirection = DemonicsVector2.Zero;

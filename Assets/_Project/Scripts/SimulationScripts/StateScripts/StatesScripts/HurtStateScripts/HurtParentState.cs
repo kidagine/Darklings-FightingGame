@@ -17,6 +17,7 @@ public class HurtParentState : State
     }
     protected virtual void OnEnter(PlayerNetwork player)
     {
+        CheckTrainingGauges(player);
         player.shadow.isOnScreen = false;
         player.velocity = DemonicsVector2.Zero;
         player.animationFrames = 0;

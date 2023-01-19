@@ -33,9 +33,7 @@ public class HurtAirState : HurtParentState
             player.player.StopShakeCoroutine();
             if (player.stunFrames <= 0 || player.comboTimer <= 0)
             {
-                player.combo = 0;
-                player.player.OtherPlayerUI.ResetCombo();
-                player.player.PlayerUI.SetComboTimerActive(false);
+                ResetCombo(player);
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
                 player.enter = false;
                 player.state = "Idle";
@@ -53,10 +51,7 @@ public class HurtAirState : HurtParentState
     {
         if (player.stunFrames <= 0 || player.comboTimer <= 0)
         {
-            player.combo = 0;
-            player.player.OtherPlayerUI.ResetCombo();
-            player.player.StopShakeCoroutine();
-            player.player.PlayerUI.SetComboTimerActive(false);
+            ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.enter = false;
             player.state = "Fall";

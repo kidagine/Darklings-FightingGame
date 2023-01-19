@@ -87,6 +87,7 @@ public struct GameSimulation : IGame
             _players[i].resultAttack = new ResultAttack();
             _players[i].inputBuffer.inputItems = new InputItemNetwork[20];
             _players[i].state = "Idle";
+            _players[i].CurrentState = new IdleState();
             _players[i].flip = 1;
             _players[i].position = new DemonicsVector2((DemonicsFloat)GameplayManager.Instance.GetSpawnPositions()[i], DemonicsPhysics.GROUND_POINT);
             _players[i].playerStats = playerStats[i];
@@ -134,6 +135,8 @@ public struct GameSimulation : IGame
         _players[1].spriteOrder = 0;
         _players[0].otherPlayer = _players[1];
         _players[1].otherPlayer = _players[0];
+        _players[0].CurrentState.CheckTrainingGauges(_players[0]);
+        _players[1].CurrentState.CheckTrainingGauges(_players[1]);
     }
 
     public void PlayerLogic(int index, bool skip, bool up, bool down, bool left, bool right, bool light, bool medium, bool heavy,
@@ -292,6 +295,7 @@ public struct GameSimulation : IGame
         {
             if (_players[index].shadow.animationFrames >= 55)
             {
+                _players[index].CurrentState.CheckTrainingGauges(_players[index]);
                 _players[index].shadow.isOnScreen = false;
             }
             else
