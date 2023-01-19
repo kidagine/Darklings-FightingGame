@@ -44,19 +44,16 @@ public class AttackState : State
                     }
                     else
                     {
-                        if (player.attackInput == InputEnum.Medium && player.isCrouch)
+                        if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
                         {
-                            return;
+                            if (player.inputBuffer.inputItems[0].inputEnum != InputEnum.Throw)
+                            {
+                                if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy && player.inputBuffer.inputItems[0].inputDirection != InputDirectionEnum.Down))
+                                {
+                                    Attack(player, player.isAir);
+                                }
+                            }
                         }
-                        if (player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy && player.inputBuffer.inputItems[0].inputDirection != InputDirectionEnum.Down)
-                        {
-                            return;
-                        }
-                        if (player.inputBuffer.inputItems[0].inputEnum == InputEnum.Throw)
-                        {
-                            return;
-                        }
-                        Attack(player, player.isAir);
                     }
                 }
             }
@@ -163,9 +160,9 @@ public class AttackState : State
         {
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
 
-            player.enter = false;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
+                player.enter = false;
                 player.state = "Grabbed";
                 return;
             }
@@ -185,8 +182,11 @@ public class AttackState : State
                 }
                 player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
                 player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
-                player.otherPlayer.canChainAttack = true;
-                GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                player.canChainAttack = false;
+                if (GameSimulation.Hitstop <= 0)
+                {
+                    GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                }
                 player.player.PlayerAnimator.SpriteSuperArmorEffect();
                 player.player.PlayerUI.Damaged();
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
