@@ -116,6 +116,7 @@ public struct GameSimulation : IGame
             _players[i].shadow.projectile.animationMaxFrames = ObjectPoolingManager.Instance.GetAssistPoolAnimation(i, _players[i].shadow.projectile.name).GetMaxAnimationFrames();
             _players[i].shadow.projectile.destroyOnHit = true;
             _players[i].shadow.projectile.speed = (DemonicsFloat)assistStats[i].assistSpeed;
+            _players[i].shadow.projectile.priority = assistStats[i].assistPriority;
             for (int j = 0; j < _players[i].effects.Length; j++)
             {
                 _players[i].effects[j] = new EffectNetwork();

@@ -33,17 +33,23 @@ public class ProjectilesSimulation
                 DisableShadow(player);
                 DisableShadow(player.otherPlayer);
             }
-            for (int i = 0; i < player.otherPlayer.projectiles.Length; i++)
+        }
+        for (int i = 0; i < player.otherPlayer.projectiles.Length; i++)
+        {
+            if (DemonicsCollider.Colliding(player.shadow.projectile.hitbox, player.otherPlayer.projectiles[i].hitbox))
             {
-                if (DemonicsCollider.Colliding(player.shadow.projectile.hitbox, player.otherPlayer.projectiles[i].hitbox))
+                if (player.shadow.projectile.priority < player.otherPlayer.projectiles[i].priority)
                 {
-                    if (player.shadow.projectile.priority <= player.otherPlayer.projectiles[i].priority)
-                    {
-                        DisableShadow(player);
-                    }
+                    DisableShadow(player);
+                }
+                else if (player.shadow.projectile.priority == player.otherPlayer.shadow.projectile.priority)
+                {
+                    DisableShadow(player);
+                    DisableProjectile(player.otherPlayer, i);
                 }
             }
         }
+
         if (!player.shadow.projectile.hitstop)
         {
             player.shadow.projectile.animationFrames++;
@@ -79,15 +85,22 @@ public class ProjectilesSimulation
             {
                 if (player.projectiles[i].priority < player.otherPlayer.projectiles[j].priority)
                 {
-                    DisableProjectile(player, i);
+                    if (player.projectiles[i].priority > -1)
+                    {
+                        DisableProjectile(player, i);
+                    }
                 }
                 else if (player.projectiles[i].priority == player.otherPlayer.projectiles[j].priority)
                 {
-                    DisableProjectile(player, i);
-                    DisableProjectile(player.otherPlayer, i);
+                    if (player.projectiles[i].priority > -1)
+                    {
+                        DisableProjectile(player, i);
+                        DisableProjectile(player.otherPlayer, i);
+                    }
                 }
             }
         }
+
         if (!player.projectiles[i].hitstop)
         {
             player.projectiles[i].animationFrames++;
