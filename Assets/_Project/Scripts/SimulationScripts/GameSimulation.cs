@@ -312,6 +312,7 @@ public struct GameSimulation : IGame
         AnimationBox[] animationHitboxes = _players[index].player.PlayerAnimator.GetHitboxes(_players[index].animation, _players[index].animationFrames);
         if (animationHitboxes.Length == 0)
         {
+            _players[index].hitbox.enter = false;
             _players[index].hitbox.active = false;
         }
         else

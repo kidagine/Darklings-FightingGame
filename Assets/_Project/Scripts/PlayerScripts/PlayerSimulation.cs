@@ -14,6 +14,11 @@ public class PlayerSimulation : MonoBehaviour
 
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
+        if (!string.IsNullOrEmpty(playerGs.soundGroup))
+        {
+            _audio.SoundGroup(playerGs.soundGroup).PlayInRandom();
+            playerGs.soundGroup = "";
+        }
         if (!string.IsNullOrEmpty(playerGs.sound))
         {
             _audio.Sound(playerGs.sound).Play();

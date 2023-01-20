@@ -34,7 +34,7 @@ public class State
         {
             return true;
         }
-        if (player.attackHurtNetwork.attackType == AttackTypeEnum.Low && player.direction.y > 0)
+        if (player.attackHurtNetwork.attackType == AttackTypeEnum.Low && player.direction.y >= 0)
         {
             return false;
         }
@@ -379,6 +379,7 @@ public class State
         {
             if (!player.shadow.isOnScreen && player.shadowGauge > 1000)
             {
+                player.sound = "Shadow";
                 player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
                 player.shadow.projectile.flip = player.flip == 1 ? false : true;
                 player.shadow.animationFrames = 0;

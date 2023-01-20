@@ -71,6 +71,10 @@ public class PlayerAnimator : DemonicsAnimator
     {
         return GetEvent(name, frame).invisibile;
     }
+    public bool GetFootstep(string name, int frame)
+    {
+        return GetEvent(name, frame).footstep;
+    }
     public DemonicsVector2 GetJump(string name, int frame)
     {
         DemonicsVector2 jumpDirection = DemonicsVector2.Zero;

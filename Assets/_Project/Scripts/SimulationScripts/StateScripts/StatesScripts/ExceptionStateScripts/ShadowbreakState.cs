@@ -37,6 +37,7 @@ public class ShadowbreakState : State
     {
         if (player.animationFrames >= 60)
         {
+            CheckTrainingGauges(player);
             player.enter = false;
             player.state = "Fall";
         }

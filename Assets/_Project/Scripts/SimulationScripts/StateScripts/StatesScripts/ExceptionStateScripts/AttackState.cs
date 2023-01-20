@@ -156,10 +156,8 @@ public class AttackState : State
 
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && IsColliding(player))
+        if (IsColliding(player))
         {
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
-
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 player.enter = false;
@@ -201,26 +199,14 @@ public class AttackState : State
             }
 
 
-            if (IsBlocking(player))
+            player.enter = false;
+            if (player.attackHurtNetwork.hardKnockdown)
             {
-                player.enter = false;
-                if (player.direction.y < 0)
-                {
-                    player.state = "BlockLow";
-                }
-                else
-                {
-                    player.state = "Block";
-                }
+                player.state = "Airborne";
             }
             else
             {
-                player.enter = false;
-                if (player.attackHurtNetwork.hardKnockdown)
-                {
-                    player.state = "Airborne";
-                }
-                else
+                if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
                     {
@@ -230,6 +216,10 @@ public class AttackState : State
                     {
                         player.state = "HurtAir";
                     }
+                }
+                else
+                {
+                    player.state = "HurtAir";
                 }
             }
         }

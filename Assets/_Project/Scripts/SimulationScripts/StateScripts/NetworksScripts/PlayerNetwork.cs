@@ -33,6 +33,7 @@ public class PlayerNetwork
     public int shadowGauge;
     public int flip;
     public int knockback;
+    public string soundGroup;
     public string sound;
     public string soundStop;
     public float jump;
@@ -88,6 +89,7 @@ public class PlayerNetwork
         bw.Write(arcanaGauge);
         bw.Write(shadowGauge);
         bw.Write(sound);
+        bw.Write(soundGroup);
         bw.Write(soundStop);
         bw.Write(canDash);
         bw.Write(jump);
@@ -155,6 +157,7 @@ public class PlayerNetwork
         arcanaGauge = br.ReadInt32();
         shadowGauge = br.ReadInt32();
         sound = br.ReadString();
+        soundGroup = br.ReadString();
         soundStop = br.ReadString();
         canDash = br.ReadBoolean();
         jump = br.ReadSingle();
