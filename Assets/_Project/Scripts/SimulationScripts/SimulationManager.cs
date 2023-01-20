@@ -1,6 +1,5 @@
 ﻿using SharedGame;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityGGPO;
 
 public class SimulationManager : GameManager
