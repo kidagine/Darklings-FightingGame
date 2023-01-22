@@ -13,7 +13,8 @@ public class ShadowbreakState : State
                 impactSound = "",
                 attackSound = "",
                 hurtEffect = "",
-                hitstop = 10
+                hitstop = 10,
+                cameraShakerNetwork = new CameraShakerNetwork() { intensity = 35, timer = 0.15f }
             };
             SetTopPriority(player);
             CheckFlip(player);
@@ -24,6 +25,7 @@ public class ShadowbreakState : State
             player.position = new DemonicsVector2(player.position.x, player.position.y + 15);
             player.InitializeProjectile("Shadowbreak", player.attackNetwork, (DemonicsFloat)0, 0, false);
             player.SetProjectile("Shadowbreak", new DemonicsVector2(player.position.x, player.position.y + player.pushbox.size.y), false);
+            CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
         }
         player.velocity = DemonicsVector2.Zero;
         player.hurtbox.active = false;
@@ -35,6 +37,7 @@ public class ShadowbreakState : State
     {
         if (player.animationFrames >= 60)
         {
+            CheckTrainingGauges(player);
             player.enter = false;
             player.state = "Fall";
         }

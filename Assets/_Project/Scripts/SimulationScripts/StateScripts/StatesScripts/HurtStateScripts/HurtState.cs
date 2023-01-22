@@ -6,28 +6,30 @@ public class HurtState : HurtParentState
     {
         base.UpdateLogic(player);
         player.animation = "Hurt";
+        player.velocity = DemonicsVector2.Zero;
         if (player.animationFrames < 4)
         {
             player.animationFrames++;
         }
-        ToHurtState(player);
+        if (ToHurtState(player))
+        {
+            return;
+        }
         ToIdleState(player);
+        ToShadowbreakState(player);
     }
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.stunFrames <= 0 || player.comboTimer <= 0)
         {
-            player.combo = 0;
-            player.player.OtherPlayerUI.ResetCombo();
-            player.player.StopShakeCoroutine();
-            player.player.PlayerUI.SetComboTimerActive(false);
+            ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.velocity = DemonicsVector2.Zero;
             player.enter = false;
             player.state = "Idle";
         }
     }
-    private void ToHurtState(PlayerNetwork player)
+    private bool ToHurtState(PlayerNetwork player)
     {
         if (IsColliding(player))
         {
@@ -35,7 +37,7 @@ public class HurtState : HurtParentState
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 player.state = "Grabbed";
-                return;
+                return false;
             }
             if (DemonicsPhysics.IsInCorner(player))
             {
@@ -61,7 +63,9 @@ public class HurtState : HurtParentState
                     player.state = "HurtAir";
                 }
             }
+            return true;
         }
+        return false;
     }
     protected override void OnEnter(PlayerNetwork player)
     {

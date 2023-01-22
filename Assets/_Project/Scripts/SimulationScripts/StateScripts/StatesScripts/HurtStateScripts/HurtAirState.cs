@@ -14,6 +14,7 @@ public class HurtAirState : HurtParentState
         }
         ToHurtState(player);
         ToFallState(player);
+        ToShadowbreakState(player);
     }
 
     protected override void AfterHitstop(PlayerNetwork player)
@@ -23,14 +24,16 @@ public class HurtAirState : HurtParentState
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0 && player.knockback > 1)
+        if (player.attackHurtNetwork.knockbackArc > 0 && player.knockback <= 1)
+        {
+            return;
+        }
+        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
             player.player.StopShakeCoroutine();
             if (player.stunFrames <= 0 || player.comboTimer <= 0)
             {
-                player.combo = 0;
-                player.player.OtherPlayerUI.ResetCombo();
-                player.player.PlayerUI.SetComboTimerActive(false);
+                ResetCombo(player);
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
                 player.enter = false;
                 player.state = "Idle";
@@ -48,10 +51,7 @@ public class HurtAirState : HurtParentState
     {
         if (player.stunFrames <= 0 || player.comboTimer <= 0)
         {
-            player.combo = 0;
-            player.player.OtherPlayerUI.ResetCombo();
-            player.player.StopShakeCoroutine();
-            player.player.PlayerUI.SetComboTimerActive(false);
+            ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.enter = false;
             player.state = "Fall";

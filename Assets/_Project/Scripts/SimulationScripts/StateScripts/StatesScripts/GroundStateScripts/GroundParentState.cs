@@ -13,31 +13,47 @@ public class GroundParentState : State
         ToBlueFrenzyState(player);
         ToRedFrenzyState(player);
         ToGrabState(player);
-        ToHurtState(player);
+        ToAttackState(player);
+        ToArcanaState(player);
         Shadow(player);
+        if (ToHurtState(player))
+        {
+            return;
+        }
     }
 
     private void ToBlueFrenzyState(PlayerNetwork player)
     {
-        if (player.blueFrenzyPress)
+        if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Parry)
         {
             player.enter = false;
             player.state = "BlueFrenzy";
         }
     }
+    public void ToAttackState(PlayerNetwork player)
+    {
+        if (player.inputBuffer.inputItems[0].pressed)
+        {
+            Attack(player);
+        }
+    }
+    public void ToArcanaState(PlayerNetwork player)
+    {
+        if (player.inputBuffer.inputItems[0].pressed)
+        {
+            Arcana(player);
+        }
+    }
     private void ToRedFrenzyState(PlayerNetwork player)
     {
-        if (player.redFrenzyPress && player.healthRecoverable > player.health)
+        if (player.inputBuffer.inputItems[0].pressed)
         {
-            AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
-            player.attackNetwork = SetAttack(player.attackInput, attack);
-            player.enter = false;
-            player.state = "RedFrenzy";
+            RedFrenzy(player);
         }
     }
     private void ToGrabState(PlayerNetwork player)
     {
-        if (player.grabPress)
+        if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Throw)
         {
             AttackSO attack = PlayerComboSystem.GetThrow(player.playerStats);
             player.attackNetwork = SetAttack(player.attackInput, attack);
@@ -45,15 +61,21 @@ public class GroundParentState : State
             player.state = "Grab";
         }
     }
-    private void ToHurtState(PlayerNetwork player)
+    private bool ToHurtState(PlayerNetwork player)
     {
         if (IsColliding(player))
         {
             player.enter = false;
+            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            {
+                player.enter = false;
+                player.state = "Knockback";
+                return false;
+            }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 player.state = "Grabbed";
-                return;
+                return false;
             }
             if (DemonicsPhysics.IsInCorner(player))
             {
@@ -91,7 +113,9 @@ public class GroundParentState : State
                     }
                 }
             }
+            return true;
         }
+        return false;
     }
     public override bool ToBlockState(PlayerNetwork player, AttackSO attack)
     {

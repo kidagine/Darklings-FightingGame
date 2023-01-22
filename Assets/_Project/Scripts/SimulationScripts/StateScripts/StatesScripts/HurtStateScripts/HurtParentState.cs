@@ -14,10 +14,11 @@ public class HurtParentState : State
         {
             AfterHitstop(player);
         }
-        ToShadowbreakState(player);
     }
     protected virtual void OnEnter(PlayerNetwork player)
     {
+        CheckTrainingGauges(player);
+        player.shadow.isOnScreen = false;
         player.velocity = DemonicsVector2.Zero;
         player.animationFrames = 0;
         if (player.combo == 0)
@@ -27,8 +28,8 @@ public class HurtParentState : State
         }
         player.player.OtherPlayerUI.SetComboTimerActive(true);
         player.combo++;
-        player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
-        player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.player.StartShakeContact();
         player.player.PlayerUI.Damaged();
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
@@ -61,26 +62,14 @@ public class HurtParentState : State
         {
             Knockback(player);
         }
-        player.comboTimer--;
+        if (!player.comboLocked)
+        {
+            player.comboTimer--;
+        }
         player.stunFrames--;
         player.player.OtherPlayerUI.SetComboTimer
-       (DemonicsFloat.Lerp((DemonicsFloat)1, (DemonicsFloat)0,
+       (DemonicsFloat.Lerp((DemonicsFloat)0, (DemonicsFloat)1,
         (DemonicsFloat)player.comboTimer / (DemonicsFloat)ComboTimerStarterTypes.GetComboTimerStarterValue(player.comboTimerStarter)), ComboTimerStarterTypes.GetComboTimerStarterColor(player.comboTimerStarter));
-    }
-
-    private void ToShadowbreakState(PlayerNetwork player)
-    {
-        if (player.shadowPress)
-        {
-            player.combo = 0;
-            player.player.OtherPlayerUI.ResetCombo();
-            player.player.StopShakeCoroutine();
-            player.player.PlayerUI.SetComboTimerActive(false);
-            player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-            player.velocity = DemonicsVector2.Zero;
-            player.enter = false;
-            player.state = "Shadowbreak";
-        }
     }
 
     protected virtual void Knockback(PlayerNetwork player)

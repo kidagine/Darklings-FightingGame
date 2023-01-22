@@ -31,10 +31,7 @@ public class TrainingMenu : BaseMenu
 
     public void ConfigurePlayers(Player playerOne, Player playerTwo)
     {
-        playerOne.hitConnectsEvent.AddListener(() => FramedataValue(true, playerOne.ResultAttack));
-        playerTwo.hitConnectsEvent.AddListener(() => FramedataValue(false, playerTwo.ResultAttack));
-        playerOne.parryConnectsEvent.AddListener(() => FramedataValue(true, playerOne.ResultAttack));
-        playerTwo.parryConnectsEvent.AddListener(() => FramedataValue(false, playerTwo.ResultAttack));
+
     }
 
     public void ChangePage(bool left)
@@ -194,7 +191,6 @@ public class TrainingMenu : BaseMenu
                 GameplayManager.Instance.InfiniteHealth = false;
                 break;
             case 1:
-                GameplayManager.Instance.MaxHealths();
                 GameplayManager.Instance.InfiniteHealth = true;
                 break;
         }
@@ -246,6 +242,10 @@ public class TrainingMenu : BaseMenu
 
     public void FramedataValue(bool isPlayerOne, ResultAttack attack)
     {
+        if (attack == null)
+        {
+            return;
+        }
         if (isPlayerOne)
         {
             if (_startupOneText.gameObject.activeSelf)
@@ -270,7 +270,10 @@ public class TrainingMenu : BaseMenu
             }
             if (_damageComboOneText.gameObject.activeSelf)
             {
-                _damageComboOneText.text = attack.comboDamage.ToString();
+                if (attack.comboDamage > 0)
+                {
+                    _damageComboOneText.text = attack.comboDamage.ToString();
+                }
             }
         }
         else
@@ -297,7 +300,10 @@ public class TrainingMenu : BaseMenu
             }
             if (_damageComboTwoText.gameObject.activeSelf)
             {
-                _damageComboTwoText.text = attack.comboDamage.ToString();
+                if (attack.comboDamage > 0)
+                {
+                    _damageComboTwoText.text = attack.comboDamage.ToString();
+                }
             }
         }
     }

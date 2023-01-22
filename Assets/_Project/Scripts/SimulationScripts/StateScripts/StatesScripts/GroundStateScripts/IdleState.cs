@@ -19,8 +19,6 @@ public class IdleState : GroundParentState
         ToJumpForwardState(player);
         ToCrouchState(player);
         ToDashState(player);
-        ToAttackState(player);
-        ToArcanaState(player);
     }
 
     private void ToCrouchState(PlayerNetwork player)
@@ -58,24 +56,21 @@ public class IdleState : GroundParentState
     }
     private void ToDashState(PlayerNetwork player)
     {
-        if (player.dashDirection != 0)
+        if (player.inputBuffer.inputItems[0].pressed)
         {
-            player.enter = false;
-            player.state = "Dash";
+            if (player.inputBuffer.inputItems[0].inputEnum == InputEnum.ForwardDash)
+            {
+                player.dashDirection = 1;
+                player.enter = false;
+                player.state = "Dash";
+            }
+            else if (player.inputBuffer.inputItems[0].inputEnum == InputEnum.BackDash)
+            {
+                player.dashDirection = -1;
+                player.enter = false;
+                player.state = "Dash";
+            }
         }
     }
-    public void ToAttackState(PlayerNetwork player)
-    {
-        if (player.attackPress)
-        {
-            Attack(player);
-        }
-    }
-    public void ToArcanaState(PlayerNetwork player)
-    {
-        if (player.arcanaPress)
-        {
-            Arcana(player);
-        }
-    }
+
 }

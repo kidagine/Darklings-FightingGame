@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerSimulation : MonoBehaviour
 {
     [SerializeField] private Player _player = default;
+    [SerializeField] private InputBuffer _inputBuffer = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Audio _audio = default;
     [SerializeField] private CollisionVisualizer _hurtBoxVisualizer = default;
@@ -13,6 +14,11 @@ public class PlayerSimulation : MonoBehaviour
 
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
+        if (!string.IsNullOrEmpty(playerGs.soundGroup))
+        {
+            _audio.SoundGroup(playerGs.soundGroup).PlayInRandom();
+            playerGs.soundGroup = "";
+        }
         if (!string.IsNullOrEmpty(playerGs.sound))
         {
             _audio.Sound(playerGs.sound).Play();
@@ -29,27 +35,14 @@ public class PlayerSimulation : MonoBehaviour
         }
         _player.Simulate(playerGs, info);
         _player.PlayerUI.SetArcana(playerGs.arcanaGauge);
-        // if (playerGs.shadow.isOnScreen)
-        // {
-        //     if (playerGs.shadow.animationFrames >= 55)
-        //     {
-        //         playerGs.shadow.isOnScreen = false;
-        //         _player.Assist.Recall();
-        //     }
-        //     else
-        //     {
-        //         _player.Assist.Attack(playerGs.shadow.animationFrames);
-        //         _player.Assist.SetAnimation("Attack", playerGs.shadow.animationFrames);
-        //         bool isProjectile = _player.Assist.GetProjectile("Attack", playerGs.shadow.animationFrames);
-        //         if (isProjectile)
-        //         {
-        //             playerGs.SetAssist(playerGs.shadow.projectile.name, new DemonicsVector2(playerGs.position.x + (playerGs.shadow.position.x * playerGs.flip), playerGs.position.y + playerGs.shadow.position.y), false);
-        //         }
-        //     }
-        // }
+        _player.PlayerUI.SetComboTimerLock(playerGs.otherPlayer.comboLocked);
         _player.Assist.Simulate(playerGs.shadow);
+        if (playerGs.inputBuffer.inputItems[0].pressed)
+        {
+            _inputBuffer.AddInputBufferItem(playerGs.inputBuffer.inputItems[0].inputEnum, playerGs.inputBuffer.inputItems[0].inputDirection);
+        }
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
-        _playerAnimator.SetInvinsible(playerGs.invinsible);
+        _playerAnimator.SetInvinsible(playerGs.invisible);
         _playerAnimator.SetSpriteOrder(playerGs.spriteOrder);
         _hitBoxVisualizer.ShowBox(playerGs.hitbox);
         _hurtBoxVisualizer.ShowBox(playerGs.hurtbox);

@@ -20,7 +20,7 @@ public class AttackState : State
         }
         if (!player.isAir)
         {
-            player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)0);
+            player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
         }
         else
         {
@@ -32,17 +32,27 @@ public class AttackState : State
             player.attackFrames--;
             if (player.canChainAttack)
             {
-                if (player.inputBuffer.inputItems[0].frame + 20 >= DemonicsWorld.Frame)
+                if (player.inputBuffer.inputItems[0].frame != 0)
                 {
+                    if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                    {
+                        player.isAir = true;
+                    }
                     if (player.inputBuffer.inputItems[0].inputEnum == InputEnum.Special)
                     {
                         Arcana(player, player.isAir);
                     }
                     else
                     {
-                        if ((!(player.attackInput == InputEnum.Medium && player.isCrouch)) && player.inputBuffer.inputItems[0].inputEnum != InputEnum.Throw)
+                        if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
                         {
-                            Attack(player, player.isAir);
+                            if (player.inputBuffer.inputItems[0].inputEnum != InputEnum.Throw)
+                            {
+                                if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Heavy && player.direction.y >= 0))
+                                {
+                                    Attack(player, player.isAir);
+                                }
+                            }
                         }
                     }
                 }
@@ -119,9 +129,8 @@ public class AttackState : State
     {
         if (player.attackFrames <= 0)
         {
-            player.attackPress = false;
             player.enter = false;
-            if (player.isAir)
+            if (player.isAir || (DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
             {
                 player.isCrouch = false;
                 player.isAir = false;
@@ -147,9 +156,21 @@ public class AttackState : State
 
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && IsColliding(player))
+        if (IsColliding(player))
         {
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                player.enter = false;
+                player.state = "Grabbed";
+                return;
+            }
+            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            {
+                player.enter = false;
+                player.state = "Knockback";
+                return;
+            }
+
             if (player.attackNetwork.superArmor && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
             {
                 player.sound = player.attackHurtNetwork.impactSound;
@@ -157,10 +178,13 @@ public class AttackState : State
                 {
                     CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
                 }
-                player.health -= CalculateDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
-                player.healthRecoverable -= CalculateRecoverableDamage(player.attackHurtNetwork.damage, player.playerStats.Defense);
-                player.otherPlayer.canChainAttack = true;
-                GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.canChainAttack = false;
+                if (GameSimulation.Hitstop <= 0)
+                {
+                    GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                }
                 player.player.PlayerAnimator.SpriteSuperArmorEffect();
                 player.player.PlayerUI.Damaged();
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
@@ -174,32 +198,15 @@ public class AttackState : State
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
 
-            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+
+            player.enter = false;
+            if (player.attackHurtNetwork.hardKnockdown)
             {
-                player.enter = false;
-                player.state = "Knockback";
-                return;
-            }
-            if (IsBlocking(player))
-            {
-                player.enter = false;
-                if (player.direction.y < 0)
-                {
-                    player.state = "BlockLow";
-                }
-                else
-                {
-                    player.state = "Block";
-                }
+                player.state = "Airborne";
             }
             else
             {
-                player.enter = false;
-                if (player.attackHurtNetwork.hardKnockdown)
-                {
-                    player.state = "Airborne";
-                }
-                else
+                if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
                     {
@@ -209,6 +216,10 @@ public class AttackState : State
                     {
                         player.state = "HurtAir";
                     }
+                }
+                else
+                {
+                    player.state = "HurtAir";
                 }
             }
         }

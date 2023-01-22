@@ -103,7 +103,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerMovement.Physics.ResetSkipWall();
         int index = IsPlayerOne ? 0 : 1;
         GameSimulation._players[index].position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
-        GameSimulation._players[index].velocity = DemonicsVector2.Zero;
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)GameSimulation._players[index].position.x, (DemonicsFloat)GameSimulation._players[index].position.y));
         SetInvinsible(false);
         transform.rotation = Quaternion.identity;
@@ -271,24 +270,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         // _playerUI.SetComboTimerActive(false);
         // _playerUI.ResetCombo();
         // _comboTimerPaused = false;
-    }
-
-    public void FreezeComboTimer()
-    {
-        if (_comboTimerWaitFrames > 0 && !_comboTimerPaused)
-        {
-            _playerUI.SetComboTimerLock(true);
-            _comboTimerPaused = true;
-        }
-    }
-
-    public void UnfreezeComboTimer()
-    {
-        if (_comboTimerWaitFrames > 0 && _comboTimerPaused)
-        {
-            _playerUI.SetComboTimerLock(false);
-            _comboTimerPaused = false;
-        }
     }
 
     public void RecallAssist()

@@ -13,15 +13,18 @@ public class WalkState : GroundParentState
         player.animation = "Walk";
         player.animationFrames++;
         player.velocity = new DemonicsVector2(player.direction.x * player.playerStats.SpeedWalk, 0);
+        // bool t = player.player.PlayerAnimator.GetFootstep(player.animation, player.animationFrames);
+        // if (player.wasWallSplatted != t)
+        // {
+        //     player.wasWallSplatted = t;
+        //     player.soundGroup = "Footsteps";
+        // }
         CheckFlip(player);
         base.UpdateLogic(player);
         ToIdleState(player);
         ToJumpState(player);
         ToJumpForwardState(player);
         ToCrouchState(player);
-        ToDashState(player);
-        ToAttackState(player);
-        ToArcanaState(player);
     }
     private void ToCrouchState(PlayerNetwork player)
     {
@@ -54,28 +57,6 @@ public class WalkState : GroundParentState
         {
             player.enter = false;
             player.state = "Idle";
-        }
-    }
-    private void ToDashState(PlayerNetwork player)
-    {
-        if (player.dashDirection != 0)
-        {
-            player.enter = false;
-            player.state = "Dash";
-        }
-    }
-    public void ToAttackState(PlayerNetwork player)
-    {
-        if (player.attackPress)
-        {
-            Attack(player);
-        }
-    }
-    public void ToArcanaState(PlayerNetwork player)
-    {
-        if (player.arcanaPress)
-        {
-            Arcana(player);
         }
     }
 }

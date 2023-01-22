@@ -7,6 +7,7 @@ public class WallSplatState : State
         CheckFlip(player);
         if (!player.enter)
         {
+            player.comboLocked = true;
             player.wasWallSplatted = true;
             DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + ((DemonicsFloat)2.25 * player.flip), player.position.y);
             if (player.flip == 1)

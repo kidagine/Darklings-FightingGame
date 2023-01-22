@@ -358,7 +358,6 @@ GameObject:
   - component: {fileID: 4797689787146866183}
   - component: {fileID: 4797689787146866181}
   - component: {fileID: 4797689787146866180}
-  - component: {fileID: 4797689787146866179}
   - component: {fileID: 5292133793367007441}
   - component: {fileID: 1071850407856800994}
   m_Layer: 5
@@ -456,26 +455,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!95 &4797689787146866179
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4797689787146866182}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0bfa287c34589f847aa8257262d4f23a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &5292133793367007441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,10 +467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4316a829458a63948b85b54a39b8345d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterAnimatorController: {fileID: 9100000, guid: d07b4c2442277164a847eaaa08ae9e05, type: 2}
   _playerStatsSO: {fileID: 11400000, guid: 9fad6f01eb20d174da80212d97759474, type: 2}
   _characterMenu: {fileID: 0}
-  _randomSpriteRenderer: {fileID: 0}
   _firstPlayerSelector: {fileID: 8263986908285458562}
   _secondPlayerSelector: {fileID: 8842898653811615722}
   _isRandomizer: 0

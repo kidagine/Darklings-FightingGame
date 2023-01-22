@@ -19,6 +19,7 @@ public class ArcanaState : State
             player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
             player.InitializeProjectile(player.attackNetwork.moveName, player.attackNetwork, player.attackNetwork.projectileSpeed, player.attackNetwork.projectilePriority, player.attackNetwork.projectileDestroyOnHit);
         }
+        player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
         ToIdleState(player);
         if (!player.hitstop)
         {
@@ -58,6 +59,7 @@ public class ArcanaState : State
     {
         if (player.isAir && player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
+            player.invincible = false;
             player.dashFrames = 0;
             player.isCrouch = false;
             player.isAir = false;
@@ -69,6 +71,8 @@ public class ArcanaState : State
     {
         if (player.attackFrames <= 0)
         {
+            CheckTrainingGauges(player);
+            player.invincible = false;
             player.dashFrames = 0;
             player.enter = false;
             if (player.isAir || player.position.y > DemonicsPhysics.GROUND_POINT)
@@ -91,13 +95,17 @@ public class ArcanaState : State
         {
             player.dashFrames = 0;
             player.enter = false;
-            player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             if (DemonicsPhysics.IsInCorner(player))
             {
                 player.otherPlayer.knockback = 0;
                 player.otherPlayer.pushbackStart = player.otherPlayer.position;
                 player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
+            }
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                player.state = "Grabbed";
+                return;
             }
             if (player.attackHurtNetwork.moveName == "Shadowbreak")
             {

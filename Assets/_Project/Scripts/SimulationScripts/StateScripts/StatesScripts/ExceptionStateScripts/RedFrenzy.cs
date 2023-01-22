@@ -27,7 +27,7 @@ public class RedFrenzyState : State
         }
         if (player.dashFrames == 7)
         {
-            player.invinsible = true;
+            player.invisible = true;
             player.SetEffect("VanishDisappear", player.position);
             GameSimulation.Hitstop = 26;
         }
@@ -38,7 +38,7 @@ public class RedFrenzyState : State
         }
         if (player.dashFrames == 33)
         {
-            player.invinsible = false;
+            player.invisible = false;
             player.sound = player.attackNetwork.attackSound;
         }
         ToIdleState(player);
@@ -55,7 +55,7 @@ public class RedFrenzyState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && IsColliding(player) && !player.invinsible)
+        if (IsColliding(player))
         {
             player.enter = false;
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
