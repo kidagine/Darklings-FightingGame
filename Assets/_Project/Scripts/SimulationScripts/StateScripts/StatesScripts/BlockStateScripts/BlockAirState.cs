@@ -25,15 +25,14 @@ public class BlockAirState : BlockParentState
             player.player.StopShakeCoroutine();
             if (player.stunFrames <= 0)
             {
-                player.enter = false;
-                player.state = "Idle";
+                EnterState(player, "Idle");
             }
             else
             {
                 player.stunFrames = player.attackHurtNetwork.hitStun;
                 player.velocity = DemonicsVector2.Zero;
                 player.animationFrames = 0;
-                player.state = "Block";
+                EnterState(player, "Block");
             }
         }
     }
@@ -41,8 +40,7 @@ public class BlockAirState : BlockParentState
     {
         if (player.stunFrames <= 0)
         {
-            player.enter = false;
-            player.state = "Fall";
+            EnterState(player, "Fall");
         }
     }
     protected override void OnEnter(PlayerNetwork player)

@@ -518,7 +518,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        Health = playerGs.health;
         _playerMovement.SetPosition(playerGs.position);
         _playerUI.SetHealth(playerGs.health);
         _playerUI.SetRecoverableHealth(playerGs.healthRecoverable);

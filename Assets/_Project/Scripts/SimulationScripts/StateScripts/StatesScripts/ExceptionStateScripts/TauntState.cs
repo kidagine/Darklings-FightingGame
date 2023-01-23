@@ -18,8 +18,7 @@ public class TauntState : State
     {
         if (player.animationFrames >= 160)
         {
-            player.enter = false;
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
 }

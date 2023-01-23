@@ -34,8 +34,7 @@ public class WallSplatState : State
         {
             player.flip *= -1;
             player.hurtbox.active = true;
-            player.enter = false;
-            player.state = "Airborne";
+            EnterState(player, "Airborne");
         }
     }
 }

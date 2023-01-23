@@ -150,6 +150,7 @@ public class TrainingMenu : BaseMenu
                 break;
             case 1:
                 GameplayManager.Instance.InfiniteArcana = true;
+                CheckTrainingGauges();
                 break;
         }
     }
@@ -163,6 +164,7 @@ public class TrainingMenu : BaseMenu
                 break;
             case 1:
                 GameplayManager.Instance.InfiniteAssist = true;
+                CheckTrainingGauges();
                 break;
         }
     }
@@ -192,7 +194,17 @@ public class TrainingMenu : BaseMenu
                 break;
             case 1:
                 GameplayManager.Instance.InfiniteHealth = true;
+                CheckTrainingGauges();
                 break;
+        }
+    }
+
+    private void CheckTrainingGauges()
+    {
+        if (GameSimulation.Run)
+        {
+            GameSimulation._players[0].CurrentState.CheckTrainingComboEnd(GameSimulation._players[0], true);
+            GameSimulation._players[1].CurrentState.CheckTrainingComboEnd(GameSimulation._players[1], true);
         }
     }
 

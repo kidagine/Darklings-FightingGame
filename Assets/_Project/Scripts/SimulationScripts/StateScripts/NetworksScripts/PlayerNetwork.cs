@@ -39,6 +39,7 @@ public class PlayerNetwork
     public float jump;
     public bool isCrouch;
     public bool isAir;
+    public bool isAi;
     public int dashDirection;
     public int jumpDirection;
     public int dashFrames;
@@ -55,6 +56,10 @@ public class PlayerNetwork
     public bool wasWallSplatted;
     public bool canChainAttack;
     public bool hitstop;
+    public bool upHold;
+    public bool downHold;
+    public bool leftHold;
+    public bool rightHold;
     public string state;
     public int spriteOrder;
     public State CurrentState;
@@ -99,6 +104,10 @@ public class PlayerNetwork
         bw.Write((int)comboTimerStarter);
         bw.Write(isCrouch);
         bw.Write(isAir);
+        bw.Write(upHold);
+        bw.Write(downHold);
+        bw.Write(leftHold);
+        bw.Write(rightHold);
         bw.Write(hasJumped);
         bw.Write(pushbackDuration);
         bw.Write(canJump);
@@ -167,6 +176,10 @@ public class PlayerNetwork
         comboTimerStarter = (ComboTimerStarterEnum)br.ReadInt32();
         isCrouch = br.ReadBoolean();
         isAir = br.ReadBoolean();
+        upHold = br.ReadBoolean();
+        downHold = br.ReadBoolean();
+        leftHold = br.ReadBoolean();
+        rightHold = br.ReadBoolean();
         hasJumped = br.ReadBoolean();
         pushbackDuration = br.ReadInt32();
         canJump = br.ReadBoolean();

@@ -10,6 +10,7 @@ public struct ProjectileNetwork
     public bool active;
     public bool flip;
     public bool hitstop;
+    public bool fire;
     public bool destroyOnHit;
     public string name;
     public DemonicsFloat speed;
@@ -29,6 +30,7 @@ public struct ProjectileNetwork
         bw.Write(animationFrames);
         bw.Write(animationMaxFrames);
         bw.Write(active);
+        bw.Write(fire);
         bw.Write(flip);
         bw.Write(hitstop);
         bw.Write(destroyOnHit);
@@ -46,6 +48,7 @@ public struct ProjectileNetwork
         animationFrames = br.ReadInt32();
         animationMaxFrames = br.ReadInt32();
         active = br.ReadBoolean();
+        fire = br.ReadBoolean();
         flip = br.ReadBoolean();
         hitstop = br.ReadBoolean();
         destroyOnHit = br.ReadBoolean();

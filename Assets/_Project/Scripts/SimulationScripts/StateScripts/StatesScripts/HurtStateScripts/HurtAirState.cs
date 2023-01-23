@@ -35,15 +35,15 @@ public class HurtAirState : HurtParentState
             {
                 ResetCombo(player);
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-                player.enter = false;
-                player.state = "Idle";
+                EnterState(player, "Idle");
+
             }
             else
             {
                 player.stunFrames = player.attackHurtNetwork.hitStun;
                 player.velocity = DemonicsVector2.Zero;
                 player.animationFrames = 0;
-                player.state = "Hurt";
+                EnterState(player, "Hurt", true);
             }
         }
     }
@@ -53,8 +53,7 @@ public class HurtAirState : HurtParentState
         {
             ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-            player.enter = false;
-            player.state = "Fall";
+            EnterState(player, "Fall");
         }
     }
     private void ToHurtState(PlayerNetwork player)
@@ -63,19 +62,18 @@ public class HurtAirState : HurtParentState
         {
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-            player.enter = false;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
-                player.state = "Grabbed";
+                EnterState(player, "Grabbed");
                 return;
             }
             if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown)
             {
-                player.state = "Airborne";
+                EnterState(player, "Airborne");
             }
             else
             {
-                player.state = "HurtAir";
+                EnterState(player, "HurtAir");
             }
         }
     }

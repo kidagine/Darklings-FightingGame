@@ -60,7 +60,7 @@ public class ReplayManager : MonoBehaviour
     public void SetReplay()
     {
         ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-        SceneSettings.SceneSettingsDecide = true;
+        // SceneSettings.SceneSettingsDecide = true;
         SceneSettings.PlayerOne = replayCardData.characterOne;
         SceneSettings.ColorOne = replayCardData.colorOne;
         SceneSettings.AssistOne = replayCardData.assistOne;
@@ -87,7 +87,7 @@ public class ReplayManager : MonoBehaviour
         }
     }
 
-    void Start()
+    public void StartReplay()
     {
         string versionText = _versionTextAsset.text;
         int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
@@ -173,7 +173,7 @@ public class ReplayManager : MonoBehaviour
         {
             if (DemonicsWorld.Frame == replayCardData.skip && replayCardData.skip > 0)
             {
-                GameplayManager.Instance.SkipIntro();
+                GameSimulation.Skip = true;
                 initialReplayStart = false;
                 runReplay = true;
             }
@@ -190,7 +190,53 @@ public class ReplayManager : MonoBehaviour
         {
             if (DemonicsWorld.Frame >= replayCardData.playerOneInputs[i].time)
             {
-                NetworkInput.ONE_LIGHT_INPUT = true;
+                if (replayCardData.playerOneInputs[i].input == InputEnum.Direction)
+                {
+                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.NoneVertical)
+                    {
+
+                    }
+                }
+                if (replayCardData.playerOneInputs[i].input == InputEnum.Light)
+                {
+                    NetworkInput.ONE_LIGHT_INPUT = true;
+                }
+                if (replayCardData.playerOneInputs[i].input == InputEnum.Medium)
+                {
+                    NetworkInput.ONE_MEDIUM_INPUT = true;
+                }
+                if (replayCardData.playerOneInputs[i].input == InputEnum.Heavy)
+                {
+                    NetworkInput.ONE_HEAVY_INPUT = true;
+                }
+                if (replayCardData.playerOneInputs[i].input == InputEnum.Assist)
+                {
+                    NetworkInput.ONE_SHADOW_INPUT = true;
+                }
+                if (replayCardData.playerOneInputs[i].input == InputEnum.Special)
+                {
+                    NetworkInput.ONE_ARCANA_INPUT = true;
+                }
+                if (replayCardData.playerOneInputs[i].input == InputEnum.ForwardDash)
+                {
+                    NetworkInput.ONE_DASH_FORWARD_INPUT = true;
+                }
+                if (replayCardData.playerOneInputs[i].input == InputEnum.BackDash)
+                {
+                    NetworkInput.ONE_DASH_BACKWARD_INPUT = true;
+                }
+                if (replayCardData.playerOneInputs[i].input == InputEnum.Throw)
+                {
+                    NetworkInput.ONE_GRAB_INPUT = true;
+                }
+                if (replayCardData.playerOneInputs[i].input == InputEnum.Parry)
+                {
+                    NetworkInput.ONE_BLUE_FRENZY_INPUT = true;
+                }
+                if (replayCardData.playerOneInputs[i].input == InputEnum.RedFrenzy)
+                {
+                    NetworkInput.ONE_RED_FRENZY_INPUT = true;
+                }
                 i++;
                 NextReplayAction();
             }
@@ -212,7 +258,6 @@ public class ReplayManager : MonoBehaviour
     public ReplayCardData GetReplayData(int index)
     {
         string replayText = _replays[index];
-
         int versionTextPosition = replayText.IndexOf(_versionSplit) + _versionSplit.Length;
         string versionNumber = replayText[versionTextPosition..replayText.LastIndexOf(_dateSplit)].Trim();
 

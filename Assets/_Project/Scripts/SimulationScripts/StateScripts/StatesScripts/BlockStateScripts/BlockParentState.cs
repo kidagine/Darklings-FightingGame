@@ -86,8 +86,7 @@ public class BlockParentState : State
             player.enter = false;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
-                player.state = "Grabbed";
-                return;
+                EnterState(player, "Grabbed");
             }
             if (DemonicsPhysics.IsInCorner(player))
             {
@@ -102,33 +101,33 @@ public class BlockParentState : State
                 {
                     if (player.direction.y < 0)
                     {
-                        player.state = "BlockLow";
+                        EnterState(player, "BlockLow");
                     }
                     else
                     {
-                        player.state = "Block";
+                        EnterState(player, "Block");
                     }
                 }
                 else
                 {
-                    player.state = "BlockAir";
+                    EnterState(player, "BlockAir");
                 }
             }
             else
             {
                 if (player.attackHurtNetwork.hardKnockdown)
                 {
-                    player.state = "Airborne";
+                    EnterState(player, "Airborne");
                 }
                 else
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
                     {
-                        player.state = "Hurt";
+                        EnterState(player, "Hurt");
                     }
                     else
                     {
-                        player.state = "HurtAir";
+                        EnterState(player, "HurtAir");
                     }
                 }
             }

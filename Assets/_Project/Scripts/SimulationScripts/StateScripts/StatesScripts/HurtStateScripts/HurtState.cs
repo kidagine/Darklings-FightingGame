@@ -11,10 +11,7 @@ public class HurtState : HurtParentState
         {
             player.animationFrames++;
         }
-        if (ToHurtState(player))
-        {
-            return;
-        }
+        ToHurtState(player);
         ToIdleState(player);
         ToShadowbreakState(player);
     }
@@ -25,19 +22,17 @@ public class HurtState : HurtParentState
             ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.velocity = DemonicsVector2.Zero;
-            player.enter = false;
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
-    private bool ToHurtState(PlayerNetwork player)
+    private void ToHurtState(PlayerNetwork player)
     {
         if (IsColliding(player))
         {
-            player.enter = false;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
-                player.state = "Grabbed";
-                return false;
+                EnterState(player, "Grabbed");
+                return;
             }
             if (DemonicsPhysics.IsInCorner(player))
             {
@@ -50,22 +45,20 @@ public class HurtState : HurtParentState
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             if (player.attackHurtNetwork.hardKnockdown)
             {
-                player.state = "Airborne";
+                EnterState(player, "Airborne");
             }
             else
             {
                 if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
                 {
-                    player.state = "Hurt";
+                    EnterState(player, "Hurt");
                 }
                 else
                 {
-                    player.state = "HurtAir";
+                    EnterState(player, "HurtAir");
                 }
             }
-            return true;
         }
-        return false;
     }
     protected override void OnEnter(PlayerNetwork player)
     {

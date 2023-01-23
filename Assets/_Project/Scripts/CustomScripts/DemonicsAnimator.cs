@@ -175,10 +175,11 @@ public class DemonicsAnimator : MonoBehaviour
         return _animation.GetCel(_group, _cel).hitboxes.ToArray();
     }
 
-    protected AnimationEvent GetEvent(string name, int frame)
+    protected AnimationEvent GetEvent(string name, int frame, out int cel)
     {
         _group = _animation.GetGroupId(name);
         _cel = GetCellByFrame(frame);
+        cel = _cel;
         return _animation.GetCel(_group, _cel).animationEvent;
     }
 

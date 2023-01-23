@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WalkState : GroundParentState
 {
+    private int _cel;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
@@ -13,12 +14,13 @@ public class WalkState : GroundParentState
         player.animation = "Walk";
         player.animationFrames++;
         player.velocity = new DemonicsVector2(player.direction.x * player.playerStats.SpeedWalk, 0);
-        // bool t = player.player.PlayerAnimator.GetFootstep(player.animation, player.animationFrames);
-        // if (player.wasWallSplatted != t)
-        // {
-        //     player.wasWallSplatted = t;
-        //     player.soundGroup = "Footsteps";
-        // }
+        int cel;
+        bool footstep = player.player.PlayerAnimator.GetFootstep(player.animation, player.animationFrames, out cel);
+        if (cel != _cel && footstep)
+        {
+            _cel = cel;
+            player.soundGroup = "Footsteps";
+        }
         CheckFlip(player);
         base.UpdateLogic(player);
         ToIdleState(player);
@@ -30,16 +32,14 @@ public class WalkState : GroundParentState
     {
         if (player.direction.y < 0)
         {
-            player.enter = false;
-            player.state = "Crouch";
+            EnterState(player, "Crouch");
         }
     }
     private void ToJumpState(PlayerNetwork player)
     {
         if (player.direction.y > 0)
         {
-            player.enter = false;
-            player.state = "Jump";
+            EnterState(player, "Jump");
         }
     }
     private void ToJumpForwardState(PlayerNetwork player)
@@ -47,16 +47,14 @@ public class WalkState : GroundParentState
         if (player.direction.y > 0 && player.direction.x != 0)
         {
             player.jumpDirection = (int)player.direction.x;
-            player.enter = false;
-            player.state = "JumpForward";
+            EnterState(player, "JumpForward");
         }
     }
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.direction.x == 0)
         {
-            player.enter = false;
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
 }

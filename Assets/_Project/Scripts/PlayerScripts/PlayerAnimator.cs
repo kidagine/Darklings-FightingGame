@@ -57,36 +57,36 @@ public class PlayerAnimator : DemonicsAnimator
     }
     public bool GetProjectile(string name, int frame)
     {
-        return GetEvent(name, frame).projectile;
+        return GetEvent(name, frame, out _).projectile;
     }
     public bool GetParrying(string name, int frame)
     {
-        return GetEvent(name, frame).parry;
+        return GetEvent(name, frame, out _).parry;
     }
     public bool GetThrowArcanaEnd(string name, int frame)
     {
-        return GetEvent(name, frame).throwArcanaEnd;
+        return GetEvent(name, frame, out _).throwArcanaEnd;
     }
     public bool GetInvincible(string name, int frame)
     {
-        return GetEvent(name, frame).invisibile;
+        return GetEvent(name, frame, out _).invisibile;
     }
-    public bool GetFootstep(string name, int frame)
+    public bool GetFootstep(string name, int frame, out int cel)
     {
-        return GetEvent(name, frame).footstep;
+        return GetEvent(name, frame, out cel).footstep;
     }
     public DemonicsVector2 GetJump(string name, int frame)
     {
         DemonicsVector2 jumpDirection = DemonicsVector2.Zero;
-        if (GetEvent(name, frame).jump)
+        if (GetEvent(name, frame, out _).jump)
         {
-            jumpDirection = new DemonicsVector2((DemonicsFloat)GetEvent(name, frame).jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent(name, frame).jumpDirection.y);
+            jumpDirection = new DemonicsVector2((DemonicsFloat)GetEvent(name, frame, out _).jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent(name, frame, out _).jumpDirection.y);
         }
         return jumpDirection;
     }
     public DemonicsVector2 GetGrabPoint(string name, int frame)
     {
-        Vector2 grabPoint = GetEvent(name, frame).grabPoint;
+        Vector2 grabPoint = GetEvent(name, frame, out _).grabPoint;
         return new DemonicsVector2((DemonicsFloat)grabPoint.x, (DemonicsFloat)grabPoint.y);
     }
 

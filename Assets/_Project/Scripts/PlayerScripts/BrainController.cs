@@ -21,20 +21,22 @@ public class BrainController : MonoBehaviour
         _cpuController = GetComponent<CpuController>();
     }
 
-    public void SetControllerToPlayer()
+    public void SetControllerToPlayer(int index)
     {
         ActiveController = _playerController;
         _cpuActive = false;
+        GameSimulation._players[index].isAi = false;
         _playerController.enabled = true;
         _cpuController.enabled = false;
         DeactivateCpu();
     }
 
-    public void SetControllerToCpu()
+    public void SetControllerToCpu(int index)
     {
         GetComponent<PlayerInput>().enabled = false;
         ActiveController = _cpuController;
         _cpuActive = true;
+        GameSimulation._players[index].isAi = true;
         _playerController.enabled = false;
         _cpuController.enabled = true;
         ActivateCpu();

@@ -20,8 +20,7 @@ public class KnockdownSoftState : State
     {
         if (player.animationFrames >= 30)
         {
-            player.enter = false;
-            player.state = "WakeUp";
+            EnterState(player, "WakeUp");
         }
     }
 }

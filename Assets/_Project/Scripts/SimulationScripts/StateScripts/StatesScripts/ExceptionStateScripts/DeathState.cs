@@ -26,8 +26,7 @@ public class DeathState : State
         {
             if (player.otherPlayer.state != "Taunt")
             {
-                player.otherPlayer.enter = false;
-                player.otherPlayer.state = "Taunt";
+                EnterState(player.otherPlayer, "Taunt");
             }
         }
         if (SceneSettings.IsTrainingMode)
@@ -36,7 +35,7 @@ public class DeathState : State
             {
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
-                player.state = "Idle";
+                EnterState(player, "Idle");
             }
         }
         else
@@ -45,9 +44,8 @@ public class DeathState : State
             {
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
-                player.enter = false;
-                player.state = "Taunt";
-                player.otherPlayer.state = "Taunt";
+                EnterState(player, "Taunt");
+                EnterState(player.otherPlayer, "Taunt");
             }
         }
         if (!player.hitstop)

@@ -209,19 +209,19 @@ public class GameplayManager : MonoBehaviour
         playerTwoObject.SetActive(true);
         if (SceneSettings.ControllerOne != null && _controllerOneType != ControllerTypeEnum.Cpu)
         {
-            _playerOneController.SetControllerToPlayer();
+            _playerOneController.SetControllerToPlayer(0);
         }
         else
         {
-            _playerOneController.SetControllerToCpu();
+            _playerOneController.SetControllerToCpu(0);
         }
         if (SceneSettings.ControllerTwo != null && _controllerTwoType != ControllerTypeEnum.Cpu)
         {
-            _playerTwoController.SetControllerToPlayer();
+            _playerTwoController.SetControllerToPlayer(1);
         }
         else
         {
-            _playerTwoController.SetControllerToCpu();
+            _playerTwoController.SetControllerToCpu(1);
         }
         PlayerOne.SetController();
         PlayerTwo.SetController();
@@ -429,6 +429,7 @@ public class GameplayManager : MonoBehaviour
         {
             _networkCanvas.SetActive(true);
         }
+        ReplayManager.Instance.StartReplay();
     }
 
     public void SetOnlineNames(string playerOne, string playerTwo)
@@ -464,7 +465,7 @@ public class GameplayManager : MonoBehaviour
     }
     public void SkipIntro()
     {
-        if (IsDialogueRunning && !SceneSettings.ReplayMode || !NetworkInput.IS_LOCAL)
+        if (IsDialogueRunning || !NetworkInput.IS_LOCAL)
         {
             ReplayManager.Instance.Skip = DemonicsWorld.Frame;
             _playerOneDialogue.StopDialogue();
@@ -902,15 +903,15 @@ public class GameplayManager : MonoBehaviour
         {
             if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToCpu();
-                _playerTwoController.SetControllerToPlayer();
+                _playerOneController.SetControllerToCpu(0);
+                _playerTwoController.SetControllerToPlayer(1);
                 _playerOneInput.enabled = false;
                 _playerTwoInput.enabled = true;
             }
             else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToPlayer();
-                _playerTwoController.SetControllerToCpu();
+                _playerOneController.SetControllerToPlayer(0);
+                _playerTwoController.SetControllerToCpu(1);
                 _playerOneInput.enabled = true;
                 _playerTwoInput.enabled = false;
             }
@@ -931,15 +932,15 @@ public class GameplayManager : MonoBehaviour
         {
             if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToCpu();
-                _playerTwoController.SetControllerToPlayer();
+                _playerOneController.SetControllerToCpu(0);
+                _playerTwoController.SetControllerToPlayer(1);
                 _playerOneInput.enabled = false;
                 _playerTwoInput.enabled = true;
             }
             else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToPlayer();
-                _playerTwoController.SetControllerToCpu();
+                _playerOneController.SetControllerToPlayer(0);
+                _playerTwoController.SetControllerToCpu(1);
                 _playerOneInput.enabled = true;
                 _playerTwoInput.enabled = false;
             }

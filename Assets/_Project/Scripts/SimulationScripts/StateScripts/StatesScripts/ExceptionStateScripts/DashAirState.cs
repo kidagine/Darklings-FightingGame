@@ -51,8 +51,7 @@ public class DashAirState : State
         else
         {
             player.velocity = DemonicsVector2.Zero;
-            player.enter = false;
-            player.state = "Fall";
+            EnterState(player, "Fall");
         }
     }
 }

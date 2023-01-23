@@ -19,10 +19,9 @@ public class FallState : AirParentState
     {
         if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
-            player.enter = false;
             player.sound = "Landed";
             player.SetEffect("Fall", player.position);
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
 }
