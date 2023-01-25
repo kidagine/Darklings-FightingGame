@@ -47,12 +47,15 @@ public class ReplaysMenu : BaseMenu
         if (_currentReplayCard.ReplayCardData.versionNumber.Trim() == ReplayManager.Instance.VersionNumber)
         {
             ReplayManager.Instance.SetReplay();
+            SceneSettings.IsOnline = false;
+            SceneSettings.SceneSettingsDecide = true;
             SceneSettings.IsTrainingMode = false;
             SceneSettings.ReplayIndex = index;
             SceneManager.LoadScene(2);
         }
         else
         {
+            Debug.Log("Replay version incompatible:" + _currentReplayCard.ReplayCardData.versionNumber.Trim() + "," + ReplayManager.Instance.VersionNumber);
             _currentReplayCard.GetComponent<Animator>().Rebind();
             _replayIncompatibleMenu.Show();
         }

@@ -87,11 +87,15 @@ public class ReplayManager : MonoBehaviour
         }
     }
 
-    public void StartReplay()
+    private void Start()
     {
         string versionText = _versionTextAsset.text;
         int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
         VersionNumber = versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
+    }
+
+    public void StartReplay()
+    {
         if (SceneSettings.ReplayMode)
         {
             LoadReplay();
