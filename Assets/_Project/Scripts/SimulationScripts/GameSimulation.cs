@@ -78,8 +78,6 @@ public struct GameSimulation : IGame
         Hitstop = 0;
         IntroFrame = -1000;
         _players = new PlayerNetwork[playerStats.Length];
-        Debug.Log(playerStats[0]._effectsLibrary);
-        Debug.Log(playerStats[1]._effectsLibrary);
         ObjectPoolingManager.Instance.PoolInitialize(playerStats[0]._effectsLibrary, playerStats[1]._effectsLibrary);
         ObjectPoolingManager.Instance.PoolProjectileInitialize(playerStats[0]._projectilesLibrary, playerStats[1]._projectilesLibrary);
         ObjectPoolingManager.Instance.PoolAssistInitialize(assistStats[0].assistProjectile, assistStats[1].assistProjectile);
@@ -149,82 +147,151 @@ public struct GameSimulation : IGame
     {
         if (GameSimulation.Run)
         {
-            if (!left && !right)
+            // if (up && !_players[index].upHold)
+            // {
+            //     _players[index].upHold = true;
+            //     _players[index].inputDirection = InputDirectionEnum.Up;
+            //     _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+            //     _players[index].direction = new Vector2Int(_players[index].direction.x, 1);
+            // }
+            // else if (!up && _players[index].upHold)
+            // {
+            //     _players[index].upHold = false;
+            //     if (!_players[index].upHold && !_players[index].downHold)
+            //     {
+            //         _players[index].inputDirection = InputDirectionEnum.NoneVertical;
+            //         _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+            //         _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
+            //     }
+            // }
+            // if (down && !_players[index].downHold)
+            // {
+            //     _players[index].downHold = true;
+            //     _players[index].inputDirection = InputDirectionEnum.Down;
+            //     _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+            //     _players[index].direction = new Vector2Int(_players[index].direction.x, -1);
+            // }
+            // else if (!down && _players[index].downHold)
+            // {
+            //     _players[index].downHold = false;
+            //     if (!_players[index].upHold && !_players[index].downHold)
+            //     {
+            //         _players[index].inputDirection = InputDirectionEnum.NoneVertical;
+            //         _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+            //         _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
+            //     }
+            // }
+
+            if (up && !_players[index].upHold)
             {
-                _players[index].inputDirection = InputDirectionEnum.NoneHorizontal;
-                // _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
-                _players[index].direction = new Vector2Int(0, _players[index].direction.y);
-            }
-            if (!up && !down)
-            {
-                _players[index].inputDirection = InputDirectionEnum.NoneVertical;
-                // _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
-                _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
-            }
-            if (up)
-            {
+                _players[index].upHold = true;
                 _players[index].inputDirection = InputDirectionEnum.Up;
-                //_players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
-                _players[index].direction = new Vector2Int(0, 1);
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].direction = new Vector2Int(_players[index].direction.x, 1);
             }
-            if (down)
+            else if (!up)
             {
+                if (_players[index].upHold)
+                {
+                    _players[index].upHold = false;
+                    _players[index].inputDirection = InputDirectionEnum.NoneVertical;
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                    _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
+                }
+            }
+            if (down && !_players[index].downHold)
+            {
+                _players[index].downHold = true;
                 _players[index].inputDirection = InputDirectionEnum.Down;
-                //_players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()]= new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
-                _players[index].direction = new Vector2Int(0, -1);
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].direction = new Vector2Int(_players[index].direction.x, -1);
             }
-            if (right)
+            else if (!down)
             {
-                _players[index].inputDirection = InputDirectionEnum.Right;
-                // _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
-                _players[index].direction = new Vector2Int(1, _players[index].direction.y);
+                if (_players[index].downHold)
+                {
+                    _players[index].downHold = false;
+                    _players[index].inputDirection = InputDirectionEnum.NoneVertical;
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                    _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
+                }
             }
-            if (left)
+
+            if (left && !_players[index].leftHold)
             {
+                _players[index].leftHold = true;
                 _players[index].inputDirection = InputDirectionEnum.Left;
-                // _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
                 _players[index].direction = new Vector2Int(-1, _players[index].direction.y);
             }
+            else if (!left)
+            {
+                if (_players[index].leftHold)
+                {
+                    _players[index].leftHold = false;
+                    _players[index].inputDirection = InputDirectionEnum.NoneHorizontal;
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                    _players[index].direction = new Vector2Int(0, _players[index].direction.y);
+                }
+            }
+            if (right && !_players[index].rightHold)
+            {
+                _players[index].rightHold = true;
+                _players[index].inputDirection = InputDirectionEnum.Right;
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].direction = new Vector2Int(1, _players[index].direction.y);
+            }
+            else if (!right)
+            {
+                if (_players[index].rightHold)
+                {
+                    _players[index].rightHold = false;
+                    _players[index].inputDirection = InputDirectionEnum.NoneHorizontal;
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                    _players[index].direction = new Vector2Int(0, _players[index].direction.y);
+                }
+            }
+
 
             if (dashForward)
             {
-                _players[index].inputBuffer.inputItems[_players[index].inputBuffer.index] = new InputItemNetwork() { inputEnum = InputEnum.ForwardDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.ForwardDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (dashBackward)
             {
-                _players[index].inputBuffer.inputItems[_players[index].inputBuffer.index] = new InputItemNetwork() { inputEnum = InputEnum.BackDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.BackDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (light)
             {
-                _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (medium)
             {
-                _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (heavy)
             {
-                _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (arcana)
             {
-                _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (blueFrenzy)
             {
-                _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Parry, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Parry, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (redFrenzy)
             {
-                _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.RedFrenzy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.RedFrenzy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (grab)
             {
-                _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (shadow)
             {
-                _players[index].inputBuffer.inputItems[_players[index].inputBuffer.NextInputIndex()] = new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
 
             if (_players[index].arcanaGauge >= _players[index].playerStats.Arcana)

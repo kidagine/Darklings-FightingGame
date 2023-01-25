@@ -25,15 +25,20 @@ public struct InputBufferNetwork
         }
     }
 
-    public int NextInputIndex()
+    public void AddInputItem(InputItemNetwork inputItem)
     {
         index++;
         if (index >= inputItems.Length)
         {
             index = 0;
         }
-        return index;
+        inputItems[index] = inputItem;
+        // if (inputItem.inputEnum != InputEnum.Direction)
+        //{
+        //  inputItems[index] = inputItem;
+        //}
     }
+
     public InputItemNetwork CurrentInput()
     {
         return inputItems[index];

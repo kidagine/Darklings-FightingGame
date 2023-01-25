@@ -62,7 +62,8 @@ public class State
     }
     protected void Attack(PlayerNetwork player, bool air = false)
     {
-        if ((player.inputBuffer.CurrentInput().inputEnum == InputEnum.Light || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Medium || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Heavy))
+        if ((player.inputBuffer.CurrentInput().inputEnum == InputEnum.Light || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Medium
+        || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Heavy))
         {
             player.pushbackDuration = 0;
             player.attackInput = player.inputBuffer.inputItems[player.inputBuffer.index].inputEnum;

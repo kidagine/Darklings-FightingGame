@@ -31,12 +31,10 @@ public class ThrowState : State
         {
             if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.flip == 1)
             {
-                Debug.Log("A");
                 player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT - player.pushbox.size.x, player.position.y);
             }
             else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.flip == -1)
             {
-                Debug.Log("bA");
                 player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT + player.pushbox.size.x, player.position.y);
             }
             ThrowEnd(player.otherPlayer);

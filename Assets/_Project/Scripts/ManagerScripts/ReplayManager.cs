@@ -192,9 +192,31 @@ public class ReplayManager : MonoBehaviour
             {
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Direction)
                 {
+                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Up)
+                    {
+                        NetworkInput.ONE_UP_INPUT = true;
+                    }
+                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Down)
+                    {
+                        NetworkInput.ONE_DOWN_INPUT = true;
+                    }
+                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Left)
+                    {
+                        NetworkInput.ONE_LEFT_INPUT = true;
+                    }
+                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Right)
+                    {
+                        NetworkInput.ONE_RIGHT_INPUT = true;
+                    }
                     if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.NoneVertical)
                     {
-
+                        NetworkInput.ONE_UP_INPUT = false;
+                        NetworkInput.ONE_DOWN_INPUT = false;
+                    }
+                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.NoneHorizontal)
+                    {
+                        NetworkInput.ONE_LEFT_INPUT = false;
+                        NetworkInput.ONE_RIGHT_INPUT = false;
                     }
                 }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Light)
@@ -248,7 +270,75 @@ public class ReplayManager : MonoBehaviour
         {
             if (DemonicsWorld.Frame >= replayCardData.playerTwoInputs[j].time)
             {
-                _playerTwoInputBuffer.AddInputBufferItem(replayCardData.playerTwoInputs[j].input, replayCardData.playerTwoInputs[j].direction);
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.Direction)
+                {
+                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Up)
+                    {
+                        NetworkInput.TWO_UP_INPUT = true;
+                    }
+                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Down)
+                    {
+                        NetworkInput.TWO_DOWN_INPUT = true;
+                    }
+                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Left)
+                    {
+                        NetworkInput.TWO_LEFT_INPUT = true;
+                    }
+                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Right)
+                    {
+                        NetworkInput.TWO_RIGHT_INPUT = true;
+                    }
+                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.NoneVertical)
+                    {
+                        NetworkInput.TWO_UP_INPUT = false;
+                        NetworkInput.TWO_DOWN_INPUT = false;
+                    }
+                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.NoneHorizontal)
+                    {
+                        NetworkInput.TWO_LEFT_INPUT = false;
+                        NetworkInput.TWO_RIGHT_INPUT = false;
+                    }
+                }
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.Light)
+                {
+                    NetworkInput.TWO_LIGHT_INPUT = true;
+                }
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.Medium)
+                {
+                    NetworkInput.TWO_MEDIUM_INPUT = true;
+                }
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.Heavy)
+                {
+                    NetworkInput.TWO_HEAVY_INPUT = true;
+                }
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.Assist)
+                {
+                    NetworkInput.TWO_SHADOW_INPUT = true;
+                }
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.Special)
+                {
+                    NetworkInput.TWO_ARCANA_INPUT = true;
+                }
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.ForwardDash)
+                {
+                    NetworkInput.TWO_DASH_FORWARD_INPUT = true;
+                }
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.BackDash)
+                {
+                    NetworkInput.TWO_DASH_BACKWARD_INPUT = true;
+                }
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.Throw)
+                {
+                    NetworkInput.TWO_GRAB_INPUT = true;
+                }
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.Parry)
+                {
+                    NetworkInput.TWO_BLUE_FRENZY_INPUT = true;
+                }
+                if (replayCardData.playerTwoInputs[i].input == InputEnum.RedFrenzy)
+                {
+                    NetworkInput.TWO_RED_FRENZY_INPUT = true;
+                }
                 j++;
                 NextReplayAction2();
             }
