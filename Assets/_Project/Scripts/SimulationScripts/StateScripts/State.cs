@@ -261,6 +261,7 @@ public class State
                 player.health = 10000;
                 player.healthRecoverable = 10000;
             }
+            player.player.PlayerUI.CheckDemonLimit(player.health);
             CheckTrainingGauges(player.otherPlayer, skipCombo);
         }
     }

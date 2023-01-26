@@ -52,13 +52,13 @@ public class DebugGameplayMenu : MonoBehaviour
         {
             _p1ConnectionSlider.value = GameplayManager.Instance.PlayerOne.ConnectionProgress;
             _p2ConnectionSlider.value = GameplayManager.Instance.PlayerTwo.ConnectionProgress;
-            _p1ConnectionText.text = GameplayManager.Instance.PlayerOne.Health.ToString();
-            _p2ConnectionText.text = GameplayManager.Instance.PlayerTwo.Health.ToString();
+            _p1ConnectionText.text = GameSimulation._players[0].health.ToString();
+            _p2ConnectionText.text = GameSimulation._players[1].health.ToString();
 
-            string p1X = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.x).ToString();
-            string p1Y = ((float)GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.y).ToString();
-            string p2X = ((float)GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.x).ToString();
-            string p2Y = ((float)GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.y).ToString();
+            string p1X = (GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.x).ToString();
+            string p1Y = (GameplayManager.Instance.PlayerTwo.OtherPlayerMovement.Physics.Position.y).ToString();
+            string p2X = (GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.x).ToString();
+            string p2Y = (GameplayManager.Instance.PlayerOne.OtherPlayerMovement.Physics.Position.y).ToString();
             _p1PositionText.text = $"P1 ({p1X}, {p1Y})";
             _p2PositionText.text = $"P2 ({p2X}, {p2Y})";
 
