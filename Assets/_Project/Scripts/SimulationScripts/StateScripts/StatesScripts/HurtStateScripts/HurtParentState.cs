@@ -52,6 +52,11 @@ public class HurtParentState : State
         {
             CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 30, timer = 0.4f });
             GameSimulation.GlobalHitstop = 4;
+            if (!SceneSettings.IsTrainingMode)
+            {
+                GameSimulation.Run = false;
+                GameSimulation.Timer = 99;
+            }
         }
     }
 

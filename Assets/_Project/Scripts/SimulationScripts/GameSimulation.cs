@@ -405,9 +405,11 @@ public struct GameSimulation : IGame
             DemonicsWorld.Frame = Framenumber;
             if (Framenumber % GlobalHitstop == 0)
             {
+                Debug.Log(IntroFrame);
                 if (IntroFrame < 0 && IntroFrame > -1000)
                 {
-                    GameSimulation.Run = true;
+
+                    Debug.Log("As");
                 }
                 if (!GameSimulation.Run)
                 {
@@ -463,11 +465,6 @@ public struct GameSimulation : IGame
             }
 
         }
-    }
-
-    public void Test()
-    {
-
     }
 
     public long ReadInputs(int id)

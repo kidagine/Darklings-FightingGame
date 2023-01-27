@@ -534,7 +534,9 @@ public class GameplayManager : MonoBehaviour
 
     public virtual void StartRound()
     {
-        GameSimulation.IntroFrame = 150;
+        GameSimulation._players[0].CurrentState.EnterState(GameSimulation._players[0], "Taunt");
+        GameSimulation._players[1].CurrentState.EnterState(GameSimulation._players[1], "Taunt");
+        GameSimulation.Run = true;
         _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
         {
