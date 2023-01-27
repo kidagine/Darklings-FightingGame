@@ -8,7 +8,7 @@ using UnityEngine;
 public struct GameSimulation : IGame
 {
     public int Framenumber { get; private set; }
-    public int Timer { get; private set; }
+    public static int Timer { get; set; }
     public static int GlobalHitstop { get; set; }
     public static int Hitstop { get; set; }
     public static int IntroFrame { get; set; }

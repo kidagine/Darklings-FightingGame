@@ -7,7 +7,7 @@ public class DeathState : State
     {
         if (!player.enter)
         {
-            GameSimulation.GlobalHitstop = 2;
+            GameSimulation.GlobalHitstop = 1;
             player.velocity = DemonicsVector2.Zero;
             player.enter = true;
             player.animationFrames = 0;
@@ -20,6 +20,7 @@ public class DeathState : State
             if (!SceneSettings.IsTrainingMode)
             {
                 GameSimulation.Run = false;
+                GameSimulation.Timer = 99;
             }
         }
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
@@ -29,7 +30,6 @@ public class DeathState : State
         {
             if (player.otherPlayer.state != "Taunt")
             {
-                GameSimulation.GlobalHitstop = 1;
                 EnterState(player.otherPlayer, "Taunt");
             }
         }
@@ -37,7 +37,6 @@ public class DeathState : State
         {
             if (player.animationFrames >= 190 / GameSimulation.GlobalHitstop)
             {
-                GameSimulation.GlobalHitstop = 1;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
                 EnterState(player, "Idle");
@@ -47,7 +46,6 @@ public class DeathState : State
         {
             if (player.animationFrames >= 725 / GameSimulation.GlobalHitstop)
             {
-                GameSimulation.GlobalHitstop = 1;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
                 EnterState(player, "Taunt");

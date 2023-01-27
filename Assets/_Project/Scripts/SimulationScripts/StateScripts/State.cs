@@ -320,7 +320,7 @@ public class State
     }
     protected bool IsColliding(PlayerNetwork player)
     {
-        if (player.invincible)
+        if (player.invincible && player.health <= 0)
         {
             return false;
         }

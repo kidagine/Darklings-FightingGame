@@ -59,6 +59,11 @@ public class HurtAirborneState : HurtParentState
             ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.wasWallSplatted = false;
+            if (player.health <= 0)
+            {
+                EnterState(player, "Death");
+                return;
+            }
             if (player.attackHurtNetwork.softKnockdown)
             {
                 EnterState(player, "SoftKnockdown");

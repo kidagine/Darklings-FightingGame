@@ -28,7 +28,7 @@ public class HurtParentState : State
         }
         player.player.OtherPlayerUI.SetComboTimerActive(true);
         player.combo++;
-        player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense) * 1000;
         player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.player.StartShakeContact();
         player.player.PlayerUI.Damaged();
@@ -50,12 +50,14 @@ public class HurtParentState : State
         player.pushbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         if (player.health <= 0)
         {
-            EnterState(player, "Death");
+            CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 30, timer = 0.4f });
+            GameSimulation.GlobalHitstop = 4;
         }
     }
 
     protected virtual void AfterHitstop(PlayerNetwork player)
     {
+        GameSimulation.GlobalHitstop = 1;
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         if (player.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.attackHurtNetwork.knockbackDuration)
         {

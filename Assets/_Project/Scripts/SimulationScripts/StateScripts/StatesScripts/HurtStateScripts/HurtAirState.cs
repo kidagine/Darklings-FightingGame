@@ -31,6 +31,11 @@ public class HurtAirState : HurtParentState
         if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
             player.player.StopShakeCoroutine();
+            if (player.health <= 0)
+            {
+                EnterState(player, "Death");
+                return;
+            }
             if (player.stunFrames <= 0 || player.comboTimer <= 0)
             {
                 ResetCombo(player);

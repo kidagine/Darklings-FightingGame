@@ -22,6 +22,11 @@ public class HurtState : HurtParentState
             ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.velocity = DemonicsVector2.Zero;
+            if (player.health <= 0)
+            {
+                EnterState(player, "Death");
+                return;
+            }
             EnterState(player, "Idle");
         }
     }

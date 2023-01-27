@@ -446,7 +446,7 @@ public class GameplayManager : MonoBehaviour
     }
     public void SetCountdown(int timer)
     {
-        if (!_isTrainingMode)
+        if (!_isTrainingMode && GameSimulation.Run)
         {
             _countdownText.text = timer.ToString();
             if (_countdown <= 0)
@@ -497,6 +497,8 @@ public class GameplayManager : MonoBehaviour
         _currentRound = 1;
         if (SceneSettings.ReplayMode)
         {
+            GameplayManager.Instance.PausedController = _playerOneController;
+            DisableAllInput(true);
             _matchOverReplayMenu.Show();
         }
         else
@@ -511,6 +513,8 @@ public class GameplayManager : MonoBehaviour
             }
             else
             {
+                GameplayManager.Instance.PausedController = _playerOneController;
+                DisableAllInput(true);
                 _matchOverMenu.Show();
             }
             // if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
@@ -560,7 +564,6 @@ public class GameplayManager : MonoBehaviour
 
     private void StartTrainingRound()
     {
-        //  GameSimulation.Reset();
         PlayerOne.ResetPlayer(new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT));
         PlayerTwo.ResetPlayer(new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT));
         PlayerOne.ResetLives();
@@ -1028,6 +1031,7 @@ public class GameplayManager : MonoBehaviour
     public void StartMatch()
     {
         Time.timeScale = 1;
+        GameplayManager.Instance.EnableAllInput();
         if (SceneSettings.RandomStage)
         {
             _currentStage.SetActive(false);
