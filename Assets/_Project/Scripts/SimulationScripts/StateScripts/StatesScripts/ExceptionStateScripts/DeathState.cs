@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class DeathState : State
 {
+    //TODO: Refactor frame checks
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
         {
+            GameSimulation.GlobalHitstop = 2;
             player.velocity = DemonicsVector2.Zero;
             player.enter = true;
             player.animationFrames = 0;
@@ -14,25 +16,28 @@ public class DeathState : State
             GameSimulation.IntroFrame = 360;
             player.healthRecoverable = 0;
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+            ResetCombo(player);
             if (!SceneSettings.IsTrainingMode)
             {
                 GameSimulation.Run = false;
             }
         }
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
-        player.animation = "Knockdown";
+        player.animation = "Death";
         player.animationFrames++;
-        if (player.animationFrames >= 510)
+        if (player.animationFrames >= 510 / GameSimulation.GlobalHitstop)
         {
             if (player.otherPlayer.state != "Taunt")
             {
+                GameSimulation.GlobalHitstop = 1;
                 EnterState(player.otherPlayer, "Taunt");
             }
         }
         if (SceneSettings.IsTrainingMode)
         {
-            if (player.animationFrames >= 190)
+            if (player.animationFrames >= 190 / GameSimulation.GlobalHitstop)
             {
+                GameSimulation.GlobalHitstop = 1;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
                 EnterState(player, "Idle");
@@ -40,8 +45,9 @@ public class DeathState : State
         }
         else
         {
-            if (player.animationFrames >= 725)
+            if (player.animationFrames >= 725 / GameSimulation.GlobalHitstop)
             {
+                GameSimulation.GlobalHitstop = 1;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
                 EnterState(player, "Taunt");

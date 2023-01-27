@@ -35,6 +35,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
         }
         for (int i = 0; i < playersGss.Length; ++i)
         {
+            GameplayManager.Instance.SetCountdown(game.Timer);
             playerViews[i].PlayerSimulation.Simulate(playersGss[i], gameInfo.players[i]);
             UpdateEffects(i, playersGss[i].effects);
             UpdateProjectiles(i, playersGss[i].projectiles);

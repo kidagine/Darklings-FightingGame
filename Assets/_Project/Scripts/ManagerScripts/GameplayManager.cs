@@ -440,29 +440,28 @@ public class GameplayManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (HasGameStarted && !_isTrainingMode)
-        {
-            _countdownFrames--;
-            if (_countdownFrames == 0)
-            {
-                _countdownFrames = 60;
-                _countdown -= 1;
-                _countdownText.text = Mathf.Round(_countdown).ToString();
-                if (_countdown <= 0)
-                {
-                    _timerMainAnimator.Rebind();
-                    RoundOver(true);
-                }
-                else if (_countdown <= 10)
-                {
-                    _timerMainAnimator.SetTrigger("TimerLow");
-                }
-            }
-        }
         RunHitStop();
         RunReady();
         RunRoundOver();
     }
+    public void SetCountdown(int timer)
+    {
+        if (!_isTrainingMode)
+        {
+            _countdownText.text = timer.ToString();
+            if (_countdown <= 0)
+            {
+                _timerMainAnimator.Rebind();
+                RoundOver(true);
+            }
+            else if (_countdown <= 10)
+            {
+                _timerMainAnimator.SetTrigger("TimerLow");
+            }
+        }
+    }
+
+
     public void SkipIntro()
     {
         if (IsDialogueRunning || !NetworkInput.IS_LOCAL)
@@ -657,7 +656,7 @@ public class GameplayManager : MonoBehaviour
             else
             {
                 string roundOverCause;
-                if (PlayerOne.Health == PlayerTwo.Health)
+                if (GameSimulation._players[0].health == GameSimulation._players[1].health)
                 {
                     roundOverCause = "DOUBLE KO";
                     if (PlayerOne.Lives > 1 && PlayerTwo.Lives > 1)
@@ -687,8 +686,8 @@ public class GameplayManager : MonoBehaviour
                 }
                 else
                 {
-                    if (PlayerOne.PlayerStats.maxHealth == PlayerOne.Health
-                        || PlayerTwo.PlayerStats.maxHealth == PlayerTwo.Health)
+                    if (PlayerOne.PlayerStats.maxHealth == GameSimulation._players[0].health
+                        || PlayerTwo.PlayerStats.maxHealth == GameSimulation._players[1].health)
                     {
                         roundOverCause = "PERFECT KO";
                     }
@@ -696,13 +695,13 @@ public class GameplayManager : MonoBehaviour
                     {
                         roundOverCause = "KO";
                     }
-                    if (PlayerOne.Health > PlayerTwo.Health)
+                    if (GameSimulation._players[0].health > GameSimulation._players[1].health)
                     {
                         _playerOneWon = true;
                         PlayerTwo.LoseLife();
 
                     }
-                    else if (PlayerTwo.Health > PlayerOne.Health)
+                    else if (GameSimulation._players[1].health > GameSimulation._players[0].health)
                     {
                         _playerTwoWon = true;
                         PlayerOne.LoseLife();
