@@ -50,10 +50,11 @@ public class HurtParentState : State
         player.pushbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         if (player.health <= 0)
         {
+            player.invincible = true;
             CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 30, timer = 0.4f });
-            GameSimulation.GlobalHitstop = 4;
             if (!SceneSettings.IsTrainingMode)
             {
+                GameSimulation.GlobalHitstop = 4;
                 GameSimulation.Run = false;
                 GameSimulation.Timer = 99;
             }

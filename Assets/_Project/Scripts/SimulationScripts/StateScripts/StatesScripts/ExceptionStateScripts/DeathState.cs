@@ -36,6 +36,7 @@ public class DeathState : State
         {
             if (player.animationFrames >= 190)
             {
+                player.invincible = false;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
                 EnterState(player, "Idle");
@@ -45,6 +46,7 @@ public class DeathState : State
         {
             if (player.animationFrames >= 725)
             {
+                player.invincible = false;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
                 EnterState(player, "Taunt");

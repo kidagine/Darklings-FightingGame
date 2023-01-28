@@ -457,7 +457,7 @@ public struct GameSimulation : IGame
                     {
                         if (Framenumber % 60 == 0)
                         {
-                            if (Timer > 0)
+                            if (Timer > 0 && !SceneSettings.IsTrainingMode)
                             {
                                 Timer--;
                                 if (Timer == 0)

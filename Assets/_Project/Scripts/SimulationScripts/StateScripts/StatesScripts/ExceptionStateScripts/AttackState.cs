@@ -96,6 +96,10 @@ public class AttackState : State
         {
             if (player.direction.y > 0)
             {
+                if (player.isAir)
+                {
+                    player.canDoubleJump = false;
+                }
                 player.isCrouch = false;
                 player.isAir = false;
                 GameSimulation.Hitstop = 0;
@@ -109,6 +113,10 @@ public class AttackState : State
         {
             if (player.direction.y > 0 && player.direction.x != 0)
             {
+                if (player.isAir)
+                {
+                    player.canDoubleJump = false;
+                }
                 player.jumpDirection = (int)player.direction.x;
                 player.isCrouch = false;
                 player.isAir = false;
