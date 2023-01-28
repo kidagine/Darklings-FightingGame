@@ -534,8 +534,6 @@ public class GameplayManager : MonoBehaviour
 
     public virtual void StartRound()
     {
-        GameSimulation._players[0].CurrentState.EnterState(GameSimulation._players[0], "Taunt");
-        GameSimulation._players[1].CurrentState.EnterState(GameSimulation._players[1], "Taunt");
         _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
         {
@@ -660,7 +658,7 @@ public class GameplayManager : MonoBehaviour
             else
             {
                 string roundOverCause;
-                if (GameSimulation._players[0].health == GameSimulation._players[1].health)
+                if (GameSimulation._players[0].health <= 0 && GameSimulation._players[1].health <= 0)
                 {
                     roundOverCause = "DOUBLE KO";
                     if (PlayerOne.Lives > 1 && PlayerTwo.Lives > 1)

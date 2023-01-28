@@ -242,7 +242,14 @@ public class State
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
         ResetCombo(player);
         player.pushbox.active = true;
-        EnterState(player, "HardKnockdown");
+        if (player.health <= 0)
+        {
+            EnterState(player, "Death");
+        }
+        else
+        {
+            EnterState(player, "HardKnockdown");
+        }
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);

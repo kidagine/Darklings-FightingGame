@@ -6,6 +6,14 @@ public class TauntState : State
     {
         if (!player.enter)
         {
+            if (player.otherPlayer.health <= 0)
+            {
+                player.comboLocked = true;
+            }
+            else
+            {
+                player.comboLocked = false;
+            }
             player.enter = true;
             player.animationFrames = 0;
             player.animation = "Taunt";
@@ -16,12 +24,8 @@ public class TauntState : State
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if (player.animationFrames >= 160)
+        if (player.animationFrames >= 160 && !player.comboLocked)
         {
-            if (player.health == 0 || player.otherPlayer.health == 0)
-            {
-                return;
-            }
             GameSimulation.Run = true;
             EnterState(player, "Idle");
         }

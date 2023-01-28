@@ -84,7 +84,7 @@ public struct GameSimulation : IGame
         Framenumber = 0;
         Timer = 99;
         Hitstop = 0;
-        IntroFrame = -1000;
+        IntroFrame = 880;
         _players = new PlayerNetwork[playerStats.Length];
         ObjectPoolingManager.Instance.PoolInitialize(playerStats[0]._effectsLibrary, playerStats[1]._effectsLibrary);
         ObjectPoolingManager.Instance.PoolProjectileInitialize(playerStats[0]._projectilesLibrary, playerStats[1]._projectilesLibrary);
@@ -405,11 +405,11 @@ public struct GameSimulation : IGame
             DemonicsWorld.Frame = Framenumber;
             if (Framenumber % GlobalHitstop == 0)
             {
-                Debug.Log(IntroFrame);
-                if (IntroFrame < 0 && IntroFrame > -1000)
+                if (IntroFrame == 0 && !_introPlayed)
                 {
-
-                    Debug.Log("As");
+                    _introPlayed = true;
+                    _players[0].CurrentState.EnterState(_players[0], "Taunt");
+                    _players[1].CurrentState.EnterState(_players[1], "Taunt");
                 }
                 if (!GameSimulation.Run)
                 {

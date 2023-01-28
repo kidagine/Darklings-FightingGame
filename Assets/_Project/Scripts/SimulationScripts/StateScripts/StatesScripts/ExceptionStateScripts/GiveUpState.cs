@@ -14,7 +14,6 @@ public class GiveUpState : State
             player.animationFrames = 0;
             player.player.StopShakeCoroutine();
             GameplayManager.Instance.RoundOver(true);
-            GameSimulation.IntroFrame = 360;
             player.healthRecoverable = 0;
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             ResetCombo(player);

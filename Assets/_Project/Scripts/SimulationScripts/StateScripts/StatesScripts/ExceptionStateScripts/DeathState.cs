@@ -7,13 +7,17 @@ public class DeathState : State
     {
         if (!player.enter)
         {
+            if (!SceneSettings.IsTrainingMode)
+            {
+                GameSimulation.Run = false;
+                GameSimulation.Timer = 99;
+            }
             GameSimulation.GlobalHitstop = 1;
             player.velocity = DemonicsVector2.Zero;
             player.enter = true;
             player.animationFrames = 0;
             player.player.StopShakeCoroutine();
             GameplayManager.Instance.RoundOver(false);
-            GameSimulation.IntroFrame = 360;
             player.healthRecoverable = 0;
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             ResetCombo(player);
@@ -23,7 +27,7 @@ public class DeathState : State
         player.animationFrames++;
         if (player.animationFrames >= 510)
         {
-            if (player.otherPlayer.state != "Taunt")
+            if (player.otherPlayer.state != "Taunt" && player.otherPlayer.health > 0)
             {
                 EnterState(player.otherPlayer, "Taunt");
             }

@@ -43,6 +43,10 @@ public class HurtAirborneState : HurtParentState
     {
         if (player.attackHurtNetwork.hardKnockdown && !player.wasWallSplatted)
         {
+            if (player.health <= 0)
+            {
+                return;
+            }
             if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.flip == 1
             || player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.flip == -1)
             {
