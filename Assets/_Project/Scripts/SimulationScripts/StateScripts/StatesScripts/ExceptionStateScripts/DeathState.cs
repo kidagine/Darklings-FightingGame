@@ -32,7 +32,6 @@ public class DeathState : State
         {
             if (player.animationFrames >= 190)
             {
-                GameSimulation.Run = true;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
                 EnterState(player, "Idle");
@@ -42,7 +41,6 @@ public class DeathState : State
         {
             if (player.animationFrames >= 725)
             {
-                GameSimulation.Run = true;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
                 EnterState(player, "Taunt");

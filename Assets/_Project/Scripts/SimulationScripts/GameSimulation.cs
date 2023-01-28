@@ -457,7 +457,15 @@ public struct GameSimulation : IGame
                     {
                         if (Framenumber % 60 == 0)
                         {
-                            Timer--;
+                            if (Timer > 0)
+                            {
+                                Timer--;
+                                if (Timer == 0)
+                                {
+                                    _players[0].CurrentState.EnterState(_players[0], "GiveUp");
+                                    _players[1].CurrentState.EnterState(_players[1], "GiveUp");
+                                }
+                            }
                         }
                     }
                     Hitstop--;

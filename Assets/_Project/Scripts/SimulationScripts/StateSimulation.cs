@@ -100,6 +100,10 @@ public class StateSimulation
         {
             player.CurrentState = new DeathState();
         }
+        if (player.state == "GiveUp")
+        {
+            player.CurrentState = new GiveUpState();
+        }
         if (player.state == "Taunt")
         {
             player.CurrentState = new TauntState();

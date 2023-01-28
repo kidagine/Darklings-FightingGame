@@ -449,12 +449,12 @@ public class GameplayManager : MonoBehaviour
         if (!_isTrainingMode && GameSimulation.Run)
         {
             _countdownText.text = timer.ToString();
-            if (_countdown <= 0)
+            if (timer <= 0)
             {
                 _timerMainAnimator.Rebind();
                 RoundOver(true);
             }
-            else if (_countdown <= 10)
+            else if (timer <= 10)
             {
                 _timerMainAnimator.SetTrigger("TimerLow");
             }
@@ -536,7 +536,6 @@ public class GameplayManager : MonoBehaviour
     {
         GameSimulation._players[0].CurrentState.EnterState(GameSimulation._players[0], "Taunt");
         GameSimulation._players[1].CurrentState.EnterState(GameSimulation._players[1], "Taunt");
-        GameSimulation.Run = true;
         _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
         {
