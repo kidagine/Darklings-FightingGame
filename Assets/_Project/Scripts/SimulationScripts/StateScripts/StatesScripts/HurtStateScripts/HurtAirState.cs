@@ -20,6 +20,7 @@ public class HurtAirState : HurtParentState
     protected override void AfterHitstop(PlayerNetwork player)
     {
         base.AfterHitstop(player);
+        player.velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)5);
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)
