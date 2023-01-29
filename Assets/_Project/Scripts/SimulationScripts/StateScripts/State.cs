@@ -169,6 +169,7 @@ public class State
     }
     public void ResetPlayer(PlayerNetwork player)
     {
+        player.dashDirection = 0;
         player.healthRecoverable = 10000;
         player.health = 10000;
         player.shadowGauge = 2000;

@@ -60,6 +60,7 @@ public class PlayerNetwork
     public bool downHold;
     public bool leftHold;
     public bool rightHold;
+    public bool juggleBounce;
     public string state;
     public int spriteOrder;
     public State CurrentState;
@@ -122,6 +123,7 @@ public class PlayerNetwork
         bw.Write(hitstop);
         bw.Write(inPushback);
         bw.Write(canChainAttack);
+        bw.Write(juggleBounce);
         bw.Write(flip);
         bw.Write(spriteOrder);
         bw.Write(state);
@@ -194,6 +196,7 @@ public class PlayerNetwork
         hitstop = br.ReadBoolean();
         inPushback = br.ReadBoolean();
         canChainAttack = br.ReadBoolean();
+        juggleBounce = br.ReadBoolean();
         flip = br.ReadInt32();
         spriteOrder = br.ReadInt32();
         state = br.ReadString();

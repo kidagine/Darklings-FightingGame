@@ -11,8 +11,8 @@ public class HurtState : HurtParentState
         {
             player.animationFrames++;
         }
-        ToHurtState(player);
         ToIdleState(player);
+        ToHurtState(player);
         ToShadowbreakState(player);
     }
     private void ToIdleState(PlayerNetwork player)

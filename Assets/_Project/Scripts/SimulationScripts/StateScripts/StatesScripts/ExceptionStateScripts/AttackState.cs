@@ -8,6 +8,11 @@ public class AttackState : State
         player.dashDirection = 0;
         if (!player.enter)
         {
+            if (player.juggleBounce & player.isAir)
+            {
+                player.position = new DemonicsVector2((DemonicsFloat)player.position.x, (DemonicsFloat)player.position.y + 7);
+                player.juggleBounce = false;
+            }
             player.inputBuffer.inputItems[player.inputBuffer.index].frame = 0;
             player.animationFrames = 0;
             SetTopPriority(player);
@@ -100,6 +105,7 @@ public class AttackState : State
                 {
                     player.canDoubleJump = false;
                 }
+                player.juggleBounce = true;
                 player.isCrouch = false;
                 player.isAir = false;
                 GameSimulation.Hitstop = 0;
@@ -118,6 +124,7 @@ public class AttackState : State
                     player.canDoubleJump = false;
                 }
                 player.jumpDirection = (int)player.direction.x;
+                player.juggleBounce = true;
                 player.isCrouch = false;
                 player.isAir = false;
                 GameSimulation.Hitstop = 0;
