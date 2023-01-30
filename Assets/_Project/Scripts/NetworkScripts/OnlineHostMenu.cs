@@ -63,6 +63,7 @@ public class OnlineHostMenu : BaseMenu
         _nameplates[1].gameObject.SetActive(false);
         for (int i = 0; i < lobby.Players.Count; i++)
         {
+            Debug.Log("A" + i);
             demonDatas.Add(new DemonData()
             {
                 demonName = lobby.Players[i].Data["DemonName"].Value,

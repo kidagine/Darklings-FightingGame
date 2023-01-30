@@ -74,6 +74,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private AssistStatsSO[] _assists = default;
     [SerializeField] private BaseMenu _matchOverMenu = default;
     [SerializeField] private BaseMenu _matchOverReplayMenu = default;
+    [SerializeField] private BaseMenu _matchOverOnlineMenu = default;
     [SerializeField] private Animator _readyAnimator = default;
     [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [SerializeField] private Audio _musicAudio = default;
@@ -507,9 +508,12 @@ public class GameplayManager : MonoBehaviour
             {
                 if (GameManager.Instance.IsRunning)
                 {
-                    GameManager.Instance.Shutdown();
+                    // GameManager.Instance.Shutdown();
                 }
-                SceneManager.LoadScene("2. MainMenuScene");
+                GameplayManager.Instance.PausedController = _playerOneController;
+                DisableAllInput(true);
+                _matchOverOnlineMenu.Show();
+                //SceneManager.LoadScene("2. MainMenuScene");
             }
             else
             {
@@ -530,6 +534,18 @@ public class GameplayManager : MonoBehaviour
             ReplayManager.Instance.SaveReplay();
         }
         Time.timeScale = 0;
+    }
+
+    public void DisconnectOnline()
+    {
+        GameManager.Instance.DisconnectPlayer(SceneSettings.OnlineIndex);
+    }
+
+    public void ConnectOnline()
+    {
+        GameManager.Instance.Shutdown();
+        _matchOverOnlineMenu.Hide();
+        _connectionWidget.StartTe();
     }
 
     public virtual void StartRound()

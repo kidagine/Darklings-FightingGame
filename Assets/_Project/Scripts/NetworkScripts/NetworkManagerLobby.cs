@@ -149,9 +149,8 @@ public class NetworkManagerLobby : MonoBehaviour
     //Get the Player data required for the lobby and P2P connection
     private Unity.Services.Lobbies.Models.Player GetPlayer(DemonData demonData)
     {
-        string address = "";
-        string port = "";
-        PublicIp(out address, out port);
+        PublicIp(out string address, out string port);
+        Debug.Log(address);
         return new Unity.Services.Lobbies.Models.Player
         {
             Data = new Dictionary<string, PlayerDataObject>{
@@ -160,9 +159,9 @@ public class NetworkManagerLobby : MonoBehaviour
                 { "Assist", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.assist.ToString())},
                 { "Color", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.color.ToString())},
                 { "Ready", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, "False")},
-                { "Ip", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Private, address)},
-                { "Port", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Private,port)},
-                { "PrivateIp", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Private, PrivateIp())},
+                { "Ip", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, address)},
+                { "Port", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public,port)},
+                { "PrivateIp", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, PrivateIp())},
             }
         };
     }

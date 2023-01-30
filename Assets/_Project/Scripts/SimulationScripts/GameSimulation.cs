@@ -80,6 +80,7 @@ public struct GameSimulation : IGame
 
     public GameSimulation(PlayerStatsSO[] playerStats, AssistStatsSO[] assistStats)
     {
+        Debug.Log("AAAA");
         GlobalHitstop = 1;
         Framenumber = 0;
         Timer = 99;

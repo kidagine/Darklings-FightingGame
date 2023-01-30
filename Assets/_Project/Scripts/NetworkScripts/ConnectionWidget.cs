@@ -99,6 +99,15 @@ namespace SharedGame
                 gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
             }
         }
+        public void StartTe()
+        {
+            NetworkInput.IS_LOCAL = false;
+            var connectionInfo = GetConnectionInfo();
+            var perf = FindObjectOfType<GgpoPerformancePanel>();
+            perf.Setup();
+            var playerIndex = int.Parse(inpPlayerIndex.text);
+            gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
+        }
 
         public void StartGGPO(string ipOne, string ipTwo, string privateIpOne, string privateIpTwo, int portOne, int portTwo, int index)
         {
