@@ -41,6 +41,7 @@ public class GameplayManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] private ConnectionWidget _connectionWidget = default;
     [SerializeField] private CinemachineTargetGroup _targetGroup = default;
+    [SerializeField] private GameSimulationView _gameSimulationView = default;
     [SerializeField] private IntroUI _introUI = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
@@ -543,6 +544,9 @@ public class GameplayManager : MonoBehaviour
 
     public void ConnectOnline()
     {
+        EnableAllInput();
+        Time.timeScale = 1;
+        _fadeHandler.StartFadeTransition(false);
         GameManager.Instance.Shutdown();
         _matchOverOnlineMenu.Hide();
         _connectionWidget.StartTe();

@@ -80,12 +80,12 @@ public struct GameSimulation : IGame
 
     public GameSimulation(PlayerStatsSO[] playerStats, AssistStatsSO[] assistStats)
     {
-        Debug.Log("AAAA");
         GlobalHitstop = 1;
         Framenumber = 0;
         Timer = 99;
         Hitstop = 0;
         IntroFrame = 880;
+        _introPlayed = false;
         _players = new PlayerNetwork[playerStats.Length];
         ObjectPoolingManager.Instance.PoolInitialize(playerStats[0]._effectsLibrary, playerStats[1]._effectsLibrary);
         ObjectPoolingManager.Instance.PoolProjectileInitialize(playerStats[0]._projectilesLibrary, playerStats[1]._projectilesLibrary);
@@ -414,13 +414,15 @@ public struct GameSimulation : IGame
                 }
                 if (!GameSimulation.Run)
                 {
-                    if (((inputs[0] & NetworkInput.SKIP_BYTE) != 0 && !SceneSettings.ReplayMode
-                     || Skip) && Framenumber > 200 && !_introPlayed)
+                    if ((inputs[0] & NetworkInput.SKIP_BYTE) != 0 || (inputs[1] & NetworkInput.SKIP_BYTE) != 0)
                     {
-                        _introPlayed = true;
-                        _players[0].CurrentState.EnterState(_players[0], "Taunt");
-                        _players[1].CurrentState.EnterState(_players[1], "Taunt");
-                        GameplayManager.Instance.SkipIntro();
+                        if ((!SceneSettings.ReplayMode || Skip) && Framenumber > 200 && !_introPlayed)
+                        {
+                            _introPlayed = true;
+                            _players[0].CurrentState.EnterState(_players[0], "Taunt");
+                            _players[1].CurrentState.EnterState(_players[1], "Taunt");
+                            GameplayManager.Instance.SkipIntro();
+                        }
                     }
                     IntroFrame--;
                 }

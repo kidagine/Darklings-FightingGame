@@ -33,10 +33,6 @@ public struct InputBufferNetwork
             index = 0;
         }
         inputItems[index] = inputItem;
-        // if (inputItem.inputEnum != InputEnum.Direction)
-        //{
-        //  inputItems[index] = inputItem;
-        //}
     }
 
     public InputItemNetwork CurrentInput()

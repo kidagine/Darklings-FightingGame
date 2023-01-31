@@ -10,6 +10,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
     private Player[] playerViews = Array.Empty<Player>();
     private GameManager gameManager => GameManager.Instance;
 
+
     private void SetGame(GameSimulation gs)
     {
         var playersGss = GameSimulation._players;

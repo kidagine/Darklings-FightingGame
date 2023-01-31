@@ -7,8 +7,10 @@ public class InputSimulation
         long input = 0;
         if (id == 0)
         {
+            Debug.Log("aaaa");
             if (Input.anyKeyDown)
             {
+                Debug.Log("bsbs");
                 input |= NetworkInput.SKIP_BYTE;
             }
             if (NetworkInput.ONE_UP_INPUT)
@@ -80,6 +82,7 @@ public class InputSimulation
         }
         if (id == 1)
         {
+            Debug.Log("bbbb");
             if (Input.anyKeyDown)
             {
                 input |= NetworkInput.SKIP_BYTE;
