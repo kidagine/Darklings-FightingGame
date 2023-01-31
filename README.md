@@ -7,7 +7,7 @@ Darklings is a free to play 2D fighting game with the intention of being an acce
 
 [![GitHub](https://img.shields.io/badge/unity_version-2021.3.12-blue)](https://unity3d.com/get-unity/download/archive)
 [![GitHub](https://img.shields.io/badge/game_version-0.2.8-brightgreen)](https://gamejolt.com/games/darklings/640842)
-[![GitHub](https://img.shields.io/badge/game_views-1.2k-orange)](https://gamejolt.com/games/darklings/640842)
+[![GitHub](https://img.shields.io/badge/game_views-1.3k-orange)](https://gamejolt.com/games/darklings/640842)
 </div>
 
 <p align="center">
@@ -31,7 +31,7 @@ State Machine|Hitstop System|Rebinding
 Streaming Videos|Dialogue System|
 Pixel Perfect Camera|Replay System|
 60FPS Logic Tick|AI Opponent|
-Very Early Rollback Implementation|Lobby System|
+Early Rollback Implementation|Lobby System|
 
 
 ## Sub Repositories
