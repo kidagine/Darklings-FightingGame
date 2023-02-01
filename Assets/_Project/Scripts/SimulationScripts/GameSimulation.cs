@@ -111,6 +111,10 @@ public struct GameSimulation : IGame
             _players[i].soundStop = "";
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
+            _players[i].upHold = false;
+            _players[i].downHold = false;
+            _players[i].leftHold = false;
+            _players[i].rightHold = false;
             _players[i].attackNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
             _players[i].attackHurtNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
             _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
@@ -156,74 +160,35 @@ public struct GameSimulation : IGame
     {
         if (GameSimulation.Run)
         {
-            if (up && !_players[index].upHold)
+            if (!up && !down)
             {
-                _players[index].upHold = true;
+                _players[index].inputDirection = InputDirectionEnum.NoneVertical;
+                _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
+            }
+            if (!left && !right)
+            {
+                _players[index].inputDirection = InputDirectionEnum.NoneHorizontal;
+                _players[index].direction = new Vector2Int(0, _players[index].direction.y);
+            }
+            if (up)
+            {
                 _players[index].inputDirection = InputDirectionEnum.Up;
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
                 _players[index].direction = new Vector2Int(_players[index].direction.x, 1);
             }
-            else if (!up)
+            if (down)
             {
-                if (_players[index].upHold)
-                {
-                    _players[index].upHold = false;
-                    _players[index].inputDirection = InputDirectionEnum.NoneVertical;
-                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
-                    _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
-                }
-            }
-            if (down && !_players[index].downHold)
-            {
-                _players[index].downHold = true;
                 _players[index].inputDirection = InputDirectionEnum.Down;
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
                 _players[index].direction = new Vector2Int(_players[index].direction.x, -1);
             }
-            else if (!down)
+            if (right)
             {
-                if (_players[index].downHold)
-                {
-                    _players[index].downHold = false;
-                    _players[index].inputDirection = InputDirectionEnum.NoneVertical;
-                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
-                    _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
-                }
-            }
-
-            if (left && !_players[index].leftHold)
-            {
-                _players[index].leftHold = true;
-                _players[index].inputDirection = InputDirectionEnum.Left;
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
-                _players[index].direction = new Vector2Int(-1, _players[index].direction.y);
-            }
-            else if (!left)
-            {
-                if (_players[index].leftHold)
-                {
-                    _players[index].leftHold = false;
-                    _players[index].inputDirection = InputDirectionEnum.NoneHorizontal;
-                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
-                    _players[index].direction = new Vector2Int(0, _players[index].direction.y);
-                }
-            }
-            if (right && !_players[index].rightHold)
-            {
-                _players[index].rightHold = true;
                 _players[index].inputDirection = InputDirectionEnum.Right;
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
                 _players[index].direction = new Vector2Int(1, _players[index].direction.y);
             }
-            else if (!right)
+            if (left)
             {
-                if (_players[index].rightHold)
-                {
-                    _players[index].rightHold = false;
-                    _players[index].inputDirection = InputDirectionEnum.NoneHorizontal;
-                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
-                    _players[index].direction = new Vector2Int(0, _players[index].direction.y);
-                }
+                _players[index].inputDirection = InputDirectionEnum.Left;
+                _players[index].direction = new Vector2Int(-1, _players[index].direction.y);
             }
 
 
@@ -451,7 +416,7 @@ public struct GameSimulation : IGame
                         }
                         else
                         {
-                            InputSimulation.ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
+                            InputSimulation.ParseInputs(inputs[i], out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
                              out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
                         }
                         PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);

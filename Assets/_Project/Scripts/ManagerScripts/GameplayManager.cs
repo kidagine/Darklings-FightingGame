@@ -544,6 +544,8 @@ public class GameplayManager : MonoBehaviour
 
     public void ConnectOnline()
     {
+        _targetGroup.m_Targets[0].weight = 0.5f;
+        _targetGroup.m_Targets[1].weight = 0.5f;
         EnableAllInput();
         Time.timeScale = 1;
         _fadeHandler.StartFadeTransition(false);

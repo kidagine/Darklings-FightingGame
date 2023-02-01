@@ -71,14 +71,14 @@ public class DemonicsPhysics : MonoBehaviour
                 {
                     DemonicsFloat difference = DemonicsFloat.Abs(player.position.x - otherPlayer.position.x);
                     DemonicsFloat pushDistance = (player.pushbox.size.x - difference) / (2);
-                    // if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
-                    // {
-                    //     player.position = new DemonicsVector2(player.position.x + pushDistance, player.position.y);
-                    // }
-                    // else if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
-                    // {
-                    //     player.position = new DemonicsVector2(player.position.x - pushDistance, player.position.y);
-                    // }
+                    if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
+                    {
+                        player.position = new DemonicsVector2(player.position.x + pushDistance, player.position.y);
+                    }
+                    else if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
+                    {
+                        player.position = new DemonicsVector2(player.position.x - pushDistance, player.position.y);
+                    }
                 }
             }
             DemonicsVector2 main = player.velocity;

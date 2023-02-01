@@ -39,6 +39,10 @@ public class PlayerNetwork
     public float jump;
     public bool isCrouch;
     public bool isAir;
+    public bool upHold;
+    public bool downHold;
+    public bool leftHold;
+    public bool rightHold;
     public bool isAi;
     public int dashDirection;
     public int jumpDirection;
@@ -56,10 +60,6 @@ public class PlayerNetwork
     public bool wasWallSplatted;
     public bool canChainAttack;
     public bool hitstop;
-    public bool upHold;
-    public bool downHold;
-    public bool leftHold;
-    public bool rightHold;
     public bool juggleBounce;
     public string state;
     public int spriteOrder;
