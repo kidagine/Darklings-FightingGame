@@ -254,7 +254,7 @@ public struct GameSimulation : IGame
         {
             _players[index].direction = Vector2Int.zero;
         }
-
+        StateSimulation.SetState(_players[index]);
         _players[index].CurrentState.UpdateLogic(_players[index]);
         if (!_players[index].hitstop)
         {
