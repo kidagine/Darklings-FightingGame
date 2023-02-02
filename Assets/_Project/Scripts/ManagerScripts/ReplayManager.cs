@@ -113,39 +113,42 @@ public class ReplayManager : MonoBehaviour
 
     public void SaveReplay()
     {
-        if (!SceneSettings.IsTrainingMode && !SceneSettings.ReplayMode && _replayNotificationAnimator != null)
+        if (NetworkInput.IS_LOCAL)
         {
-            string replayName = "replay";
-            string replayData = "";
-            replayData += $"Version:\n{VersionNumber}";
-            replayData += $"\nDate:\n{DateTime.Now.ToString("MM/dd/yyyy HH:mm")}";
-            replayData += $"\nPlayer One:\n{SceneSettings.PlayerOne}, {SceneSettings.ColorOne}, {SceneSettings.AssistOne}";
-            replayData += $"\nPlayer Two:\n{SceneSettings.PlayerTwo}, {SceneSettings.ColorTwo}, {SceneSettings.AssistTwo}";
-            replayData += $"\nStage:\n{SceneSettings.StageIndex}, {GameplayManager.Instance.CurrentMusic.name}, {SceneSettings.Bit1}";
-            string playerOneInputsHistory = "";
-            for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
+            if (!SceneSettings.IsTrainingMode && !SceneSettings.ReplayMode && _replayNotificationAnimator != null)
             {
-                playerOneInputsHistory += $"{_playerOneInputHistory.Inputs[i]},{_playerOneInputHistory.Directions[i]},{_playerOneInputHistory.InputTimes[i]}";
-                if (i != _playerOneInputHistory.Inputs.Count - 1)
+                string replayName = "replay";
+                string replayData = "";
+                replayData += $"Version:\n{VersionNumber}";
+                replayData += $"\nDate:\n{DateTime.Now.ToString("MM/dd/yyyy HH:mm")}";
+                replayData += $"\nPlayer One:\n{SceneSettings.PlayerOne}, {SceneSettings.ColorOne}, {SceneSettings.AssistOne}";
+                replayData += $"\nPlayer Two:\n{SceneSettings.PlayerTwo}, {SceneSettings.ColorTwo}, {SceneSettings.AssistTwo}";
+                replayData += $"\nStage:\n{SceneSettings.StageIndex}, {GameplayManager.Instance.CurrentMusic.name}, {SceneSettings.Bit1}";
+                string playerOneInputsHistory = "";
+                for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
                 {
-                    playerOneInputsHistory += "|";
+                    playerOneInputsHistory += $"{_playerOneInputHistory.Inputs[i]},{_playerOneInputHistory.Directions[i]},{_playerOneInputHistory.InputTimes[i]}";
+                    if (i != _playerOneInputHistory.Inputs.Count - 1)
+                    {
+                        playerOneInputsHistory += "|";
+                    }
                 }
-            }
-            replayData += $"\nPlayer One Inputs:\n{playerOneInputsHistory}";
-            string playerTwoInputsHistory = "";
-            for (int i = 0; i < _playerTwoInputHistory.Inputs.Count; i++)
-            {
-                playerTwoInputsHistory += $"{_playerTwoInputHistory.Inputs[i]},{_playerTwoInputHistory.Directions[i]},{_playerTwoInputHistory.InputTimes[i]}";
-                if (i != _playerTwoInputHistory.Inputs.Count - 1)
+                replayData += $"\nPlayer One Inputs:\n{playerOneInputsHistory}";
+                string playerTwoInputsHistory = "";
+                for (int i = 0; i < _playerTwoInputHistory.Inputs.Count; i++)
                 {
-                    playerTwoInputsHistory += "|";
+                    playerTwoInputsHistory += $"{_playerTwoInputHistory.Inputs[i]},{_playerTwoInputHistory.Directions[i]},{_playerTwoInputHistory.InputTimes[i]}";
+                    if (i != _playerTwoInputHistory.Inputs.Count - 1)
+                    {
+                        playerTwoInputsHistory += "|";
+                    }
                 }
+                replayData += $"\nPlayer Two Inputs:\n{playerTwoInputsHistory}";
+                replayData += $"\nSkip:\n{Skip}";
+                replayData += $"\n@";
+                _replayNotificationAnimator.SetTrigger("Save");
+                DemonicsSaver.Save(replayName, replayData, true);
             }
-            replayData += $"\nPlayer Two Inputs:\n{playerTwoInputsHistory}";
-            replayData += $"\nSkip:\n{Skip}";
-            replayData += $"\n@";
-            _replayNotificationAnimator.SetTrigger("Save");
-            DemonicsSaver.Save(replayName, replayData, true);
         }
     }
 
