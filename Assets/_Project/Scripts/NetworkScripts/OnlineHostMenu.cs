@@ -169,6 +169,7 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.ColorOne = demonDatas[0].color;
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.SceneSettingsDecide = true;
+        SceneSettings.Bit1 = false;
         SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
         SceneSettings.MusicName = "Random";
         _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
