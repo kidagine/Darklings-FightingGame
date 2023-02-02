@@ -32,6 +32,13 @@ public class OnlineHostMenu : BaseMenu
         {
             _nameplates[0].SetDemonData(_onlineSetupMenu.DemonData);
             _lobbyId = await _networkManager.CreateLobby(_onlineSetupMenu.DemonData);
+            if (_lobbyId == null)
+            {
+                _creatingLobby.SetActive(false);
+                _lobbyCreated.SetActive(true);
+                Hide();
+                return;
+            }
             _lobbyIdText.text = $"Lobby ID: {_lobbyId}";
             _creatingLobby.SetActive(false);
             _lobbyCreated.SetActive(true);

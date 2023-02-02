@@ -16,6 +16,7 @@ using STUN;
 
 public class NetworkManagerLobby : MonoBehaviour
 {
+    [SerializeField] private OnlineErrorMenu _onlineErrorMenu = default;
     [SerializeField] private int _maxPlayers = 2;
     private Lobby _hostLobby;
     private Lobby _clientLobby;
@@ -37,13 +38,22 @@ public class NetworkManagerLobby : MonoBehaviour
     //Host a lobby
     public async Task<string> CreateLobby(DemonData demonData)
     {
+        Lobby lobby;
         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
         {
             IsPrivate = false,
             Player = GetPlayer(demonData)
         };
-        Lobby lobby = await LobbyService.Instance.CreateLobbyAsync("darklings", _maxPlayers, createLobbyOptions);
-        _hostLobby = lobby;
+        try
+        {
+            lobby = await LobbyService.Instance.CreateLobbyAsync("darklings", _maxPlayers, createLobbyOptions);
+            _hostLobby = lobby;
+        }
+        catch (LobbyServiceException e)
+        {
+            _onlineErrorMenu.Show(e.Reason.ToString());
+            return null;
+        }
         return lobby.LobbyCode;
     }
 
@@ -60,12 +70,21 @@ public class NetworkManagerLobby : MonoBehaviour
     //Join the lobby given a lobby Id
     public async Task<Lobby> JoinLobby(DemonData demonData, string lobbyId)
     {
+        Lobby lobby;
         JoinLobbyByCodeOptions joinLobbyByCodeOptions = new JoinLobbyByCodeOptions
         {
             Player = GetPlayer(demonData)
         };
-        Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyId, joinLobbyByCodeOptions);
-        _clientLobby = lobby;
+        try
+        {
+            lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyId, joinLobbyByCodeOptions);
+            _clientLobby = lobby;
+        }
+        catch (LobbyServiceException e)
+        {
+            _onlineErrorMenu.Show(e.Reason.ToString());
+            return null;
+        }
         return lobby;
     }
 
