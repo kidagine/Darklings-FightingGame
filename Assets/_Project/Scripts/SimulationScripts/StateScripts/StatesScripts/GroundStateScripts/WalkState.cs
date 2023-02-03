@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class WalkState : GroundParentState
 {
-    private int _cel;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
@@ -14,11 +13,10 @@ public class WalkState : GroundParentState
         player.animation = "Walk";
         player.animationFrames++;
         player.velocity = new DemonicsVector2(player.direction.x * player.playerStats.SpeedWalk, 0);
-        int cel;
-        bool footstep = player.player.PlayerAnimator.GetFootstep(player.animation, player.animationFrames, out cel);
-        if (cel != _cel && footstep)
+        bool footstep = player.player.PlayerAnimator.GetFootstep(player.animation, player.animationFrames, out int cel);
+        if (cel != player.cel && footstep)
         {
-            _cel = cel;
+            player.cel = cel;
             player.soundGroup = "Footsteps";
         }
         CheckFlip(player);

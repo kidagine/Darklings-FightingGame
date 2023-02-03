@@ -21,6 +21,7 @@ public class PlayerNetwork
     public InputDirectionEnum inputDirection;
     public string animation;
     public int animationFrames;
+    public int cel;
     public int attackFrames;
     public int stunFrames;
     public int combo;
@@ -87,6 +88,7 @@ public class PlayerNetwork
         bw.Write(direction.y);
         bw.Write(animation);
         bw.Write(animationFrames);
+        bw.Write(cel);
         bw.Write(attackFrames);
         bw.Write(stunFrames);
         bw.Write((int)attackInput);
@@ -160,6 +162,7 @@ public class PlayerNetwork
         inputDirection = (InputDirectionEnum)br.ReadInt32();
         animation = br.ReadString();
         animationFrames = br.ReadInt32();
+        cel = br.ReadInt32();
         attackFrames = br.ReadInt32();
         stunFrames = br.ReadInt32();
         attackInput = (InputEnum)br.ReadInt32();
