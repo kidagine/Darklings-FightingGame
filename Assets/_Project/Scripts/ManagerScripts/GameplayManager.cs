@@ -544,11 +544,13 @@ public class GameplayManager : MonoBehaviour
 
     public void ConnectOnline()
     {
+        _fadeHandler.StartFadeTransition(true, 0.01f);
+        PlayerOne.ResetLives();
+        PlayerTwo.ResetLives();
         _targetGroup.m_Targets[0].weight = 0.5f;
         _targetGroup.m_Targets[1].weight = 0.5f;
         EnableAllInput();
         Time.timeScale = 1;
-        _fadeHandler.StartFadeTransition(true);
         GameManager.Instance.Shutdown();
         _matchOverOnlineMenu.Hide();
         _connectionWidget.StartTe();
