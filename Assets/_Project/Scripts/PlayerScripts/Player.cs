@@ -153,15 +153,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerUI.SetHealth(Health);
     }
 
-    public void ArcanaGain(DemonicsFloat arcana)
-    {
-        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameplayManager.Instance.HasGameStarted)
-        {
-            ArcanaGauge += arcana;
-            _playerUI.SetArcana((float)ArcanaGauge);
-        }
-    }
-
     public void StartShakeContact()
     {
         _shakeContactCoroutine = StartCoroutine(ShakeContactCoroutine());

@@ -548,7 +548,7 @@ public class GameplayManager : MonoBehaviour
         _targetGroup.m_Targets[1].weight = 0.5f;
         EnableAllInput();
         Time.timeScale = 1;
-        _fadeHandler.StartFadeTransition(false);
+        _fadeHandler.StartFadeTransition(true);
         GameManager.Instance.Shutdown();
         _matchOverOnlineMenu.Hide();
         _connectionWidget.StartTe();
