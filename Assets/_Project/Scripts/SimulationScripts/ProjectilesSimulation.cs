@@ -124,24 +124,30 @@ public class ProjectilesSimulation
     }
     private static void DisableShadow(PlayerNetwork player, bool explode = true)
     {
-        player.shadow.projectile.hitbox.enter = false;
-        player.shadow.projectile.animationFrames = 0;
-        player.shadow.projectile.active = false;
-        player.shadow.projectile.hitbox.active = false;
-        if (explode)
+        if (player.shadow.projectile.active)
         {
-            player.SetEffect("Impact", player.shadow.projectile.position);
+            player.shadow.projectile.hitbox.enter = false;
+            player.shadow.projectile.animationFrames = 0;
+            player.shadow.projectile.active = false;
+            player.shadow.projectile.hitbox.active = false;
+            if (explode)
+            {
+                player.SetEffect("Impact", player.shadow.projectile.position);
+            }
         }
     }
     private static void DisableProjectile(PlayerNetwork player, int i, bool explode = true)
     {
-        player.projectiles[i].hitbox.enter = false;
-        player.projectiles[i].animationFrames = 0;
-        player.projectiles[i].active = false;
-        player.projectiles[i].hitbox.active = false;
-        if (explode)
+        if (player.projectiles[i].active)
         {
-            player.SetEffect("Impact", player.projectiles[i].position);
+            player.projectiles[i].hitbox.enter = false;
+            player.projectiles[i].animationFrames = 0;
+            player.projectiles[i].active = false;
+            player.projectiles[i].hitbox.active = false;
+            if (explode)
+            {
+                player.SetEffect("Impact", player.projectiles[i].position);
+            }
         }
     }
 }

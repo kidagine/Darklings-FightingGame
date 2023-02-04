@@ -25,16 +25,14 @@ public class IdleState : GroundParentState
     {
         if (player.direction.y < 0)
         {
-            player.enter = false;
-            player.state = "Crouch";
+            EnterState(player, "Crouch");
         }
     }
     private void ToJumpState(PlayerNetwork player)
     {
         if (player.direction.y > 0)
         {
-            player.enter = false;
-            player.state = "Jump";
+            EnterState(player, "Jump");
         }
     }
     private void ToJumpForwardState(PlayerNetwork player)
@@ -42,33 +40,30 @@ public class IdleState : GroundParentState
         if (player.direction.y > 0 && player.direction.x != 0)
         {
             player.jumpDirection = (int)player.direction.x;
-            player.enter = false;
-            player.state = "JumpForward";
+            EnterState(player, "JumpForward");
         }
     }
     private void ToWalkState(PlayerNetwork player)
     {
         if (player.direction.x != 0)
         {
-            player.enter = false;
-            player.state = "Walk";
+            EnterState(player, "Walk");
         }
     }
     private void ToDashState(PlayerNetwork player)
     {
-        if (player.inputBuffer.inputItems[0].pressed)
+        if (player.inputBuffer.CurrentInput().pressed)
         {
-            if (player.inputBuffer.inputItems[0].inputEnum == InputEnum.ForwardDash)
+            if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.ForwardDash)
             {
                 player.dashDirection = 1;
-                player.enter = false;
-                player.state = "Dash";
+                EnterState(player, "Dash");
+
             }
-            else if (player.inputBuffer.inputItems[0].inputEnum == InputEnum.BackDash)
+            else if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.BackDash)
             {
                 player.dashDirection = -1;
-                player.enter = false;
-                player.state = "Dash";
+                EnterState(player, "Dash");
             }
         }
     }

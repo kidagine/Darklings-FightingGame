@@ -2,52 +2,55 @@ using UnityEngine;
 
 public class DeathState : State
 {
+    //TODO: Refactor frame checks
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
         {
+            if (!SceneSettings.IsTrainingMode)
+            {
+                GameSimulation.Run = false;
+                GameSimulation.Timer = 99;
+            }
+            GameSimulation.GlobalHitstop = 1;
             player.velocity = DemonicsVector2.Zero;
             player.enter = true;
             player.animationFrames = 0;
             player.player.StopShakeCoroutine();
             GameplayManager.Instance.RoundOver(false);
-            GameSimulation.IntroFrame = 360;
             player.healthRecoverable = 0;
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-            if (!SceneSettings.IsTrainingMode)
-            {
-                GameSimulation.Run = false;
-            }
+            ResetCombo(player);
         }
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
-        player.animation = "Knockdown";
+        player.animation = "Death";
         player.animationFrames++;
         if (player.animationFrames >= 510)
         {
-            if (player.otherPlayer.state != "Taunt")
+            if (player.otherPlayer.state != "Taunt" && player.otherPlayer.health > 0)
             {
-                player.otherPlayer.enter = false;
-                player.otherPlayer.state = "Taunt";
+                EnterState(player.otherPlayer, "Taunt");
             }
         }
         if (SceneSettings.IsTrainingMode)
         {
             if (player.animationFrames >= 190)
             {
+                player.invincible = false;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
-                player.state = "Idle";
+                EnterState(player, "Idle");
             }
         }
         else
         {
             if (player.animationFrames >= 725)
             {
+                player.invincible = false;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);
-                player.enter = false;
-                player.state = "Taunt";
-                player.otherPlayer.state = "Taunt";
+                EnterState(player, "Taunt");
+                EnterState(player.otherPlayer, "Taunt");
             }
         }
         if (!player.hitstop)

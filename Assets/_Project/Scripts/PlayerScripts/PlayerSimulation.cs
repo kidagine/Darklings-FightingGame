@@ -29,17 +29,20 @@ public class PlayerSimulation : MonoBehaviour
             _audio.Sound(playerGs.soundStop).Stop();
             playerGs.soundStop = "";
         }
-        if (info.state == PlayerConnectState.Disconnected)
+        if (info.state == PlayerConnectState.Disconnected && playerGs.health <= 0)
         {
             _player.PlayerUI.Disconnected();
         }
         _player.Simulate(playerGs, info);
         _player.PlayerUI.SetArcana(playerGs.arcanaGauge);
         _player.PlayerUI.SetComboTimerLock(playerGs.otherPlayer.comboLocked);
-        _player.Assist.Simulate(playerGs.shadow);
-        if (playerGs.inputBuffer.inputItems[0].pressed)
+        _player.Assist.Simulate(playerGs);
+        for (int i = 0; i < playerGs.inputBuffer.inputItems.Length; i++)
         {
-            _inputBuffer.AddInputBufferItem(playerGs.inputBuffer.inputItems[0].inputEnum, playerGs.inputBuffer.inputItems[0].inputDirection);
+            if (playerGs.inputBuffer.inputItems[i].pressed)
+            {
+                _inputBuffer.AddInputBufferItem(playerGs.inputBuffer.inputItems[i].inputEnum, playerGs.inputBuffer.inputItems[i].inputDirection);
+            }
         }
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         _playerAnimator.SetInvinsible(playerGs.invisible);

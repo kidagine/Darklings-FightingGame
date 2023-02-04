@@ -63,8 +63,7 @@ public class ArcanaState : State
             player.dashFrames = 0;
             player.isCrouch = false;
             player.isAir = false;
-            player.enter = false;
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
     private void ToIdleState(PlayerNetwork player)
@@ -74,18 +73,18 @@ public class ArcanaState : State
             CheckTrainingGauges(player);
             player.invincible = false;
             player.dashFrames = 0;
-            player.enter = false;
             if (player.isAir || player.position.y > DemonicsPhysics.GROUND_POINT)
             {
                 player.isCrouch = false;
                 player.isAir = false;
-                player.state = "Fall";
+                EnterState(player, "Fall");
+
             }
             else
             {
                 player.isCrouch = false;
                 player.isAir = false;
-                player.state = "Idle";
+                EnterState(player, "Idle");
             }
         }
     }
@@ -104,41 +103,38 @@ public class ArcanaState : State
             }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
-                player.state = "Grabbed";
-                return;
+                EnterState(player, "Grabbed");
             }
             if (player.attackHurtNetwork.moveName == "Shadowbreak")
             {
-                player.enter = false;
-                player.state = "Knockback";
-                return;
+                EnterState(player, "Knockback");
             }
             if (IsBlocking(player))
             {
                 if (player.direction.y < 0)
                 {
-                    player.state = "BlockLow";
+                    EnterState(player, "BlockLow");
                 }
                 else
                 {
-                    player.state = "Block";
+                    EnterState(player, "Block");
                 }
             }
             else
             {
                 if (player.attackHurtNetwork.hardKnockdown)
                 {
-                    player.state = "Airborne";
+                    EnterState(player, "Airborne");
                 }
                 else
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
                     {
-                        player.state = "Hurt";
+                        EnterState(player, "Hurt");
                     }
                     else
                     {
-                        player.state = "HurtAir";
+                        EnterState(player, "HurtAir");
                     }
                 }
             }

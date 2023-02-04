@@ -16,6 +16,7 @@ using STUN;
 
 public class NetworkManagerLobby : MonoBehaviour
 {
+    [SerializeField] private OnlineErrorMenu _onlineErrorMenu = default;
     [SerializeField] private int _maxPlayers = 2;
     private Lobby _hostLobby;
     private Lobby _clientLobby;
@@ -37,13 +38,22 @@ public class NetworkManagerLobby : MonoBehaviour
     //Host a lobby
     public async Task<string> CreateLobby(DemonData demonData)
     {
+        Lobby lobby;
         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
         {
             IsPrivate = false,
             Player = GetPlayer(demonData)
         };
-        Lobby lobby = await LobbyService.Instance.CreateLobbyAsync("darklings", _maxPlayers, createLobbyOptions);
-        _hostLobby = lobby;
+        try
+        {
+            lobby = await LobbyService.Instance.CreateLobbyAsync("darklings", _maxPlayers, createLobbyOptions);
+            _hostLobby = lobby;
+        }
+        catch (LobbyServiceException e)
+        {
+            _onlineErrorMenu.Show(e.Reason.ToString());
+            return null;
+        }
         return lobby.LobbyCode;
     }
 
@@ -60,12 +70,21 @@ public class NetworkManagerLobby : MonoBehaviour
     //Join the lobby given a lobby Id
     public async Task<Lobby> JoinLobby(DemonData demonData, string lobbyId)
     {
+        Lobby lobby;
         JoinLobbyByCodeOptions joinLobbyByCodeOptions = new JoinLobbyByCodeOptions
         {
             Player = GetPlayer(demonData)
         };
-        Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyId, joinLobbyByCodeOptions);
-        _clientLobby = lobby;
+        try
+        {
+            lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyId, joinLobbyByCodeOptions);
+            _clientLobby = lobby;
+        }
+        catch (LobbyServiceException e)
+        {
+            _onlineErrorMenu.Show(e.Reason.ToString());
+            return null;
+        }
         return lobby;
     }
 
@@ -149,9 +168,8 @@ public class NetworkManagerLobby : MonoBehaviour
     //Get the Player data required for the lobby and P2P connection
     private Unity.Services.Lobbies.Models.Player GetPlayer(DemonData demonData)
     {
-        string address = "";
-        string port = "";
-        PublicIp(out address, out port);
+        PublicIp(out string address, out string port);
+        Debug.Log(address);
         return new Unity.Services.Lobbies.Models.Player
         {
             Data = new Dictionary<string, PlayerDataObject>{
@@ -160,9 +178,9 @@ public class NetworkManagerLobby : MonoBehaviour
                 { "Assist", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.assist.ToString())},
                 { "Color", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, demonData.color.ToString())},
                 { "Ready", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, "False")},
-                { "Ip", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Private, address)},
-                { "Port", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Private,port)},
-                { "PrivateIp", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Private, PrivateIp())},
+                { "Ip", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, address)},
+                { "Port", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public,port)},
+                { "PrivateIp", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, PrivateIp())},
             }
         };
     }

@@ -10,6 +10,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
     private Player[] playerViews = Array.Empty<Player>();
     private GameManager gameManager => GameManager.Instance;
 
+
     private void SetGame(GameSimulation gs)
     {
         var playersGss = GameSimulation._players;
@@ -35,6 +36,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
         }
         for (int i = 0; i < playersGss.Length; ++i)
         {
+            GameplayManager.Instance.SetCountdown(GameSimulation.Timer);
             playerViews[i].PlayerSimulation.Simulate(playersGss[i], gameInfo.players[i]);
             UpdateEffects(i, playersGss[i].effects);
             UpdateProjectiles(i, playersGss[i].projectiles);
@@ -105,7 +107,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
             if (shadow.projectile.active)
             {
                 assistObject.transform.position = new Vector2((int)shadow.projectile.position.x, (int)shadow.projectile.position.y);
-                assistObject.transform.up = new Vector2((float)shadow.spawnRotation.x * shadow.flip, (float)shadow.spawnRotation.x);
+                assistObject.transform.right = new Vector2((float)shadow.spawnRotation.x, (float)shadow.spawnRotation.y * shadow.flip);
                 assistObject.GetComponent<SpriteRenderer>().flipX = shadow.projectile.flip;
                 assistObject.GetComponent<DemonicsAnimator>().SetAnimation("Idle", shadow.projectile.animationFrames);
                 assistObject.transform.GetChild(0).GetComponent<CollisionVisualizer>().ShowBox(shadow.projectile.hitbox);

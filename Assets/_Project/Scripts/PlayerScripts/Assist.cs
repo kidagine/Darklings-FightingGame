@@ -31,16 +31,16 @@ public class Assist : DemonicsAnimator, IHitboxResponder
         transform.localPosition = AssistStats.assistPosition;
         transform.localScale = _player.localScale;
     }
-    public void Simulate(ShadowNetwork shadow)
+    public void Simulate(PlayerNetwork player)
     {
-        gameObject.SetActive(shadow.isOnScreen);
-        SetAnimation("Attack", shadow.animationFrames);
-        transform.position = new Vector2((float)shadow.position.x, (float)shadow.position.y);
-        transform.localScale = new Vector2(shadow.flip, 1);
+        gameObject.SetActive(player.shadow.isOnScreen);
+        SetAnimation("Attack", player.shadow.animationFrames);
+        transform.position = new Vector2((float)player.shadow.position.x, (float)player.shadow.position.y);
+        transform.localScale = new Vector2(player.shadow.flip, 1);
     }
     public bool GetProjectile(string name, int frame)
     {
-        return GetEvent(name, frame).projectile;
+        return GetEvent(name, frame, out _).projectile;
     }
     protected override void AnimationEnded()
     {

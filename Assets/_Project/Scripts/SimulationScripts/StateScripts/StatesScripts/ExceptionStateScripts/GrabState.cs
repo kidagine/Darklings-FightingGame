@@ -23,8 +23,7 @@ public class GrabState : State
     {
         if (player.attackFrames <= 0)
         {
-            player.enter = false;
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
     private void ToHurtState(PlayerNetwork player)
@@ -34,7 +33,7 @@ public class GrabState : State
             player.enter = false;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
-                player.state = "Grabbed";
+                EnterState(player, "Grabbed");
                 return;
             }
             if (DemonicsPhysics.IsInCorner(player))
@@ -48,17 +47,17 @@ public class GrabState : State
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             if (player.attackHurtNetwork.hardKnockdown)
             {
-                player.state = "Airborne";
+                EnterState(player, "Airborne");
             }
             else
             {
                 if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
                 {
-                    player.state = "Hurt";
+                    EnterState(player, "Hurt");
                 }
                 else
                 {
-                    player.state = "HurtAir";
+                    EnterState(player, "HurtAir");
                 }
             }
         }

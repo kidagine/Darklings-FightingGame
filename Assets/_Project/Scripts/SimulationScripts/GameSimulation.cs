@@ -8,8 +8,11 @@ using UnityEngine;
 public struct GameSimulation : IGame
 {
     public int Framenumber { get; private set; }
+    public static int Timer { get; set; }
+    public static int GlobalHitstop { get; set; }
     public static int Hitstop { get; set; }
     public static int IntroFrame { get; set; }
+    public static bool Skip { get; set; }
     public static bool Start { get; set; }
     public static bool Run { get; set; }
     public int Checksum => GetHashCode();
@@ -19,6 +22,8 @@ public struct GameSimulation : IGame
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(Framenumber);
+        bw.Write(GlobalHitstop);
+        bw.Write(Timer);
         bw.Write(Hitstop);
         bw.Write(IntroFrame);
         bw.Write(Start);
@@ -33,6 +38,8 @@ public struct GameSimulation : IGame
     public void Deserialize(BinaryReader br)
     {
         Framenumber = br.ReadInt32();
+        GlobalHitstop = br.ReadInt32();
+        Timer = br.ReadInt32();
         Hitstop = br.ReadInt32();
         IntroFrame = br.ReadInt32();
         Start = br.ReadBoolean();
@@ -73,9 +80,12 @@ public struct GameSimulation : IGame
 
     public GameSimulation(PlayerStatsSO[] playerStats, AssistStatsSO[] assistStats)
     {
+        GlobalHitstop = 1;
         Framenumber = 0;
+        Timer = 99;
         Hitstop = 0;
-        IntroFrame = -1000;
+        IntroFrame = 880;
+        _introPlayed = false;
         _players = new PlayerNetwork[playerStats.Length];
         ObjectPoolingManager.Instance.PoolInitialize(playerStats[0]._effectsLibrary, playerStats[1]._effectsLibrary);
         ObjectPoolingManager.Instance.PoolProjectileInitialize(playerStats[0]._projectilesLibrary, playerStats[1]._projectilesLibrary);
@@ -97,9 +107,14 @@ public struct GameSimulation : IGame
             _players[i].attackInput = InputEnum.Direction;
             _players[i].animation = "Idle";
             _players[i].sound = "";
+            _players[i].soundGroup = "";
             _players[i].soundStop = "";
             _players[i].canJump = true;
             _players[i].canDoubleJump = true;
+            _players[i].upHold = false;
+            _players[i].downHold = false;
+            _players[i].leftHold = false;
+            _players[i].rightHold = false;
             _players[i].attackNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
             _players[i].attackHurtNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
             _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
@@ -145,82 +160,109 @@ public struct GameSimulation : IGame
     {
         if (GameSimulation.Run)
         {
-            if (!left && !right)
-            {
-                _players[index].inputDirection = InputDirectionEnum.NoneHorizontal;
-                //_players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
-                _players[index].direction = new Vector2Int(0, _players[index].direction.y);
-            }
             if (!up && !down)
             {
                 _players[index].inputDirection = InputDirectionEnum.NoneVertical;
-                //_players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
                 _players[index].direction = new Vector2Int(_players[index].direction.x, 0);
+                if (_players[index].upHold || _players[index].downHold)
+                {
+                    _players[index].upHold = false;
+                    _players[index].downHold = false;
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                }
+            }
+            if (!left && !right)
+            {
+                _players[index].inputDirection = InputDirectionEnum.NoneHorizontal;
+                _players[index].direction = new Vector2Int(0, _players[index].direction.y);
+                if (_players[index].rightHold || _players[index].leftHold)
+                {
+                    _players[index].rightHold = false;
+                    _players[index].leftHold = false;
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                }
             }
             if (up)
             {
                 _players[index].inputDirection = InputDirectionEnum.Up;
-                //_players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
-                _players[index].direction = new Vector2Int(0, 1);
+                _players[index].direction = new Vector2Int(_players[index].direction.x, 1);
+                if (!_players[index].upHold)
+                {
+                    _players[index].upHold = true;
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                }
             }
             if (down)
             {
                 _players[index].inputDirection = InputDirectionEnum.Down;
-                // _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
-                _players[index].direction = new Vector2Int(0, -1);
+                _players[index].direction = new Vector2Int(_players[index].direction.x, -1);
+                if (!_players[index].downHold)
+                {
+                    _players[index].downHold = true;
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                }
             }
             if (right)
             {
                 _players[index].inputDirection = InputDirectionEnum.Right;
-                // _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
                 _players[index].direction = new Vector2Int(1, _players[index].direction.y);
+                if (!_players[index].rightHold)
+                {
+                    _players[index].rightHold = true;
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                }
             }
             if (left)
             {
                 _players[index].inputDirection = InputDirectionEnum.Left;
-                //_players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
                 _players[index].direction = new Vector2Int(-1, _players[index].direction.y);
+                if (!_players[index].leftHold)
+                {
+                    _players[index].leftHold = true;
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                }
             }
+
 
             if (dashForward)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.ForwardDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.ForwardDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (dashBackward)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.BackDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.BackDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (light)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (medium)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (heavy)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (arcana)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (blueFrenzy)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Parry, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Parry, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (redFrenzy)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.RedFrenzy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.RedFrenzy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (grab)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
             if (shadow)
             {
-                _players[index].inputBuffer.inputItems[0] = new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true };
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
 
             if (_players[index].arcanaGauge >= _players[index].playerStats.Arcana)
@@ -244,7 +286,6 @@ public struct GameSimulation : IGame
         {
             _players[index].direction = Vector2Int.zero;
         }
-
         StateSimulation.SetState(_players[index]);
         _players[index].CurrentState.UpdateLogic(_players[index]);
         if (!_players[index].hitstop)
@@ -302,8 +343,9 @@ public struct GameSimulation : IGame
             else
             {
                 bool isProjectile = _players[index].player.Assist.GetProjectile("Attack", _players[index].shadow.animationFrames);
-                if (isProjectile)
+                if (isProjectile && _players[index].shadow.projectile.fire)
                 {
+                    _players[index].shadow.projectile.fire = false;
                     _players[index].SetAssist(_players[index].shadow.projectile.name, _players[index].shadow.position, _players[index].shadow.projectile.speed, false);
                 }
             }
@@ -331,14 +373,19 @@ public struct GameSimulation : IGame
         }
         _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
         _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
-        if (_players[index].inputBuffer.inputItems[0].frame < Framenumber)
+        for (int i = 0; i < _players[index].inputBuffer.inputItems.Length; i++)
         {
-            _players[index].inputBuffer.inputItems[0].pressed = false;
+            if (_players[index].inputBuffer.inputItems[i].frame < Framenumber)
+            {
+                _players[index].inputBuffer.inputItems[i].pressed = false;
+            }
+            if (_players[index].inputBuffer.inputItems[i].frame + 20 < Framenumber)
+            {
+                _players[index].inputBuffer.inputItems[i].frame = 0;
+            }
         }
-        if (_players[index].inputBuffer.inputItems[0].frame + 20 < Framenumber)
-        {
-            _players[index].inputBuffer.inputItems[0].frame = 0;
-        }
+
+
         if (_players[index].shadow.isOnScreen)
         {
             _players[index].shadow.animationFrames++;
@@ -354,55 +401,91 @@ public struct GameSimulation : IGame
             }
             Framenumber++;
             DemonicsWorld.Frame = Framenumber;
-            if (IntroFrame < 0 && IntroFrame > -1000)
+            if (Framenumber % GlobalHitstop == 0)
             {
-                GameSimulation.Run = true;
-            }
-            if (!GameSimulation.Run)
-            {
-                if ((inputs[0] & NetworkInput.SKIP_BYTE) != 0 && Framenumber > 200 && !_introPlayed)
+                if (IntroFrame == 0 && !_introPlayed)
                 {
                     _introPlayed = true;
-                    _players[0].enter = false;
-                    _players[1].enter = false;
-                    _players[0].state = "Taunt";
-                    _players[1].state = "Taunt";
-                    GameplayManager.Instance.SkipIntro();
+                    _players[0].CurrentState.EnterState(_players[0], "Taunt");
+                    _players[1].CurrentState.EnterState(_players[1], "Taunt");
                 }
-                IntroFrame--;
-            }
-            if (_players[0].player != null)
-            {
-                for (int i = 0; i < _players.Length; i++)
+                if (!GameSimulation.Run)
                 {
-                    bool skip = false;
-                    bool up = false;
-                    bool down = false;
-                    bool left = false;
-                    bool right = false;
-                    bool light = false;
-                    bool medium = false;
-                    bool heavy = false;
-                    bool arcana = false;
-                    bool grab = false;
-                    bool shadow = false;
-                    bool blueFrenzy = false;
-                    bool redFrenzy = false;
-                    bool dashForward = false;
-                    bool dashBackward = false;
-                    if ((disconnect_flags & (1 << i)) != 0)
+                    if (!SceneSettings.ReplayMode)
                     {
-                        //Handle AI
+                        if ((inputs[0] & NetworkInput.SKIP_BYTE) != 0 || (inputs[1] & NetworkInput.SKIP_BYTE) != 0)
+                        {
+                            if (Framenumber > 200 && !_introPlayed)
+                            {
+                                _introPlayed = true;
+                                _players[0].CurrentState.EnterState(_players[0], "Taunt");
+                                _players[1].CurrentState.EnterState(_players[1], "Taunt");
+                                GameplayManager.Instance.SkipIntro();
+                            }
+                        }
                     }
                     else
                     {
-                        InputSimulation.ParseInputs(inputs[i], i, out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
-                         out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
+                        if (Skip && !_introPlayed)
+                        {
+                            _introPlayed = true;
+                            _players[0].CurrentState.EnterState(_players[0], "Taunt");
+                            _players[1].CurrentState.EnterState(_players[1], "Taunt");
+                            GameplayManager.Instance.SkipIntro();
+                        }
                     }
-                    PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
+
+                    IntroFrame--;
                 }
-                Hitstop--;
+                if (_players[0].player != null)
+                {
+                    for (int i = 0; i < _players.Length; i++)
+                    {
+                        bool skip = false;
+                        bool up = false;
+                        bool down = false;
+                        bool left = false;
+                        bool right = false;
+                        bool light = false;
+                        bool medium = false;
+                        bool heavy = false;
+                        bool arcana = false;
+                        bool grab = false;
+                        bool shadow = false;
+                        bool blueFrenzy = false;
+                        bool redFrenzy = false;
+                        bool dashForward = false;
+                        bool dashBackward = false;
+                        if ((disconnect_flags & (1 << i)) != 0)
+                        {
+                            //Handle AI
+                        }
+                        else
+                        {
+                            InputSimulation.ParseInputs(inputs[i], out skip, out up, out down, out left, out right, out light, out medium, out heavy, out arcana,
+                             out grab, out shadow, out blueFrenzy, out redFrenzy, out dashForward, out dashBackward);
+                        }
+                        PlayerLogic(i, skip, up, down, left, right, light, medium, heavy, arcana, grab, shadow, blueFrenzy, redFrenzy, dashForward, dashBackward);
+                    }
+                    if (GameSimulation.Run)
+                    {
+                        if (Framenumber % 60 == 0)
+                        {
+                            if (Timer > 0 && !SceneSettings.IsTrainingMode)
+                            {
+                                Timer--;
+                                if (Timer == 0)
+                                {
+                                    _players[0].CurrentState.EnterState(_players[0], "GiveUp");
+                                    _players[1].CurrentState.EnterState(_players[1], "GiveUp");
+                                }
+                            }
+                        }
+                    }
+                    Hitstop--;
+                }
             }
+
         }
     }
 

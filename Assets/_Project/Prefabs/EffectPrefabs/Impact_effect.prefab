@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2750352054325948049}
   - component: {fileID: -7550055698016414408}
   - component: {fileID: -4337868581526163580}
+  - component: {fileID: 6693989676570017292}
   m_Layer: 0
   m_Name: Impact_effect
   m_TagString: Untagged
@@ -115,3 +116,28 @@ MonoBehaviour:
   OnCurrentAnimationFinished:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6693989676570017292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6697712921357175186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioMixerGroup: {fileID: -3276983034543540519, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
+  _sounds:
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: bd4014f34eadb954c8f82fbc98e0bd6b, type: 3}
+    volume: 0.8
+    pitch: 1
+    name: Destroyed
+    loop: 0
+    playOnAwake: 1
+    playOneInstanceAtATime: 0
+  _sounds3D: []
+  _soundGroups: []
+  _soundGroups3D: []

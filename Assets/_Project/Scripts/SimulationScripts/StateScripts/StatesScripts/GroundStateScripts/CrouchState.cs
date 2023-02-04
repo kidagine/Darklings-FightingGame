@@ -24,8 +24,7 @@ public class CrouchState : GroundParentState
     {
         if (player.direction.y >= 0)
         {
-            player.enter = false;
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
 }

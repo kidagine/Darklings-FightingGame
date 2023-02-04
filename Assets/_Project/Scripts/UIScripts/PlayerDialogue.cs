@@ -25,6 +25,13 @@ public class PlayerDialogue : MonoBehaviour
 
     public void Initialize(bool isPlayerOne, DialogueSO dialogue, CharacterTypeEnum opponentCharacter)
     {
+        Debug.Log("dia");
+        _sentence = null;
+        _skip = false;
+        _endDialogueFrame = 0;
+        _midDialogueFrame = 0;
+        _dialoguePlayFrame = 0;
+        _dialogueText.text = "";
         _isPlayerOne = isPlayerOne;
         _dialogue = dialogue;
         _opponentCharacter = opponentCharacter;

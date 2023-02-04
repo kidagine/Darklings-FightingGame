@@ -32,6 +32,13 @@ public class OnlineHostMenu : BaseMenu
         {
             _nameplates[0].SetDemonData(_onlineSetupMenu.DemonData);
             _lobbyId = await _networkManager.CreateLobby(_onlineSetupMenu.DemonData);
+            if (_lobbyId == null)
+            {
+                _creatingLobby.SetActive(false);
+                _lobbyCreated.SetActive(true);
+                Hide();
+                return;
+            }
             _lobbyIdText.text = $"Lobby ID: {_lobbyId}";
             _creatingLobby.SetActive(false);
             _lobbyCreated.SetActive(true);
@@ -162,7 +169,9 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.ColorOne = demonDatas[0].color;
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.SceneSettingsDecide = true;
-        SceneSettings.StageIndex = 0;
+        SceneSettings.Bit1 = false;
+        SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
+        SceneSettings.MusicName = "Random";
         _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
         // if (Hosting)
         //     _fadeHandler.onFadeEnd.AddListener(() => NetworkManager.Singleton.SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));

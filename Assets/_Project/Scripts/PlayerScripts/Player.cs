@@ -104,7 +104,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         int index = IsPlayerOne ? 0 : 1;
         GameSimulation._players[index].position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)GameSimulation._players[index].position.x, (DemonicsFloat)GameSimulation._players[index].position.y));
-        SetInvinsible(false);
         transform.rotation = Quaternion.identity;
         _effectsParent.gameObject.SetActive(true);
         SetHurtbox(true);
@@ -152,48 +151,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         Health = playerStats.maxHealth;
         HealthRecoverable = playerStats.maxHealth;
         _playerUI.SetHealth(Health);
-    }
-
-    private void AssistCharge()
-    {
-        // if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameplayManager.Instance.HasGameStarted)
-        // {
-        //     AssistGauge += (DemonicsFloat)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
-        //     if (GameplayManager.Instance.InfiniteAssist)
-        //     {
-        //         AssistGauge = (DemonicsFloat)1.0f;
-        //     }
-        // }
-    }
-
-    public void ArcanaGain(DemonicsFloat arcana)
-    {
-        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameplayManager.Instance.HasGameStarted)
-        {
-            ArcanaGauge += arcana;
-            _playerUI.SetArcana((float)ArcanaGauge);
-        }
-    }
-
-    public void HealthGain()
-    {
-        Health = HealthRecoverable;
-        _playerUI.UpdateHealth();
-        _playerUI.CheckDemonLimit(Health);
-    }
-
-    public void SetHealth(int value, bool noRecoverable = false)
-    {
-        Health -= value;
-        if (noRecoverable)
-        {
-            HealthRecoverable -= value;
-        }
-        else
-        {
-        }
-        // _playerUI.SetHealth(Health);
-        // _playerUI.SetRecoverableHealth(HealthRecoverable);
     }
 
     public void StartShakeContact()
@@ -259,11 +216,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return (DemonicsFloat)1;
     }
 
-    public void DecreaseArcana(DemonicsFloat value)
-    {
-        AssistGauge -= value;
-    }
-
     public void StopComboTimer()
     {
         // _comboTimerWaitFrames = 0;
@@ -275,24 +227,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void RecallAssist()
     {
         _assist.Recall();
-    }
-
-    public int CalculateDamage(AttackSO attack)
-    {
-        int comboCount = OtherPlayerUI.CurrentComboCount;
-        DemonicsFloat calculatedDamage = ((DemonicsFloat)attack.damage / (DemonicsFloat)playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
-        if (comboCount > 1)
-        {
-            DemonicsFloat damageScale = (DemonicsFloat)1;
-            for (int i = 0; i < comboCount; i++)
-            {
-                damageScale *= _damageDecay;
-            }
-            calculatedDamage *= damageScale;
-        }
-        int calculatedIntDamage = (int)calculatedDamage;
-        OtherPlayer.SetResultAttack(calculatedIntDamage, attack);
-        return calculatedIntDamage;
     }
 
     public void SetResultAttack(int calculatedDamage, AttackSO attack)
@@ -335,34 +269,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return hurtbox.TakeDamage(CurrentAttack);
     }
 
-    public virtual void CreateEffect(Vector2 projectilePosition, bool isProjectile = false)
-    {
-        // if (CurrentAttack.hitEffect != null)
-        // {
-        //     // GameObject hitEffect;
-        //     // hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
-        //     // hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
-        //     // hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
-        //     // hitEffect.transform.localScale = new Vector2(-1, 1);
-        //     // if (isProjectile)
-        //     // {
-        //     //     hitEffect.transform.SetParent(null);
-        //     //     hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
-        //     //     hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition, false);
-        //     //     hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
-        //     //     hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
-        //     // }
-        // }
-    }
-
-    public void SetInvinsible(bool state)
-    {
-        // Invisible = state;
-        // PlayerAnimator.SetInvinsible(state);
-        // SetHurtbox(!state);
-        // SetPushboxTrigger(state);
-    }
-
     public bool TakeDamage(AttackSO attack)
     {
         // if (attack.causesKnockdown || attack.causesSoftKnockdown && !_playerMovement.IsGrounded)
@@ -397,12 +303,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         // return _playerStateManager.TryToHurtState(attack);
     }
 
-    public void SetSpriteOrderPriority()
-    {
-        PlayerAnimator.SetSpriteOrder(1);
-        OtherPlayer.PlayerAnimator.SetSpriteOrder(0);
-    }
-
     public void EnterHitstop()
     {
         _playerMovement.EnterHitstop();
@@ -424,39 +324,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return _playerMovement.IsInHitstop;
     }
 
-    private bool CanBlock(AttackSO attack)
-    {
-        if (attack.attackTypeEnum == AttackTypeEnum.Break)
-        {
-            if (BlockingLeftOrRight())
-            {
-                _playerUI.DisplayNotification(NotificationTypeEnum.GuardBreak);
-            }
-            return false;
-        }
-
-        if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && TrainingSettings.CpuOff)
-        {
-            return true;
-        }
-        if (BlockingLeftOrRight())
-        {
-            if (attack.attackTypeEnum == AttackTypeEnum.Overhead && !_controller.ActiveController.Crouch())
-            {
-                return true;
-            }
-            if (attack.attackTypeEnum == AttackTypeEnum.Mid)
-            {
-                return true;
-            }
-            if (attack.attackTypeEnum == AttackTypeEnum.Low && _controller.ActiveController.Crouch())
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public bool BlockingLeftOrRight()
     {
         if (transform.localScale.x == 1 && _controller.ActiveController.InputDirection.x < 0
@@ -471,11 +338,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         Lives--;
         _playerUI.SetLives();
-    }
-
-    public void SetPushboxTrigger(bool state)
-    {
-        _groundPushbox.SetIsTrigger(state);
     }
 
     public void SetHurtbox(bool state)
@@ -518,7 +380,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public int ConnectionProgress { get; private set; }
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        Health = playerGs.health;
         _playerMovement.SetPosition(playerGs.position);
         _playerUI.SetHealth(playerGs.health);
         _playerUI.SetRecoverableHealth(playerGs.healthRecoverable);

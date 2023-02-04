@@ -58,8 +58,7 @@ public class BlueFrenzyState : State
     {
         if (player.attackFrames <= 0)
         {
-            player.enter = false;
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
 
@@ -88,7 +87,6 @@ public class BlueFrenzyState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        player.enter = false;
         player.attackHurtNetwork = player.otherPlayer.attackNetwork;
         if (DemonicsPhysics.IsInCorner(player))
         {
@@ -101,28 +99,28 @@ public class BlueFrenzyState : State
         {
             if (player.direction.y < 0)
             {
-                player.state = "BlockLow";
+                EnterState(player, "BlockLow");
             }
             else
             {
-                player.state = "Block";
+                EnterState(player, "Block");
             }
         }
         else
         {
             if (player.attackHurtNetwork.hardKnockdown)
             {
-                player.state = "Airborne";
+                EnterState(player, "Airborne");
             }
             else
             {
                 if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
                 {
-                    player.state = "Hurt";
+                    EnterState(player, "Hurt");
                 }
                 else
                 {
-                    player.state = "HurtAir";
+                    EnterState(player, "HurtAir");
                 }
             }
         }

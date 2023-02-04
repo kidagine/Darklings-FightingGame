@@ -35,9 +35,8 @@ public class RunState : GroundParentState
     {
         if (player.direction.y > 0)
         {
-            player.enter = false;
             player.soundStop = "Run";
-            player.state = "Jump";
+            EnterState(player, "Jump");
         }
     }
     private void ToJumpForwardState(PlayerNetwork player)
@@ -45,18 +44,16 @@ public class RunState : GroundParentState
         if (player.direction.y > 0 && player.direction.x != 0)
         {
             player.jumpDirection = (int)player.direction.x;
-            player.enter = false;
             player.soundStop = "Run";
-            player.state = "JumpForward";
+            EnterState(player, "JumpForward");
         }
     }
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.direction.x == 0)
         {
-            player.enter = false;
             player.soundStop = "Run";
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
 }

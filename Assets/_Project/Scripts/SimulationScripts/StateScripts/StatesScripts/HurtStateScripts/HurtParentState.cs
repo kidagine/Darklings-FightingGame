@@ -48,15 +48,22 @@ public class HurtParentState : State
         player.knockback = 0;
         player.pushbackStart = player.position;
         player.pushbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
-        // if (player.health <= 0)
-        // {
-        //     player.enter = false;
-        //     player.state = "Death";
-        // }
+        if (player.health <= 0)
+        {
+            player.invincible = true;
+            CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 30, timer = 0.4f });
+            if (!SceneSettings.IsTrainingMode)
+            {
+                GameSimulation.GlobalHitstop = 4;
+                GameSimulation.Run = false;
+                GameSimulation.Timer = 99;
+            }
+        }
     }
 
     protected virtual void AfterHitstop(PlayerNetwork player)
     {
+        GameSimulation.GlobalHitstop = 1;
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         if (player.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.attackHurtNetwork.knockbackDuration)
         {

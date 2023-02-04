@@ -16,66 +16,59 @@ public class GroundParentState : State
         ToAttackState(player);
         ToArcanaState(player);
         Shadow(player);
-        if (ToHurtState(player))
-        {
-            return;
-        }
+        ToHurtState(player);
     }
 
     private void ToBlueFrenzyState(PlayerNetwork player)
     {
-        if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Parry)
+        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Parry)
         {
-            player.enter = false;
-            player.state = "BlueFrenzy";
+            EnterState(player, "BlueFrenzy");
         }
     }
     public void ToAttackState(PlayerNetwork player)
     {
-        if (player.inputBuffer.inputItems[0].pressed)
+        if (player.inputBuffer.CurrentInput().pressed)
         {
             Attack(player);
         }
     }
     public void ToArcanaState(PlayerNetwork player)
     {
-        if (player.inputBuffer.inputItems[0].pressed)
+        if (player.inputBuffer.CurrentInput().pressed)
         {
             Arcana(player);
         }
     }
     private void ToRedFrenzyState(PlayerNetwork player)
     {
-        if (player.inputBuffer.inputItems[0].pressed)
+        if (player.inputBuffer.CurrentInput().pressed)
         {
             RedFrenzy(player);
         }
     }
     private void ToGrabState(PlayerNetwork player)
     {
-        if (player.inputBuffer.inputItems[0].pressed && player.inputBuffer.inputItems[0].inputEnum == InputEnum.Throw)
+        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Throw)
         {
             AttackSO attack = PlayerComboSystem.GetThrow(player.playerStats);
             player.attackNetwork = SetAttack(player.attackInput, attack);
-            player.enter = false;
-            player.state = "Grab";
+            EnterState(player, "Grab");
         }
     }
-    private bool ToHurtState(PlayerNetwork player)
+    private void ToHurtState(PlayerNetwork player)
     {
         if (IsColliding(player))
         {
-            player.enter = false;
             if (player.attackHurtNetwork.moveName == "Shadowbreak")
             {
-                player.enter = false;
-                player.state = "Knockback";
-                return false;
+                EnterState(player, "Knockback");
+                return;
             }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
-                player.state = "Grabbed";
-                return false;
+                EnterState(player, "Grabbed");
+                return;
             }
             if (DemonicsPhysics.IsInCorner(player))
             {
@@ -88,46 +81,31 @@ public class GroundParentState : State
             {
                 if (player.direction.y < 0)
                 {
-                    player.state = "BlockLow";
+                    EnterState(player, "BlockLow");
                 }
                 else
                 {
-                    player.state = "Block";
+                    EnterState(player, "Block");
                 }
             }
             else
             {
                 if (player.attackHurtNetwork.hardKnockdown)
                 {
-                    player.state = "Airborne";
+                    EnterState(player, "Airborne");
                 }
                 else
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
                     {
-                        player.state = "Hurt";
+                        EnterState(player, "Hurt");
                     }
                     else
                     {
-                        player.state = "HurtAir";
+                        EnterState(player, "HurtAir");
                     }
                 }
             }
-            return true;
         }
-        return false;
-    }
-    public override bool ToBlockState(PlayerNetwork player, AttackSO attack)
-    {
-        player.enter = false;
-        if (player.direction.y < 0)
-        {
-            player.state = "BlockLow";
-        }
-        else
-        {
-            player.state = "Block";
-        }
-        return true;
     }
 }

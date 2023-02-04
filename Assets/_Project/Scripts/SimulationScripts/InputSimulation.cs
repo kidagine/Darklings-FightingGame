@@ -80,6 +80,7 @@ public class InputSimulation
         }
         if (id == 1)
         {
+            Debug.Log("bbbb");
             if (Input.anyKeyDown)
             {
                 input |= NetworkInput.SKIP_BYTE;
@@ -154,7 +155,7 @@ public class InputSimulation
         return input;
     }
 
-    public static void ParseInputs(long inputs, int i, out bool skip, out bool up, out bool down, out bool left, out bool right, out bool light, out bool medium,
+    public static void ParseInputs(long inputs, out bool skip, out bool up, out bool down, out bool left, out bool right, out bool light, out bool medium,
     out bool heavy, out bool arcana, out bool grab, out bool shadow, out bool blueFrenzy, out bool redFrenzy, out bool dashForward, out bool dashBackward)
     {
         if ((inputs & NetworkInput.SKIP_BYTE) != 0)

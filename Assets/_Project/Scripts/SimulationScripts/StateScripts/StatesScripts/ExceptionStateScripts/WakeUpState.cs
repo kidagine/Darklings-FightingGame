@@ -18,8 +18,7 @@ public class WakeUpState : State
         if (player.animationFrames >= DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation))
         {
             player.hurtbox.active = true;
-            player.enter = false;
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
 }

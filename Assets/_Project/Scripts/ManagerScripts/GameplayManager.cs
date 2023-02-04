@@ -41,6 +41,7 @@ public class GameplayManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] private ConnectionWidget _connectionWidget = default;
     [SerializeField] private CinemachineTargetGroup _targetGroup = default;
+    [SerializeField] private GameSimulationView _gameSimulationView = default;
     [SerializeField] private IntroUI _introUI = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
@@ -74,6 +75,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private AssistStatsSO[] _assists = default;
     [SerializeField] private BaseMenu _matchOverMenu = default;
     [SerializeField] private BaseMenu _matchOverReplayMenu = default;
+    [SerializeField] private BaseMenu _matchOverOnlineMenu = default;
     [SerializeField] private Animator _readyAnimator = default;
     [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [SerializeField] private Audio _musicAudio = default;
@@ -209,19 +211,19 @@ public class GameplayManager : MonoBehaviour
         playerTwoObject.SetActive(true);
         if (SceneSettings.ControllerOne != null && _controllerOneType != ControllerTypeEnum.Cpu)
         {
-            _playerOneController.SetControllerToPlayer();
+            _playerOneController.SetControllerToPlayer(0);
         }
         else
         {
-            _playerOneController.SetControllerToCpu();
+            _playerOneController.SetControllerToCpu(0);
         }
         if (SceneSettings.ControllerTwo != null && _controllerTwoType != ControllerTypeEnum.Cpu)
         {
-            _playerTwoController.SetControllerToPlayer();
+            _playerTwoController.SetControllerToPlayer(1);
         }
         else
         {
-            _playerTwoController.SetControllerToCpu();
+            _playerTwoController.SetControllerToCpu(1);
         }
         PlayerOne.SetController();
         PlayerTwo.SetController();
@@ -429,6 +431,7 @@ public class GameplayManager : MonoBehaviour
         {
             _networkCanvas.SetActive(true);
         }
+        ReplayManager.Instance.StartReplay();
     }
 
     public void SetOnlineNames(string playerOne, string playerTwo)
@@ -439,32 +442,31 @@ public class GameplayManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (HasGameStarted && !_isTrainingMode)
-        {
-            _countdownFrames--;
-            if (_countdownFrames == 0)
-            {
-                _countdownFrames = 60;
-                _countdown -= 1;
-                _countdownText.text = Mathf.Round(_countdown).ToString();
-                if (_countdown <= 0)
-                {
-                    _timerMainAnimator.Rebind();
-                    RoundOver(true);
-                }
-                else if (_countdown <= 10)
-                {
-                    _timerMainAnimator.SetTrigger("TimerLow");
-                }
-            }
-        }
         RunHitStop();
         RunReady();
         RunRoundOver();
     }
+    public void SetCountdown(int timer)
+    {
+        if (!_isTrainingMode && GameSimulation.Run)
+        {
+            _countdownText.text = timer.ToString();
+            if (timer <= 0)
+            {
+                _timerMainAnimator.Rebind();
+                RoundOver(true);
+            }
+            else if (timer <= 10)
+            {
+                _timerMainAnimator.SetTrigger("TimerLow");
+            }
+        }
+    }
+
+
     public void SkipIntro()
     {
-        if (IsDialogueRunning && !SceneSettings.ReplayMode || !NetworkInput.IS_LOCAL)
+        if (IsDialogueRunning || !NetworkInput.IS_LOCAL)
         {
             ReplayManager.Instance.Skip = DemonicsWorld.Frame;
             _playerOneDialogue.StopDialogue();
@@ -497,6 +499,8 @@ public class GameplayManager : MonoBehaviour
         _currentRound = 1;
         if (SceneSettings.ReplayMode)
         {
+            GameplayManager.Instance.PausedController = _playerOneController;
+            DisableAllInput(true);
             _matchOverReplayMenu.Show();
         }
         else
@@ -505,12 +509,17 @@ public class GameplayManager : MonoBehaviour
             {
                 if (GameManager.Instance.IsRunning)
                 {
-                    GameManager.Instance.Shutdown();
+                    // GameManager.Instance.Shutdown();
                 }
-                SceneManager.LoadScene("2. MainMenuScene");
+                GameplayManager.Instance.PausedController = _playerOneController;
+                DisableAllInput(true);
+                _matchOverOnlineMenu.Show();
+                //SceneManager.LoadScene("2. MainMenuScene");
             }
             else
             {
+                GameplayManager.Instance.PausedController = _playerOneController;
+                DisableAllInput(true);
                 _matchOverMenu.Show();
             }
             // if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
@@ -528,9 +537,27 @@ public class GameplayManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
+    public void DisconnectOnline()
+    {
+        GameManager.Instance.DisconnectPlayer(SceneSettings.OnlineIndex);
+    }
+
+    public void ConnectOnline()
+    {
+        _fadeHandler.StartFadeTransition(true, 0.01f);
+        PlayerOne.ResetLives();
+        PlayerTwo.ResetLives();
+        _targetGroup.m_Targets[0].weight = 0.5f;
+        _targetGroup.m_Targets[1].weight = 0.5f;
+        EnableAllInput();
+        Time.timeScale = 1;
+        GameManager.Instance.Shutdown();
+        _matchOverOnlineMenu.Hide();
+        _connectionWidget.StartTe();
+    }
+
     public virtual void StartRound()
     {
-        GameSimulation.IntroFrame = 150;
         _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
         {
@@ -560,7 +587,6 @@ public class GameplayManager : MonoBehaviour
 
     private void StartTrainingRound()
     {
-        //  GameSimulation.Reset();
         PlayerOne.ResetPlayer(new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT));
         PlayerTwo.ResetPlayer(new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT));
         PlayerOne.ResetLives();
@@ -656,7 +682,7 @@ public class GameplayManager : MonoBehaviour
             else
             {
                 string roundOverCause;
-                if (PlayerOne.Health == PlayerTwo.Health)
+                if (GameSimulation._players[0].health <= 0 && GameSimulation._players[1].health <= 0)
                 {
                     roundOverCause = "DOUBLE KO";
                     if (PlayerOne.Lives > 1 && PlayerTwo.Lives > 1)
@@ -686,8 +712,8 @@ public class GameplayManager : MonoBehaviour
                 }
                 else
                 {
-                    if (PlayerOne.PlayerStats.maxHealth == PlayerOne.Health
-                        || PlayerTwo.PlayerStats.maxHealth == PlayerTwo.Health)
+                    if (PlayerOne.PlayerStats.maxHealth == GameSimulation._players[0].health
+                        || PlayerTwo.PlayerStats.maxHealth == GameSimulation._players[1].health)
                     {
                         roundOverCause = "PERFECT KO";
                     }
@@ -695,13 +721,13 @@ public class GameplayManager : MonoBehaviour
                     {
                         roundOverCause = "KO";
                     }
-                    if (PlayerOne.Health > PlayerTwo.Health)
+                    if (GameSimulation._players[0].health > GameSimulation._players[1].health)
                     {
                         _playerOneWon = true;
                         PlayerTwo.LoseLife();
 
                     }
-                    else if (PlayerTwo.Health > PlayerOne.Health)
+                    else if (GameSimulation._players[1].health > GameSimulation._players[0].health)
                     {
                         _playerTwoWon = true;
                         PlayerOne.LoseLife();
@@ -902,15 +928,15 @@ public class GameplayManager : MonoBehaviour
         {
             if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToCpu();
-                _playerTwoController.SetControllerToPlayer();
+                _playerOneController.SetControllerToCpu(0);
+                _playerTwoController.SetControllerToPlayer(1);
                 _playerOneInput.enabled = false;
                 _playerTwoInput.enabled = true;
             }
             else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToPlayer();
-                _playerTwoController.SetControllerToCpu();
+                _playerOneController.SetControllerToPlayer(0);
+                _playerTwoController.SetControllerToCpu(1);
                 _playerOneInput.enabled = true;
                 _playerTwoInput.enabled = false;
             }
@@ -931,15 +957,15 @@ public class GameplayManager : MonoBehaviour
         {
             if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToCpu();
-                _playerTwoController.SetControllerToPlayer();
+                _playerOneController.SetControllerToCpu(0);
+                _playerTwoController.SetControllerToPlayer(1);
                 _playerOneInput.enabled = false;
                 _playerTwoInput.enabled = true;
             }
             else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToPlayer();
-                _playerTwoController.SetControllerToCpu();
+                _playerOneController.SetControllerToPlayer(0);
+                _playerTwoController.SetControllerToCpu(1);
                 _playerOneInput.enabled = true;
                 _playerTwoInput.enabled = false;
             }
@@ -1028,6 +1054,7 @@ public class GameplayManager : MonoBehaviour
     public void StartMatch()
     {
         Time.timeScale = 1;
+        GameplayManager.Instance.EnableAllInput();
         if (SceneSettings.RandomStage)
         {
             _currentStage.SetActive(false);

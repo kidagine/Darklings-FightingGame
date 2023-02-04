@@ -22,7 +22,6 @@ public class DashState : State
             player.dashFrames = 15;
             player.velocity = new DemonicsVector2(player.dashDirection * player.playerStats.DashForce, 0);
         }
-        player.dashDirection = 0;
         ToHurtState(player);
         Dash(player);
     }
@@ -51,15 +50,16 @@ public class DashState : State
         else
         {
             player.velocity = DemonicsVector2.Zero;
-            player.enter = false;
-            if (player.direction.x * player.flip > 0)
+            if (player.direction.x * player.flip > 0 && player.dashDirection == player.flip)
             {
+                player.dashDirection = 0;
                 player.sound = "Run";
-                player.state = "Run";
+                EnterState(player, "Run");
             }
             else
             {
-                player.state = "Idle";
+                player.dashDirection = 0;
+                EnterState(player, "Idle");
             }
         }
     }
@@ -67,17 +67,14 @@ public class DashState : State
     {
         if (IsColliding(player))
         {
-            player.enter = false;
+            player.dashDirection = 0;
             if (player.attackHurtNetwork.moveName == "Shadowbreak")
             {
-                player.enter = false;
-                player.state = "Knockback";
-                return;
+                EnterState(player, "Knockback");
             }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
-                player.state = "Grabbed";
-                return;
+                EnterState(player, "Grabbed");
             }
             if (DemonicsPhysics.IsInCorner(player))
             {
@@ -90,28 +87,28 @@ public class DashState : State
             {
                 if (player.direction.y < 0)
                 {
-                    player.state = "BlockLow";
+                    EnterState(player, "BlockLow");
                 }
                 else
                 {
-                    player.state = "Block";
+                    EnterState(player, "Block");
                 }
             }
             else
             {
                 if (player.attackHurtNetwork.hardKnockdown)
                 {
-                    player.state = "Airborne";
+                    EnterState(player, "Airborne");
                 }
                 else
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
                     {
-                        player.state = "Hurt";
+                        EnterState(player, "Hurt");
                     }
                     else
                     {
-                        player.state = "HurtAir";
+                        EnterState(player, "HurtAir");
                     }
                 }
             }

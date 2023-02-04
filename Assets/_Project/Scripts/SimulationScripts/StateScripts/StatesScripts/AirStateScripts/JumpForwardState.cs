@@ -23,8 +23,7 @@ public class JumpForwardState : AirParentState
     {
         if (player.velocity.y <= (DemonicsFloat)0)
         {
-            player.enter = false;
-            player.state = "Fall";
+            EnterState(player, "Fall");
         }
     }
 }

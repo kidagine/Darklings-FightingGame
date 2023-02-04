@@ -13,12 +13,12 @@ public class WalkState : GroundParentState
         player.animation = "Walk";
         player.animationFrames++;
         player.velocity = new DemonicsVector2(player.direction.x * player.playerStats.SpeedWalk, 0);
-        // bool t = player.player.PlayerAnimator.GetFootstep(player.animation, player.animationFrames);
-        // if (player.wasWallSplatted != t)
-        // {
-        //     player.wasWallSplatted = t;
-        //     player.soundGroup = "Footsteps";
-        // }
+        bool footstep = player.player.PlayerAnimator.GetFootstep(player.animation, player.animationFrames, out int cel);
+        if (cel != player.cel && footstep)
+        {
+            player.cel = cel;
+            player.soundGroup = "Footsteps";
+        }
         CheckFlip(player);
         base.UpdateLogic(player);
         ToIdleState(player);
@@ -30,16 +30,14 @@ public class WalkState : GroundParentState
     {
         if (player.direction.y < 0)
         {
-            player.enter = false;
-            player.state = "Crouch";
+            EnterState(player, "Crouch");
         }
     }
     private void ToJumpState(PlayerNetwork player)
     {
         if (player.direction.y > 0)
         {
-            player.enter = false;
-            player.state = "Jump";
+            EnterState(player, "Jump");
         }
     }
     private void ToJumpForwardState(PlayerNetwork player)
@@ -47,16 +45,14 @@ public class WalkState : GroundParentState
         if (player.direction.y > 0 && player.direction.x != 0)
         {
             player.jumpDirection = (int)player.direction.x;
-            player.enter = false;
-            player.state = "JumpForward";
+            EnterState(player, "JumpForward");
         }
     }
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.direction.x == 0)
         {
-            player.enter = false;
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
 }

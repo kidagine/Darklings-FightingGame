@@ -19,6 +19,14 @@ public class OnlineClientMenu : BaseMenu
         _lobbyJoinGroup.SetActive(false);
         string lobbyId = _lobbyIdInputField.text;
         Lobby lobby = await _networkManager.JoinLobby(_onlineSetupMenu.DemonData, lobbyId);
+        if (lobby == null)
+        {
+            _lobbyIdInputField.text = "";
+            _joiningLobbyGroup.SetActive(false);
+            _lobbyJoinGroup.SetActive(true);
+            Hide();
+            return;
+        }
         List<DemonData> demonDatas = new List<DemonData>();
         foreach (var player in lobby.Players)
         {

@@ -5,7 +5,6 @@ public class BlockState : BlockParentState
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
-        player.position = new DemonicsVector2(player.position.x, DemonicsPhysics.GROUND_POINT);
         player.animation = "Block";
         player.animationFrames++;
         ToIdleState(player);
@@ -16,8 +15,7 @@ public class BlockState : BlockParentState
         {
             BlockParentState.skipKnockback = false;
             player.player.StopShakeCoroutine();
-            player.enter = false;
-            player.state = "Idle";
+            EnterState(player, "Idle");
         }
     }
     protected override void OnEnter(PlayerNetwork player)

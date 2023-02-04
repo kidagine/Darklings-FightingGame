@@ -21,6 +21,7 @@ public class PlayerNetwork
     public InputDirectionEnum inputDirection;
     public string animation;
     public int animationFrames;
+    public int cel;
     public int attackFrames;
     public int stunFrames;
     public int combo;
@@ -39,6 +40,11 @@ public class PlayerNetwork
     public float jump;
     public bool isCrouch;
     public bool isAir;
+    public bool upHold;
+    public bool downHold;
+    public bool leftHold;
+    public bool rightHold;
+    public bool isAi;
     public int dashDirection;
     public int jumpDirection;
     public int dashFrames;
@@ -55,6 +61,7 @@ public class PlayerNetwork
     public bool wasWallSplatted;
     public bool canChainAttack;
     public bool hitstop;
+    public bool juggleBounce;
     public string state;
     public int spriteOrder;
     public State CurrentState;
@@ -81,6 +88,7 @@ public class PlayerNetwork
         bw.Write(direction.y);
         bw.Write(animation);
         bw.Write(animationFrames);
+        bw.Write(cel);
         bw.Write(attackFrames);
         bw.Write(stunFrames);
         bw.Write((int)attackInput);
@@ -99,6 +107,10 @@ public class PlayerNetwork
         bw.Write((int)comboTimerStarter);
         bw.Write(isCrouch);
         bw.Write(isAir);
+        bw.Write(upHold);
+        bw.Write(downHold);
+        bw.Write(leftHold);
+        bw.Write(rightHold);
         bw.Write(hasJumped);
         bw.Write(pushbackDuration);
         bw.Write(canJump);
@@ -113,6 +125,7 @@ public class PlayerNetwork
         bw.Write(hitstop);
         bw.Write(inPushback);
         bw.Write(canChainAttack);
+        bw.Write(juggleBounce);
         bw.Write(flip);
         bw.Write(spriteOrder);
         bw.Write(state);
@@ -149,6 +162,7 @@ public class PlayerNetwork
         inputDirection = (InputDirectionEnum)br.ReadInt32();
         animation = br.ReadString();
         animationFrames = br.ReadInt32();
+        cel = br.ReadInt32();
         attackFrames = br.ReadInt32();
         stunFrames = br.ReadInt32();
         attackInput = (InputEnum)br.ReadInt32();
@@ -167,6 +181,10 @@ public class PlayerNetwork
         comboTimerStarter = (ComboTimerStarterEnum)br.ReadInt32();
         isCrouch = br.ReadBoolean();
         isAir = br.ReadBoolean();
+        upHold = br.ReadBoolean();
+        downHold = br.ReadBoolean();
+        leftHold = br.ReadBoolean();
+        rightHold = br.ReadBoolean();
         hasJumped = br.ReadBoolean();
         pushbackDuration = br.ReadInt32();
         canJump = br.ReadBoolean();
@@ -181,6 +199,7 @@ public class PlayerNetwork
         hitstop = br.ReadBoolean();
         inPushback = br.ReadBoolean();
         canChainAttack = br.ReadBoolean();
+        juggleBounce = br.ReadBoolean();
         flip = br.ReadInt32();
         spriteOrder = br.ReadInt32();
         state = br.ReadString();

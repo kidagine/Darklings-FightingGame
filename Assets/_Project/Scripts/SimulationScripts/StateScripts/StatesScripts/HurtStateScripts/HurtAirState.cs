@@ -19,6 +19,10 @@ public class HurtAirState : HurtParentState
 
     protected override void AfterHitstop(PlayerNetwork player)
     {
+        if (player.stunFrames == player.attackHurtNetwork.hitStun)
+        {
+            player.velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)2);
+        }
         base.AfterHitstop(player);
         ToIdleState(player);
     }
@@ -31,19 +35,24 @@ public class HurtAirState : HurtParentState
         if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
             player.player.StopShakeCoroutine();
+            if (player.health <= 0)
+            {
+                EnterState(player, "Death");
+                return;
+            }
             if (player.stunFrames <= 0 || player.comboTimer <= 0)
             {
                 ResetCombo(player);
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-                player.enter = false;
-                player.state = "Idle";
+                EnterState(player, "Idle");
+
             }
             else
             {
                 player.stunFrames = player.attackHurtNetwork.hitStun;
                 player.velocity = DemonicsVector2.Zero;
                 player.animationFrames = 0;
-                player.state = "Hurt";
+                EnterState(player, "Hurt", true);
             }
         }
     }
@@ -53,8 +62,7 @@ public class HurtAirState : HurtParentState
         {
             ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-            player.enter = false;
-            player.state = "Fall";
+            EnterState(player, "Fall");
         }
     }
     private void ToHurtState(PlayerNetwork player)
@@ -63,19 +71,18 @@ public class HurtAirState : HurtParentState
         {
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-            player.enter = false;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
-                player.state = "Grabbed";
+                EnterState(player, "Grabbed");
                 return;
             }
             if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown)
             {
-                player.state = "Airborne";
+                EnterState(player, "Airborne");
             }
             else
             {
-                player.state = "HurtAir";
+                EnterState(player, "HurtAir");
             }
         }
     }

@@ -23,20 +23,19 @@ public class HurtAirborneState : HurtParentState
             CheckFlip(player);
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-            player.enter = false;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
-                player.state = "Grabbed";
+                EnterState(player, "Grabbed");
                 return;
             }
             if (player.attackHurtNetwork.hardKnockdown)
             {
-                player.state = "Airborne";
+                EnterState(player, "Airborne");
             }
             else
             {
                 player.comboLocked = false;
-                player.state = "HurtAir";
+                EnterState(player, "HurtAir");
             }
         }
     }
@@ -44,12 +43,15 @@ public class HurtAirborneState : HurtParentState
     {
         if (player.attackHurtNetwork.hardKnockdown && !player.wasWallSplatted)
         {
+            if (player.health <= 0)
+            {
+                return;
+            }
             if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.flip == 1
             || player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.flip == -1)
             {
                 player.player.StopShakeCoroutine();
-                player.enter = false;
-                player.state = "WallSplat";
+                EnterState(player, "WallSplat");
             }
         }
     }
@@ -61,14 +63,18 @@ public class HurtAirborneState : HurtParentState
             ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.wasWallSplatted = false;
-            player.enter = false;
+            if (player.health <= 0)
+            {
+                EnterState(player, "Death");
+                return;
+            }
             if (player.attackHurtNetwork.softKnockdown)
             {
-                player.state = "SoftKnockdown";
+                EnterState(player, "SoftKnockdown");
             }
             else
             {
-                player.state = "HardKnockdown";
+                EnterState(player, "HardKnockdown");
             }
         }
     }
