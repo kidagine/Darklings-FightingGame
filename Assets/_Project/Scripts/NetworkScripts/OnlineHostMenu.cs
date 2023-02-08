@@ -17,6 +17,7 @@ public class OnlineHostMenu : BaseMenu
     [SerializeField] private DemonNameplate[] _nameplates = default;
     [SerializeField] private TextMeshProUGUI _readyText = default;
     [SerializeField] private TextMeshProUGUI _lobbyIdText = default;
+    [SerializeField] private TextMeshProUGUI _currentControllerText = default;
     [SerializeField] private GameObject _creatingLobby = default;
     [SerializeField] private GameObject _lobbyCreated = default;
     [SerializeField] private GameObject _exitingLobby = default;
@@ -51,6 +52,11 @@ public class OnlineHostMenu : BaseMenu
             _creatingLobby.SetActive(false);
             _lobbyCreated.SetActive(true);
         }
+    }
+
+    private void Update()
+    {
+        _currentControllerText.text = $"Current Controller: {_playerInput.currentControlScheme}";
     }
 
     private void UpdateLobby()
@@ -160,8 +166,8 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.ControllerOne = _playerInput.devices[0];
         SceneSettings.ControllerTwo = _playerInput.devices[0];
-        SceneSettings.ControllerOneScheme = "Keyboard";
-        SceneSettings.ControllerTwoScheme = "Keyboard";
+        SceneSettings.ControllerOneScheme = _playerInput.currentControlScheme;
+        SceneSettings.ControllerTwoScheme = _playerInput.currentControlScheme;
         SceneSettings.PlayerOne = demonDatas[0].character;
         SceneSettings.PlayerTwo = demonDatas[1].character;
         SceneSettings.AssistOne = demonDatas[0].assist;
