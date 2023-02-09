@@ -21,7 +21,7 @@ public class OnlineHostMenu : BaseMenu
     [SerializeField] private GameObject _creatingLobby = default;
     [SerializeField] private GameObject _lobbyCreated = default;
     [SerializeField] private GameObject _exitingLobby = default;
-    [SerializeField] private GameObject _readyButton = default;
+    [SerializeField] private BaseButton _readyButton = default;
     [SerializeField] private GameObject _copyLobbyId = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] private PlayerInput _playerInput = default;
@@ -83,11 +83,11 @@ public class OnlineHostMenu : BaseMenu
         _nameplates[1].gameObject.SetActive(false);
         if (lobby.Players.Count >= 2)
         {
-            _readyButton.SetActive(true);
+            _readyButton.Activate();
         }
         else
         {
-            _readyButton.SetActive(false);
+            _readyButton.Deactivate();
         }
         for (int i = 0; i < lobby.Players.Count; i++)
         {
