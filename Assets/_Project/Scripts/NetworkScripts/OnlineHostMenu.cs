@@ -53,6 +53,7 @@ public class OnlineHostMenu : BaseMenu
             EventSystem.current.SetSelectedGameObject(null);
             _startingOption.Select();
             _networkManager.OnLobbyUpdate += UpdateLobby;
+            _readyButton.Deactivate();
         }
         else
         {
@@ -66,7 +67,7 @@ public class OnlineHostMenu : BaseMenu
         if (!_ready)
         {
             _storedController = _playerInput.currentControlScheme;
-            _currentControllerText.text = $"Current Controller: {_storedController}";
+            _currentControllerText.text = $"Match Controller: {_storedController}";
         }
     }
 

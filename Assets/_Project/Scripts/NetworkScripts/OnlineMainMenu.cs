@@ -19,8 +19,6 @@ public class OnlineMainMenu : BaseMenu
         {
             _connectingGroup.SetActive(false);
             _connectedGroup.SetActive(true);
-            EventSystem.current.SetSelectedGameObject(null);
-            _startingOption.Select();
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
