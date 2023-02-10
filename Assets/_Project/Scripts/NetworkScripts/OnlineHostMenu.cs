@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class OnlineHostMenu : BaseMenu
 {
@@ -22,9 +23,11 @@ public class OnlineHostMenu : BaseMenu
     [SerializeField] private GameObject _lobbyCreated = default;
     [SerializeField] private GameObject _exitingLobby = default;
     [SerializeField] private BaseButton _readyButton = default;
+    [SerializeField] private Button _copyButton = default;
     [SerializeField] private GameObject _copyLobbyId = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] private PlayerInput _playerInput = default;
+    private Button _readyButtonComponent;
     private string _lobbyId;
     private string _storedController;
     private bool _ready;
@@ -32,6 +35,7 @@ public class OnlineHostMenu : BaseMenu
 
     async void OnEnable()
     {
+        _readyButtonComponent = _readyButton.GetComponent<Button>();
         if (Hosting)
         {
             _nameplates[0].SetDemonData(_onlineSetupMenu.DemonData);
@@ -84,6 +88,10 @@ public class OnlineHostMenu : BaseMenu
         if (lobby.Players.Count >= 2)
         {
             _readyButton.Activate();
+            Navigation navigation = _copyButton.navigation;
+            navigation.selectOnDown = _readyButtonComponent;
+            navigation.selectOnRight = _readyButtonComponent;
+            _copyButton.navigation = navigation;
         }
         else
         {
