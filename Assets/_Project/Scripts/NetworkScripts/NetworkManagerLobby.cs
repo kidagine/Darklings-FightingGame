@@ -202,14 +202,22 @@ public class NetworkManagerLobby : MonoBehaviour
     //Use a STUN server for port forwarding, this is done for WAN P2P connections
     private void PublicIp(out string address, out string port)
     {
-        if (!STUNUtils.TryParseHostAndPort("stun1.l.google.com:19302", out IPEndPoint stunEndPoint))
-            throw new Exception("Failed to resolve STUN server address");
+        IPEndPoint stunEndPoint;
+        try
+        {
+            STUNUtils.TryParseHostAndPort("stun1.l.google.com:19302", out stunEndPoint);
+        }
+        catch (System.Exception e)
+        {
+            _onlineErrorMenu.Show(e.StackTrace);
+            throw;
+        }
 
         STUNClient.ReceiveTimeout = 500;
         var queryResult = STUNClient.Query(stunEndPoint, STUNQueryType.ExactNAT, true, NATTypeDetectionRFC.Rfc3489);
-
         if (queryResult.QueryError != STUNQueryError.Success)
-            throw new Exception("Query Error: " + queryResult.QueryError.ToString());
+            _onlineErrorMenu.Show("Server Failed");
+
 
         address = queryResult.PublicEndPoint.Address.ToString();
         port = queryResult.PublicEndPoint.Port.ToString();
