@@ -104,6 +104,18 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         }
     }
 
+    public void Activate()
+    {
+        _button.enabled = true;
+        _animator.SetBool("IsDeactivated", false);
+    }
+
+    public void Deactivate()
+    {
+        _button.enabled = false;
+        _animator.SetBool("IsDeactivated", true);
+    }
+
     void OnEnable()
     {
         _isIgnoringFirstSelectSound = _ignoreFirstSelectSound;
