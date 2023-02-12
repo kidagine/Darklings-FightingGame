@@ -553,7 +553,7 @@ public class GameplayManager : MonoBehaviour
         Time.timeScale = 1;
         GameManager.Instance.Shutdown();
         _matchOverOnlineMenu.Hide();
-        _connectionWidget.StartTe();
+        _connectionWidget.RematchConnection();
     }
 
     public virtual void StartRound()
