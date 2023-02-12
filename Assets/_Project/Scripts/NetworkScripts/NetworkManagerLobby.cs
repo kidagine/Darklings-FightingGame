@@ -39,10 +39,20 @@ public class NetworkManagerLobby : MonoBehaviour
     public async Task<string> CreateLobby(DemonData demonData)
     {
         Lobby lobby;
+        Unity.Services.Lobbies.Models.Player player = null;
+        try
+        {
+            player = GetPlayer(demonData);
+        }
+        catch (System.Exception e)
+        {
+            _onlineErrorMenu.Show(e.Message);
+            return null;
+        }
         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
         {
             IsPrivate = false,
-            Player = GetPlayer(demonData)
+            Player = player
         };
         try
         {
@@ -71,6 +81,16 @@ public class NetworkManagerLobby : MonoBehaviour
     public async Task<Lobby> JoinLobby(DemonData demonData, string lobbyId)
     {
         Lobby lobby;
+        Unity.Services.Lobbies.Models.Player player = null;
+        try
+        {
+            player = GetPlayer(demonData);
+        }
+        catch (System.Exception e)
+        {
+            _onlineErrorMenu.Show(e.Message);
+            return null;
+        }
         JoinLobbyByCodeOptions joinLobbyByCodeOptions = new JoinLobbyByCodeOptions
         {
             Player = GetPlayer(demonData)
@@ -168,8 +188,16 @@ public class NetworkManagerLobby : MonoBehaviour
     //Get the Player data required for the lobby and P2P connection
     private Unity.Services.Lobbies.Models.Player GetPlayer(DemonData demonData)
     {
-        PublicIp(out string address, out string port);
-        Debug.Log(address);
+        string address;
+        string port;
+        try
+        {
+            PublicIp(out address, out port);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
         return new Unity.Services.Lobbies.Models.Player
         {
             Data = new Dictionary<string, PlayerDataObject>{
@@ -202,21 +230,13 @@ public class NetworkManagerLobby : MonoBehaviour
     //Use a STUN server for port forwarding, this is done for WAN P2P connections
     private void PublicIp(out string address, out string port)
     {
-        IPEndPoint stunEndPoint;
-        try
-        {
-            STUNUtils.TryParseHostAndPort("stun1.l.google.com:19302", out stunEndPoint);
-        }
-        catch (System.Exception e)
-        {
-            _onlineErrorMenu.Show(e.StackTrace);
-            throw;
-        }
+        if (!STUNUtils.TryParseHostAndPort("stun1.l.google.com:19302", out IPEndPoint stunEndPoint))
+            throw new Exception("Failed to establish connection");
 
         STUNClient.ReceiveTimeout = 500;
         var queryResult = STUNClient.Query(stunEndPoint, STUNQueryType.ExactNAT, true, NATTypeDetectionRFC.Rfc3489);
         if (queryResult.QueryError != STUNQueryError.Success)
-            _onlineErrorMenu.Show("Server Failed");
+            throw new Exception("Connection Failed");
 
 
         address = queryResult.PublicEndPoint.Address.ToString();
