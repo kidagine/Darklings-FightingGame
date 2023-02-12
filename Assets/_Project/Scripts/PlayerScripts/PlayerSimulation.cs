@@ -29,8 +29,10 @@ public class PlayerSimulation : MonoBehaviour
             _audio.Sound(playerGs.soundStop).Stop();
             playerGs.soundStop = "";
         }
-        if (info.state == PlayerConnectState.Disconnected && playerGs.health <= 0)
+        Debug.Log(info.state);
+        if (info.state == PlayerConnectState.Disconnected && playerGs.health > 0)
         {
+            Debug.LogWarning("A");
             _player.PlayerUI.Disconnected();
         }
         _player.Simulate(playerGs, info);
