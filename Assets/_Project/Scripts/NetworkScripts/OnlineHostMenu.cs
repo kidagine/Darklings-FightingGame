@@ -189,7 +189,7 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.PrivateTwoIp = demonDatas[1].privateIp;
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.ControllerOne = _playerInput.devices[0];
-        SceneSettings.ControllerTwo = _playerInput.devices[0];
+        SceneSettings.ControllerTwo = _playerInput.devices[1];
         SceneSettings.ControllerOneScheme = Hosting == true ? _playerInput.currentControlScheme : "Keyboard";
         SceneSettings.ControllerTwoScheme = Hosting == false ? _playerInput.currentControlScheme : "Keyboard";
         SceneSettings.PlayerOne = demonDatas[0].character;
