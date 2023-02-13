@@ -160,16 +160,9 @@ public class NetworkManagerLobby : MonoBehaviour
             if (_lobbyUpdateTimer < 0)
             {
                 _lobbyUpdateTimer = 1.1f;
-                try
-                {
-                    Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_hostLobby.Id);
-                    _hostLobby = lobby;
-                    OnLobbyUpdate?.Invoke();
-                }
-                catch (System.Exception)
-                {
-                    throw new Exception($"Failed to get lobby with Id:{_hostLobby.Id}");
-                }
+                Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_hostLobby.Id);
+                _hostLobby = lobby;
+                OnLobbyUpdate?.Invoke();
             }
         }
         else if (_clientLobby != null)

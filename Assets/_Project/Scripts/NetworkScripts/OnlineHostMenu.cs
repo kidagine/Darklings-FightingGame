@@ -29,7 +29,7 @@ public class OnlineHostMenu : BaseMenu
     [SerializeField] private PlayerInput _playerInput = default;
     private Button _readyButtonComponent;
     private string _lobbyId;
-    private string _storedController;
+    private PlayerInput _storedPlayerInput = default;
     private bool _ready;
     public bool Hosting { get; set; } = true;
 
@@ -66,8 +66,8 @@ public class OnlineHostMenu : BaseMenu
     {
         if (!_ready)
         {
-            _storedController = _playerInput.currentControlScheme;
-            _currentControllerText.text = $"Match Controller: {_storedController}";
+            _storedPlayerInput = _playerInput;
+            _currentControllerText.text = $"Match Controller: {_storedPlayerInput.currentControlScheme}";
         }
     }
 
@@ -188,10 +188,10 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.PrivateOneIp = demonDatas[0].privateIp;
         SceneSettings.PrivateTwoIp = demonDatas[1].privateIp;
         SceneSettings.ColorTwo = demonDatas[1].color;
-        SceneSettings.ControllerOne = _playerInput.devices[0];
-        SceneSettings.ControllerTwo = _playerInput.devices[1];
-        SceneSettings.ControllerOneScheme = Hosting == true ? _playerInput.currentControlScheme : "Keyboard";
-        SceneSettings.ControllerTwoScheme = Hosting == false ? _playerInput.currentControlScheme : "Keyboard";
+        SceneSettings.ControllerOne = _storedPlayerInput.devices[0];
+        SceneSettings.ControllerTwo = _storedPlayerInput.devices[0];
+        SceneSettings.ControllerOneScheme = Hosting == true ? _storedPlayerInput.currentControlScheme : "Keyboard";
+        SceneSettings.ControllerTwoScheme = Hosting == false ? _storedPlayerInput.currentControlScheme : "Keyboard";
         SceneSettings.PlayerOne = demonDatas[0].character;
         SceneSettings.PlayerTwo = demonDatas[1].character;
         SceneSettings.AssistOne = demonDatas[0].assist;
