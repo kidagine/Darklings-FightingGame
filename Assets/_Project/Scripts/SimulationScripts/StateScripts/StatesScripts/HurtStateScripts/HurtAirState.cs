@@ -19,9 +19,9 @@ public class HurtAirState : HurtParentState
 
     protected override void AfterHitstop(PlayerNetwork player)
     {
-        if (player.stunFrames == player.attackHurtNetwork.hitStun)
+        if (player.stunFrames == player.attackHurtNetwork.hitStun && player.attackHurtNetwork.knockbackArc == 0)
         {
-            player.velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)2.25);
+            player.velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)1.7);
         }
         base.AfterHitstop(player);
         ToIdleState(player);
