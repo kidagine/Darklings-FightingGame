@@ -165,6 +165,7 @@ public class DemonicsAnimator : MonoBehaviour
     {
         _group = _animation.GetGroupId(name);
         _cel = GetCellByFrame(frame);
+        Debug.Log(name + ": " + _cel);
         return _animation.GetCel(_group, _cel).hurtboxes.ToArray();
     }
 
@@ -206,6 +207,10 @@ public class DemonicsAnimator : MonoBehaviour
                 cel = i;
                 break;
             }
+        }
+        if (frame > 0)
+        {
+            cel = _animation.GetGroup(_group).animationCel.Count - 1;
         }
         return cel;
     }
