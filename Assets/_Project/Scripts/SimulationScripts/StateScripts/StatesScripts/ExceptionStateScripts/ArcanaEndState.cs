@@ -16,6 +16,7 @@ public class ArcanaEndState : State
             player.animation = "5AEnd";
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.otherPlayer.pushbox.active = false;
+            player.velocity = DemonicsVector2.Zero;
         }
         player.animationFrames++;
         player.attackFrames--;
@@ -27,7 +28,6 @@ public class ArcanaEndState : State
 
         if (player.player.PlayerAnimator.GetThrowArcanaEnd(player.animation, player.animationFrames) && player.otherPlayer.state == "Grabbed")
         {
-            player.otherPlayer.pushbox.active = true;
             EnterState(player.otherPlayer, "Airborne");
         }
         DemonicsVector2 jump = player.player.PlayerAnimator.GetJump(player.animation, player.animationFrames);
