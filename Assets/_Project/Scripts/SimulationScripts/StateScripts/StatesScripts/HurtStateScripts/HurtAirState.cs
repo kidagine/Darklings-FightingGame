@@ -21,7 +21,7 @@ public class HurtAirState : HurtParentState
     {
         if (player.stunFrames == player.attackHurtNetwork.hitStun && player.attackHurtNetwork.knockbackArc == 0)
         {
-            player.velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)1.7);
+            player.velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)1.1);
         }
         base.AfterHitstop(player);
         ToIdleState(player);

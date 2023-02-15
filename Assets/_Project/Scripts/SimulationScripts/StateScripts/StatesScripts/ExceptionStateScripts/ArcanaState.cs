@@ -7,6 +7,7 @@ public class ArcanaState : State
     {
         if (!player.enter)
         {
+            SetTopPriority(player);
             player.dashFrames = 0;
             player.arcanaGauge -= PlayerStatsSO.ARCANA_MULTIPLIER;
             player.enter = true;
