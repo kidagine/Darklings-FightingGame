@@ -84,7 +84,7 @@ public class State
     }
     protected void Arcana(PlayerNetwork player, bool air = false)
     {
-        if (player.arcanaGauge > 1000 && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Special)
+        if (player.arcanaGauge >= 1000 && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Special)
         {
             player.attackInput = player.inputBuffer.CurrentInput().inputEnum;
             player.isAir = air;
