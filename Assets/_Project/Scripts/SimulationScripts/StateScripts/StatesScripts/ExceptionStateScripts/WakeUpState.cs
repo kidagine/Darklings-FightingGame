@@ -15,7 +15,7 @@ public class WakeUpState : State
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if (player.animationFrames > DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation))
+        if (player.animationFrames >= DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation))
         {
             player.hurtbox.active = true;
             EnterState(player, "Idle");

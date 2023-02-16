@@ -37,6 +37,18 @@ public struct InputBufferNetwork
 
     public InputItemNetwork CurrentInput()
     {
-        return inputItems[index];
+        int storedIndex = index;
+        if (storedIndex >= 0 && storedIndex < inputItems.Length)
+        {
+            while (inputItems[storedIndex].inputEnum == InputEnum.Direction)
+            {
+                if (storedIndex == 0)
+                {
+                    break;
+                }
+                storedIndex--;
+            }
+        }
+        return inputItems[storedIndex];
     }
 };
