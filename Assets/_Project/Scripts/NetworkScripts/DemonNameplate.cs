@@ -19,7 +19,18 @@ public class DemonNameplate : MonoBehaviour
         {
             gameObject.SetActive(true);
             _demonNameText.text = demonData.demonName;
-            _assistText.text = $"Assist {demonData.assist}";
+            if (demonData.assist == 0)
+            {
+                _assistText.text = $"Assist A";
+            }
+            else if (demonData.assist == 1)
+            {
+                _assistText.text = $"Assist B";
+            }
+            else
+            {
+                _assistText.text = $"Assist C";
+            }
             _characterImage.sprite = _playersStatsSo[demonData.character].portraits[0];
         }
     }
