@@ -17,6 +17,7 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private GameObject _assistTwo = default;
     [SerializeField] private GameObject _iconsOne = default;
     [SerializeField] private GameObject _iconsTwo = default;
+    [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private PlayerUIRender _assistOneUIRenderer = default;
     [SerializeField] private PlayerUIRender _assistTwoUIRenderer = default;
     [SerializeField] private ChangeStageMenu _changeStageMenu = default;
@@ -210,10 +211,12 @@ public class CharacterMenu : BaseMenu
             {
                 if (!FirstCharacterSelected && SceneSettings.ControllerOne != null)
                 {
+                    _rebindMenues[0].PreviousPromptsInput = _inputManager.CurrentPrompts;
                     _rebindMenues[0].Show();
                 }
                 else if (SceneSettings.ControllerTwo != null)
                 {
+                    _rebindMenues[1].PreviousPromptsInput = _inputManager.CurrentPrompts;
                     _rebindMenues[1].Show();
                 }
                 _currentEventSystem.sendNavigationEvents = true;

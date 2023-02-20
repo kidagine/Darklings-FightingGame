@@ -12,6 +12,7 @@ using static UnityEngine.InputSystem.InputActionRebindingExtensions;
 
 public class RebindMenu : BaseMenu
 {
+    [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private EventSystem _eventSystem = default;
     [SerializeField] private TextMeshProUGUI _deviceText = default;
     [SerializeField] private PlayerInput _playerInput = default;
@@ -31,7 +32,7 @@ public class RebindMenu : BaseMenu
     private string _controlMatch;
     private string _controlCancel;
 
-
+    public PromptsInput PreviousPromptsInput { get; set; }
     //Load the bindings
     void Awake()
     {
@@ -88,6 +89,7 @@ public class RebindMenu : BaseMenu
         {
             _firstCharacterButton.Select();
         }
+        _inputManager.CurrentPrompts = PreviousPromptsInput;
     }
 
     //Called from UI, rebind the given button

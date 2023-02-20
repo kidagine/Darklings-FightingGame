@@ -19918,6 +19918,7 @@ MonoBehaviour:
   _assistTwo: {fileID: 1772714353}
   _iconsOne: {fileID: 1093234182}
   _iconsTwo: {fileID: 1909813817}
+  _inputManager: {fileID: 1856510700}
   _assistOneUIRenderer: {fileID: 273464207}
   _assistTwoUIRenderer: {fileID: 2057415177}
   _changeStageMenu: {fileID: 1939241173}
@@ -32035,6 +32036,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1951023776}
+  _inputManager: {fileID: 1856510700}
   _eventSystem: {fileID: 1856510703}
   _deviceText: {fileID: 1989512690}
   _playerInput: {fileID: 1856510701}
@@ -43045,6 +43047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1257131190}
+  _inputManager: {fileID: 1856510700}
   _eventSystem: {fileID: 1856510703}
   _deviceText: {fileID: 1291073627}
   _playerInput: {fileID: 1856510701}
@@ -54414,18 +54417,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1856510700}
-        m_TargetAssemblyTypeName: InputManager, Scripts
-        m_MethodName: set_CurrentPrompts
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 422592752}
-          m_ObjectArgumentAssemblyTypeName: PromptsInput, Scripts
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   OnCoop:
     m_PersistentCalls:
       m_Calls: []
@@ -58706,7 +58697,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5882979951045071910, guid: 5730242d627a91a43a6d0f845a43ec2a, type: 3}
       propertyPath: _onClickedAnimationEnd.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5882979951045071910, guid: 5730242d627a91a43a6d0f845a43ec2a, type: 3}
       propertyPath: _onClickedAnimationEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
