@@ -53,12 +53,23 @@ public class BlueFrenzyState : State
             player.health = player.healthRecoverable;
         }
         ToIdleState(player);
+        ToParryState(player, isParrying);
     }
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.attackFrames <= 0)
         {
             EnterState(player, "Idle");
+        }
+    }
+    private void ToParryState(PlayerNetwork player, bool isParrying)
+    {
+        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Parry)
+        {
+            if (isParrying)
+            {
+                EnterState(player, "BlueFrenzy");
+            }
         }
     }
 

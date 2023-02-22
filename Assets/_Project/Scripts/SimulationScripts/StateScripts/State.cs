@@ -290,9 +290,12 @@ public class State
 
     public void EnterState(PlayerNetwork player, string name, bool skipEnter = false)
     {
-        player.enter = skipEnter;
-        player.state = name;
-        StateSimulation.SetState(player);
+        if (!player.gotHit || name.Contains("Hurt") || name.Contains("Airborne") || name.Contains("Grabbed"))
+        {
+            player.enter = skipEnter;
+            player.state = name;
+            StateSimulation.SetState(player);
+        }
     }
 
     protected void HitstopFully(PlayerNetwork player)
@@ -350,6 +353,7 @@ public class State
                     player.otherPlayer.shadow.projectile.active = false;
                     player.otherPlayer.shadow.projectile.hitbox.active = false;
                 }
+                player.gotHit = true;
                 return true;
             }
         }
@@ -373,6 +377,7 @@ public class State
                         player.otherPlayer.projectiles[i].active = false;
                         player.otherPlayer.projectiles[i].hitbox.active = false;
                     }
+                    player.gotHit = true;
                     return true;
                 }
             }
@@ -396,6 +401,7 @@ public class State
             {
                 player.hurtPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
             }
+            player.gotHit = true;
             return true;
         }
         return false;

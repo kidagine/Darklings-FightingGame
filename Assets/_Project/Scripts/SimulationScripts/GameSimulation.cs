@@ -80,6 +80,7 @@ public struct GameSimulation : IGame
 
     public GameSimulation(PlayerStatsSO[] playerStats, AssistStatsSO[] assistStats)
     {
+        Printer.Log($"Connection initialized");
         GlobalHitstop = 1;
         Framenumber = 0;
         Timer = 99;
@@ -384,7 +385,7 @@ public struct GameSimulation : IGame
                 _players[index].inputBuffer.inputItems[i].frame = 0;
             }
         }
-
+        _players[index].gotHit = false;
 
         if (_players[index].shadow.isOnScreen)
         {

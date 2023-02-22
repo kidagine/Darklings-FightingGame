@@ -140,6 +140,8 @@ namespace SharedGame
             var perf = FindObjectOfType<GgpoPerformancePanel>();
             perf.Setup();
             var playerIndex = index;
+            Printer.Log($"P1:" + ipOneUsed + "," + portOne);
+            Printer.Log($"P2:" + ipTwoUsed + "," + portTwo);
             gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
         }
 
