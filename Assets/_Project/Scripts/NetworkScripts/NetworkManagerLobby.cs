@@ -46,7 +46,7 @@ public class NetworkManagerLobby : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            _onlineErrorMenu.Show(e.Message);
+            _onlineErrorMenu.Show("Host:" + e.Message);
             return null;
         }
         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
@@ -61,7 +61,7 @@ public class NetworkManagerLobby : MonoBehaviour
         }
         catch (LobbyServiceException e)
         {
-            _onlineErrorMenu.Show(e.Reason.ToString());
+            _onlineErrorMenu.Show("Lobby:" + e.Reason.ToString());
             return null;
         }
         return lobby.LobbyCode;
@@ -181,8 +181,8 @@ public class NetworkManagerLobby : MonoBehaviour
     //Get the Player data required for the lobby and P2P connection
     private Unity.Services.Lobbies.Models.Player GetPlayer(DemonData demonData)
     {
-        string address;
-        string port;
+        string address = "";
+        string port = "";
         try
         {
             PublicIp(out address, out port);
