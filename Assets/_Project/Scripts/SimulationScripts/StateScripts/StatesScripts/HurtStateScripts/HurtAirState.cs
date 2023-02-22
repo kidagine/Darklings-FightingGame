@@ -58,6 +58,10 @@ public class HurtAirState : HurtParentState
     }
     private void ToFallState(PlayerNetwork player)
     {
+        if (player.health <= 0)
+        {
+            return;
+        }
         if (player.stunFrames <= 0 || player.comboTimer <= 0)
         {
             ResetCombo(player);
