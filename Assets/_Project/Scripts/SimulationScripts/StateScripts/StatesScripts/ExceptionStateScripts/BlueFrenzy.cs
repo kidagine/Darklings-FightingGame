@@ -37,7 +37,7 @@ public class BlueFrenzyState : State
             }
         }
         bool isParrying = player.player.PlayerAnimator.GetParrying(player.animation, player.animationFrames);
-        if (!player.otherPlayer.canChainAttack && DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox))
+        if (IsColliding(player))
         {
             if (isParrying)
             {
