@@ -64,10 +64,13 @@ public class HurtParentState : State
     protected virtual void AfterHitstop(PlayerNetwork player)
     {
         GameSimulation.GlobalHitstop = 1;
-        player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         if (player.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.attackHurtNetwork.knockbackDuration)
         {
             Knockback(player);
+        }
+        else
+        {
+            player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         }
         if (!player.comboLocked)
         {

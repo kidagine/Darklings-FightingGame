@@ -39,10 +39,20 @@ public class NetworkManagerLobby : MonoBehaviour
     public async Task<string> CreateLobby(DemonData demonData)
     {
         Lobby lobby;
+        Unity.Services.Lobbies.Models.Player player = null;
+        try
+        {
+            player = GetPlayer(demonData);
+        }
+        catch (System.Exception e)
+        {
+            _onlineErrorMenu.Show("Host:" + e.Message);
+            return null;
+        }
         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
         {
             IsPrivate = false,
-            Player = GetPlayer(demonData)
+            Player = player
         };
         try
         {
@@ -51,7 +61,7 @@ public class NetworkManagerLobby : MonoBehaviour
         }
         catch (LobbyServiceException e)
         {
-            _onlineErrorMenu.Show(e.Reason.ToString());
+            _onlineErrorMenu.Show("Lobby:" + e.Reason.ToString());
             return null;
         }
         return lobby.LobbyCode;
@@ -71,6 +81,16 @@ public class NetworkManagerLobby : MonoBehaviour
     public async Task<Lobby> JoinLobby(DemonData demonData, string lobbyId)
     {
         Lobby lobby;
+        Unity.Services.Lobbies.Models.Player player = null;
+        try
+        {
+            player = GetPlayer(demonData);
+        }
+        catch (System.Exception e)
+        {
+            _onlineErrorMenu.Show(e.Message);
+            return null;
+        }
         JoinLobbyByCodeOptions joinLobbyByCodeOptions = new JoinLobbyByCodeOptions
         {
             Player = GetPlayer(demonData)
@@ -140,16 +160,9 @@ public class NetworkManagerLobby : MonoBehaviour
             if (_lobbyUpdateTimer < 0)
             {
                 _lobbyUpdateTimer = 1.1f;
-                try
-                {
-                    Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_hostLobby.Id);
-                    _hostLobby = lobby;
-                    OnLobbyUpdate?.Invoke();
-                }
-                catch (System.Exception)
-                {
-                    throw new Exception($"Failed to get lobby with Id:{_hostLobby.Id}");
-                }
+                Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_hostLobby.Id);
+                _hostLobby = lobby;
+                OnLobbyUpdate?.Invoke();
             }
         }
         else if (_clientLobby != null)
@@ -168,8 +181,16 @@ public class NetworkManagerLobby : MonoBehaviour
     //Get the Player data required for the lobby and P2P connection
     private Unity.Services.Lobbies.Models.Player GetPlayer(DemonData demonData)
     {
-        PublicIp(out string address, out string port);
-        Debug.Log(address);
+        string address = "";
+        string port = "";
+        try
+        {
+            PublicIp(out address, out port);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
         return new Unity.Services.Lobbies.Models.Player
         {
             Data = new Dictionary<string, PlayerDataObject>{
@@ -203,13 +224,13 @@ public class NetworkManagerLobby : MonoBehaviour
     private void PublicIp(out string address, out string port)
     {
         if (!STUNUtils.TryParseHostAndPort("stun1.l.google.com:19302", out IPEndPoint stunEndPoint))
-            throw new Exception("Failed to resolve STUN server address");
+            throw new Exception("Failed to establish connection");
 
         STUNClient.ReceiveTimeout = 500;
         var queryResult = STUNClient.Query(stunEndPoint, STUNQueryType.ExactNAT, true, NATTypeDetectionRFC.Rfc3489);
-
         if (queryResult.QueryError != STUNQueryError.Success)
-            throw new Exception("Query Error: " + queryResult.QueryError.ToString());
+            throw new Exception("Connection Failed");
+
 
         address = queryResult.PublicEndPoint.Address.ToString();
         port = queryResult.PublicEndPoint.Port.ToString();

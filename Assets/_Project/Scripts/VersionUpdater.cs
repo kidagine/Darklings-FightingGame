@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class VersionUpdater : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class VersionUpdater : MonoBehaviour
     void Awake()
     {
         SetVersionInformation();
+        SceneManager.LoadScene("DebugScene", LoadSceneMode.Additive);
     }
 
     void SetVersionInformation()

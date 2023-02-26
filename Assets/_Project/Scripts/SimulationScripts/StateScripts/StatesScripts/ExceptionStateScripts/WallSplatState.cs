@@ -21,6 +21,8 @@ public class WallSplatState : State
             player.sound = "WallSplat";
             player.enter = true;
             player.animationFrames = 0;
+            player.attackHurtNetwork.knockbackArc = 35;
+            player.attackHurtNetwork.knockbackDuration = 27;
         }
         player.velocity = DemonicsVector2.Zero;
         player.hurtbox.active = false;

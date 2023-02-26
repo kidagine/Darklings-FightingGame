@@ -207,6 +207,10 @@ public class DemonicsAnimator : MonoBehaviour
                 break;
             }
         }
+        if (frame > 0)
+        {
+            cel = _animation.GetGroup(_group).animationCel.Count - 1;
+        }
         return cel;
     }
 

@@ -99,14 +99,17 @@ namespace SharedGame
                 gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
             }
         }
-        public void StartTe()
+        public void RematchConnection()
         {
             NetworkInput.IS_LOCAL = false;
             var connectionInfo = GetConnectionInfo();
             var perf = FindObjectOfType<GgpoPerformancePanel>();
             perf.Setup();
-            var playerIndex = int.Parse(inpPlayerIndex.text);
-            gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
+            if (SceneSettings.OnlineIndex == -1)
+            {
+                SceneSettings.OnlineIndex = int.Parse(inpPlayerIndex.text);
+            }
+            gameManager.StartGGPOGame(perf, connectionInfo, SceneSettings.OnlineIndex);
         }
 
         public void StartGGPO(string ipOne, string ipTwo, string privateIpOne, string privateIpTwo, int portOne, int portTwo, int index)
@@ -137,6 +140,8 @@ namespace SharedGame
             var perf = FindObjectOfType<GgpoPerformancePanel>();
             perf.Setup();
             var playerIndex = index;
+            Printer.Log($"P1:" + ipOneUsed + "," + portOne);
+            Printer.Log($"P2:" + ipTwoUsed + "," + portTwo);
             gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
         }
 

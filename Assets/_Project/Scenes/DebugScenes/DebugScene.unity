@@ -315,6 +315,7 @@ GameObject:
   - component: {fileID: 1162434148}
   - component: {fileID: 1162434147}
   - component: {fileID: 1162434151}
+  - component: {fileID: 1162434152}
   m_Layer: 5
   m_Name: Debug_canvas
   m_TagString: Untagged
@@ -338,7 +339,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 16375
 --- !u!114 &1162434148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,10 +352,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -418,6 +419,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _debugPrefab: {fileID: 5752128009251276550, guid: 17f20121f909306448c56645f277bf2d, type: 3}
   _debugContent: {fileID: 1115363084}
+--- !u!114 &1162434152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1162434146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4faf6fb606a446c49a91fdba9f05ba9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2023352920
 GameObject:
   m_ObjectHideFlags: 0

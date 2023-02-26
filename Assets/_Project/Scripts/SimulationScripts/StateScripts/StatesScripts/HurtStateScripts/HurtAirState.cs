@@ -19,9 +19,9 @@ public class HurtAirState : HurtParentState
 
     protected override void AfterHitstop(PlayerNetwork player)
     {
-        if (player.stunFrames == player.attackHurtNetwork.hitStun)
+        if (player.stunFrames == player.attackHurtNetwork.hitStun && player.attackHurtNetwork.knockbackArc == 0)
         {
-            player.velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)2);
+            player.velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)1.1);
         }
         base.AfterHitstop(player);
         ToIdleState(player);
@@ -58,6 +58,10 @@ public class HurtAirState : HurtParentState
     }
     private void ToFallState(PlayerNetwork player)
     {
+        if (player.health <= 0)
+        {
+            return;
+        }
         if (player.stunFrames <= 0 || player.comboTimer <= 0)
         {
             ResetCombo(player);

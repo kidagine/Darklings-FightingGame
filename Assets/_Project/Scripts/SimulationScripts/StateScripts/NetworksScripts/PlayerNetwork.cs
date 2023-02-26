@@ -45,6 +45,7 @@ public class PlayerNetwork
     public bool leftHold;
     public bool rightHold;
     public bool isAi;
+    public bool gotHit;
     public int dashDirection;
     public int jumpDirection;
     public int dashFrames;
@@ -107,6 +108,7 @@ public class PlayerNetwork
         bw.Write((int)comboTimerStarter);
         bw.Write(isCrouch);
         bw.Write(isAir);
+        bw.Write(gotHit);
         bw.Write(upHold);
         bw.Write(downHold);
         bw.Write(leftHold);
@@ -181,6 +183,7 @@ public class PlayerNetwork
         comboTimerStarter = (ComboTimerStarterEnum)br.ReadInt32();
         isCrouch = br.ReadBoolean();
         isAir = br.ReadBoolean();
+        gotHit = br.ReadBoolean();
         upHold = br.ReadBoolean();
         downHold = br.ReadBoolean();
         leftHold = br.ReadBoolean();

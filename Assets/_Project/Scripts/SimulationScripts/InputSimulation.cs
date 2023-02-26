@@ -80,7 +80,6 @@ public class InputSimulation
         }
         if (id == 1)
         {
-            Debug.Log("bbbb");
             if (Input.anyKeyDown)
             {
                 input |= NetworkInput.SKIP_BYTE;
