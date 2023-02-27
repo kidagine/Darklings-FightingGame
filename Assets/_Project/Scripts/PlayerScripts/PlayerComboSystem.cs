@@ -63,14 +63,16 @@ public class PlayerComboSystem : MonoBehaviour
         {
             return playerStats.m2M;
         }
-        else
+        else if (inputEnum == InputEnum.Heavy)
         {
             return playerStats.m2H;
         }
+        return null;
     }
 
     private static AttackSO GetStandingAttackType(PlayerStatsSO playerStats, InputEnum inputEnum)
     {
+        Debug.Log(inputEnum);
         if (inputEnum == InputEnum.Light)
         {
             return playerStats.m5L;
@@ -79,10 +81,11 @@ public class PlayerComboSystem : MonoBehaviour
         {
             return playerStats.m5M;
         }
-        else
+        else if (inputEnum == InputEnum.Heavy)
         {
             return playerStats.m5H;
         }
+        return null;
     }
 
     public static AttackSO GetThrow(PlayerStatsSO playerStats)
