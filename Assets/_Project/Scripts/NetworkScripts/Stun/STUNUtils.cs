@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 
@@ -50,9 +51,15 @@ namespace STUN.Attributes
                 try
                 {
 #if NETSTANDARD1_3
-                    address = Dns.GetHostEntryAsync(split[0]).GetAwaiter().GetResult().AddressList.First();
+                    IPAddress[] ipv4Addresses = Array.FindAll(
+                        Dns.GetHostEntryAsync(split[0]).GetAwaiter().GetResult().AddressList,
+                        a => a.AddressFamily == AddressFamily.InterNetwork);
+                    address = ipv4Addresses.First();
 #else
-                    address = Dns.GetHostEntry(split[0]).AddressList.First();
+                    IPAddress[] ipv4Addresses = Array.FindAll(
+                        Dns.GetHostEntry(split[0]).AddressList,
+                        a => a.AddressFamily == AddressFamily.InterNetwork);
+                    address = ipv4Addresses.First();
 #endif
                 }
                 catch
