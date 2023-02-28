@@ -26,6 +26,7 @@ public class State
     }
     public bool IsBlocking(PlayerNetwork player)
     {
+        player.gotHit = false;
         if (player.attackHurtNetwork.attackType == AttackTypeEnum.Break)
         {
             return false;
@@ -78,8 +79,11 @@ public class State
                 player.isCrouch = false;
             }
             AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
-            player.attackNetwork = SetAttack(player.attackInput, attack);
-            EnterState(player, "Attack");
+            if (attack != null)
+            {
+                player.attackNetwork = SetAttack(player.attackInput, attack);
+                EnterState(player, "Attack");
+            }
         }
     }
     protected void Arcana(PlayerNetwork player, bool air = false)
