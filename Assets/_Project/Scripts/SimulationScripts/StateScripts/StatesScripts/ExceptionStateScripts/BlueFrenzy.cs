@@ -39,6 +39,11 @@ public class BlueFrenzyState : State
         bool isParrying = player.player.PlayerAnimator.GetParrying(player.animation, player.animationFrames);
         if (IsColliding(player))
         {
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                EnterState(player, "Grabbed");
+                return;
+            }
             if (isParrying)
             {
                 Parry(player);
