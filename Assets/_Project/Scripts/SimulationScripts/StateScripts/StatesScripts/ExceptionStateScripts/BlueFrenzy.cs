@@ -53,10 +53,6 @@ public class BlueFrenzyState : State
                 ToHurtState(player);
             }
         }
-        if (isParrying)
-        {
-            player.health = player.healthRecoverable;
-        }
         ToIdleState(player);
         ToParryState(player, isParrying);
     }
