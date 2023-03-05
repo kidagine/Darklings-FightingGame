@@ -22,7 +22,7 @@ public class VersionUpdater : MonoBehaviour
     void Awake()
     {
         SetVersionInformation();
-        SceneManager.LoadScene("DebugScene", LoadSceneMode.Additive);
+        //        SceneManager.LoadScene("DebugScene", LoadSceneMode.Additive);
     }
 
     void SetVersionInformation()
