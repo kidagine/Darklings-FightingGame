@@ -45897,7 +45897,7 @@ GameObject:
   - component: {fileID: 1772714355}
   - component: {fileID: 1772714358}
   m_Layer: 5
-  m_Name: Assist_group
+  m_Name: AssistTwo_group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49289,7 +49289,7 @@ GameObject:
   - component: {fileID: 1886072746}
   - component: {fileID: 1886072745}
   m_Layer: 5
-  m_Name: Prompts_group
+  m_Name: StagePrompts_group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49382,18 +49382,6 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1856510700}
-        m_TargetAssemblyTypeName: InputManager, Scripts
-        m_MethodName: set_CurrentPrompts
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 422592752}
-          m_ObjectArgumentAssemblyTypeName: PromptsInput, Scripts
-          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -51466,6 +51454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 073eea09b3e36d646b823e031b3463d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputManager: {fileID: 1856510700}
   _rebindOneMenu: {fileID: 1651129290}
   _rebindTwoMenu: {fileID: 1270428479}
   _initialSelectable: {fileID: 844696347}
@@ -54917,7 +54906,7 @@ GameObject:
   - component: {fileID: 2069834481}
   - component: {fileID: 2069834482}
   m_Layer: 5
-  m_Name: Color_group
+  m_Name: ColorTwo_group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
