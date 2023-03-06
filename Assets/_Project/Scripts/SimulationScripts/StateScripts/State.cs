@@ -311,7 +311,24 @@ public class State
             player.projectiles[i].hitstop = true;
         }
     }
-
+    public bool AIHurt(PlayerNetwork player)
+    {
+        if (SceneSettings.IsTrainingMode && player.isAi)
+        {
+            if (TrainingSettings.OnHit)
+            {
+                if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                {
+                    player.isAir = true;
+                }
+                AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Light, false, player.isAir);
+                player.attackNetwork = SetAttack(InputEnum.Light, attack);
+                EnterState(player, "Attack");
+                return true;
+            }
+        }
+        return false;
+    }
     public bool AIBlocking(PlayerNetwork player)
     {
         if (SceneSettings.IsTrainingMode && player.isAi)
