@@ -5,7 +5,7 @@ using UnityEngine;
 public class State
 {
     public virtual void UpdateLogic(PlayerNetwork player) { }
-    public virtual void Exit() { }
+    public virtual void Exit(PlayerNetwork player) { }
     public virtual bool ToHurtState(PlayerNetwork player, AttackSO attack) { return false; }
     public virtual bool ToBlockState(PlayerNetwork player, AttackSO attack) { return false; }
     public void CheckFlip(PlayerNetwork player)

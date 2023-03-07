@@ -35,7 +35,6 @@ public class RunState : GroundParentState
     {
         if (player.direction.y > 0)
         {
-            player.soundStop = "Run";
             EnterState(player, "Jump");
         }
     }
@@ -44,7 +43,6 @@ public class RunState : GroundParentState
         if (player.direction.y > 0 && player.direction.x != 0)
         {
             player.jumpDirection = (int)player.direction.x;
-            player.soundStop = "Run";
             EnterState(player, "JumpForward");
         }
     }
@@ -52,8 +50,13 @@ public class RunState : GroundParentState
     {
         if (player.direction.x == 0)
         {
-            player.soundStop = "Run";
             EnterState(player, "Idle");
         }
+    }
+
+    public override void Exit(PlayerNetwork player)
+    {
+        base.Exit(player);
+        player.soundStop = "Run";
     }
 }

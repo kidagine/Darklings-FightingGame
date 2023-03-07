@@ -477,8 +477,25 @@ public struct GameSimulation : IGame
                                 Timer--;
                                 if (Timer == 0)
                                 {
-                                    _players[0].CurrentState.EnterState(_players[0], "GiveUp");
-                                    _players[1].CurrentState.EnterState(_players[1], "GiveUp");
+                                    if (_players[0].health == _players[1].health)
+                                    {
+                                        _players[0].CurrentState.EnterState(_players[0], "GiveUp");
+                                        _players[1].CurrentState.EnterState(_players[1], "GiveUp");
+                                    }
+                                    else
+                                    {
+                                        if (_players[0].health > _players[1].health)
+                                        {
+                                            _players[0].CurrentState.EnterState(_players[0], "Taunt");
+                                            _players[1].CurrentState.EnterState(_players[1], "GiveUp");
+                                        }
+                                        else
+                                        {
+                                            _players[0].CurrentState.EnterState(_players[0], "GiveUp");
+                                            _players[1].CurrentState.EnterState(_players[1], "Taunt");
+                                        }
+                                    }
+
                                 }
                             }
                         }

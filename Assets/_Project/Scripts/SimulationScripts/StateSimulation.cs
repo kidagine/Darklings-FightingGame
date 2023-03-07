@@ -4,6 +4,10 @@ public class StateSimulation
 {
     public static void SetState(PlayerNetwork player)
     {
+        if (player.state != "Run")
+        {
+            player.CurrentState.Exit(player);
+        }
         if (player.state == "Attack")
         {
             player.CurrentState = new AttackState();
