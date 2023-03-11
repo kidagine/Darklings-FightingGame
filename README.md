@@ -33,6 +33,13 @@ Pixel Perfect Camera|Replay System|
 60FPS Logic Tick|AI Opponent|
 Early Rollback Implementation|Lobby System|
 
+## Testing Online
+- Open two instances of Unity using ParrelSync (https://github.com/VeriorPies/ParrelSync).
+- Load the 'GameScene' for both instances and start the game.
+- In one of the two instances press the '1' key to change the player index to 1.
+- In both instances press the '5' key to start the GGPO connection and you're good to go. 
+
+Optional: use Clumsy (https://github.com/jagt/clumsy) to simulate lag
 
 ## Sub Repositories
 These are the sub-repositories that help in one way or another to make Darklings.
