@@ -22,6 +22,7 @@ public class BlockParentState : State
 
     protected virtual void OnEnter(PlayerNetwork player)
     {
+        CheckFlip(player);
         player.otherPlayer.canChainAttack = true;
         player.player.StartShakeContact();
         player.enter = true;

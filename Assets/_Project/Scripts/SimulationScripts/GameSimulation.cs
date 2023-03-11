@@ -381,7 +381,7 @@ public struct GameSimulation : IGame
             {
                 _players[index].inputBuffer.inputItems[i].pressed = false;
             }
-            if (_players[index].inputBuffer.inputItems[i].frame + 20 < Framenumber)
+            if (_players[index].inputBuffer.inputItems[i].frame + 25 < Framenumber)
             {
                 _players[index].inputBuffer.inputItems[i].frame = 0;
             }
