@@ -20,6 +20,8 @@ public class TauntState : State
         }
         player.velocity = DemonicsVector2.Zero;
         player.animationFrames++;
+        if (GameSimulation.Timer <= 0)
+            return;
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)

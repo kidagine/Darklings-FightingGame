@@ -16,6 +16,7 @@ public struct GameSimulation : IGame
     public static bool Start { get; set; }
     public static bool Run { get; set; }
     public int Checksum => GetHashCode();
+    public static int _timerMax = 99;
     public static bool _introPlayed;
     public static PlayerNetwork[] _players;
 
@@ -83,7 +84,7 @@ public struct GameSimulation : IGame
         Printer.Log($"Connection initialized");
         GlobalHitstop = 1;
         Framenumber = 0;
-        Timer = 99;
+        Timer = _timerMax;
         Hitstop = 0;
         IntroFrame = 880;
         _introPlayed = false;
@@ -479,8 +480,15 @@ public struct GameSimulation : IGame
                                 {
                                     if (_players[0].health == _players[1].health)
                                     {
-                                        _players[0].CurrentState.EnterState(_players[0], "GiveUp");
-                                        _players[1].CurrentState.EnterState(_players[1], "GiveUp");
+                                        if (_players[0].player.Lives > 1 && _players[1].player.Lives == 1)
+                                            _players[0].CurrentState.EnterState(_players[0], "Taunt");
+                                        else
+                                            _players[0].CurrentState.EnterState(_players[0], "GiveUp");
+
+                                        if (_players[1].player.Lives > 1 && _players[0].player.Lives == 1)
+                                            _players[0].CurrentState.EnterState(_players[1], "Taunt");
+                                        else
+                                            _players[1].CurrentState.EnterState(_players[1], "GiveUp");
                                     }
                                     else
                                     {

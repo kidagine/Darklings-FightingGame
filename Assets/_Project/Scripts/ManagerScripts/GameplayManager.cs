@@ -514,7 +514,6 @@ public class GameplayManager : MonoBehaviour
                 GameplayManager.Instance.PausedController = _playerOneController;
                 DisableAllInput(true);
                 _matchOverOnlineMenu.Show();
-                //SceneManager.LoadScene("2. MainMenuScene");
             }
             else
             {
@@ -682,28 +681,45 @@ public class GameplayManager : MonoBehaviour
             else
             {
                 string roundOverCause;
-                if (GameSimulation._players[0].health <= 0 && GameSimulation._players[1].health <= 0)
+                if (GameSimulation._players[0].health <= 0 && GameSimulation._players[1].health <= 0
+                || GameSimulation._players[0].health > 0 && GameSimulation._players[1].health > 0)
                 {
                     roundOverCause = "DOUBLE KO";
-                    if (PlayerOne.Lives > 1 && PlayerTwo.Lives > 1)
+                    if (PlayerOne.Lives > 1 || PlayerTwo.Lives > 1)
                     {
-                        PlayerOne.LoseLife();
-                        PlayerTwo.LoseLife();
-                    }
-                    else if (PlayerOne.Lives == 1 && PlayerTwo.Lives > 1)
-                    {
-                        _playerTwoWon = true;
-                        PlayerOne.LoseLife();
-                    }
-                    else if (PlayerTwo.Lives == 1 && PlayerOne.Lives > 1)
-                    {
-                        _playerOneWon = true;
-                        PlayerTwo.LoseLife();
+                        if (GameSimulation._players[0].health < GameSimulation._players[1].health)
+                        {
+                            _playerTwoWon = true;
+                            PlayerOne.LoseLife();
+                        }
+                        else if (GameSimulation._players[1].health < GameSimulation._players[0].health)
+                        {
+                            _playerOneWon = true;
+                            PlayerTwo.LoseLife();
+                        }
+                        else
+                        {
+                            PlayerOne.LoseLife();
+                            PlayerTwo.LoseLife();
+                        }
                     }
                     else if (PlayerOne.Lives == 1 && PlayerTwo.Lives == 1 && _finalRound)
                     {
-                        PlayerOne.LoseLife();
-                        PlayerTwo.LoseLife();
+                        if (GameSimulation._players[0].health < GameSimulation._players[1].health)
+                        {
+                            _playerTwoWon = true;
+                            PlayerOne.LoseLife();
+                        }
+                        else if (GameSimulation._players[1].health < GameSimulation._players[0].health)
+                        {
+                            _playerOneWon = true;
+                            PlayerTwo.LoseLife();
+                        }
+                        else
+                        {
+                            PlayerOne.LoseLife();
+                            PlayerTwo.LoseLife();
+                        }
                     }
                     else
                     {
@@ -712,8 +728,8 @@ public class GameplayManager : MonoBehaviour
                 }
                 else
                 {
-                    if (PlayerOne.PlayerStats.maxHealth == GameSimulation._players[0].health
-                        || PlayerTwo.PlayerStats.maxHealth == GameSimulation._players[1].health)
+                    if (PlayerOne.PlayerStats.maxHealth == GameSimulation._players[0].health && GameSimulation._players[1].health <= 0
+                        || PlayerTwo.PlayerStats.maxHealth == GameSimulation._players[1].health && GameSimulation._players[0].health <= 0)
                     {
                         roundOverCause = "PERFECT KO";
                     }
@@ -733,7 +749,7 @@ public class GameplayManager : MonoBehaviour
                         PlayerOne.LoseLife();
                     }
                 }
-                if (_timeout)
+                if (timeout)
                 {
                     _readyText.text = "TIME UP";
                 }

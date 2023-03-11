@@ -7,7 +7,6 @@ public class GiveUpState : State
         if (!player.enter)
         {
             GameSimulation.Run = false;
-            GameSimulation.Timer = 99;
             GameSimulation.GlobalHitstop = 1;
             player.velocity = DemonicsVector2.Zero;
             player.enter = true;
@@ -23,6 +22,7 @@ public class GiveUpState : State
         player.animationFrames++;
         if (player.animationFrames >= 725)
         {
+            GameSimulation.Timer = GameSimulation._timerMax;
             ResetPlayer(player);
             ResetPlayer(player.otherPlayer);
             EnterState(player, "Taunt");
