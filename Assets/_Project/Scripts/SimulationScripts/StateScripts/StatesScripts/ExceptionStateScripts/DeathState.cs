@@ -21,7 +21,10 @@ public class DeathState : State
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             ResetCombo(player);
         }
-        player.velocity = new DemonicsVector2(player.velocity.x, 0);
+        if (player.position.y > DemonicsPhysics.GROUND_POINT)
+            player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+        else
+            player.velocity = new DemonicsVector2(player.velocity.x, 0);
         player.animation = "Death";
         player.animationFrames++;
         if (player.animationFrames >= 510)

@@ -26,7 +26,6 @@ public class State
     }
     public bool IsBlocking(PlayerNetwork player)
     {
-        player.gotHit = false;
         if (player.attackHurtNetwork.attackType == AttackTypeEnum.Break)
         {
             return false;
@@ -294,7 +293,7 @@ public class State
 
     public void EnterState(PlayerNetwork player, string name, bool skipEnter = false)
     {
-        if (!player.gotHit || name.Contains("Hurt") || name.Contains("Airborne") || name.Contains("Grabbed") || name.Contains("Knockback"))
+        if (!player.gotHit || name.Contains("Hurt") || name.Contains("Airborne") || name.Contains("Grabbed") || name.Contains("Block") || name.Contains("Knockback"))
         {
             player.enter = skipEnter;
             player.state = name;
