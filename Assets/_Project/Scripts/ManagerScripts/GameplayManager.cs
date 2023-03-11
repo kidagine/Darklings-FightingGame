@@ -131,26 +131,29 @@ public class GameplayManager : MonoBehaviour
         if (!SceneSettings.SceneSettingsDecide)
         {
             _debugNetwork.SetActive(true);
-            if (_controllerOne >= 0)
+            if (!SceneSettings.ReplayMode)
             {
-                SceneSettings.ControllerOne = InputSystem.devices[_controllerOne];
+                if (_controllerOne >= 0)
+                {
+                    SceneSettings.ControllerOne = InputSystem.devices[_controllerOne];
+                }
+                if (_controllerTwo >= 0)
+                {
+                    SceneSettings.ControllerTwo = InputSystem.devices[_controllerTwo];
+                }
+                SceneSettings.ControllerOneScheme = _controllerOneType.ToString();
+                SceneSettings.ControllerTwoScheme = _controllerTwoType.ToString();
+                SceneSettings.PlayerOne = (int)_characterOne;
+                SceneSettings.PlayerTwo = (int)_characterTwo;
+                SceneSettings.AssistOne = (int)_assistOne;
+                SceneSettings.AssistTwo = (int)_assistTwo;
+                SceneSettings.StageIndex = (int)_stage;
+                SceneSettings.ColorOne = _playerOneSkin;
+                SceneSettings.ColorTwo = _playerTwoSkin;
+                SceneSettings.IsTrainingMode = _isTrainingMode;
+                SceneSettings.Bit1 = _1BitOn;
+                SceneSettings.MusicName = _music.ToString();
             }
-            if (_controllerTwo >= 0)
-            {
-                SceneSettings.ControllerTwo = InputSystem.devices[_controllerTwo];
-            }
-            SceneSettings.ControllerOneScheme = _controllerOneType.ToString();
-            SceneSettings.ControllerTwoScheme = _controllerTwoType.ToString();
-            SceneSettings.PlayerOne = (int)_characterOne;
-            SceneSettings.PlayerTwo = (int)_characterTwo;
-            SceneSettings.AssistOne = (int)_assistOne;
-            SceneSettings.AssistTwo = (int)_assistTwo;
-            SceneSettings.StageIndex = (int)_stage;
-            SceneSettings.ColorOne = _playerOneSkin;
-            SceneSettings.ColorTwo = _playerTwoSkin;
-            SceneSettings.IsTrainingMode = _isTrainingMode;
-            SceneSettings.Bit1 = _1BitOn;
-            SceneSettings.MusicName = _music.ToString();
         }
         else
         {
