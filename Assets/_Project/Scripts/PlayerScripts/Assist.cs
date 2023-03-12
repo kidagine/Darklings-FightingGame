@@ -1,4 +1,3 @@
-using Demonics.Sounds;
 using UnityEngine;
 
 public class Assist : DemonicsAnimator, IHitboxResponder
@@ -10,13 +9,13 @@ public class Assist : DemonicsAnimator, IHitboxResponder
     private GameObject _hitEffect;
 
     public AssistStatsSO AssistStats { get { return _assistStatsSO; } private set { } }
-    public bool IsOnScreen { get; set; }
 
 
     private void Awake()
     {
         _player = transform.root;
         _audio = GetComponent<Audio>();
+        transform.SetParent(null);
     }
 
     public void SetAssist(AssistStatsSO assistStats)
@@ -24,55 +23,48 @@ public class Assist : DemonicsAnimator, IHitboxResponder
         _assistStatsSO = assistStats;
     }
 
-    public void Attack()
+    public void Attack(int frame)
     {
         gameObject.SetActive(true);
-        IsOnScreen = true;
         _audio.Sound("Attack").Play();
         transform.SetParent(_player);
-        SetAnimation("Attack");
         transform.localPosition = AssistStats.assistPosition;
-        transform.SetParent(null);
         transform.localScale = _player.localScale;
     }
-
-    protected override void CheckEvents()
+    public void Simulate(PlayerNetwork player)
     {
-        base.CheckEvents();
-        if (GetEvent().projectile)
-        {
-            Projectile();
-        }
+        gameObject.SetActive(player.shadow.isOnScreen);
+        SetAnimation("Attack", player.shadow.animationFrames);
+        transform.position = new Vector2((float)player.shadow.position.x, (float)player.shadow.position.y);
+        transform.localScale = new Vector2(player.shadow.flip, 1);
     }
-
+    public bool GetProjectile(string name, int frame)
+    {
+        return GetEvent(name, frame, out _).projectile;
+    }
     protected override void AnimationEnded()
     {
         base.AnimationEnded();
-        IsOnScreen = false;
         gameObject.SetActive(false);
     }
 
     public void Recall()
     {
-        if (IsOnScreen)
+        if (_hitEffect != null)
         {
-            IsOnScreen = false;
-            if (_hitEffect != null)
-            {
-                _hitEffect.SetActive(false);
-            }
+            _hitEffect.SetActive(false);
         }
         gameObject.SetActive(false);
     }
 
     public void Projectile()
     {
-        _hitEffect = Instantiate(_assistStatsSO.assistPrefab, transform);
-        _hitEffect.GetComponent<Projectile>().SetSourceTransform(_player, transform.position, true);
-        _hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
-        _hitEffect.transform.localRotation = Quaternion.Euler(0, 0, AssistStats.assistRotation);
-        _hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
-        _hitEffect.transform.SetParent(null);
+        // _hitEffect = Instantiate(_assistStatsSO.assistPrefab, transform);
+        // _hitEffect.GetComponent<Projectile>().SetSourceTransform(_player, transform.position, true);
+        // _hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
+        // _hitEffect.transform.localRotation = Quaternion.Euler(0, 0, AssistStats.assistRotation);
+        // _hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
+        // _hitEffect.transform.SetParent(null);
     }
 
     public bool HitboxCollided(Vector2 hurtPosition, Hurtbox hurtbox = null)

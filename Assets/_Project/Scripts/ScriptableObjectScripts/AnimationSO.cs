@@ -31,7 +31,15 @@ public class AnimationSO : ScriptableObject
 
     public AnimationCel GetCel(int group, int cel)
     {
-        return animationCelsGroup[group].animationCel[cel];
+        try
+        {
+            return animationCelsGroup[group].animationCel[cel];
+        }
+        catch (System.Exception)
+        {
+            Debug.Log(group + "|" + cel);
+            return animationCelsGroup[group].animationCel[0];
+        }
     }
 
     public int GetGroupId(string name)
@@ -49,8 +57,8 @@ public class AnimationSO : ScriptableObject
     private void OnDisable()
     {
 #if UNITY_EDITOR
-        EditorUtility.SetDirty(this);
-        AssetDatabase.SaveAssets();
+        // EditorUtility.SetDirty(this);
+        // AssetDatabase.SaveAssets();
 #endif
     }
 }

@@ -1,6 +1,7 @@
+using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Video;
-
 [CreateAssetMenu(fileName = "Attack", menuName = "Scriptable Objects/Attack", order = 2)]
 public class AttackSO : ScriptableObject
 {
@@ -21,6 +22,7 @@ public class AttackSO : ScriptableObject
     public bool isArcana;
     public bool jumpCancelable;
     public bool causesKnockdown;
+    public bool causesSoftKnockdown;
     [Header("Sounds")]
     public string attackSound;
     public string impactSound;
@@ -30,7 +32,7 @@ public class AttackSO : ScriptableObject
     public GameObject hitEffect;
     public Vector2 hitEffectPosition;
     public float hitEffectRotation;
-    public GameObject hurtEffect;
+    public string hurtEffect;
     [HideInInspector] public Vector2 hurtEffectPosition;
     public float hurtEffectRotation;
     public CameraShakerSO cameraShaker;
@@ -45,6 +47,20 @@ public class AttackSO : ScriptableObject
     [TextArea(5, 7)]
     public string moveDescription;
     public VideoClip moveVideo;
+
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(travelDistance.x);
+        bw.Write(travelDistance.y);
+        bw.Write(damage);
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        travelDistance.x = br.ReadSingle();
+        travelDistance.y = br.ReadSingle();
+        damage = br.ReadInt32();
+    }
 }
 
 public class ResultAttack

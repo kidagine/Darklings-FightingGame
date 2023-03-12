@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class InputBuffer : MonoBehaviour
 {
-    [SerializeField] private PlayerStateManager _playerStateManager = default;
     private readonly Queue<InputBufferItem> _inputBuffer = new();
     private readonly Queue<InputBufferItem> _inputBufferAttacks = new();
     private List<InputBufferItem> _inputBufferItems = new List<InputBufferItem>();
@@ -158,74 +157,33 @@ public class InputBuffer : MonoBehaviour
 
     public bool ExecuteInputBuffer(InputEnum inputEnum)
     {
-        if (inputEnum == InputEnum.Parry)
-        {
-            return _playerStateManager.TryToParryState();
-        }
-        if (inputEnum == InputEnum.RedFrenzy)
-        {
-            return _playerStateManager.TryToRedFrenzyState();
-        }
-        if (inputEnum == InputEnum.Throw)
-        {
-            return _playerStateManager.TryToGrabState();
-        }
-        if (inputEnum == InputEnum.ForwardDash)
-        {
-            return _playerStateManager.TryToDashState(1);
-        }
-        if (inputEnum == InputEnum.BackDash)
-        {
-            return _playerStateManager.TryToDashState(-1);
-        }
-        if (inputEnum == InputEnum.Assist)
-        {
-            return _playerStateManager.TryToAssistCall();
-        }
-        else if (inputEnum == InputEnum.Special)
-        {
-            bool value = _playerStateManager.TryToArcanaState(_lastInputDirection);
-            if (value)
-            {
-                _lastInputDirection = InputDirectionEnum.NoneVertical;
-            }
-            return value;
-        }
-        else
-        {
-            bool value = _playerStateManager.TryToAttackState(inputEnum, _lastInputDirection);
-            if (value)
-            {
-                _lastInputDirection = InputDirectionEnum.NoneVertical;
-            }
-            return value;
-        }
+        return false;
     }
 
     private bool ExecuteMovementBuffer(InputDirectionEnum inputDirectionEnum)
     {
         _lastInputDirection = inputDirectionEnum;
-        switch (inputDirectionEnum)
-        {
-            case InputDirectionEnum.NoneVertical:
-                _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, 0);
-                break;
-            case InputDirectionEnum.NoneHorizontal:
-                _controller.ActiveController.InputDirection = new Vector2Int(0, _controller.ActiveController.InputDirection.y);
-                break;
-            case InputDirectionEnum.Up:
-                _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, 1);
-                break;
-            case InputDirectionEnum.Down:
-                _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, -1);
-                break;
-            case InputDirectionEnum.Left:
-                _controller.ActiveController.InputDirection = new Vector2Int(-1, _controller.ActiveController.InputDirection.y);
-                break;
-            case InputDirectionEnum.Right:
-                _controller.ActiveController.InputDirection = new Vector2Int(1, _controller.ActiveController.InputDirection.y);
-                break;
-        }
+        // switch (inputDirectionEnum)
+        // {
+        //     case InputDirectionEnum.NoneVertical:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, 0);
+        //         break;
+        //     case InputDirectionEnum.NoneHorizontal:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(0, _controller.ActiveController.InputDirection.y);
+        //         break;
+        //     case InputDirectionEnum.Up:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, 1);
+        //         break;
+        //     case InputDirectionEnum.Down:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(_controller.ActiveController.InputDirection.x, -1);
+        //         break;
+        //     case InputDirectionEnum.Left:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(-1, _controller.ActiveController.InputDirection.y);
+        //         break;
+        //     case InputDirectionEnum.Right:
+        //         _controller.ActiveController.InputDirection = new Vector2Int(1, _controller.ActiveController.InputDirection.y);
+        //         break;
+        // }
         return true;
     }
 

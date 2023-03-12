@@ -38,6 +38,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private PauseMenu _trainingPauseMenu = default;
     [SerializeField] private PauseMenu _replayPauseMenu = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
+    [SerializeField] private DisconnectMenu _disconnectMenu = default;
     [SerializeField] private Color _healthNormalColor = default;
     [SerializeField] private Color _healthLimitColor = default;
     [SerializeField] private Color _healthDamagedColor = default;
@@ -147,6 +148,12 @@ public class PlayerUI : MonoBehaviour
         }
     }
 
+    public void SetPlayerName(string name)
+    {
+        PlayerName = name;
+        _playerName.text = PlayerName;
+    }
+
     public void SetAssistName(string name)
     {
         _assistName.text = name;
@@ -170,9 +177,9 @@ public class PlayerUI : MonoBehaviour
     {
         float arcanaSliderWidth = _arcanaSlider.GetComponent<RectTransform>().sizeDelta.x;
         _arcanaSlider.maxValue = value;
-        float increaseValue = arcanaSliderWidth / value;
+        float increaseValue = arcanaSliderWidth / (value / PlayerStatsSO.ARCANA_MULTIPLIER);
         float currentPositionX = increaseValue;
-        for (int i = 0; i < value - 1; i++)
+        for (int i = 0; i < (value / PlayerStatsSO.ARCANA_MULTIPLIER) - 1; i++)
         {
             GameObject arcanaDivider = Instantiate(_arcanaDividerPrefab, _arcanaDividerPivot);
             arcanaDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
@@ -198,16 +205,16 @@ public class PlayerUI : MonoBehaviour
     public void SetArcana(float value)
     {
         _arcanaSlider.value = value;
-        _arcanaAmountText.text = Mathf.Floor(value).ToString();
+        _arcanaAmountText.text = Mathf.Floor(value / PlayerStatsSO.ARCANA_MULTIPLIER).ToString();
     }
 
-    public void SetAssist(float value)
+    public void SetAssist(int value)
     {
-        if (value >= 1.0f)
+        if (value >= 2000)
         {
             _assistBorder.sprite = _assistFull;
         }
-        else if (value >= 0.5f)
+        else if (value >= 1000)
         {
             _assistBorder.sprite = _assistHalf;
         }
@@ -218,7 +225,7 @@ public class PlayerUI : MonoBehaviour
         _assistSlider.value = value;
     }
 
-    public void SetHealth(float value)
+    public void SetHealth(int value)
     {
         if (value <= 3000)
         {
@@ -230,7 +237,7 @@ public class PlayerUI : MonoBehaviour
         _healthSlider.value = value;
     }
 
-    public void CheckDemonLimit(float value)
+    public void CheckDemonLimit(int value)
     {
         if (value > 3000)
         {
@@ -249,6 +256,13 @@ public class PlayerUI : MonoBehaviour
         }
         _healthCoroutine = StartCoroutine(SetHealthCoroutine());
     }
+    public void Disconnected()
+    {
+        Time.timeScale = 0;
+        GameplayManager.Instance.DisableAllInput(true);
+        GameplayManager.Instance.PauseMusic();
+        _disconnectMenu.Show();
+    }
 
     IEnumerator SetHealthCoroutine()
     {
@@ -266,7 +280,7 @@ public class PlayerUI : MonoBehaviour
         _healthSlider.value = endValue;
     }
 
-    public void SetRecoverableHealth(float value)
+    public void SetRecoverableHealth(int value)
     {
         _healthRecoverableSlider.value = value;
     }
@@ -316,8 +330,9 @@ public class PlayerUI : MonoBehaviour
         _healthDamagedSlider.value = value;
     }
 
-    public void UpdateHealthDamaged()
+    public void UpdateHealthDamaged(int healthRecoverable)
     {
+        SetRecoverableHealth(healthRecoverable);
         if (_damagedHealthCoroutine != null)
         {
             StopCoroutine(_damagedHealthCoroutine);
@@ -356,7 +371,6 @@ public class PlayerUI : MonoBehaviour
 
     public void SetComboTimerActive(bool state)
     {
-        _comboTimerLock.gameObject.SetActive(false);
         _comboTimerSlider.transform.GetChild(0).gameObject.SetActive(state);
         _comboTimerSlider.transform.GetChild(1).gameObject.SetActive(state);
     }
@@ -425,10 +439,10 @@ public class PlayerUI : MonoBehaviour
     {
         _pauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
-        GameManager.Instance.DisableAllInput();
-        GameManager.Instance.PauseMusic();
-        GameManager.Instance.PausedController = _controller.ActiveController;
-        _pauseMenu.PlayerInput = _controller.GetComponent<PlayerInput>();
+        GameplayManager.Instance.PausedController = _controller;
+        GameplayManager.Instance.DisableAllInput(isPlayerOne);
+        GameplayManager.Instance.PauseMusic();
+        _pauseMenu.PlayerInput = GameplayManager.Instance.PlayerInput;
         _pauseMenu.Show();
     }
 
@@ -436,45 +450,43 @@ public class PlayerUI : MonoBehaviour
     {
         _trainingPauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
-        GameManager.Instance.DisableAllInput();
-        GameManager.Instance.PauseMusic();
-        GameManager.Instance.PausedController = _controller.ActiveController;
-        _trainingPauseMenu.PlayerInput = _controller.GetComponent<PlayerInput>();
+        GameplayManager.Instance.PausedController = _controller;
+        GameplayManager.Instance.DisableAllInput(isPlayerOne);
+        GameplayManager.Instance.PauseMusic();
+        _trainingPauseMenu.PlayerInput = GameplayManager.Instance.PlayerInput;
         _trainingPauseMenu.Show();
     }
 
     public void ClosePause()
     {
-        Time.timeScale = GameManager.Instance.GameSpeed;
-        GameManager.Instance.EnableAllInput();
-        GameManager.Instance.PlayMusic();
+        Time.timeScale = GameplayManager.Instance.GameSpeed;
+        GameplayManager.Instance.EnableAllInput();
+        GameplayManager.Instance.PlayMusic();
         _pauseMenu.Hide();
         _trainingPauseMenu.Hide();
         _replayPauseMenu.Hide();
     }
 
-    public void IncreaseCombo()
+    public void IncreaseCombo(int combo)
     {
         if (_hasComboEnded)
         {
             StopCoroutine(_resetComboCoroutine);
             _hasComboEnded = false;
             _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
-            CurrentComboCount = 0;
             _hitsNumberText.text = "0 Hits";
             if (_comboGroup.anchoredPosition.x == -110.0f)
             {
                 _comboGroup.anchoredPosition = new Vector2(-40.0f, _comboGroup.anchoredPosition.y);
             }
         }
-        CurrentComboCount++;
-        _hitsNumberText.text = CurrentComboCount.ToString();
-        if (CurrentComboCount > 1)
+        _hitsNumberText.text = combo.ToString();
+        if (combo > 1)
         {
             _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
             _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(true);
         }
-        if (CurrentComboCount >= 10 && _comboGroup.anchoredPosition.x == -40.0f)
+        if (combo >= 10 && _comboGroup.anchoredPosition.x == -40.0f)
         {
             _comboGroup.anchoredPosition = new Vector2(-110.0f, _comboGroup.anchoredPosition.y);
         }

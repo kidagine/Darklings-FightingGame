@@ -1,6 +1,5 @@
 using Cinemachine;
 using UnityEngine;
-
 public class CameraShake : MonoBehaviour
 {
     public static CameraShake Instance { get; private set; }
@@ -28,7 +27,7 @@ public class CameraShake : MonoBehaviour
         }
     }
 
-    public void Shake(CameraShakerSO cameraShaker)
+    public void Shake(CameraShakerNetwork cameraShaker)
     {
         _cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = cameraShaker.intensity;
         _shakeTimer = cameraShaker.timer;

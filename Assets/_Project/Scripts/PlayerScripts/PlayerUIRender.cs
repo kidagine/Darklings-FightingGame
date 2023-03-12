@@ -13,8 +13,14 @@ public class PlayerUIRender : DemonicsAnimator
 
     protected override void FixedUpdate()
     {
-        base.FixedUpdate();
+        PlayAnimation();
         _image.sprite = _spriteRenderer.sprite;
+    }
+
+    public void SetPlayerStat(PlayerStatsSO playerStats)
+    {
+        _cel = 0;
+        PlayerStats = playerStats;
     }
 
     public void Taunt()

@@ -25,34 +25,34 @@ public class PlayerCollisionBoxes : MonoBehaviour
 
     public void SetHurtboxes(AnimationBox[] animationBoxes)
     {
-        if (_player != null)
-        {
-            if (_player.Invisible)
-            {
-                return;
-            }
-        }
+        // if (_player != null)
+        // {
+        //     if (_player.Invisible)
+        //     {
+        //         return;
+        //     }
+        // }
 
-        for (int i = 0; i < animationBoxes.Length; i++)
-        {
-            _hurtboxes[i].SetBox(animationBoxes[i].size, animationBoxes[i].offset);
-        }
+        // for (int i = 0; i < animationBoxes.Length; i++)
+        // {
+        //     _hurtboxes[i].SetBox(animationBoxes[i].size, animationBoxes[i].offset);
+        // }
     }
 
     public void SetHitboxes(AnimationBox[] animationBoxes, bool multiHit = false)
     {
-        for (int i = 0; i < _hitboxes.Count; i++)
-        {
-            if (multiHit || animationBoxes.Length == 0)
-            {
-                _hitboxes[i].gameObject.SetActive(false);
-            }
-        }
+        // for (int i = 0; i < _hitboxes.Count; i++)
+        // {
+        //     if (multiHit || animationBoxes.Length == 0)
+        //     {
+        //         _hitboxes[i].gameObject.SetActive(false);
+        //     }
+        // }
 
-        for (int i = 0; i < animationBoxes.Length; i++)
-        {
-            _hitboxes[i].gameObject.SetActive(true);
-            _hitboxes[i].SetBox(animationBoxes[i].size, animationBoxes[i].offset);
-        }
+        // for (int i = 0; i < animationBoxes.Length; i++)
+        // {
+        //     _hitboxes[i].gameObject.SetActive(true);
+        //     _hitboxes[i].SetBox(animationBoxes[i].size, animationBoxes[i].offset);
+        // }
     }
 }

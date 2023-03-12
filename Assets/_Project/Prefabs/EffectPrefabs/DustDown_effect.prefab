@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2476959653787158861}
   - component: {fileID: 2476959653787158860}
-  - component: {fileID: 2476959653787158859}
-  - component: {fileID: -7411818353040262961}
   - component: {fileID: -8348201581638713859}
+  - component: {fileID: 5812289948411035420}
   m_Layer: 0
   m_Name: DustDown_effect
   m_TagString: Untagged
@@ -87,38 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &2476959653787158859
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2476959653787158858}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f0e5ab45b5422cb4099f5581082b9a37, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-7411818353040262961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2476959653787158858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b84e46fd1d592c840a7adf1d4e50adb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-8348201581638713859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,3 +98,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baaf2fda5785ef3419c32f6c8e9db2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5812289948411035420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2476959653787158858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eeaea74bc3298134ebdb63581e084405, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animation: {fileID: 11400000, guid: e5b4ba36b9410324890da5341e4283fe, type: 2}
+  _spriteRenderer: {fileID: 2476959653787158860}
+  OnCurrentAnimationFinished:
+    m_PersistentCalls:
+      m_Calls: []

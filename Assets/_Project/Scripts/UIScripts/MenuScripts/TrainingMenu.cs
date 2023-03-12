@@ -1,4 +1,3 @@
-using Demonics.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -32,10 +31,7 @@ public class TrainingMenu : BaseMenu
 
     public void ConfigurePlayers(Player playerOne, Player playerTwo)
     {
-        playerOne.hitConnectsEvent.AddListener(() => FramedataValue(true, playerOne.ResultAttack));
-        playerTwo.hitConnectsEvent.AddListener(() => FramedataValue(false, playerTwo.ResultAttack));
-        playerOne.parryConnectsEvent.AddListener(() => FramedataValue(true, playerOne.ResultAttack));
-        playerTwo.parryConnectsEvent.AddListener(() => FramedataValue(false, playerTwo.ResultAttack));
+
     }
 
     public void ChangePage(bool left)
@@ -111,19 +107,19 @@ public class TrainingMenu : BaseMenu
         switch (value)
         {
             case 0:
-                GameManager.Instance.GameSpeed = 1.0f;
+                GameplayManager.Instance.GameSpeed = 1.0f;
                 break;
             case 1:
-                GameManager.Instance.GameSpeed = 0.75f;
+                GameplayManager.Instance.GameSpeed = 0.75f;
                 break;
             case 2:
-                GameManager.Instance.GameSpeed = 0.5f;
+                GameplayManager.Instance.GameSpeed = 0.5f;
                 break;
             case 3:
-                GameManager.Instance.GameSpeed = 0.25f;
+                GameplayManager.Instance.GameSpeed = 0.25f;
                 break;
             case 4:
-                GameManager.Instance.GameSpeed = 0.10f;
+                GameplayManager.Instance.GameSpeed = 0.10f;
                 break;
         }
     }
@@ -135,12 +131,12 @@ public class TrainingMenu : BaseMenu
         {
             case 0:
                 TrainingSettings.CpuOff = true;
-                GameManager.Instance.DeactivateCpus();
+                GameplayManager.Instance.DeactivateCpus();
                 break;
             case 1:
                 TrainingSettings.CpuOff = false;
-                GameManager.Instance.DeactivateCpus();
-                GameManager.Instance.ActivateCpus();
+                GameplayManager.Instance.DeactivateCpus();
+                GameplayManager.Instance.ActivateCpus();
                 break;
         }
     }
@@ -150,10 +146,11 @@ public class TrainingMenu : BaseMenu
         switch (value)
         {
             case 0:
-                GameManager.Instance.InfiniteArcana = false;
+                GameplayManager.Instance.InfiniteArcana = false;
                 break;
             case 1:
-                GameManager.Instance.InfiniteArcana = true;
+                GameplayManager.Instance.InfiniteArcana = true;
+                CheckTrainingGauges();
                 break;
         }
     }
@@ -163,10 +160,11 @@ public class TrainingMenu : BaseMenu
         switch (value)
         {
             case 0:
-                GameManager.Instance.InfiniteAssist = false;
+                GameplayManager.Instance.InfiniteAssist = false;
                 break;
             case 1:
-                GameManager.Instance.InfiniteAssist = true;
+                GameplayManager.Instance.InfiniteAssist = true;
+                CheckTrainingGauges();
                 break;
         }
     }
@@ -192,12 +190,21 @@ public class TrainingMenu : BaseMenu
         switch (value)
         {
             case 0:
-                GameManager.Instance.InfiniteHealth = false;
+                GameplayManager.Instance.InfiniteHealth = false;
                 break;
             case 1:
-                GameManager.Instance.MaxHealths();
-                GameManager.Instance.InfiniteHealth = true;
+                GameplayManager.Instance.InfiniteHealth = true;
+                CheckTrainingGauges();
                 break;
+        }
+    }
+
+    private void CheckTrainingGauges()
+    {
+        if (GameSimulation.Run)
+        {
+            GameSimulation._players[0].CurrentState.CheckTrainingComboEnd(GameSimulation._players[0], true);
+            GameSimulation._players[1].CurrentState.CheckTrainingComboEnd(GameSimulation._players[1], true);
         }
     }
 
@@ -247,6 +254,10 @@ public class TrainingMenu : BaseMenu
 
     public void FramedataValue(bool isPlayerOne, ResultAttack attack)
     {
+        if (attack == null)
+        {
+            return;
+        }
         if (isPlayerOne)
         {
             if (_startupOneText.gameObject.activeSelf)
@@ -271,7 +282,10 @@ public class TrainingMenu : BaseMenu
             }
             if (_damageComboOneText.gameObject.activeSelf)
             {
-                _damageComboOneText.text = attack.comboDamage.ToString();
+                if (attack.comboDamage > 0)
+                {
+                    _damageComboOneText.text = attack.comboDamage.ToString();
+                }
             }
         }
         else
@@ -298,7 +312,10 @@ public class TrainingMenu : BaseMenu
             }
             if (_damageComboTwoText.gameObject.activeSelf)
             {
-                _damageComboTwoText.text = attack.comboDamage.ToString();
+                if (attack.comboDamage > 0)
+                {
+                    _damageComboTwoText.text = attack.comboDamage.ToString();
+                }
             }
         }
     }
@@ -332,10 +349,10 @@ public class TrainingMenu : BaseMenu
     public void ResetTrainingOptions()
     {
         TrainingSettings.ShowHitboxes = false;
-        GameManager.Instance.InfiniteHealth = false;
-        GameManager.Instance.InfiniteArcana = false;
-        GameManager.Instance.GameSpeed = 1.0f;
-        GameManager.Instance.ActivateCpus();
+        GameplayManager.Instance.InfiniteHealth = false;
+        GameplayManager.Instance.InfiniteArcana = false;
+        GameplayManager.Instance.GameSpeed = 1.0f;
+        GameplayManager.Instance.ActivateCpus();
     }
 
     public void HideMenu()

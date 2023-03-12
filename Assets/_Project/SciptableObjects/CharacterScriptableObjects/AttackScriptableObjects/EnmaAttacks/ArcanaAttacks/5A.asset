@@ -16,31 +16,34 @@ MonoBehaviour:
   attackTypeEnum: 2
   hitStun: 25
   blockStun: 0
-  travelDistance: {x: 0.28, y: 0}
-  knockbackForce: {x: 6, y: 0}
+  travelDistance: {x: 4.48, y: 0}
+  knockbackForce: {x: 96, y: 0}
   knockbackDuration: 28
-  knockbackArc: 4
+  knockbackArc: 48
   hasSuperArmor: 0
   isAirAttack: 0
   isProjectile: 0
   isArcana: 1
   jumpCancelable: 0
   causesKnockdown: 1
+  causesSoftKnockdown: 0
   attackSound: Slam
   impactSound: Impact5
   hitstop: 12
   hitEffect: {fileID: 0}
   hitEffectPosition: {x: 2.5, y: 1.5}
   hitEffectRotation: 0
-  hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
+  hurtEffect: HurtHeavy
   hurtEffectPosition: {x: 1.7250977, y: -2.9848633}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: d5b8e5c4877dde94e8be4884ea49386c, type: 2}
   startUpFrames: 5
   activeFrames: 15
   recoveryFrames: 6
-  moveName: 
-  moveDescription: 
-  moveVideo: {fileID: 0}
+  moveName: Firey Blade
+  moveDescription: Charge forward and quickly knockdown the opponent .
+  moveVideo: {fileID: 32900000, guid: 67107b0d411f6af498f6b3d007d7ec5f, type: 3}
   airOk: 0
   reversal: 0
+  projectileSpeed: 0
+  projectileDestroyOnHit: 0

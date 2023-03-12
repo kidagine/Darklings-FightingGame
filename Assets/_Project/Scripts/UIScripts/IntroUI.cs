@@ -1,4 +1,3 @@
-using Demonics.Sounds;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
@@ -23,13 +22,15 @@ public class IntroUI : MonoBehaviour
     {
         if (DemonicsWorld.WaitFramesOnce(ref _midDialogueFrame))
         {
-            GameManager.Instance.IsDialogueRunning = true;
+            GameplayManager.Instance.IsDialogueRunning = true;
             _playerOneDialogue.PlayDialogue();
         }
     }
 
     public void StartIntro()
     {
+        GameplayManager.Instance.IsDialogueRunning = true;
+        _animator.Rebind();
         _animator.SetBool("IsIntroRunning", true);
         _midDialogueFrame = 200;
     }

@@ -1,4 +1,3 @@
-using Demonics.UI;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -10,7 +9,7 @@ public class OptionsMenu : BaseMenu
     public void SetVFX(int value)
     {
         float parsedValue = ((float)value / 10) + 0.00001f;
-        _audioMixer.SetFloat("VFXVolume", Mathf.Log10(parsedValue) * 20);   
+        _audioMixer.SetFloat("VFXVolume", Mathf.Log10(parsedValue) * 20);
     }
 
     public void SetUI(int value)

@@ -17,7 +17,7 @@ MonoBehaviour:
   hitStun: 34
   blockStun: 0
   travelDistance: {x: 0, y: 0}
-  knockbackForce: {x: 0.9, y: 0}
+  knockbackForce: {x: 9.6, y: 0}
   knockbackDuration: 6
   knockbackArc: 0
   hasSuperArmor: 0
@@ -26,17 +26,18 @@ MonoBehaviour:
   isArcana: 0
   jumpCancelable: 0
   causesKnockdown: 0
+  causesSoftKnockdown: 0
   attackSound: Hit
   impactSound: Impact5
   hitstop: 9
   hitEffect: {fileID: 3782010356200484119, guid: 47b4915fae0034c45b98dedc650be9af, type: 3}
   hitEffectPosition: {x: 1, y: 0.8}
   hitEffectRotation: -25
-  hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
+  hurtEffect: HurtNormal
   hurtEffectPosition: {x: -5.0908203, y: -3.3693848}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 0}
-  startUpFrames: 12
+  startUpFrames: 10
   activeFrames: 7
   recoveryFrames: 12
   moveName: 
