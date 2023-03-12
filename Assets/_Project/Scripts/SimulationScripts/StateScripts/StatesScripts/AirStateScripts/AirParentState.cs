@@ -101,7 +101,7 @@ public class AirParentState : State
             }
             else
             {
-                if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown && (DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown && player.position.y > DemonicsPhysics.GROUND_POINT)
                 {
                     EnterState(player, "Airborne");
                 }

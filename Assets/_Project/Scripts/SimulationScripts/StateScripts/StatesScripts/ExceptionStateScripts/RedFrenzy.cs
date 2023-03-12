@@ -51,7 +51,14 @@ public class RedFrenzyState : State
         if (player.attackFrames <= 0)
         {
             player.dashFrames = 0;
-            EnterState(player, "Idle");
+            if (player.position.y > DemonicsPhysics.GROUND_POINT)
+            {
+                EnterState(player, "Fall");
+            }
+            else
+            {
+                EnterState(player, "Idle");
+            }
         }
     }
     private void ToHurtState(PlayerNetwork player)
