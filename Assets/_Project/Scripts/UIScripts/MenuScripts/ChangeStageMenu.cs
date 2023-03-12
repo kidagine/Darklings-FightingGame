@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ChangeStageMenu : MonoBehaviour
 {
+    [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private RebindMenu _rebindOneMenu = default;
     [SerializeField] private RebindMenu _rebindTwoMenu = default;
     [SerializeField] private Selectable _initialSelectable = default;
@@ -24,6 +25,7 @@ public class ChangeStageMenu : MonoBehaviour
     private EventSystem _currentEventSystem;
     private bool _isCharacterSelectDeactivated;
     public bool IsOpen { get; private set; }
+    public PromptsInput PreviousPromptsInput { get; set; }
 
 
     void Awake()
@@ -64,9 +66,11 @@ public class ChangeStageMenu : MonoBehaviour
     {
         if (!IsOpen && !_rebindOneMenu.gameObject.activeSelf && !_rebindTwoMenu.gameObject.activeSelf)
         {
-            _changeStagePrompts.SetActive(true);
+            _isCharacterSelectDeactivated = !_currentEventSystem.sendNavigationEvents;
             _backgroundDarken.SetActive(true);
+            PreviousPromptsInput = _inputManager.CurrentPrompts;
             _previousSelectable = _currentEventSystem.currentSelectedGameObject.GetComponent<Selectable>();
+            _changeStagePrompts.SetActive(true);
             _changeStageAnimator.Play("ChangeStageOpen");
             IsOpen = true;
         }
@@ -74,10 +78,6 @@ public class ChangeStageMenu : MonoBehaviour
 
     public void ChangeStageOpenFinished()
     {
-        if (!_currentEventSystem.sendNavigationEvents)
-        {
-            _isCharacterSelectDeactivated = true;
-        }
         _currentEventSystem.sendNavigationEvents = true;
         _initialSelectable.Select();
     }
@@ -89,11 +89,13 @@ public class ChangeStageMenu : MonoBehaviour
             _changeStagePrompts.SetActive(false);
             _backgroundDarken.SetActive(false);
             _currentEventSystem.currentSelectedGameObject.GetComponent<Animator>().Rebind();
+            _previousSelectable.Select();
             _changeStageAnimator.Play("ChangeStageClose");
-            if (!_isCharacterSelectDeactivated)
+            if (_isCharacterSelectDeactivated)
             {
-                _previousSelectable.Select();
+                _currentEventSystem.sendNavigationEvents = false;
             }
+            _inputManager.CurrentPrompts = PreviousPromptsInput;
             IsOpen = false;
         }
     }

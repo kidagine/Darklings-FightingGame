@@ -46,11 +46,11 @@ public class ReplaysMenu : BaseMenu
         _currentReplayCard = _replayCards[index];
         if (_currentReplayCard.ReplayCardData.versionNumber.Trim() == ReplayManager.Instance.VersionNumber)
         {
-            ReplayManager.Instance.SetReplay();
             SceneSettings.IsOnline = false;
             SceneSettings.SceneSettingsDecide = true;
             SceneSettings.IsTrainingMode = false;
             SceneSettings.ReplayIndex = index;
+            ReplayManager.Instance.SetReplay();
             SceneManager.LoadScene(2);
         }
         else

@@ -5,7 +5,7 @@ using UnityEngine;
 public class State
 {
     public virtual void UpdateLogic(PlayerNetwork player) { }
-    public virtual void Exit() { }
+    public virtual void Exit(PlayerNetwork player) { }
     public virtual bool ToHurtState(PlayerNetwork player, AttackSO attack) { return false; }
     public virtual bool ToBlockState(PlayerNetwork player, AttackSO attack) { return false; }
     public void CheckFlip(PlayerNetwork player)
@@ -26,7 +26,6 @@ public class State
     }
     public bool IsBlocking(PlayerNetwork player)
     {
-        player.gotHit = false;
         if (player.attackHurtNetwork.attackType == AttackTypeEnum.Break)
         {
             return false;
@@ -294,7 +293,7 @@ public class State
 
     public void EnterState(PlayerNetwork player, string name, bool skipEnter = false)
     {
-        if (!player.gotHit || name.Contains("Hurt") || name.Contains("Airborne") || name.Contains("Grabbed"))
+        if (!player.gotHit || name.Contains("Hurt") || name.Contains("Airborne") || name.Contains("Grabbed") || name.Contains("Block") || name.Contains("Knockback"))
         {
             player.enter = skipEnter;
             player.state = name;
@@ -311,7 +310,24 @@ public class State
             player.projectiles[i].hitstop = true;
         }
     }
-
+    public bool AIHurt(PlayerNetwork player)
+    {
+        if (SceneSettings.IsTrainingMode && player.isAi)
+        {
+            if (TrainingSettings.OnHit)
+            {
+                if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                {
+                    player.isAir = true;
+                }
+                AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Light, false, player.isAir);
+                player.attackNetwork = SetAttack(InputEnum.Light, attack);
+                EnterState(player, "Attack");
+                return true;
+            }
+        }
+        return false;
+    }
     public bool AIBlocking(PlayerNetwork player)
     {
         if (SceneSettings.IsTrainingMode && player.isAi)

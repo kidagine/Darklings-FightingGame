@@ -72,7 +72,6 @@ public class PlayerComboSystem : MonoBehaviour
 
     private static AttackSO GetStandingAttackType(PlayerStatsSO playerStats, InputEnum inputEnum)
     {
-        Debug.Log(inputEnum);
         if (inputEnum == InputEnum.Light)
         {
             return playerStats.m5L;

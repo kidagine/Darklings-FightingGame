@@ -10,7 +10,6 @@ public class DeathState : State
             if (!SceneSettings.IsTrainingMode)
             {
                 GameSimulation.Run = false;
-                GameSimulation.Timer = 99;
             }
             GameSimulation.GlobalHitstop = 1;
             player.velocity = DemonicsVector2.Zero;
@@ -22,7 +21,10 @@ public class DeathState : State
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             ResetCombo(player);
         }
-        player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+        if (player.position.y > DemonicsPhysics.GROUND_POINT)
+            player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+        else
+            player.velocity = new DemonicsVector2(player.velocity.x, 0);
         player.animation = "Death";
         player.animationFrames++;
         if (player.animationFrames >= 510)
@@ -46,6 +48,7 @@ public class DeathState : State
         {
             if (player.animationFrames >= 725)
             {
+                GameSimulation.Timer = GameSimulation._timerMax;
                 player.invincible = false;
                 ResetPlayer(player);
                 ResetPlayer(player.otherPlayer);

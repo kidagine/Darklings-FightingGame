@@ -66,6 +66,8 @@ public class HurtAirState : HurtParentState
         {
             ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+            if (AIHurt(player))
+                return;
             EnterState(player, "Fall");
         }
     }

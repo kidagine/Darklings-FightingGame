@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -57,10 +58,11 @@ public class ReplayManager : MonoBehaviour
         CheckInstance();
     }
 
+
     public void SetReplay()
     {
         ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-        // SceneSettings.SceneSettingsDecide = true;
+
         SceneSettings.PlayerOne = replayCardData.characterOne;
         SceneSettings.ColorOne = replayCardData.colorOne;
         SceneSettings.AssistOne = replayCardData.assistOne;

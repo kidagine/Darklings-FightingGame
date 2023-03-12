@@ -30,6 +30,7 @@ public class GrabbedState : State
         {
             if (player.otherPlayer.state != "Arcana" && player.animationFrames <= 6)
             {
+                player.sound = "ParryStart";
                 player.SetEffect("Impact", new DemonicsVector2((player.position.x + player.otherPlayer.position.x) / 2, player.position.y + (player.pushbox.size.y / 2)));
                 EnterState(player, "Knockback");
                 EnterState(player.otherPlayer, "Knockback");
