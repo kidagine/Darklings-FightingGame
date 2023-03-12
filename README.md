@@ -31,7 +31,7 @@ State Machine|Hitstop System|Rebinding
 Streaming Videos|Dialogue System|
 Pixel Perfect Camera|Replay System|
 60FPS Logic Tick|AI Opponent|
-Early Rollback Implementation|Lobby System|
+Rollback Implementation|Lobby System|
 
 ## Testing Online
 - Open two instances of Unity using ParrelSync (https://github.com/VeriorPies/ParrelSync).
