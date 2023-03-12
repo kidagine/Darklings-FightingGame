@@ -411,6 +411,10 @@ public class GameplayManager : MonoBehaviour
         }
         if (_isTrainingMode)
         {
+            if (!NetworkInput.IS_LOCAL)
+            {
+                _networkCanvas.SetActive(true);
+            }
             _cachedOneResetPosition = PlayerOne.GetComponent<PlayerMovement>().Physics.Position;
             _cachedTwoResetPosition = PlayerTwo.GetComponent<PlayerMovement>().Physics.Position;
             _countdownText.gameObject.SetActive(false);
@@ -429,10 +433,6 @@ public class GameplayManager : MonoBehaviour
             _inputHistories[1].transform.GetChild(0).gameObject.SetActive(false);
             _trainingPrompts.gameObject.SetActive(false);
             StartIntro();
-        }
-        if (!NetworkInput.IS_LOCAL)
-        {
-            _networkCanvas.SetActive(true);
         }
         ReplayManager.Instance.StartReplay();
     }
@@ -560,6 +560,10 @@ public class GameplayManager : MonoBehaviour
 
     public virtual void StartRound()
     {
+        if (!NetworkInput.IS_LOCAL)
+        {
+            _networkCanvas.SetActive(true);
+        }
         _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
         {
