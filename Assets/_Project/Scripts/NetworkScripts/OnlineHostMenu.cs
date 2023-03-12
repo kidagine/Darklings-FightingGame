@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Demonics.UI;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
@@ -9,6 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class OnlineHostMenu : BaseMenu
 {
@@ -18,32 +18,56 @@ public class OnlineHostMenu : BaseMenu
     [SerializeField] private DemonNameplate[] _nameplates = default;
     [SerializeField] private TextMeshProUGUI _readyText = default;
     [SerializeField] private TextMeshProUGUI _lobbyIdText = default;
+    [SerializeField] private TextMeshProUGUI _currentControllerText = default;
     [SerializeField] private GameObject _creatingLobby = default;
     [SerializeField] private GameObject _lobbyCreated = default;
     [SerializeField] private GameObject _exitingLobby = default;
+    [SerializeField] private BaseButton _readyButton = default;
+    [SerializeField] private Button _copyButton = default;
     [SerializeField] private GameObject _copyLobbyId = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] private PlayerInput _playerInput = default;
+    private Button _readyButtonComponent;
     private string _lobbyId;
+    private PlayerInput _storedPlayerInput = default;
+    private bool _ready;
     public bool Hosting { get; set; } = true;
 
     async void OnEnable()
     {
+        _readyButtonComponent = _readyButton.GetComponent<Button>();
         if (Hosting)
         {
             _nameplates[0].SetDemonData(_onlineSetupMenu.DemonData);
             _lobbyId = await _networkManager.CreateLobby(_onlineSetupMenu.DemonData);
+            if (_lobbyId == null)
+            {
+                _creatingLobby.SetActive(false);
+                _lobbyCreated.SetActive(true);
+                Hide();
+                return;
+            }
             _lobbyIdText.text = $"Lobby ID: {_lobbyId}";
             _creatingLobby.SetActive(false);
             _lobbyCreated.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null);
             _startingOption.Select();
             _networkManager.OnLobbyUpdate += UpdateLobby;
+            _readyButton.Deactivate();
         }
         else
         {
             _creatingLobby.SetActive(false);
             _lobbyCreated.SetActive(true);
+        }
+    }
+
+    private void Update()
+    {
+        if (!_ready)
+        {
+            _storedPlayerInput = _playerInput;
+            _currentControllerText.text = $"Match Controller: {_storedPlayerInput.currentControlScheme}";
         }
     }
 
@@ -62,6 +86,18 @@ public class OnlineHostMenu : BaseMenu
         List<bool> readyList = new List<bool>();
         _nameplates[0].gameObject.SetActive(false);
         _nameplates[1].gameObject.SetActive(false);
+        if (lobby.Players.Count >= 2)
+        {
+            _readyButton.Activate();
+            Navigation navigation = _copyButton.navigation;
+            navigation.selectOnDown = _readyButtonComponent;
+            navigation.selectOnRight = _readyButtonComponent;
+            _copyButton.navigation = navigation;
+        }
+        else
+        {
+            _readyButton.Deactivate();
+        }
         for (int i = 0; i < lobby.Players.Count; i++)
         {
             demonDatas.Add(new DemonData()
@@ -70,7 +106,9 @@ public class OnlineHostMenu : BaseMenu
                 character = int.Parse(lobby.Players[i].Data["Character"].Value),
                 assist = int.Parse(lobby.Players[i].Data["Assist"].Value),
                 color = int.Parse(lobby.Players[i].Data["Color"].Value),
-                ip = lobby.Players[i].Data["Ip"].Value
+                ip = lobby.Players[i].Data["Ip"].Value,
+                port = int.Parse(lobby.Players[i].Data["Port"].Value),
+                privateIp = lobby.Players[i].Data["PrivateIp"].Value,
             });
             readyList.Add(bool.Parse(lobby.Players[i].Data["Ready"].Value));
             _nameplates[i].SetDemonData(demonDatas[i]);
@@ -104,8 +142,8 @@ public class OnlineHostMenu : BaseMenu
     {
         if (Hosting)
         {
-            bool ready = _nameplates[0].ToggleReady();
-            if (ready)
+            _ready = _nameplates[0].ToggleReady();
+            if (_ready)
             {
                 _readyText.text = "Cancel";
             }
@@ -113,12 +151,12 @@ public class OnlineHostMenu : BaseMenu
             {
                 _readyText.text = "Ready";
             }
-            _networkManager.UpdateLobbyReady(ready, true);
+            _networkManager.UpdateLobbyReady(_ready, true);
         }
         else
         {
-            bool ready = _nameplates[1].ToggleReady();
-            if (ready)
+            _ready = _nameplates[1].ToggleReady();
+            if (_ready)
             {
                 _readyText.text = "Cancel";
             }
@@ -126,7 +164,7 @@ public class OnlineHostMenu : BaseMenu
             {
                 _readyText.text = "Ready";
             }
-            _networkManager.UpdateLobbyReady(ready, false);
+            _networkManager.UpdateLobbyReady(_ready, false);
         }
     }
 
@@ -145,11 +183,15 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.NameTwo = demonDatas[1].demonName;
         SceneSettings.OnlineOneIp = demonDatas[0].ip;
         SceneSettings.OnlineTwoIp = demonDatas[1].ip;
+        SceneSettings.PortOne = demonDatas[0].port;
+        SceneSettings.PortTwo = demonDatas[1].port;
+        SceneSettings.PrivateOneIp = demonDatas[0].privateIp;
+        SceneSettings.PrivateTwoIp = demonDatas[1].privateIp;
         SceneSettings.ColorTwo = demonDatas[1].color;
-        SceneSettings.ControllerOne = _playerInput.devices[0];
-        SceneSettings.ControllerTwo = _playerInput.devices[0];
-        SceneSettings.ControllerOneScheme = "Keyboard";
-        SceneSettings.ControllerTwoScheme = "Keyboard";
+        SceneSettings.ControllerOne = _storedPlayerInput.devices[0];
+        SceneSettings.ControllerTwo = _storedPlayerInput.devices[0];
+        SceneSettings.ControllerOneScheme = Hosting == true ? _storedPlayerInput.currentControlScheme : "Keyboard";
+        SceneSettings.ControllerTwoScheme = Hosting == false ? _storedPlayerInput.currentControlScheme : "Keyboard";
         SceneSettings.PlayerOne = demonDatas[0].character;
         SceneSettings.PlayerTwo = demonDatas[1].character;
         SceneSettings.AssistOne = demonDatas[0].assist;
@@ -157,10 +199,10 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.ColorOne = demonDatas[0].color;
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.SceneSettingsDecide = true;
-        SceneSettings.StageIndex = 0;
-        // _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
-        if (Hosting)
-            _fadeHandler.onFadeEnd.AddListener(() => NetworkManager.Singleton.SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
+        SceneSettings.Bit1 = false;
+        SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
+        SceneSettings.MusicName = "Random";
+        _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
         _fadeHandler.StartFadeTransition(true);
     }
 

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Demonics.UI;
 using UnityEngine;
 
 public class OnlineSetupMenu : BaseMenu
@@ -38,4 +37,6 @@ public class DemonData
     public int assist;
     public int color;
     public string ip;
+    public int port;
+    public string privateIp;
 }

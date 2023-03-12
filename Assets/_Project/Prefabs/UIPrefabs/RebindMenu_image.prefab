@@ -774,6 +774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f6edf85cd646454995d0f0d1519be8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pauseMenu: {fileID: 0}
   _inputManager: {fileID: 0}
   OnConfirm:
     m_PersistentCalls:
@@ -817,10 +818,19 @@ MonoBehaviour:
   OnControls:
     m_PersistentCalls:
       m_Calls: []
+  OnToggleFramedata:
+    m_PersistentCalls:
+      m_Calls: []
   OnLeftPage:
     m_PersistentCalls:
       m_Calls: []
   OnRightPage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLeftNavigation:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRightNavigation:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &5882979951445544861

@@ -9,92 +9,103 @@ public class PlayerComboSystem : MonoBehaviour
         _player = GetComponent<Player>();
     }
 
-    public AttackSO GetComboAttack(InputEnum inputEnum, bool isCrouching, bool isAir)
+
+    public static AttackSO GetComboAttack(PlayerStatsSO playerStats, InputEnum inputEnum, bool isCrouching, bool isAir)
     {
+        if (inputEnum == InputEnum.Special)
+        {
+            return GetArcana(playerStats, isCrouching, isAir);
+        }
         if (inputEnum == InputEnum.Throw)
         {
-            return _player.playerStats.mThrow;
+            return playerStats.mThrow;
         }
         if (isCrouching)
         {
-            return GetCrouchingAttackType(inputEnum);
+            return GetCrouchingAttackType(playerStats, inputEnum);
         }
         else
         {
             if (isAir)
             {
-                return GetJumpAttackType(inputEnum);
+                return GetJumpAttackType(playerStats, inputEnum);
             }
             else
             {
-                return GetStandingAttackType(inputEnum);
+                return GetStandingAttackType(playerStats, inputEnum);
             }
         }
     }
 
-    private AttackSO GetJumpAttackType(InputEnum inputEnum)
+    private static AttackSO GetJumpAttackType(PlayerStatsSO playerStats, InputEnum inputEnum)
     {
         if (inputEnum == InputEnum.Light)
         {
-            return _player.playerStats.jL;
+            return playerStats.jL;
         }
         else if (inputEnum == InputEnum.Medium)
         {
-            return _player.playerStats.jM;
+            return playerStats.jM;
         }
         else
         {
-            return _player.playerStats.jH;
+            return playerStats.jH;
         }
     }
 
-    private AttackSO GetCrouchingAttackType(InputEnum inputEnum)
+    private static AttackSO GetCrouchingAttackType(PlayerStatsSO playerStats, InputEnum inputEnum)
     {
         if (inputEnum == InputEnum.Light)
         {
-            return _player.playerStats.m2L;
+            return playerStats.m2L;
         }
         else if (inputEnum == InputEnum.Medium)
         {
-            return _player.playerStats.m2M;
+            return playerStats.m2M;
         }
-        else
+        else if (inputEnum == InputEnum.Heavy)
         {
-            return _player.playerStats.m2H;
+            return playerStats.m2H;
         }
+        return null;
     }
 
-    private AttackSO GetStandingAttackType(InputEnum inputEnum)
+    private static AttackSO GetStandingAttackType(PlayerStatsSO playerStats, InputEnum inputEnum)
     {
         if (inputEnum == InputEnum.Light)
         {
-            return _player.playerStats.m5L;
+            return playerStats.m5L;
         }
         else if (inputEnum == InputEnum.Medium)
         {
-            return _player.playerStats.m5M;
+            return playerStats.m5M;
         }
-        else
+        else if (inputEnum == InputEnum.Heavy)
         {
-            return _player.playerStats.m5H;
+            return playerStats.m5H;
         }
+        return null;
     }
 
-    public AttackSO GetThrow()
+    public static AttackSO GetThrow(PlayerStatsSO playerStats)
     {
-        return _player.playerStats.mThrow;
+        return playerStats.mThrow;
+    }
+    public static AttackSO GetRedFrenzy(PlayerStatsSO playerStats)
+    {
+        return playerStats.mRedFrenzy;
     }
 
-    public ArcanaSO GetArcana(bool isCrouching = false, bool isAir = false)
+    public static ArcanaSO GetArcana(PlayerStatsSO playerStats, bool isCrouching = false, bool isAir = false)
     {
         if (isAir)
         {
-            return _player.playerStats.jArcana;
+            return playerStats.jArcana;
         }
         if (isCrouching)
         {
-            return _player.playerStats.m2Arcana;
+            return playerStats.m2Arcana;
         }
-        return _player.playerStats.m5Arcana;
+        return playerStats.m5Arcana;
     }
 }

@@ -1,4 +1,3 @@
-using Demonics.Sounds;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
@@ -30,6 +29,8 @@ public class IntroUI : MonoBehaviour
 
     public void StartIntro()
     {
+        GameplayManager.Instance.IsDialogueRunning = true;
+        _animator.Rebind();
         _animator.SetBool("IsIntroRunning", true);
         _midDialogueFrame = 200;
     }

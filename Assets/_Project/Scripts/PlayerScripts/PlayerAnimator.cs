@@ -1,5 +1,4 @@
 using System.Collections;
-using Demonics.Sounds;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -10,7 +9,7 @@ public class PlayerAnimator : DemonicsAnimator
     [SerializeField] private PlayerMovement _playerMovement = default;
     [SerializeField] private Audio _audio = default;
     private Shadow _shadow;
-
+    private int _celPrevious = -1;
     public PlayerStatsSO PlayerStats { get { return _player.playerStats; } set { } }
 
 
@@ -24,50 +23,93 @@ public class PlayerAnimator : DemonicsAnimator
         _animation = _player.playerStats._animation;
     }
 
-    protected override void CheckGrab()
-    {
-        if (GetEvent().grabPoint != Vector2.zero)
-        {
-            _player.OtherPlayer.GrabPoint = new DemonicsVector2((DemonicsFloat)GetEvent().grabPoint.x * (DemonicsFloat)(_player.transform.localScale.x), (DemonicsFloat)GetEvent().grabPoint.y);
-            _player.OtherPlayerMovement.Physics.SetPositionWithRender(new DemonicsVector2(_playerMovement.Physics.Position.x + _player.OtherPlayer.GrabPoint.x, _playerMovement.Physics.Position.y + _player.OtherPlayer.GrabPoint.y));
-        }
-    }
     protected override void CheckEvents()
     {
-        base.CheckEvents();
-        if (GetEvent().projectile)
+        if (_celPrevious != _cel)
         {
-            _player.CreateEffect(GetEvent().projectilePoint, true);
+            // _celPrevious = _cel;
+            // base.CheckEvents();
+            // if (GetEvent().projectile)
+            // {
+            //     _player.CreateEffect(GetEvent().projectilePoint, true);
+            // }
+            // if (GetEvent().jump)
+            // {
+            //     _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent().jumpDirection.y));
+            // }
+            // if (GetEvent().footstep)
+            // {
+            //     _audio.SoundGroup("Footsteps").PlayInRandom();
+            // }
+            // if (GetEvent().throwEnd)
+            // {
+            //     _audio.Sound("Impact6").Play();
+            //     // CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+            // }
+            // if (GetEvent().throwArcanaEnd)
+            // {
+            //     _audio.Sound("Impact6").Play();
+            //     //  CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
+            // }
+            // _player.Parrying = GetEvent().parry;
+            // _player.Invincible = GetEvent().invisibile;
         }
-        if (GetEvent().jump)
+    }
+    public bool GetProjectile(string name, int frame)
+    {
+        return GetEvent(name, frame, out _).projectile;
+    }
+    public bool GetParrying(string name, int frame)
+    {
+        return GetEvent(name, frame, out _).parry;
+    }
+    public bool GetThrowArcanaEnd(string name, int frame)
+    {
+        return GetEvent(name, frame, out _).throwArcanaEnd;
+    }
+    public bool GetInvincible(string name, int frame)
+    {
+        return GetEvent(name, frame, out _).invisibile;
+    }
+    public bool GetFootstep(string name, int frame, out int cel)
+    {
+        return GetEvent(name, frame, out cel).footstep;
+    }
+    public DemonicsVector2 GetJump(string name, int frame)
+    {
+        DemonicsVector2 jumpDirection = DemonicsVector2.Zero;
+        if (GetEvent(name, frame, out _).jump)
         {
-            _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent().jumpDirection.y));
+            jumpDirection = new DemonicsVector2((DemonicsFloat)GetEvent(name, frame, out _).jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent(name, frame, out _).jumpDirection.y);
         }
-        if (GetEvent().footstep)
+        return jumpDirection;
+    }
+    public DemonicsVector2 GetGrabPoint(string name, int frame)
+    {
+        Vector2 grabPoint = GetEvent(name, frame, out _).grabPoint;
+        return new DemonicsVector2((DemonicsFloat)grabPoint.x, (DemonicsFloat)grabPoint.y);
+    }
+
+    public override void SetAnimation(string name, int frame)
+    {
+        if (name == "Wallsplat")
         {
-            _audio.SoundGroup("Footsteps").PlayInRandom();
+            transform.localPosition = new Vector2(10 * -transform.localScale.x, 0);
+            transform.localRotation = Quaternion.Euler(0, 0, -90);
         }
-        if (GetEvent().throwEnd)
+        else
         {
-            _audio.Sound("Impact6").Play();
-            CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
-            _player.OtherPlayerStateManager.TryToKnockdownState();
+            transform.localPosition = Vector2.zero;
+            transform.localRotation = Quaternion.identity;
         }
-        if (GetEvent().throwArcanaEnd)
-        {
-            _audio.Sound("Impact6").Play();
-            CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
-            _player.OtherPlayerStateManager.TryToHurtState(_player.CurrentAttack);
-        }
-        _player.Parrying = GetEvent().parry;
-        _player.Invincible = GetEvent().invisibile;
+        base.SetAnimation(name, frame);
     }
 
     protected override void CheckAnimationBoxes()
     {
         base.CheckAnimationBoxes();
-        _playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
-        _playerCollisionBoxes.SetHitboxes(GetHitboxes());
+        //_playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
+        //_playerCollisionBoxes.SetHitboxes(GetHitboxes());
     }
 
     public void SetInvinsible(bool state)
@@ -76,8 +118,10 @@ public class PlayerAnimator : DemonicsAnimator
         _shadow.SetInvinsible(state);
     }
 
-    public bool InRecovery()
+    public bool InRecovery(string name, int frame)
     {
+        _group = _animation.GetGroupId(name);
+        _cel = GetCellByFrame(frame);
         for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
         {
             if (i < _cel)
@@ -89,18 +133,24 @@ public class PlayerAnimator : DemonicsAnimator
             }
         }
         return false;
-    }
 
-    public bool InActive()
-    {
-        if (GetHitboxes().Length > 0)
+        if (_animation.GetCel(_group, _cel).hitboxes.Count == 0)
         {
             return true;
         }
         return false;
     }
 
-    public AttackSO GetFramedate(AttackSO attack)
+    public bool InActive()
+    {
+        // if (GetHitboxes().Length > 0)
+        // {
+        //     return true;
+        // }
+        return false;
+    }
+
+    public AttackSO GetFramedata(AttackSO attack)
     {
         int startUpFrames = 0;
         int activeFrames = 0;
@@ -135,132 +185,6 @@ public class PlayerAnimator : DemonicsAnimator
         attack.activeFrames = activeFrames;
         attack.recoveryFrames = recoveryFrames;
         return attack;
-    }
-
-    public void Walk()
-    {
-        SetAnimation("Walk");
-    }
-
-    public void Idle()
-    {
-        SetAnimation("Idle");
-    }
-
-    public void Crouch()
-    {
-        SetAnimation("Crouch");
-    }
-
-    public void Jump()
-    {
-        SetAnimation("Jump");
-    }
-
-    public void JumpForward()
-    {
-        SetAnimation("JumpForward");
-    }
-
-    public void Attack(string attackType)
-    {
-        SetAnimation(attackType);
-    }
-
-    public void Shadowbreak()
-    {
-        SetAnimation("Shadowbreak");
-    }
-
-    public void Grab()
-    {
-        SetAnimation("Grab");
-    }
-
-    public void WallSplat()
-    {
-        transform.localPosition = new Vector2(0, 1);
-        transform.localRotation = Quaternion.Euler(0, 0, -90);
-        SetAnimation("Wallsplat");
-    }
-
-    public void Throw()
-    {
-        SetAnimation("Throw");
-    }
-
-    public void BlueFrenzy()
-    {
-        SetAnimation("Parry");
-    }
-
-    public void RedFrenzy()
-    {
-        SetAnimation("RedFrenzy");
-    }
-
-    public void Arcana(string arcanaType)
-    {
-        SetAnimation(arcanaType);
-    }
-
-    public void ArcanaThrow()
-    {
-        SetAnimation("5AEnd");
-    }
-
-    public void Hurt()
-    {
-        SetAnimation("Hurt");
-    }
-
-    public void HurtAir()
-    {
-        SetAnimation("HurtAir");
-    }
-
-    public void Block()
-    {
-        SetAnimation("Block");
-    }
-
-    public void BlockLow()
-    {
-        SetAnimation("BlockLow");
-    }
-    public void BlockAir()
-    {
-        SetAnimation("BlockAir");
-    }
-
-    public void Dash()
-    {
-        SetAnimation("Dash");
-    }
-
-    public void AirDash()
-    {
-        SetAnimation("Jump");
-    }
-
-    public void Run()
-    {
-        SetAnimation("Run");
-    }
-
-    public void Taunt()
-    {
-        SetAnimation("Taunt");
-    }
-
-    public void Knockdown()
-    {
-        SetAnimation("Knockdown");
-    }
-
-    public void WakeUp()
-    {
-        SetAnimation("WakeUp");
     }
 
     public void ResetPosition()

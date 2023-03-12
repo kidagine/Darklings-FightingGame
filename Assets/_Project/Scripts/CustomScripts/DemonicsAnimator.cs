@@ -16,7 +16,6 @@ public class DemonicsAnimator : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        PlayAnimation();
     }
 
     public void SetAnimator(AnimationSO animation)
@@ -25,9 +24,30 @@ public class DemonicsAnimator : MonoBehaviour
         SetAnimation("Idle");
     }
 
-    public void SetAnimation(string name)
+    public int GetMaxAnimationFrames(string name = "Idle")
     {
-        if (_animation != null)
+        int maxFrames = 0;
+        _group = _animation.GetGroupId(name);
+        for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
+        {
+            maxFrames += _animation.GetGroup(_group).animationCel[i].frames;
+        }
+        return maxFrames;
+    }
+    public static int GetMaxAnimationFrames(AnimationSO animation, string name = "Idle")
+    {
+        int maxFrames = 0;
+        int group = animation.GetGroupId(name);
+        for (int i = 0; i < animation.GetGroup(group).animationCel.Count; i++)
+        {
+            maxFrames += animation.GetGroup(group).animationCel[i].frames;
+        }
+        return maxFrames;
+    }
+
+    public virtual void SetAnimation(string name)
+    {
+        if (_animation != null && _animation.GetGroup(_group).celName != name)
         {
             _frame = 0;
             _cel = 0;
@@ -38,8 +58,70 @@ public class DemonicsAnimator : MonoBehaviour
             _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
         }
     }
+    public bool IsAnimationLoop(string name)
+    {
+        _group = _animation.GetGroupId(name);
+        return _animation.GetGroup(_group).loop;
+    }
+    public bool IsAnimationFinished(string name, int frames)
+    {
+        _group = _animation.GetGroupId(name);
+        int totalFrames = 0;
+        for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
+        {
+            totalFrames += _animation.GetGroup(_group).animationCel[i].frames;
+        }
+        if (frames >= totalFrames)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private bool _finished;
+    public virtual void SetAnimation(string name, int frame)
+    {
+        _group = _animation.GetGroupId(name);
+        for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
+        {
+            if (frame > 0)
+            {
+                frame -= _animation.GetGroup(_group).animationCel[i].frames;
+                if (frame < 0)
+                {
+                    _finished = false;
+                    _frame = Mathf.Abs(frame);
+                    _cel = i;
+                    break;
+                }
+                else if (frame > 0 && _animation.GetGroup(_group).loop)
+                {
+                    _finished = true;
+                    _frame = 0;
+                    _cel = 0;
+                }
+                else
+                {
+                    _frame = 0;
+                    _cel = _animation.GetGroup(_group).animationCel.Count - 1;
+                }
+            }
+            else
+            {
+                _finished = false;
+                _frame = Mathf.Abs(frame);
+                _cel = i;
+                break;
+            }
+        }
+        CheckAnimationBoxes();
+        CheckEvents();
+        _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
+    }
 
-    private void PlayAnimation()
+    public void PlayAnimation()
     {
         if (!_isPaused && !_frozen)
         {
@@ -79,19 +161,57 @@ public class DemonicsAnimator : MonoBehaviour
         OnCurrentAnimationFinished.RemoveAllListeners();
     }
 
-    protected AnimationBox[] GetHurtboxes()
+    public AnimationBox[] GetHurtboxes(string name, int frame)
     {
+        _group = _animation.GetGroupId(name);
+        _cel = GetCellByFrame(frame);
         return _animation.GetCel(_group, _cel).hurtboxes.ToArray();
     }
 
-    protected AnimationBox[] GetHitboxes()
+    public AnimationBox[] GetHitboxes(string name, int frame)
     {
+        _group = _animation.GetGroupId(name);
+        _cel = GetCellByFrame(frame);
         return _animation.GetCel(_group, _cel).hitboxes.ToArray();
     }
 
-    protected AnimationEvent GetEvent()
+    protected AnimationEvent GetEvent(string name, int frame, out int cel)
     {
+        _group = _animation.GetGroupId(name);
+        _cel = GetCellByFrame(frame);
+        cel = _cel;
         return _animation.GetCel(_group, _cel).animationEvent;
+    }
+
+    protected int GetCellByFrame(int frame)
+    {
+        int cel = 0;
+        for (int i = 0; i < _animation.GetGroup(_group).animationCel.Count; i++)
+        {
+            if (frame > 0)
+            {
+                frame -= _animation.GetGroup(_group).animationCel[i].frames;
+                if (frame < 0)
+                {
+                    cel = i;
+                    break;
+                }
+                if (frame > 0 && _animation.GetGroup(_group).loop)
+                {
+                    cel = 0;
+                }
+            }
+            else
+            {
+                cel = i;
+                break;
+            }
+        }
+        if (frame > 0)
+        {
+            cel = _animation.GetGroup(_group).animationCel.Count - 1;
+        }
+        return cel;
     }
 
     public void Pause()

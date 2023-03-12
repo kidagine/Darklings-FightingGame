@@ -12,7 +12,6 @@ public class Shadowbreak : Hitbox
         {
             if (collider.transform.root.TryGetComponent(out Player player))
             {
-                player.PlayerStateManager.TryToKnockbackState();
                 HitConfirm = true;
             }
         }

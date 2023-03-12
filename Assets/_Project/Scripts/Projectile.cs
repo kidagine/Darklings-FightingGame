@@ -46,10 +46,10 @@ public class Projectile : DemonicsAnimator, IHurtboxResponder, IHitstop
 
     protected override void CheckAnimationBoxes()
     {
-        if (GetHitboxes().Length > 0)
-        {
-            _hitbox.SetBox(GetHitboxes()[0].size, GetHitboxes()[0].offset);
-        }
+        // if (GetHitboxes().Length > 0)
+        // {
+        //     _hitbox.SetBox(GetHitboxes()[0].size, GetHitboxes()[0].offset);
+        // }
     }
 
     public void SetSourceTransform(Transform sourceTransform, Vector2 position, bool assist)

@@ -1,7 +1,5 @@
 using Cinemachine;
 using Demonics.Manager;
-using Demonics.Sounds;
-using Demonics.UI;
 using SharedGame;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,6 +41,7 @@ public class GameplayManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] private ConnectionWidget _connectionWidget = default;
     [SerializeField] private CinemachineTargetGroup _targetGroup = default;
+    [SerializeField] private GameSimulationView _gameSimulationView = default;
     [SerializeField] private IntroUI _introUI = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
@@ -76,6 +75,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private AssistStatsSO[] _assists = default;
     [SerializeField] private BaseMenu _matchOverMenu = default;
     [SerializeField] private BaseMenu _matchOverReplayMenu = default;
+    [SerializeField] private BaseMenu _matchOverOnlineMenu = default;
     [SerializeField] private Animator _readyAnimator = default;
     [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [SerializeField] private Audio _musicAudio = default;
@@ -131,52 +131,76 @@ public class GameplayManager : MonoBehaviour
         if (!SceneSettings.SceneSettingsDecide)
         {
             _debugNetwork.SetActive(true);
-            if (_controllerOne >= 0)
+            if (!SceneSettings.ReplayMode)
             {
-                SceneSettings.ControllerOne = InputSystem.devices[_controllerOne];
+                if (_controllerOne >= 0)
+                {
+                    SceneSettings.ControllerOne = InputSystem.devices[_controllerOne];
+                }
+                if (_controllerTwo >= 0)
+                {
+                    SceneSettings.ControllerTwo = InputSystem.devices[_controllerTwo];
+                }
+                SceneSettings.ControllerOneScheme = _controllerOneType.ToString();
+                SceneSettings.ControllerTwoScheme = _controllerTwoType.ToString();
+                SceneSettings.PlayerOne = (int)_characterOne;
+                SceneSettings.PlayerTwo = (int)_characterTwo;
+                SceneSettings.AssistOne = (int)_assistOne;
+                SceneSettings.AssistTwo = (int)_assistTwo;
+                SceneSettings.StageIndex = (int)_stage;
+                SceneSettings.ColorOne = _playerOneSkin;
+                SceneSettings.ColorTwo = _playerTwoSkin;
+                SceneSettings.IsTrainingMode = _isTrainingMode;
+                SceneSettings.Bit1 = _1BitOn;
+                SceneSettings.MusicName = _music.ToString();
             }
-            if (_controllerTwo >= 0)
-            {
-                SceneSettings.ControllerTwo = InputSystem.devices[_controllerTwo];
-            }
-            SceneSettings.ControllerOneScheme = _controllerOneType.ToString();
-            SceneSettings.ControllerTwoScheme = _controllerTwoType.ToString();
-            SceneSettings.PlayerOne = (int)_characterOne;
-            SceneSettings.PlayerTwo = (int)_characterTwo;
-            SceneSettings.AssistOne = (int)_assistOne;
-            SceneSettings.AssistTwo = (int)_assistTwo;
-            SceneSettings.StageIndex = (int)_stage;
-            SceneSettings.ColorOne = _playerOneSkin;
-            SceneSettings.ColorTwo = _playerTwoSkin;
-            SceneSettings.IsTrainingMode = _isTrainingMode;
-            SceneSettings.Bit1 = _1BitOn;
-            SceneSettings.MusicName = _music.ToString();
         }
         else
         {
             _debugNetwork.SetActive(false);
             if (!SceneSettings.IsOnline)
             {
-                Debug.Log("A");
                 NetworkInput.IS_LOCAL = true;
                 GameManager.Instance.StartLocalGame();
                 _isTrainingMode = SceneSettings.IsTrainingMode;
-
-                //InitializePlayers(playerOne, playerTwo);
             }
             else
             {
-                Debug.Log("B");
                 _isTrainingMode = false;
-                _connectionWidget.StartGGPO(SceneSettings.OnlineOneIp, SceneSettings.OnlineTwoIp, SceneSettings.OnlineIndex);
+                _connectionWidget.StartGGPO(SceneSettings.OnlineOneIp, SceneSettings.OnlineTwoIp, SceneSettings.PrivateOneIp, SceneSettings.PrivateTwoIp,
+                SceneSettings.PortOne, SceneSettings.PortTwo, SceneSettings.OnlineIndex);
             }
         }
         CheckSceneSettings();
     }
 
 
+    public PlayerStatsSO[] GetPlayerStats()
+    {
+        List<PlayerStatsSO> playerStats = new List<PlayerStatsSO>();
+        playerStats.Add(_playerStats[SceneSettings.PlayerOne]);
+        playerStats.Add(_playerStats[SceneSettings.PlayerTwo]);
+        return playerStats.ToArray();
+    }
+    public AssistStatsSO[] GetAssistStats()
+    {
+        List<AssistStatsSO> assistStats = new List<AssistStatsSO>();
+        assistStats.Add(_assists[SceneSettings.AssistOne]);
+        assistStats.Add(_assists[SceneSettings.AssistTwo]);
+        return assistStats.ToArray();
+    }
+
+    public float[] GetSpawnPositions()
+    {
+        List<float> spawnPositions = new List<float>();
+        spawnPositions.Add(_spawnPositionsX[0]);
+        spawnPositions.Add(_spawnPositionsX[1]);
+        return spawnPositions.ToArray();
+    }
+
     public void InitializePlayers(GameObject playerOneObject, GameObject playerTwoObject)
     {
+        _fadeHandler.StartFadeTransition(true);
         playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];
         playerTwoObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerTwo];
         Time.timeScale = GameplayManager.Instance.GameSpeed;
@@ -188,23 +212,21 @@ public class GameplayManager : MonoBehaviour
         playerTwoObject.GetComponent<CpuController>().SetOtherPlayer(playerOneObject.transform);
         playerOneObject.SetActive(true);
         playerTwoObject.SetActive(true);
-        PlayerOne.transform.position = new Vector2(_spawnPositionsX[0], (float)DemonicsPhysics.GROUND_POINT);
-        PlayerTwo.transform.position = new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT);
         if (SceneSettings.ControllerOne != null && _controllerOneType != ControllerTypeEnum.Cpu)
         {
-            _playerOneController.SetControllerToPlayer();
+            _playerOneController.SetControllerToPlayer(0);
         }
         else
         {
-            _playerOneController.SetControllerToCpu();
+            _playerOneController.SetControllerToCpu(0);
         }
         if (SceneSettings.ControllerTwo != null && _controllerTwoType != ControllerTypeEnum.Cpu)
         {
-            _playerTwoController.SetControllerToPlayer();
+            _playerTwoController.SetControllerToPlayer(1);
         }
         else
         {
-            _playerTwoController.SetControllerToCpu();
+            _playerTwoController.SetControllerToCpu(1);
         }
         PlayerOne.SetController();
         PlayerTwo.SetController();
@@ -223,8 +245,6 @@ public class GameplayManager : MonoBehaviour
             }
         }
         _playerTwoAnimator.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
-        PlayerOne.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerOneUI, _trainingMenu);
-        PlayerTwo.transform.GetChild(4).GetComponent<PlayerStateManager>().Initialize(_playerTwoUI, _trainingMenu);
         _trainingMenu.ConfigurePlayers(PlayerOne, PlayerTwo);
         _playerOneController.IsPlayerOne = true;
         PlayerOne.SetPlayerUI(_playerOneUI);
@@ -348,8 +368,11 @@ public class GameplayManager : MonoBehaviour
 
     public void ActivateCpus()
     {
-        _playerOneController.ActivateCpu();
-        _playerTwoController.ActivateCpu();
+        if (IsTrainingMode && PlayerOne != null)
+        {
+            _playerOneController.ActivateCpu();
+            _playerTwoController.ActivateCpu();
+        }
     }
 
     public void DeactivateCpus()
@@ -373,6 +396,9 @@ public class GameplayManager : MonoBehaviour
 
     public void SetupGame()
     {
+        _fadeHandler.StartFadeTransition(false);
+        GameSimulation._players[0].player = GameplayManager.Instance.PlayerOne;
+        GameSimulation._players[1].player = GameplayManager.Instance.PlayerTwo;
         _uiInput.gameObject.SetActive(true);
         if (SceneSettings.MusicName == "Random")
         {
@@ -385,6 +411,10 @@ public class GameplayManager : MonoBehaviour
         }
         if (_isTrainingMode)
         {
+            if (!NetworkInput.IS_LOCAL)
+            {
+                _networkCanvas.SetActive(true);
+            }
             _cachedOneResetPosition = PlayerOne.GetComponent<PlayerMovement>().Physics.Position;
             _cachedTwoResetPosition = PlayerTwo.GetComponent<PlayerMovement>().Physics.Position;
             _countdownText.gameObject.SetActive(false);
@@ -394,6 +424,7 @@ public class GameplayManager : MonoBehaviour
             _trainingPrompts.gameObject.SetActive(true);
             HasGameStarted = true;
             StartTrainingRound();
+            GameSimulation.Run = true;
         }
         else
         {
@@ -403,10 +434,7 @@ public class GameplayManager : MonoBehaviour
             _trainingPrompts.gameObject.SetActive(false);
             StartIntro();
         }
-        if (!NetworkInput.IS_LOCAL)
-        {
-            _networkCanvas.SetActive(true);
-        }
+        ReplayManager.Instance.StartReplay();
     }
 
     public void SetOnlineNames(string playerOne, string playerTwo)
@@ -417,42 +445,31 @@ public class GameplayManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (HasGameStarted && !_isTrainingMode)
-        {
-            _countdownFrames--;
-            if (_countdownFrames == 0)
-            {
-                _countdownFrames = 60;
-                _countdown -= 1;
-                _countdownText.text = Mathf.Round(_countdown).ToString();
-                if (_countdown <= 0)
-                {
-                    _timerMainAnimator.Rebind();
-                    RoundOver(true);
-                }
-                else if (_countdown <= 10)
-                {
-                    _timerMainAnimator.SetTrigger("TimerLow");
-                }
-            }
-        }
-        // if (!SceneSettings.IsOnline)
-        // {
-        //     if (IsDialogueRunning && !SceneSettings.ReplayMode)
-        //     {
-        //         if (Input.anyKeyDown)
-        //         {
-        //             SkipIntro();
-        //         }
-        //     }
-        // }
         RunHitStop();
         RunReady();
         RunRoundOver();
     }
+    public void SetCountdown(int timer)
+    {
+        if (!_isTrainingMode && GameSimulation.Run)
+        {
+            _countdownText.text = timer.ToString();
+            if (timer <= 0)
+            {
+                _timerMainAnimator.Rebind();
+                RoundOver(true);
+            }
+            else if (timer <= 10)
+            {
+                _timerMainAnimator.SetTrigger("TimerLow");
+            }
+        }
+    }
+
+
     public void SkipIntro()
     {
-        if (IsDialogueRunning && !SceneSettings.ReplayMode)
+        if (IsDialogueRunning || !NetworkInput.IS_LOCAL)
         {
             ReplayManager.Instance.Skip = DemonicsWorld.Frame;
             _playerOneDialogue.StopDialogue();
@@ -485,11 +502,28 @@ public class GameplayManager : MonoBehaviour
         _currentRound = 1;
         if (SceneSettings.ReplayMode)
         {
+            GameplayManager.Instance.PausedController = _playerOneController;
+            DisableAllInput(true);
             _matchOverReplayMenu.Show();
         }
         else
         {
-            _matchOverMenu.Show();
+            if (!NetworkInput.IS_LOCAL)
+            {
+                if (GameManager.Instance.IsRunning)
+                {
+                    // GameManager.Instance.Shutdown();
+                }
+                GameplayManager.Instance.PausedController = _playerOneController;
+                DisableAllInput(true);
+                _matchOverOnlineMenu.Show();
+            }
+            else
+            {
+                GameplayManager.Instance.PausedController = _playerOneController;
+                DisableAllInput(true);
+                _matchOverMenu.Show();
+            }
             // if (_controllerOneType != ControllerTypeEnum.Cpu && _controllerTwoType != ControllerTypeEnum.Cpu)
             // {
             //     if (_controllerTwoType != ControllerTypeEnum.Keyboard)
@@ -505,8 +539,31 @@ public class GameplayManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
+    public void DisconnectOnline()
+    {
+        GameManager.Instance.DisconnectPlayer(SceneSettings.OnlineIndex);
+    }
+
+    public void ConnectOnline()
+    {
+        _fadeHandler.StartFadeTransition(true, 0.01f);
+        PlayerOne.ResetLives();
+        PlayerTwo.ResetLives();
+        _targetGroup.m_Targets[0].weight = 0.5f;
+        _targetGroup.m_Targets[1].weight = 0.5f;
+        EnableAllInput();
+        Time.timeScale = 1;
+        GameManager.Instance.Shutdown();
+        _matchOverOnlineMenu.Hide();
+        _connectionWidget.RematchConnection();
+    }
+
     public virtual void StartRound()
     {
+        if (!NetworkInput.IS_LOCAL)
+        {
+            _networkCanvas.SetActive(true);
+        }
         _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
         {
@@ -526,8 +583,6 @@ public class GameplayManager : MonoBehaviour
         PlayerTwo.ResetPlayer(new Vector2(_spawnPositionsX[1], (float)DemonicsPhysics.GROUND_POINT));
         PlayerOne.StopComboTimer();
         PlayerTwo.StopComboTimer();
-        PlayerOne.PlayerStateManager.TryToTauntState();
-        PlayerTwo.PlayerStateManager.TryToTauntState();
         _showFrame = 30;
         _readyFrame = 60;
         _readyEndFrame = 60;
@@ -633,28 +688,45 @@ public class GameplayManager : MonoBehaviour
             else
             {
                 string roundOverCause;
-                if (PlayerOne.Health == PlayerTwo.Health)
+                if (GameSimulation._players[0].health <= 0 && GameSimulation._players[1].health <= 0
+                || GameSimulation._players[0].health > 0 && GameSimulation._players[1].health > 0)
                 {
                     roundOverCause = "DOUBLE KO";
-                    if (PlayerOne.Lives > 1 && PlayerTwo.Lives > 1)
+                    if (PlayerOne.Lives > 1 || PlayerTwo.Lives > 1)
                     {
-                        PlayerOne.LoseLife();
-                        PlayerTwo.LoseLife();
-                    }
-                    else if (PlayerOne.Lives == 1 && PlayerTwo.Lives > 1)
-                    {
-                        _playerTwoWon = true;
-                        PlayerOne.LoseLife();
-                    }
-                    else if (PlayerTwo.Lives == 1 && PlayerOne.Lives > 1)
-                    {
-                        _playerOneWon = true;
-                        PlayerTwo.LoseLife();
+                        if (GameSimulation._players[0].health < GameSimulation._players[1].health)
+                        {
+                            _playerTwoWon = true;
+                            PlayerOne.LoseLife();
+                        }
+                        else if (GameSimulation._players[1].health < GameSimulation._players[0].health)
+                        {
+                            _playerOneWon = true;
+                            PlayerTwo.LoseLife();
+                        }
+                        else
+                        {
+                            PlayerOne.LoseLife();
+                            PlayerTwo.LoseLife();
+                        }
                     }
                     else if (PlayerOne.Lives == 1 && PlayerTwo.Lives == 1 && _finalRound)
                     {
-                        PlayerOne.LoseLife();
-                        PlayerTwo.LoseLife();
+                        if (GameSimulation._players[0].health < GameSimulation._players[1].health)
+                        {
+                            _playerTwoWon = true;
+                            PlayerOne.LoseLife();
+                        }
+                        else if (GameSimulation._players[1].health < GameSimulation._players[0].health)
+                        {
+                            _playerOneWon = true;
+                            PlayerTwo.LoseLife();
+                        }
+                        else
+                        {
+                            PlayerOne.LoseLife();
+                            PlayerTwo.LoseLife();
+                        }
                     }
                     else
                     {
@@ -663,8 +735,8 @@ public class GameplayManager : MonoBehaviour
                 }
                 else
                 {
-                    if (PlayerOne.PlayerStats.maxHealth == PlayerOne.Health
-                        || PlayerTwo.PlayerStats.maxHealth == PlayerTwo.Health)
+                    if (PlayerOne.PlayerStats.maxHealth == GameSimulation._players[0].health && GameSimulation._players[1].health <= 0
+                        || PlayerTwo.PlayerStats.maxHealth == GameSimulation._players[1].health && GameSimulation._players[0].health <= 0)
                     {
                         roundOverCause = "PERFECT KO";
                     }
@@ -672,19 +744,19 @@ public class GameplayManager : MonoBehaviour
                     {
                         roundOverCause = "KO";
                     }
-                    if (PlayerOne.Health > PlayerTwo.Health)
+                    if (GameSimulation._players[0].health > GameSimulation._players[1].health)
                     {
                         _playerOneWon = true;
                         PlayerTwo.LoseLife();
 
                     }
-                    else if (PlayerTwo.Health > PlayerOne.Health)
+                    else if (GameSimulation._players[1].health > GameSimulation._players[0].health)
                     {
                         _playerTwoWon = true;
                         PlayerOne.LoseLife();
                     }
                 }
-                if (_timeout)
+                if (timeout)
                 {
                     _readyText.text = "TIME UP";
                 }
@@ -759,19 +831,16 @@ public class GameplayManager : MonoBehaviour
                         if (_playerOneWon)
                         {
                             StartCoroutine(CameraCenterCoroutine(1));
-                            PlayerOne.PlayerStateManager.TryToTauntState();
-                            PlayerTwo.PlayerStateManager.TryToGiveUpState();
+
                         }
                         else if (_playerTwoWon)
                         {
                             StartCoroutine(CameraCenterCoroutine(0));
-                            PlayerOne.PlayerStateManager.TryToGiveUpState();
-                            PlayerTwo.PlayerStateManager.TryToTauntState();
+
                         }
                         else
                         {
-                            PlayerOne.PlayerStateManager.TryToGiveUpState();
-                            PlayerTwo.PlayerStateManager.TryToGiveUpState();
+
                         }
                         _roundOverThird = true;
                     }
@@ -882,15 +951,15 @@ public class GameplayManager : MonoBehaviour
         {
             if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToCpu();
-                _playerTwoController.SetControllerToPlayer();
+                _playerOneController.SetControllerToCpu(0);
+                _playerTwoController.SetControllerToPlayer(1);
                 _playerOneInput.enabled = false;
                 _playerTwoInput.enabled = true;
             }
             else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToPlayer();
-                _playerTwoController.SetControllerToCpu();
+                _playerOneController.SetControllerToPlayer(0);
+                _playerTwoController.SetControllerToCpu(1);
                 _playerOneInput.enabled = true;
                 _playerTwoInput.enabled = false;
             }
@@ -911,15 +980,15 @@ public class GameplayManager : MonoBehaviour
         {
             if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToCpu();
-                _playerTwoController.SetControllerToPlayer();
+                _playerOneController.SetControllerToCpu(0);
+                _playerTwoController.SetControllerToPlayer(1);
                 _playerOneInput.enabled = false;
                 _playerTwoInput.enabled = true;
             }
             else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToPlayer();
-                _playerTwoController.SetControllerToCpu();
+                _playerOneController.SetControllerToPlayer(0);
+                _playerTwoController.SetControllerToCpu(1);
                 _playerOneInput.enabled = true;
                 _playerTwoInput.enabled = false;
             }
@@ -995,6 +1064,8 @@ public class GameplayManager : MonoBehaviour
                     PlayerOne.ResetPlayer(new Vector2((float)playerOneResetPosition.x, (float)playerOneResetPosition.y));
                     PlayerTwo.ResetPlayer(new Vector2((float)playerTwoResetPosition.x, (float)playerTwoResetPosition.y));
                 }
+                GameSimulation._players[0].CurrentState.ResetPlayerTraining(GameSimulation._players[0]);
+                GameSimulation._players[1].CurrentState.ResetPlayerTraining(GameSimulation._players[1]);
                 _cachedOneResetPosition = playerOneResetPosition;
                 _cachedTwoResetPosition = playerTwoResetPosition;
 
@@ -1006,6 +1077,7 @@ public class GameplayManager : MonoBehaviour
     public void StartMatch()
     {
         Time.timeScale = 1;
+        GameplayManager.Instance.EnableAllInput();
         if (SceneSettings.RandomStage)
         {
             _currentStage.SetActive(false);
@@ -1169,6 +1241,12 @@ public class GameplayManager : MonoBehaviour
         {
             InputSystem.RemoveDevice(keyboardTwo);
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        if (GameManager.Instance.IsRunning)
+            GameManager.Instance.Shutdown();
     }
 }
 

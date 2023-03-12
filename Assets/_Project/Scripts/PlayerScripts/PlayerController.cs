@@ -30,49 +30,49 @@ public class PlayerController : BaseController
             if (input.x == 1)
             {
                 _previousInput = input;
-                if (NetworkInput.IS_LOCAL)
+                if (_player.IsPlayerOne)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
+                    NetworkInput.ONE_RIGHT_INPUT = true;
                 }
                 else
                 {
-                    NetworkInput.RIGHT_INPUT = true;
+                    NetworkInput.TWO_RIGHT_INPUT = true;
                 }
             }
             if (input.x == -1)
             {
                 _previousInput = input;
-                if (NetworkInput.IS_LOCAL)
+                if (_player.IsPlayerOne)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
+                    NetworkInput.ONE_LEFT_INPUT = true;
                 }
                 else
                 {
-                    NetworkInput.LEFT_INPUT = true;
+                    NetworkInput.TWO_LEFT_INPUT = true;
                 }
             }
             if (input.y == 1)
             {
                 _previousInput = input;
-                if (NetworkInput.IS_LOCAL)
+                if (_player.IsPlayerOne)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
+                    NetworkInput.ONE_UP_INPUT = true;
                 }
                 else
                 {
-                    NetworkInput.UP_INPUT = true;
+                    NetworkInput.TWO_UP_INPUT = true;
                 }
             }
             if (input.y == -1)
             {
                 _previousInput = input;
-                if (NetworkInput.IS_LOCAL)
+                if (_player.IsPlayerOne)
                 {
-                    _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
+                    NetworkInput.ONE_DOWN_INPUT = true;
                 }
                 else
                 {
-                    NetworkInput.DOWN_INPUT = true;
+                    NetworkInput.TWO_DOWN_INPUT = true;
                 }
             }
         }
@@ -83,26 +83,29 @@ public class PlayerController : BaseController
 
         if (input.x == 0)
         {
-            if (NetworkInput.IS_LOCAL)
+            if (_player.IsPlayerOne)
             {
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
+                NetworkInput.ONE_RIGHT_INPUT = false;
+                NetworkInput.ONE_LEFT_INPUT = false;
             }
             else
             {
-                NetworkInput.RIGHT_INPUT = false;
-                NetworkInput.LEFT_INPUT = false;
+                NetworkInput.TWO_RIGHT_INPUT = false;
+                NetworkInput.TWO_LEFT_INPUT = false;
             }
+
         }
         if (input.y == 0)
         {
-            if (NetworkInput.IS_LOCAL)
+            if (_player.IsPlayerOne)
             {
-                _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
+                NetworkInput.ONE_UP_INPUT = false;
+                NetworkInput.ONE_DOWN_INPUT = false;
             }
             else
             {
-                NetworkInput.UP_INPUT = false;
-                NetworkInput.DOWN_INPUT = false;
+                NetworkInput.TWO_UP_INPUT = false;
+                NetworkInput.TWO_DOWN_INPUT = false;
             }
         }
     }
@@ -135,32 +138,17 @@ public class PlayerController : BaseController
         return false;
     }
 
-    public void Jump(CallbackContext callbackContext)
-    {
-        //_inputBuffer.AddInputBufferItem(InputEnum.Light);
-    }
-
-    public void Crouch(CallbackContext callbackContext)
-    {
-        //_inputBuffer.AddInputBufferItem(InputEnum.Light);
-    }
-
-    public void StandUp(CallbackContext callbackContext)
-    {
-        //_inputBuffer.AddInputBufferItem(InputEnum.Light);
-    }
-
     public void Light(CallbackContext callbackContext)
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            if (NetworkInput.IS_LOCAL)
+            if (_player.IsPlayerOne)
             {
-                _inputBuffer.AddInputBufferItem(InputEnum.Light);
+                NetworkInput.ONE_LIGHT_INPUT = true;
             }
             else
             {
-                NetworkInput.LIGHT_INPUT = true;
+                NetworkInput.TWO_LIGHT_INPUT = true;
             }
         }
     }
@@ -169,13 +157,13 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            if (NetworkInput.IS_LOCAL)
+            if (_player.IsPlayerOne)
             {
-                _inputBuffer.AddInputBufferItem(InputEnum.Medium);
+                NetworkInput.ONE_MEDIUM_INPUT = true;
             }
             else
             {
-                NetworkInput.MEDIUM_INPUT = true;
+                NetworkInput.TWO_MEDIUM_INPUT = true;
             }
         }
     }
@@ -184,13 +172,13 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            if (NetworkInput.IS_LOCAL)
+            if (_player.IsPlayerOne)
             {
-                _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
+                NetworkInput.ONE_HEAVY_INPUT = true;
             }
             else
             {
-                NetworkInput.HEAVY_INPUT = true;
+                NetworkInput.TWO_HEAVY_INPUT = true;
             }
         }
     }
@@ -199,13 +187,13 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            if (NetworkInput.IS_LOCAL)
+            if (_player.IsPlayerOne)
             {
-                _inputBuffer.AddInputBufferItem(InputEnum.Special);
+                NetworkInput.ONE_ARCANA_INPUT = true;
             }
             else
             {
-                NetworkInput.ARCANA_INPUT = true;
+                NetworkInput.TWO_ARCANA_INPUT = true;
             }
         }
     }
@@ -213,13 +201,13 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            if (NetworkInput.IS_LOCAL)
+            if (_player.IsPlayerOne)
             {
-                _inputBuffer.AddInputBufferItem(InputEnum.Assist);
+                NetworkInput.ONE_SHADOW_INPUT = true;
             }
             else
             {
-                NetworkInput.SHADOW_INPUT = true;
+                NetworkInput.TWO_SHADOW_INPUT = true;
             }
         }
     }
@@ -228,13 +216,13 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            if (NetworkInput.IS_LOCAL)
+            if (_player.IsPlayerOne)
             {
-                _inputBuffer.AddInputBufferItem(InputEnum.Throw);
+                NetworkInput.ONE_GRAB_INPUT = true;
             }
             else
             {
-                NetworkInput.GRAB_INPUT = true;
+                NetworkInput.TWO_GRAB_INPUT = true;
             }
         }
     }
@@ -243,13 +231,13 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            if (NetworkInput.IS_LOCAL)
+            if (_player.IsPlayerOne)
             {
-                _inputBuffer.AddInputBufferItem(InputEnum.Parry);
+                NetworkInput.ONE_BLUE_FRENZY_INPUT = true;
             }
             else
             {
-                NetworkInput.BLUE_FRENZY_INPUT = true;
+                NetworkInput.TWO_BLUE_FRENZY_INPUT = true;
             }
         }
     }
@@ -258,13 +246,13 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed && IsControllerEnabled)
         {
-            if (NetworkInput.IS_LOCAL)
+            if (_player.IsPlayerOne)
             {
-                _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
+                NetworkInput.ONE_RED_FRENZY_INPUT = true;
             }
             else
             {
-                NetworkInput.RED_FRENZY_INPUT = true;
+                NetworkInput.TWO_RED_FRENZY_INPUT = true;
             }
         }
     }
@@ -283,13 +271,13 @@ public class PlayerController : BaseController
                 int timeSinceLastPress = DemonicsWorld.Frame - _dashForwardLastInputTime;
                 if (timeSinceLastPress <= _dashTime)
                 {
-                    if (NetworkInput.IS_LOCAL)
+                    if (_player.IsPlayerOne)
                     {
-                        _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
+                        NetworkInput.ONE_DASH_FORWARD_INPUT = true;
                     }
                     else
                     {
-                        NetworkInput.DASH_FORWARD_INPUT = true;
+                        NetworkInput.TWO_DASH_FORWARD_INPUT = true;
                     }
                     _dashForwardPressed = false;
                 }
@@ -312,13 +300,13 @@ public class PlayerController : BaseController
                 int timeSinceLastPress = DemonicsWorld.Frame - _dashBackLastInputTime;
                 if (timeSinceLastPress <= _dashTime)
                 {
-                    if (NetworkInput.IS_LOCAL)
+                    if (_player.IsPlayerOne)
                     {
-                        _inputBuffer.AddInputBufferItem(InputEnum.BackDash);
+                        NetworkInput.ONE_DASH_BACKWARD_INPUT = true;
                     }
                     else
                     {
-                        NetworkInput.DASH_BACKWARD_INPUT = true;
+                        NetworkInput.TWO_DASH_BACKWARD_INPUT = true;
                     }
                     _dashBackPressed = false;
                 }
@@ -329,13 +317,16 @@ public class PlayerController : BaseController
 
     public void Pause(CallbackContext callbackContext)
     {
-        if (callbackContext.performed)
+        if (NetworkInput.IS_LOCAL)
         {
-            _player.Pause(_brainController.IsPlayerOne);
-        }
-        if (callbackContext.canceled)
-        {
-            _player.UnPause();
+            if (callbackContext.performed)
+            {
+                _player.Pause(_brainController.IsPlayerOne);
+            }
+            if (callbackContext.canceled)
+            {
+                _player.UnPause();
+            }
         }
     }
     //TRAINING
@@ -343,7 +334,14 @@ public class PlayerController : BaseController
     {
         if (callbackContext.performed)
         {
-            GameplayManager.Instance.ResetRound(InputDirection);
+            if (_player.IsPlayerOne)
+            {
+                GameplayManager.Instance.ResetRound(GameSimulation._players[0].direction);
+            }
+            else
+            {
+                GameplayManager.Instance.ResetRound(GameSimulation._players[1].direction);
+            }
         }
     }
 

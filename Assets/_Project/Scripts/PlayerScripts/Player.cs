@@ -4,10 +4,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityGGPO;
-
 public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
 {
-    [SerializeField] private PlayerStateManager _playerStateManager = default;
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Assist _assist = default;
     [SerializeField] private Pushbox _groundPushbox = default;
@@ -15,6 +13,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     [SerializeField] protected Transform _effectsParent = default;
     [SerializeField] private Transform _cameraPoint = default;
     [SerializeField] private Transform _keepFlip = default;
+    [SerializeField] private Audio _audio = default;
     [SerializeField] private GameObject[] _playerIcons = default;
     protected PlayerUI _playerUI;
     private PlayerMovement _playerMovement;
@@ -28,13 +27,11 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     private Color _comboTimerColor;
     private Coroutine _shakeContactCoroutine;
     private readonly DemonicsFloat _damageDecay = (DemonicsFloat)0.97f;
-    private readonly DemonicsFloat _whiteHealthDivider = (DemonicsFloat)1.4f;
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
-
-    public PlayerStateManager PlayerStateManager { get { return _playerStateManager; } private set { } }
-    public PlayerStateManager OtherPlayerStateManager { get; private set; }
+    public PlayerSimulation PlayerSimulation { get; private set; }
+    public PlayerAnimator PlayerAnimator { get { return _playerAnimator; } private set { } }
     public Player OtherPlayer { get; private set; }
     public PlayerMovement OtherPlayerMovement { get; private set; }
     public PlayerUI OtherPlayerUI { get; private set; }
@@ -50,7 +47,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool IsPlayerOne { get; set; }
     public DemonicsFloat AssistGauge { get; set; } = (DemonicsFloat)1;
     public DemonicsFloat ArcanaGauge { get; set; }
-    public DemonicsVector2 GrabPoint { get; set; }
+    public Assist Assist { get { return _assist; } private set { } }
     public int ArcaneSlowdown { get; set; } = 6;
     public bool CanShadowbreak { get; set; } = true;
     public bool BlockingLow { get; set; }
@@ -68,6 +65,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _inputBuffer = GetComponent<InputBuffer>();
         _playerMovement = GetComponent<PlayerMovement>();
         _playerComboSystem = GetComponent<PlayerComboSystem>();
+        PlayerSimulation = GetComponent<PlayerSimulation>();
         ResultAttack = new ResultAttack();
     }
 
@@ -86,7 +84,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         InitializeStats();
     }
-
     public void SetPlayerUI(PlayerUI playerUI)
     {
         _playerUI = playerUI;
@@ -97,7 +94,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         OtherPlayer = otherPlayer;
         OtherPlayerMovement = otherPlayer.GetComponent<PlayerMovement>();
         OtherPlayerUI = otherPlayer.PlayerUI;
-        OtherPlayerStateManager = otherPlayer.PlayerStateManager;
     }
 
     public void ResetPlayer(Vector2 resetPosition)
@@ -105,10 +101,9 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         RecallAssist();
         _playerMovement.StopKnockback();
         _playerMovement.Physics.ResetSkipWall();
-        _playerMovement.Physics.Position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
-        _playerMovement.Physics.Velocity = DemonicsVector2.Zero;
-        _playerStateManager.ResetToInitialState();
-        SetInvinsible(false);
+        int index = IsPlayerOne ? 0 : 1;
+        GameSimulation._players[index].position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
+        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)GameSimulation._players[index].position.x, (DemonicsFloat)GameSimulation._players[index].position.y));
         transform.rotation = Quaternion.identity;
         _effectsParent.gameObject.SetActive(true);
         SetHurtbox(true);
@@ -118,13 +113,10 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         {
             ArcanaGauge = (DemonicsFloat)0;
         }
-        _playerMovement.Physics.EnableGravity(true);
         StopAllCoroutines();
         StopComboTimer();
         _playerMovement.StopAllCoroutines();
-        _playerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
-        _playerUI.SetArcana((float)ArcanaGauge);
-        _playerUI.SetAssist((float)AssistGauge);
+        PlayerAnimator.OnCurrentAnimationFinished.RemoveAllListeners();
         _playerUI.ResetHealthDamaged();
         InitializeStats();
         _playerUI.ShowPlayerIcon();
@@ -161,81 +153,18 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _playerUI.SetHealth(Health);
     }
 
-    void FixedUpdate()
-    {
-        ArcanaCharge();
-        AssistCharge();
-        ComboTimer();
-    }
-
-    private void AssistCharge()
-    {
-        if (AssistGauge < (DemonicsFloat)1.0f && !_assist.IsOnScreen && CanShadowbreak && GameplayManager.Instance.HasGameStarted)
-        {
-            AssistGauge += (DemonicsFloat)(Time.deltaTime / (10.0f - _assist.AssistStats.assistRecharge));
-            if (GameplayManager.Instance.InfiniteAssist)
-            {
-                AssistGauge = (DemonicsFloat)1.0f;
-            }
-            _playerUI.SetAssist((float)AssistGauge);
-        }
-    }
-
-    private void ArcanaCharge()
-    {
-        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameplayManager.Instance.HasGameStarted)
-        {
-            ArcanaGauge += (DemonicsFloat)(Time.deltaTime / (ArcaneSlowdown - playerStats.arcanaRecharge));
-            if (GameplayManager.Instance.InfiniteArcana)
-            {
-                ArcanaGauge = (DemonicsFloat)playerStats.Arcana;
-            }
-            _playerUI.SetArcana((float)ArcanaGauge);
-        }
-    }
-
-    public void ArcanaGain(DemonicsFloat arcana)
-    {
-        if (ArcanaGauge < (DemonicsFloat)playerStats.Arcana && GameplayManager.Instance.HasGameStarted)
-        {
-            ArcanaGauge += arcana;
-            _playerUI.SetArcana((float)ArcanaGauge);
-        }
-    }
-
-    public void HealthGain()
-    {
-        Health = HealthRecoverable;
-        _playerUI.UpdateHealth();
-        _playerUI.CheckDemonLimit(Health);
-    }
-
-    public void SetHealth(int value, bool noRecoverable = false)
-    {
-        Health -= value;
-        if (noRecoverable)
-        {
-            HealthRecoverable -= value;
-        }
-        else
-        {
-            HealthRecoverable -= (int)((DemonicsFloat)value / _whiteHealthDivider);
-        }
-        _playerUI.SetHealth(Health);
-        _playerUI.SetRecoverableHealth(HealthRecoverable);
-    }
-
     public void StartShakeContact()
     {
         _shakeContactCoroutine = StartCoroutine(ShakeContactCoroutine());
     }
 
-    private void StopShakeCoroutine()
+    public void StopShakeCoroutine()
     {
         if (_shakeContactCoroutine != null)
         {
             _playerAnimator.transform.localPosition = Vector2.zero;
             StopCoroutine(_shakeContactCoroutine);
+            _shakeContactCoroutine = null;
         }
     }
 
@@ -244,25 +173,13 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         while (true)
         {
             yield return new WaitForSeconds(0.075f);
-            _playerAnimator.transform.localPosition = new Vector2(_playerAnimator.transform.localPosition.x - 0.03f, _playerAnimator.transform.localPosition.y);
+            PlayerAnimator.transform.localPosition = new Vector2(PlayerAnimator.transform.localPosition.x - 0.03f, PlayerAnimator.transform.localPosition.y);
             yield return new WaitForSeconds(0.075f);
-            _playerAnimator.transform.localPosition = Vector2.zero;
+            PlayerAnimator.transform.localPosition = Vector2.zero;
         }
     }
 
-    public void CheckFlip()
-    {
-        if (OtherPlayerMovement.Physics.Position.x > _playerMovement.Physics.Position.x)
-        {
-            Flip(1);
-        }
-        else if (OtherPlayerMovement.Physics.Position.x < _playerMovement.Physics.Position.x)
-        {
-            Flip(-1);
-        }
-    }
-
-    public void Flip(int xDirection)
+    private void Flip(int xDirection)
     {
         transform.localScale = new Vector2(xDirection, transform.localScale.y);
         _keepFlip.localScale = transform.localScale;
@@ -290,17 +207,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return false;
     }
 
-    public bool AssistAction()
-    {
-        if (AssistGauge >= (DemonicsFloat)0.5f && GameplayManager.Instance.HasGameStarted && !_assist.IsOnScreen)
-        {
-            _assist.Attack();
-            DecreaseArcana((DemonicsFloat)0.5f);
-            return true;
-        }
-        return false;
-    }
-
     public DemonicsFloat DemonLimitMultiplier()
     {
         if (Health < 3000)
@@ -310,83 +216,17 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return (DemonicsFloat)1;
     }
 
-    public void DecreaseArcana(DemonicsFloat value)
-    {
-        AssistGauge -= value;
-        _playerUI.SetAssist((float)AssistGauge);
-    }
-
-    public void StartComboTimer(ComboTimerStarterEnum comboTimerStarter)
-    {
-        _playerUI.SetComboTimerActive(true);
-        _comboTimerFrames = 0;
-        _comboTimerWaitFrames = ComboTimerStarterTypes.GetComboTimerStarterValue(comboTimerStarter);
-        _comboTimerColor = ComboTimerStarterTypes.GetComboTimerStarterColor(comboTimerStarter);
-        _playerUI.SetComboTimer((DemonicsFloat)1, _comboTimerColor);
-    }
-
-    private void ComboTimer()
-    {
-        if (_comboTimerWaitFrames > 0 && !_comboTimerPaused)
-        {
-            DemonicsFloat value = DemonicsFloat.Lerp((DemonicsFloat)1, (DemonicsFloat)0, (DemonicsFloat)_comboTimerFrames / (DemonicsFloat)_comboTimerWaitFrames);
-            _playerUI.SetComboTimer(value, _comboTimerColor);
-            _comboTimerFrames++;
-            if (_comboTimerFrames == _comboTimerWaitFrames)
-            {
-                OtherPlayer._playerStateManager.TryToIdleState();
-                _playerUI.SetComboTimerActive(false);
-            }
-        }
-    }
-
     public void StopComboTimer()
     {
-        _comboTimerWaitFrames = 0;
-        _playerUI.SetComboTimerActive(false);
-        _playerUI.ResetCombo();
-        _comboTimerPaused = false;
-    }
-
-    public void FreezeComboTimer()
-    {
-        if (_comboTimerWaitFrames > 0 && !_comboTimerPaused)
-        {
-            _playerUI.SetComboTimerLock(true);
-            _comboTimerPaused = true;
-        }
-    }
-
-    public void UnfreezeComboTimer()
-    {
-        if (_comboTimerWaitFrames > 0 && _comboTimerPaused)
-        {
-            _playerUI.SetComboTimerLock(false);
-            _comboTimerPaused = false;
-        }
+        // _comboTimerWaitFrames = 0;
+        // _playerUI.SetComboTimerActive(false);
+        // _playerUI.ResetCombo();
+        // _comboTimerPaused = false;
     }
 
     public void RecallAssist()
     {
         _assist.Recall();
-    }
-
-    public int CalculateDamage(AttackSO hurtAttack)
-    {
-        int comboCount = OtherPlayerUI.CurrentComboCount;
-        DemonicsFloat calculatedDamage = ((DemonicsFloat)hurtAttack.damage / (DemonicsFloat)playerStats.Defense) * OtherPlayer.DemonLimitMultiplier();
-        if (comboCount > 1)
-        {
-            DemonicsFloat damageScale = (DemonicsFloat)1;
-            for (int i = 0; i < comboCount; i++)
-            {
-                damageScale *= _damageDecay;
-            }
-            calculatedDamage *= damageScale;
-        }
-        int calculatedIntDamage = (int)calculatedDamage;
-        OtherPlayer.SetResultAttack(calculatedIntDamage, hurtAttack);
-        return calculatedIntDamage;
     }
 
     public void SetResultAttack(int calculatedDamage, AttackSO attack)
@@ -429,75 +269,52 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         return hurtbox.TakeDamage(CurrentAttack);
     }
 
-    public virtual void CreateEffect(Vector2 projectilePosition, bool isProjectile = false)
-    {
-        if (CurrentAttack.hitEffect != null)
-        {
-            GameObject hitEffect;
-            hitEffect = ObjectPoolingManager.Instance.Spawn(CurrentAttack.hitEffect, parent: _effectsParent);
-            hitEffect.transform.localPosition = CurrentAttack.hitEffectPosition;
-            hitEffect.transform.localRotation = Quaternion.Euler(0, 0, CurrentAttack.hitEffectRotation);
-            hitEffect.transform.localScale = new Vector2(-1, 1);
-            if (isProjectile)
-            {
-                hitEffect.transform.SetParent(null);
-                hitEffect.transform.localScale = new Vector2(transform.localScale.x, 1);
-                hitEffect.GetComponent<Projectile>().SetSourceTransform(transform, projectilePosition, false);
-                hitEffect.GetComponent<Projectile>().Direction = new Vector2(transform.localScale.x, 0);
-                hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
-            }
-        }
-    }
-
-    public void SetInvinsible(bool state)
-    {
-        Invisible = state;
-        _playerAnimator.SetInvinsible(state);
-        SetHurtbox(!state);
-        SetPushboxTrigger(state);
-    }
-
     public bool TakeDamage(AttackSO attack)
     {
-        GameplayManager.Instance.AddHitstop(this);
-        if (attack.attackTypeEnum == AttackTypeEnum.Throw)
-        {
-            return _playerStateManager.TryToGrabbedState();
-        }
-        if (Invincible)
-        {
-            return false;
-        }
-        if (CanBlock(attack))
-        {
-            bool blockSuccesful = _playerStateManager.TryToBlockState(attack);
-            if (!blockSuccesful)
-            {
-                return _playerStateManager.TryToHurtState(attack);
-            }
-            return true;
-        }
-        return _playerStateManager.TryToHurtState(attack);
-    }
-
-    public void SetSpriteOrderPriority()
-    {
-        _playerAnimator.SetSpriteOrder(1);
-        OtherPlayer._playerAnimator.SetSpriteOrder(0);
+        // if (attack.causesKnockdown || attack.causesSoftKnockdown && !_playerMovement.IsGrounded)
+        // {
+        //     GameSimulation._players[1].enter = false;
+        //     GameSimulation._players[1].state = "Airborne";
+        // }
+        // else
+        // {
+        //     GameSimulation._players[1].enter = false;
+        //     GameSimulation._players[1].state = "Hurt";
+        // }
+        return true;
+        // GameplayManager.Instance.AddHitstop(this);
+        // if (attack.attackTypeEnum == AttackTypeEnum.Throw)
+        // {
+        //     return _playerStateManager.TryToGrabbedState();
+        // }
+        // if (Invincible)
+        // {
+        //     return false;
+        // }
+        // if (CanBlock(attack))
+        // {
+        //     bool blockSuccesful = _playerStateManager.TryToBlockState(attack);
+        //     if (!blockSuccesful)
+        //     {
+        //         return _playerStateManager.TryToHurtState(attack);
+        //     }
+        //     return true;
+        // }
+        // return _playerStateManager.TryToHurtState(attack);
     }
 
     public void EnterHitstop()
     {
         _playerMovement.EnterHitstop();
-        _playerAnimator.Pause();
+        PlayerAnimator.Pause();
     }
 
     public void ExitHitstop()
     {
         StopShakeCoroutine();
         _playerMovement.ExitHitstop();
-        _playerAnimator.Resume();
-        _playerAnimator.SpriteNormalEffect();
+        PlayerAnimator.Resume();
+        PlayerAnimator.SpriteNormalEffect();
         hitstopEvent?.Invoke();
         hitstopEvent.RemoveAllListeners();
     }
@@ -505,60 +322,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool IsInHitstop()
     {
         return _playerMovement.IsInHitstop;
-    }
-
-    public void HurtOnSuperArmor(AttackSO attack)
-    {
-        SetHealth(CalculateDamage(attack));
-        _playerUI.Damaged();
-        _playerUI.UpdateHealthDamaged();
-        _playerAnimator.SpriteSuperArmorEffect();
-        GameplayManager.Instance.HitStop(attack.hitstop);
-    }
-
-    public bool CanTakeSuperArmorHit(AttackSO attack)
-    {
-        if (CurrentAttack.hasSuperArmor && !_playerAnimator.InRecovery() && !CanSkipAttack)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    private bool CanBlock(AttackSO attack)
-    {
-        if (attack.attackTypeEnum == AttackTypeEnum.Break)
-        {
-            if (BlockingLeftOrRight())
-            {
-                _playerUI.DisplayNotification(NotificationTypeEnum.GuardBreak);
-            }
-            return false;
-        }
-        if (_playerStateManager.CurrentState is BlockParentState)
-        {
-            return true;
-        }
-        if (_controller.ControllerInputName == ControllerTypeEnum.Cpu.ToString() && TrainingSettings.BlockAlways && TrainingSettings.CpuOff)
-        {
-            return true;
-        }
-        if (BlockingLeftOrRight())
-        {
-            if (attack.attackTypeEnum == AttackTypeEnum.Overhead && !_controller.ActiveController.Crouch())
-            {
-                return true;
-            }
-            if (attack.attackTypeEnum == AttackTypeEnum.Mid)
-            {
-                return true;
-            }
-            if (attack.attackTypeEnum == AttackTypeEnum.Low && _controller.ActiveController.Crouch())
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     public bool BlockingLeftOrRight()
@@ -575,11 +338,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     {
         Lives--;
         _playerUI.SetLives();
-    }
-
-    public void SetPushboxTrigger(bool state)
-    {
-        _groundPushbox.SetIsTrigger(state);
     }
 
     public void SetHurtbox(bool state)
@@ -609,78 +367,30 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
             _playerUI.ClosePauseHold();
         }
     }
+
+    public bool IsAnimationFinished(string name, int frames)
+    {
+        return PlayerAnimator.IsAnimationFinished(name, frames);
+    }
+    public bool IsAnimationLoop(string name)
+    {
+        return PlayerAnimator.IsAnimationLoop(name);
+    }
     public string ConnectionStatus { get; private set; }
     public int ConnectionProgress { get; private set; }
-    public void Populate(PlayerNetwork playerGs, PlayerConnectionInfo info)
+    public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
-        if (playerGs.skip)
-        {
-            GameplayManager.Instance.SkipIntro();
-        }
-        if (playerGs.up)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Up);
-        }
-        if (playerGs.down)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Down);
-        }
-        if (playerGs.left)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Left);
-        }
-        if (playerGs.right)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.Right);
-        }
-        if (!playerGs.left && !playerGs.right && _controller.ActiveController.InputDirection.x != 0)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneHorizontal);
-        }
-        if (!playerGs.up && !playerGs.down && _controller.ActiveController.InputDirection.y != 0)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
-        }
-        if (playerGs.light)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Light);
-        }
-        if (playerGs.medium)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Medium);
-        }
-        if (playerGs.heavy)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Heavy);
-        }
-        if (playerGs.arcana)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Special);
-        }
-        if (playerGs.grab)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Throw);
-        }
-        if (playerGs.shadow)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Assist);
-        }
-        if (playerGs.blueFrenzy)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Parry);
-        }
-        if (playerGs.redFrenzy)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.RedFrenzy);
-        }
-        if (playerGs.dashForward)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.ForwardDash);
-        }
-        if (playerGs.dashBackward)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.BackDash);
-        }
+        _playerMovement.SetPosition(playerGs.position);
+        _playerUI.SetHealth(playerGs.health);
+        _playerUI.SetRecoverableHealth(playerGs.healthRecoverable);
+        _playerUI.SetAssist(playerGs.shadowGauge);
+        Flip(playerGs.flip);
+        NetworkDebug(info);
+    }
+
+    private void NetworkDebug(PlayerConnectionInfo info)
+    {
+#if UNITY_EDITOR
         switch (info.state)
         {
             case PlayerConnectState.Connecting:
@@ -698,5 +408,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
                 ConnectionProgress = (Utils.TimeGetTime() - info.disconnect_start) * 100 / info.disconnect_timeout;
                 break;
         }
+#endif
     }
 }

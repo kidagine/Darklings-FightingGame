@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 650
   attackTypeEnum: 2
-  hitStun: 45
+  hitStun: 35
   blockStun: 0
-  travelDistance: {x: 0.07, y: 0.07}
-  knockbackForce: {x: 0.8, y: 0}
-  knockbackDuration: 45
-  knockbackArc: 5
+  travelDistance: {x: 1.12, y: 1.3}
+  knockbackForce: {x: 12.8, y: 0}
+  knockbackDuration: 35
+  knockbackArc: 55
   hasSuperArmor: 0
   isAirAttack: 1
   isProjectile: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
   hitEffect: {fileID: 3782010356200484119, guid: 47b4915fae0034c45b98dedc650be9af, type: 3}
   hitEffectPosition: {x: 1, y: 1.5}
   hitEffectRotation: 50
-  hurtEffect: {fileID: 6697712921357175186, guid: 42fff4f540e4cdd4b9969996164b54a8, type: 3}
+  hurtEffect: HurtHeavy
   hurtEffectPosition: {x: 7.227051, y: -3.0168457}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 0}

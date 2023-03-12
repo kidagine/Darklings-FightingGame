@@ -1,4 +1,3 @@
-using Demonics.UI;
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
@@ -18,6 +17,7 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private GameObject _assistTwo = default;
     [SerializeField] private GameObject _iconsOne = default;
     [SerializeField] private GameObject _iconsTwo = default;
+    [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private PlayerUIRender _assistOneUIRenderer = default;
     [SerializeField] private PlayerUIRender _assistTwoUIRenderer = default;
     [SerializeField] private ChangeStageMenu _changeStageMenu = default;
@@ -57,7 +57,7 @@ public class CharacterMenu : BaseMenu
                 _playerUIRenderOne.gameObject.SetActive(true);
                 _iconsOne.gameObject.SetActive(true);
                 _playerOneName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-                _playerUIRenderOne.PlayerStats = playerStats;
+                _playerUIRenderOne.SetPlayerStat(playerStats);
                 _playerUIRenderOne.SetAnimator(_playerStats._animation);
                 _hpTextOne.text = $"LV{_playerStats.defenseLevel}";
                 _arcanaTextOne.text = $"LV{_playerStats.arcanaLevel}";
@@ -81,7 +81,7 @@ public class CharacterMenu : BaseMenu
                 _playerUIRenderTwo.gameObject.SetActive(true);
                 _iconsTwo.gameObject.SetActive(true);
                 _playerTwoName.text = Regex.Replace(playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-                _playerUIRenderTwo.PlayerStats = playerStats;
+                _playerUIRenderTwo.SetPlayerStat(playerStats);
                 _playerUIRenderTwo.SetAnimator(_playerStats._animation);
                 _hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
                 _arcanaTextTwo.text = $"LV{_playerStats.arcanaLevel}";
@@ -113,7 +113,7 @@ public class CharacterMenu : BaseMenu
                 _playerStats = _playerStatsArray[randomPlayer];
                 string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
                 _playerOneName.text = characterName;
-                _playerUIRenderOne.PlayerStats = _playerStats;
+                _playerUIRenderOne.SetPlayerStat(_playerStats);
                 _playerUIRenderOne.SetAnimator(_playerStats._animation);
             }
             _hpTextOne.text = $"LV{_playerStats.defenseLevel}";
@@ -131,7 +131,7 @@ public class CharacterMenu : BaseMenu
                 _playerStats = _playerStatsArray[randomPlayer];
                 string characterName = Regex.Replace(_playerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
                 _playerOneName.text = characterName;
-                _playerUIRenderTwo.PlayerStats = _playerStats;
+                _playerUIRenderTwo.SetPlayerStat(_playerStats);
                 _playerUIRenderTwo.SetAnimator(_playerStats._animation);
             }
             _hpTextTwo.text = $"LV{_playerStats.defenseLevel}";
@@ -211,10 +211,12 @@ public class CharacterMenu : BaseMenu
             {
                 if (!FirstCharacterSelected && SceneSettings.ControllerOne != null)
                 {
+                    _rebindMenues[0].PreviousPromptsInput = _inputManager.CurrentPrompts;
                     _rebindMenues[0].Show();
                 }
                 else if (SceneSettings.ControllerTwo != null)
                 {
+                    _rebindMenues[1].PreviousPromptsInput = _inputManager.CurrentPrompts;
                     _rebindMenues[1].Show();
                 }
                 _currentEventSystem.sendNavigationEvents = true;
@@ -244,6 +246,7 @@ public class CharacterMenu : BaseMenu
 
     private void OnDisable()
     {
+        _currentEventSystem.sendNavigationEvents = true;
         if (!SceneSettings.SceneSettingsDecide)
         {
             if (_tauntCoroutine != null)

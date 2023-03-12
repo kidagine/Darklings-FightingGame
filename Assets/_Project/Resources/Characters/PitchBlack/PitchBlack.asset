@@ -38,8 +38,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.6}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 28, y: 42}
+        offset: {x: 0, y: 20}
     - frames: 10
       sprite: {fileID: 1868486934, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -55,8 +55,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.6}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 28, y: 42}
+        offset: {x: 0, y: 20}
     - frames: 10
       sprite: {fileID: 1625465866, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -72,8 +72,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.6}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 28, y: 42}
+        offset: {x: 0, y: 20}
     - frames: 10
       sprite: {fileID: 597489822, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -89,8 +89,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.6}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 28, y: 42}
+        offset: {x: 0, y: 20}
   - celName: Walk
     loop: 1
     cameraShake: {fileID: 0}
@@ -110,8 +110,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 10
       sprite: {fileID: 75367023, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -127,8 +127,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 10
       sprite: {fileID: -729105056, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -144,8 +144,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 10
       sprite: {fileID: 270488441, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -161,8 +161,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
   - celName: Crouch
     loop: 0
     cameraShake: {fileID: 0}
@@ -182,8 +182,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.3, y: 2.1}
-        offset: {x: 0, y: 1}
+      - size: {x: 37, y: 34}
+        offset: {x: 0, y: 16}
   - celName: Jump
     loop: 0
     cameraShake: {fileID: 0}
@@ -203,8 +203,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 10
       sprite: {fileID: -881570710, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -220,8 +220,29 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.8, y: 3}
-        offset: {x: -0.2, y: 1.5}
+      - size: {x: 29, y: 48}
+        offset: {x: -3, y: 24}
+  - celName: Fall
+    loop: 0
+    cameraShake: {fileID: 0}
+    animationCel:
+    - frames: 10
+      sprite: {fileID: -881570710, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 29, y: 48}
+        offset: {x: -3, y: 24}
   - celName: JumpForward
     loop: 0
     cameraShake: {fileID: 0}
@@ -241,8 +262,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.4, y: 2.3}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 38, y: 37}
+        offset: {x: 0, y: 18}
     - frames: 5
       sprite: {fileID: -763888934, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -258,8 +279,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.4, y: 2}
-        offset: {x: 0.5, y: 1.2}
+      - size: {x: 38, y: 32}
+        offset: {x: 8, y: 19}
     - frames: 5
       sprite: {fileID: -1425301530, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -275,8 +296,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.8, y: 3}
-        offset: {x: 0.1, y: 1.8}
+      - size: {x: 29, y: 48}
+        offset: {x: 2, y: 29}
     - frames: 5
       sprite: {fileID: -710549312, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -292,8 +313,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.4, y: 2}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 38, y: 32}
+        offset: {x: 0, y: 19}
     - frames: 5
       sprite: {fileID: -881570710, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -309,8 +330,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.8, y: 3}
-        offset: {x: 0.1, y: 1.8}
+      - size: {x: 29, y: 48}
+        offset: {x: 2, y: 29}
   - celName: Dash
     loop: 0
     cameraShake: {fileID: 0}
@@ -330,8 +351,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
   - celName: Run
     loop: 0
     cameraShake: {fileID: 0}
@@ -351,8 +372,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.5, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 40, y: 40}
+        offset: {x: 0, y: 19}
   - celName: Block
     loop: 0
     cameraShake: {fileID: 0}
@@ -372,8 +393,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
   - celName: BlockLow
     loop: 0
     cameraShake: {fileID: 0}
@@ -393,8 +414,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.2}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 28, y: 35}
+        offset: {x: 0, y: 18}
   - celName: BlockAir
     loop: 0
     cameraShake: {fileID: 0}
@@ -414,13 +435,13 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
   - celName: Hurt
     loop: 0
     cameraShake: {fileID: 0}
     animationCel:
-    - frames: 1
+    - frames: 4
       sprite: {fileID: -1771032092, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
         jump: 0
@@ -435,8 +456,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 1
       sprite: {fileID: -2110617761, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -452,13 +473,13 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 19}
   - celName: HurtAir
     loop: 0
     cameraShake: {fileID: 0}
     animationCel:
-    - frames: 1
+    - frames: 4
       sprite: {fileID: 995430397, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
         jump: 0
@@ -473,8 +494,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 45}
+        offset: {x: 0, y: 24}
     - frames: 10
       sprite: {fileID: 264363681, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -490,8 +511,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.1}
-        offset: {x: -0.1, y: 1}
+      - size: {x: 40, y: 37}
+        offset: {x: 2, y: 18}
   - celName: Taunt
     loop: 0
     cameraShake: {fileID: 0}
@@ -511,8 +532,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 10
       sprite: {fileID: 651407041, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -528,8 +549,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 10
       sprite: {fileID: -955685164, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -545,8 +566,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.3}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 28, y: 37}
+        offset: {x: 0, y: 18}
     - frames: 10
       sprite: {fileID: 1345626759, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -562,8 +583,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.3}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 28, y: 37}
+        offset: {x: 0, y: 18}
     - frames: 10
       sprite: {fileID: 1599964124, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -579,8 +600,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.3}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 28, y: 37}
+        offset: {x: 0, y: 18}
     - frames: 10
       sprite: {fileID: 793350876, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -596,8 +617,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.3}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 28, y: 37}
+        offset: {x: 0, y: 18}
     - frames: 10
       sprite: {fileID: 335632673, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -613,8 +634,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.3}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 28, y: 37}
+        offset: {x: 0, y: 18}
   - celName: Knockdown
     loop: 0
     cameraShake: {fileID: 0}
@@ -634,8 +655,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.8, y: 2}
-        offset: {x: 0, y: 1}
+      - size: {x: 29, y: 32}
+        offset: {x: 0, y: 16}
     - frames: 5
       sprite: {fileID: -1065222051, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -651,8 +672,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 3, y: 2}
-        offset: {x: 0, y: 1}
+      - size: {x: 48, y: 32}
+        offset: {x: 0, y: 16}
     - frames: 5
       sprite: {fileID: -694562415, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -668,8 +689,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 3, y: 1.2}
-        offset: {x: 0, y: 0.8}
+      - size: {x: 48, y: 19}
+        offset: {x: 0, y: 13}
     - frames: 5
       sprite: {fileID: 1353628674, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -685,8 +706,80 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 3, y: 1.2}
-        offset: {x: 0, y: 0.5}
+      - size: {x: 48, y: 19}
+        offset: {x: 0, y: 8}
+  - celName: Death
+    loop: 0
+    cameraShake: {fileID: 0}
+    animationCel:
+    - frames: 5
+      sprite: {fileID: -1588199468, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 29, y: 32}
+        offset: {x: 0, y: 16}
+    - frames: 5
+      sprite: {fileID: -1065222051, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 48, y: 32}
+        offset: {x: 0, y: 16}
+    - frames: 5
+      sprite: {fileID: -694562415, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 48, y: 19}
+        offset: {x: 0, y: 13}
+    - frames: 5
+      sprite: {fileID: 1353628674, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 48, y: 19}
+        offset: {x: 0, y: 8}
   - celName: WakeUp
     loop: 0
     cameraShake: {fileID: 0}
@@ -706,8 +799,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 3, y: 1.2}
-        offset: {x: 0, y: 0.5}
+      - size: {x: 48, y: 19}
+        offset: {x: 0, y: 8}
     - frames: 10
       sprite: {fileID: -1633591532, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -723,8 +816,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.3, y: 2.1}
-        offset: {x: 0, y: 1}
+      - size: {x: 37, y: 34}
+        offset: {x: 0, y: 16}
   - celName: Wallsplat
     loop: 0
     cameraShake: {fileID: 0}
@@ -744,8 +837,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 3, y: 1.2}
-        offset: {x: 0, y: 0.5}
+      - size: {x: 48, y: 19}
+        offset: {x: 0, y: 8}
   - celName: 5L
     loop: 0
     cameraShake: {fileID: 0}
@@ -765,8 +858,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 3
       sprite: {fileID: -565609802, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -781,11 +874,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 1}
-        offset: {x: 0.65, y: 1.5}
+      - size: {x: 32, y: 16}
+        offset: {x: 10, y: 24}
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 12
       sprite: {fileID: 65775153, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -801,8 +894,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
   - celName: 2L
     loop: 0
     cameraShake: {fileID: 0}
@@ -822,8 +915,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.9, y: 2.2}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 30, y: 35}
+        offset: {x: 0, y: 18}
     - frames: 3
       sprite: {fileID: 491220235, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -838,11 +931,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 1.7, y: 1}
-        offset: {x: 1.2, y: 1}
+      - size: {x: 22, y: 16}
+        offset: {x: 18, y: 12}
       hurtboxes:
-      - size: {x: 1.9, y: 2.2}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 30, y: 35}
+        offset: {x: 0, y: 18}
     - frames: 13
       sprite: {fileID: 342213566, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -858,8 +951,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.9, y: 2.2}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 30, y: 35}
+        offset: {x: 0, y: 18}
   - celName: JL
     loop: 0
     cameraShake: {fileID: 0}
@@ -879,8 +972,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.9, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 30, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 4
       sprite: {fileID: -766454785, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -896,8 +989,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.9, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 30, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 5
       sprite: {fileID: 2077572819, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -912,11 +1005,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 1.5}
-        offset: {x: 0.8, y: 0.5}
+      - size: {x: 32, y: 24}
+        offset: {x: 13, y: 12}
       hurtboxes:
-      - size: {x: 1.9, y: 2.5}
-        offset: {x: -0.5, y: 1.2}
+      - size: {x: 30, y: 40}
+        offset: {x: -8, y: 19}
     - frames: 9
       sprite: {fileID: -424375879, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -932,8 +1025,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.9, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 30, y: 40}
+        offset: {x: 0, y: 19}
   - celName: 5M
     loop: 0
     cameraShake: {fileID: 0}
@@ -953,8 +1046,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.9, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 30, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 4
       sprite: {fileID: 1563740792, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -969,11 +1062,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 1}
-        offset: {x: 1.1, y: 1.7}
+      - size: {x: 32, y: 16}
+        offset: {x: 18, y: 27}
       hurtboxes:
-      - size: {x: 1.9, y: 2.8}
-        offset: {x: 0, y: 1.4}
+      - size: {x: 30, y: 45}
+        offset: {x: 0, y: 22}
     - frames: 14
       sprite: {fileID: 455690918, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -989,8 +1082,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.9, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 30, y: 40}
+        offset: {x: 0, y: 19}
   - celName: 2M
     loop: 0
     cameraShake: {fileID: 0}
@@ -1010,8 +1103,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.2}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 32, y: 35}
+        offset: {x: 0, y: 18}
     - frames: 5
       sprite: {fileID: -641053398, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1026,11 +1119,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 1.5}
-        offset: {x: 1.2, y: 2}
+      - size: {x: 32, y: 24}
+        offset: {x: 19, y: 32}
       hurtboxes:
-      - size: {x: 2.1, y: 2.2}
-        offset: {x: -0.2, y: 1.1}
+      - size: {x: 34, y: 35}
+        offset: {x: -3, y: 18}
     - frames: 10
       sprite: {fileID: -445174949, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1046,8 +1139,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.3, y: 2.1}
-        offset: {x: 0, y: 1}
+      - size: {x: 37, y: 34}
+        offset: {x: 0, y: 16}
     - frames: 7
       sprite: {fileID: -1633591532, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1063,8 +1156,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.1, y: 2.2}
-        offset: {x: -0.2, y: 1.1}
+      - size: {x: 34, y: 35}
+        offset: {x: -3, y: 18}
   - celName: JM
     loop: 0
     cameraShake: {fileID: 0}
@@ -1084,8 +1177,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: -0.5, y: 1.2}
+      - size: {x: 32, y: 40}
+        offset: {x: -8, y: 19}
     - frames: 5
       sprite: {fileID: 2064558875, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1101,8 +1194,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.2, y: 2.5}
-        offset: {x: -0.5, y: 1.4}
+      - size: {x: 35, y: 40}
+        offset: {x: -8, y: 22}
     - frames: 7
       sprite: {fileID: -463190647, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1117,11 +1210,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 1.5}
-        offset: {x: 1, y: 1.3}
+      - size: {x: 32, y: 24}
+        offset: {x: 16, y: 25}
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: -0.3, y: 1.3}
+      - size: {x: 32, y: 40}
+        offset: {x: -5, y: 21}
     - frames: 7
       sprite: {fileID: 2072393783, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1137,8 +1230,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: -0.5, y: 1.2}
+      - size: {x: 32, y: 40}
+        offset: {x: -8, y: 19}
   - celName: 5H
     loop: 0
     cameraShake: {fileID: 0}
@@ -1158,8 +1251,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
     - frames: 4
       sprite: {fileID: 948745804, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1175,8 +1268,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
     - frames: 5
       sprite: {fileID: 1951186265, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1191,11 +1284,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 1}
-        offset: {x: 1, y: 1.3}
+      - size: {x: 32, y: 16}
+        offset: {x: 16, y: 21}
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
     - frames: 15
       sprite: {fileID: -900884515, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1211,8 +1304,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
     - frames: 15
       sprite: {fileID: -476229041, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1228,8 +1321,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
   - celName: JH
     loop: 0
     cameraShake: {fileID: 0}
@@ -1249,8 +1342,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
     - frames: 6
       sprite: {fileID: 2077726448, guid: 77e7e325dec8a264b98fc2a4f5399bc1, type: 3}
       animationEvent:
@@ -1266,8 +1359,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
     - frames: 7
       sprite: {fileID: -1930322931, guid: 77e7e325dec8a264b98fc2a4f5399bc1, type: 3}
       animationEvent:
@@ -1282,11 +1375,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 2}
-        offset: {x: 1, y: 1}
+      - size: {x: 32, y: 32}
+        offset: {x: 16, y: 18}
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
     - frames: 10
       sprite: {fileID: -1863739714, guid: 77e7e325dec8a264b98fc2a4f5399bc1, type: 3}
       animationEvent:
@@ -1321,8 +1414,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
     - frames: 5
       sprite: {fileID: -1920379436, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1338,8 +1431,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.3}
-        offset: {x: 0, y: 1.1}
+      - size: {x: 32, y: 37}
+        offset: {x: 0, y: 18}
     - frames: 5
       sprite: {fileID: 736252163, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1354,11 +1447,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 1}
-        offset: {x: 1, y: 1.3}
+      - size: {x: 32, y: 16}
+        offset: {x: 16, y: 21}
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
     - frames: 10
       sprite: {fileID: -900884515, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1374,8 +1467,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
     - frames: 15
       sprite: {fileID: -476229041, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1391,8 +1484,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.25}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 20}
   - celName: 2H
     loop: 0
     cameraShake: {fileID: 0}
@@ -1412,8 +1505,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: -0.3, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: -5, y: 24}
     - frames: 5
       sprite: {fileID: 131050288, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1428,11 +1521,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 1.8}
-        offset: {x: 1, y: 2.8}
+      - size: {x: 32, y: 29}
+        offset: {x: 16, y: 45}
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: -0.3, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: -5, y: 24}
     - frames: 5
       sprite: {fileID: 1268088895, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1447,11 +1540,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 1.8}
-        offset: {x: 1, y: 2.8}
+      - size: {x: 32, y: 29}
+        offset: {x: 16, y: 45}
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: -0.3, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: -5, y: 24}
     - frames: 3
       sprite: {fileID: -1950372995, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1467,8 +1560,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: -0.3, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: -5, y: 24}
     - frames: 4
       sprite: {fileID: -144121578, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1484,8 +1577,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: -0.3, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: -5, y: 24}
   - celName: 5A
     loop: 0
     cameraShake: {fileID: 0}
@@ -1505,8 +1598,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 5
       sprite: {fileID: 824127916, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1522,8 +1615,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 8
       sprite: {fileID: 957201301, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1539,8 +1632,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 5
       sprite: {fileID: -736446275, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1556,8 +1649,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 5
       sprite: {fileID: 251000965, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1573,8 +1666,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 5
       sprite: {fileID: -267682154, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1590,8 +1683,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 4
       sprite: {fileID: -1948558497, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1607,8 +1700,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 5
       sprite: {fileID: -2009988844, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1624,8 +1717,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
   - celName: 2A
     loop: 0
     cameraShake: {fileID: 0}
@@ -1645,8 +1738,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.7}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 27}
     - frames: 5
       sprite: {fileID: 1202685884, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1661,11 +1754,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 2}
-        offset: {x: 1.5, y: 1}
+      - size: {x: 32, y: 32}
+        offset: {x: 24, y: 16}
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.7}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 27}
     - frames: 4
       sprite: {fileID: 1977425245, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1680,11 +1773,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 1, y: 2}
+      - size: {x: 32, y: 48}
+        offset: {x: 16, y: 32}
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.7}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 27}
     - frames: 3
       sprite: {fileID: 1556236537, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1699,11 +1792,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 1, y: 2}
+      - size: {x: 32, y: 48}
+        offset: {x: 16, y: 32}
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.7}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 27}
     - frames: 3
       sprite: {fileID: -248777726, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1718,11 +1811,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 3.5, y: 1.5}
-        offset: {x: 0, y: 3.5}
+      - size: {x: 56, y: 24}
+        offset: {x: 0, y: 56}
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.7}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 27}
     - frames: 3
       sprite: {fileID: -610571168, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1737,11 +1830,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 3.5, y: 1.5}
-        offset: {x: 0, y: 3.5}
+      - size: {x: 56, y: 24}
+        offset: {x: 0, y: 56}
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.7}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 27}
     - frames: 5
       sprite: {fileID: 1627628239, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1756,11 +1849,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 3.5, y: 1.5}
-        offset: {x: 0, y: 3.5}
+      - size: {x: 56, y: 24}
+        offset: {x: 0, y: 56}
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.7}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 27}
     - frames: 11
       sprite: {fileID: -449614260, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1776,8 +1869,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.2, y: 3}
-        offset: {x: 0, y: 1.7}
+      - size: {x: 35, y: 48}
+        offset: {x: 0, y: 27}
   - celName: JA
     loop: 0
     cameraShake: {fileID: 0}
@@ -1797,8 +1890,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 5
       sprite: {fileID: 824127916, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1814,8 +1907,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 8
       sprite: {fileID: 957201301, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1831,8 +1924,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 5
       sprite: {fileID: -736446275, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1848,8 +1941,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 5
       sprite: {fileID: 251000965, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1865,8 +1958,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 5
       sprite: {fileID: -267682154, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1882,8 +1975,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 4
       sprite: {fileID: -1948558497, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1899,8 +1992,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 5
       sprite: {fileID: -2009988844, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1916,8 +2009,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
   - celName: Grab
     loop: 0
     cameraShake: {fileID: 0}
@@ -1937,8 +2030,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 3
       sprite: {fileID: -1745333282, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1953,11 +2046,11 @@ MonoBehaviour:
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
       hitboxes:
-      - size: {x: 1, y: 1}
-        offset: {x: 1, y: 1.2}
+      - size: {x: 16, y: 16}
+        offset: {x: 16, y: 19}
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 15
       sprite: {fileID: -1745333282, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -1973,8 +2066,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 32, y: 40}
+        offset: {x: 0, y: 19}
   - celName: Grabbed
     loop: 0
     cameraShake: {fileID: 0}
@@ -1994,8 +2087,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2.5, y: 2.3}
-        offset: {x: -0.1, y: 1.1}
+      - size: {x: 40, y: 37}
+        offset: {x: -2, y: 18}
   - celName: Throw
     loop: 0
     cameraShake: {fileID: 11400000, guid: 1a36444acf606ae4d878fd0e61f5918a, type: 2}
@@ -2012,11 +2105,11 @@ MonoBehaviour:
         invisibile: 0
         throwEnd: 0
         throwArcanaEnd: 0
-        grabPoint: {x: 0.83, y: 0}
+        grabPoint: {x: 20.8, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 7
       sprite: {fileID: -1098211442, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -2029,11 +2122,11 @@ MonoBehaviour:
         invisibile: 0
         throwEnd: 0
         throwArcanaEnd: 0
-        grabPoint: {x: -0.9, y: 1}
+        grabPoint: {x: -14.4, y: 16}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
     - frames: 6
       sprite: {fileID: 1091399975, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -2046,11 +2139,11 @@ MonoBehaviour:
         invisibile: 0
         throwEnd: 0
         throwArcanaEnd: 0
-        grabPoint: {x: -0.9, y: 1}
+        grabPoint: {x: -14.4, y: 16}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.8, y: 2.2}
-        offset: {x: 0, y: 1}
+      - size: {x: 29, y: 35}
+        offset: {x: 0, y: 16}
     - frames: 5
       sprite: {fileID: 399910107, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -2063,11 +2156,11 @@ MonoBehaviour:
         invisibile: 0
         throwEnd: 1
         throwArcanaEnd: 0
-        grabPoint: {x: 1.3, y: 0}
+        grabPoint: {x: 20.8, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.8, y: 1.9}
-        offset: {x: 0, y: 0.9}
+      - size: {x: 29, y: 30}
+        offset: {x: 0, y: 14}
   - celName: Shadowbreak
     loop: 0
     cameraShake: {fileID: 0}
@@ -2087,8 +2180,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 10
       sprite: {fileID: -881570710, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -2104,8 +2197,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
     - frames: 10
       sprite: {fileID: 995430397, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -2121,8 +2214,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 2, y: 3}
-        offset: {x: 0, y: 1.5}
+      - size: {x: 32, y: 48}
+        offset: {x: 0, y: 24}
   - celName: Parry
     loop: 0
     cameraShake: {fileID: 0}
@@ -2142,8 +2235,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: -0.3, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: -5, y: 19}
     - frames: 5
       sprite: {fileID: 1567841248, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -2159,8 +2252,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: -0.3, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: -5, y: 19}
     - frames: 10
       sprite: {fileID: 1081615243, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -2176,8 +2269,8 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0.5, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 8, y: 19}
     - frames: 14
       sprite: {fileID: -1228036677, guid: 6bf24118a2d30f349a97fa0562811ce0, type: 3}
       animationEvent:
@@ -2193,5 +2286,5 @@ MonoBehaviour:
         grabPoint: {x: 0, y: 0}
       hitboxes: []
       hurtboxes:
-      - size: {x: 1.75, y: 2.5}
-        offset: {x: 0.5, y: 1.2}
+      - size: {x: 28, y: 40}
+        offset: {x: 8, y: 19}
