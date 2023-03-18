@@ -10,6 +10,7 @@ public class PlayerPreferences : MonoBehaviour
     [SerializeField] private bool _checkOptions = default;
     [SerializeField] private bool _checkTraining = default;
     [SerializeField] private ChangeStageMenu _changeStageMenu = default;
+    [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
     [Header("ONLINE")]
     [SerializeField] private string _playerNameInputFieldInitial = "Demon";
     [SerializeField] private TMP_InputField _playerNameInputField = default;
@@ -19,6 +20,12 @@ public class PlayerPreferences : MonoBehaviour
     [SerializeField] private int _characterAssistSelectorInitial = default;
     [SerializeField] private BaseSelector _characterColorSelector = default;
     [SerializeField] private int _characterColorSelectorInitial = default;
+    [SerializeField] private BaseSelector _stageOnlineSelector = default;
+    [SerializeField] private int _stageOnlineInitial = default;
+    [SerializeField] private BaseSelector _musicOnlineSelector = default;
+    [SerializeField] private int _musicOnlineInitial = default;
+    [SerializeField] private BaseSelector _stageStyleOnlineSelector = default;
+    [SerializeField] private int _stageStyleOnlineInitial = default;
     [Header("STAGE")]
     [SerializeField] private BaseSelector _stageSelector = default;
     [SerializeField] private int _stageSelectorInitial = default;
@@ -75,6 +82,8 @@ public class PlayerPreferences : MonoBehaviour
         }
         if (_checkStage)
         {
+            _onlineSetupMenu.SetMusicSelectorValues();
+            _onlineSetupMenu.SetStageSelectorValues();
             _changeStageMenu.SetMusicSelectorValues();
             _changeStageMenu.SetStageSelectorValues();
             LoadStagePreferences();
@@ -102,6 +111,10 @@ public class PlayerPreferences : MonoBehaviour
 
     private void LoadStagePreferences()
     {
+        _stageOnlineSelector.SetValue(int.Parse(DemonicsSaver.Load("stageonline", _stageOnlineInitial.ToString())));
+        _musicOnlineSelector.SetValue(int.Parse(DemonicsSaver.Load("stagemusiconline", _musicOnlineInitial.ToString())));
+        _stageStyleOnlineSelector.SetValue(int.Parse(DemonicsSaver.Load("stagestyleonline", _stageStyleOnlineInitial.ToString())));
+
         _stageSelector.SetValue(int.Parse(DemonicsSaver.Load("stage", _stageSelectorInitial.ToString())));
         _stageMusicSelector.SetValue(int.Parse(DemonicsSaver.Load("stagemusic", _stageMusicSelectorInitial.ToString())));
         _stageStyleSelector.SetValue(int.Parse(DemonicsSaver.Load("stagestyle", _stageStyleSelectorInitial.ToString())));

@@ -6,6 +6,7 @@ public class SceneSettings
     public static int StageIndex = 0;
     public static string MusicName = "Random";
     public static bool OnlineStageRandom = false;
+    public static bool OnlineBit1 = false;
     public static int OnlineStageIndex = 0;
     public static string OnlineMusicName = "Random";
     public static bool IsOnline = false;
