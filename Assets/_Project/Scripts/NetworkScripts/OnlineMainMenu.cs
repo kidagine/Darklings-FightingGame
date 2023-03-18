@@ -10,7 +10,8 @@ public class OnlineMainMenu : BaseMenu
     [SerializeField] private NetworkManagerLobby _networkManager = default;
     [SerializeField] private GameObject _connectingGroup = default;
     [SerializeField] private GameObject _connectedGroup = default;
-
+    [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
+    [SerializeField] private DemonNameplate _demonNameplate = default;
 
     async void Awake()
     {
@@ -21,5 +22,10 @@ public class OnlineMainMenu : BaseMenu
             _connectedGroup.SetActive(true);
         };
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
+    private void OnEnable()
+    {
+        _demonNameplate.SetDemonData(_onlineSetupMenu.DemonData);
     }
 }

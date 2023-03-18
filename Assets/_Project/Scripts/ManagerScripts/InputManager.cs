@@ -79,4 +79,21 @@ public class InputManager : MonoBehaviour
             CurrentPrompts?.OnToggleFramedata?.Invoke();
         }
     }
+
+    public void PageLeft(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnLeftPage?.Invoke();
+        }
+    }
+
+    public void PageRight(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+        {
+            CurrentPrompts?.OnRightPage?.Invoke();
+        }
+    }
+
 }

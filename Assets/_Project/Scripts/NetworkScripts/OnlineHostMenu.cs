@@ -200,8 +200,11 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.SceneSettingsDecide = true;
         SceneSettings.Bit1 = false;
-        SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
-        SceneSettings.MusicName = "Random";
+        if (SceneSettings.OnlineStageRandom)
+            SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
+        else
+            SceneSettings.StageIndex = SceneSettings.OnlineStageIndex;
+        SceneSettings.MusicName = SceneSettings.OnlineMusicName;
         _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
         _fadeHandler.StartFadeTransition(true);
     }
