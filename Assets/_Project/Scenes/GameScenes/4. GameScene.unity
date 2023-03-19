@@ -12946,8 +12946,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 0
-  _characterOne: 4
-  _characterTwo: 0
+  _characterOne: 0
+  _characterTwo: 2
   _assistOne: 0
   _assistTwo: 0
   _controllerOne: 0
@@ -29031,7 +29031,7 @@ MonoBehaviour:
   _playerOneInputHistory: {fileID: 1607718335}
   _playerTwoInputHistory: {fileID: 446620529}
   _isReplayMode: 0
-  _replayIndex: 6
+  _replayIndex: 18
 --- !u!4 &856490119
 Transform:
   m_ObjectHideFlags: 0
@@ -57350,7 +57350,7 @@ PrefabInstance:
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1779541208}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
@@ -62442,7 +62442,7 @@ PrefabInstance:
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1673243238}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -67487,6 +67487,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _playerInput: {fileID: 1933533298}
+  CurrentPrompts: {fileID: 0}
 --- !u!114 &1933533298
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -27,6 +27,9 @@ public class HurtState : HurtParentState
                 EnterState(player, "Death");
                 return;
             }
+            if (AIHurt(player))
+                return;
+
             EnterState(player, "Idle");
         }
     }

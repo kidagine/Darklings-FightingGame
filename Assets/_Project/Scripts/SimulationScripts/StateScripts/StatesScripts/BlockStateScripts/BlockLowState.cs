@@ -7,6 +7,7 @@ public class BlockLowState : BlockParentState
         base.UpdateLogic(player);
         player.animation = "BlockLow";
         player.animationFrames++;
+        player.velocity = new DemonicsVector2(player.velocity.x, 0);
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)

@@ -32,7 +32,7 @@ public class WallSplatState : State
     }
     private void ToAirborneState(PlayerNetwork player)
     {
-        if (player.animationFrames >= 10)
+        if (player.animationFrames >= 15)
         {
             player.flip *= -1;
             player.hurtbox.active = true;

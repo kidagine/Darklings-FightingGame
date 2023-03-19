@@ -246,6 +246,7 @@ public class CharacterMenu : BaseMenu
 
     private void OnDisable()
     {
+        _currentEventSystem.sendNavigationEvents = true;
         if (!SceneSettings.SceneSettingsDecide)
         {
             if (_tauntCoroutine != null)

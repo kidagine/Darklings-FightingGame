@@ -6,6 +6,7 @@ public class TauntState : State
     {
         if (!player.enter)
         {
+            CheckFlip(player);
             if (player.otherPlayer.health <= 0)
             {
                 player.comboLocked = true;
@@ -20,6 +21,8 @@ public class TauntState : State
         }
         player.velocity = DemonicsVector2.Zero;
         player.animationFrames++;
+        if (GameSimulation.Timer <= 0)
+            return;
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)

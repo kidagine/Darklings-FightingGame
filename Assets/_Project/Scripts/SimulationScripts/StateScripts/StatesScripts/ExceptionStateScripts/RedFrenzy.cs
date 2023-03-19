@@ -51,7 +51,14 @@ public class RedFrenzyState : State
         if (player.attackFrames <= 0)
         {
             player.dashFrames = 0;
-            EnterState(player, "Idle");
+            if (player.position.y > DemonicsPhysics.GROUND_POINT)
+            {
+                EnterState(player, "Fall");
+            }
+            else
+            {
+                EnterState(player, "Idle");
+            }
         }
     }
     private void ToHurtState(PlayerNetwork player)
@@ -62,6 +69,25 @@ public class RedFrenzyState : State
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 EnterState(player, "Grabbed");
+                return;
+            }
+            if (player.attackNetwork.superArmor && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
+            {
+                player.sound = player.attackHurtNetwork.impactSound;
+                if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
+                {
+                    CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
+                }
+                player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.canChainAttack = false;
+                if (GameSimulation.Hitstop <= 0)
+                {
+                    GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                }
+                player.player.PlayerAnimator.SpriteSuperArmorEffect();
+                player.player.PlayerUI.Damaged();
+                player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
                 return;
             }
             if (DemonicsPhysics.IsInCorner(player))

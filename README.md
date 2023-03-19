@@ -6,8 +6,8 @@ Darklings is a free to play 2D fighting game with the intention of being an acce
 <div align="center">
 
 [![GitHub](https://img.shields.io/badge/unity_version-2021.3.12-blue)](https://unity3d.com/get-unity/download/archive)
-[![GitHub](https://img.shields.io/badge/game_version-0.2.8-brightgreen)](https://gamejolt.com/games/darklings/640842)
-[![GitHub](https://img.shields.io/badge/game_views-1.3k-orange)](https://gamejolt.com/games/darklings/640842)
+[![GitHub](https://img.shields.io/badge/game_version-0.2.9-brightgreen)](https://gamejolt.com/games/darklings/640842)
+[![GitHub](https://img.shields.io/badge/game_views-1.4k-orange)](https://gamejolt.com/games/darklings/640842)
 </div>
 
 <p align="center">
@@ -31,7 +31,7 @@ State Machine|Hitstop System|Rebinding
 Streaming Videos|Dialogue System|
 Pixel Perfect Camera|Replay System|
 60FPS Logic Tick|AI Opponent|
-Early Rollback Implementation|Lobby System|
+Rollback Implementation|Lobby System|
 
 ## Testing Online
 - Open two instances of Unity using ParrelSync (https://github.com/VeriorPies/ParrelSync).
@@ -39,7 +39,7 @@ Early Rollback Implementation|Lobby System|
 - In one of the two instances press the '2' key to change the player index to 1.
 - In both instances press the '5' key to start the GGPO connection and you're good to go. 
 
-Optional: use Clumsy (https://github.com/jagt/clumsy) to simulate lag
+Optional: use Clumsy (https://github.com/jagt/clumsy) to simulate lag.
 
 ## Sub Repositories
 These are the sub-repositories that help in one way or another to make Darklings.

@@ -56,7 +56,7 @@ public class HurtParentState : State
             {
                 GameSimulation.GlobalHitstop = 4;
                 GameSimulation.Run = false;
-                GameSimulation.Timer = 99;
+                GameSimulation.Timer = GameSimulation._timerMax;
             }
         }
     }
