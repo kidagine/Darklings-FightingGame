@@ -84,6 +84,7 @@ public class OnlineSetupMenu : BaseMenu
         _characterGroup.SetActive(true);
         _stageGroup.SetActive(false);
         _characterSelectable.Select();
+        _playerUIRender.gameObject.SetActive(true);
     }
 
     public void SetStageSelectorValues()
