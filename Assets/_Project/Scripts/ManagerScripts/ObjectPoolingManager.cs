@@ -56,6 +56,7 @@ public class ObjectPoolingManager : MonoBehaviour
         {
             for (int i = 0; i < effectsLibraryOne._objectPools.Count; i++)
             {
+                Debug.Log("B");
                 _objectsProjectilePoolOne.Add(new ObjectPoolGroup() { groupName = effectsLibraryOne._objectPools[i].groupName, objects = new List<GameObject>() });
                 for (int j = 0; j < effectsLibraryOne._objectPools[i].size; ++j)
                 {
@@ -80,6 +81,7 @@ public class ObjectPoolingManager : MonoBehaviour
     {
         if (!HasPooled)
         {
+
             _objectsAssistsPoolOne.Add(new ObjectPoolGroup() { groupName = assistOne.groupName, objects = new List<GameObject>() });
             GameObject assistObjectOne = Instantiate(assistOne.prefab, _playerOneProjectilePool).gameObject;
             assistObjectOne.gameObject.SetActive(false);
@@ -258,6 +260,26 @@ public class ObjectPoolingManager : MonoBehaviour
                 _objects[i].SetActive(false);
             }
         }
+    }
+
+    public void DestroyAllObjects()
+    {
+        Debug.Log("a");
+        foreach (Transform child in _playerOnePool)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in _playerTwoPool)
+        {
+            Destroy(child.gameObject);
+        }
+        _objectsPoolOne.Clear();
+        _objectsProjectilePoolOne.Clear();
+        _objectsAssistsPoolOne.Clear();
+        _objectsPoolTwo.Clear();
+        _objectsProjectilePoolTwo.Clear();
+        _objectsAssistsPoolTwo.Clear();
+        HasPooled = false;
     }
 }
 

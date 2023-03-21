@@ -1241,6 +1241,7 @@ public class GameplayManager : MonoBehaviour
         {
             InputSystem.RemoveDevice(keyboardTwo);
         }
+        ObjectPoolingManager.Instance.DestroyAllObjects();
     }
 
     void OnApplicationQuit()
