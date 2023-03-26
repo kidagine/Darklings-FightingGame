@@ -318,23 +318,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4703080449929076746, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
   m_PrefabInstance: {fileID: 10216028}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &10216031
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 10216030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 0}
-  _sounds: []
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &10216032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7878,8 +7861,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8502113b1baf1c41a513f6e9b21166e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cursorLockMode: 0
+  _cursorLockMode: 1
   _mouseVisible: 0
+  _playerInput: {fileID: 0}
 --- !u!1 &272102748 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4797689787146866182, guid: 8456c5b7e280fbe4db6a620f2ebab729, type: 3}
@@ -9678,23 +9662,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
---- !u!114 &367525713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 367525710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 0}
-  _sounds: []
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &367525714 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -26206,7 +26173,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1439075139381376838, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1439075139381376838, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_UpdateMode
@@ -26238,7 +26205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Interactable
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -26447,23 +26414,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
---- !u!114 &863543798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 863543796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 0}
-  _sounds: []
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!1 &866261738
 GameObject:
   m_ObjectHideFlags: 0
@@ -33899,23 +33849,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
---- !u!114 &1162407426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1162407421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 0}
-  _sounds: []
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!1 &1163163415
 GameObject:
   m_ObjectHideFlags: 0
@@ -34415,23 +34348,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4703080449929076746, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
   m_PrefabInstance: {fileID: 1193077564}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1193077567
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1193077566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 0}
-  _sounds: []
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &1193077568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35954,6 +35870,7 @@ GameObject:
   - component: {fileID: 1270773636}
   - component: {fileID: 1270773635}
   - component: {fileID: 1270773634}
+  - component: {fileID: 1270773637}
   m_Layer: 5
   m_Name: Prompt_image
   m_TagString: Untagged
@@ -36039,6 +35956,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1270773632}
   m_CullTransparentMesh: 1
+--- !u!114 &1270773637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270773632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &1270790922
 GameObject:
   m_ObjectHideFlags: 0
@@ -39584,23 +39518,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4703080449929076746, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
   m_PrefabInstance: {fileID: 1380143290}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1380143293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380143292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 0}
-  _sounds: []
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &1380143294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47000,23 +46917,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
---- !u!114 &1632717467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1632717464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 0}
-  _sounds: []
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!1 &1634688211
 GameObject:
   m_ObjectHideFlags: 0
@@ -53843,7 +53743,6 @@ GameObject:
   - component: {fileID: 1848307824}
   - component: {fileID: 1848307823}
   - component: {fileID: 1848307822}
-  - component: {fileID: 1848307821}
   m_Layer: 5
   m_Name: Quit_button
   m_TagString: Untagged
@@ -53874,23 +53773,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1848307821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848307819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 0}
-  _sounds: []
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!114 &1848307822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54619,6 +54501,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: d7c071bb-8534-4278-8262-781633a88662
     m_ActionName: UI/NavigationRight[/DualShock4GamepadHID/dpad/right,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d3b6907d-ceac-4c97-ab97-35d834f31fe0
+    m_ActionName: UI/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0306d6f2-a2bc-4bdc-8fa1-a7e4b78b925f
+    m_ActionName: UI/Click[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
@@ -54641,11 +54531,11 @@ MonoBehaviour:
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
-  m_PointAction: {fileID: 0}
+  m_PointAction: {fileID: 1054132383583890850, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   m_MoveAction: {fileID: 4875369870055060632, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   m_SubmitAction: {fileID: -8610638692812447094, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   m_CancelAction: {fileID: 8462929126762520957, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
-  m_LeftClickAction: {fileID: 0}
+  m_LeftClickAction: {fileID: 4745456900535354360, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   m_MiddleClickAction: {fileID: 0}
   m_RightClickAction: {fileID: 0}
   m_ScrollWheelAction: {fileID: 0}
