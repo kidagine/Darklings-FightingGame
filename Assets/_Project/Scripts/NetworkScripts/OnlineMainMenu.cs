@@ -26,6 +26,7 @@ public class OnlineMainMenu : BaseMenu
 
     private void OnEnable()
     {
+        _demonNameplate.transform.parent.gameObject.SetActive(true);
         _demonNameplate.SetDemonData(_onlineSetupMenu.DemonData);
     }
 }
