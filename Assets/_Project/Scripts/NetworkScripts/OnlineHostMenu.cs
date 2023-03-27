@@ -126,7 +126,7 @@ public class OnlineHostMenu : BaseMenu
         GUIUtility.systemCopyBuffer = _lobbyId;
     }
 
-    public void OpenAsClient(DemonData[] demonDatas, string lobbyId)
+    public void OpenAsClient(DemonData[] demonDatas, string lobbyId = null)
     {
         _networkManager.OnLobbyUpdate += UpdateLobby;
         Hosting = false;
@@ -135,7 +135,10 @@ public class OnlineHostMenu : BaseMenu
         _creatingLobby.SetActive(false);
         _lobbyCreated.SetActive(true);
         _copyLobbyId.SetActive(false);
-        _lobbyIdText.text = $"Lobby ID: {lobbyId.ToUpper()}";
+        if (lobbyId == null)
+            _lobbyIdText.text = "";
+        else
+            _lobbyIdText.text = $"Lobby ID: {lobbyId.ToUpper()}";
     }
 
     public void Ready()

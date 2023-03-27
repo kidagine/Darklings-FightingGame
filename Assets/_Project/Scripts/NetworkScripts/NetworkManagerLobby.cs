@@ -77,6 +77,39 @@ public class NetworkManagerLobby : MonoBehaviour
         return _clientLobby;
     }
 
+
+    //Join the lobby given a lobby Id
+    public async Task<Lobby> QuickJoinLobby(DemonData demonData)
+    {
+        Lobby lobby;
+        Unity.Services.Lobbies.Models.Player player = null;
+        try
+        {
+            player = GetPlayer(demonData);
+        }
+        catch (System.Exception e)
+        {
+            _onlineErrorMenu.Show(e.Message);
+            return null;
+        }
+        QuickJoinLobbyOptions quickJoinLobbyByCodeOptions = new QuickJoinLobbyOptions
+        {
+            Player = GetPlayer(demonData)
+        };
+        try
+        {
+            lobby = await Lobbies.Instance.QuickJoinLobbyAsync(quickJoinLobbyByCodeOptions);
+            _clientLobby = lobby;
+        }
+        catch (LobbyServiceException e)
+        {
+            _onlineErrorMenu.Show(e.Reason.ToString());
+            return null;
+        }
+        return lobby;
+    }
+
+
     //Join the lobby given a lobby Id
     public async Task<Lobby> JoinLobby(DemonData demonData, string lobbyId)
     {

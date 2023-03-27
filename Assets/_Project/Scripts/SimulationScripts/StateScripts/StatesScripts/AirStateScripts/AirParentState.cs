@@ -49,7 +49,7 @@ public class AirParentState : State
     }
     private void ToDashAirState(PlayerNetwork player)
     {
-        if (player.canDash && player.inputBuffer.CurrentInput().pressed)
+        if (player.canDoubleJump && player.inputBuffer.CurrentInput().pressed)
         {
             if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.ForwardDash)
             {

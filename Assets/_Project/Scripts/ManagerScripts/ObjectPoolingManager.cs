@@ -56,7 +56,6 @@ public class ObjectPoolingManager : MonoBehaviour
         {
             for (int i = 0; i < effectsLibraryOne._objectPools.Count; i++)
             {
-                Debug.Log("B");
                 _objectsProjectilePoolOne.Add(new ObjectPoolGroup() { groupName = effectsLibraryOne._objectPools[i].groupName, objects = new List<GameObject>() });
                 for (int j = 0; j < effectsLibraryOne._objectPools[i].size; ++j)
                 {
@@ -264,7 +263,6 @@ public class ObjectPoolingManager : MonoBehaviour
 
     public void DestroyAllObjects()
     {
-        Debug.Log("a");
         foreach (Transform child in _playerOnePool)
         {
             Destroy(child.gameObject);

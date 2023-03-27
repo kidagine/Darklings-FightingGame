@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
-using UnityEngine.UI;
 public class OnlineClientMenu : BaseMenu
 {
     [SerializeField] private NetworkManagerLobby _networkManager = default;

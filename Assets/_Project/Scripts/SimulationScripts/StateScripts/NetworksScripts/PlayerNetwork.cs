@@ -100,7 +100,6 @@ public class PlayerNetwork
         bw.Write(sound);
         bw.Write(soundGroup);
         bw.Write(soundStop);
-        bw.Write(canDash);
         bw.Write(jump);
         bw.Write(knockback);
         bw.Write(combo);
@@ -175,7 +174,6 @@ public class PlayerNetwork
         sound = br.ReadString();
         soundGroup = br.ReadString();
         soundStop = br.ReadString();
-        canDash = br.ReadBoolean();
         jump = br.ReadSingle();
         knockback = br.ReadInt32();
         combo = br.ReadInt32();
