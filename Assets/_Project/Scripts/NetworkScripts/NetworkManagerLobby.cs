@@ -52,7 +52,16 @@ public class NetworkManagerLobby : MonoBehaviour
         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
         {
             IsPrivate = false,
-            Player = player
+            Player = player,
+            Data = new Dictionary<string, DataObject>
+            {
+                {
+                    "Code", new DataObject(
+                        visibility: DataObject.VisibilityOptions.Public,
+                        value: "111111",
+                        index: DataObject.IndexOptions.S1)
+                }
+            }
         };
         try
         {
@@ -78,7 +87,7 @@ public class NetworkManagerLobby : MonoBehaviour
     }
 
 
-    //Join the lobby given a lobby Id
+    //Quick join the first found lobby
     public async Task<Lobby> QuickJoinLobby(DemonData demonData)
     {
         Lobby lobby;
@@ -108,10 +117,69 @@ public class NetworkManagerLobby : MonoBehaviour
         }
         return lobby;
     }
-
+    //Search for lobbies
+    public async Task<Lobby[]> SearchLobbies()
+    {
+        Lobby[] lobbies;
+        try
+        {
+            QueryLobbiesOptions queryLobbiesOptions = new QueryLobbiesOptions();
+            queryLobbiesOptions.Count = 20;
+            queryLobbiesOptions.Filters = new List<QueryFilter>();
+            {
+                new QueryFilter(
+                    field: QueryFilter.FieldOptions.AvailableSlots,
+                    op: QueryFilter.OpOptions.GT,
+                    value: "0");
+            }
+            QueryResponse query = await Lobbies.Instance.QueryLobbiesAsync(queryLobbiesOptions);
+            lobbies = query.Results.ToArray();
+        }
+        catch (LobbyServiceException e)
+        {
+            _onlineErrorMenu.Show(e.Reason.ToString());
+            return null;
+        }
+        if (lobbies.Length == 0)
+        {
+            _onlineErrorMenu.Show("No lobbies found");
+            return null;
+        }
+        return lobbies;
+    }
 
     //Join the lobby given a lobby Id
     public async Task<Lobby> JoinLobby(DemonData demonData, string lobbyId)
+    {
+        Lobby lobby;
+        Unity.Services.Lobbies.Models.Player player = null;
+        try
+        {
+            player = GetPlayer(demonData);
+        }
+        catch (System.Exception e)
+        {
+            _onlineErrorMenu.Show(e.Message);
+            return null;
+        }
+        JoinLobbyByIdOptions joinLobbyByIdOptions = new JoinLobbyByIdOptions
+        {
+            Player = GetPlayer(demonData)
+        };
+        try
+        {
+            lobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId, joinLobbyByIdOptions);
+            _clientLobby = lobby;
+        }
+        catch (LobbyServiceException e)
+        {
+            _onlineErrorMenu.Show(e.Reason.ToString());
+            return null;
+        }
+        return lobby;
+    }
+    //Join the lobby given a lobby code
+    public async Task<Lobby> JoinLobbyByCode(DemonData demonData, string lobbyCode)
     {
         Lobby lobby;
         Unity.Services.Lobbies.Models.Player player = null;
@@ -130,7 +198,7 @@ public class NetworkManagerLobby : MonoBehaviour
         };
         try
         {
-            lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyId, joinLobbyByCodeOptions);
+            lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, joinLobbyByCodeOptions);
             _clientLobby = lobby;
         }
         catch (LobbyServiceException e)

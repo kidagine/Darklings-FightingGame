@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Services.Lobbies.Models;
@@ -6,46 +7,94 @@ public class OnlineClientMenu : BaseMenu
 {
     [SerializeField] private NetworkManagerLobby _networkManager = default;
     [SerializeField] private OnlineHostMenu _onlineHostMenu = default;
+    [SerializeField] private OnlineLobbiesSearchMenu _onlineLobbiesSearchMenu = default;
     [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
     [SerializeField] private TMP_InputField _lobbyIdInputField = default;
+    [SerializeField] private TMP_InputField _lobbyIdChangeInputField = default;
+    [SerializeField] private InputManager _inputManager = default;
+    [SerializeField] private PromptsInput _searchPrompts = default;
+    [SerializeField] private PromptsInput _idPrompts = default;
+    [SerializeField] private GameObject _idChangeGroup = default;
     [SerializeField] private GameObject _joiningLobbyGroup = default;
     [SerializeField] private GameObject _lobbyJoinGroup = default;
 
 
-    public async void JoinLobby()
+    public async void SearchLobbies()
     {
         _joiningLobbyGroup.SetActive(true);
         _lobbyJoinGroup.SetActive(false);
         string lobbyId = _lobbyIdInputField.text;
-        Lobby lobby = await _networkManager.JoinLobby(_onlineSetupMenu.DemonData, lobbyId);
-        if (lobby == null)
+        if (lobbyId != "")
         {
-            _lobbyIdInputField.text = "";
+            Lobby lobby = await _networkManager.JoinLobbyByCode(_onlineSetupMenu.DemonData, lobbyId);
+            if (lobby == null)
+            {
+                _joiningLobbyGroup.SetActive(false);
+                _lobbyJoinGroup.SetActive(true);
+                Hide();
+                return;
+            }
+            List<DemonData> demonDatas = new List<DemonData>();
+            foreach (var player in lobby.Players)
+            {
+                demonDatas.Add(new DemonData()
+                {
+                    demonName = player.Data["DemonName"].Value,
+                    character = int.Parse(player.Data["Character"].Value),
+                    assist = int.Parse(player.Data["Assist"].Value),
+                    color = int.Parse(player.Data["Color"].Value)
+                });
+            }
             _joiningLobbyGroup.SetActive(false);
             _lobbyJoinGroup.SetActive(true);
-            Hide();
-            return;
+            _onlineHostMenu.OpenAsClient(demonDatas.ToArray(), lobbyId);
+            OpenMenuHideCurrent(_onlineHostMenu);
         }
-        List<DemonData> demonDatas = new List<DemonData>();
-        foreach (var player in lobby.Players)
+        else
         {
-            demonDatas.Add(new DemonData()
+            Lobby[] lobbies = await _networkManager.SearchLobbies();
+            if (lobbies == null)
             {
-                demonName = player.Data["DemonName"].Value,
-                character = int.Parse(player.Data["Character"].Value),
-                assist = int.Parse(player.Data["Assist"].Value),
-                color = int.Parse(player.Data["Color"].Value)
-            });
+                _lobbyIdInputField.text = "";
+                _joiningLobbyGroup.SetActive(false);
+                _lobbyJoinGroup.SetActive(true);
+                Hide();
+                return;
+            }
+            _onlineLobbiesSearchMenu.SetLobbies(lobbies);
+            OpenMenuHideCurrent(_onlineLobbiesSearchMenu);
+            _joiningLobbyGroup.SetActive(false);
+            _lobbyJoinGroup.SetActive(true);
         }
-        _onlineHostMenu.OpenAsClient(demonDatas.ToArray(), lobbyId);
-        OpenMenuHideCurrent(_onlineHostMenu);
-        _joiningLobbyGroup.SetActive(false);
-        _lobbyJoinGroup.SetActive(true);
     }
 
     private void HandleClientConnected()
     {
         _onlineHostMenu.Show();
         gameObject.SetActive(false);
+    }
+    public void OpenChangeId()
+    {
+        _lobbyIdChangeInputField.text = _lobbyIdInputField.text;
+        _idChangeGroup.SetActive(true);
+        _lobbyIdChangeInputField.Select();
+        _inputManager.CurrentPrompts = _idPrompts;
+    }
+
+    public void CloseChangeId()
+    {
+        _lobbyIdInputField.text = _lobbyIdChangeInputField.text;
+        _idChangeGroup.SetActive(false);
+        _inputManager.CurrentPrompts = _searchPrompts;
+        StartCoroutine(SelectOption());
+    }
+
+    IEnumerator SelectOption()
+    {
+        yield return null;
+        if (_startingOption != null)
+        {
+            _startingOption.Select();
+        }
     }
 }
