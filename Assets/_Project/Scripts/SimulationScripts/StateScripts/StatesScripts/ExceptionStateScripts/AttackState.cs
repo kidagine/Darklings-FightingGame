@@ -54,6 +54,7 @@ public class AttackState : State
                 }
             }
         }
+        UpdateFramedata(player);
         ToJumpState(player);
         ToJumpForwardState(player);
         ToIdleState(player);

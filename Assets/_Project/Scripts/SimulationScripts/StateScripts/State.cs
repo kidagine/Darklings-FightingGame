@@ -229,6 +229,12 @@ public class State
         return calculatedIntDamage;
     }
 
+    protected void UpdateFramedata(PlayerNetwork player)
+    {
+        if (SceneSettings.IsTrainingMode)
+            player.framedataEnum = player.player.PlayerAnimator.GetFramedata(player.animation, player.animationFrames);
+    }
+
     private void SetResultAttack(PlayerNetwork player, int calculatedDamage, AttackNetwork attack)
     {
         player.otherPlayer.resultAttack.startUpFrames = attack.startup;
@@ -298,6 +304,7 @@ public class State
     {
         if (!player.gotHit || name.Contains("Hurt") || name.Contains("Airborne") || name.Contains("Grabbed") || name.Contains("Block") || name.Contains("Knockback"))
         {
+            player.framedataEnum = Demonics.FramedataTypesEnum.None;
             player.enter = skipEnter;
             player.state = name;
             StateSimulation.SetState(player);

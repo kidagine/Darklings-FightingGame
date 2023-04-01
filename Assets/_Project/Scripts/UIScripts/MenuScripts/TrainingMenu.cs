@@ -1,3 +1,4 @@
+using Demonics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,7 +7,9 @@ using UnityEngine.UI;
 public class TrainingMenu : BaseMenu
 {
     [SerializeField] private GameObject _p1 = default;
-    [SerializeField] private GameObject _framedataMeter = default;
+    [SerializeField] private GameObject _framedataMeterGroup = default;
+    [SerializeField] private FrameMeter _framedataMeterOne = default;
+    [SerializeField] private FrameMeter _framedataMeterTwo = default;
     [SerializeField] private InputHistory _inputHistoryOne = default;
     [SerializeField] private InputHistory _inputHistoryTwo = default;
     [SerializeField] private TextMeshProUGUI _startupOneText = default;
@@ -233,10 +236,10 @@ public class TrainingMenu : BaseMenu
         switch (value)
         {
             case 0:
-                _framedataMeter.SetActive(false);
+                _framedataMeterGroup.SetActive(false);
                 break;
             case 1:
-                _framedataMeter.SetActive(true);
+                _framedataMeterGroup.SetActive(true);
                 break;
         }
     }
@@ -254,9 +257,9 @@ public class TrainingMenu : BaseMenu
         }
     }
 
-    public void SetState(bool isPlayerOne, string state)
+    public void SetState(int isPlayerOne, string state)
     {
-        if (isPlayerOne)
+        if (isPlayerOne == 0)
         {
             _stateOneText.text = state;
         }
@@ -266,13 +269,13 @@ public class TrainingMenu : BaseMenu
         }
     }
 
-    public void FramedataValue(bool isPlayerOne, ResultAttack attack)
+    public void FramedataValue(int isPlayerOne, ResultAttack attack)
     {
         if (attack == null)
         {
             return;
         }
-        if (isPlayerOne)
+        if (isPlayerOne == 0)
         {
             if (_startupOneText.gameObject.activeSelf)
             {
@@ -331,6 +334,18 @@ public class TrainingMenu : BaseMenu
                     _damageComboTwoText.text = attack.comboDamage.ToString();
                 }
             }
+        }
+    }
+
+    public void FramedataMeterValue(int isPlayerOne, FramedataTypesEnum framedataEnum)
+    {
+        if (isPlayerOne == 0)
+        {
+            _framedataMeterOne.AddFrame(framedataEnum);
+        }
+        else
+        {
+            _framedataMeterTwo.AddFrame(framedataEnum);
         }
     }
 

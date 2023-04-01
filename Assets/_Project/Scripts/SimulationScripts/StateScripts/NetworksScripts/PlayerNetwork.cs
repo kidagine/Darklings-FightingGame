@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Demonics;
 using UnityEngine;
 
 [Serializable]
@@ -70,6 +71,7 @@ public class PlayerNetwork
     public ColliderNetwork hitbox;
     public ColliderNetwork pushbox;
     public InputBufferNetwork inputBuffer;
+    public FramedataTypesEnum framedataEnum;
     public EffectNetwork[] effects;
     public ProjectileNetwork[] projectiles;
     public void Serialize(BinaryWriter bw)

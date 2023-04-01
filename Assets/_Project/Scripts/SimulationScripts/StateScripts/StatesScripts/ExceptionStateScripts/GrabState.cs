@@ -13,6 +13,7 @@ public class GrabState : State
             player.sound = "Hit";
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
         }
+        UpdateFramedata(player);
         player.velocity = DemonicsVector2.Zero;
         player.animationFrames++;
         player.attackFrames--;

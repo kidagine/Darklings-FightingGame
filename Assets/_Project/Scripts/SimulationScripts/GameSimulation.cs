@@ -1,3 +1,4 @@
+using Demonics;
 using SharedGame;
 using System;
 using System.IO;
@@ -378,20 +379,14 @@ public struct GameSimulation : IGame
         for (int i = 0; i < _players[index].inputBuffer.inputItems.Length; i++)
         {
             if (_players[index].inputBuffer.inputItems[i].frame < Framenumber)
-            {
                 _players[index].inputBuffer.inputItems[i].pressed = false;
-            }
             if (_players[index].inputBuffer.inputItems[i].frame + 25 < Framenumber)
-            {
                 _players[index].inputBuffer.inputItems[i].frame = 0;
-            }
         }
         _players[index].gotHit = false;
 
         if (_players[index].shadow.isOnScreen)
-        {
             _players[index].shadow.animationFrames++;
-        }
     }
     public void Update(long[] inputs, int disconnect_flags)
     {

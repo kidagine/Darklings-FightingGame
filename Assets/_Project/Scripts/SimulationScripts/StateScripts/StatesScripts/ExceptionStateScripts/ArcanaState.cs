@@ -21,6 +21,7 @@ public class ArcanaState : State
             player.InitializeProjectile(player.attackNetwork.moveName, player.attackNetwork, player.attackNetwork.projectileSpeed, player.attackNetwork.projectilePriority, player.attackNetwork.projectileDestroyOnHit);
         }
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
+        UpdateFramedata(player);
         ToIdleState(player);
         if (!player.hitstop)
         {

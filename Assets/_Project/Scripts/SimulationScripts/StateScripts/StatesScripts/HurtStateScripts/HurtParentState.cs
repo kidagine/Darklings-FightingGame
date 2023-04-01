@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Demonics;
 using UnityEngine;
 
 public class HurtParentState : State
@@ -10,6 +11,8 @@ public class HurtParentState : State
         {
             OnEnter(player);
         }
+        if (SceneSettings.IsTrainingMode)
+            player.framedataEnum = FramedataTypesEnum.Hurt;
         if (!player.hitstop)
         {
             AfterHitstop(player);

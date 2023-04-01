@@ -41,10 +41,10 @@ public class GameSimulationView : MonoBehaviour, IGameView
             UpdateEffects(i, playersGss[i].effects);
             UpdateProjectiles(i, playersGss[i].projectiles);
             UpdateAssists(i, playersGss[i].shadow);
-            _trainingMenu.SetState(true, playersGss[0].state);
-            _trainingMenu.SetState(false, playersGss[1].state);
-            _trainingMenu.FramedataValue(true, playersGss[0].resultAttack);
-            _trainingMenu.FramedataValue(false, playersGss[1].resultAttack);
+            _trainingMenu.SetState(i, playersGss[i].state);
+            _trainingMenu.FramedataValue(i, playersGss[i].resultAttack);
+            if (!playersGss[i].hitstop)
+                _trainingMenu.FramedataMeterValue(i, playersGss[i].framedataEnum);
         }
     }
     private void UpdateEffects(int index, EffectNetwork[] effects)
@@ -117,8 +117,6 @@ public class GameSimulationView : MonoBehaviour, IGameView
     private void Update()
     {
         if (gameManager.IsRunning)
-        {
             UpdateGameView(gameManager.Runner);
-        }
     }
 }
