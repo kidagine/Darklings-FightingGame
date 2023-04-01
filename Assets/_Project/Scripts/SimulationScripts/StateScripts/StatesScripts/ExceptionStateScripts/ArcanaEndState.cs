@@ -5,6 +5,12 @@ public class ArcanaEndState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (player.enter)
+            if (!player.hitstop)
+            {
+                player.animationFrames++;
+                player.attackFrames--;
+            }
         if (!player.enter)
         {
             if (player.direction.x < 0 && player.flip == 1 || player.direction.x > 0 && player.flip == -1)
@@ -18,8 +24,7 @@ public class ArcanaEndState : State
             player.otherPlayer.pushbox.active = false;
             player.velocity = DemonicsVector2.Zero;
         }
-        player.animationFrames++;
-        player.attackFrames--;
+
         if (player.otherPlayer.state == "Grabbed")
         {
             DemonicsVector2 grabPoint = player.player.PlayerAnimator.GetGrabPoint(player.animation, player.animationFrames);

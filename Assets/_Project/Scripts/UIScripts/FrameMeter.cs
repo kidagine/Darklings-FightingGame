@@ -79,7 +79,7 @@ public class FrameMeter : MonoBehaviour
             SetFramedataNumber();
             _frame = 1;
             _framedataEnum = framedataEnum;
-            _framedataText.text = $"StartUp {_startUp} | Active {_active} | Recovery {_recovery}";
+            _framedataText.text = $"StartUp {_startUp}F | Active {_active}F | Recovery {_recovery}F";
         }
         else
             _frame++;

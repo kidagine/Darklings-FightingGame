@@ -4,6 +4,11 @@ public class DashAirState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (player.enter)
+        {
+            player.dashDirection = 0;
+            Dash(player);
+        }
         if (!player.enter)
         {
             player.enter = true;
@@ -23,8 +28,6 @@ public class DashAirState : State
             player.dashFrames = 15;
             player.velocity = new DemonicsVector2(player.dashDirection * player.playerStats.DashForce, 0);
         }
-        player.dashDirection = 0;
-        Dash(player);
     }
 
     private void Dash(PlayerNetwork player)

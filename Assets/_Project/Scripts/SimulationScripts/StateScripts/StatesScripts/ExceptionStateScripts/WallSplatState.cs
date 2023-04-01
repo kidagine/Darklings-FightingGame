@@ -5,6 +5,8 @@ public class WallSplatState : State
     public override void UpdateLogic(PlayerNetwork player)
     {
         CheckFlip(player);
+        if (player.enter)
+            player.animationFrames++;
         if (!player.enter)
         {
             player.comboLocked = true;
@@ -27,7 +29,6 @@ public class WallSplatState : State
         player.velocity = DemonicsVector2.Zero;
         player.hurtbox.active = false;
         player.animation = "Wallsplat";
-        player.animationFrames++;
         ToAirborneState(player);
     }
     private void ToAirborneState(PlayerNetwork player)

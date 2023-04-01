@@ -4,6 +4,10 @@ public class KnockbackState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (player.enter)
+        {
+            player.animationFrames++;
+        }
         if (!player.enter)
         {
             player.enter = true;
@@ -14,7 +18,6 @@ public class KnockbackState : State
         }
         player.velocity = DemonicsVector2.Zero;
         player.animation = "HurtAir";
-        player.animationFrames++;
 
         DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)10;
         DemonicsFloat distance = player.pushbackEnd.x - player.pushbackStart.x;

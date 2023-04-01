@@ -6,6 +6,10 @@ public class KnockdownHardState : State
     public override void UpdateLogic(PlayerNetwork player)
     {
         CheckFlip(player);
+        if (player.enter)
+        {
+            player.animationFrames++;
+        }
         if (!player.enter)
         {
             player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.Knockdown);
@@ -17,7 +21,6 @@ public class KnockdownHardState : State
         player.framedataEnum = FramedataTypesEnum.Knockdown;
         player.hurtbox.active = false;
         player.animation = "Knockdown";
-        player.animationFrames++;
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)

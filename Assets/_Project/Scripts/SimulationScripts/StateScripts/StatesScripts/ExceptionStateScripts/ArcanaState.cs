@@ -5,6 +5,17 @@ public class ArcanaState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (player.enter)
+            if (!player.hitstop)
+            {
+                if (player.attackNetwork.travelDistance.y > 0)
+                {
+                    player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+                    ToIdleFallState(player);
+                }
+                player.animationFrames++;
+                player.attackFrames--;
+            }
         if (!player.enter)
         {
             SetTopPriority(player);
@@ -23,16 +34,7 @@ public class ArcanaState : State
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
         UpdateFramedata(player);
         ToIdleState(player);
-        if (!player.hitstop)
-        {
-            if (player.attackNetwork.travelDistance.y > 0)
-            {
-                player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
-                ToIdleFallState(player);
-            }
-            player.animationFrames++;
-            player.attackFrames--;
-        }
+
         Projectile(player);
         ToHurtState(player);
     }

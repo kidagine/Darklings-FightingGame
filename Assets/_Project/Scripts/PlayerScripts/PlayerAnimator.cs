@@ -109,8 +109,6 @@ public class PlayerAnimator : DemonicsAnimator
     protected override void CheckAnimationBoxes()
     {
         base.CheckAnimationBoxes();
-        //_playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
-        //_playerCollisionBoxes.SetHitboxes(GetHitboxes());
     }
 
     public void SetInvinsible(bool state)
@@ -124,15 +122,9 @@ public class PlayerAnimator : DemonicsAnimator
         _group = _animation.GetGroupId(name);
         _cel = GetCellByFrame(frame);
         for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
-        {
             if (i < _cel)
-            {
-                if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes.Count > 0 || GetProjectile(name, frame))
-                {
+                if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes.Count > 0 || _animation.GetCel(_group, i).animationEvent.projectile)
                     return true;
-                }
-            }
-        }
         return false;
     }
 
@@ -143,10 +135,12 @@ public class PlayerAnimator : DemonicsAnimator
         if (_animation.animationCelsGroup[_group].animationCel[_cel].hitboxes?.Count > 0 || GetProjectile(name, frame))
             return FramedataTypesEnum.Active;
         else
-        if (InRecovery(name, frame))
-            return FramedataTypesEnum.Recovery;
-        else
-            return FramedataTypesEnum.StartUp;
+        {
+            if (InRecovery(name, frame))
+                return FramedataTypesEnum.Recovery;
+            else
+                return FramedataTypesEnum.StartUp;
+        }
     }
 
     public Sprite GetCurrentSprite()

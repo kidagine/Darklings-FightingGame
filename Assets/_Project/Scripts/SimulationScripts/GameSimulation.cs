@@ -353,6 +353,7 @@ public struct GameSimulation : IGame
                 }
             }
         }
+
         ProjectilesSimulation.HandleProjectileCollision(_players[index], index);
         AnimationBox[] animationHitboxes = _players[index].player.PlayerAnimator.GetHitboxes(_players[index].animation, _players[index].animationFrames);
         if (animationHitboxes.Length == 0)
@@ -376,6 +377,7 @@ public struct GameSimulation : IGame
         }
         _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
         _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
+
         for (int i = 0; i < _players[index].inputBuffer.inputItems.Length; i++)
         {
             if (_players[index].inputBuffer.inputItems[i].frame < Framenumber)

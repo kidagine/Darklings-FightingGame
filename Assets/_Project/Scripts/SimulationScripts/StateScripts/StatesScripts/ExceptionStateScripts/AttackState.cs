@@ -6,6 +6,11 @@ public class AttackState : State
     public override void UpdateLogic(PlayerNetwork player)
     {
         player.dashDirection = 0;
+        if (player.enter)
+            if (!player.hitstop)
+            {
+                AttackCancel(player);
+            }
         if (!player.enter)
         {
             if (player.juggleBounce & player.isAir)
@@ -31,10 +36,7 @@ public class AttackState : State
         {
             player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
         }
-        if (!player.hitstop)
-        {
-            AttackCancel(player);
-        }
+
         if (!player.isAir)
         {
             if (player.pushbackDuration > 0 && player.knockback <= player.pushbackDuration)

@@ -2,6 +2,11 @@ public class GrabState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (player.enter)
+        {
+            player.animationFrames++;
+            player.attackFrames--;
+        }
         if (!player.enter)
         {
             SetTopPriority(player);
@@ -15,8 +20,7 @@ public class GrabState : State
         }
         UpdateFramedata(player);
         player.velocity = DemonicsVector2.Zero;
-        player.animationFrames++;
-        player.attackFrames--;
+
         ToIdleState(player);
         ToHurtState(player);
     }

@@ -4,6 +4,12 @@ public class RedFrenzyState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (player.enter)
+            if (!player.hitstop)
+            {
+                player.animationFrames++;
+                player.attackFrames--;
+            }
         if (!player.enter)
         {
             SetTopPriority(player);
@@ -20,11 +26,8 @@ public class RedFrenzyState : State
         }
         player.velocity = DemonicsVector2.Zero;
         player.dashFrames++;
-        if (!player.hitstop)
-        {
-            player.animationFrames++;
-            player.attackFrames--;
-        }
+        UpdateFramedata(player);
+
         if (player.dashFrames == 7)
         {
             player.invisible = true;
