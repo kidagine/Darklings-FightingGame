@@ -8,8 +8,7 @@ public class TrainingMenu : BaseMenu
 {
     [SerializeField] private GameObject _p1 = default;
     [SerializeField] private GameObject _framedataMeterGroup = default;
-    [SerializeField] private FrameMeter _framedataMeterOne = default;
-    [SerializeField] private FrameMeter _framedataMeterTwo = default;
+    [SerializeField] private FrameMeterSystem _frameMeterSystem = default;
     [SerializeField] private InputHistory _inputHistoryOne = default;
     [SerializeField] private InputHistory _inputHistoryTwo = default;
     [SerializeField] private TextMeshProUGUI _startupOneText = default;
@@ -339,14 +338,11 @@ public class TrainingMenu : BaseMenu
 
     public void FramedataMeterValue(int isPlayerOne, FramedataTypesEnum framedataEnum)
     {
-        if (isPlayerOne == 0)
-        {
-            _framedataMeterOne.AddFrame(framedataEnum);
-        }
-        else
-        {
-            _framedataMeterTwo.AddFrame(framedataEnum);
-        }
+        _frameMeterSystem.AddFrame(isPlayerOne, framedataEnum);
+    }
+    public void FramedataMeterRun()
+    {
+        _frameMeterSystem.RunFrame();
     }
 
     public void SetBlock(int value)

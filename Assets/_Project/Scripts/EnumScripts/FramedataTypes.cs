@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Demonics
 {
     [Serializable]
-    public enum FramedataTypesEnum { None, StartUp, Active, Recovery, Hurt, Knockdown, Block };
+    public enum FramedataTypesEnum { None, StartUp, Active, Recovery, Hurt, Knockdown, Block, Parry, Empty };
 
     public class FramedataTypes : MonoBehaviour
     {

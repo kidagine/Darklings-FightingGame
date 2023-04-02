@@ -34,9 +34,9 @@ public class GameSimulationView : MonoBehaviour, IGameView
             GameplayManager.Instance.SetupGame();
             GameSimulation.Start = false;
         }
+        GameplayManager.Instance.SetCountdown(GameSimulation.Timer);
         for (int i = 0; i < playersGss.Length; ++i)
         {
-            GameplayManager.Instance.SetCountdown(GameSimulation.Timer);
             playerViews[i].PlayerSimulation.Simulate(playersGss[i], gameInfo.players[i]);
             UpdateEffects(i, playersGss[i].effects);
             UpdateProjectiles(i, playersGss[i].projectiles);
@@ -46,6 +46,8 @@ public class GameSimulationView : MonoBehaviour, IGameView
             if (!playersGss[i].hitstop)
                 _trainingMenu.FramedataMeterValue(i, playersGss[i].framedataEnum);
         }
+        if (!playersGss[0].hitstop && !playersGss[1].hitstop)
+            _trainingMenu.FramedataMeterRun();
     }
     private void UpdateEffects(int index, EffectNetwork[] effects)
     {

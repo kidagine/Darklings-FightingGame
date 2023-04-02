@@ -7,16 +7,20 @@ public class HurtParentState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (player.enter)
+        {
+            if (!player.hitstop)
+            {
+                AfterHitstop(player);
+            }
+        }
         if (!player.enter)
         {
             OnEnter(player);
         }
         if (SceneSettings.IsTrainingMode)
             player.framedataEnum = FramedataTypesEnum.Hurt;
-        if (!player.hitstop)
-        {
-            AfterHitstop(player);
-        }
+
     }
     protected virtual void OnEnter(PlayerNetwork player)
     {

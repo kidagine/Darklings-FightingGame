@@ -123,7 +123,9 @@ public class PlayerAnimator : DemonicsAnimator
         _cel = GetCellByFrame(frame);
         for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
             if (i < _cel)
-                if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes.Count > 0 || _animation.GetCel(_group, i).animationEvent.projectile)
+                if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes.Count > 0
+                 || _animation.GetCel(_group, i).animationEvent.projectile
+                 || _animation.GetCel(_group, i).animationEvent.parry)
                     return true;
         return false;
     }
@@ -134,6 +136,8 @@ public class PlayerAnimator : DemonicsAnimator
         _cel = GetCellByFrame(frame);
         if (_animation.animationCelsGroup[_group].animationCel[_cel].hitboxes?.Count > 0 || GetProjectile(name, frame))
             return FramedataTypesEnum.Active;
+        else if (GetParrying(name, frame))
+            return FramedataTypesEnum.Parry;
         else
         {
             if (InRecovery(name, frame))

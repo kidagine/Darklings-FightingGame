@@ -6,15 +6,14 @@ using UnityEngine;
 
 public class FrameMeter : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _framedataText = default;
+    [SerializeField] private TextMeshProUGUI _startUpText = default;
+    [SerializeField] private TextMeshProUGUI _totalText = default;
+    [SerializeField] private TextMeshProUGUI _recoveryText = default;
     List<FrameMeterSquare> _frameMeterSquares = new List<FrameMeterSquare>();
-    private bool _wasPreviousNone = true;
-    private int _index;
+    public bool WasPreviousNone { get; set; }
     private int _indexPrevious;
-    private int _frame = 1;
-    private int _startUp;
-    private int _active;
-    private int _recovery;
+    private int _frame;
+    private int _total;
     private FramedataTypesEnum _framedataEnum = FramedataTypesEnum.StartUp;
 
     void Awake()
@@ -23,87 +22,86 @@ public class FrameMeter : MonoBehaviour
             _frameMeterSquares.Add(child.GetComponent<FrameMeterSquare>());
     }
 
-    public void AddFrame(FramedataTypesEnum framedataEnum)
+    public void AddFrame(FramedataTypesEnum framedataEnum, int index)
     {
         if (framedataEnum == FramedataTypesEnum.None)
         {
-            if (!_wasPreviousNone)
-                SetFramedataNumber(true);
-            _wasPreviousNone = true;
+            if (!WasPreviousNone)
+            {
+
+                _totalText.text = $"Total {_total}F";
+                if (_frame > 1)
+                    SetFramedataNumber(index, true);
+            }
+            WasPreviousNone = true;
+            _frameMeterSquares[index].SetFrame(framedataEnum);
         }
         else
         {
-            if (_wasPreviousNone)
-                ClearFrames();
-            if (_index > _frameMeterSquares.Count - 1)
-                FadeFrames();
-            _frameMeterSquares[_index].SetFrame(framedataEnum);
-            CheckFramedata(framedataEnum);
-            _indexPrevious = _index;
-            _index++;
+            WasPreviousNone = false;
+            _frameMeterSquares[index].SetFrame(framedataEnum);
+            CheckFramedata(framedataEnum, index);
+            _indexPrevious = index;
+            _total++;
         }
     }
 
-    private void ClearFrames()
+    public void ClearFrames()
     {
-        _index = 0;
-        _frame = 0;
-        _wasPreviousNone = false;
+        _total = 0;
+        _frame = 1;
+        WasPreviousNone = false;
+        _startUpText.text = $"StartUp --";
+        _totalText.text = $"Total --";
+        _recoveryText.text = $"Recovery --";
         for (int i = 0; i < _frameMeterSquares.Count; i++)
-            _frameMeterSquares[i].SetFrame(FramedataTypesEnum.None);
+            _frameMeterSquares[i].SetFrame(FramedataTypesEnum.Empty);
     }
 
-    private void FadeFrames()
+    public void FadeFrames()
     {
-        _index = 0;
         for (int i = 0; i < _frameMeterSquares.Count; i++)
             _frameMeterSquares[i].FadeFrame();
     }
 
-    private void CheckFramedata(FramedataTypesEnum framedataEnum)
+    private void CheckFramedata(FramedataTypesEnum framedataEnum, int index)
     {
         if (_framedataEnum != framedataEnum)
         {
             switch (_framedataEnum)
             {
                 case FramedataTypesEnum.StartUp:
-                    _startUp = _frame;
+                    _startUpText.text = $"StartUp {_frame}F";
                     break;
                 case FramedataTypesEnum.Active:
-                    _active = _frame;
-                    break;
-                case FramedataTypesEnum.Recovery:
-                    _recovery = _frame;
+                    _recoveryText.text = $"Recovery {_frame}F";
                     break;
             }
-            SetFramedataNumber();
+            SetFramedataNumber(index);
             _frame = 1;
             _framedataEnum = framedataEnum;
-            _framedataText.text = $"StartUp {_startUp}F | Active {_active}F | Recovery {_recovery}F";
         }
         else
             _frame++;
     }
 
-    private void SetFramedataNumber(bool setFrameForward = false)
+    private void SetFramedataNumber(int index, bool setFrameForward = false)
     {
-        int _lastMeterSquare = _index - 1;
+        int _lastMeterSquare = index - 1;
         if (_lastMeterSquare >= 0)
         {
             int[] frameDigits = _frame.ToString().Select(digit => int.Parse(digit.ToString())).ToArray();
-            if (frameDigits.Length == 1 || _index > _frameMeterSquares.Count - 1)
+            if (frameDigits.Length == 1 || index > _frameMeterSquares.Count - 1)
                 setFrameForward = false;
+
             for (int i = 0; i < frameDigits.Length; i++)
             {
                 int meterSquareIndex = 0;
+                meterSquareIndex = _lastMeterSquare - ((frameDigits.Length - 1) - i);
                 if (setFrameForward)
-                {
-                    meterSquareIndex = _lastMeterSquare - ((frameDigits.Length - 2) - i);
-                    _frameMeterSquares[_lastMeterSquare + 1].SetFrame(_framedataEnum, true);
-                }
-                else
-                    meterSquareIndex = _lastMeterSquare - ((frameDigits.Length - 1) - i);
-                _frameMeterSquares[meterSquareIndex].DisplayFrameNumber(frameDigits[i]);
+                    _frameMeterSquares[_lastMeterSquare].SetFrame(_framedataEnum, true);
+                if (_frame > 3 & meterSquareIndex > 1)
+                    _frameMeterSquares[meterSquareIndex].DisplayFrameNumber(frameDigits[i]);
             }
         }
     }
