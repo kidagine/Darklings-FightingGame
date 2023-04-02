@@ -28,10 +28,12 @@ public class FrameMeter : MonoBehaviour
         {
             if (!WasPreviousNone)
             {
-
                 _totalText.text = $"Total {_total}F";
                 if (_frame > 1)
+                {
                     SetFramedataNumber(index, true);
+                    _frame = 1;
+                }
             }
             WasPreviousNone = true;
             _frameMeterSquares[index].SetFrame(framedataEnum);
@@ -87,6 +89,7 @@ public class FrameMeter : MonoBehaviour
 
     private void SetFramedataNumber(int index, bool setFrameForward = false)
     {
+
         int _lastMeterSquare = index - 1;
         if (_lastMeterSquare >= 0)
         {

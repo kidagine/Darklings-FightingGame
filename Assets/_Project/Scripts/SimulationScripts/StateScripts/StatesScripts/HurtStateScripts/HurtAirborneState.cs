@@ -1,3 +1,4 @@
+using Demonics;
 using UnityEngine;
 
 public class HurtAirborneState : HurtParentState
@@ -78,6 +79,7 @@ public class HurtAirborneState : HurtParentState
             {
                 EnterState(player, "HardKnockdown");
             }
+            player.framedataEnum = FramedataTypesEnum.Knockdown;
         }
     }
     protected override void Knockback(PlayerNetwork player)

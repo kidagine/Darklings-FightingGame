@@ -9,7 +9,8 @@ public class AttackState : State
         if (player.enter)
             if (!player.hitstop)
             {
-                AttackCancel(player);
+                player.animationFrames++;
+                player.attackFrames--;
             }
         if (!player.enter)
         {
@@ -27,6 +28,10 @@ public class AttackState : State
             player.sound = player.attackNetwork.attackSound;
             player.animation = player.attackNetwork.name;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
+        }
+        if (!player.hitstop)
+        {
+            AttackCancel(player);
         }
         if (!player.isAir)
         {
@@ -67,8 +72,7 @@ public class AttackState : State
 
     private void AttackCancel(PlayerNetwork player)
     {
-        player.animationFrames++;
-        player.attackFrames--;
+
         if (player.canChainAttack)
         {
             if (player.inputBuffer.CurrentInput().frame != 0)

@@ -25,7 +25,7 @@ public class KnockdownHardState : State
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if (player.animationFrames >= 60)
+        if (player.animationFrames > 60)
         {
             EnterState(player, "WakeUp");
         }

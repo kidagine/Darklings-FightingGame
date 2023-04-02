@@ -318,7 +318,7 @@ public struct GameSimulation : IGame
             }
             else
             {
-                _players[index].animationFrames = _players[index].animationFrames + 1;
+                // _players[index].animationFrames = _players[index].animationFrames + 1;
             }
         }
         for (int i = 0; i < _players[index].effects.Length; i++)
