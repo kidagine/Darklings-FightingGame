@@ -7,14 +7,15 @@ public class CrouchState : GroundParentState
         if (!player.enter)
         {
             player.enter = true;
+            player.animation = "Crouch";
             player.animationFrames = 0;
+            return;
         }
         player.position = new DemonicsVector2(player.position.x, DemonicsPhysics.GROUND_POINT);
         CheckFlip(player);
         player.canDoubleJump = true;
         player.dashFrames = 0;
         player.animationFrames = 0;
-        player.animation = "Crouch";
         player.velocity = DemonicsVector2.Zero;
         base.UpdateLogic(player);
         ToIdleState(player);

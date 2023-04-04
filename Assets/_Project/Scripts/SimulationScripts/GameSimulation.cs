@@ -508,7 +508,6 @@ public struct GameSimulation : IGame
                     Hitstop--;
                 }
             }
-
         }
     }
 
@@ -520,9 +519,7 @@ public struct GameSimulation : IGame
     public void FreeBytes(NativeArray<byte> data)
     {
         if (data.IsCreated)
-        {
             data.Dispose();
-        }
     }
 
     public override int GetHashCode()
@@ -530,9 +527,7 @@ public struct GameSimulation : IGame
         int hashCode = -1214587014;
         hashCode = hashCode * -1521134295 + Framenumber.GetHashCode();
         foreach (var player in _players)
-        {
             hashCode = hashCode * -1521134295 + player.GetHashCode();
-        }
         return hashCode;
     }
 

@@ -11,6 +11,7 @@ public class BlockParentState : State
         if (!player.enter)
         {
             OnEnter(player);
+            return;
         }
         if (SceneSettings.IsTrainingMode)
             player.framedataEnum = FramedataTypesEnum.Block;

@@ -7,7 +7,9 @@ public class RunState : GroundParentState
         if (!player.enter)
         {
             player.enter = true;
+            player.animation = "Run";
             player.animationFrames = 0;
+            return;
         }
         player.position = new DemonicsVector2(player.position.x, DemonicsPhysics.GROUND_POINT);
         player.animation = "Run";

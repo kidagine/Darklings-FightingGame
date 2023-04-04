@@ -4,28 +4,6 @@ public class BlueFrenzyState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (player.enter)
-            if (!player.hitstop)
-            {
-                player.animationFrames++;
-                player.attackFrames--;
-                if (player.pushbackDuration > 0 && player.knockback <= player.pushbackDuration)
-                {
-                    DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.pushbackDuration;
-                    DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
-                    DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
-                    player.position = nextPosition;
-                    player.knockback++;
-                    if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
-                    {
-                        player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
-                    }
-                    else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
-                    {
-                        player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
-                    }
-                }
-            }
         if (!player.enter)
         {
             player.sound = "ParryStart";
@@ -35,6 +13,29 @@ public class BlueFrenzyState : State
             player.animationFrames = 0;
             player.animation = "Parry";
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
+            UpdateFramedata(player);
+            return;
+        }
+        if (!player.hitstop)
+        {
+            player.animationFrames++;
+            player.attackFrames--;
+            if (player.pushbackDuration > 0 && player.knockback <= player.pushbackDuration)
+            {
+                DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.pushbackDuration;
+                DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+                DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
+                player.position = nextPosition;
+                player.knockback++;
+                if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
+                {
+                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+                }
+                else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
+                {
+                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+                }
+            }
         }
         UpdateFramedata(player);
         player.velocity = DemonicsVector2.Zero;

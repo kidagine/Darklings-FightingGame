@@ -5,11 +5,12 @@ public class WakeUpState : State
         CheckFlip(player);
         if (!player.enter)
         {
+            player.animation = "WakeUp";
             player.enter = true;
             player.animationFrames = 0;
+            return;
         }
         player.hurtbox.active = false;
-        player.animation = "WakeUp";
         player.animationFrames++;
         ToIdleState(player);
     }

@@ -1,17 +1,7 @@
-using UnityEngine;
-
-
 public class AttackState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        player.dashDirection = 0;
-        if (player.enter)
-            if (!player.hitstop)
-            {
-                player.animationFrames++;
-                player.attackFrames--;
-            }
         if (!player.enter)
         {
             if (player.juggleBounce & player.isAir)
@@ -28,11 +18,10 @@ public class AttackState : State
             player.sound = player.attackNetwork.attackSound;
             player.animation = player.attackNetwork.name;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
+            UpdateFramedata(player);
+            return;
         }
-        if (!player.hitstop)
-        {
-            AttackCancel(player);
-        }
+        player.dashDirection = 0;
         if (!player.isAir)
         {
             player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
@@ -41,7 +30,10 @@ public class AttackState : State
         {
             player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
         }
-
+        if (!player.hitstop)
+        {
+            AttackCancel(player);
+        }
         if (!player.isAir)
         {
             if (player.pushbackDuration > 0 && player.knockback <= player.pushbackDuration)
@@ -72,7 +64,8 @@ public class AttackState : State
 
     private void AttackCancel(PlayerNetwork player)
     {
-
+        player.animationFrames++;
+        player.attackFrames--;
         if (player.canChainAttack)
         {
             if (player.inputBuffer.CurrentInput().frame != 0)

@@ -5,19 +5,10 @@ public class ArcanaState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (player.enter)
-            if (!player.hitstop)
-            {
-                if (player.attackNetwork.travelDistance.y > 0)
-                {
-                    player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
-                    ToIdleFallState(player);
-                }
-                player.animationFrames++;
-                player.attackFrames--;
-            }
         if (!player.enter)
         {
+            if (player.CurrentState != this)
+                return;
             SetTopPriority(player);
             player.dashFrames = 0;
             player.arcanaGauge -= PlayerStatsSO.ARCANA_MULTIPLIER;
@@ -30,6 +21,18 @@ public class ArcanaState : State
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
             player.InitializeProjectile(player.attackNetwork.moveName, player.attackNetwork, player.attackNetwork.projectileSpeed, player.attackNetwork.projectilePriority, player.attackNetwork.projectileDestroyOnHit);
+            UpdateFramedata(player);
+            return;
+        }
+        if (!player.hitstop)
+        {
+            if (player.attackNetwork.travelDistance.y > 0)
+            {
+                player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+                ToIdleFallState(player);
+            }
+            player.animationFrames++;
+            player.attackFrames--;
         }
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
         UpdateFramedata(player);
@@ -82,7 +85,6 @@ public class ArcanaState : State
                 player.isCrouch = false;
                 player.isAir = false;
                 EnterState(player, "Fall");
-
             }
             else
             {
@@ -106,40 +108,29 @@ public class ArcanaState : State
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
-            {
                 EnterState(player, "Grabbed");
-            }
             if (player.attackHurtNetwork.moveName == "Shadowbreak")
-            {
                 EnterState(player, "Knockback");
-            }
             if (IsBlocking(player))
             {
                 if (player.direction.y < 0)
-                {
                     EnterState(player, "BlockLow");
-                }
                 else
-                {
                     EnterState(player, "Block");
-                }
             }
             else
             {
                 if (player.attackHurtNetwork.hardKnockdown)
-                {
                     EnterState(player, "Airborne");
-                }
                 else
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
-                    {
-                        EnterState(player, "Hurt");
-                    }
+                        if (player.position.y <= DemonicsPhysics.GROUND_POINT)
+                            EnterState(player, "Hurt");
+                        else
+                            EnterState(player, "HurtAir");
                     else
-                    {
                         EnterState(player, "HurtAir");
-                    }
                 }
             }
         }

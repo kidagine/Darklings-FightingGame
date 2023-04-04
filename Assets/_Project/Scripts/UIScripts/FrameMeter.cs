@@ -13,7 +13,9 @@ public class FrameMeter : MonoBehaviour
     public bool WasPreviousNone { get; set; }
     private int _indexPrevious;
     private int _frame;
-    private int _total;
+    private int _cycles;
+    public int Total { get; private set; }
+    public int ActionFrame { get; private set; }
     private FramedataTypesEnum _framedataEnum = FramedataTypesEnum.StartUp;
 
     void Awake()
@@ -22,40 +24,44 @@ public class FrameMeter : MonoBehaviour
             _frameMeterSquares.Add(child.GetComponent<FrameMeterSquare>());
     }
 
-    public void AddFrame(FramedataTypesEnum framedataEnum, int index)
+    public void AddFrame(FramedataTypesEnum framedataEnum, int index, int cycles)
     {
         if (framedataEnum == FramedataTypesEnum.None)
         {
             if (!WasPreviousNone)
             {
-                _totalText.text = $"Total {_total}F";
+                _totalText.text = $"Total {Total}F";
                 if (_frame > 1)
                 {
                     SetFramedataNumber(index, true);
                     _frame = 1;
                 }
+                _framedataEnum = framedataEnum;
             }
             WasPreviousNone = true;
             _frameMeterSquares[index].SetFrame(framedataEnum);
         }
         else
         {
+            Debug.Log(index + "|" + cycles);
+            ActionFrame = index + (cycles * 60);
             WasPreviousNone = false;
             _frameMeterSquares[index].SetFrame(framedataEnum);
             CheckFramedata(framedataEnum, index);
-            _indexPrevious = index;
-            _total++;
+            Total++;
         }
     }
 
     public void ClearFrames()
     {
-        _total = 0;
+        Total = 0;
         _frame = 1;
+        ActionFrame = 0;
         WasPreviousNone = false;
         _startUpText.text = $"StartUp --";
         _totalText.text = $"Total --";
         _recoveryText.text = $"Recovery --";
+        _recoveryText.color = Color.white;
         for (int i = 0; i < _frameMeterSquares.Count; i++)
             _frameMeterSquares[i].SetFrame(FramedataTypesEnum.Empty);
     }
@@ -70,15 +76,9 @@ public class FrameMeter : MonoBehaviour
     {
         if (_framedataEnum != framedataEnum)
         {
-            switch (_framedataEnum)
-            {
-                case FramedataTypesEnum.StartUp:
-                    _startUpText.text = $"StartUp {_frame}F";
-                    break;
-                case FramedataTypesEnum.Active:
-                    _recoveryText.text = $"Recovery {_frame}F";
-                    break;
-            }
+            if (_framedataEnum == FramedataTypesEnum.StartUp)
+                _startUpText.text = $"StartUp {_frame}F";
+
             SetFramedataNumber(index);
             _frame = 1;
             _framedataEnum = framedataEnum;
@@ -107,5 +107,16 @@ public class FrameMeter : MonoBehaviour
                     _frameMeterSquares[meterSquareIndex].DisplayFrameNumber(frameDigits[i]);
             }
         }
+    }
+
+    public void SetRecovery(int value)
+    {
+        _recoveryText.text = $"Recovery {value}F";
+        if (value > 0)
+            _recoveryText.color = Color.green;
+        else if (value < 0)
+            _recoveryText.color = Color.red;
+        else
+            _recoveryText.color = Color.white;
     }
 }

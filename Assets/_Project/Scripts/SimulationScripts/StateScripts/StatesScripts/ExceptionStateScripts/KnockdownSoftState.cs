@@ -5,10 +5,6 @@ public class KnockdownSoftState : State
     public override void UpdateLogic(PlayerNetwork player)
     {
         CheckFlip(player);
-        if (player.enter)
-        {
-            player.animationFrames++;
-        }
         if (!player.enter)
         {
             player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.SoftKnockdown);
@@ -16,7 +12,10 @@ public class KnockdownSoftState : State
             player.animationFrames = 0;
             player.sound = "Landed";
             player.SetEffect("Fall", player.position);
+            player.framedataEnum = FramedataTypesEnum.Knockdown;
+            return;
         }
+        player.animationFrames++;
         player.framedataEnum = FramedataTypesEnum.Knockdown;
         player.hurtbox.active = false;
         player.animation = "Knockdown";
@@ -24,7 +23,7 @@ public class KnockdownSoftState : State
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if (player.animationFrames > 30)
+        if (player.animationFrames >= 30)
         {
             EnterState(player, "WakeUp");
         }

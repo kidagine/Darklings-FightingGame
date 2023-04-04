@@ -4,10 +4,6 @@ public class KnockbackState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (player.enter)
-        {
-            player.animationFrames++;
-        }
         if (!player.enter)
         {
             player.enter = true;
@@ -15,7 +11,9 @@ public class KnockbackState : State
             player.knockback = 0;
             player.pushbackStart = player.position;
             player.pushbackEnd = new DemonicsVector2(player.pushbackStart.x + (20 * -player.flip), player.pushbackStart.y + 20);
+            return;
         }
+        player.animationFrames++;
         player.velocity = DemonicsVector2.Zero;
         player.animation = "HurtAir";
 

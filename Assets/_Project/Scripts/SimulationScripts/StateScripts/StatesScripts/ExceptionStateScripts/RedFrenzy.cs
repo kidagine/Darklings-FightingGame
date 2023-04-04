@@ -4,12 +4,6 @@ public class RedFrenzyState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (player.enter)
-            if (!player.hitstop)
-            {
-                player.animationFrames++;
-                player.attackFrames--;
-            }
         if (!player.enter)
         {
             SetTopPriority(player);
@@ -23,6 +17,13 @@ public class RedFrenzyState : State
             player.healthRecoverable = player.health;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+            UpdateFramedata(player);
+            return;
+        }
+        if (!player.hitstop)
+        {
+            player.animationFrames++;
+            player.attackFrames--;
         }
         player.velocity = DemonicsVector2.Zero;
         player.dashFrames++;

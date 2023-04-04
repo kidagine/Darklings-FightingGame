@@ -6,10 +6,11 @@ public class IdleState : GroundParentState
     {
         if (!player.enter)
         {
+            player.animation = "Idle";
             player.enter = true;
             player.animationFrames = 0;
+            return;
         }
-        player.animation = "Idle";
         player.animationFrames++;
         player.velocity = DemonicsVector2.Zero;
         CheckFlip(player);

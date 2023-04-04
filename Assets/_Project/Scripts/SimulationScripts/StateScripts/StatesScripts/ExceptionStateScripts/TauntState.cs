@@ -4,9 +4,9 @@ public class TauntState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        CheckFlip(player);
         if (!player.enter)
         {
-            CheckFlip(player);
             if (player.otherPlayer.health <= 0)
             {
                 player.comboLocked = true;
@@ -18,6 +18,7 @@ public class TauntState : State
             player.enter = true;
             player.animationFrames = 0;
             player.animation = "Taunt";
+            return;
         }
         player.velocity = DemonicsVector2.Zero;
         player.animationFrames++;

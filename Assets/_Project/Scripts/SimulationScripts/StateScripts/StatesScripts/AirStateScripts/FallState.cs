@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class FallState : AirParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
@@ -9,6 +7,7 @@ public class FallState : AirParentState
         {
             player.enter = true;
             player.animationFrames = 0;
+            return;
         }
         player.animation = "Fall";
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
@@ -17,7 +16,7 @@ public class FallState : AirParentState
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
+        if (player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
             player.sound = "Landed";
             player.SetEffect("Fall", player.position);

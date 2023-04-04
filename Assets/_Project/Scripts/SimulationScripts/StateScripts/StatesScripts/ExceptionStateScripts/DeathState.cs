@@ -8,9 +8,7 @@ public class DeathState : State
         if (!player.enter)
         {
             if (!SceneSettings.IsTrainingMode)
-            {
                 GameSimulation.Run = false;
-            }
             GameSimulation.GlobalHitstop = 1;
             player.velocity = DemonicsVector2.Zero;
             player.enter = true;
@@ -20,6 +18,7 @@ public class DeathState : State
             player.healthRecoverable = 0;
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             ResetCombo(player);
+            return;
         }
         if (player.position.y > DemonicsPhysics.GROUND_POINT)
             player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);

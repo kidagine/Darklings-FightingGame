@@ -16,6 +16,7 @@ public class GiveUpState : State
             player.healthRecoverable = 0;
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             ResetCombo(player);
+            return;
         }
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         player.animation = "Death";

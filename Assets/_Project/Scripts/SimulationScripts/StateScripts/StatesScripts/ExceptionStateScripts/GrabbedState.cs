@@ -4,10 +4,6 @@ public class GrabbedState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (player.enter)
-        {
-            player.animationFrames++;
-        }
         if (!player.enter)
         {
             if (player.otherPlayer.state == "Arcana")
@@ -21,7 +17,9 @@ public class GrabbedState : State
             player.enter = true;
             player.animationFrames = 0;
             player.player.StopShakeCoroutine();
+            return;
         }
+        player.animationFrames++;
         player.velocity = DemonicsVector2.Zero;
         player.animation = "HurtAir";
         ThrowBreak(player);

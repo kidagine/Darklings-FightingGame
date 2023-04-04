@@ -8,6 +8,7 @@ public class State
     public virtual void Exit(PlayerNetwork player) { }
     public virtual bool ToHurtState(PlayerNetwork player, AttackSO attack) { return false; }
     public virtual bool ToBlockState(PlayerNetwork player, AttackSO attack) { return false; }
+    public string StateName { get; set; }
     public void CheckFlip(PlayerNetwork player)
     {
         if (player.otherPlayer.position.x > player.position.x)
@@ -308,6 +309,7 @@ public class State
             player.enter = skipEnter;
             player.state = name;
             StateSimulation.SetState(player);
+            player.CurrentState.UpdateLogic(player);
         }
     }
 

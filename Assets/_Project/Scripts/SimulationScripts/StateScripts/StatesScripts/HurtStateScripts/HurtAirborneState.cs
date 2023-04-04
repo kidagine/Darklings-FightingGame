@@ -5,6 +5,11 @@ public class HurtAirborneState : HurtParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (!player.enter)
+        {
+            OnEnter(player);
+            return;
+        }
         if (player.enter)
             if (player.animationFrames < 4)
             {
@@ -79,7 +84,6 @@ public class HurtAirborneState : HurtParentState
             {
                 EnterState(player, "HardKnockdown");
             }
-            player.framedataEnum = FramedataTypesEnum.Knockdown;
         }
     }
     protected override void Knockback(PlayerNetwork player)

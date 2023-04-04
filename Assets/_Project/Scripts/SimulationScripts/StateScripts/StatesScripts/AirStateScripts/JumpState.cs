@@ -4,10 +4,6 @@ public class JumpState : AirParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (player.enter)
-        {
-            player.animationFrames++;
-        }
         if (!player.enter)
         {
             player.enter = true;
@@ -16,11 +12,13 @@ public class JumpState : AirParentState
             player.hasJumped = true;
             player.animationFrames = 0;
             player.velocity = new DemonicsVector2((DemonicsFloat)0, player.playerStats.JumpForce);
+            return;
         }
+        player.animationFrames++;
         player.animation = "Jump";
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
-        base.UpdateLogic(player);
         ToFallState(player);
+        base.UpdateLogic(player);
     }
     private void ToFallState(PlayerNetwork player)
     {

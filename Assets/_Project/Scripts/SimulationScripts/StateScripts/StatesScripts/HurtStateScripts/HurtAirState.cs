@@ -6,6 +6,11 @@ public class HurtAirState : HurtParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (!player.enter)
+        {
+            OnEnter(player);
+            return;
+        }
         if (player.enter)
             if (player.animationFrames < 4)
             {
