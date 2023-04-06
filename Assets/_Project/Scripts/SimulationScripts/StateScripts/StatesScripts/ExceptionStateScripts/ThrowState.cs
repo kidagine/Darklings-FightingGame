@@ -6,6 +6,7 @@ public class ThrowState : State
     {
         if (!player.enter)
         {
+            SetTopPriority(player);
             if (player.direction.x < 0 && player.flip == 1 || player.direction.x > 0 && player.flip == -1)
             {
                 player.flip *= -1;
@@ -21,9 +22,9 @@ public class ThrowState : State
         player.attackFrames--;
         DemonicsVector2 grabPoint = player.player.PlayerAnimator.GetGrabPoint(player.animation, player.animationFrames);
         player.otherPlayer.position = new DemonicsVector2(player.position.x + (grabPoint.x * player.flip), player.position.y + grabPoint.y);
-        if (player.player.PlayerAnimator.GetThrowArcanaEnd(player.animation, player.animationFrames) && player.otherPlayer.state == "Grabbed")
-        {
-        }
+        // if (player.player.PlayerAnimator.GetThrowArcanaEnd(player.animation, player.animationFrames) && player.otherPlayer.state == "Grabbed")
+        // {
+        // }
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)

@@ -146,7 +146,7 @@ public class PlayerPreferences : MonoBehaviour
         //Misc
         _hitboxesSelector.SetValue(int.Parse(DemonicsSaver.Load("hitboxes", _hitboxesSelectorInitial.ToString())));
         _framedataSelector.SetValue(int.Parse(DemonicsSaver.Load("framedata", _framedataSelectorInitial.ToString())));
-        _framedataMeterSelector.SetValue(int.Parse(DemonicsSaver.Load("framedata", framedataMeterSelectorInitial.ToString())));
+        _framedataMeterSelector.SetValue(int.Parse(DemonicsSaver.Load("framedataMeter", framedataMeterSelectorInitial.ToString())));
         _slowdownSelector.SetValue(int.Parse(DemonicsSaver.Load("slowdown", _slowdownSelectorInitial.ToString())));
         _inputSelector.SetValue(int.Parse(DemonicsSaver.Load("input", _inputSelectorInitial.ToString())));
         _uiCanvasSelector.SetValue(int.Parse(DemonicsSaver.Load("uicanvas", _uiCanvasSelectorInitial.ToString())));

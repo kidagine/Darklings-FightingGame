@@ -6,10 +6,10 @@ public class FallState : AirParentState
         if (!player.enter)
         {
             player.enter = true;
+            player.animation = "Fall";
             player.animationFrames = 0;
             return;
         }
-        player.animation = "Fall";
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         base.UpdateLogic(player);
         ToIdleState(player);

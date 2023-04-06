@@ -14,6 +14,7 @@ public class GrabbedState : State
             {
                 EnterState(player.otherPlayer, "Throw");
             }
+            player.animation = "HurtAir";
             player.enter = true;
             player.animationFrames = 0;
             player.player.StopShakeCoroutine();
@@ -21,7 +22,6 @@ public class GrabbedState : State
         }
         player.animationFrames++;
         player.velocity = DemonicsVector2.Zero;
-        player.animation = "HurtAir";
         ThrowBreak(player);
     }
 

@@ -7,6 +7,7 @@ public class ArcanaEndState : State
     {
         if (!player.enter)
         {
+            SetTopPriority(player);
             if (player.direction.x < 0 && player.flip == 1 || player.direction.x > 0 && player.flip == -1)
             {
                 player.flip *= -1;
@@ -19,11 +20,8 @@ public class ArcanaEndState : State
             player.velocity = DemonicsVector2.Zero;
             return;
         }
-        if (!player.hitstop)
-        {
-            player.animationFrames++;
-            player.attackFrames--;
-        }
+        player.animationFrames++;
+        player.attackFrames--;
         if (player.otherPlayer.state == "Grabbed")
         {
             DemonicsVector2 grabPoint = player.player.PlayerAnimator.GetGrabPoint(player.animation, player.animationFrames);

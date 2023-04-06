@@ -41,13 +41,19 @@ public class GameSimulationView : MonoBehaviour, IGameView
             UpdateEffects(i, playersGss[i].effects);
             UpdateProjectiles(i, playersGss[i].projectiles);
             UpdateAssists(i, playersGss[i].shadow);
-            _trainingMenu.SetState(i, playersGss[i].state);
-            _trainingMenu.FramedataValue(i, playersGss[i].resultAttack);
-            if (!playersGss[i].hitstop)
-                _trainingMenu.FramedataMeterValue(i, playersGss[i].framedataEnum);
+            if (SceneSettings.IsTrainingMode)
+            {
+                _trainingMenu.SetState(i, playersGss[i].state);
+                _trainingMenu.FramedataValue(i, playersGss[i].resultAttack);
+                if (!playersGss[i].hitstop)
+                    _trainingMenu.FramedataMeterValue(i, playersGss[i].framedataEnum);
+            }
         }
-        if (!playersGss[0].hitstop && !playersGss[1].hitstop)
-            _trainingMenu.FramedataMeterRun();
+        if (SceneSettings.IsTrainingMode)
+        {
+            if (!playersGss[0].hitstop && !playersGss[1].hitstop)
+                _trainingMenu.FramedataMeterRun();
+        }
     }
     private void UpdateEffects(int index, EffectNetwork[] effects)
     {

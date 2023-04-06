@@ -43,7 +43,6 @@ public class FrameMeter : MonoBehaviour
         }
         else
         {
-            Debug.Log(index + "|" + cycles);
             ActionFrame = index + (cycles * 60);
             WasPreviousNone = false;
             _frameMeterSquares[index].SetFrame(framedataEnum);

@@ -18,7 +18,6 @@ public class TauntState : State
             player.enter = true;
             player.animationFrames = 0;
             player.animation = "Taunt";
-            return;
         }
         player.velocity = DemonicsVector2.Zero;
         player.animationFrames++;
@@ -28,7 +27,7 @@ public class TauntState : State
     }
     private void ToIdleState(PlayerNetwork player)
     {
-        if (player.animationFrames >= 160 && !player.comboLocked)
+        if (player.animationFrames >= 100 && !player.comboLocked)
         {
             GameSimulation.Run = true;
             EnterState(player, "Idle");

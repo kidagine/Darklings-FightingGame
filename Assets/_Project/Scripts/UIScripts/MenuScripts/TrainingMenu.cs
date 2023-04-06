@@ -342,6 +342,10 @@ public class TrainingMenu : BaseMenu
     }
     public void FramedataMeterRun()
     {
+        if (!_frameMeterSystem.gameObject.activeInHierarchy)
+            return;
+        if (Time.timeScale == 0)
+            return;
         _frameMeterSystem.RunFrame();
     }
 
