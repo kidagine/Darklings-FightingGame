@@ -1,3 +1,4 @@
+using Demonics;
 using SharedGame;
 using System;
 using System.IO;
@@ -317,7 +318,7 @@ public struct GameSimulation : IGame
             }
             else
             {
-                _players[index].animationFrames = _players[index].animationFrames + 1;
+                // _players[index].animationFrames = _players[index].animationFrames + 1;
             }
         }
         for (int i = 0; i < _players[index].effects.Length; i++)
@@ -352,6 +353,7 @@ public struct GameSimulation : IGame
                 }
             }
         }
+
         ProjectilesSimulation.HandleProjectileCollision(_players[index], index);
         AnimationBox[] animationHitboxes = _players[index].player.PlayerAnimator.GetHitboxes(_players[index].animation, _players[index].animationFrames);
         if (animationHitboxes.Length == 0)
@@ -375,23 +377,18 @@ public struct GameSimulation : IGame
         }
         _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
         _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
+
         for (int i = 0; i < _players[index].inputBuffer.inputItems.Length; i++)
         {
             if (_players[index].inputBuffer.inputItems[i].frame < Framenumber)
-            {
                 _players[index].inputBuffer.inputItems[i].pressed = false;
-            }
             if (_players[index].inputBuffer.inputItems[i].frame + 25 < Framenumber)
-            {
                 _players[index].inputBuffer.inputItems[i].frame = 0;
-            }
         }
         _players[index].gotHit = false;
 
         if (_players[index].shadow.isOnScreen)
-        {
             _players[index].shadow.animationFrames++;
-        }
     }
     public void Update(long[] inputs, int disconnect_flags)
     {
@@ -511,7 +508,6 @@ public struct GameSimulation : IGame
                     Hitstop--;
                 }
             }
-
         }
     }
 
@@ -523,9 +519,7 @@ public struct GameSimulation : IGame
     public void FreeBytes(NativeArray<byte> data)
     {
         if (data.IsCreated)
-        {
             data.Dispose();
-        }
     }
 
     public override int GetHashCode()
@@ -533,9 +527,7 @@ public struct GameSimulation : IGame
         int hashCode = -1214587014;
         hashCode = hashCode * -1521134295 + Framenumber.GetHashCode();
         foreach (var player in _players)
-        {
             hashCode = hashCode * -1521134295 + player.GetHashCode();
-        }
         return hashCode;
     }
 

@@ -6,12 +6,18 @@ public class HurtAirState : HurtParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (!player.enter)
+        {
+            OnEnter(player);
+            return;
+        }
+        if (player.enter)
+            if (player.animationFrames < 4)
+            {
+                player.animationFrames++;
+            }
         base.UpdateLogic(player);
         player.animation = "HurtAir";
-        if (player.animationFrames < 4)
-        {
-            player.animationFrames++;
-        }
         ToHurtState(player);
         ToFallState(player);
         ToShadowbreakState(player);

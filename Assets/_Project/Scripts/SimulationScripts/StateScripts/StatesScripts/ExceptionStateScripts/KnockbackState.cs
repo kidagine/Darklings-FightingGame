@@ -11,10 +11,11 @@ public class KnockbackState : State
             player.knockback = 0;
             player.pushbackStart = player.position;
             player.pushbackEnd = new DemonicsVector2(player.pushbackStart.x + (20 * -player.flip), player.pushbackStart.y + 20);
+            return;
         }
+        player.animationFrames++;
         player.velocity = DemonicsVector2.Zero;
         player.animation = "HurtAir";
-        player.animationFrames++;
 
         DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)10;
         DemonicsFloat distance = player.pushbackEnd.x - player.pushbackStart.x;

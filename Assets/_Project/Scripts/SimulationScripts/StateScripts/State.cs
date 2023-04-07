@@ -8,6 +8,7 @@ public class State
     public virtual void Exit(PlayerNetwork player) { }
     public virtual bool ToHurtState(PlayerNetwork player, AttackSO attack) { return false; }
     public virtual bool ToBlockState(PlayerNetwork player, AttackSO attack) { return false; }
+    public string StateName { get; set; }
     public void CheckFlip(PlayerNetwork player)
     {
         if (player.otherPlayer.position.x > player.position.x)
@@ -127,6 +128,9 @@ public class State
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
             superArmor = attack.hasSuperArmor,
+            startup = attack.startUpFrames,
+            active = attack.activeFrames,
+            recovery = attack.recoveryFrames,
             projectileSpeed = (DemonicsFloat)attack.projectileSpeed,
             projectileDestroyOnHit = attack.projectileDestroyOnHit,
             projectilePriority = attack.projectilePriority
@@ -226,6 +230,12 @@ public class State
         return calculatedIntDamage;
     }
 
+    protected void UpdateFramedata(PlayerNetwork player)
+    {
+        if (SceneSettings.IsTrainingMode)
+            player.framedataEnum = player.player.PlayerAnimator.GetFramedata(player.animation, player.animationFrames);
+    }
+
     private void SetResultAttack(PlayerNetwork player, int calculatedDamage, AttackNetwork attack)
     {
         player.otherPlayer.resultAttack.startUpFrames = attack.startup;
@@ -241,10 +251,10 @@ public class State
         player.combo++;
         player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
-        player.player.PlayerUI.Damaged();
-        player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
         ResetCombo(player);
+        player.player.PlayerUI.Damaged();
+        player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
         player.pushbox.active = true;
         if (player.health <= 0)
         {
@@ -295,9 +305,11 @@ public class State
     {
         if (!player.gotHit || name.Contains("Hurt") || name.Contains("Airborne") || name.Contains("Grabbed") || name.Contains("Block") || name.Contains("Knockback"))
         {
+            player.framedataEnum = Demonics.FramedataTypesEnum.None;
             player.enter = skipEnter;
             player.state = name;
             StateSimulation.SetState(player);
+            player.CurrentState.UpdateLogic(player);
         }
     }
 

@@ -1,10 +1,8 @@
-using Demonics.Manager;
-using SharedGame;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityGGPO;
-public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitstop
+public class Player : MonoBehaviour, IHitboxResponder, IHitstop
 {
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Assist _assist = default;
@@ -21,12 +19,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     protected PlayerComboSystem _playerComboSystem;
     private BrainController _controller;
     private InputBuffer _inputBuffer;
-    private bool _comboTimerPaused;
-    private int _comboTimerFrames;
-    private int _comboTimerWaitFrames;
-    private Color _comboTimerColor;
     private Coroutine _shakeContactCoroutine;
-    private readonly DemonicsFloat _damageDecay = (DemonicsFloat)0.97f;
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
     [HideInInspector] public UnityEvent parryConnectsEvent;
@@ -40,7 +33,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public AttackSO CurrentAttack { get; set; }
     public ResultAttack ResultAttack { get; set; }
     public Transform CameraPoint { get { return _cameraPoint; } private set { } }
-    public bool CanAirArcana { get; set; }
     public int Health { get; set; }
     public int HealthRecoverable { get; set; }
     public int Lives { get; set; } = 2;
@@ -48,15 +40,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public DemonicsFloat AssistGauge { get; set; } = (DemonicsFloat)1;
     public DemonicsFloat ArcanaGauge { get; set; }
     public Assist Assist { get { return _assist; } private set { } }
-    public int ArcaneSlowdown { get; set; } = 6;
-    public bool CanShadowbreak { get; set; } = true;
-    public bool BlockingLow { get; set; }
-    public bool BlockingHigh { get; set; }
-    public bool BlockingMiddair { get; set; }
-    public bool Parrying { get; set; }
     public bool CanSkipAttack { get; set; }
-    public bool Invincible { get; set; }
-    public bool Invisible { get; set; }
     public bool LockChain { get; set; }
     public bool HasJuggleForce { get; set; }
 
@@ -185,18 +169,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         _keepFlip.localScale = transform.localScale;
     }
 
-    public bool HasRecoverableHealth()
-    {
-        float remainingRecoverableHealth = HealthRecoverable - Health;
-        if (remainingRecoverableHealth > 0)
-        {
-            HealthRecoverable = Health;
-            _playerUI.SetRecoverableHealth(HealthRecoverable);
-            return true;
-        }
-        return false;
-    }
-
     public bool CheckRecoverableHealth()
     {
         float remainingRecoverableHealth = HealthRecoverable - Health;
@@ -206,16 +178,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
         }
         return false;
     }
-
-    public DemonicsFloat DemonLimitMultiplier()
-    {
-        if (Health < 3000)
-        {
-            return (DemonicsFloat)1.2;
-        }
-        return (DemonicsFloat)1;
-    }
-
     public void StopComboTimer()
     {
         // _comboTimerWaitFrames = 0;
@@ -227,16 +189,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public void RecallAssist()
     {
         _assist.Recall();
-    }
-
-    public void SetResultAttack(int calculatedDamage, AttackSO attack)
-    {
-        ResultAttack.startUpFrames = attack.startUpFrames;
-        ResultAttack.activeFrames = attack.activeFrames;
-        ResultAttack.recoveryFrames = attack.recoveryFrames;
-        ResultAttack.attackTypeEnum = attack.attackTypeEnum;
-        ResultAttack.damage = calculatedDamage;
-        ResultAttack.comboDamage += calculatedDamage;
     }
 
     public bool HitboxCollided(Vector2 hurtPosition, Hurtbox hurtbox = null)
@@ -271,36 +223,7 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
 
     public bool TakeDamage(AttackSO attack)
     {
-        // if (attack.causesKnockdown || attack.causesSoftKnockdown && !_playerMovement.IsGrounded)
-        // {
-        //     GameSimulation._players[1].enter = false;
-        //     GameSimulation._players[1].state = "Airborne";
-        // }
-        // else
-        // {
-        //     GameSimulation._players[1].enter = false;
-        //     GameSimulation._players[1].state = "Hurt";
-        // }
         return true;
-        // GameplayManager.Instance.AddHitstop(this);
-        // if (attack.attackTypeEnum == AttackTypeEnum.Throw)
-        // {
-        //     return _playerStateManager.TryToGrabbedState();
-        // }
-        // if (Invincible)
-        // {
-        //     return false;
-        // }
-        // if (CanBlock(attack))
-        // {
-        //     bool blockSuccesful = _playerStateManager.TryToBlockState(attack);
-        //     if (!blockSuccesful)
-        //     {
-        //         return _playerStateManager.TryToHurtState(attack);
-        //     }
-        //     return true;
-        // }
-        // return _playerStateManager.TryToHurtState(attack);
     }
 
     public void EnterHitstop()
@@ -322,16 +245,6 @@ public class Player : MonoBehaviour, IHurtboxResponder, IHitboxResponder, IHitst
     public bool IsInHitstop()
     {
         return _playerMovement.IsInHitstop;
-    }
-
-    public bool BlockingLeftOrRight()
-    {
-        if (transform.localScale.x == 1 && _controller.ActiveController.InputDirection.x < 0
-                   || transform.localScale.x == -1 && _controller.ActiveController.InputDirection.x > 0)
-        {
-            return true;
-        }
-        return false;
     }
 
     public void LoseLife()

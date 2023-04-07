@@ -31,7 +31,7 @@ public class DemonNameplate : MonoBehaviour
             {
                 _assistText.text = $"Assist C";
             }
-            _characterImage.sprite = _playersStatsSo[demonData.character].portraits[0];
+            _characterImage.sprite = _playersStatsSo[demonData.character].portraits[demonData.color];
         }
     }
 

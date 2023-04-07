@@ -1,3 +1,5 @@
+using Demonics;
+
 public class KnockdownSoftState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
@@ -10,10 +12,13 @@ public class KnockdownSoftState : State
             player.animationFrames = 0;
             player.sound = "Landed";
             player.SetEffect("Fall", player.position);
+            player.framedataEnum = FramedataTypesEnum.Knockdown;
+            return;
         }
+        player.animationFrames++;
+        player.framedataEnum = FramedataTypesEnum.Knockdown;
         player.hurtbox.active = false;
         player.animation = "Knockdown";
-        player.animationFrames++;
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)

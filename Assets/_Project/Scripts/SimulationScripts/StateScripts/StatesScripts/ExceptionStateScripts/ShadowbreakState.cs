@@ -26,6 +26,7 @@ public class ShadowbreakState : State
             player.InitializeProjectile("Shadowbreak", player.attackNetwork, (DemonicsFloat)0, 0, false);
             player.SetProjectile("Shadowbreak", new DemonicsVector2(player.position.x, player.position.y + player.pushbox.size.y), false);
             CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
+            return;
         }
         player.velocity = DemonicsVector2.Zero;
         player.hurtbox.active = false;

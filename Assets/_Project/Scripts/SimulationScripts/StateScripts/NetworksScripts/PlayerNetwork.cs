@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Demonics;
 using UnityEngine;
 
 [Serializable]
@@ -70,6 +71,7 @@ public class PlayerNetwork
     public ColliderNetwork hitbox;
     public ColliderNetwork pushbox;
     public InputBufferNetwork inputBuffer;
+    public FramedataTypesEnum framedataEnum;
     public EffectNetwork[] effects;
     public ProjectileNetwork[] projectiles;
     public void Serialize(BinaryWriter bw)
@@ -100,7 +102,6 @@ public class PlayerNetwork
         bw.Write(sound);
         bw.Write(soundGroup);
         bw.Write(soundStop);
-        bw.Write(canDash);
         bw.Write(jump);
         bw.Write(knockback);
         bw.Write(combo);
@@ -175,7 +176,6 @@ public class PlayerNetwork
         sound = br.ReadString();
         soundGroup = br.ReadString();
         soundStop = br.ReadString();
-        canDash = br.ReadBoolean();
         jump = br.ReadSingle();
         knockback = br.ReadInt32();
         combo = br.ReadInt32();

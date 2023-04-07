@@ -13,8 +13,9 @@ public class BlueFrenzyState : State
             player.animationFrames = 0;
             player.animation = "Parry";
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
+            UpdateFramedata(player);
+            return;
         }
-        player.velocity = DemonicsVector2.Zero;
         if (!player.hitstop)
         {
             player.animationFrames++;
@@ -36,6 +37,9 @@ public class BlueFrenzyState : State
                 }
             }
         }
+        UpdateFramedata(player);
+        player.velocity = DemonicsVector2.Zero;
+
         bool isParrying = player.player.PlayerAnimator.GetParrying(player.animation, player.animationFrames);
         if (IsColliding(player))
         {

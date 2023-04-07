@@ -4,13 +4,20 @@ public class HurtState : HurtParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (!player.enter)
+        {
+            OnEnter(player);
+            return;
+        }
+        if (player.enter)
+            if (player.animationFrames < 4)
+            {
+                player.animationFrames++;
+            }
         base.UpdateLogic(player);
         player.animation = "Hurt";
         player.velocity = DemonicsVector2.Zero;
-        if (player.animationFrames < 4)
-        {
-            player.animationFrames++;
-        }
+
         ToIdleState(player);
         ToHurtState(player);
         ToShadowbreakState(player);

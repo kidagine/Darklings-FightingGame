@@ -1,15 +1,22 @@
+using Demonics;
 using UnityEngine;
 
 public class HurtAirborneState : HurtParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (!player.enter)
+        {
+            OnEnter(player);
+            return;
+        }
+        if (player.enter)
+            if (player.animationFrames < 4)
+            {
+                player.animationFrames++;
+            }
         base.UpdateLogic(player);
         player.animation = "HurtAir";
-        if (player.animationFrames < 4)
-        {
-            player.animationFrames++;
-        }
         ToHurtState(player);
         ToKnockdownState(player);
         ToWallSplatState(player);
@@ -50,6 +57,7 @@ public class HurtAirborneState : HurtParentState
             if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.flip == 1
             || player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.flip == -1)
             {
+                player.pushbox.active = true;
                 player.player.StopShakeCoroutine();
                 EnterState(player, "WallSplat");
             }

@@ -6,11 +6,12 @@ public class WalkState : GroundParentState
     {
         if (!player.enter)
         {
+            player.animation = "Walk";
             player.enter = true;
             player.animationFrames = 0;
+            return;
         }
         player.canDoubleJump = true;
-        player.animation = "Walk";
         player.animationFrames++;
         player.velocity = new DemonicsVector2(player.direction.x * player.playerStats.SpeedWalk, 0);
         bool footstep = player.player.PlayerAnimator.GetFootstep(player.animation, player.animationFrames, out int cel);

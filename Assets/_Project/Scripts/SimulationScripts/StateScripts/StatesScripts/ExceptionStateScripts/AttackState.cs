@@ -1,11 +1,7 @@
-using UnityEngine;
-
-
 public class AttackState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        player.dashDirection = 0;
         if (!player.enter)
         {
             if (player.juggleBounce & player.isAir)
@@ -22,7 +18,10 @@ public class AttackState : State
             player.sound = player.attackNetwork.attackSound;
             player.animation = player.attackNetwork.name;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
+            UpdateFramedata(player);
+            return;
         }
+        player.dashDirection = 0;
         if (!player.isAir)
         {
             player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
@@ -54,6 +53,7 @@ public class AttackState : State
                 }
             }
         }
+        UpdateFramedata(player);
         ToJumpState(player);
         ToJumpForwardState(player);
         ToIdleState(player);

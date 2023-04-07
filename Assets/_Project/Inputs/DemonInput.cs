@@ -880,6 +880,24 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Point"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""d3b6907d-ceac-4c97-ab97-35d834f31fe0"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""0306d6f2-a2bc-4bdc-8fa1-a7e4b78b925f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -1289,6 +1307,83 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""action"": ""NavigationLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b301b3d5-6910-4f4b-a75b-acbb7256e826"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6bd795e6-e8bf-43d9-a8aa-aa931fdc72f7"",
+                    ""path"": ""<Pen>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fc55063b-779b-419c-9190-56cf03047318"",
+                    ""path"": ""<Touchscreen>/touch*/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Point"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""836ed3d3-4271-48ac-8c62-372b44ffa85b"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf299029-570a-4c1b-ad26-5b72847b2359"",
+                    ""path"": ""<Pen>/tip"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c49af215-5f00-4578-bad0-9e97c93fa447"",
+                    ""path"": ""<Touchscreen>/touch*/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d207cd35-1419-40b2-a308-b660406c1fcf"",
+                    ""path"": ""<XRController>/trigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1394,6 +1489,11 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                     ""devicePath"": ""<Keyboard>"",
                     ""isOptional"": false,
                     ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
                 }
             ]
         },
@@ -1442,6 +1542,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         m_UI_NavigationLeft = m_UI.FindAction("NavigationLeft", throwIfNotFound: true);
         m_UI_NavigationRight = m_UI.FindAction("NavigationRight", throwIfNotFound: true);
         m_UI_ToggleFramedata = m_UI.FindAction("ToggleFramedata", throwIfNotFound: true);
+        m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
+        m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
         // Training
         m_Training = asset.FindActionMap("Training", throwIfNotFound: true);
         m_Training_Reset = m_Training.FindAction("Reset", throwIfNotFound: true);
@@ -1656,6 +1758,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_NavigationLeft;
     private readonly InputAction m_UI_NavigationRight;
     private readonly InputAction m_UI_ToggleFramedata;
+    private readonly InputAction m_UI_Point;
+    private readonly InputAction m_UI_Click;
     public struct UIActions
     {
         private @DemonInput m_Wrapper;
@@ -1674,6 +1778,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         public InputAction @NavigationLeft => m_Wrapper.m_UI_NavigationLeft;
         public InputAction @NavigationRight => m_Wrapper.m_UI_NavigationRight;
         public InputAction @ToggleFramedata => m_Wrapper.m_UI_ToggleFramedata;
+        public InputAction @Point => m_Wrapper.m_UI_Point;
+        public InputAction @Click => m_Wrapper.m_UI_Click;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1725,6 +1831,12 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @ToggleFramedata.started -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleFramedata;
                 @ToggleFramedata.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleFramedata;
                 @ToggleFramedata.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleFramedata;
+                @Point.started -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
+                @Point.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
+                @Point.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnPoint;
+                @Click.started -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1771,6 +1883,12 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
                 @ToggleFramedata.started += instance.OnToggleFramedata;
                 @ToggleFramedata.performed += instance.OnToggleFramedata;
                 @ToggleFramedata.canceled += instance.OnToggleFramedata;
+                @Point.started += instance.OnPoint;
+                @Point.performed += instance.OnPoint;
+                @Point.canceled += instance.OnPoint;
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
             }
         }
     }
@@ -1876,6 +1994,8 @@ public partial class @DemonInput : IInputActionCollection2, IDisposable
         void OnNavigationLeft(InputAction.CallbackContext context);
         void OnNavigationRight(InputAction.CallbackContext context);
         void OnToggleFramedata(InputAction.CallbackContext context);
+        void OnPoint(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
     }
     public interface ITrainingActions
     {

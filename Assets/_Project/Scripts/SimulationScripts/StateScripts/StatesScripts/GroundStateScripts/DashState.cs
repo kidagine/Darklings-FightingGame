@@ -21,6 +21,7 @@ public class DashState : State
             }
             player.dashFrames = 15;
             player.velocity = new DemonicsVector2(player.dashDirection * player.playerStats.DashForce, 0);
+            return;
         }
         ToHurtState(player);
         Dash(player);

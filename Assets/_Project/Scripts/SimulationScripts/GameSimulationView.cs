@@ -34,17 +34,25 @@ public class GameSimulationView : MonoBehaviour, IGameView
             GameplayManager.Instance.SetupGame();
             GameSimulation.Start = false;
         }
+        GameplayManager.Instance.SetCountdown(GameSimulation.Timer);
         for (int i = 0; i < playersGss.Length; ++i)
         {
-            GameplayManager.Instance.SetCountdown(GameSimulation.Timer);
             playerViews[i].PlayerSimulation.Simulate(playersGss[i], gameInfo.players[i]);
             UpdateEffects(i, playersGss[i].effects);
             UpdateProjectiles(i, playersGss[i].projectiles);
             UpdateAssists(i, playersGss[i].shadow);
-            _trainingMenu.SetState(true, playersGss[0].state);
-            _trainingMenu.SetState(false, playersGss[1].state);
-            _trainingMenu.FramedataValue(true, playersGss[0].resultAttack);
-            _trainingMenu.FramedataValue(false, playersGss[1].resultAttack);
+            if (SceneSettings.IsTrainingMode)
+            {
+                _trainingMenu.SetState(i, playersGss[i].state);
+                _trainingMenu.FramedataValue(i, playersGss[i].resultAttack);
+                if (!playersGss[i].hitstop)
+                    _trainingMenu.FramedataMeterValue(i, playersGss[i].framedataEnum);
+            }
+        }
+        if (SceneSettings.IsTrainingMode)
+        {
+            if (!playersGss[0].hitstop && !playersGss[1].hitstop)
+                _trainingMenu.FramedataMeterRun();
         }
     }
     private void UpdateEffects(int index, EffectNetwork[] effects)
@@ -117,8 +125,6 @@ public class GameSimulationView : MonoBehaviour, IGameView
     private void Update()
     {
         if (gameManager.IsRunning)
-        {
             UpdateGameView(gameManager.Runner);
-        }
     }
 }

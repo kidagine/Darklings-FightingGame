@@ -17,14 +17,18 @@ public class RedFrenzyState : State
             player.healthRecoverable = player.health;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+            UpdateFramedata(player);
+            return;
         }
-        player.velocity = DemonicsVector2.Zero;
-        player.dashFrames++;
         if (!player.hitstop)
         {
             player.animationFrames++;
             player.attackFrames--;
         }
+        player.velocity = DemonicsVector2.Zero;
+        player.dashFrames++;
+        UpdateFramedata(player);
+
         if (player.dashFrames == 7)
         {
             player.invisible = true;

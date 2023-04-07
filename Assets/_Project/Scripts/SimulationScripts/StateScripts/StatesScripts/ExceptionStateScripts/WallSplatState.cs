@@ -7,7 +7,8 @@ public class WallSplatState : State
         CheckFlip(player);
         if (!player.enter)
         {
-            player.comboLocked = true;
+            if (player.CurrentState != this)
+                player.comboLocked = true;
             player.wasWallSplatted = true;
             DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + ((DemonicsFloat)2.25 * player.flip), player.position.y);
             if (player.flip == 1)
@@ -23,11 +24,12 @@ public class WallSplatState : State
             player.animationFrames = 0;
             player.attackHurtNetwork.knockbackArc = 35;
             player.attackHurtNetwork.knockbackDuration = 27;
+            return;
         }
+        player.animationFrames++;
         player.velocity = DemonicsVector2.Zero;
         player.hurtbox.active = false;
         player.animation = "Wallsplat";
-        player.animationFrames++;
         ToAirborneState(player);
     }
     private void ToAirborneState(PlayerNetwork player)

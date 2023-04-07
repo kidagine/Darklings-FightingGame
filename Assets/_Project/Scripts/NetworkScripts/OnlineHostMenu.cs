@@ -126,7 +126,7 @@ public class OnlineHostMenu : BaseMenu
         GUIUtility.systemCopyBuffer = _lobbyId;
     }
 
-    public void OpenAsClient(DemonData[] demonDatas, string lobbyId)
+    public void OpenAsClient(DemonData[] demonDatas, string lobbyId = null)
     {
         _networkManager.OnLobbyUpdate += UpdateLobby;
         Hosting = false;
@@ -135,7 +135,10 @@ public class OnlineHostMenu : BaseMenu
         _creatingLobby.SetActive(false);
         _lobbyCreated.SetActive(true);
         _copyLobbyId.SetActive(false);
-        _lobbyIdText.text = $"Lobby ID: {lobbyId.ToUpper()}";
+        if (lobbyId == null)
+            _lobbyIdText.text = "";
+        else
+            _lobbyIdText.text = $"Lobby ID: {lobbyId.ToUpper()}";
     }
 
     public void Ready()
@@ -199,9 +202,12 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.ColorOne = demonDatas[0].color;
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.SceneSettingsDecide = true;
-        SceneSettings.Bit1 = false;
-        SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
-        SceneSettings.MusicName = "Random";
+        SceneSettings.Bit1 = SceneSettings.OnlineBit1;
+        if (SceneSettings.OnlineStageRandom)
+            SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
+        else
+            SceneSettings.StageIndex = SceneSettings.OnlineStageIndex;
+        SceneSettings.MusicName = SceneSettings.OnlineMusicName;
         _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
         _fadeHandler.StartFadeTransition(true);
     }

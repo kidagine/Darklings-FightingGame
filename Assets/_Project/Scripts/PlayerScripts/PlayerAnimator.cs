@@ -1,4 +1,5 @@
 using System.Collections;
+using Demonics;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -108,8 +109,6 @@ public class PlayerAnimator : DemonicsAnimator
     protected override void CheckAnimationBoxes()
     {
         base.CheckAnimationBoxes();
-        //_playerCollisionBoxes.SetHurtboxes(GetHurtboxes());
-        //_playerCollisionBoxes.SetHitboxes(GetHitboxes());
     }
 
     public void SetInvinsible(bool state)
@@ -123,74 +122,29 @@ public class PlayerAnimator : DemonicsAnimator
         _group = _animation.GetGroupId(name);
         _cel = GetCellByFrame(frame);
         for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
-        {
             if (i < _cel)
-            {
-                if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes.Count > 0)
-                {
+                if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes.Count > 0
+                 || _animation.GetCel(_group, i).animationEvent.projectile
+                 || _animation.GetCel(_group, i).animationEvent.parry)
                     return true;
-                }
-            }
-        }
-        return false;
-
-        if (_animation.GetCel(_group, _cel).hitboxes.Count == 0)
-        {
-            return true;
-        }
         return false;
     }
 
-    public bool InActive()
+    public FramedataTypesEnum GetFramedata(string name, int frame)
     {
-        // if (GetHitboxes().Length > 0)
-        // {
-        //     return true;
-        // }
-        return false;
-    }
-
-    public AttackSO GetFramedata(AttackSO attack)
-    {
-        int startUpFrames = 0;
-        int activeFrames = 0;
-        int recoveryFrames = 0;
-        for (int i = 0; i < _animation.animationCelsGroup[_group].animationCel.Count; i++)
+        _group = _animation.GetGroupId(name);
+        _cel = GetCellByFrame(frame);
+        if (_animation.animationCelsGroup[_group].animationCel[_cel].hitboxes?.Count > 0 || GetProjectile(name, frame))
+            return FramedataTypesEnum.Active;
+        else if (GetParrying(name, frame))
+            return FramedataTypesEnum.Parry;
+        else
         {
-            if (_animation.animationCelsGroup[_group].animationCel[i].hitboxes?.Count > 0)
-            {
-                activeFrames += _animation.animationCelsGroup[_group].animationCel[i].frames;
-            }
+            if (InRecovery(name, frame))
+                return FramedataTypesEnum.Recovery;
             else
-            {
-                bool isPriorFrameActive = false;
-                for (int j = 0; j < _animation.animationCelsGroup[_group].animationCel.Count; j++)
-                {
-                    if (_animation.animationCelsGroup[_group].animationCel[j].hitboxes?.Count > 0 && j < i)
-                    {
-                        isPriorFrameActive = true;
-                    }
-                }
-                if (!isPriorFrameActive)
-                {
-                    startUpFrames += _animation.animationCelsGroup[_group].animationCel[i].frames;
-                }
-                else
-                {
-                    recoveryFrames += _animation.animationCelsGroup[_group].animationCel[i].frames;
-                }
-            }
+                return FramedataTypesEnum.StartUp;
         }
-        attack.startUpFrames = startUpFrames;
-        attack.activeFrames = activeFrames;
-        attack.recoveryFrames = recoveryFrames;
-        return attack;
-    }
-
-    public void ResetPosition()
-    {
-        transform.localPosition = Vector2.zero;
-        transform.localRotation = Quaternion.identity;
     }
 
     public Sprite GetCurrentSprite()

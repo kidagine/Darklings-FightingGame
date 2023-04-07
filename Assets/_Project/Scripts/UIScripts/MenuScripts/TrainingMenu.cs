@@ -1,3 +1,4 @@
+using Demonics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,6 +7,8 @@ using UnityEngine.UI;
 public class TrainingMenu : BaseMenu
 {
     [SerializeField] private GameObject _p1 = default;
+    [SerializeField] private GameObject _framedataMeterGroup = default;
+    [SerializeField] private FrameMeterSystem _frameMeterSystem = default;
     [SerializeField] private InputHistory _inputHistoryOne = default;
     [SerializeField] private InputHistory _inputHistoryTwo = default;
     [SerializeField] private TextMeshProUGUI _startupOneText = default;
@@ -227,6 +230,19 @@ public class TrainingMenu : BaseMenu
         }
     }
 
+    public void SetFramedataMeter(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                _framedataMeterGroup.SetActive(false);
+                break;
+            case 1:
+                _framedataMeterGroup.SetActive(true);
+                break;
+        }
+    }
+
     public void SetFramedata(int value)
     {
         switch (value)
@@ -240,9 +256,9 @@ public class TrainingMenu : BaseMenu
         }
     }
 
-    public void SetState(bool isPlayerOne, string state)
+    public void SetState(int isPlayerOne, string state)
     {
-        if (isPlayerOne)
+        if (isPlayerOne == 0)
         {
             _stateOneText.text = state;
         }
@@ -252,13 +268,13 @@ public class TrainingMenu : BaseMenu
         }
     }
 
-    public void FramedataValue(bool isPlayerOne, ResultAttack attack)
+    public void FramedataValue(int isPlayerOne, ResultAttack attack)
     {
         if (attack == null)
         {
             return;
         }
-        if (isPlayerOne)
+        if (isPlayerOne == 0)
         {
             if (_startupOneText.gameObject.activeSelf)
             {
@@ -318,6 +334,19 @@ public class TrainingMenu : BaseMenu
                 }
             }
         }
+    }
+
+    public void FramedataMeterValue(int isPlayerOne, FramedataTypesEnum framedataEnum)
+    {
+        _frameMeterSystem.AddFrame(isPlayerOne, framedataEnum);
+    }
+    public void FramedataMeterRun()
+    {
+        if (!_frameMeterSystem.gameObject.activeInHierarchy)
+            return;
+        if (Time.timeScale == 0)
+            return;
+        _frameMeterSystem.RunFrame();
     }
 
     public void SetBlock(int value)

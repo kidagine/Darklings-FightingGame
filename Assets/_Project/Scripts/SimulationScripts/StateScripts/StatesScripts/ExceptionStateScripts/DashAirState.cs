@@ -4,6 +4,7 @@ public class DashAirState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+
         if (!player.enter)
         {
             player.enter = true;
@@ -19,12 +20,13 @@ public class DashAirState : State
                 DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
                 player.SetEffect("Dash", effectPosition, true);
             }
-            player.canDash = false;
+            player.canDoubleJump = false;
             player.dashFrames = 15;
             player.velocity = new DemonicsVector2(player.dashDirection * player.playerStats.DashForce, 0);
+            return;
         }
-        player.dashDirection = 0;
         Dash(player);
+        player.dashDirection = 0;
     }
 
     private void Dash(PlayerNetwork player)

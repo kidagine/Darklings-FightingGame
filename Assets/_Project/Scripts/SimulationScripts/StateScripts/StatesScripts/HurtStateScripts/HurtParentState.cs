@@ -1,19 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Demonics;
 
 public class HurtParentState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (!player.enter)
-        {
-            OnEnter(player);
-        }
         if (!player.hitstop)
         {
             AfterHitstop(player);
         }
+        if (SceneSettings.IsTrainingMode)
+            player.framedataEnum = FramedataTypesEnum.Hurt;
     }
     protected virtual void OnEnter(PlayerNetwork player)
     {
@@ -59,6 +55,8 @@ public class HurtParentState : State
                 GameSimulation.Timer = GameSimulation._timerMax;
             }
         }
+        if (SceneSettings.IsTrainingMode)
+            player.framedataEnum = FramedataTypesEnum.Hurt;
     }
 
     protected virtual void AfterHitstop(PlayerNetwork player)

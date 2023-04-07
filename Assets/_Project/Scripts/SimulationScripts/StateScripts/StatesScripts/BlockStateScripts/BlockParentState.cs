@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Demonics;
 using UnityEngine;
 
 public class BlockParentState : State
@@ -10,8 +11,10 @@ public class BlockParentState : State
         if (!player.enter)
         {
             OnEnter(player);
+            return;
         }
-
+        if (SceneSettings.IsTrainingMode)
+            player.framedataEnum = FramedataTypesEnum.Block;
         if (!player.hitstop)
         {
             AfterHitstop(player);

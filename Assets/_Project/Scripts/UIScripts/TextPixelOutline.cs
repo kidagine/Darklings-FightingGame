@@ -26,6 +26,7 @@ public class TextPixelOutline : MonoBehaviour
             text.alignment = _mainText.alignment;
             text.fontStyle = _mainText.fontStyle;
             text.font = _mainText.font;
+            text.characterSpacing = _mainText.characterSpacing;
             text.enableWordWrapping = _mainText.enableWordWrapping;
             _outlineTexts.Add(outlineText.GetComponent<TextMeshProUGUI>());
         }

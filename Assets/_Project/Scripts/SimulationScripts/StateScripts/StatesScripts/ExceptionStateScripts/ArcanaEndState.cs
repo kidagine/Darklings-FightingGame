@@ -7,6 +7,7 @@ public class ArcanaEndState : State
     {
         if (!player.enter)
         {
+            SetTopPriority(player);
             if (player.direction.x < 0 && player.flip == 1 || player.direction.x > 0 && player.flip == -1)
             {
                 player.flip *= -1;
@@ -17,6 +18,7 @@ public class ArcanaEndState : State
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.otherPlayer.pushbox.active = false;
             player.velocity = DemonicsVector2.Zero;
+            return;
         }
         player.animationFrames++;
         player.attackFrames--;

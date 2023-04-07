@@ -1,3 +1,4 @@
+using Demonics;
 using UnityEngine;
 
 public class KnockdownHardState : State
@@ -12,10 +13,13 @@ public class KnockdownHardState : State
             player.animationFrames = 0;
             player.sound = "Landed";
             player.SetEffect("Fall", player.position);
+            player.framedataEnum = FramedataTypesEnum.Knockdown;
+            return;
         }
+        player.animationFrames++;
+        player.framedataEnum = FramedataTypesEnum.Knockdown;
         player.hurtbox.active = false;
         player.animation = "Knockdown";
-        player.animationFrames++;
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)

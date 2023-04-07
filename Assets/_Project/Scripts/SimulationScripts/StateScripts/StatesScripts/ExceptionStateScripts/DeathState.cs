@@ -8,9 +8,7 @@ public class DeathState : State
         if (!player.enter)
         {
             if (!SceneSettings.IsTrainingMode)
-            {
                 GameSimulation.Run = false;
-            }
             GameSimulation.GlobalHitstop = 1;
             player.velocity = DemonicsVector2.Zero;
             player.enter = true;
@@ -27,7 +25,7 @@ public class DeathState : State
             player.velocity = new DemonicsVector2(player.velocity.x, 0);
         player.animation = "Death";
         player.animationFrames++;
-        if (player.animationFrames >= 510)
+        if (player.animationFrames >= 255)
         {
             if (player.otherPlayer.state != "Taunt" && player.otherPlayer.health > 0)
             {
@@ -36,7 +34,7 @@ public class DeathState : State
         }
         if (SceneSettings.IsTrainingMode)
         {
-            if (player.animationFrames >= 190)
+            if (player.animationFrames >= 95)
             {
                 player.invincible = false;
                 ResetPlayer(player);
@@ -46,7 +44,7 @@ public class DeathState : State
         }
         else
         {
-            if (player.animationFrames >= 725)
+            if (player.animationFrames >= 375)
             {
                 GameSimulation.Timer = GameSimulation._timerMax;
                 player.invincible = false;

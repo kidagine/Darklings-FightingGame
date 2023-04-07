@@ -7,7 +7,6 @@ public class GroundParentState : State
     {
         base.UpdateLogic(player);
         player.canDoubleJump = true;
-        player.canDash = true;
         player.hasJumped = false;
         player.canJump = true;
         ToBlueFrenzyState(player);
