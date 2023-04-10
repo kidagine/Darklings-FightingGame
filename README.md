@@ -45,7 +45,7 @@ Optional: use Clumsy (https://github.com/jagt/clumsy) to simulate lag.
 These are the sub-repositories that help in one way or another to make Darklings.
 
  * [Website repository](https://github.com/kidagine/Darklings-Website) <br>
- * [Launcher repository](https://github.com/kidagine/Darklings-Launcher) <br>
+ * [Launcher repository](https://github.com/kidagine/Darklings-FightingGame-Launcher) <br>
  * [Command videos for WebGL repository](https://github.com/kidagine/Darklings-CommandListVideos) <br>
  * [Demonics library repository](https://github.com/kidagine/Demonics-Base-UnityLibrary) <br>
 
