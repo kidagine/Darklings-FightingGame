@@ -353,6 +353,27 @@ MonoBehaviour:
       hurtboxes:
       - size: {x: 28, y: 40}
         offset: {x: 0, y: 19}
+  - celName: DashAir
+    loop: 0
+    cameraShake: {fileID: 0}
+    animationCel:
+    - frames: 10
+      sprite: {fileID: 995430397, guid: 77e7e325dec8a264b98fc2a4f5399bc1, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
   - celName: Run
     loop: 0
     cameraShake: {fileID: 0}

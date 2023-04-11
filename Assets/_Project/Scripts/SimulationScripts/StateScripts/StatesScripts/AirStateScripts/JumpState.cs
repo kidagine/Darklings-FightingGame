@@ -6,6 +6,7 @@ public class JumpState : AirParentState
     {
         if (!player.enter)
         {
+            player.animation = "Jump";
             player.enter = true;
             player.sound = "Jump";
             player.SetEffect("Jump", player.position);
@@ -15,7 +16,6 @@ public class JumpState : AirParentState
             return;
         }
         player.animationFrames++;
-        player.animation = "Jump";
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         ToFallState(player);
         base.UpdateLogic(player);

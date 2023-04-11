@@ -101,11 +101,29 @@ public class PlayerStatsSO : ScriptableObject
             switch (dashLevel)
             {
                 case 1:
-                    return (DemonicsFloat)3.52;
+                    return (DemonicsFloat)3.8;
                 case 2:
                     return (DemonicsFloat)4;
                 case 3:
-                    return (DemonicsFloat)4.48;
+                    return (DemonicsFloat)4.2;
+                default:
+                    return (DemonicsFloat)0;
+            }
+        }
+        set { }
+    }
+    public DemonicsFloat DashBackForce
+    {
+        get
+        {
+            switch (dashLevel)
+            {
+                case 1:
+                    return (DemonicsFloat)3.2;
+                case 2:
+                    return (DemonicsFloat)3.4;
+                case 3:
+                    return (DemonicsFloat)3.6;
                 default:
                     return (DemonicsFloat)0;
             }
