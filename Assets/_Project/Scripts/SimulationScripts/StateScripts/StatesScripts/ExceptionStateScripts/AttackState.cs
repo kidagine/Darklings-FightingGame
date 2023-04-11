@@ -9,7 +9,6 @@ public class AttackState : State
                 player.position = new DemonicsVector2((DemonicsFloat)player.position.x, (DemonicsFloat)player.position.y + 7);
                 player.juggleBounce = false;
             }
-            player.inputBuffer.inputItems[player.inputBuffer.index].frame = 0;
             player.animationFrames = 0;
             SetTopPriority(player);
             player.canChainAttack = false;
@@ -21,6 +20,8 @@ public class AttackState : State
             UpdateFramedata(player);
             return;
         }
+        if (player.animationFrames == 0)
+            player.inputBuffer.inputItems[player.inputBuffer.index].frame = 0;
         player.dashDirection = 0;
         if (!player.isAir)
         {
