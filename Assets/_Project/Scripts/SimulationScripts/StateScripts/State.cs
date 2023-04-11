@@ -128,9 +128,6 @@ public class State
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
             superArmor = attack.hasSuperArmor,
-            startup = attack.startUpFrames,
-            active = attack.activeFrames,
-            recovery = attack.recoveryFrames,
             projectileSpeed = (DemonicsFloat)attack.projectileSpeed,
             projectileDestroyOnHit = attack.projectileDestroyOnHit,
             projectilePriority = attack.projectilePriority
@@ -164,9 +161,6 @@ public class State
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
             superArmor = attack.hasSuperArmor,
-            startup = attack.startUpFrames,
-            active = attack.activeFrames,
-            recovery = attack.recoveryFrames
         };
         if (attack.cameraShaker != null)
         {

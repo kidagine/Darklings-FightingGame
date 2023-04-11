@@ -36,12 +36,6 @@ public class AttackSO : ScriptableObject
     [HideInInspector] public Vector2 hurtEffectPosition;
     public float hurtEffectRotation;
     public CameraShakerSO cameraShaker;
-    [Header("Framedata")]
-    public int startUpFrames;
-    public int activeFrames;
-    public int recoveryFrames;
-    public int hitAdv { get { return hitStun - recoveryFrames; } private set { } }
-    public int blockAdv { get { return blockStun - recoveryFrames; } private set { } }
     [Header("Information")]
     public string moveName;
     [TextArea(5, 7)]
