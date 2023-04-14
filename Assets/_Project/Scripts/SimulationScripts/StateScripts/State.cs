@@ -246,18 +246,6 @@ public class State
         player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
-        ResetCombo(player);
-        player.player.PlayerUI.Damaged();
-        player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-        player.pushbox.active = true;
-        if (player.health <= 0)
-        {
-            EnterState(player, "Death");
-        }
-        else
-        {
-            EnterState(player, "HardKnockdown");
-        }
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
@@ -266,6 +254,9 @@ public class State
         {
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
         }
+        GameSimulation.Hitstop = 4;
+        HitstopFully(player);
+        HitstopFully(player.otherPlayer);
     }
     public void CheckTrainingComboEnd(PlayerNetwork player, bool skipCombo = false)
     {
