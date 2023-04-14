@@ -6,6 +6,7 @@ public class ThrowState : State
     {
         if (!player.enter)
         {
+            CameraShake.Instance.Zoom(-3, 0.085f);
             SetTopPriority(player);
             if (player.direction.x < 0 && player.flip == 1 || player.direction.x > 0 && player.flip == -1)
             {
@@ -40,6 +41,7 @@ public class ThrowState : State
                 player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT + player.pushbox.size.x, player.position.y);
             }
             ThrowEnd(player.otherPlayer);
+            CameraShake.Instance.ZoomDefault(0.08f);
             if (player.attackNetwork.cameraShakerNetwork.timer > 0)
             {
                 CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);

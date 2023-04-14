@@ -12,7 +12,7 @@ public class KnockdownHardState : State
             player.enter = true;
             player.animationFrames = 0;
             player.sound = "Landed";
-            player.SetEffect("Fall", player.position);
+            player.SetEffect("Jump", player.position);
             player.framedataEnum = FramedataTypesEnum.Knockdown;
             return;
         }
