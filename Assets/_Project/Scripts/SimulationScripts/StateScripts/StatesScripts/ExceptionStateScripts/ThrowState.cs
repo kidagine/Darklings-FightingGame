@@ -57,10 +57,7 @@ public class ThrowState : State
                     player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT + player.pushbox.size.x, player.position.y);
                 }
                 ThrowEnd(player.otherPlayer);
-                if (player.attackNetwork.cameraShakerNetwork.timer > 0)
-                {
-                    CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
-                }
+                CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
                 player.sound = "Impact1";
             }
         }
