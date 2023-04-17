@@ -67,7 +67,7 @@ public class State
         || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Heavy))
         {
             player.pushbackDuration = 0;
-            player.attackInput = player.inputBuffer.inputItems[player.inputBuffer.index].inputEnum;
+            player.attackInput = player.inputBuffer.CurrentInput().inputEnum;
             player.isCrouch = false;
             player.isAir = air;
             if (player.direction.y < 0)
