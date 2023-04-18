@@ -22,14 +22,23 @@ public class AttackState : State
         }
         if (player.animationFrames == 0)
             player.inputBuffer.inputItems[player.inputBuffer.index].frame = 0;
-        player.dashDirection = 0;
+        if (player.dashFrames <= 0)
+        {
+            player.dashDirection = 0;
+        }
         if (!player.isAir)
         {
             player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
         }
         else
         {
-            player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
+            if (player.dashFrames > 0)
+                Dash(player);
+            else
+            {
+                player.dashDirection = 0;
+                player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
+            }
         }
         if (!player.hitstop)
         {
@@ -61,6 +70,36 @@ public class AttackState : State
         ToIdleFallState(player);
         ToHurtState(player);
         Shadow(player);
+    }
+
+    private void Dash(PlayerNetwork player)
+    {
+        bool forwardDash = player.dashDirection * player.flip == 1 ? true : false;
+        int startUpFrames = forwardDash ? 9 : 13;
+        int recoveryFrames = forwardDash ? 2 : 3;
+        DemonicsFloat dashforce = forwardDash ? player.playerStats.DashAirForce : player.playerStats.DashBackAirForce;
+        if (player.dashFrames < startUpFrames && player.dashFrames > recoveryFrames)
+        {
+            player.velocity = new DemonicsVector2(player.dashDirection * dashforce, 0);
+        }
+        else
+        {
+            player.velocity = new DemonicsVector2(player.dashDirection * (dashforce - (DemonicsFloat)1), 0);
+        }
+        if (player.dashFrames % 3 == 0)
+        {
+            if (player.flip > 0)
+            {
+                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x - 1, player.position.y);
+                player.SetEffect("Ghost", player.position, false);
+            }
+            else
+            {
+                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
+                player.SetEffect("Ghost", player.position, true);
+            }
+        }
+        player.dashFrames--;
     }
 
     private void AttackCancel(PlayerNetwork player)
