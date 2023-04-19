@@ -68,13 +68,17 @@ public class DashState : State
     {
         if (IsColliding(player))
         {
-            player.dashDirection = 0;
             if (player.attackHurtNetwork.moveName == "Shadowbreak")
             {
+                player.dashDirection = 0;
                 EnterState(player, "Knockback");
             }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
+                bool forwardDash = player.dashDirection * player.flip == 1 ? true : false;
+                if (!forwardDash)
+                    return;
+                player.dashDirection = 0;
                 EnterState(player, "Grabbed");
             }
             if (DemonicsPhysics.IsInCorner(player))
@@ -86,6 +90,7 @@ public class DashState : State
             }
             if (IsBlocking(player))
             {
+                player.dashDirection = 0;
                 if (player.direction.y < 0)
                 {
                     EnterState(player, "BlockLow");
@@ -97,6 +102,7 @@ public class DashState : State
             }
             else
             {
+                player.dashDirection = 0;
                 if (player.attackHurtNetwork.hardKnockdown)
                 {
                     EnterState(player, "Airborne");
