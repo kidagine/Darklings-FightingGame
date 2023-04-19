@@ -29,6 +29,17 @@ public class DashAirState : State
         }
         player.animationFrames++;
         Dash(player);
+        ToAttackState(player);
+    }
+
+    public bool ToAttackState(PlayerNetwork player)
+    {
+        if (player.inputBuffer.CurrentInput().pressed)
+        {
+            Attack(player, true);
+            return true;
+        }
+        return false;
     }
 
     private void Dash(PlayerNetwork player)
@@ -38,7 +49,7 @@ public class DashAirState : State
             bool forwardDash = player.dashDirection * player.flip == 1 ? true : false;
             int startUpFrames = forwardDash ? 9 : 13;
             int recoveryFrames = forwardDash ? 2 : 3;
-            DemonicsFloat dashforce = forwardDash ? player.playerStats.DashForce : player.playerStats.DashBackForce;
+            DemonicsFloat dashforce = forwardDash ? player.playerStats.DashAirForce : player.playerStats.DashBackAirForce;
             if (player.dashFrames < startUpFrames && player.dashFrames > recoveryFrames)
             {
                 player.velocity = new DemonicsVector2(player.dashDirection * dashforce, 0);

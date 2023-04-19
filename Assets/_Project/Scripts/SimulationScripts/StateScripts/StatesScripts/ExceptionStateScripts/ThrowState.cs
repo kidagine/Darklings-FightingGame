@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ThrowState : State
 {
+    private static bool _k;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
@@ -31,21 +32,34 @@ public class ThrowState : State
     {
         if (player.attackFrames <= 0)
         {
-            if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.flip == 1)
+            if (player.attackFrames <= -1 && !player.hitstop)
             {
-                player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT - player.pushbox.size.x, player.position.y);
+                ResetCombo(player.otherPlayer);
+                player.otherPlayer.player.PlayerUI.Damaged();
+                player.otherPlayer.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+                player.otherPlayer.pushbox.active = true;
+                if (player.health <= 0)
+                    EnterState(player.otherPlayer, "Death");
+                else
+                    EnterState(player.otherPlayer, "HardKnockdown");
+                EnterState(player, "Idle");
+                return;
             }
-            else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.flip == -1)
+            if (!player.hitstop)
             {
-                player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT + player.pushbox.size.x, player.position.y);
-            }
-            ThrowEnd(player.otherPlayer);
-            if (player.attackNetwork.cameraShakerNetwork.timer > 0)
-            {
+                player.otherPlayer.player.StartShakeContact();
+                if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.flip == 1)
+                {
+                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT - player.pushbox.size.x, player.position.y);
+                }
+                else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.flip == -1)
+                {
+                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT + player.pushbox.size.x, player.position.y);
+                }
+                ThrowEnd(player.otherPlayer);
                 CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
+                player.sound = "Impact1";
             }
-            player.sound = "Impact1";
-            EnterState(player, "Idle");
         }
     }
 }

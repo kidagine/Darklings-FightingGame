@@ -358,11 +358,6 @@ public class GameplayManager : MonoBehaviour
         }
         _currentStage.SetActive(true);
         int stageColorIndex = SceneSettings.Bit1 ? 1 : 0;
-        if (SceneSettings.Bit1)
-        {
-            _playerOneUI.Turn1BitVisuals();
-            _playerTwoUI.Turn1BitVisuals();
-        }
         _currentStage.transform.GetChild(stageColorIndex).gameObject.SetActive(true);
     }
 

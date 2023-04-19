@@ -67,7 +67,7 @@ public class State
         || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Heavy))
         {
             player.pushbackDuration = 0;
-            player.attackInput = player.inputBuffer.inputItems[player.inputBuffer.index].inputEnum;
+            player.attackInput = player.inputBuffer.CurrentInput().inputEnum;
             player.isCrouch = false;
             player.isAir = air;
             if (player.direction.y < 0)
@@ -246,18 +246,7 @@ public class State
         player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
-        ResetCombo(player);
-        player.player.PlayerUI.Damaged();
-        player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-        player.pushbox.active = true;
-        if (player.health <= 0)
-        {
-            EnterState(player, "Death");
-        }
-        else
-        {
-            EnterState(player, "HardKnockdown");
-        }
+        player.SetEffect(player.attackHurtNetwork.hurtEffect, new DemonicsVector2(player.hurtPosition.x, player.hurtPosition.y - 5));
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
@@ -266,6 +255,9 @@ public class State
         {
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
         }
+        GameSimulation.Hitstop = 3;
+        HitstopFully(player);
+        HitstopFully(player.otherPlayer);
     }
     public void CheckTrainingComboEnd(PlayerNetwork player, bool skipCombo = false)
     {

@@ -130,6 +130,42 @@ public class PlayerStatsSO : ScriptableObject
         }
         set { }
     }
+    public DemonicsFloat DashAirForce
+    {
+        get
+        {
+            switch (dashLevel)
+            {
+                case 1:
+                    return (DemonicsFloat)3.6;
+                case 2:
+                    return (DemonicsFloat)3.8;
+                case 3:
+                    return (DemonicsFloat)4.0;
+                default:
+                    return (DemonicsFloat)0;
+            }
+        }
+        set { }
+    }
+    public DemonicsFloat DashBackAirForce
+    {
+        get
+        {
+            switch (dashLevel)
+            {
+                case 1:
+                    return (DemonicsFloat)3.2;
+                case 2:
+                    return (DemonicsFloat)3.4;
+                case 3:
+                    return (DemonicsFloat)3.6;
+                default:
+                    return (DemonicsFloat)0;
+            }
+        }
+        set { }
+    }
 
     public const int ARCANA_MULTIPLIER = 1000;
 }
