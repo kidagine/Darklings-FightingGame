@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 4.594794, g: 4.594794, b: 4.594794, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -3240,7 +3240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &76342298
 Transform:
   m_ObjectHideFlags: 0
@@ -64532,7 +64532,7 @@ MonoBehaviour:
   m_NoiseProfile: {fileID: 11400000, guid: 7e1ad6e7f7158ab47998c4f7fbcd04ed, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
   m_AmplitudeGain: 0
-  m_FrequencyGain: 0
+  m_FrequencyGain: 1
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1524240020
 GameObject:
@@ -95821,6 +95821,10 @@ PrefabInstance:
     - target: {fileID: 8194909459223732001, guid: c4a1fc5b8ed77d24da151650a126e407, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194909459223732001, guid: c4a1fc5b8ed77d24da151650a126e407, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8572356570523619348, guid: c4a1fc5b8ed77d24da151650a126e407, type: 3}
       propertyPath: m_Name
