@@ -22,6 +22,8 @@ public class StateSimulation
             player.CurrentState = new IdleState();
         if (player.state == "Walk")
             player.CurrentState = new WalkState();
+        if (player.state == "PreJump")
+            player.CurrentState = new PreJumpState();
         if (player.state == "Run")
             player.CurrentState = new RunState();
         if (player.state == "JumpForward")

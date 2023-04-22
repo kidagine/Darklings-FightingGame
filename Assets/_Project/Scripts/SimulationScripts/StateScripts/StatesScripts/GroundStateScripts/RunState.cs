@@ -37,7 +37,8 @@ public class RunState : GroundParentState
     {
         if (player.direction.y > 0)
         {
-            EnterState(player, "Jump");
+            player.jumpDirection = 0;
+            EnterState(player, "PreJump");
         }
     }
     private void ToJumpForwardState(PlayerNetwork player)
@@ -45,7 +46,7 @@ public class RunState : GroundParentState
         if (player.direction.y > 0 && player.direction.x != 0)
         {
             player.jumpDirection = (int)player.direction.x;
-            EnterState(player, "JumpForward");
+            EnterState(player, "PreJump");
         }
     }
     private void ToIdleState(PlayerNetwork player)

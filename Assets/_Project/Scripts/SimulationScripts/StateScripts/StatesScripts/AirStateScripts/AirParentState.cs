@@ -95,6 +95,8 @@ public class AirParentState : State
                 EnterState(player, "Knockback");
                 return;
             }
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+                return;
             if (IsBlocking(player))
             {
                 EnterState(player, "BlockAir");
