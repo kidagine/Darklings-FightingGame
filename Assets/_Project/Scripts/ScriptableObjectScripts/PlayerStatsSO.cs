@@ -58,6 +58,24 @@ public class PlayerStatsSO : ScriptableObject
         }
         set { }
     }
+    public DemonicsFloat SpeedWalkBackwards
+    {
+        get
+        {
+            switch (speedLevel)
+            {
+                case 1:
+                    return (DemonicsFloat)0.43;
+                case 2:
+                    return (DemonicsFloat)0.7;
+                case 3:
+                    return (DemonicsFloat)1.0;
+                default:
+                    return (DemonicsFloat)0;
+            }
+        }
+        set { }
+    }
     public DemonicsFloat SpeedRun
     {
         get
