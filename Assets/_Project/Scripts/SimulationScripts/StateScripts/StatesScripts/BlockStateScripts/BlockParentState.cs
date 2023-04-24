@@ -45,7 +45,7 @@ public class BlockParentState : State
             player.SetEffect("Block", hurtEffectPosition);
         }
         player.animationFrames = 0;
-        player.stunFrames = player.attackHurtNetwork.hitStun;
+        player.stunFrames = player.attackHurtNetwork.blockStun;
         player.knockback = 0;
         player.pushbackStart = player.position;
         if (player.attackHurtNetwork.hardKnockdown)

@@ -15,7 +15,7 @@ MonoBehaviour:
   damage: 500
   attackTypeEnum: 2
   hitStun: 32
-  blockStun: 0
+  blockStun: 23
   travelDistance: {x: 0, y: 0}
   knockbackForce: {x: 64, y: 0}
   knockbackDuration: 30
@@ -37,9 +37,6 @@ MonoBehaviour:
   hurtEffectPosition: {x: 5.6154785, y: -3.2600098}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: b6c04c6f8b446df4e996a2b115e6f0bf, type: 2}
-  startUpFrames: 18
-  activeFrames: 19
-  recoveryFrames: 5
   moveName: Void Beam
   moveDescription: Quick beam projectile that causes knockdown, good for zoning the
     opponent.
@@ -47,4 +44,5 @@ MonoBehaviour:
   airOk: 1
   reversal: 0
   projectileSpeed: 2
+  projectilePriority: 0
   projectileDestroyOnHit: 1

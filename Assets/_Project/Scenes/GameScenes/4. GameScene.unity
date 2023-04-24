@@ -4541,11 +4541,6 @@ MonoBehaviour:
   _moveType: {fileID: 1182490249}
   _damage: {fileID: 1555540651}
   _chipDamage: {fileID: 2123262219}
-  _startUp: {fileID: 1702342966}
-  _active: {fileID: 1825943000}
-  _recovery: {fileID: 419251849}
-  _hitAdv: {fileID: 1758337527}
-  _blockAdv: {fileID: 314029905}
 --- !u!1001 &113844840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9850,7 +9845,6 @@ MonoBehaviour:
   _onlineSetupMenu: {fileID: 0}
   _playerNameInputFieldInitial: Demon
   _playerNameInputField: {fileID: 0}
-  _characterSelector: {fileID: 0}
   _characterSelectorInitial: 0
   _charactersAssistSelector: {fileID: 0}
   _characterAssistSelectorInitial: 0
@@ -14611,7 +14605,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 8462929126762520957, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!114 &346741012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15745,7 +15738,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 8462929126762520957, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!1 &370283199
 GameObject:
   m_ObjectHideFlags: 0
@@ -16771,13 +16763,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stage: 0
   _characterOne: 0
-  _characterTwo: 3
+  _characterTwo: 1
   _assistOne: 0
   _assistTwo: 0
   _controllerOne: 0
   _controllerOneType: 0
-  _controllerTwo: 0
-  _controllerTwoType: 0
+  _controllerTwo: -1
+  _controllerTwoType: 5
   _music: 0
   _playerOneSkin: 0
   _playerTwoSkin: 0
@@ -16793,7 +16785,6 @@ MonoBehaviour:
   - 55
   _connectionWidget: {fileID: 1262826836}
   _targetGroup: {fileID: 1821676145}
-  _gameSimulationView: {fileID: 300786367}
   _introUI: {fileID: 633093284}
   _fadeHandler: {fileID: 55237746}
   _playerOneUI: {fileID: 548047948519602076}
@@ -16802,7 +16793,6 @@ MonoBehaviour:
   _playerTwoDialogue: {fileID: 1698465833}
   _timerAnimator: {fileID: 436993071}
   _timerMainAnimator: {fileID: 533794065}
-  _introAnimator: {fileID: 633093280}
   _countdownText: {fileID: 1506265208}
   _readyText: {fileID: 9123090233932709715}
   _winnerNameText: {fileID: 2496762}
@@ -16815,7 +16805,6 @@ MonoBehaviour:
   _arcanaObjects:
   - {fileID: 661996216}
   - {fileID: 1136645026}
-  _playerLocal: {fileID: 8073473790702501986, guid: 9b4cc346b13c14c4d825365f34663594, type: 3}
   _debugNetwork: {fileID: 1020842436}
   _networkCanvas: {fileID: 91089586}
   _infiniteTime: {fileID: 2133406262}
@@ -38806,7 +38795,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 8462929126762520957, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!1 &902537758
 GameObject:
   m_ObjectHideFlags: 0
@@ -40175,7 +40163,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 8462929126762520957, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 860885408}
 --- !u!1 &941243160
 GameObject:
   m_ObjectHideFlags: 0
@@ -41877,7 +41864,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: -5064225296483760917, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!1 &989425630
 GameObject:
   m_ObjectHideFlags: 0
@@ -42556,7 +42542,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: -5064225296483760917, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!1 &999045537
 GameObject:
   m_ObjectHideFlags: 0
@@ -49721,7 +49706,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 1601865184994860850, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!114 &1180880672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49984,7 +49968,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 1151530345847315047, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!114 &1183773594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52838,7 +52821,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: -5064225296483760917, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!114 &1255348560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54375,7 +54357,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 3781642598736455645, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!114 &1287051723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58988,7 +58969,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 1151530345847315047, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!114 &1404052555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60303,7 +60283,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 3781642598736455645, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!1 &1435134064
 GameObject:
   m_ObjectHideFlags: 0
@@ -65331,7 +65310,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 1601865184994860850, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!114 &1560427595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68214,7 +68192,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: -7311543212011582887, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!1001 &1621999827
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83123,7 +83100,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 3781642598736455645, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!1 &1933533296
 GameObject:
   m_ObjectHideFlags: 0
@@ -93220,11 +93196,6 @@ MonoBehaviour:
   _healthLimitColor: {r: 0.6392157, g: 0.75686276, b: 0.23137255, a: 1}
   _healthDamagedColor: {r: 0.96862745, g: 0.007843138, b: 0.12156863, a: 1}
   _healthImage: {fileID: 47249489669798708}
-  _arcanaImage: {fileID: 2113286081}
-  _assistImage: {fileID: 1649658741578152849}
-  _heartImages:
-  - {fileID: 7325432891511610178}
-  - {fileID: 35493794895099741}
 --- !u!1 &698991663363796575
 GameObject:
   m_ObjectHideFlags: 0
@@ -93728,11 +93699,6 @@ MonoBehaviour:
   _healthLimitColor: {r: 0.6392157, g: 0.75686276, b: 0.23137255, a: 1}
   _healthDamagedColor: {r: 0.96862745, g: 0.007843138, b: 0.12156863, a: 1}
   _healthImage: {fileID: 1604159753374727643}
-  _arcanaImage: {fileID: 1282009096}
-  _assistImage: {fileID: 1830092158}
-  _heartImages:
-  - {fileID: 8308553648732233133}
-  - {fileID: 1628854501169770930}
 --- !u!1 &1372643225604853850
 GameObject:
   m_ObjectHideFlags: 0
@@ -99273,7 +99239,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: 3781642598736455645, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!222 &8185872015622604570
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -99963,7 +99928,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actionReference: {fileID: -5064225296483760917, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
-  _pauseMenu: {fileID: 534647985}
 --- !u!114 &8230492421516499355
 MonoBehaviour:
   m_ObjectHideFlags: 0

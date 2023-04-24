@@ -15,7 +15,7 @@ MonoBehaviour:
   damage: 600
   attackTypeEnum: 2
   hitStun: 30
-  blockStun: 8
+  blockStun: 15
   travelDistance: {x: 0.8, y: 4.32}
   knockbackForce: {x: 48, y: 0}
   knockbackDuration: 35
@@ -37,11 +37,11 @@ MonoBehaviour:
   hurtEffectPosition: {x: -3.2612305, y: 2.1450195}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}
-  startUpFrames: 1
-  activeFrames: 15
-  recoveryFrames: 8
   moveName: Spirit Strike
   moveDescription: Reversal move with very heigh vertical distance reach.
   moveVideo: {fileID: 32900000, guid: 03cf6bb398083f5408752a1f2cfb56b5, type: 3}
   airOk: 0
   reversal: 1
+  projectileSpeed: 0
+  projectilePriority: 0
+  projectileDestroyOnHit: 0

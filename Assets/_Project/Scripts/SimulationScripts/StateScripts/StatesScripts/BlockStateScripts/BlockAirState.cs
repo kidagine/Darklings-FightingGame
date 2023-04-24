@@ -29,7 +29,7 @@ public class BlockAirState : BlockParentState
             }
             else
             {
-                player.stunFrames = player.attackHurtNetwork.hitStun;
+                player.stunFrames = player.attackHurtNetwork.blockStun;
                 player.velocity = DemonicsVector2.Zero;
                 player.animationFrames = 0;
                 EnterState(player, "Block");

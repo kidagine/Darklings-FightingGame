@@ -17,6 +17,7 @@ public struct AttackNetwork
     public int hitstop;
     public int damage;
     public int hitStun;
+    public int blockStun;
     public int projectilePriority;
     public int startup;
     public int active;
@@ -47,6 +48,7 @@ public struct AttackNetwork
         bw.Write(damage);
         bw.Write(knockbackArc);
         bw.Write(hitStun);
+        bw.Write(blockStun);
         bw.Write(projectilePriority);
         bw.Write((float)projectileSpeed);
         bw.Write(projectileDestroyOnHit);
@@ -76,6 +78,7 @@ public struct AttackNetwork
         damage = br.ReadInt32();
         knockbackArc = br.ReadInt32();
         hitStun = br.ReadInt32();
+        blockStun = br.ReadInt32();
         projectilePriority = br.ReadInt32();
         projectileSpeed = (DemonicsFloat)br.ReadSingle();
         projectileDestroyOnHit = br.ReadBoolean();

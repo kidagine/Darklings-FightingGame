@@ -15,7 +15,7 @@ MonoBehaviour:
   damage: 650
   attackTypeEnum: 2
   hitStun: 30
-  blockStun: 0
+  blockStun: 15
   travelDistance: {x: -0.8, y: 4.32}
   knockbackForce: {x: 48, y: 0}
   knockbackDuration: 30
@@ -37,9 +37,6 @@ MonoBehaviour:
   hurtEffectPosition: {x: 8.801757, y: -2.9988635}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}
-  startUpFrames: 1
-  activeFrames: 23
-  recoveryFrames: 10
   moveName: Null Cut
   moveDescription: Reversal move kicking the opponent and jump backwards to gain
     distance for zoning.
@@ -47,4 +44,5 @@ MonoBehaviour:
   airOk: 0
   reversal: 1
   projectileSpeed: 0
+  projectilePriority: 0
   projectileDestroyOnHit: 0
