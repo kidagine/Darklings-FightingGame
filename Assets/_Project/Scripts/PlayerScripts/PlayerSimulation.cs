@@ -9,7 +9,6 @@ public class PlayerSimulation : MonoBehaviour
     [SerializeField] private CollisionVisualizer _hurtBoxVisualizer = default;
     [SerializeField] private CollisionVisualizer _hitBoxVisualizer = default;
     [SerializeField] private CollisionVisualizer _pushBoxVisualizer = default;
-    [SerializeField] private DisconnectMenu _disconnectMenu = default;
 
 
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)

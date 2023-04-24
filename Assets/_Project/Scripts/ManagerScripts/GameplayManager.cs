@@ -41,7 +41,6 @@ public class GameplayManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] private ConnectionWidget _connectionWidget = default;
     [SerializeField] private CinemachineTargetGroup _targetGroup = default;
-    [SerializeField] private GameSimulationView _gameSimulationView = default;
     [SerializeField] private IntroUI _introUI = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
@@ -50,7 +49,6 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private PlayerDialogue _playerTwoDialogue = default;
     [SerializeField] private Animator _timerAnimator = default;
     [SerializeField] private Animator _timerMainAnimator = default;
-    [SerializeField] private Animator _introAnimator = default;
     [SerializeField] protected TextMeshProUGUI _countdownText = default;
     [SerializeField] protected TextMeshProUGUI _readyText = default;
     [SerializeField] protected TextMeshProUGUI _winnerNameText = default;
@@ -60,7 +58,6 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] protected GameObject _xboxPrompts = default;
     [SerializeField] protected GameObject[] _readyObjects = default;
     [SerializeField] protected GameObject[] _arcanaObjects = default;
-    [SerializeField] protected GameObject _playerLocal = default;
     [SerializeField] protected GameObject _debugNetwork = default;
     [SerializeField] protected GameObject _networkCanvas = default;
     [SerializeField] protected GameObject _infiniteTime = default;
@@ -92,7 +89,6 @@ public class GameplayManager : MonoBehaviour
     private DemonicsVector2 _cachedOneResetPosition;
     private DemonicsVector2 _cachedTwoResetPosition;
     private int _countdown;
-    private int _countdownFrames = 60;
     private int _currentRound = 1;
     private bool _reverseReset;
     private bool _hasSwitchedCharacters;

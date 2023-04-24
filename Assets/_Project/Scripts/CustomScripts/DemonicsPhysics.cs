@@ -20,7 +20,6 @@ public class DemonicsPhysics : MonoBehaviour
     public static DemonicsFloat GRAVITY = (DemonicsFloat)0.288f;
     public static DemonicsFloat JUGGLE_GRAVITY = (DemonicsFloat)0.208f;
     private static DemonicsFloat WALL_OFFSET = (DemonicsFloat)10;
-    private int _skipWallFrame = 1;
     public DemonicsPhysics OtherPhysics { get; set; }
     public bool IgnoreWalls { get { return _ignoreWalls; } set { _ignoreWalls = value; } }
 
@@ -42,11 +41,6 @@ public class DemonicsPhysics : MonoBehaviour
         {
             _freezePosition = Position;
         }
-    }
-
-    public void ResetSkipWall()
-    {
-        _skipWallFrame = 2;
     }
 
     void FixedUpdate()

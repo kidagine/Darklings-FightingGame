@@ -6,11 +6,6 @@ public class CommandFramedata : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _moveType = default;
     [SerializeField] private TextMeshProUGUI _damage = default;
     [SerializeField] private TextMeshProUGUI _chipDamage = default;
-    [SerializeField] private TextMeshProUGUI _startUp = default;
-    [SerializeField] private TextMeshProUGUI _active = default;
-    [SerializeField] private TextMeshProUGUI _recovery = default;
-    [SerializeField] private TextMeshProUGUI _hitAdv = default;
-    [SerializeField] private TextMeshProUGUI _blockAdv = default;
 
 
     public void SetFramedata(AttackSO command)

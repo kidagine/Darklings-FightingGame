@@ -6,7 +6,6 @@ public class PromptsPause : MonoBehaviour
 {
     [SerializeField] private InputActionReference _actionReference = default;
     [SerializeField] private DeviceConfigurator _deviceConfigurator = default;
-    [SerializeField] private PauseMenu _pauseMenu = default;
     private Image _image;
 
 

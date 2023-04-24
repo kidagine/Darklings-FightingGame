@@ -14,7 +14,6 @@ public class PlayerPreferences : MonoBehaviour
     [Header("ONLINE")]
     [SerializeField] private string _playerNameInputFieldInitial = "Demon";
     [SerializeField] private TMP_InputField _playerNameInputField = default;
-    [SerializeField] private BaseSelector _characterSelector = default;
     [SerializeField] private int _characterSelectorInitial = default;
     [SerializeField] private BaseSelector _charactersAssistSelector = default;
     [SerializeField] private int _characterAssistSelectorInitial = default;

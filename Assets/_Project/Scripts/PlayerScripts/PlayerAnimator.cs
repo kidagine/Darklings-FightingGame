@@ -7,7 +7,6 @@ public class PlayerAnimator : DemonicsAnimator
 {
     [SerializeField] private Player _player = default;
     private Shadow _shadow;
-    private int _celPrevious = -1;
 
 
     void Awake()

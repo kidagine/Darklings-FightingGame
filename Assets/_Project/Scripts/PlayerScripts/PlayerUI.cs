@@ -44,7 +44,6 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Color _healthDamagedColor = default;
     [Header("1BitVisuals")]
     [SerializeField] private Image _healthImage = default;
-    [SerializeField] private Image[] _heartImages = default;
     private GameObject[] _playerIcons;
     private Coroutine _openPauseHoldCoroutine;
     private Coroutine _notificiationCoroutine;
