@@ -5,13 +5,9 @@ using UnityEngine.Networking;
 
 public class PlayerAnimator : DemonicsAnimator
 {
-    [SerializeField] private PlayerCollisionBoxes _playerCollisionBoxes = default;
     [SerializeField] private Player _player = default;
-    [SerializeField] private PlayerMovement _playerMovement = default;
-    [SerializeField] private Audio _audio = default;
     private Shadow _shadow;
     private int _celPrevious = -1;
-    public PlayerStatsSO PlayerStats { get { return _player.playerStats; } set { } }
 
 
     void Awake()
@@ -24,38 +20,6 @@ public class PlayerAnimator : DemonicsAnimator
         _animation = _player.playerStats._animation;
     }
 
-    protected override void CheckEvents()
-    {
-        if (_celPrevious != _cel)
-        {
-            // _celPrevious = _cel;
-            // base.CheckEvents();
-            // if (GetEvent().projectile)
-            // {
-            //     _player.CreateEffect(GetEvent().projectilePoint, true);
-            // }
-            // if (GetEvent().jump)
-            // {
-            //     _playerMovement.TravelDistance(new DemonicsVector2((DemonicsFloat)GetEvent().jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent().jumpDirection.y));
-            // }
-            // if (GetEvent().footstep)
-            // {
-            //     _audio.SoundGroup("Footsteps").PlayInRandom();
-            // }
-            // if (GetEvent().throwEnd)
-            // {
-            //     _audio.Sound("Impact6").Play();
-            //     // CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
-            // }
-            // if (GetEvent().throwArcanaEnd)
-            // {
-            //     _audio.Sound("Impact6").Play();
-            //     //  CameraShake.Instance.Shake(_animation.GetGroup(_group).cameraShake);
-            // }
-            // _player.Parrying = GetEvent().parry;
-            // _player.Invincible = GetEvent().invisibile;
-        }
-    }
     public bool GetProjectile(string name, int frame)
     {
         return GetEvent(name, frame, out _).projectile;

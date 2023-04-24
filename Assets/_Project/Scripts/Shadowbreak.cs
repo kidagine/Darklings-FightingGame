@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Shadowbreak : Hitbox
 {
-    [SerializeField] private DemonicsPhysics _physics = default;
     [SerializeField] DemonicsAnimator _animator = default;
 
 

@@ -54,7 +54,6 @@ public class DemonicsAnimator : MonoBehaviour
             _group = _animation.GetGroupId(name);
             _isPaused = false;
             CheckAnimationBoxes();
-            CheckEvents();
             _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
         }
     }
@@ -117,7 +116,6 @@ public class DemonicsAnimator : MonoBehaviour
             }
         }
         CheckAnimationBoxes();
-        CheckEvents();
         _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
     }
 
@@ -136,7 +134,6 @@ public class DemonicsAnimator : MonoBehaviour
                         return;
                     }
                 }
-                CheckEvents();
                 CheckAnimationBoxes();
                 _frame = 0;
             }
