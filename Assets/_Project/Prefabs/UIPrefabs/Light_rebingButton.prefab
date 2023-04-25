@@ -217,7 +217,7 @@ MonoBehaviour:
         m_CallState: 2
 --- !u!95 &8440601770684910002
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -234,7 +234,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &325784466122419534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +263,7 @@ MonoBehaviour:
   _deviceConfigurator: {fileID: 11400000, guid: 86db5f8588dd9f5468809bdd76a7318e, type: 2}
   _image: {fileID: 193505244554774721}
   _playerInput: {fileID: 0}
+  _compositeIndex: -1
 --- !u!114 &5900726864327438532
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -388,33 +388,39 @@ MonoBehaviour:
   - {fileID: 7002177567847538751}
   - {fileID: 2421832643090794161}
   _healthSlider: {fileID: 47249491118590675}
+  _healthDamagedSlider: {fileID: 0}
+  _healthRecoverableSlider: {fileID: 0}
   _arcanaSlider: {fileID: 2395974749523758054}
   _assistSlider: {fileID: 1649658741919758515}
   _portraitImage: {fileID: 2706891383778757653}
-  _arcanaFillRectTransform: {fileID: 5144788027148728870}
+  _assistBorder: {fileID: 0}
+  _notification: {fileID: 0}
   _characterName: {fileID: 47249491323643755}
   _playerName: {fileID: 1649658742900739473}
   _assistName: {fileID: 1649658742974566714}
-  _notificationText: {fileID: 4957905610511389904}
-  _comboText: {fileID: 1649658741313006273}
-  _whoPausedText: {fileID: 0}
-  _whoPausedTrainingText: {fileID: 0}
   _arcanaAmountText: {fileID: 5695783812653798548}
+  _hitsNumberText: {fileID: 0}
   _arcanaAnimator: {fileID: 1649658741445296679}
-  _healthDividerPivot: {fileID: 2359028110424381609}
-  _healthDividerPrefab: {fileID: 5592667340369626980, guid: c8e765c1947768d429ca00f98abcdea5, type: 3}
   _arcanaDividerPivot: {fileID: 80695158901685876}
   _arcanaDividerPrefab: {fileID: 3513086637377240680, guid: ca8d861f1948210469491a3ff1f7c669, type: 3}
   _pauseSlider: {fileID: 0}
+  _comboTimerSlider: {fileID: 0}
+  _comboTimerImage: {fileID: 0}
+  _comboTimerLock: {fileID: 0}
+  _borderHealth: {fileID: 0}
+  _borderPortrait: {fileID: 0}
+  _assistEmpty: {fileID: 0}
+  _assistHalf: {fileID: 0}
+  _assistFull: {fileID: 0}
   _pauseMenu: {fileID: 0}
   _trainingPauseMenu: {fileID: 0}
+  _replayPauseMenu: {fileID: 0}
   _trainingMenu: {fileID: 0}
+  _disconnectMenu: {fileID: 0}
+  _healthNormalColor: {r: 0, g: 0, b: 0, a: 0}
+  _healthLimitColor: {r: 0, g: 0, b: 0, a: 0}
+  _healthDamagedColor: {r: 0, g: 0, b: 0, a: 0}
   _healthImage: {fileID: 47249490187918419}
-  _arcanaImage: {fileID: 2362344707117627119}
-  _assistImage: {fileID: 1649658742134545654}
-  _heartImages:
-  - {fileID: 7325432890990083109}
-  - {fileID: 35493795451490362}
 --- !u!225 &8851386332854943426
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -429,7 +435,7 @@ CanvasGroup:
   m_IgnoreParentGroups: 0
 --- !u!95 &868909973966696714
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -446,7 +452,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4280183662068215149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1260,7 +1267,7 @@ MonoBehaviour:
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!95 &1649658741313006272
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1277,7 +1284,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1649658741869051834
 GameObject:
   m_ObjectHideFlags: 0
@@ -2332,7 +2340,7 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
 --- !u!95 &7002177567847538751
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2349,7 +2357,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2575659796378133773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2755,7 +2764,7 @@ MonoBehaviour:
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!95 &4334735873584002720
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2772,7 +2781,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3696597428683715142
 GameObject:
   m_ObjectHideFlags: 0
@@ -3083,7 +3093,7 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
 --- !u!95 &2421832643090794161
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3100,7 +3110,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6106640028232566742
 GameObject:
   m_ObjectHideFlags: 0
@@ -3586,7 +3597,7 @@ CanvasRenderer:
   m_CullTransparentMesh: 1
 --- !u!95 &1649658741445296679
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -3603,7 +3614,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8531597817536758472
 GameObject:
   m_ObjectHideFlags: 0

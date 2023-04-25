@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cursorLockMode: 1
   _mouseVisible: 0
+  _playerInput: {fileID: 0}
 --- !u!4 &84839167
 Transform:
   m_ObjectHideFlags: 0
@@ -397,7 +398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!95 &531835873
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -414,7 +415,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &689511626
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -550,6 +552,7 @@ MonoBehaviour:
   m_TrackedDeviceOrientationAction: {fileID: 1025543830046995696, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!114 &1856510698
 MonoBehaviour:
   m_ObjectHideFlags: 0

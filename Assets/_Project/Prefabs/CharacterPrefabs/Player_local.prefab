@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -150,7 +150,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -330,7 +330,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -415,10 +415,7 @@ MonoBehaviour:
   OnCurrentAnimationFinished:
     m_PersistentCalls:
       m_Calls: []
-  _playerCollisionBoxes: {fileID: 0}
   _player: {fileID: 8073473790702501988}
-  _playerMovement: {fileID: 8073473790702501987}
-  _audio: {fileID: 7611394710214668632}
 --- !u!212 &8073473789928578676
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -439,7 +436,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -655,12 +652,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerAnimator: {fileID: 8073473789928578677}
   _assist: {fileID: 8780121904732240358}
-  _groundPushbox: {fileID: 0}
   _hurtbox: {fileID: 8073473791272386160}
   _effectsParent: {fileID: 2017372758765848807}
   _cameraPoint: {fileID: 3775412804825945539}
   _keepFlip: {fileID: 4489081760178489291}
-  _audio: {fileID: 7611394710214668632}
   _playerIcons:
   - {fileID: 7759221523502482170}
   - {fileID: 3488833446598643948}
@@ -741,7 +736,6 @@ MonoBehaviour:
   _hurtBoxVisualizer: {fileID: 607065318714514336}
   _hitBoxVisualizer: {fileID: 5491236174710387130}
   _pushBoxVisualizer: {fileID: 5470316766750224333}
-  _disconnectMenu: {fileID: 0}
 --- !u!114 &8743540751678485471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1548,7 +1542,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1890,6 +1884,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6719501380990296644, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
 --- !u!1 &500702964140621493 stripped

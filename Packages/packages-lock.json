@@ -57,7 +57,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-      "version": "1.6.6",
+      "version": "1.8.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -147,6 +147,34 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.render-pipelines.core": {
+      "version": "12.1.11",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      }
+    },
+    "com.unity.render-pipelines.universal": {
+      "version": "12.1.11",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1",
+        "com.unity.burst": "1.8.2",
+        "com.unity.render-pipelines.core": "12.1.11",
+        "com.unity.shadergraph": "12.1.11"
+      }
+    },
+    "com.unity.searcher": {
+      "version": "4.9.1",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.services.authentication": {
       "version": "2.4.0",
       "depth": 1,
@@ -185,6 +213,15 @@
         "com.unity.services.authentication": "2.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.shadergraph": {
+      "version": "12.1.11",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "12.1.11",
+        "com.unity.searcher": "4.9.1"
+      }
     },
     "com.unity.sysroot": {
       "version": "2.0.5",
