@@ -31,7 +31,7 @@ public class State
         {
             return false;
         }
-        if (AIBlocking(player))
+        if (AIBlocking(player, player.attackHurtNetwork.attackType))
         {
             return true;
         }
@@ -328,15 +328,17 @@ public class State
         }
         return false;
     }
-    public bool AIBlocking(PlayerNetwork player)
+    public bool AIBlocking(PlayerNetwork player, AttackTypeEnum attackType)
     {
         if (SceneSettings.IsTrainingMode && player.isAi)
-        {
             if (TrainingSettings.BlockAlways)
             {
+                if (attackType == AttackTypeEnum.Low)
+                    player.direction.y = -1;
+                else
+                    player.direction.y = 0;
                 return true;
             }
-        }
         return false;
     }
     protected void ResetCombo(PlayerNetwork player)
