@@ -16,6 +16,7 @@ public class BlockState : BlockParentState
         {
             BlockParentState.skipKnockback = false;
             player.player.StopShakeCoroutine();
+            CheckTrainingComboEnd(player);
             EnterState(player, "Idle");
         }
     }

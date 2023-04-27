@@ -15,14 +15,11 @@ public class BlockLowState : BlockParentState
         if (player.stunFrames <= 0)
         {
             player.player.StopShakeCoroutine();
+            CheckTrainingComboEnd(player);
             if (player.direction.y < 0)
-            {
                 EnterState(player, "Crouch");
-            }
             else
-            {
                 EnterState(player, "Idle");
-            }
         }
     }
 }
