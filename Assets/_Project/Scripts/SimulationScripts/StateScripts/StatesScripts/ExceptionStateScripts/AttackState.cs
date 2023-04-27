@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class AttackState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
@@ -108,23 +110,26 @@ public class AttackState : State
         player.attackFrames--;
         if (player.canChainAttack)
         {
-            if (player.inputBuffer.CurrentInput().frame != 0)
+            InputItemNetwork input = player.inputBuffer.CurrentInput();
+            if (input.frame != 0)
             {
                 if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
                 {
                     player.isAir = true;
                 }
-                if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.Special)
+                if (input.inputEnum == InputEnum.Special)
                 {
                     Arcana(player, player.isAir);
                 }
                 else
                 {
+                    if (input.inputEnum == InputEnum.Heavy && input.inputDirection != InputDirectionEnum.Down && player.attackInput != InputEnum.Light)
+                        return;
                     if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
                     {
-                        if (player.inputBuffer.CurrentInput().inputEnum != InputEnum.Throw)
+                        if (input.inputEnum != InputEnum.Throw)
                         {
-                            if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Heavy && player.direction.y >= 0))
+                            if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && input.inputEnum == InputEnum.Heavy && player.direction.y >= 0))
                             {
                                 Attack(player, player.isAir);
                             }
