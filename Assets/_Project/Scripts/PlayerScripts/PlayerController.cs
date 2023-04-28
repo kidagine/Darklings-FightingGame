@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -13,7 +14,8 @@ public class PlayerController : BaseController
     private int _dashBackLastInputTime;
     private readonly int _dashTime = 12;
     private Vector2Int _previousInput;
-
+    public static UnityEvent<Vector2Int, bool> OnInputDirection = new UnityEvent<Vector2Int, bool>();
+    public static UnityEvent<InputEnum, bool, bool> OnInputAction = new UnityEvent<InputEnum, bool, bool>();
     void Start()
     {
         string rebinds = PlayerPrefs.GetString(_controlRebindKey);
@@ -25,6 +27,7 @@ public class PlayerController : BaseController
     public void Movement(CallbackContext callbackContext)
     {
         Vector2Int input = new Vector2Int(Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().x), Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().y));
+        OnInputDirection?.Invoke(input, _player.IsPlayerOne);
         if (callbackContext.performed && IsControllerEnabled && _previousInput != input)
         {
             if (input.x == 1)
@@ -140,121 +143,81 @@ public class PlayerController : BaseController
 
     public void Light(CallbackContext callbackContext)
     {
+        OnInputAction?.Invoke(InputEnum.Light, callbackContext.performed, _player.IsPlayerOne);
         if (callbackContext.performed && IsControllerEnabled)
-        {
             if (_player.IsPlayerOne)
-            {
                 NetworkInput.ONE_LIGHT_INPUT = true;
-            }
             else
-            {
                 NetworkInput.TWO_LIGHT_INPUT = true;
-            }
-        }
     }
 
     public void Medium(CallbackContext callbackContext)
     {
+        OnInputAction?.Invoke(InputEnum.Medium, callbackContext.performed, _player.IsPlayerOne);
         if (callbackContext.performed && IsControllerEnabled)
-        {
             if (_player.IsPlayerOne)
-            {
                 NetworkInput.ONE_MEDIUM_INPUT = true;
-            }
             else
-            {
                 NetworkInput.TWO_MEDIUM_INPUT = true;
-            }
-        }
     }
 
     public void Heavy(CallbackContext callbackContext)
     {
+        OnInputAction?.Invoke(InputEnum.Heavy, callbackContext.performed, _player.IsPlayerOne);
         if (callbackContext.performed && IsControllerEnabled)
-        {
             if (_player.IsPlayerOne)
-            {
                 NetworkInput.ONE_HEAVY_INPUT = true;
-            }
             else
-            {
                 NetworkInput.TWO_HEAVY_INPUT = true;
-            }
-        }
     }
 
     public void Arcane(CallbackContext callbackContext)
     {
+        OnInputAction?.Invoke(InputEnum.Special, callbackContext.performed, _player.IsPlayerOne);
         if (callbackContext.performed && IsControllerEnabled)
-        {
             if (_player.IsPlayerOne)
-            {
                 NetworkInput.ONE_ARCANA_INPUT = true;
-            }
             else
-            {
                 NetworkInput.TWO_ARCANA_INPUT = true;
-            }
-        }
     }
     public void Assist(CallbackContext callbackContext)
     {
+        OnInputAction?.Invoke(InputEnum.Assist, callbackContext.performed, _player.IsPlayerOne);
         if (callbackContext.performed && IsControllerEnabled)
-        {
             if (_player.IsPlayerOne)
-            {
                 NetworkInput.ONE_SHADOW_INPUT = true;
-            }
             else
-            {
                 NetworkInput.TWO_SHADOW_INPUT = true;
-            }
-        }
     }
 
     public void Throw(CallbackContext callbackContext)
     {
+        OnInputAction?.Invoke(InputEnum.Throw, callbackContext.performed, _player.IsPlayerOne);
         if (callbackContext.performed && IsControllerEnabled)
-        {
             if (_player.IsPlayerOne)
-            {
                 NetworkInput.ONE_GRAB_INPUT = true;
-            }
             else
-            {
                 NetworkInput.TWO_GRAB_INPUT = true;
-            }
-        }
     }
 
     public void Parry(CallbackContext callbackContext)
     {
+        OnInputAction?.Invoke(InputEnum.Parry, callbackContext.performed, _player.IsPlayerOne);
         if (callbackContext.performed && IsControllerEnabled)
-        {
             if (_player.IsPlayerOne)
-            {
                 NetworkInput.ONE_BLUE_FRENZY_INPUT = true;
-            }
             else
-            {
                 NetworkInput.TWO_BLUE_FRENZY_INPUT = true;
-            }
-        }
     }
 
     public void RedFrenzy(CallbackContext callbackContext)
     {
+        OnInputAction?.Invoke(InputEnum.RedFrenzy, callbackContext.performed, _player.IsPlayerOne);
         if (callbackContext.performed && IsControllerEnabled)
-        {
             if (_player.IsPlayerOne)
-            {
                 NetworkInput.ONE_RED_FRENZY_INPUT = true;
-            }
             else
-            {
                 NetworkInput.TWO_RED_FRENZY_INPUT = true;
-            }
-        }
     }
 
     public void DashForward(CallbackContext callbackContext)

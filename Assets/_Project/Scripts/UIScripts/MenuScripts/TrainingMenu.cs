@@ -8,6 +8,8 @@ public class TrainingMenu : BaseMenu
 {
     [SerializeField] private GameObject _p1 = default;
     [SerializeField] private GameObject _framedataMeterGroup = default;
+    [SerializeField] private GameObject _inputDisplayOne = default;
+    [SerializeField] private GameObject _inputDisplayTwo = default;
     [SerializeField] private FrameMeterSystem _frameMeterSystem = default;
     [SerializeField] private InputHistory _inputHistoryOne = default;
     [SerializeField] private InputHistory _inputHistoryTwo = default;
@@ -226,6 +228,21 @@ public class TrainingMenu : BaseMenu
                 {
                     _uiCanvases[i].enabled = false;
                 }
+                break;
+        }
+    }
+
+    public void SetInputDisplay(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                _inputDisplayOne.SetActive(false);
+                _inputDisplayTwo.SetActive(false);
+                break;
+            case 1:
+                _inputDisplayOne.SetActive(true);
+                _inputDisplayTwo.SetActive(true);
                 break;
         }
     }
