@@ -41,6 +41,7 @@ public class GameplayManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] private ConnectionWidget _connectionWidget = default;
     [SerializeField] private CinemachineTargetGroup _targetGroup = default;
+    [SerializeField] private DisconnectMenu _disconnectMenu = default;
     [SerializeField] private IntroUI _introUI = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
@@ -165,11 +166,22 @@ public class GameplayManager : MonoBehaviour
                 _isTrainingMode = false;
                 _connectionWidget.StartGGPO(SceneSettings.OnlineOneIp, SceneSettings.OnlineTwoIp, SceneSettings.PrivateOneIp, SceneSettings.PrivateTwoIp,
                 SceneSettings.PortOne, SceneSettings.PortTwo, SceneSettings.OnlineIndex);
+                StartCoroutine(CheckIfConnectedCoroutine());
             }
         }
         CheckSceneSettings();
     }
 
+    IEnumerator CheckIfConnectedCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+        if (!_uiInput.gameObject.activeSelf)
+        {
+            DisableAllInput(true, true);
+            _uiInput.gameObject.SetActive(true);
+            _disconnectMenu.Show();
+        }
+    }
 
     public PlayerStatsSO[] GetPlayerStats()
     {
@@ -1101,7 +1113,7 @@ public class GameplayManager : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene(index);
     }
-    public void DisableAllInput(bool isPlayerOne = false)
+    public void DisableAllInput(bool isPlayerOne = false, bool skipSwitch = false)
     {
         PlayerInput = _uiInput;
         if (_playerOneInput.enabled)
@@ -1119,6 +1131,8 @@ public class GameplayManager : MonoBehaviour
                 _playerTwoInput.enabled = false;
             }
         }
+        if (skipSwitch)
+            return;
         if (isPlayerOne)
         {
             _uiInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);

@@ -9,6 +9,7 @@ public class VersusMenu : BaseMenu
     [SerializeField] private GameObject _unavailableText = default;
     [SerializeField] private Image _startingImage = default;
     [SerializeField] private TextMeshProUGUI _startingText = default;
+    [SerializeField] private TextMeshProUGUI _experimentalText = default;
 
     void OnEnable()
     {
@@ -16,7 +17,7 @@ public class VersusMenu : BaseMenu
         StartCoroutine(ActivateCoroutine());
 #endif
 #if !UNITY_WEBGL
-        _experimentalText.SetActive(true);
+        _experimentalText.gameObject.SetActive(true);
 #endif
     }
 

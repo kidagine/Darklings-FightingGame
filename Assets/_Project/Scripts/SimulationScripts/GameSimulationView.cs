@@ -26,9 +26,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
         GameInfo gameInfo = runner.GameInfo;
         var playersGss = GameSimulation._players;
         if (playerViews.Length != playersGss.Length)
-        {
             SetGame(game);
-        }
         if (GameSimulation.Start)
         {
             GameplayManager.Instance.SetupGame();

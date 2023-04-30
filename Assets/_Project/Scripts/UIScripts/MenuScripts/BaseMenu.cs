@@ -41,8 +41,6 @@ public class BaseMenu : MonoBehaviour
     {
         yield return null;
         if (_startingOption != null)
-        {
             _startingOption.Select();
-        }
     }
 }
