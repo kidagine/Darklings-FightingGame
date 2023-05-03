@@ -6,7 +6,7 @@ public class CameraShake : MonoBehaviour
     public static CameraShake Instance { get; private set; }
     private CinemachineVirtualCamera _cinemachineVirtualCamera;
     private CinemachineBasicMultiChannelPerlin _cinemachineBasicMultiChannelPerlin;
-    private CinemachineTransposer _cinemachineTransposer;
+    private CinemachineFramingTransposer _cinemachineFramingTransposer;
     private Coroutine _zoomCoroutine;
     private float _shakeTimer;
     private float _zoomTimer;
@@ -16,8 +16,8 @@ public class CameraShake : MonoBehaviour
     {
         _cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
         _cinemachineBasicMultiChannelPerlin = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        _cinemachineTransposer = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
-        _defaultZoom = (int)_cinemachineTransposer.m_FollowOffset.z;
+        _cinemachineFramingTransposer = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        _defaultZoom = (int)_cinemachineFramingTransposer.m_TrackedObjectOffset.z;
         CheckInstance();
     }
 
@@ -53,15 +53,15 @@ public class CameraShake : MonoBehaviour
     {
         float elapsedTime = 0;
         float waitTime = time;
-        Vector3 startZoom = new Vector3(0, 0, _cinemachineTransposer.m_FollowOffset.z);
+        Vector3 startZoom = new Vector3(0, 0, _cinemachineFramingTransposer.m_TrackedObjectOffset.z);
         Vector3 endZoom = new Vector3(0, 0, zoomValue);
         while (elapsedTime < waitTime)
         {
-            _cinemachineTransposer.m_FollowOffset = Vector3.Lerp(startZoom, endZoom, (elapsedTime / waitTime));
+            _cinemachineFramingTransposer.m_TrackedObjectOffset = Vector3.Lerp(startZoom, endZoom, (elapsedTime / waitTime));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        _cinemachineTransposer.m_FollowOffset = endZoom;
+        _cinemachineFramingTransposer.m_TrackedObjectOffset = endZoom;
     }
 
     private void Update()
@@ -78,7 +78,7 @@ public class CameraShake : MonoBehaviour
         {
             _zoomTimer -= Time.unscaledDeltaTime;
             if (_zoomTimer <= 0)
-                _cinemachineTransposer.m_FollowOffset = new Vector3(0, 0, _defaultZoom);
+                _cinemachineFramingTransposer.m_TrackedObjectOffset = new Vector3(0, 0, _defaultZoom);
         }
     }
 }
