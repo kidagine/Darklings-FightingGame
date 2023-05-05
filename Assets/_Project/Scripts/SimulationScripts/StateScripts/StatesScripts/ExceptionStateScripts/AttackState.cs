@@ -257,7 +257,7 @@ public class AttackState : State
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
 
-
+            player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
             if (player.attackHurtNetwork.hardKnockdown)
             {
                 EnterState(player, "Airborne");

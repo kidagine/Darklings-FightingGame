@@ -7,6 +7,7 @@ public class WallSplatState : State
         CheckFlip(player);
         if (!player.enter)
         {
+            player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
             CameraShake.Instance.Zoom(-4, 0.2f);
             if (player.CurrentState != this)
                 player.comboLocked = true;

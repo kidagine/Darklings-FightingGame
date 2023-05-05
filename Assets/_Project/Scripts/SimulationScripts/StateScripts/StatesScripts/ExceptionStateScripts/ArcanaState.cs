@@ -21,6 +21,9 @@ public class ArcanaState : State
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
             player.InitializeProjectile(player.attackNetwork.moveName, player.attackNetwork, player.attackNetwork.projectileSpeed, player.attackNetwork.projectilePriority, player.attackNetwork.projectileDestroyOnHit);
+            player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
+            if (player.invincible)
+                player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.Reversal);
             UpdateFramedata(player);
             return;
         }
@@ -35,6 +38,7 @@ public class ArcanaState : State
             player.attackFrames--;
         }
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
+
         UpdateFramedata(player);
         ToIdleState(player);
 
@@ -120,6 +124,7 @@ public class ArcanaState : State
             }
             else
             {
+                player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
                 if (player.attackHurtNetwork.hardKnockdown)
                     EnterState(player, "Airborne");
                 else
