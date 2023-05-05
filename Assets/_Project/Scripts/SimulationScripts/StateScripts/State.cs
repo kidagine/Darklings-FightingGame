@@ -433,7 +433,7 @@ public class State
     {
         if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Assist)
         {
-            if (!player.shadow.isOnScreen && player.shadowGauge > 1000)
+            if (!player.shadow.isOnScreen && player.shadowGauge >= 1000)
             {
                 player.sound = "Shadow";
                 player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
