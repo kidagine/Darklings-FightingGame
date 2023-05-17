@@ -35,7 +35,7 @@ public class HurtAirborneState : HurtParentState
                 EnterState(player, "Grabbed");
                 return;
             }
-            if (player.attackHurtNetwork.hardKnockdown)
+            if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown)
             {
                 EnterState(player, "Airborne");
             }

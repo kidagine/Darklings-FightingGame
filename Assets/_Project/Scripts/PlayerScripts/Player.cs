@@ -10,6 +10,7 @@ public class Player : MonoBehaviour, IHitstop
     [SerializeField] protected Transform _effectsParent = default;
     [SerializeField] private Transform _cameraPoint = default;
     [SerializeField] private Transform _keepFlip = default;
+    [SerializeField] private GameObject _throwTechPrefab = default;
     [SerializeField] private GameObject[] _playerIcons = default;
     protected PlayerUI _playerUI;
     private PlayerMovement _playerMovement;
@@ -60,6 +61,11 @@ public class Player : MonoBehaviour, IHitstop
     {
         _assist.SetAssist(assistStats);
         _playerUI.SetAssistName(assistStats.name[0].ToString());
+    }
+
+    public void ThrowTechPrefab(DemonicsVector2 pos)
+    {
+        Instantiate(_throwTechPrefab, new Vector3((float)pos.x, (float)pos.y, 0), Quaternion.identity);
     }
 
     void Start()
