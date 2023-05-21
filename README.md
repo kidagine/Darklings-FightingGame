@@ -5,9 +5,9 @@
 Darklings is a free to play 2D fighting game with the intention of being an accessible fighter, that will keep getting updated periodically.
 <div align="center">
 
-[![GitHub](https://img.shields.io/badge/unity_version-2021.3.12-blue)](https://unity3d.com/get-unity/download/archive)
-[![GitHub](https://img.shields.io/badge/game_version-0.2.10-brightgreen)](https://gamejolt.com/games/darklings/640842)
-[![GitHub](https://img.shields.io/badge/game_views-2.0k-orange)](https://gamejolt.com/games/darklings/640842)
+[![GitHub](https://img.shields.io/badge/unity_version-2021.3.24-blue)](https://unity3d.com/get-unity/download/archive)
+[![GitHub](https://img.shields.io/badge/game_version-0.2.11-brightgreen)](https://gamejolt.com/games/darklings/640842)
+[![GitHub](https://img.shields.io/badge/game_views-2.1k-orange)](https://gamejolt.com/games/darklings/640842)
 </div>
 
 <p align="center">
