@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6928605624373777523}
   - component: {fileID: 8164358433208840962}
   - component: {fileID: 5470316766750224333}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Pushbox_collisionVisualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -150,7 +150,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -256,7 +256,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3775412804825945539}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CameraPoint_emptyObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 8073473789928578677}
   - component: {fileID: 8073473789928578676}
   - component: {fileID: 1790606702567451895}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Character_emulated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,10 +415,7 @@ MonoBehaviour:
   OnCurrentAnimationFinished:
     m_PersistentCalls:
       m_Calls: []
-  _playerCollisionBoxes: {fileID: 3247643240904518811}
   _player: {fileID: 8073473790702501988}
-  _playerMovement: {fileID: 8073473790702501987}
-  _audio: {fileID: 7611394710214668632}
 --- !u!212 &8073473789928578676
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -439,7 +436,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -493,7 +490,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8073473790341886577}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Ground_pushbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +522,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8073473790437601078}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Hitboxes_group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -557,7 +554,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8073473790464433816}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Colliders_group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -599,7 +596,6 @@ GameObject:
   - component: {fileID: 6371053321382070875}
   - component: {fileID: 3127622633484732809}
   - component: {fileID: 8743540751678485471}
-  - component: {fileID: 3247643240904518811}
   - component: {fileID: 4664395619888274278}
   - component: {fileID: 7611394710214668632}
   - component: {fileID: 6591136354886088417}
@@ -656,12 +652,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerAnimator: {fileID: 8073473789928578677}
   _assist: {fileID: 8780121904732240358}
-  _groundPushbox: {fileID: 0}
   _hurtbox: {fileID: 8073473791272386160}
   _effectsParent: {fileID: 2017372758765848807}
   _cameraPoint: {fileID: 3775412804825945539}
   _keepFlip: {fileID: 4489081760178489291}
-  _audio: {fileID: 7611394710214668632}
+  _throwTechPrefab: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
   _playerIcons:
   - {fileID: 7759221523502482170}
   - {fileID: 3488833446598643948}
@@ -742,7 +737,6 @@ MonoBehaviour:
   _hurtBoxVisualizer: {fileID: 607065318714514336}
   _hitBoxVisualizer: {fileID: 5491236174710387130}
   _pushBoxVisualizer: {fileID: 5470316766750224333}
-  _disconnectMenu: {fileID: 0}
 --- !u!114 &8743540751678485471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,20 +749,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d562f22c9aaf3dd43b92f09d29e2263b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3247643240904518811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8073473790702501986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 763f8940ef33da941ba41b1dfe6dc052, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hurtboxesGroup: {fileID: 8073473791272386160}
-  _hitboxesGroup: {fileID: 8073473790437601078}
 --- !u!114 &4664395619888274278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1433,6 +1413,14 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 2d0c8a2c-8997-4c52-a8ef-e6072fcfcf6a
     m_ActionName: Gameplay/RedFrenzy[/DualShock4GamepadHID/rightTrigger,/Keyboard/semicolon,/DualShock4GamepadHID/buttonEast,/DualShock4GamepadHID/buttonSouth,/Keyboard/l,/Keyboard/i,/Keyboard/v]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d3b6907d-ceac-4c97-ab97-35d834f31fe0
+    m_ActionName: UI/Point
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0306d6f2-a2bc-4bdc-8fa1-a7e4b78b925f
+    m_ActionName: UI/Click
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -1447,7 +1435,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8073473791272386160}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Hurtboxes_group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1479,7 +1467,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1761475174765221373}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Pushboxes_group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1555,7 +1543,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1728,6 +1716,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hitbox_collisionVisualizer
       objectReference: {fileID: 0}
+    - target: {fileID: 2533667708567321803, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5123739317702046984, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
       propertyPath: m_SortingOrder
       value: 2
@@ -1779,6 +1771,10 @@ PrefabInstance:
     - target: {fileID: 6291948109849223295, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
       propertyPath: m_Name
       value: Main_hitbox
+      objectReference: {fileID: 0}
+    - target: {fileID: 6291948109849223295, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6291948109849223295, guid: 4e49d562be375914a8b79c622f2bf360, type: 3}
       propertyPath: m_IsActive
@@ -1870,6 +1866,10 @@ PrefabInstance:
       value: Main_hurtbox
       objectReference: {fileID: 0}
     - target: {fileID: 3820304870352819294, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3820304870352819294, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -1877,10 +1877,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hurtbox_collisionVisualizer
       objectReference: {fileID: 0}
+    - target: {fileID: 4898812605033455692, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6719501380990296644, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6719501380990296644, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 507071ec8b3e78048bd252b9c9c723c7, type: 3}
 --- !u!1 &500702964140621493 stripped

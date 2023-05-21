@@ -14,7 +14,6 @@ public class OnlineSetupMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _stageText = default;
     [SerializeField] private GameObject _characterGroup = default;
     [SerializeField] private GameObject _stageGroup = default;
-    [SerializeField] private GameObject _colorsValues = default;
     [SerializeField] private Selectable _characterSelectable = default;
     [SerializeField] private Selectable _stageSelectable = default;
     [SerializeField] private TMP_InputField _nameInputField = default;

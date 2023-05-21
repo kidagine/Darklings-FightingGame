@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class AttackState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
@@ -9,7 +11,6 @@ public class AttackState : State
                 player.position = new DemonicsVector2((DemonicsFloat)player.position.x, (DemonicsFloat)player.position.y + 7);
                 player.juggleBounce = false;
             }
-            player.inputBuffer.inputItems[player.inputBuffer.index].frame = 0;
             player.animationFrames = 0;
             SetTopPriority(player);
             player.canChainAttack = false;
@@ -21,14 +22,25 @@ public class AttackState : State
             UpdateFramedata(player);
             return;
         }
-        player.dashDirection = 0;
+        if (player.animationFrames == 0)
+            player.inputBuffer.inputItems[player.inputBuffer.index].frame = 0;
+        if (player.dashFrames <= 0)
+        {
+            player.dashDirection = 0;
+        }
         if (!player.isAir)
         {
             player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
         }
         else
         {
-            player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
+            if (player.dashFrames > 0)
+                Dash(player);
+            else
+            {
+                player.dashDirection = 0;
+                player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
+            }
         }
         if (!player.hitstop)
         {
@@ -62,29 +74,62 @@ public class AttackState : State
         Shadow(player);
     }
 
+    private void Dash(PlayerNetwork player)
+    {
+        bool forwardDash = player.dashDirection * player.flip == 1 ? true : false;
+        int startUpFrames = forwardDash ? 9 : 13;
+        int recoveryFrames = forwardDash ? 2 : 3;
+        DemonicsFloat dashforce = forwardDash ? player.playerStats.DashAirForce : player.playerStats.DashBackAirForce;
+        if (player.dashFrames < startUpFrames && player.dashFrames > recoveryFrames)
+        {
+            player.velocity = new DemonicsVector2(player.dashDirection * dashforce, 0);
+        }
+        else
+        {
+            player.velocity = new DemonicsVector2(player.dashDirection * (dashforce - (DemonicsFloat)1), 0);
+        }
+        if (player.dashFrames % 3 == 0)
+        {
+            if (player.flip > 0)
+            {
+                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x - 1, player.position.y);
+                player.SetEffect("Ghost", player.position, false);
+            }
+            else
+            {
+                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
+                player.SetEffect("Ghost", player.position, true);
+            }
+        }
+        player.dashFrames--;
+    }
+
     private void AttackCancel(PlayerNetwork player)
     {
         player.animationFrames++;
         player.attackFrames--;
         if (player.canChainAttack)
         {
-            if (player.inputBuffer.CurrentInput().frame != 0)
+            InputItemNetwork input = player.inputBuffer.CurrentInput();
+            if (input.frame != 0)
             {
                 if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
                 {
                     player.isAir = true;
                 }
-                if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.Special)
+                if (input.inputEnum == InputEnum.Special)
                 {
                     Arcana(player, player.isAir);
                 }
                 else
                 {
+                    if (input.inputEnum == InputEnum.Heavy && input.inputDirection != InputDirectionEnum.Down && player.attackInput != InputEnum.Light)
+                        return;
                     if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
                     {
-                        if (player.inputBuffer.CurrentInput().inputEnum != InputEnum.Throw)
+                        if (input.inputEnum != InputEnum.Throw)
                         {
-                            if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Heavy && player.direction.y >= 0))
+                            if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && input.inputEnum == InputEnum.Heavy && player.direction.y >= 0))
                             {
                                 Attack(player, player.isAir);
                             }
@@ -212,7 +257,7 @@ public class AttackState : State
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
 
-
+            player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.Punish);
             if (player.attackHurtNetwork.hardKnockdown)
             {
                 EnterState(player, "Airborne");

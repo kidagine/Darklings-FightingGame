@@ -58,6 +58,24 @@ public class PlayerStatsSO : ScriptableObject
         }
         set { }
     }
+    public DemonicsFloat SpeedWalkBackwards
+    {
+        get
+        {
+            switch (speedLevel)
+            {
+                case 1:
+                    return (DemonicsFloat)0.43;
+                case 2:
+                    return (DemonicsFloat)0.7;
+                case 3:
+                    return (DemonicsFloat)1.0;
+                default:
+                    return (DemonicsFloat)0;
+            }
+        }
+        set { }
+    }
     public DemonicsFloat SpeedRun
     {
         get
@@ -101,11 +119,65 @@ public class PlayerStatsSO : ScriptableObject
             switch (dashLevel)
             {
                 case 1:
-                    return (DemonicsFloat)3.52;
+                    return (DemonicsFloat)3.8;
                 case 2:
                     return (DemonicsFloat)4;
                 case 3:
-                    return (DemonicsFloat)4.48;
+                    return (DemonicsFloat)4.2;
+                default:
+                    return (DemonicsFloat)0;
+            }
+        }
+        set { }
+    }
+    public DemonicsFloat DashBackForce
+    {
+        get
+        {
+            switch (dashLevel)
+            {
+                case 1:
+                    return (DemonicsFloat)3.2;
+                case 2:
+                    return (DemonicsFloat)3.4;
+                case 3:
+                    return (DemonicsFloat)3.6;
+                default:
+                    return (DemonicsFloat)0;
+            }
+        }
+        set { }
+    }
+    public DemonicsFloat DashAirForce
+    {
+        get
+        {
+            switch (dashLevel)
+            {
+                case 1:
+                    return (DemonicsFloat)3.6;
+                case 2:
+                    return (DemonicsFloat)3.8;
+                case 3:
+                    return (DemonicsFloat)4.0;
+                default:
+                    return (DemonicsFloat)0;
+            }
+        }
+        set { }
+    }
+    public DemonicsFloat DashBackAirForce
+    {
+        get
+        {
+            switch (dashLevel)
+            {
+                case 1:
+                    return (DemonicsFloat)3.2;
+                case 2:
+                    return (DemonicsFloat)3.4;
+                case 3:
+                    return (DemonicsFloat)3.6;
                 default:
                     return (DemonicsFloat)0;
             }

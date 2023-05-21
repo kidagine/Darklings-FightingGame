@@ -25,7 +25,6 @@ public class ReplayManager : MonoBehaviour
     private BrainController _playerTwoController;
     private InputBuffer _playerOneInputBuffer;
     private InputBuffer _playerTwoInputBuffer;
-    private readonly int _replaysLimit = 100;
     private string[] _replays;
     private readonly string _versionSplit = "Version:";
     private readonly string _dateSplit = "Date:";

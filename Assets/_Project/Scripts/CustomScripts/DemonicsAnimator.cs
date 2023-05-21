@@ -54,7 +54,6 @@ public class DemonicsAnimator : MonoBehaviour
             _group = _animation.GetGroupId(name);
             _isPaused = false;
             CheckAnimationBoxes();
-            CheckEvents();
             _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
         }
     }
@@ -80,7 +79,6 @@ public class DemonicsAnimator : MonoBehaviour
             return false;
         }
     }
-    private bool _finished;
     public virtual void SetAnimation(string name, int frame)
     {
         _group = _animation.GetGroupId(name);
@@ -91,14 +89,12 @@ public class DemonicsAnimator : MonoBehaviour
                 frame -= _animation.GetGroup(_group).animationCel[i].frames;
                 if (frame < 0)
                 {
-                    _finished = false;
                     _frame = Mathf.Abs(frame);
                     _cel = i;
                     break;
                 }
                 else if (frame > 0 && _animation.GetGroup(_group).loop)
                 {
-                    _finished = true;
                     _frame = 0;
                     _cel = 0;
                 }
@@ -110,14 +106,12 @@ public class DemonicsAnimator : MonoBehaviour
             }
             else
             {
-                _finished = false;
                 _frame = Mathf.Abs(frame);
                 _cel = i;
                 break;
             }
         }
         CheckAnimationBoxes();
-        CheckEvents();
         _spriteRenderer.sprite = _animation.GetSprite(_skin, _group, _cel);
     }
 
@@ -136,7 +130,6 @@ public class DemonicsAnimator : MonoBehaviour
                         return;
                     }
                 }
-                CheckEvents();
                 CheckAnimationBoxes();
                 _frame = 0;
             }

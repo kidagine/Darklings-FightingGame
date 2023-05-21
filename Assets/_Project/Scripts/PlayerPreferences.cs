@@ -14,7 +14,6 @@ public class PlayerPreferences : MonoBehaviour
     [Header("ONLINE")]
     [SerializeField] private string _playerNameInputFieldInitial = "Demon";
     [SerializeField] private TMP_InputField _playerNameInputField = default;
-    [SerializeField] private BaseSelector _characterSelector = default;
     [SerializeField] private int _characterSelectorInitial = default;
     [SerializeField] private BaseSelector _charactersAssistSelector = default;
     [SerializeField] private int _characterAssistSelectorInitial = default;
@@ -71,7 +70,9 @@ public class PlayerPreferences : MonoBehaviour
     [SerializeField] private BaseSelector _inputSelector = default;
     [SerializeField] private int _inputSelectorInitial = default;
     [SerializeField] private BaseSelector _framedataMeterSelector = default;
-    [SerializeField] private int framedataMeterSelectorInitial = default;
+    [SerializeField] private int _framedataMeterSelectorInitial = default;
+    [SerializeField] private BaseSelector _inputDisplaySelector = default;
+    [SerializeField] private int _inputDisplaySelectorInitial = default;
     [SerializeField] private BaseSelector _uiCanvasSelector = default;
     [SerializeField] private int _uiCanvasSelectorInitial = default;
 
@@ -146,7 +147,8 @@ public class PlayerPreferences : MonoBehaviour
         //Misc
         _hitboxesSelector.SetValue(int.Parse(DemonicsSaver.Load("hitboxes", _hitboxesSelectorInitial.ToString())));
         _framedataSelector.SetValue(int.Parse(DemonicsSaver.Load("framedata", _framedataSelectorInitial.ToString())));
-        _framedataMeterSelector.SetValue(int.Parse(DemonicsSaver.Load("framedataMeter", framedataMeterSelectorInitial.ToString())));
+        _framedataMeterSelector.SetValue(int.Parse(DemonicsSaver.Load("framedataMeter", _framedataMeterSelectorInitial.ToString())));
+        _inputDisplaySelector.SetValue(int.Parse(DemonicsSaver.Load("inputDisplay", _inputDisplaySelectorInitial.ToString())));
         _slowdownSelector.SetValue(int.Parse(DemonicsSaver.Load("slowdown", _slowdownSelectorInitial.ToString())));
         _inputSelector.SetValue(int.Parse(DemonicsSaver.Load("input", _inputSelectorInitial.ToString())));
         _uiCanvasSelector.SetValue(int.Parse(DemonicsSaver.Load("uicanvas", _uiCanvasSelectorInitial.ToString())));

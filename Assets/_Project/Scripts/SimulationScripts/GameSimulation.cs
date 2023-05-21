@@ -282,7 +282,8 @@ public struct GameSimulation : IGame
             }
             else
             {
-                _players[index].shadowGauge += 3;
+                if (_players[index].otherPlayer.combo == 0)
+                    _players[index].shadowGauge += 3;
             }
         }
         else

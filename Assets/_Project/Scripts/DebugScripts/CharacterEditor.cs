@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class CharacterEditor : MonoBehaviour
 {
     [SerializeField] private FrameEditor[] _frames = default;
-    [SerializeField] private PlayerCollisionBoxes _playerCollisionBoxes = default;
     [SerializeField] private TMP_Dropdown _characterDropdown = default;
     [SerializeField] private TMP_Dropdown _spriteDropdown = default;
     [SerializeField] private TMP_Dropdown _skinDropdown = default;
@@ -55,7 +54,6 @@ public class CharacterEditor : MonoBehaviour
             _typeDropdown.value = 0;
             AnimationEnded();
             UpdateBoxesFields();
-            CheckAnimationBoxes();
             SetFrames();
             _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
             _skinDropdown.ClearOptions();
@@ -79,7 +77,6 @@ public class CharacterEditor : MonoBehaviour
             AnimationEnded();
             SetFrames();
             UpdateBoxesFields();
-            CheckAnimationBoxes();
             _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
             _frames[_cel].EnableFrameSelected();
         });
@@ -126,7 +123,6 @@ public class CharacterEditor : MonoBehaviour
                 {
                     _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes[_boxesDropdown.value] = new AnimationBox() { size = _savedBox.size, offset = _savedBox.offset };
                     UpdateBoxesFields();
-                    CheckAnimationBoxes();
                 }
             }
         }
@@ -186,7 +182,6 @@ public class CharacterEditor : MonoBehaviour
                         return;
                     }
                 }
-                CheckAnimationBoxes();
                 _frame = 0;
             }
             _frames[_cel].EnableFrameSelected();
@@ -225,7 +220,6 @@ public class CharacterEditor : MonoBehaviour
                     _characterDropdown.value = 0;
                 }
             }
-            CheckAnimationBoxes();
         }
     }
     public void UpdateAnimationBoxSizeY(string value)
@@ -241,7 +235,6 @@ public class CharacterEditor : MonoBehaviour
             {
                 _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].size.y = float.Parse(value);
             }
-            CheckAnimationBoxes();
         }
     }
     public void UpdateAnimationBoxOffsetX(string value)
@@ -257,7 +250,6 @@ public class CharacterEditor : MonoBehaviour
             {
                 _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].offset.x = valueFixed;
             }
-            CheckAnimationBoxes();
         }
     }
     public void UpdateAnimationBoxOffsetY(string value)
@@ -273,15 +265,8 @@ public class CharacterEditor : MonoBehaviour
             {
                 _animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes[_boxesDropdown.value].offset.y = float.Parse(value);
             }
-            CheckAnimationBoxes();
         }
     }
-    private void CheckAnimationBoxes()
-    {
-        _playerCollisionBoxes.SetHurtboxes(_animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hurtboxes.ToArray());
-        _playerCollisionBoxes.SetHitboxes(_animations[_characterDropdown.value].GetCel(_spriteDropdown.value, _cel).hitboxes.ToArray());
-    }
-
 
     private void SetFrames()
     {
@@ -356,7 +341,6 @@ public class CharacterEditor : MonoBehaviour
         _characterSpriteRenderer.sprite = _animations[_characterDropdown.value].GetSprite(_skinDropdown.value, _spriteDropdown.value, _cel);
         _isPlayOn = false;
         _playButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _isPlayOn ? "Pause" : "Play";
-        CheckAnimationBoxes();
         _boxesDropdown.ClearOptions();
         _boxesDropdownOptions.Clear();
         for (int i = 0; i < _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes.Count; i++)
@@ -390,7 +374,6 @@ public class CharacterEditor : MonoBehaviour
         AnimationBox hurtbox = new AnimationBox();
         hurtbox.size = new Vector2(1, 1);
         _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hurtboxes.Add(hurtbox);
-        CheckAnimationBoxes();
     }
 
     public void CreateHitbox()
@@ -398,7 +381,6 @@ public class CharacterEditor : MonoBehaviour
         AnimationBox hitbox = new AnimationBox();
         hitbox.size = new Vector2(1, 1);
         _animations[_characterDropdown.value].animationCelsGroup[_spriteDropdown.value].animationCel[_cel].hitboxes.Add(hitbox);
-        CheckAnimationBoxes();
         SetFrames();
     }
 

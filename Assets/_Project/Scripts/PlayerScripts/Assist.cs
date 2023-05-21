@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Assist : DemonicsAnimator, IHitboxResponder
+public class Assist : DemonicsAnimator
 {
     [SerializeField] private AssistStatsSO _assistStatsSO = default;
     [SerializeField] private GameObject _smokePrefab = default;
@@ -55,22 +55,6 @@ public class Assist : DemonicsAnimator, IHitboxResponder
             _hitEffect.SetActive(false);
         }
         gameObject.SetActive(false);
-    }
-
-    public void Projectile()
-    {
-        // _hitEffect = Instantiate(_assistStatsSO.assistPrefab, transform);
-        // _hitEffect.GetComponent<Projectile>().SetSourceTransform(_player, transform.position, true);
-        // _hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetSourceTransform(_player);
-        // _hitEffect.transform.localRotation = Quaternion.Euler(0, 0, AssistStats.assistRotation);
-        // _hitEffect.transform.GetChild(0).GetChild(0).GetComponent<Hitbox>().SetHitboxResponder(transform);
-        // _hitEffect.transform.SetParent(null);
-    }
-
-    public bool HitboxCollided(Vector2 hurtPosition, Hurtbox hurtbox = null)
-    {
-        AssistStats.attackSO.hurtEffectPosition = hurtPosition;
-        return hurtbox.TakeDamage(AssistStats.attackSO);
     }
 
     public void HitboxCollidedGround(RaycastHit2D hit)

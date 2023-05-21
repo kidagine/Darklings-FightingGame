@@ -31,7 +31,7 @@ public class State
         {
             return false;
         }
-        if (AIBlocking(player))
+        if (AIBlocking(player, player.attackHurtNetwork.attackType))
         {
             return true;
         }
@@ -67,7 +67,7 @@ public class State
         || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Heavy))
         {
             player.pushbackDuration = 0;
-            player.attackInput = player.inputBuffer.inputItems[player.inputBuffer.index].inputEnum;
+            player.attackInput = player.inputBuffer.CurrentInput().inputEnum;
             player.isCrouch = false;
             player.isAir = air;
             if (player.direction.y < 0)
@@ -120,6 +120,7 @@ public class State
             hitstop = attack.hitstop,
             impactSound = attack.impactSound,
             hitStun = attack.hitStun,
+            blockStun = attack.blockStun,
             knockbackArc = attack.knockbackArc,
             jumpCancelable = attack.jumpCancelable,
             softKnockdown = attack.causesSoftKnockdown,
@@ -128,9 +129,6 @@ public class State
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
             superArmor = attack.hasSuperArmor,
-            startup = attack.startUpFrames,
-            active = attack.activeFrames,
-            recovery = attack.recoveryFrames,
             projectileSpeed = (DemonicsFloat)attack.projectileSpeed,
             projectileDestroyOnHit = attack.projectileDestroyOnHit,
             projectilePriority = attack.projectilePriority
@@ -156,6 +154,7 @@ public class State
             hitstop = attack.hitstop,
             impactSound = attack.impactSound,
             hitStun = attack.hitStun,
+            blockStun = attack.blockStun,
             knockbackArc = attack.knockbackArc,
             jumpCancelable = attack.jumpCancelable,
             softKnockdown = attack.causesSoftKnockdown,
@@ -164,9 +163,6 @@ public class State
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
             superArmor = attack.hasSuperArmor,
-            startup = attack.startUpFrames,
-            active = attack.activeFrames,
-            recovery = attack.recoveryFrames
         };
         if (attack.cameraShaker != null)
         {
@@ -252,18 +248,7 @@ public class State
         player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
-        ResetCombo(player);
-        player.player.PlayerUI.Damaged();
-        player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-        player.pushbox.active = true;
-        if (player.health <= 0)
-        {
-            EnterState(player, "Death");
-        }
-        else
-        {
-            EnterState(player, "HardKnockdown");
-        }
+        player.SetEffect(player.attackHurtNetwork.hurtEffect, new DemonicsVector2(player.hurtPosition.x, player.hurtPosition.y - 5));
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
@@ -272,6 +257,9 @@ public class State
         {
             player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
         }
+        GameSimulation.Hitstop = 3;
+        HitstopFully(player);
+        HitstopFully(player.otherPlayer);
     }
     public void CheckTrainingComboEnd(PlayerNetwork player, bool skipCombo = false)
     {
@@ -340,15 +328,17 @@ public class State
         }
         return false;
     }
-    public bool AIBlocking(PlayerNetwork player)
+    public bool AIBlocking(PlayerNetwork player, AttackTypeEnum attackType)
     {
         if (SceneSettings.IsTrainingMode && player.isAi)
-        {
             if (TrainingSettings.BlockAlways)
             {
+                if (attackType == AttackTypeEnum.Low)
+                    player.direction.y = -1;
+                else
+                    player.direction.y = 0;
                 return true;
             }
-        }
         return false;
     }
     protected void ResetCombo(PlayerNetwork player)
@@ -443,7 +433,7 @@ public class State
     {
         if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Assist)
         {
-            if (!player.shadow.isOnScreen && player.shadowGauge > 1000)
+            if (!player.shadow.isOnScreen && player.shadowGauge >= 1000)
             {
                 player.sound = "Shadow";
                 player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);

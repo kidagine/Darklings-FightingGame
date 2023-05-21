@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class OnlineMainMenu : BaseMenu
 {
-    [SerializeField] private NetworkManagerLobby _networkManager = default;
     [SerializeField] private GameObject _connectingGroup = default;
     [SerializeField] private GameObject _connectedGroup = default;
     [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;

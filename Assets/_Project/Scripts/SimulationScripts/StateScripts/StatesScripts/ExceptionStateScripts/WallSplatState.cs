@@ -7,6 +7,8 @@ public class WallSplatState : State
         CheckFlip(player);
         if (!player.enter)
         {
+            player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
+            CameraShake.Instance.Zoom(-4, 0.2f);
             if (player.CurrentState != this)
                 player.comboLocked = true;
             player.wasWallSplatted = true;
@@ -34,8 +36,9 @@ public class WallSplatState : State
     }
     private void ToAirborneState(PlayerNetwork player)
     {
-        if (player.animationFrames >= 15)
+        if (player.animationFrames >= 20)
         {
+            CameraShake.Instance.ZoomDefault(0.1f);
             player.flip *= -1;
             player.hurtbox.active = true;
             EnterState(player, "Airborne");

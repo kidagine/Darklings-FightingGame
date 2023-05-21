@@ -2,16 +2,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityGGPO;
-public class Player : MonoBehaviour, IHitboxResponder, IHitstop
+public class Player : MonoBehaviour, IHitstop
 {
     [SerializeField] private PlayerAnimator _playerAnimator = default;
     [SerializeField] private Assist _assist = default;
-    [SerializeField] private Pushbox _groundPushbox = default;
     [SerializeField] private Transform _hurtbox = default;
     [SerializeField] protected Transform _effectsParent = default;
     [SerializeField] private Transform _cameraPoint = default;
     [SerializeField] private Transform _keepFlip = default;
-    [SerializeField] private Audio _audio = default;
+    [SerializeField] private GameObject _throwTechPrefab = default;
     [SerializeField] private GameObject[] _playerIcons = default;
     protected PlayerUI _playerUI;
     private PlayerMovement _playerMovement;
@@ -64,6 +63,11 @@ public class Player : MonoBehaviour, IHitboxResponder, IHitstop
         _playerUI.SetAssistName(assistStats.name[0].ToString());
     }
 
+    public void ThrowTechPrefab(DemonicsVector2 pos)
+    {
+        Instantiate(_throwTechPrefab, new Vector3((float)pos.x, (float)pos.y, 0), Quaternion.identity);
+    }
+
     void Start()
     {
         InitializeStats();
@@ -84,7 +88,6 @@ public class Player : MonoBehaviour, IHitboxResponder, IHitstop
     {
         RecallAssist();
         _playerMovement.StopKnockback();
-        _playerMovement.Physics.ResetSkipWall();
         int index = IsPlayerOne ? 0 : 1;
         GameSimulation._players[index].position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
         _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)GameSimulation._players[index].position.x, (DemonicsFloat)GameSimulation._players[index].position.y));
@@ -189,36 +192,6 @@ public class Player : MonoBehaviour, IHitboxResponder, IHitstop
     public void RecallAssist()
     {
         _assist.Recall();
-    }
-
-    public bool HitboxCollided(Vector2 hurtPosition, Hurtbox hurtbox = null)
-    {
-        if (!CurrentAttack.isProjectile)
-        {
-            if (!CurrentAttack.isArcana || CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw)
-            {
-                GameplayManager.Instance.AddHitstop(this);
-            }
-        }
-        CurrentAttack.hurtEffectPosition = hurtPosition;
-        if (!CurrentAttack.isProjectile)
-        {
-            if (!CurrentAttack.isArcana)
-            {
-                CanSkipAttack = true;
-            }
-            if (OtherPlayerMovement.IsInCorner)
-            {
-                if (!CurrentAttack.isArcana && CurrentAttack.attackTypeEnum != AttackTypeEnum.Throw && !CurrentAttack.causesKnockdown)
-                {
-                    if (_playerMovement.IsGrounded || OtherPlayerMovement.IsGrounded)
-                    {
-                        _playerMovement.Knockback(new Vector2(CurrentAttack.knockbackForce.x, 0), CurrentAttack.knockbackDuration, (int)(OtherPlayer.transform.localScale.x));
-                    }
-                }
-            }
-        }
-        return hurtbox.TakeDamage(CurrentAttack);
     }
 
     public bool TakeDamage(AttackSO attack)

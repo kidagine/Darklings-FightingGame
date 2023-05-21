@@ -80,6 +80,7 @@ public class BlueFrenzyState : State
 
     private void Parry(PlayerNetwork player)
     {
+        int parryDistance = 37;
         player.sound = "Parry";
         DemonicsVector2 hurtEffectPosition = new DemonicsVector2(player.position.x + (20 * player.flip), player.otherPlayer.hitbox.position.y);
         player.SetEffect("Parry", hurtEffectPosition);
@@ -89,14 +90,14 @@ public class BlueFrenzyState : State
         {
             player.knockback = 0;
             player.pushbackStart = player.position;
-            player.pushbackEnd = new DemonicsVector2(player.position.x + (24 * -player.flip), DemonicsPhysics.GROUND_POINT);
+            player.pushbackEnd = new DemonicsVector2(player.position.x + (parryDistance * -player.flip), DemonicsPhysics.GROUND_POINT);
             player.pushbackDuration = 10;
         }
         else
         {
             player.otherPlayer.knockback = 0;
             player.otherPlayer.pushbackStart = player.otherPlayer.position;
-            player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (24 * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+            player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (parryDistance * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
             player.otherPlayer.pushbackDuration = 10;
         }
         player.health = player.healthRecoverable;
