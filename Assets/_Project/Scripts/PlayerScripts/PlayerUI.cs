@@ -23,8 +23,6 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
     [SerializeField] private TextMeshProUGUI _hitsNumberText = default;
     [SerializeField] private Animator _arcanaAnimator = default;
-    [SerializeField] private Transform _arcanaDividerPivot = default;
-    [SerializeField] private GameObject _arcanaDividerPrefab = default;
     [SerializeField] private Slider _pauseSlider = default;
     [SerializeField] private Slider _comboTimerSlider = default;
     [SerializeField] private Image _comboTimerImage = default;
@@ -42,6 +40,8 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Color _healthNormalColor = default;
     [SerializeField] private Color _healthLimitColor = default;
     [SerializeField] private Color _healthDamagedColor = default;
+    [SerializeField] private Color _arcanaAvailableColor = default;
+    [SerializeField] private Color _arcanaUnavailableColor = default;
     [Header("1BitVisuals")]
     [SerializeField] private Image _healthImage = default;
     private GameObject[] _playerIcons;
@@ -140,7 +140,7 @@ public class PlayerUI : MonoBehaviour
                 SetPortrait(playerStats.portraits[SceneSettings.ColorTwo]);
             }
             SetMaxHealth(playerStats.maxHealth);
-            SetMaxArcana(playerStats.Arcana);
+            SetMaxArcana(PlayerStatsSO.ARCANA_MULTIPLIER);
             _initializedStats = true;
         }
     }
@@ -174,14 +174,6 @@ public class PlayerUI : MonoBehaviour
     {
         float arcanaSliderWidth = _arcanaSlider.GetComponent<RectTransform>().sizeDelta.x;
         _arcanaSlider.maxValue = value;
-        float increaseValue = arcanaSliderWidth / (value / PlayerStatsSO.ARCANA_MULTIPLIER);
-        float currentPositionX = increaseValue;
-        for (int i = 0; i < (value / PlayerStatsSO.ARCANA_MULTIPLIER) - 1; i++)
-        {
-            GameObject arcanaDivider = Instantiate(_arcanaDividerPrefab, _arcanaDividerPivot);
-            arcanaDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
-            currentPositionX += increaseValue;
-        }
     }
 
     public void FadeIn()
@@ -201,8 +193,15 @@ public class PlayerUI : MonoBehaviour
 
     public void SetArcana(float value)
     {
+        int arcana = Mathf.FloorToInt(value / PlayerStatsSO.ARCANA_MULTIPLIER);
+        if (value != 3000)
+            value = value - (PlayerStatsSO.ARCANA_MULTIPLIER * arcana);
         _arcanaSlider.value = value;
-        _arcanaAmountText.text = Mathf.Floor(value / PlayerStatsSO.ARCANA_MULTIPLIER).ToString();
+        _arcanaAmountText.text = arcana.ToString();
+        if (arcana == 0)
+            _arcanaAmountText.color = _arcanaUnavailableColor;
+        else
+            _arcanaAmountText.color = _arcanaAvailableColor;
     }
 
     public void SetAssist(int value)
