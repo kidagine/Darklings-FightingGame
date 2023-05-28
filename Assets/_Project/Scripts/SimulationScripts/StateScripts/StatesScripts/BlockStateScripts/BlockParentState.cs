@@ -25,6 +25,8 @@ public class BlockParentState : State
 
     protected virtual void OnEnter(PlayerNetwork player)
     {
+        player.otherPlayer.ArcanaGain(ArcanaGainTypes.AttackOnBlock);
+        player.ArcanaGain(ArcanaGainTypes.DefendOnBlock);
         CheckFlip(player);
         player.otherPlayer.canChainAttack = true;
         player.player.StartShakeContact();

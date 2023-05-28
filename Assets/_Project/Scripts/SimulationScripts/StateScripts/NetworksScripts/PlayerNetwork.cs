@@ -289,4 +289,26 @@ public class PlayerNetwork
             }
         }
     }
+    public void ArcanaGain(ArcanaGainTypes arcanaGainTypes)
+    {
+        DemonicsFloat meter = (DemonicsFloat)70;
+        switch (arcanaGainTypes)
+        {
+            case ArcanaGainTypes.AttackOnHit:
+                arcanaGauge += (int)DemonicsFloat.Floor(meter * 1);
+                break;
+            case ArcanaGainTypes.AttackOnBlock:
+                arcanaGauge += (int)DemonicsFloat.Floor(meter * 0.5);
+                break;
+            case ArcanaGainTypes.DefendOnHit:
+                arcanaGauge += (int)DemonicsFloat.Floor(meter * 0.25);
+                break;
+            case ArcanaGainTypes.DefendOnBlock:
+                arcanaGauge += (int)DemonicsFloat.Floor(meter * 0.3);
+                break;
+        }
+        int maxArcana = PlayerStatsSO.ARCANA_MULTIPLIER * playerStats.arcanaLevel;
+        if (arcanaGauge > maxArcana)
+            arcanaGauge = maxArcana;
+    }
 };

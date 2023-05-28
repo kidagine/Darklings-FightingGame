@@ -268,14 +268,6 @@ public struct GameSimulation : IGame
                 _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
 
-            if (_players[index].arcanaGauge >= _players[index].playerStats.Arcana)
-            {
-                _players[index].arcanaGauge = _players[index].playerStats.Arcana;
-            }
-            else
-            {
-                _players[index].arcanaGauge += _players[index].playerStats.arcanaRecharge;
-            }
             if (_players[index].shadowGauge >= 2000)
             {
                 _players[index].shadowGauge = 2000;
@@ -391,6 +383,7 @@ public struct GameSimulation : IGame
         if (_players[index].shadow.isOnScreen)
             _players[index].shadow.animationFrames++;
     }
+
     public void Update(long[] inputs, int disconnect_flags)
     {
         if (Time.timeScale > 0 && GameplayManager.Instance)

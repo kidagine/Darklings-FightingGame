@@ -13,6 +13,8 @@ public class HurtParentState : State
     }
     protected virtual void OnEnter(PlayerNetwork player)
     {
+        player.otherPlayer.ArcanaGain(ArcanaGainTypes.AttackOnHit);
+        player.ArcanaGain(ArcanaGainTypes.DefendOnHit);
         CheckTrainingGauges(player);
         player.shadow.isOnScreen = false;
         player.velocity = DemonicsVector2.Zero;
