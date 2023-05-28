@@ -343,6 +343,7 @@ public class State
     }
     protected void ResetCombo(PlayerNetwork player)
     {
+        player.otherPlayer.shadow.usedInCombo = false;
         player.otherPlayer.resultAttack.comboDamage = 0;
         player.player.PlayerUI.SetComboTimerActive(false);
         player.player.StopShakeCoroutine();
@@ -436,6 +437,7 @@ public class State
             if (!player.shadow.isOnScreen && player.shadowGauge >= 1000)
             {
                 player.sound = "Shadow";
+                player.shadow.usedInCombo = true;
                 player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
                 player.shadow.projectile.flip = player.flip == 1 ? false : true;
                 player.shadow.projectile.fire = true;

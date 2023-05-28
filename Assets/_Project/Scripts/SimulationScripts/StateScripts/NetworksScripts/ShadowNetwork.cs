@@ -13,6 +13,8 @@ public struct ShadowNetwork
     public int flip;
     public int animationFrames;
     public ProjectileNetwork projectile;
+    public bool usedInCombo;
+
     public void Serialize(BinaryWriter bw)
     {
         bw.Write((float)position.x);
@@ -22,6 +24,7 @@ public struct ShadowNetwork
         bw.Write((float)spawnRotation.x);
         bw.Write((float)spawnRotation.y);
         bw.Write(isOnScreen);
+        bw.Write(usedInCombo);
         bw.Write(flip);
         bw.Write(animationFrames);
         projectile.Serialize(bw);
@@ -36,6 +39,7 @@ public struct ShadowNetwork
         spawnRotation.x = (DemonicsFloat)br.ReadSingle();
         spawnRotation.y = (DemonicsFloat)br.ReadSingle();
         isOnScreen = br.ReadBoolean();
+        usedInCombo = br.ReadBoolean();
         flip = br.ReadInt32();
         animationFrames = br.ReadInt32();
         projectile.Deserialize(br);
