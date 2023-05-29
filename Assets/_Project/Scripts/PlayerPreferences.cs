@@ -136,7 +136,7 @@ public class PlayerPreferences : MonoBehaviour
         //General
         _healthSelector.SetValue(int.Parse(DemonicsSaver.Load("health", _healthSelectorInitial.ToString())));
         _arcanaSelector.SetValue(int.Parse(DemonicsSaver.Load("arcana", _arcanaSelectorInitial.ToString())));
-        _assistSelector.SetValue(int.Parse(DemonicsSaver.Load("assist", _assistSelectorInitial.ToString())));
+        _assistSelector.SetValue(int.Parse(DemonicsSaver.Load("shadow", _assistSelectorInitial.ToString())));
 
         //Cpu
         _cpuSelector.SetValue(int.Parse(DemonicsSaver.Load("cpu", _cpuSelectorInitial.ToString())));

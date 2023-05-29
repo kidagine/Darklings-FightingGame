@@ -11,13 +11,17 @@ public class FallState : AirParentState
             return;
         }
         player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
-        base.UpdateLogic(player);
+        if (!player.usedShadowbreak)
+            base.UpdateLogic(player);
+        else
+            ToHurtState(player);
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
+            player.usedShadowbreak = false;
             player.sound = "Landed";
             player.SetEffect("Fall", player.position);
             EnterState(player, "Idle");

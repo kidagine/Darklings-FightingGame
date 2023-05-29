@@ -59,11 +59,6 @@ public class GroundParentState : State
     {
         if (IsColliding(player))
         {
-            if (player.attackHurtNetwork.moveName == "Shadowbreak")
-            {
-                EnterState(player, "Knockback");
-                return;
-            }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 EnterState(player, "Grabbed");
@@ -89,7 +84,7 @@ public class GroundParentState : State
             }
             else
             {
-                if (player.attackHurtNetwork.hardKnockdown)
+                if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.moveName == "Shadowbreak")
                 {
                     EnterState(player, "Airborne");
                 }

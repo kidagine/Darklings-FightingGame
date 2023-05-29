@@ -86,15 +86,10 @@ public class AirParentState : State
             Arcana(player, true);
         }
     }
-    private void ToHurtState(PlayerNetwork player)
+    protected void ToHurtState(PlayerNetwork player)
     {
         if (IsColliding(player))
         {
-            if (player.attackHurtNetwork.moveName == "Shadowbreak")
-            {
-                EnterState(player, "Knockback");
-                return;
-            }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
                 return;
             if (IsBlocking(player))
@@ -103,7 +98,7 @@ public class AirParentState : State
             }
             else
             {
-                if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown && player.position.y > DemonicsPhysics.GROUND_POINT)
+                if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.moveName == "Shadowbreak" || player.attackHurtNetwork.softKnockdown && player.position.y > DemonicsPhysics.GROUND_POINT)
                 {
                     EnterState(player, "Airborne");
                 }
