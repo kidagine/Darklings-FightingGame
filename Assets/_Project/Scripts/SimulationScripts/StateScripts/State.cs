@@ -364,6 +364,7 @@ public class State
             {
                 player.attackHurtNetwork = player.otherPlayer.shadow.projectile.attackNetwork;
                 GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                player.hitstop = true;
                 player.otherPlayer.shadow.projectile.hitstop = true;
                 player.otherPlayer.shadow.projectile.hitbox.enter = true;
                 player.otherPlayer.shadow.projectile.hitstop = true;
