@@ -230,8 +230,9 @@ public class AttackState : State
                 EnterState(player, "Knockback");
                 return;
             }
-            if (player.attackNetwork.superArmor && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
+            if (player.attackNetwork.superArmor > 0 && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
             {
+                player.attackNetwork.superArmor -= 1;
                 player.sound = player.attackHurtNetwork.impactSound;
                 if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
                 {
@@ -239,6 +240,7 @@ public class AttackState : State
                 }
                 player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
                 player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.otherPlayer.canChainAttack = true;
                 player.canChainAttack = false;
                 if (GameSimulation.Hitstop <= 0)
                 {

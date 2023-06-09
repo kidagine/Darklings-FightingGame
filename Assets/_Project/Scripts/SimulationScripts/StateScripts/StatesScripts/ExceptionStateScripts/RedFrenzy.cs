@@ -75,7 +75,7 @@ public class RedFrenzyState : State
                 EnterState(player, "Grabbed");
                 return;
             }
-            if (player.attackNetwork.superArmor && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
+            if (player.attackNetwork.superArmor > 0 && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
             {
                 player.sound = player.attackHurtNetwork.impactSound;
                 if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)

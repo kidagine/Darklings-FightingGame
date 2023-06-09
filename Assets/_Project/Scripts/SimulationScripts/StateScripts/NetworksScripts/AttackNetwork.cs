@@ -31,7 +31,7 @@ public struct AttackNetwork
     public bool jumpCancelable;
     public bool softKnockdown;
     public bool hardKnockdown;
-    public bool superArmor;
+    public int superArmor;
     public bool projectileDestroyOnHit;
 
     public void Serialize(BinaryWriter bw)
@@ -90,7 +90,7 @@ public struct AttackNetwork
         jumpCancelable = br.ReadBoolean();
         softKnockdown = br.ReadBoolean();
         hardKnockdown = br.ReadBoolean();
-        superArmor = br.ReadBoolean();
+        superArmor = br.ReadInt32();
         cameraShakerNetwork.Deserialize(br);
     }
 };

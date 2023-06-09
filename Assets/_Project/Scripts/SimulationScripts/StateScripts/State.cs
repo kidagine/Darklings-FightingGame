@@ -128,7 +128,7 @@ public class State
             projectilePosition = new DemonicsVector2((DemonicsFloat)attack.hitEffectPosition.x, (DemonicsFloat)attack.hitEffectPosition.y),
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
-            superArmor = attack.hasSuperArmor,
+            superArmor = attack.superArmor,
             projectileSpeed = (DemonicsFloat)attack.projectileSpeed,
             projectileDestroyOnHit = attack.projectileDestroyOnHit,
             projectilePriority = attack.projectilePriority
@@ -162,7 +162,7 @@ public class State
             projectilePosition = new DemonicsVector2((DemonicsFloat)attack.hitEffectPosition.x, (DemonicsFloat)attack.hitEffectPosition.y),
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
-            superArmor = attack.hasSuperArmor,
+            superArmor = attack.superArmor,
         };
         if (attack.cameraShaker != null)
         {
