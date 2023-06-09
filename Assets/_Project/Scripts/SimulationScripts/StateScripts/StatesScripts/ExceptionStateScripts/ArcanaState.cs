@@ -100,8 +100,30 @@ public class ArcanaState : State
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (!player.otherPlayer.canChainAttack && IsColliding(player))
+        if (IsColliding(player))
         {
+
+            if (player.attackNetwork.superArmor > 0 && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
+            {
+                player.attackNetwork.superArmor -= 1;
+                player.sound = player.attackHurtNetwork.impactSound;
+                if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
+                {
+                    CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
+                }
+                player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+                player.otherPlayer.canChainAttack = true;
+                player.canChainAttack = false;
+                if (GameSimulation.Hitstop <= 0)
+                {
+                    GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                }
+                player.player.PlayerAnimator.SpriteSuperArmorEffect();
+                player.player.PlayerUI.Damaged();
+                player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+                return;
+            }
             player.dashFrames = 0;
             player.enter = false;
             if (DemonicsPhysics.IsInCorner(player))
