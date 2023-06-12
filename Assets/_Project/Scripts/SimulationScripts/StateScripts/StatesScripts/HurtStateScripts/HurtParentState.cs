@@ -1,4 +1,5 @@
 using Demonics;
+using UnityEngine;
 
 public class HurtParentState : State
 {

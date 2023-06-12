@@ -39,6 +39,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private PauseMenu _replayPauseMenu = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
     [SerializeField] private DisconnectMenu _disconnectMenu = default;
+    [SerializeField] private Audio _audio = default;
     [SerializeField] private Color _healthNormalColor = default;
     [SerializeField] private Color _healthLimitColor = default;
     [SerializeField] private Color _healthDamagedColor = default;
@@ -204,8 +205,11 @@ public class PlayerUI : MonoBehaviour
             value = value - (PlayerStatsSO.ARCANA_MULTIPLIER * arcana);
             _maxArcanaText.gameObject.SetActive(false);
         }
-        else
+        else if (!_maxArcanaText.gameObject.activeSelf)
+        {
+            _audio.Sound("MaxArcana").Play();
             _maxArcanaText.gameObject.SetActive(true);
+        }
         _arcanaSlider.value = value;
         _arcanaAmountText.text = arcana.ToString();
         if (arcana == 0)
@@ -222,7 +226,9 @@ public class PlayerUI : MonoBehaviour
         {
             _arcanaAmountText.color = _arcanaAvailableColor;
             if (_arcanaCoroutine == null)
+            {
                 _arcanaCoroutine = StartCoroutine(ArcanaBlinkCoroutine());
+            }
         }
     }
 

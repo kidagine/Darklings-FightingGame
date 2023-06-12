@@ -17383,8 +17383,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 0
-  _characterOne: 3
-  _characterTwo: 4
+  _characterOne: 0
+  _characterTwo: 1
   _assistOne: 3
   _assistTwo: 0
   _controllerOne: 0
@@ -97515,6 +97515,7 @@ MonoBehaviour:
   _replayPauseMenu: {fileID: 242059569}
   _trainingMenu: {fileID: 729468312}
   _disconnectMenu: {fileID: 587683964}
+  _audio: {fileID: 4280183661530155530}
   _healthNormalColor: {r: 0.21176471, g: 0.81960785, b: 0.2901961, a: 1}
   _healthLimitColor: {r: 0.6392157, g: 0.75686276, b: 0.23137255, a: 1}
   _healthDamagedColor: {r: 0.96862745, g: 0.007843138, b: 0.12156863, a: 1}
@@ -98023,6 +98024,7 @@ MonoBehaviour:
   _replayPauseMenu: {fileID: 242059569}
   _trainingMenu: {fileID: 729468312}
   _disconnectMenu: {fileID: 587683964}
+  _audio: {fileID: 4280183661530155530}
   _healthNormalColor: {r: 0.21176471, g: 0.81960785, b: 0.2901961, a: 1}
   _healthLimitColor: {r: 0.6392157, g: 0.75686276, b: 0.23137255, a: 1}
   _healthDamagedColor: {r: 0.96862745, g: 0.007843138, b: 0.12156863, a: 1}
@@ -98280,7 +98282,6 @@ GameObject:
   - component: {fileID: 1260952191717519731}
   - component: {fileID: 7796490836883545930}
   - component: {fileID: 1939431748518334594}
-  - component: {fileID: 3279332729591254245}
   m_Layer: 5
   m_Name: Player_canvas
   m_TagString: Untagged
@@ -100646,31 +100647,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3279332729591254245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1604159751684994697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d934fd054705f74ea444b1f779cbe2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioMixerGroup: {fileID: 8058793769183783417, guid: 37e1cd9c9cb5cd04b84c8b8502c44908, type: 2}
-  _sounds:
-  - source: {fileID: 0}
-    clip: {fileID: 8300000, guid: 62b8503b430dddc47b5de79bef02b781, type: 3}
-    volume: 1
-    pitch: 1
-    name: Punish
-    loop: 0
-    playOnAwake: 0
-    playOneInstanceAtATime: 0
-  _sounds3D: []
-  _soundGroups: []
-  _soundGroups3D: []
 --- !u!1 &3320892015110471687
 GameObject:
   m_ObjectHideFlags: 0
@@ -100929,6 +100905,14 @@ MonoBehaviour:
     volume: 1
     pitch: 1
     name: Punish
+    loop: 0
+    playOnAwake: 0
+    playOneInstanceAtATime: 0
+  - source: {fileID: 0}
+    clip: {fileID: 8300000, guid: b9e28b9834a0b96488eafcf1567fb1a7, type: 3}
+    volume: 0.5
+    pitch: 1
+    name: MaxArcana
     loop: 0
     playOnAwake: 0
     playOneInstanceAtATime: 0
