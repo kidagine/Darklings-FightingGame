@@ -11,6 +11,11 @@ public class AttackState : State
                 player.position = new DemonicsVector2((DemonicsFloat)player.position.x, (DemonicsFloat)player.position.y + 7);
                 player.juggleBounce = false;
             }
+            if (player.attackNetwork.attackType == AttackTypeEnum.Break)
+            {
+                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x, player.position.y + 20);
+                player.SetEffect("GuardBreak", effectPosition);
+            }
             player.animationFrames = 0;
             SetTopPriority(player);
             player.canChainAttack = false;
