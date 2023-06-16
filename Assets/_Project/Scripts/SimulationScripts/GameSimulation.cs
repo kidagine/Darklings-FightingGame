@@ -19,6 +19,7 @@ public struct GameSimulation : IGame
     public int Checksum => GetHashCode();
     public static int _timerMax = 99;
     public static bool _introPlayed;
+    public static int maxShadowGauge = 2400;
     public static PlayerNetwork[] _players;
 
     public void Serialize(BinaryWriter bw)
@@ -106,7 +107,7 @@ public struct GameSimulation : IGame
             _players[i].playerStats = playerStats[i];
             _players[i].health = playerStats[i].maxHealth;
             _players[i].healthRecoverable = playerStats[i].maxHealth;
-            _players[i].shadowGauge = 2000;
+            _players[i].shadowGauge = maxShadowGauge;
             _players[i].attackInput = InputEnum.Direction;
             _players[i].animation = "Idle";
             _players[i].sound = "";
@@ -268,9 +269,9 @@ public struct GameSimulation : IGame
                 _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
             }
 
-            if (_players[index].shadowGauge >= 2000)
+            if (_players[index].shadowGauge >= maxShadowGauge)
             {
-                _players[index].shadowGauge = 2000;
+                _players[index].shadowGauge = maxShadowGauge;
             }
             else
             {

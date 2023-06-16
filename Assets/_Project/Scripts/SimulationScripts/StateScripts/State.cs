@@ -175,7 +175,7 @@ public class State
         player.dashDirection = 0;
         player.healthRecoverable = 10000;
         player.health = 10000;
-        player.shadowGauge = 2000;
+        player.shadowGauge = GameSimulation.maxShadowGauge;
         player.arcanaGauge = 0;
         player.player.PlayerUI.CheckDemonLimit(player.health);
         player.enter = false;
@@ -284,7 +284,7 @@ public class State
             }
             if (GameplayManager.Instance.InfiniteAssist)
             {
-                player.shadowGauge = 2000;
+                player.shadowGauge = GameSimulation.maxShadowGauge;
             }
         }
     }
@@ -435,7 +435,7 @@ public class State
     {
         if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Assist)
         {
-            if (!player.shadow.isOnScreen && player.shadowGauge >= 1000)
+            if (!player.shadow.isOnScreen && player.shadowGauge >= GameSimulation.maxShadowGauge / 2)
             {
                 player.sound = "Shadow";
                 player.shadow.usedInCombo = true;
@@ -446,7 +446,7 @@ public class State
                 player.shadow.isOnScreen = true;
                 player.shadow.flip = player.flip;
                 player.shadow.position = new DemonicsVector2(player.position.x + (player.shadow.spawnPoint.x * player.flip), player.position.y + player.shadow.spawnPoint.y);
-                player.shadowGauge -= 1000;
+                player.shadowGauge -= GameSimulation.maxShadowGauge / 2;
             }
         }
     }
@@ -454,7 +454,7 @@ public class State
     {
         if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Assist)
         {
-            if (player.shadowGauge == 2000)
+            if (player.shadowGauge == GameSimulation.maxShadowGauge)
             {
                 ResetCombo(player);
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);

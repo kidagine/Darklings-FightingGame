@@ -17,6 +17,8 @@ public class RedFrenzyState : State
             player.healthRecoverable = player.health;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+            DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x, player.position.y + 20);
+            player.SetEffect("GuardBreak", effectPosition);
             UpdateFramedata(player);
             return;
         }
@@ -89,6 +91,7 @@ public class RedFrenzyState : State
                 {
                     GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
                 }
+                player.SetEffect(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
                 player.player.PlayerAnimator.SpriteSuperArmorEffect();
                 player.player.PlayerUI.Damaged();
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);

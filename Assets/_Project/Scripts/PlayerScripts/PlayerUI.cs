@@ -236,9 +236,9 @@ public class PlayerUI : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
             _arcanaFill.color = _arcanaAvailableMeterColor;
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
             _arcanaFill.color = _arcanaUnavailableMeterColor;
         }
     }
