@@ -70,6 +70,7 @@ public class ArcanaState : State
     {
         if (player.isAir && player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
+            CheckTrainingGauges(player);
             player.invincible = false;
             player.dashFrames = 0;
             player.isCrouch = false;
