@@ -431,6 +431,28 @@ public class State
         return false;
     }
 
+    protected void SuperArmorHurt(PlayerNetwork player)
+    {
+        player.attackNetwork.superArmor -= 1;
+        player.sound = "SuperArmor";
+        if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
+        {
+            CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
+        }
+        player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.otherPlayer.canChainAttack = true;
+        player.canChainAttack = false;
+        if (GameSimulation.Hitstop <= 0)
+        {
+            GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+        }
+        player.SetEffect(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
+        player.player.PlayerAnimator.SpriteSuperArmorEffect();
+        player.player.PlayerUI.Damaged();
+        player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+    }
+
     protected void Shadow(PlayerNetwork player)
     {
         if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Assist)
