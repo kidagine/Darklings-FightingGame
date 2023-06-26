@@ -9,7 +9,7 @@ public class JumpState : AirParentState
             player.animation = "Jump";
             player.enter = true;
             player.sound = "Jump";
-            player.SetEffect("Jump", player.position);
+            player.SetParticle("Jump", player.position);
             player.hasJumped = true;
             player.animationFrames = 0;
             player.velocity = new DemonicsVector2((DemonicsFloat)0, player.playerStats.JumpForce);
