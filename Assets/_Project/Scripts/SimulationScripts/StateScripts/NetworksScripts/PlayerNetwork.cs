@@ -74,6 +74,7 @@ public class PlayerNetwork
     public InputBufferNetwork inputBuffer;
     public FramedataTypesEnum framedataEnum;
     public EffectNetwork[] effects;
+    public EffectNetwork[] particles;
     public ProjectileNetwork[] projectiles;
     public void Serialize(BinaryWriter bw)
     {
@@ -143,6 +144,10 @@ public class PlayerNetwork
         for (int i = 0; i < projectiles.Length; ++i)
         {
             projectiles[i].Serialize(bw);
+        }
+        for (int i = 0; i < particles.Length; ++i)
+        {
+            particles[i].Serialize(bw);
         }
         for (int i = 0; i < effects.Length; ++i)
         {
@@ -219,6 +224,10 @@ public class PlayerNetwork
         {
             projectiles[i].Deserialize(br);
         }
+        for (int i = 0; i < particles.Length; ++i)
+        {
+            particles[i].Deserialize(br);
+        }
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Deserialize(br);
@@ -248,6 +257,17 @@ public class PlayerNetwork
                         break;
                     }
                 }
+            }
+        }
+    }
+    public void SetParticle(string name, DemonicsVector2 position, bool flip = false)
+    {
+        for (int i = 0; i < particles.Length; i++)
+        {
+            if (name == particles[i].name)
+            {
+                GameSimulationView.UpdateParticles(player.IsPlayerOne ? 0 : 1, particles[i], position);
+                return;
             }
         }
     }

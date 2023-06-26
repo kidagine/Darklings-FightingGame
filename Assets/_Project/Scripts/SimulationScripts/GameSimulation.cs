@@ -92,6 +92,7 @@ public struct GameSimulation : IGame
         _introPlayed = false;
         _players = new PlayerNetwork[playerStats.Length];
         ObjectPoolingManager.Instance.PoolInitialize(playerStats[0]._effectsLibrary, playerStats[1]._effectsLibrary);
+        ObjectPoolingManager.Instance.PoolParticlesInitialize(playerStats[0]._particlesLibrary, playerStats[1]._particlesLibrary);
         ObjectPoolingManager.Instance.PoolProjectileInitialize(playerStats[0]._projectilesLibrary, playerStats[1]._projectilesLibrary);
         ObjectPoolingManager.Instance.PoolAssistInitialize(assistStats[0].assistProjectile, assistStats[1].assistProjectile);
         ObjectPoolingManager.HasPooled = true;
@@ -122,6 +123,7 @@ public struct GameSimulation : IGame
             _players[i].attackNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
             _players[i].attackHurtNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
             _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
+            _players[i].particles = new EffectNetwork[playerStats[i]._particlesLibrary._objectPools.Count];
             _players[i].projectiles = new ProjectileNetwork[playerStats[i]._projectilesLibrary._objectPools.Count];
             _players[i].hitbox = new ColliderNetwork() { active = false };
             _players[i].hurtbox = new ColliderNetwork() { active = true };
@@ -142,6 +144,12 @@ public struct GameSimulation : IGame
                 _players[i].effects[j].name = playerStats[i]._effectsLibrary._objectPools[j].groupName;
                 _players[i].effects[j].animationMaxFrames = ObjectPoolingManager.Instance.GetObjectAnimation(i, _players[i].effects[j].name).GetMaxAnimationFrames();
                 _players[i].effects[j].effectGroups = new EffectGroupNetwork[playerStats[i]._effectsLibrary._objectPools[j].size];
+            }
+            for (int j = 0; j < _players[i].particles.Length; j++)
+            {
+                _players[i].particles[j] = new EffectNetwork();
+                _players[i].particles[j].name = playerStats[i]._particlesLibrary._objectPools[j].groupName;
+                _players[i].particles[j].effectGroups = new EffectGroupNetwork[playerStats[i]._particlesLibrary._objectPools[j].size];
             }
             for (int j = 0; j < _players[i].projectiles.Length; j++)
             {

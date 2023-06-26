@@ -11,7 +11,7 @@ public class KnockdownSoftState : State
             player.enter = true;
             player.animationFrames = 0;
             player.sound = "Landed";
-            player.SetEffect("Jump", player.position);
+            player.SetParticle("KnockdownSoft", player.position);
             player.framedataEnum = FramedataTypesEnum.Knockdown;
             return;
         }

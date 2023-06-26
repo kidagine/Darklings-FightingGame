@@ -37,7 +37,7 @@ public class HurtParentState : State
         player.sound = player.attackHurtNetwork.impactSound;
         if (!player.wasWallSplatted)
         {
-            player.SetEffect(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
+            player.SetParticle(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
         }
         if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
         {

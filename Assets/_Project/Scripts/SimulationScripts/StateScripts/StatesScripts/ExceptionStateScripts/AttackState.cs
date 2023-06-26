@@ -13,8 +13,13 @@ public class AttackState : State
             }
             if (player.attackNetwork.attackType == AttackTypeEnum.Break)
             {
+                player.health -= 300;
+                player.healthRecoverable -= 200;
+                player.player.StartShakeContact();
+                player.player.PlayerUI.Damaged();
+                player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
                 DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x, player.position.y + 20);
-                player.SetEffect("GuardBreak", effectPosition);
+                player.SetParticle("GuardBreak", effectPosition);
             }
             player.animationFrames = 0;
             SetTopPriority(player);

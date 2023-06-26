@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6330d5bbeabd1b14fa5a92f3bcaf733a, type: 3}
+  m_Name: GeneralParticlesLibrary
+  m_EditorClassIdentifier: 
+  _objectPools:
+  - groupName: HurtNormal
+    prefab: {fileID: 146714, guid: 0ca81ccf433929c4b9d002b5e03f4e82, type: 3}
+    size: 5
+  - groupName: HurtHeavy
+    prefab: {fileID: 138252, guid: 4931652d30b558448b41c30f9bbc7a65, type: 3}
+    size: 3
+  - groupName: HurtMedium
+    prefab: {fileID: 138252, guid: 2810299a6ebf57144af790983dc2c430, type: 3}
+    size: 3
+  - groupName: GuardBreak
+    prefab: {fileID: 109840, guid: 6528369279a55f847bfc34ff87001f5d, type: 3}
+    size: 3
+  - groupName: KnockdownSoft
+    prefab: {fileID: 171188, guid: 7cd05a3ad87d2c44c9db5f6045e977fa, type: 3}
+    size: 3
+  - groupName: KnockdownHard
+    prefab: {fileID: 171188, guid: a6b66c55641a7704da9de37735da9b04, type: 3}
+    size: 3
+  - groupName: RedFrenzy
+    prefab: {fileID: 109840, guid: 0e05903dcb9885349b3d67b2a9d4d54e, type: 3}
+    size: 3

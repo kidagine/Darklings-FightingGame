@@ -447,7 +447,7 @@ public class State
         {
             GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
         }
-        player.SetEffect(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
+        player.SetParticle(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
         player.player.PlayerAnimator.SpriteSuperArmorEffect();
         player.player.PlayerUI.Damaged();
         player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);

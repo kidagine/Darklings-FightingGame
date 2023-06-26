@@ -18,7 +18,7 @@ public class RedFrenzyState : State
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x, player.position.y + 20);
-            player.SetEffect("GuardBreak", effectPosition);
+            player.SetParticle("RedFrenzy", effectPosition);
             UpdateFramedata(player);
             return;
         }

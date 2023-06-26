@@ -48,7 +48,6 @@ public class ShadowbreakState : State
     {
         if (IsColliding(player))
         {
-            Debug.Log("A");
             if (player.attackHurtNetwork.moveName == "Shadowbreak")
             {
                 EnterState(player, "Knockback");
