@@ -9,7 +9,8 @@ public class JumpForwardState : AirParentState
             player.animation = "JumpForward";
             player.enter = true;
             player.sound = "Jump";
-            player.SetParticle(player.jumpDirection == 1 ? "JumpRight" : "JumpLeft", player.position);
+            if (!player.hasJumped)
+                player.SetParticle(player.jumpDirection == 1 ? "JumpLeft" : "JumpRight", player.position);
             player.hasJumped = true;
             player.animationFrames = 0;
             player.velocity = new DemonicsVector2(2 * (DemonicsFloat)player.jumpDirection, player.playerStats.JumpForce);

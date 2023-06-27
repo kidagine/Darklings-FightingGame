@@ -36,7 +36,7 @@ public class BlockParentState : State
         DemonicsVector2 hurtEffectPosition = new DemonicsVector2(player.position.x + (5 * player.flip), player.hurtPosition.y);
         if (player.attackHurtNetwork.hardKnockdown)
         {
-            player.SetEffect("Chip", hurtEffectPosition);
+            player.SetParticle("Chip", hurtEffectPosition);
             player.health -= 200;
             player.healthRecoverable -= 200;
             player.player.PlayerUI.Damaged();
@@ -44,7 +44,7 @@ public class BlockParentState : State
         }
         else
         {
-            player.SetEffect("Block", hurtEffectPosition);
+            player.SetParticle("Block", hurtEffectPosition);
         }
         player.animationFrames = 0;
         player.stunFrames = player.attackHurtNetwork.blockStun;

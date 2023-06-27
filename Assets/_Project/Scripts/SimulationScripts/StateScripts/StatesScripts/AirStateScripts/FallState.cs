@@ -23,7 +23,7 @@ public class FallState : AirParentState
         {
             player.usedShadowbreak = false;
             player.sound = "Landed";
-            player.SetEffect("Fall", player.position);
+            player.SetParticle("Fall", player.position);
             EnterState(player, "Idle");
         }
     }

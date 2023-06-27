@@ -70,6 +70,8 @@ public class ArcanaState : State
     {
         if (player.isAir && player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
+            player.SetParticle("Fall", player.position);
+            player.sound = "Landed";
             CheckTrainingGauges(player);
             player.invincible = false;
             player.dashFrames = 0;
@@ -83,16 +85,22 @@ public class ArcanaState : State
         if (player.attackFrames <= 0)
         {
             CheckTrainingGauges(player);
-            player.invincible = false;
             player.dashFrames = 0;
             if (player.isAir || player.position.y > DemonicsPhysics.GROUND_POINT)
             {
+                player.invincible = false;
                 player.isCrouch = false;
                 player.isAir = false;
                 EnterState(player, "Fall");
             }
             else
             {
+                if (player.invincible)
+                {
+                    player.SetParticle("Fall", player.position);
+                    player.sound = "Landed";
+                }
+                player.invincible = false;
                 player.isCrouch = false;
                 player.isAir = false;
                 EnterState(player, "Idle");

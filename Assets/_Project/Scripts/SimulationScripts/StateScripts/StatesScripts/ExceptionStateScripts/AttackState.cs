@@ -196,6 +196,7 @@ public class AttackState : State
     {
         if (player.isAir && (DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
         {
+            player.SetParticle("Fall", player.position);
             player.sound = "Landed";
             player.inPushback = false;
             player.isCrouch = false;

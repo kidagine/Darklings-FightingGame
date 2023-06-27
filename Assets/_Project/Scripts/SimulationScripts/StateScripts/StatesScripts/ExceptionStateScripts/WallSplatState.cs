@@ -15,11 +15,11 @@ public class WallSplatState : State
             DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + ((DemonicsFloat)2.25 * player.flip), player.position.y);
             if (player.flip == 1)
             {
-                player.SetEffect("WallSplat", effectPosition, true);
+                player.SetParticle("WallSplat", effectPosition, true);
             }
             else
             {
-                player.SetEffect("WallSplat", effectPosition, false);
+                player.SetParticle("WallSplat", effectPosition, false);
             }
             player.sound = "WallSplat";
             player.enter = true;
