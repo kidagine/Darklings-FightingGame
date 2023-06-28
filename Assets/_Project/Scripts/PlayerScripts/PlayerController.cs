@@ -135,7 +135,6 @@ public class PlayerController : BaseController
     {
         if (InputDirection.y == 0)
         {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
             return true;
         }
         return false;

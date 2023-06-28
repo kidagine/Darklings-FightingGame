@@ -24,7 +24,7 @@ TextureImporter:
       213: 2366485454458244462
     second: Inputs_6
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -84,6 +84,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -111,6 +112,30 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -397,6 +422,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Inputs_13
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 29
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf1dd5b85cb06184893938cc17abd396
+      internalID: 1129376339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -408,19 +454,20 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Inputs_7: 612874030
-      Inputs_1: 8309631369066868078
-      Inputs_9: -2035982963
       Inputs_0: 3039210842713156157
-      Inputs_8: -1251521985
-      Inputs_2: 6182861061679214308
-      Inputs_12: 1762676813
+      Inputs_1: 8309631369066868078
       Inputs_10: 1405726623
-      Inputs_5: 4040249532602692283
       Inputs_11: 1274976643
-      Inputs_6: 2366485454458244462
+      Inputs_12: 1762676813
+      Inputs_13: 1129376339
+      Inputs_2: 6182861061679214308
       Inputs_3: -3132703244072697079
       Inputs_4: 2841885645230754530
+      Inputs_5: 4040249532602692283
+      Inputs_6: 2366485454458244462
+      Inputs_7: 612874030
+      Inputs_8: -1251521985
+      Inputs_9: -2035982963
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

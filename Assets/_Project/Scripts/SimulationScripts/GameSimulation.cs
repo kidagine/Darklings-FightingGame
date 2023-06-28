@@ -8,7 +8,7 @@ using UnityEngine;
 [Serializable]
 public struct GameSimulation : IGame
 {
-    public int Framenumber { get; private set; }
+    public int Frames { get; private set; }
     public static int Timer { get; set; }
     public static int GlobalHitstop { get; set; }
     public static int Hitstop { get; set; }
@@ -24,7 +24,7 @@ public struct GameSimulation : IGame
 
     public void Serialize(BinaryWriter bw)
     {
-        bw.Write(Framenumber);
+        bw.Write(Frames);
         bw.Write(GlobalHitstop);
         bw.Write(Timer);
         bw.Write(Hitstop);
@@ -40,7 +40,7 @@ public struct GameSimulation : IGame
 
     public void Deserialize(BinaryReader br)
     {
-        Framenumber = br.ReadInt32();
+        Frames = br.ReadInt32();
         GlobalHitstop = br.ReadInt32();
         Timer = br.ReadInt32();
         Hitstop = br.ReadInt32();
@@ -85,7 +85,7 @@ public struct GameSimulation : IGame
     {
         Printer.Log($"Connection initialized");
         GlobalHitstop = 1;
-        Framenumber = 0;
+        Frames = 0;
         Timer = _timerMax;
         Hitstop = 0;
         IntroFrame = 880;
@@ -180,7 +180,7 @@ public struct GameSimulation : IGame
                 {
                     _players[index].upHold = false;
                     _players[index].downHold = false;
-                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
                 }
             }
             if (!left && !right)
@@ -191,7 +191,7 @@ public struct GameSimulation : IGame
                 {
                     _players[index].rightHold = false;
                     _players[index].leftHold = false;
-                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
                 }
             }
             if (up)
@@ -201,7 +201,7 @@ public struct GameSimulation : IGame
                 if (!_players[index].upHold)
                 {
                     _players[index].upHold = true;
-                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
                 }
             }
             if (down)
@@ -211,7 +211,7 @@ public struct GameSimulation : IGame
                 if (!_players[index].downHold)
                 {
                     _players[index].downHold = true;
-                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
                 }
             }
             if (right)
@@ -221,7 +221,7 @@ public struct GameSimulation : IGame
                 if (!_players[index].rightHold)
                 {
                     _players[index].rightHold = true;
-                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
                 }
             }
             if (left)
@@ -231,50 +231,50 @@ public struct GameSimulation : IGame
                 if (!_players[index].leftHold)
                 {
                     _players[index].leftHold = true;
-                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                    _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
                 }
             }
 
 
             if (dashForward)
             {
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.ForwardDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.ForwardDash, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
             }
             if (dashBackward)
             {
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.BackDash, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.BackDash, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
             }
             if (light)
             {
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Light, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
             }
             if (medium)
             {
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Medium, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
             }
             if (heavy)
             {
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Heavy, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
             }
             if (arcana)
             {
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Special, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
             }
             if (blueFrenzy)
             {
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Parry, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Parry, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
             }
             if (redFrenzy)
             {
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.RedFrenzy, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.RedFrenzy, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
             }
             if (grab)
             {
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Throw, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
             }
             if (shadow)
             {
-                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].inputDirection, frame = Framenumber, pressed = true });
+                _players[index].inputBuffer.AddInputItem(new InputItemNetwork() { inputEnum = InputEnum.Assist, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
             }
 
             if (_players[index].shadowGauge >= maxShadowGauge)
@@ -382,9 +382,9 @@ public struct GameSimulation : IGame
 
         for (int i = 0; i < _players[index].inputBuffer.inputItems.Length; i++)
         {
-            if (_players[index].inputBuffer.inputItems[i].frame < Framenumber)
+            if (_players[index].inputBuffer.inputItems[i].frame < Frames)
                 _players[index].inputBuffer.inputItems[i].pressed = false;
-            if (_players[index].inputBuffer.inputItems[i].frame + 25 < Framenumber)
+            if (_players[index].inputBuffer.inputItems[i].frame + 25 < Frames)
                 _players[index].inputBuffer.inputItems[i].frame = 0;
         }
         _players[index].gotHit = false;
@@ -397,13 +397,13 @@ public struct GameSimulation : IGame
     {
         if (Time.timeScale > 0 && GameplayManager.Instance)
         {
-            if (Framenumber == 0)
+            if (Frames == 0)
             {
                 GameSimulation.Start = true;
             }
-            Framenumber++;
-            DemonicsWorld.Frame = Framenumber;
-            if (Framenumber % GlobalHitstop == 0)
+            Frames++;
+            DemonicsWorld.Frame = Frames;
+            if (Frames % GlobalHitstop == 0)
             {
                 if (IntroFrame == 0 && !_introPlayed)
                 {
@@ -417,7 +417,7 @@ public struct GameSimulation : IGame
                     {
                         if ((inputs[0] & NetworkInput.SKIP_BYTE) != 0 || (inputs[1] & NetworkInput.SKIP_BYTE) != 0)
                         {
-                            if (Framenumber > 200 && !_introPlayed)
+                            if (Frames > 200 && !_introPlayed)
                             {
                                 _introPlayed = true;
                                 _players[0].CurrentState.EnterState(_players[0], "Taunt");
@@ -471,7 +471,7 @@ public struct GameSimulation : IGame
                     }
                     if (GameSimulation.Run)
                     {
-                        if (Framenumber % 60 == 0)
+                        if (Frames % 60 == 0)
                         {
                             if (Timer > 0 && !SceneSettings.IsTrainingMode)
                             {
@@ -528,7 +528,7 @@ public struct GameSimulation : IGame
     public override int GetHashCode()
     {
         int hashCode = -1214587014;
-        hashCode = hashCode * -1521134295 + Framenumber.GetHashCode();
+        hashCode = hashCode * -1521134295 + Frames.GetHashCode();
         foreach (var player in _players)
             hashCode = hashCode * -1521134295 + player.GetHashCode();
         return hashCode;
