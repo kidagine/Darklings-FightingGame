@@ -320,13 +320,9 @@ public class ObjectPoolingManager : MonoBehaviour
     public void DestroyAllObjects()
     {
         foreach (Transform child in _playerOnePool)
-        {
             Destroy(child.gameObject);
-        }
         foreach (Transform child in _playerTwoPool)
-        {
             Destroy(child.gameObject);
-        }
         _objectsPoolOne.Clear();
         _objectsProjectilePoolOne.Clear();
         _objectsAssistsPoolOne.Clear();

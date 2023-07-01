@@ -14,11 +14,11 @@ public class JumpState : AirParentState
             player.hasJumped = true;
             player.animationFrames = 0;
             player.velocity = new DemonicsVector2((DemonicsFloat)0, player.playerStats.JumpForce);
-            if (player.inputBuffer.CurrentInput().frame != 0)
+            if (player.inputBuffer.CurrentTrigger().frame != 0)
             {
                 player.isAir = true;
-                player.inputBuffer.inputItems[player.inputBuffer.index].frame = 0;
-                if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.Special)
+                player.inputBuffer.triggers[player.inputBuffer.indexTrigger].frame = 0;
+                if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Special)
                 {
                     Arcana(player, player.isAir);
                 }
@@ -26,9 +26,9 @@ public class JumpState : AirParentState
                 {
                     if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
                     {
-                        if (player.inputBuffer.CurrentInput().inputEnum != InputEnum.Throw)
+                        if (player.inputBuffer.CurrentTrigger().inputEnum != InputEnum.Throw)
                         {
-                            if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Heavy && player.direction.y >= 0))
+                            if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Heavy && player.direction.y >= 0))
                             {
                                 Attack(player, player.isAir);
                             }

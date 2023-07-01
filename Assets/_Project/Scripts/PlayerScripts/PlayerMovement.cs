@@ -159,10 +159,6 @@ public class PlayerMovement : MonoBehaviour
             _velocity = Physics.Velocity;
             IsInHitstop = true;
             Physics.SetFreeze(true);
-            if (_player.CanSkipAttack)
-            {
-                _player.hitstopEvent.AddListener(inputBuffer.CheckInputBufferAttacks);
-            }
         }
     }
 

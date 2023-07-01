@@ -24,12 +24,17 @@ public class InputDisplay : MonoBehaviour
     [SerializeField] private Image _arcana = default;
     [SerializeField] private Image _shadow = default;
     [SerializeField] private Image _throw = default;
+    [SerializeField] private Image[] _triggers = default;
 
-
-    private void Awake()
+    public void UpdateDisplay(InputList inputList)
     {
-        PlayerController.OnInputDirection.AddListener(SetInputDirection);
-        PlayerController.OnInputAction.AddListener(SetInputAction);
+        for (int i = 0; i < _triggers.Length; i++)
+            SetTriggerDisplay(_triggers[i], inputList.inputTriggers[i].held);
+    }
+
+    private void SetTriggerDisplay(Image triggerImage, bool triggerHeld)
+    {
+        triggerImage.color = triggerHeld ? _activedActions : _disabledActions;
     }
 
     private void SetInputDirection(Vector2Int direction, bool playerOne)

@@ -34,7 +34,7 @@ public class DashAirState : State
 
     public bool ToAttackState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             Attack(player, true);
             return true;

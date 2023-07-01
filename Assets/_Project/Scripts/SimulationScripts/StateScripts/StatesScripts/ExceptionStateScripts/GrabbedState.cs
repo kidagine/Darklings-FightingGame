@@ -27,7 +27,7 @@ public class GrabbedState : State
 
     private void ThrowBreak(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Throw)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Throw)
         {
             if (player.otherPlayer.state != "Arcana" && player.animationFrames <= 6)
             {

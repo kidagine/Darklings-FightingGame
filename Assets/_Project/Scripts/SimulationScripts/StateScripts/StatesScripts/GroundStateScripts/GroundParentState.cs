@@ -20,35 +20,35 @@ public class GroundParentState : State
 
     private void ToBlueFrenzyState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Parry)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Parry)
         {
             EnterState(player, "BlueFrenzy");
         }
     }
     public void ToAttackState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             Attack(player);
         }
     }
     public void ToArcanaState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             Arcana(player);
         }
     }
     private void ToRedFrenzyState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             RedFrenzy(player);
         }
     }
     private void ToGrabState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Throw)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Throw)
         {
             AttackSO attack = PlayerComboSystem.GetThrow(player.playerStats);
             player.attackNetwork = SetAttack(player.attackInput, attack);

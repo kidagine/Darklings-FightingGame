@@ -69,7 +69,7 @@ public class BlueFrenzyState : State
     }
     private void ToParryState(PlayerNetwork player, bool isParrying)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Parry)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Parry)
         {
             if (isParrying)
             {
@@ -82,8 +82,8 @@ public class BlueFrenzyState : State
     {
         int parryDistance = 37;
         player.sound = "Parry";
-        DemonicsVector2 hurtEffectPosition = new DemonicsVector2(player.position.x + (20 * player.flip), player.otherPlayer.hitbox.position.y);
-        player.SetEffect("Parry", hurtEffectPosition);
+        DemonicsVector2 hurtEffectPosition = new DemonicsVector2(player.position.x + (20 * player.flip), player.position.y + 25);
+        player.SetParticle("Parry", hurtEffectPosition);
         player.otherPlayer.canChainAttack = true;
         GameSimulation.Hitstop = 10;
         if (DemonicsPhysics.IsInCorner(player.otherPlayer))

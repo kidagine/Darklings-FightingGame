@@ -51,7 +51,7 @@ public class State
     }
     protected void RedFrenzy(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.RedFrenzy)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.RedFrenzy)
         {
             if (player.healthRecoverable > player.health)
             {
@@ -63,11 +63,11 @@ public class State
     }
     protected void Attack(PlayerNetwork player, bool air = false)
     {
-        if ((player.inputBuffer.CurrentInput().inputEnum == InputEnum.Light || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Medium
-        || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Heavy))
+        if ((player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Light || player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Medium
+        || player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Heavy))
         {
             player.pushbackDuration = 0;
-            player.attackInput = player.inputBuffer.CurrentInput().inputEnum;
+            player.attackInput = player.inputBuffer.CurrentTrigger().inputEnum;
             player.isCrouch = false;
             player.isAir = air;
             if (player.direction.y < 0)
@@ -88,9 +88,9 @@ public class State
     }
     protected void Arcana(PlayerNetwork player, bool air = false)
     {
-        if (player.arcanaGauge >= 1000 && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Special)
+        if (player.arcanaGauge >= 1000 && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Special)
         {
-            player.attackInput = player.inputBuffer.CurrentInput().inputEnum;
+            player.attackInput = player.inputBuffer.CurrentTrigger().inputEnum;
             player.isAir = air;
             player.isCrouch = false;
             if (player.direction.y < 0)
@@ -455,7 +455,7 @@ public class State
 
     protected void Shadow(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Assist)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Assist)
         {
             if (!player.shadow.isOnScreen && player.shadowGauge >= GameSimulation.maxShadowGauge / 2)
             {
@@ -474,7 +474,7 @@ public class State
     }
     protected void ToShadowbreakState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Assist)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Assist)
         {
             if (player.shadowGauge == GameSimulation.maxShadowGauge)
             {

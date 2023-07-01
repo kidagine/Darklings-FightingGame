@@ -68,6 +68,7 @@ public class PlayerNetwork
     public string state;
     public int spriteOrder;
     public State CurrentState;
+    public InputList inputList;
     public ColliderNetwork hurtbox;
     public ColliderNetwork hitbox;
     public ColliderNetwork pushbox;

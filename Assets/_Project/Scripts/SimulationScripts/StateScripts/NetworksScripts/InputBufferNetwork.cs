@@ -5,50 +5,46 @@ using UnityEngine;
 [Serializable]
 public struct InputBufferNetwork
 {
-    public InputItemNetwork[] inputItems;
-    public int index;
+    public InputItemNetwork[] triggers;
+    public InputItemNetwork[] sequences;
+    public int indexTrigger;
+    public int indexSequence;
+
     public void Serialize(BinaryWriter bw)
     {
-        bw.Write(index);
-        for (int i = 0; i < inputItems.Length; ++i)
-        {
-            inputItems[i].Serialize(bw);
-        }
+        bw.Write(indexTrigger);
+        bw.Write(indexSequence);
+        for (int i = 0; i < triggers.Length; ++i)
+            triggers[i].Serialize(bw);
+        for (int i = 0; i < sequences.Length; ++i)
+            sequences[i].Serialize(bw);
     }
 
     public void Deserialize(BinaryReader br)
     {
-        index = br.ReadInt32();
-        for (int i = 0; i < inputItems.Length; ++i)
-        {
-            inputItems[i].Deserialize(br);
-        }
+        indexTrigger = br.ReadInt32();
+        indexSequence = br.ReadInt32();
+        for (int i = 0; i < triggers.Length; ++i)
+            triggers[i].Deserialize(br);
+        for (int i = 0; i < sequences.Length; ++i)
+            sequences[i].Deserialize(br);
     }
 
-    public void AddInputItem(InputItemNetwork inputItem)
+    public void AddTrigger(InputItemNetwork inputItem)
     {
-        index++;
-        if (index >= inputItems.Length)
-        {
-            index = 0;
-        }
-        inputItems[index] = inputItem;
+        indexTrigger++;
+        if (indexTrigger >= triggers.Length)
+            indexTrigger = 0;
+        triggers[indexTrigger] = inputItem;
     }
 
-    public InputItemNetwork CurrentInput()
+    public void AddSequence(InputItemNetwork inputItem)
     {
-        int storedIndex = index;
-        if (storedIndex >= 0 && storedIndex < inputItems.Length)
-        {
-            while (inputItems[storedIndex].inputEnum == InputEnum.Direction)
-            {
-                if (storedIndex == 0)
-                {
-                    break;
-                }
-                storedIndex--;
-            }
-        }
-        return inputItems[storedIndex];
+        indexSequence++;
+        if (indexSequence >= sequences.Length)
+            indexSequence = 0;
+        sequences[indexSequence] = inputItem;
     }
+
+    public InputItemNetwork CurrentTrigger() => triggers[indexTrigger];
 };

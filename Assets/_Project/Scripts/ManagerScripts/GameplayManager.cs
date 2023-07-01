@@ -67,6 +67,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private GameObject _trainingPrompts = default;
     [SerializeField] private MusicMenu _musicMenu = default;
     [SerializeField] private InputHistory[] _inputHistories = default;
+    [SerializeField] private InputDisplay[] _inputDisplays = default;
     [SerializeField] private PlayerStatsSO[] _playerStats = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
     [SerializeField] private GameObject[] _stages = default;
@@ -283,8 +284,8 @@ public class GameplayManager : MonoBehaviour
         }
         PlayerOne.name = $"{_playerStats[SceneSettings.PlayerOne].name}({SceneSettings.ControllerOne})_player";
         PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
-        PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
-        PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
+        PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0], _inputDisplays[0]);
+        PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1], _inputDisplays[1]);
         string inputSchemeOne = "";
         string inputSchemeTwo = "";
         if (SceneSettings.ControllerOne != null && SceneSettings.ControllerOneScheme != ControllerTypeEnum.Cpu.ToString())

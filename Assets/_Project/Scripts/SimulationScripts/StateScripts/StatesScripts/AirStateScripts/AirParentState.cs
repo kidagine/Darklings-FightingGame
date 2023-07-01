@@ -49,14 +49,14 @@ public class AirParentState : State
     }
     private void ToDashAirState(PlayerNetwork player)
     {
-        if (player.canDoubleJump && player.inputBuffer.CurrentInput().pressed)
+        if (player.canDoubleJump && player.inputBuffer.CurrentTrigger().pressed)
         {
-            if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.ForwardDash)
+            if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.ForwardDash)
             {
                 player.dashDirection = 1;
                 EnterState(player, "DashAir");
             }
-            else if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.BackDash)
+            else if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.BackDash)
             {
                 player.dashDirection = -1;
                 EnterState(player, "DashAir");
@@ -65,14 +65,14 @@ public class AirParentState : State
     }
     private void ToRedFrenzyState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             RedFrenzy(player);
         }
     }
     public bool ToAttackState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             Attack(player, true);
             return true;
@@ -81,7 +81,7 @@ public class AirParentState : State
     }
     public void ToArcanaState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             Arcana(player, true);
         }

@@ -38,15 +38,11 @@ public class AttackState : State
             return;
         }
         if (player.animationFrames == 0)
-            player.inputBuffer.inputItems[player.inputBuffer.index].frame = 0;
+            player.inputBuffer.triggers[player.inputBuffer.indexTrigger].frame = 0;
         if (player.dashFrames <= 0)
-        {
             player.dashDirection = 0;
-        }
         if (!player.isAir)
-        {
             player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
-        }
         else
         {
             if (player.dashFrames > 0)
@@ -125,7 +121,7 @@ public class AttackState : State
         player.attackFrames--;
         if (player.canChainAttack)
         {
-            InputItemNetwork input = player.inputBuffer.CurrentInput();
+            InputItemNetwork input = player.inputBuffer.CurrentTrigger();
             if (input.frame != 0)
             {
                 if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
