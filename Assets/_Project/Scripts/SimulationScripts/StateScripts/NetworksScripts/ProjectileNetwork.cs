@@ -6,14 +6,14 @@ using UnityEngine;
 public struct ProjectileNetwork
 {
     public AttackNetwork attackNetwork;
-    public DemonicsVector2 position;
+    public DemonVector2 position;
     public bool active;
     public bool flip;
     public bool hitstop;
     public bool fire;
     public bool destroyOnHit;
     public string name;
-    public DemonicsFloat speed;
+    public DemonFloat speed;
     public int priority;
     public int animationFrames;
     public int animationMaxFrames;
@@ -40,9 +40,9 @@ public struct ProjectileNetwork
 
     public void Deserialize(BinaryReader br)
     {
-        position.x = (DemonicsFloat)br.ReadSingle();
-        position.y = (DemonicsFloat)br.ReadSingle();
-        speed = (DemonicsFloat)br.ReadSingle();
+        position.x = (DemonFloat)br.ReadSingle();
+        position.y = (DemonFloat)br.ReadSingle();
+        speed = (DemonFloat)br.ReadSingle();
         name = br.ReadString();
         priority = br.ReadInt32();
         animationFrames = br.ReadInt32();

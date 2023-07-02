@@ -84,7 +84,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
         }
     }
 
-    public static void UpdateParticles(int index, EffectNetwork particle, DemonicsVector2 position)
+    public static void UpdateParticles(int index, EffectNetwork particle, DemonVector2 position)
     {
         GameObject[] particlesObjects = ObjectPoolingManager.Instance.GetParticlePool(index, particle.name);
         if (particlesObjects.Length > 0)

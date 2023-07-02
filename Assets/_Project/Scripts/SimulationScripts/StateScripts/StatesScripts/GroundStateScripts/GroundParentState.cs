@@ -9,7 +9,8 @@ public class GroundParentState : State
         player.canDoubleJump = true;
         player.hasJumped = false;
         player.canJump = true;
-        ToBlueFrenzyState(player);
+        if (ToBlueFrenzyState(player))
+            return;
         ToRedFrenzyState(player);
         ToGrabState(player);
         ToAttackState(player);
@@ -18,33 +19,29 @@ public class GroundParentState : State
         ToHurtState(player);
     }
 
-    private void ToBlueFrenzyState(PlayerNetwork player)
+    private bool ToBlueFrenzyState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Parry)
+        if (player.inputBuffer.GetBlueFrenzy())
         {
             EnterState(player, "BlueFrenzy");
+            return true;
         }
+        return false;
     }
     public void ToAttackState(PlayerNetwork player)
     {
         if (player.inputBuffer.CurrentTrigger().pressed)
-        {
             Attack(player);
-        }
     }
     public void ToArcanaState(PlayerNetwork player)
     {
         if (player.inputBuffer.CurrentTrigger().pressed)
-        {
             Arcana(player);
-        }
     }
     private void ToRedFrenzyState(PlayerNetwork player)
     {
         if (player.inputBuffer.CurrentTrigger().pressed)
-        {
             RedFrenzy(player);
-        }
     }
     private void ToGrabState(PlayerNetwork player)
     {
@@ -68,7 +65,7 @@ public class GroundParentState : State
             {
                 player.otherPlayer.knockback = 0;
                 player.otherPlayer.pushbackStart = player.otherPlayer.position;
-                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
             if (IsBlocking(player))

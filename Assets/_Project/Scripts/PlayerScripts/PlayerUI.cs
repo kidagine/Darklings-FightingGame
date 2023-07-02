@@ -397,7 +397,7 @@ public class PlayerUI : MonoBehaviour
         _currentLifeIndex++;
     }
 
-    public void SetComboTimer(DemonicsFloat value, Color color)
+    public void SetComboTimer(DemonFloat value, Color color)
     {
         _hitsNumberText.color = color;
         _comboTimerImage.color = color;

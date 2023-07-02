@@ -1,7 +1,5 @@
-using Demonics;
 using SharedGame;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Unity.Collections;
 using UnityEngine;
@@ -35,9 +33,7 @@ public struct GameSimulation : IGame
         bw.Write(Run);
         bw.Write(_players.Length);
         for (int i = 0; i < _players.Length; ++i)
-        {
             _players[i].Serialize(bw);
-        }
     }
 
     public void Deserialize(BinaryReader br)
@@ -51,13 +47,9 @@ public struct GameSimulation : IGame
         Run = br.ReadBoolean();
         int length = br.ReadInt32();
         if (length != _players.Length)
-        {
             _players = new PlayerNetwork[length];
-        }
         for (int i = 0; i < _players.Length; ++i)
-        {
             _players[i].Deserialize(br);
-        }
     }
 
     public NativeArray<byte> ToBytes()
@@ -65,9 +57,7 @@ public struct GameSimulation : IGame
         using (var memoryStream = new MemoryStream())
         {
             using (var writer = new BinaryWriter(memoryStream))
-            {
                 Serialize(writer);
-            }
             return new NativeArray<byte>(memoryStream.ToArray(), Allocator.Persistent);
         }
     }
@@ -77,9 +67,7 @@ public struct GameSimulation : IGame
         using (var memoryStream = new MemoryStream(bytes.ToArray()))
         {
             using (var reader = new BinaryReader(memoryStream))
-            {
                 Deserialize(reader);
-            }
         }
     }
 
@@ -103,11 +91,10 @@ public struct GameSimulation : IGame
             _players[i] = new PlayerNetwork();
             _players[i].resultAttack = new ResultAttack();
             _players[i].inputBuffer.triggers = new InputItemNetwork[20];
-            _players[i].inputBuffer.sequences = new InputItemNetwork[20];
             _players[i].state = "Idle";
             _players[i].CurrentState = new IdleState();
             _players[i].flip = 1;
-            _players[i].position = new DemonicsVector2((DemonicsFloat)GameplayManager.Instance.GetSpawnPositions()[i], DemonicsPhysics.GROUND_POINT);
+            _players[i].position = new DemonVector2((DemonFloat)GameplayManager.Instance.GetSpawnPositions()[i], DemonicsPhysics.GROUND_POINT);
             _players[i].playerStats = playerStats[i];
             _players[i].health = playerStats[i].maxHealth;
             _players[i].healthRecoverable = playerStats[i].maxHealth;
@@ -125,24 +112,19 @@ public struct GameSimulation : IGame
             _players[i].rightHold = false;
             _players[i].inputList = new InputList()
             {
-                inputTriggers = new InputData[]{
-                    new InputData() { inputEnum = InputEnum.Light },
-                    new InputData() { inputEnum = InputEnum.Medium },
-                    new InputData() { inputEnum = InputEnum.Heavy },
-                    new InputData() { inputEnum = InputEnum.Assist },
-                    new InputData() { inputEnum = InputEnum.Special },
-                    new InputData() { inputEnum = InputEnum.Throw },
-                    new InputData() { inputEnum = InputEnum.Parry },
-                    new InputData() { inputEnum = InputEnum.RedFrenzy },
-                    new InputData() { inputEnum = InputEnum.ForwardDash },
-                    new InputData() { inputEnum = InputEnum.BackDash },
+                inputTriggers = new InputTrigger[]{
+                    new InputTrigger() { inputEnum = InputEnum.Light },
+                    new InputTrigger() { inputEnum = InputEnum.Medium },
+                    new InputTrigger() { inputEnum = InputEnum.Heavy },
+                    new InputTrigger() { inputEnum = InputEnum.Assist },
+                    new InputTrigger() { inputEnum = InputEnum.Special },
+                    new InputTrigger() { inputEnum = InputEnum.Throw },
+                    new InputTrigger() { inputEnum = InputEnum.Parry },
+                    new InputTrigger() { inputEnum = InputEnum.RedFrenzy },
+                    new InputTrigger() { inputEnum = InputEnum.ForwardDash },
+                    new InputTrigger() { inputEnum = InputEnum.BackDash },
                 },
-                inputSequences = new InputData[]{
-                    new InputData() { inputEnum = InputEnum.Direction, inputDirectionEnum = InputDirectionEnum.Up },
-                    new InputData() { inputEnum = InputEnum.Direction, inputDirectionEnum = InputDirectionEnum.Down  },
-                    new InputData() { inputEnum = InputEnum.Direction, inputDirectionEnum = InputDirectionEnum.Left },
-                    new InputData() { inputEnum = InputEnum.Direction, inputDirectionEnum = InputDirectionEnum.Right },
-                }
+                inputSequence = new InputSequence() { inputEnum = InputEnum.Direction, inputDirectionEnum = InputDirectionEnum.Neutral },
             };
             _players[i].attackNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
             _players[i].attackHurtNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
@@ -151,16 +133,16 @@ public struct GameSimulation : IGame
             _players[i].projectiles = new ProjectileNetwork[playerStats[i]._projectilesLibrary._objectPools.Count];
             _players[i].hitbox = new ColliderNetwork() { active = false };
             _players[i].hurtbox = new ColliderNetwork() { active = true };
-            _players[i].pushbox = new ColliderNetwork() { active = true, size = new DemonicsVector2(22, 25), offset = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)12.5) };
+            _players[i].pushbox = new ColliderNetwork() { active = true, size = new DemonVector2(22, 25), offset = new DemonVector2((DemonFloat)0, (DemonFloat)12.5) };
             _players[i].shadow = new ShadowNetwork();
             _players[i].shadow.projectile.name = assistStats[i].assistProjectile.groupName;
             _players[i].shadow.attack = assistStats[i].attackSO;
             _players[i].shadow.projectile.attackNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
-            _players[i].shadow.spawnPoint = new DemonicsVector2((DemonicsFloat)assistStats[i].assistPosition.x, (DemonicsFloat)assistStats[i].assistPosition.y);
-            _players[i].shadow.spawnRotation = new DemonicsVector2((DemonicsFloat)assistStats[i].assistRotation.x, (DemonicsFloat)assistStats[i].assistRotation.y);
+            _players[i].shadow.spawnPoint = new DemonVector2((DemonFloat)assistStats[i].assistPosition.x, (DemonFloat)assistStats[i].assistPosition.y);
+            _players[i].shadow.spawnRotation = new DemonVector2((DemonFloat)assistStats[i].assistRotation.x, (DemonFloat)assistStats[i].assistRotation.y);
             _players[i].shadow.projectile.animationMaxFrames = ObjectPoolingManager.Instance.GetAssistPoolAnimation(i, _players[i].shadow.projectile.name).GetMaxAnimationFrames();
             _players[i].shadow.projectile.destroyOnHit = true;
-            _players[i].shadow.projectile.speed = (DemonicsFloat)assistStats[i].assistSpeed;
+            _players[i].shadow.projectile.speed = (DemonFloat)assistStats[i].assistSpeed;
             _players[i].shadow.projectile.priority = assistStats[i].assistPriority;
             for (int j = 0; j < _players[i].effects.Length; j++)
             {
@@ -191,92 +173,47 @@ public struct GameSimulation : IGame
         _players[1].CurrentState.CheckTrainingGauges(_players[1]);
     }
 
-    public void PlayerLogic(int index, bool skip, bool up, bool down, bool left, bool right)
+    public void PlayerLogic(int index, bool skip)
     {
         if (GameSimulation.Run)
         {
-            if (up)
-            {
-                _players[index].inputDirection = InputDirectionEnum.Up;
-                _players[index].direction = new Vector2Int(_players[index].direction.x, 1);
-                if (!_players[index].upHold)
-                {
-                    _players[index].upHold = true;
-                    _players[index].inputBuffer.AddSequence(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
-                }
-            }
-            for (int i = 0; i < _players[index].inputList.inputSequences.Length; i++)
-            {
-                if (_players[index].inputList.inputSequences[i].held)
-                {
-                    _players[index].inputDirection = _players[index].inputList.inputSequences[i].inputDirectionEnum;
-                    if (_players[index].inputDirection == InputDirectionEnum.Up)
-                        _players[index].direction = new Vector2Int(_players[index].direction.x, 1);
-                    if (_players[index].inputDirection == InputDirectionEnum.Down)
-                        _players[index].direction = new Vector2Int(_players[index].direction.x, -1);
-                    if (_players[index].inputDirection == InputDirectionEnum.Left)
-                        _players[index].direction = new Vector2Int(-1, _players[index].direction.y);
-                    if (_players[index].inputDirection == InputDirectionEnum.Right)
-                        _players[index].direction = new Vector2Int(1, _players[index].direction.y);
-                    if (_players[index].inputList.inputSequences[i].pressed)
-                        _players[index].inputBuffer.AddSequence(new InputItemNetwork() { inputEnum = InputEnum.Direction, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
-                }
-            }
-
+            _players[index].inputDirection = _players[index].inputList.inputSequence.inputDirectionEnum;
+            _players[index].direction = InputDirectionTypes.GetDirectionValue(_players[index].inputDirection);
             for (int i = 0; i < _players[index].inputList.inputTriggers.Length; i++)
                 if (_players[index].inputList.inputTriggers[i].pressed)
                     _players[index].inputBuffer.AddTrigger(new InputItemNetwork() { inputEnum = _players[index].inputList.inputTriggers[i].inputEnum, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
 
             if (_players[index].shadowGauge >= maxShadowGauge)
-            {
                 _players[index].shadowGauge = maxShadowGauge;
-            }
-            else
-            {
-                if (_players[index].otherPlayer.combo == 0 || !_players[index].shadow.usedInCombo)
-                    _players[index].shadowGauge += 2;
-            }
+            else if (_players[index].otherPlayer.combo == 0 || !_players[index].shadow.usedInCombo)
+                _players[index].shadowGauge += 2;
         }
         else
-        {
             _players[index].direction = Vector2Int.zero;
-        }
+
         StateSimulation.SetState(_players[index]);
         _players[index].CurrentState.UpdateLogic(_players[index]);
         if (!_players[index].hitstop)
         {
             _players[index].player.PlayerAnimator.SpriteNormalEffect();
             if (!DemonicsPhysics.Collision(_players[index], _players[index].otherPlayer))
-            {
-                _players[index].position = new DemonicsVector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
-            }
+                _players[index].position = new DemonVector2(_players[index].position.x + _players[index].velocity.x, _players[index].position.y + _players[index].velocity.y);
         }
         if (Hitstop <= 0)
         {
             for (int i = 0; i < _players[index].projectiles.Length; i++)
-            {
                 _players[index].projectiles[i].hitstop = false;
-            }
             _players[index].shadow.projectile.hitstop = false;
             _players[index].hitstop = false;
         }
         _players[index].position = DemonicsPhysics.Bounds(_players[index]);
         DemonicsPhysics.CameraHorizontalBounds(_players[0], _players[1]);
         if (_players[index].player.IsAnimationFinished(_players[index].animation, _players[index].animationFrames))
-        {
             if (_players[index].player.IsAnimationLoop(_players[index].animation))
-            {
                 _players[index].animationFrames = 0;
-            }
-            else
-            {
-                // _players[index].animationFrames = _players[index].animationFrames + 1;
-            }
-        }
+
         for (int i = 0; i < _players[index].effects.Length; i++)
-        {
             for (int j = 0; j < _players[index].effects[i].effectGroups.Length; j++)
-            {
                 if (_players[index].effects[i].effectGroups[j].active)
                 {
                     _players[index].effects[i].effectGroups[j].animationFrames++;
@@ -286,10 +223,7 @@ public struct GameSimulation : IGame
                         _players[index].effects[i].effectGroups[j].active = false;
                     }
                 }
-            }
-        }
         if (_players[index].shadow.isOnScreen)
-        {
             if (_players[index].shadow.animationFrames >= 55)
             {
                 _players[index].CurrentState.CheckTrainingGauges(_players[index]);
@@ -304,7 +238,6 @@ public struct GameSimulation : IGame
                     _players[index].SetAssist(_players[index].shadow.projectile.name, _players[index].shadow.position, _players[index].shadow.projectile.speed, false);
                 }
             }
-        }
 
         ProjectilesSimulation.HandleProjectileCollision(_players[index], index);
         AnimationBox[] animationHitboxes = _players[index].player.PlayerAnimator.GetHitboxes(_players[index].animation, _players[index].animationFrames);
@@ -315,17 +248,17 @@ public struct GameSimulation : IGame
         }
         else
         {
-            _players[index].hitbox.size = new DemonicsVector2((DemonicsFloat)animationHitboxes[0].size.x, (DemonicsFloat)animationHitboxes[0].size.y);
-            _players[index].hitbox.offset = new DemonicsVector2((DemonicsFloat)animationHitboxes[0].offset.x, (DemonicsFloat)animationHitboxes[0].offset.y);
-            _players[index].hitbox.position = new DemonicsVector2(_players[index].position.x + (_players[index].hitbox.offset.x * _players[index].flip), _players[index].position.y + _players[index].hitbox.offset.y);
+            _players[index].hitbox.size = new DemonVector2((DemonFloat)animationHitboxes[0].size.x, (DemonFloat)animationHitboxes[0].size.y);
+            _players[index].hitbox.offset = new DemonVector2((DemonFloat)animationHitboxes[0].offset.x, (DemonFloat)animationHitboxes[0].offset.y);
+            _players[index].hitbox.position = new DemonVector2(_players[index].position.x + (_players[index].hitbox.offset.x * _players[index].flip), _players[index].position.y + _players[index].hitbox.offset.y);
             _players[index].hitbox.active = true;
         }
         AnimationBox[] animationHurtboxes = _players[index].player.PlayerAnimator.GetHurtboxes(_players[index].animation, _players[index].animationFrames);
         if (animationHurtboxes.Length > 0)
         {
             _players[index].hurtbox.active = true;
-            _players[index].hurtbox.size = new DemonicsVector2((DemonicsFloat)animationHurtboxes[0].size.x, (DemonicsFloat)animationHurtboxes[0].size.y);
-            _players[index].hurtbox.offset = new DemonicsVector2((DemonicsFloat)animationHurtboxes[0].offset.x, (DemonicsFloat)animationHurtboxes[0].offset.y);
+            _players[index].hurtbox.size = new DemonVector2((DemonFloat)animationHurtboxes[0].size.x, (DemonFloat)animationHurtboxes[0].size.y);
+            _players[index].hurtbox.offset = new DemonVector2((DemonFloat)animationHurtboxes[0].offset.x, (DemonFloat)animationHurtboxes[0].offset.y);
         }
         _players[index].hurtbox.position = _players[index].position + _players[index].hurtbox.offset;
         _players[index].pushbox.position = _players[index].position + _players[index].pushbox.offset;
@@ -340,8 +273,6 @@ public struct GameSimulation : IGame
         _players[index].gotHit = false;
         for (int i = 0; i < _players[index].inputList.inputTriggers.Length; i++)
             _players[index].inputList.inputTriggers[i].pressed = false;
-        for (int i = 0; i < _players[index].inputList.inputSequences.Length; i++)
-            _players[index].inputList.inputSequences[i].pressed = false;
         if (_players[index].shadow.isOnScreen)
             _players[index].shadow.animationFrames++;
     }
@@ -351,9 +282,7 @@ public struct GameSimulation : IGame
         if (Time.timeScale > 0 && GameplayManager.Instance)
         {
             if (Frames == 0)
-            {
                 GameSimulation.Start = true;
-            }
             Frames++;
             DemonicsWorld.Frame = Frames;
             if (Frames % GlobalHitstop == 0)
@@ -369,7 +298,6 @@ public struct GameSimulation : IGame
                     if (!SceneSettings.ReplayMode)
                     {
                         if ((inputs[0] & NetworkInput.SKIP_BYTE) != 0 || (inputs[1] & NetworkInput.SKIP_BYTE) != 0)
-                        {
                             if (Frames > 200 && !_introPlayed)
                             {
                                 _introPlayed = true;
@@ -377,7 +305,6 @@ public struct GameSimulation : IGame
                                 _players[1].CurrentState.EnterState(_players[1], "Taunt");
                                 GameplayManager.Instance.SkipIntro();
                             }
-                        }
                     }
                     else
                     {
@@ -389,7 +316,6 @@ public struct GameSimulation : IGame
                             GameplayManager.Instance.SkipIntro();
                         }
                     }
-
                     IntroFrame--;
                 }
                 if (_players[0].player != null)
@@ -397,26 +323,16 @@ public struct GameSimulation : IGame
                     for (int i = 0; i < _players.Length; i++)
                     {
                         bool skip = false;
-                        bool up = false;
-                        bool down = false;
-                        bool left = false;
-                        bool right = false;
-                        if ((disconnect_flags & (1 << i)) != 0)
-                            Debug.Log("AI");
-                        else
-                            InputSimulation.ParseInputs(inputs[i], out skip, ref _players[i].inputList);
-
-                        PlayerLogic(i, skip, up, down, left, right);
+                        if ((disconnect_flags & (1 << i)) == 0)
+                            InputParser.ParseInput(inputs[i], out skip, ref _players[i].inputList);
+                        PlayerLogic(i, skip);
                     }
                     if (GameSimulation.Run)
-                    {
                         if (Frames % 60 == 0)
-                        {
                             if (Timer > 0 && !SceneSettings.IsTrainingMode)
                             {
                                 Timer--;
                                 if (Timer == 0)
-                                {
                                     if (_players[0].health == _players[1].health)
                                     {
                                         if (_players[0].player.Lives > 1 && _players[1].player.Lives == 1)
@@ -442,21 +358,14 @@ public struct GameSimulation : IGame
                                             _players[1].CurrentState.EnterState(_players[1], "Taunt");
                                         }
                                     }
-
-                                }
                             }
-                        }
-                    }
                     Hitstop--;
                 }
             }
         }
     }
 
-    public long ReadInputs(int id)
-    {
-        return InputSimulation.GetInput(id);
-    }
+    public long ReadInputs(int id) => InputParser.GetInput(id);
 
     public void FreeBytes(NativeArray<byte> data)
     {
@@ -473,8 +382,5 @@ public struct GameSimulation : IGame
         return hashCode;
     }
 
-    public void LogInfo(string filename)
-    {
-        Debug.Log(filename);
-    }
+    public void LogInfo(string filename) => Debug.Log(filename);
 }

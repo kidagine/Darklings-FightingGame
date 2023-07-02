@@ -9,7 +9,7 @@ public class AttackState : State
         {
             if (player.juggleBounce & player.isAir)
             {
-                player.position = new DemonicsVector2((DemonicsFloat)player.position.x, (DemonicsFloat)player.position.y + 7);
+                player.position = new DemonVector2((DemonFloat)player.position.x, (DemonFloat)player.position.y + 7);
                 player.juggleBounce = false;
             }
             if (player.attackNetwork.attackType == AttackTypeEnum.Break)
@@ -22,7 +22,7 @@ public class AttackState : State
                 player.player.StartShakeContact();
                 player.player.PlayerUI.Damaged();
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x, player.position.y + 20);
+                DemonVector2 effectPosition = new DemonVector2(player.position.x, player.position.y + 20);
                 player.SetParticle("GuardBreak", effectPosition);
                 //CheckTrainingComboEnd(player);
             }
@@ -42,7 +42,7 @@ public class AttackState : State
         if (player.dashFrames <= 0)
             player.dashDirection = 0;
         if (!player.isAir)
-            player.velocity = new DemonicsVector2(player.attackNetwork.travelDistance.x * (DemonicsFloat)player.flip, (DemonicsFloat)player.attackNetwork.travelDistance.y);
+            player.velocity = new DemonVector2(player.attackNetwork.travelDistance.x * (DemonFloat)player.flip, (DemonFloat)player.attackNetwork.travelDistance.y);
         else
         {
             if (player.dashFrames > 0)
@@ -50,7 +50,7 @@ public class AttackState : State
             else
             {
                 player.dashDirection = 0;
-                player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
+                player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
             }
         }
         if (!player.hitstop)
@@ -61,18 +61,18 @@ public class AttackState : State
         {
             if (player.pushbackDuration > 0 && player.knockback <= player.pushbackDuration)
             {
-                DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.pushbackDuration;
-                DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
-                DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
+                DemonFloat ratio = (DemonFloat)player.knockback / (DemonFloat)player.pushbackDuration;
+                DemonFloat nextX = DemonFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+                DemonVector2 nextPosition = new DemonVector2(nextX, player.position.y);
                 player.position = nextPosition;
                 player.knockback++;
                 if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
                 {
-                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+                    player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
                 }
                 else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
                 {
-                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+                    player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
                 }
             }
         }
@@ -90,25 +90,25 @@ public class AttackState : State
         bool forwardDash = player.dashDirection * player.flip == 1 ? true : false;
         int startUpFrames = forwardDash ? 9 : 13;
         int recoveryFrames = forwardDash ? 2 : 3;
-        DemonicsFloat dashforce = forwardDash ? player.playerStats.DashAirForce : player.playerStats.DashBackAirForce;
+        DemonFloat dashforce = forwardDash ? player.playerStats.DashAirForce : player.playerStats.DashBackAirForce;
         if (player.dashFrames < startUpFrames && player.dashFrames > recoveryFrames)
         {
-            player.velocity = new DemonicsVector2(player.dashDirection * dashforce, 0);
+            player.velocity = new DemonVector2(player.dashDirection * dashforce, 0);
         }
         else
         {
-            player.velocity = new DemonicsVector2(player.dashDirection * (dashforce - (DemonicsFloat)1), 0);
+            player.velocity = new DemonVector2(player.dashDirection * (dashforce - (DemonFloat)1), 0);
         }
         if (player.dashFrames % 3 == 0)
         {
             if (player.flip > 0)
             {
-                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x - 1, player.position.y);
+                DemonVector2 effectPosition = new DemonVector2(player.position.x - 1, player.position.y);
                 player.SetEffect("Ghost", player.position, false);
             }
             else
             {
-                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
+                DemonVector2 effectPosition = new DemonVector2(player.position.x + 1, player.position.y);
                 player.SetEffect("Ghost", player.position, true);
             }
         }
@@ -124,7 +124,7 @@ public class AttackState : State
             InputItemNetwork input = player.inputBuffer.CurrentTrigger();
             if (input.frame != 0)
             {
-                if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
                 {
                     player.isAir = true;
                 }
@@ -190,7 +190,7 @@ public class AttackState : State
     }
     private void ToIdleFallState(PlayerNetwork player)
     {
-        if (player.isAir && (DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+        if (player.isAir && (DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0)
         {
             player.SetParticle("Fall", player.position);
             player.sound = "Landed";
@@ -204,7 +204,7 @@ public class AttackState : State
     {
         if (player.attackFrames <= 0)
         {
-            if (player.isAir || (DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+            if (player.isAir || (DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
             {
                 player.isCrouch = false;
                 player.isAir = false;
@@ -251,7 +251,7 @@ public class AttackState : State
             {
                 player.otherPlayer.knockback = 0;
                 player.otherPlayer.pushbackStart = player.otherPlayer.position;
-                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
 
@@ -262,7 +262,7 @@ public class AttackState : State
             }
             else
             {
-                if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
+                if ((DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
                     {

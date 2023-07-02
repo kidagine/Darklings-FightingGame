@@ -12,7 +12,7 @@ public class IdleState : GroundParentState
             return;
         }
         player.animationFrames++;
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
         CheckFlip(player);
         base.UpdateLogic(player);
         ToWalkState(player);

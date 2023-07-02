@@ -18,7 +18,7 @@ public class HurtParentState : State
         player.ArcanaGain(ArcanaGainTypes.DefendOnHit);
         CheckTrainingGauges(player);
         player.shadow.isOnScreen = false;
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
         player.animationFrames = 0;
         if (player.combo == 0)
         {
@@ -46,7 +46,7 @@ public class HurtParentState : State
         player.stunFrames = player.attackHurtNetwork.hitStun;
         player.knockback = 0;
         player.pushbackStart = player.position;
-        player.pushbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
+        player.pushbackEnd = new DemonVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         if (player.health <= 0)
         {
             player.invincible = true;
@@ -71,7 +71,7 @@ public class HurtParentState : State
         }
         else
         {
-            player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+            player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         }
         if (!player.comboLocked)
         {
@@ -79,8 +79,8 @@ public class HurtParentState : State
         }
         player.stunFrames--;
         player.player.OtherPlayerUI.SetComboTimer
-       (DemonicsFloat.Lerp((DemonicsFloat)0, (DemonicsFloat)1,
-        (DemonicsFloat)player.comboTimer / (DemonicsFloat)ComboTimerStarterTypes.GetComboTimerStarterValue(player.comboTimerStarter)), ComboTimerStarterTypes.GetComboTimerStarterColor(player.comboTimerStarter));
+       (DemonFloat.Lerp((DemonFloat)0, (DemonFloat)1,
+        (DemonFloat)player.comboTimer / (DemonFloat)ComboTimerStarterTypes.GetComboTimerStarterValue(player.comboTimerStarter)), ComboTimerStarterTypes.GetComboTimerStarterColor(player.comboTimerStarter));
     }
 
     protected virtual void Knockback(PlayerNetwork player)

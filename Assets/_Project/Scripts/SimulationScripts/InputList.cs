@@ -1,5 +1,5 @@
 public class InputList
 {
-    public InputData[] inputTriggers;
-    public InputData[] inputSequences;
+    public InputTrigger[] inputTriggers;
+    public InputSequence inputSequence;
 }

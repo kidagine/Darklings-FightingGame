@@ -14,16 +14,16 @@ public class DashAirState : State
             player.canDoubleJump = false;
             if (player.dashDirection > 0)
             {
-                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x - 1, player.position.y);
+                DemonVector2 effectPosition = new DemonVector2(player.position.x - 1, player.position.y);
                 player.SetEffect("Dash", effectPosition, false);
             }
             else
             {
-                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
+                DemonVector2 effectPosition = new DemonVector2(player.position.x + 1, player.position.y);
                 player.SetEffect("Dash", effectPosition, true);
             }
             player.dashFrames = forwardDash == true ? 10 : 15;
-            player.velocity = new DemonicsVector2(player.dashDirection * (player.playerStats.DashForce - 0.5), 0);
+            player.velocity = new DemonVector2(player.dashDirection * (player.playerStats.DashForce - 0.5), 0);
             player.dashFrames--;
             return;
         }
@@ -49,25 +49,25 @@ public class DashAirState : State
             bool forwardDash = player.dashDirection * player.flip == 1 ? true : false;
             int startUpFrames = forwardDash ? 9 : 13;
             int recoveryFrames = forwardDash ? 2 : 3;
-            DemonicsFloat dashforce = forwardDash ? player.playerStats.DashAirForce : player.playerStats.DashBackAirForce;
+            DemonFloat dashforce = forwardDash ? player.playerStats.DashAirForce : player.playerStats.DashBackAirForce;
             if (player.dashFrames < startUpFrames && player.dashFrames > recoveryFrames)
             {
-                player.velocity = new DemonicsVector2(player.dashDirection * dashforce, 0);
+                player.velocity = new DemonVector2(player.dashDirection * dashforce, 0);
             }
             else
             {
-                player.velocity = new DemonicsVector2(player.dashDirection * (dashforce - (DemonicsFloat)1), 0);
+                player.velocity = new DemonVector2(player.dashDirection * (dashforce - (DemonFloat)1), 0);
             }
             if (player.dashFrames % 3 == 0)
             {
                 if (player.flip > 0)
                 {
-                    DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x - 1, player.position.y);
+                    DemonVector2 effectPosition = new DemonVector2(player.position.x - 1, player.position.y);
                     player.SetEffect("Ghost", player.position, false);
                 }
                 else
                 {
-                    DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
+                    DemonVector2 effectPosition = new DemonVector2(player.position.x + 1, player.position.y);
                     player.SetEffect("Ghost", player.position, true);
                 }
             }

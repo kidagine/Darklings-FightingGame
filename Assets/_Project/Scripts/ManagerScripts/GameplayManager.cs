@@ -88,8 +88,8 @@ public class GameplayManager : MonoBehaviour
     private Coroutine _roundOverTrainingCoroutine;
     private GameObject _currentStage;
     private List<IHitstop> _hitstopList = new();
-    private DemonicsVector2 _cachedOneResetPosition;
-    private DemonicsVector2 _cachedTwoResetPosition;
+    private DemonVector2 _cachedOneResetPosition;
+    private DemonVector2 _cachedTwoResetPosition;
     private int _countdown;
     private int _currentRound = 1;
     private bool _reverseReset;
@@ -1024,29 +1024,29 @@ public class GameplayManager : MonoBehaviour
                 }
                 PlayerOne.ResetLives();
                 PlayerTwo.ResetLives();
-                if (_cachedOneResetPosition == DemonicsVector2.Zero)
+                if (_cachedOneResetPosition == DemonVector2.Zero)
                 {
-                    _cachedOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0], DemonicsPhysics.GROUND_POINT);
-                    _cachedTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1], DemonicsPhysics.GROUND_POINT);
+                    _cachedOneResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[0], DemonicsPhysics.GROUND_POINT);
+                    _cachedTwoResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[1], DemonicsPhysics.GROUND_POINT);
                 }
-                DemonicsVector2 playerOneResetPosition = _cachedOneResetPosition;
-                DemonicsVector2 playerTwoResetPosition = _cachedTwoResetPosition;
+                DemonVector2 playerOneResetPosition = _cachedOneResetPosition;
+                DemonVector2 playerTwoResetPosition = _cachedTwoResetPosition;
                 ObjectPoolingManager.Instance.DisableAllObjects();
 
                 if (movementInput.y == -1)
                 {
-                    playerOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0], DemonicsPhysics.GROUND_POINT);
-                    playerTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1], DemonicsPhysics.GROUND_POINT);
+                    playerOneResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[0], DemonicsPhysics.GROUND_POINT);
+                    playerTwoResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[1], DemonicsPhysics.GROUND_POINT);
                 }
                 else if (movementInput.x == 1)
                 {
-                    playerOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0] + _leftSpawn, DemonicsPhysics.GROUND_POINT);
-                    playerTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1] + _rightSpawn, DemonicsPhysics.GROUND_POINT);
+                    playerOneResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[0] + _leftSpawn, DemonicsPhysics.GROUND_POINT);
+                    playerTwoResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[1] + _rightSpawn, DemonicsPhysics.GROUND_POINT);
                 }
                 else if (movementInput.x == -1)
                 {
-                    playerOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0] - _rightSpawn, DemonicsPhysics.GROUND_POINT);
-                    playerTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1] - _leftSpawn, DemonicsPhysics.GROUND_POINT);
+                    playerOneResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[0] - _rightSpawn, DemonicsPhysics.GROUND_POINT);
+                    playerTwoResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[1] - _leftSpawn, DemonicsPhysics.GROUND_POINT);
                 }
                 else if (movementInput.y == 1)
                 {

@@ -4,14 +4,14 @@ public class PlayerMovement : MonoBehaviour
 {
     private Player _player;
     private Audio _audio;
-    private DemonicsVector2 _velocity;
+    private DemonVector2 _velocity;
     private int _knockbackFrame;
 
     public DemonicsPhysics Physics { get; private set; }
     public bool HasJumped { get; set; }
     public bool HasDoubleJumped { get; set; }
     public bool HasAirDashed { get; set; }
-    public DemonicsFloat MovementSpeed { get; set; }
+    public DemonFloat MovementSpeed { get; set; }
     public bool IsGrounded { get; set; } = true;
     public bool IsInHitstop { get; private set; }
     public bool IsInCorner => Physics.OnWall;
@@ -48,15 +48,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void SetPosition(DemonicsVector2 position)
+    public void SetPosition(DemonVector2 position)
     {
         Vector2Int fixedPosition = new Vector2Int((int)(position.x * 1) / 1, (int)(position.y * 1) / 1);
-        Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)fixedPosition.x, (DemonicsFloat)fixedPosition.y));
+        Physics.SetPositionWithRender(new DemonVector2((DemonFloat)fixedPosition.x, (DemonFloat)fixedPosition.y));
     }
 
-    public void TravelDistance(DemonicsVector2 travelDistance)
+    public void TravelDistance(DemonVector2 travelDistance)
     {
-        Physics.Velocity = new DemonicsVector2((DemonicsFloat)travelDistance.x, (DemonicsFloat)travelDistance.y);
+        Physics.Velocity = new DemonVector2((DemonFloat)travelDistance.x, (DemonFloat)travelDistance.y);
     }
 
     public void Knockback(Vector2 knockbackForce, int knockbackDuration, int direction, int arc = 0, bool instant = false, bool ground = false, bool ignoreX = false)
@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
                 StopKnockback();
                 Physics.SetFreeze(true);
             }
-            DemonicsFloat endPositionY = (DemonicsFloat)0;
+            DemonFloat endPositionY = (DemonFloat)0;
             if (arc > 0)
             {
                 endPositionY = DemonicsPhysics.GROUND_POINT;
@@ -76,9 +76,9 @@ public class PlayerMovement : MonoBehaviour
             if (instant)
             {
                 _startPosition = Physics.Position;
-                _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + endPositionY);
+                _endPosition = new DemonVector2(Physics.Position.x + ((DemonFloat)knockbackForce.x * direction), Physics.Position.y + endPositionY);
                 _knockbackDuration = knockbackDuration;
-                _arc = (DemonicsFloat)arc;
+                _arc = (DemonFloat)arc;
             }
             else
             {
@@ -88,14 +88,14 @@ public class PlayerMovement : MonoBehaviour
                     _startPosition = Physics.Position;
                     if (!ground)
                     {
-                        _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), Physics.Position.y + endPositionY);
+                        _endPosition = new DemonVector2(Physics.Position.x + ((DemonFloat)knockbackForce.x * direction), Physics.Position.y + endPositionY);
                     }
                     else
                     {
-                        _endPosition = new DemonicsVector2(Physics.Position.x + ((DemonicsFloat)knockbackForce.x * direction), DemonicsPhysics.GROUND_POINT - 0.5);
+                        _endPosition = new DemonVector2(Physics.Position.x + ((DemonFloat)knockbackForce.x * direction), DemonicsPhysics.GROUND_POINT - 0.5);
                     }
                     _knockbackDuration = knockbackDuration;
-                    _arc = (DemonicsFloat)arc;
+                    _arc = (DemonFloat)arc;
                 });
             }
         }
@@ -107,37 +107,37 @@ public class PlayerMovement : MonoBehaviour
         _knockbackFrame = 0;
     }
     private bool _ignoreX;
-    private DemonicsFloat _arc;
+    private DemonFloat _arc;
     private int _knockbackDuration;
-    DemonicsVector2 _startPosition;
-    DemonicsVector2 _endPosition;
+    DemonVector2 _startPosition;
+    DemonVector2 _endPosition;
     private void CheckKnockback()
     {
         if (_knockbackDuration > 0 && !IsInHitstop)
         {
-            DemonicsFloat ratio = (DemonicsFloat)_knockbackFrame / (DemonicsFloat)_knockbackDuration;
-            DemonicsFloat distance = _endPosition.x - _startPosition.x;
-            DemonicsFloat nextX = DemonicsFloat.Lerp(_startPosition.x, _endPosition.x, ratio);
-            DemonicsFloat baseY = DemonicsFloat.Lerp(_startPosition.y, _endPosition.y, (nextX - _startPosition.x) / distance);
-            DemonicsFloat arc = _arc * (nextX - _startPosition.x) * (nextX - _endPosition.x) / ((DemonicsFloat)(-0.25) * distance * distance);
-            DemonicsVector2 nextPosition;
-            if (arc == (DemonicsFloat)0)
+            DemonFloat ratio = (DemonFloat)_knockbackFrame / (DemonFloat)_knockbackDuration;
+            DemonFloat distance = _endPosition.x - _startPosition.x;
+            DemonFloat nextX = DemonFloat.Lerp(_startPosition.x, _endPosition.x, ratio);
+            DemonFloat baseY = DemonFloat.Lerp(_startPosition.y, _endPosition.y, (nextX - _startPosition.x) / distance);
+            DemonFloat arc = _arc * (nextX - _startPosition.x) * (nextX - _endPosition.x) / ((DemonFloat)(-0.25) * distance * distance);
+            DemonVector2 nextPosition;
+            if (arc == (DemonFloat)0)
             {
-                nextPosition = new DemonicsVector2(nextX, Physics.Position.y);
+                nextPosition = new DemonVector2(nextX, Physics.Position.y);
             }
             else
             {
-                nextPosition = new DemonicsVector2(nextX, baseY + arc);
+                nextPosition = new DemonVector2(nextX, baseY + arc);
             }
             if (_ignoreX)
             {
-                nextPosition = new DemonicsVector2(Physics.Position.x, nextPosition.y);
+                nextPosition = new DemonVector2(Physics.Position.x, nextPosition.y);
             }
             Physics.SetPositionWithRender(nextPosition);
             _knockbackFrame++;
             if (_knockbackFrame == _knockbackDuration)
             {
-                Physics.Velocity = DemonicsVector2.Zero;
+                Physics.Velocity = DemonVector2.Zero;
                 StopKnockback();
             }
         }
@@ -168,7 +168,7 @@ public class PlayerMovement : MonoBehaviour
         {
             IsInHitstop = false;
             Physics.SetFreeze(false);
-            Physics.Velocity = new DemonicsVector2(_velocity.x, Physics.Velocity.y);
+            Physics.Velocity = new DemonVector2(_velocity.x, Physics.Velocity.y);
         }
     }
 }

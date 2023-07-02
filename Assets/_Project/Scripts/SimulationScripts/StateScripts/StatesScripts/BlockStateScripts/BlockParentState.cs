@@ -33,7 +33,7 @@ public class BlockParentState : State
         player.enter = true;
         GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
         player.sound = "Block";
-        DemonicsVector2 hurtEffectPosition = new DemonicsVector2(player.position.x + (5 * player.flip), player.hurtPosition.y);
+        DemonVector2 hurtEffectPosition = new DemonVector2(player.position.x + (5 * player.flip), player.hurtPosition.y);
         if (player.attackHurtNetwork.hardKnockdown)
         {
             player.SetParticle("Chip", hurtEffectPosition);
@@ -53,32 +53,32 @@ public class BlockParentState : State
         if (player.attackHurtNetwork.hardKnockdown)
         {
             player.attackHurtNetwork.knockbackDuration /= 2;
-            player.pushbackEnd = new DemonicsVector2((player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip) / 2), DemonicsPhysics.GROUND_POINT);
+            player.pushbackEnd = new DemonVector2((player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip) / 2), DemonicsPhysics.GROUND_POINT);
         }
         else
         {
-            player.pushbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
+            player.pushbackEnd = new DemonVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         }
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
     }
 
     protected virtual void AfterHitstop(PlayerNetwork player)
     {
-        player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+        player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         if (player.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.attackHurtNetwork.knockbackDuration)
         {
-            DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackHurtNetwork.knockbackDuration;
-            DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
-            DemonicsVector2 nextPosition = DemonicsVector2.Zero;
-            nextPosition = new DemonicsVector2(nextX, player.position.y);
+            DemonFloat ratio = (DemonFloat)player.knockback / (DemonFloat)player.attackHurtNetwork.knockbackDuration;
+            DemonFloat nextX = DemonFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+            DemonVector2 nextPosition = DemonVector2.Zero;
+            nextPosition = new DemonVector2(nextX, player.position.y);
             player.position = nextPosition;
             if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
             {
-                player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+                player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
             }
             else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
             {
-                player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+                player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
             }
             player.knockback++;
         }
@@ -98,12 +98,12 @@ public class BlockParentState : State
             {
                 player.otherPlayer.knockback = 0;
                 player.otherPlayer.pushbackStart = player.otherPlayer.position;
-                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
             if (IsBlocking(player))
             {
-                if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0)
+                if ((DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0)
                 {
                     if (player.direction.y < 0)
                     {

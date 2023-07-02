@@ -27,7 +27,7 @@ public class HurtAirState : HurtParentState
     {
         if (player.stunFrames == player.attackHurtNetwork.hitStun && player.attackHurtNetwork.knockbackArc == 0)
         {
-            player.velocity = new DemonicsVector2((DemonicsFloat)0, (DemonicsFloat)1.1);
+            player.velocity = new DemonVector2((DemonFloat)0, (DemonFloat)1.1);
         }
         base.AfterHitstop(player);
         ToIdleState(player);
@@ -38,7 +38,7 @@ public class HurtAirState : HurtParentState
         {
             return;
         }
-        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
+        if ((DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
             player.player.StopShakeCoroutine();
             if (player.health <= 0)
@@ -56,7 +56,7 @@ public class HurtAirState : HurtParentState
             else
             {
                 player.stunFrames = player.attackHurtNetwork.hitStun;
-                player.velocity = DemonicsVector2.Zero;
+                player.velocity = DemonVector2.Zero;
                 player.animationFrames = 0;
                 EnterState(player, "Hurt", true);
             }
@@ -105,28 +105,28 @@ public class HurtAirState : HurtParentState
     }
     protected override void Knockback(PlayerNetwork player)
     {
-        DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackHurtNetwork.knockbackDuration;
-        DemonicsFloat distance = player.pushbackEnd.x - player.pushbackStart.x;
-        DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
-        DemonicsFloat baseY = DemonicsFloat.Lerp(player.pushbackStart.y, player.pushbackEnd.y, (nextX - player.pushbackStart.x) / distance);
-        DemonicsFloat arc = player.attackHurtNetwork.knockbackArc * (nextX - player.pushbackStart.x) * (nextX - player.pushbackEnd.x) / ((-0.25f) * distance * distance);
-        DemonicsVector2 nextPosition = DemonicsVector2.Zero;
+        DemonFloat ratio = (DemonFloat)player.knockback / (DemonFloat)player.attackHurtNetwork.knockbackDuration;
+        DemonFloat distance = player.pushbackEnd.x - player.pushbackStart.x;
+        DemonFloat nextX = DemonFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+        DemonFloat baseY = DemonFloat.Lerp(player.pushbackStart.y, player.pushbackEnd.y, (nextX - player.pushbackStart.x) / distance);
+        DemonFloat arc = player.attackHurtNetwork.knockbackArc * (nextX - player.pushbackStart.x) * (nextX - player.pushbackEnd.x) / ((-0.25f) * distance * distance);
+        DemonVector2 nextPosition = DemonVector2.Zero;
         if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
         {
-            nextPosition = new DemonicsVector2(nextX, player.position.y);
+            nextPosition = new DemonVector2(nextX, player.position.y);
         }
         else
         {
-            nextPosition = new DemonicsVector2(nextX, baseY + arc);
+            nextPosition = new DemonVector2(nextX, baseY + arc);
         }
         player.position = nextPosition;
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
-            player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+            player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
         }
         else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
         {
-            player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+            player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
         }
         player.knockback++;
     }

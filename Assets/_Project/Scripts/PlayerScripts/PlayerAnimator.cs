@@ -39,19 +39,19 @@ public class PlayerAnimator : DemonicsAnimator
     {
         return GetEvent(name, frame, out cel).footstep;
     }
-    public DemonicsVector2 GetJump(string name, int frame)
+    public DemonVector2 GetJump(string name, int frame)
     {
-        DemonicsVector2 jumpDirection = DemonicsVector2.Zero;
+        DemonVector2 jumpDirection = DemonVector2.Zero;
         if (GetEvent(name, frame, out _).jump)
         {
-            jumpDirection = new DemonicsVector2((DemonicsFloat)GetEvent(name, frame, out _).jumpDirection.x * transform.root.localScale.x, (DemonicsFloat)GetEvent(name, frame, out _).jumpDirection.y);
+            jumpDirection = new DemonVector2((DemonFloat)GetEvent(name, frame, out _).jumpDirection.x * transform.root.localScale.x, (DemonFloat)GetEvent(name, frame, out _).jumpDirection.y);
         }
         return jumpDirection;
     }
-    public DemonicsVector2 GetGrabPoint(string name, int frame)
+    public DemonVector2 GetGrabPoint(string name, int frame)
     {
         Vector2 grabPoint = GetEvent(name, frame, out _).grabPoint;
-        return new DemonicsVector2((DemonicsFloat)grabPoint.x, (DemonicsFloat)grabPoint.y);
+        return new DemonVector2((DemonFloat)grabPoint.x, (DemonFloat)grabPoint.y);
     }
 
     public override void SetAnimation(string name, int frame)

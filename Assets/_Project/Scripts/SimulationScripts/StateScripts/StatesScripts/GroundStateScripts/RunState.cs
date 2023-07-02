@@ -11,20 +11,20 @@ public class RunState : GroundParentState
             player.animationFrames = 0;
             return;
         }
-        player.position = new DemonicsVector2(player.position.x, DemonicsPhysics.GROUND_POINT);
+        player.position = new DemonVector2(player.position.x, DemonicsPhysics.GROUND_POINT);
         player.animation = "Run";
         player.animationFrames++;
-        player.velocity = new DemonicsVector2(player.direction.x * player.playerStats.SpeedRun, 0);
+        player.velocity = new DemonVector2(player.direction.x * player.playerStats.SpeedRun, 0);
         if (DemonicsWorld.Frame % 5 == 0)
         {
             if (player.flip > 0)
             {
-                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x - 1, player.position.y);
+                DemonVector2 effectPosition = new DemonVector2(player.position.x - 1, player.position.y);
                 player.SetEffect("Ghost", effectPosition, false);
             }
             else
             {
-                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
+                DemonVector2 effectPosition = new DemonVector2(player.position.x + 1, player.position.y);
                 player.SetEffect("Ghost", effectPosition, true);
             }
         }

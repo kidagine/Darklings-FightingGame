@@ -6,7 +6,6 @@ using UnityEngine;
 public struct InputBufferNetwork
 {
     public InputItemNetwork[] triggers;
-    public InputItemNetwork[] sequences;
     public int indexTrigger;
     public int indexSequence;
 
@@ -16,8 +15,6 @@ public struct InputBufferNetwork
         bw.Write(indexSequence);
         for (int i = 0; i < triggers.Length; ++i)
             triggers[i].Serialize(bw);
-        for (int i = 0; i < sequences.Length; ++i)
-            sequences[i].Serialize(bw);
     }
 
     public void Deserialize(BinaryReader br)
@@ -26,8 +23,6 @@ public struct InputBufferNetwork
         indexSequence = br.ReadInt32();
         for (int i = 0; i < triggers.Length; ++i)
             triggers[i].Deserialize(br);
-        for (int i = 0; i < sequences.Length; ++i)
-            sequences[i].Deserialize(br);
     }
 
     public void AddTrigger(InputItemNetwork inputItem)
@@ -37,14 +32,40 @@ public struct InputBufferNetwork
             indexTrigger = 0;
         triggers[indexTrigger] = inputItem;
     }
+    public InputItemNetwork CurrentTrigger() => triggers[indexTrigger];
+    private InputItemNetwork PreviousTrigger() => triggers[indexTrigger - 1];
 
-    public void AddSequence(InputItemNetwork inputItem)
+    public bool GetBlueFrenzy()
     {
-        indexSequence++;
-        if (indexSequence >= sequences.Length)
-            indexSequence = 0;
-        sequences[indexSequence] = inputItem;
+        int previousIndex = indexTrigger - 1;
+        if (previousIndex < 0 || previousIndex > triggers.Length - 1)
+            return false;
+        if (CurrentTrigger().pressed && CurrentTrigger().inputEnum == InputEnum.Medium)
+        {
+            if (PreviousTrigger().inputEnum == InputEnum.Light)
+            {
+                int frameDifference = CurrentTrigger().frame - PreviousTrigger().frame;
+                if (frameDifference >= 0 && frameDifference <= 1)
+                    return true;
+            }
+        }
+        return false;
     }
 
-    public InputItemNetwork CurrentTrigger() => triggers[indexTrigger];
+    public bool GetRedFrenzy()
+    {
+        int previousIndex = indexTrigger - 1;
+        if (previousIndex < 0 || previousIndex > triggers.Length - 1)
+            return false;
+        if (CurrentTrigger().pressed && CurrentTrigger().inputEnum == InputEnum.Special)
+        {
+            if (PreviousTrigger().inputEnum == InputEnum.Heavy)
+            {
+                int frameDifference = CurrentTrigger().frame - PreviousTrigger().frame;
+                if (frameDifference >= 0 && frameDifference <= 1)
+                    return true;
+            }
+        }
+        return false;
+    }
 };

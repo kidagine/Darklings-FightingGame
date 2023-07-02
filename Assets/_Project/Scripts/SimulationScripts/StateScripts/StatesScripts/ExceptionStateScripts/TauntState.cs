@@ -19,7 +19,7 @@ public class TauntState : State
             player.animationFrames = 0;
             player.animation = "Taunt";
         }
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
         player.animationFrames++;
         if (GameSimulation.Timer <= 0)
             return;

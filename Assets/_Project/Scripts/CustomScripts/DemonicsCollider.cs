@@ -15,15 +15,15 @@ public class DemonicsCollider : MonoBehaviour
     public Color GizmoColor { get; set; } = Color.green;
     public bool WasColliding { get; set; }
     public bool IgnoreCollision { get { return _ignoreCollision; } set { _ignoreCollision = value; } }
-    public DemonicsVector2 Size { get { return new DemonicsVector2((DemonicsFloat)_size.x, (DemonicsFloat)_size.y); } set { _size = new Vector2((float)value.x, (float)value.y); } }
-    public DemonicsVector2 Offset { get { return new DemonicsVector2((DemonicsFloat)_offset.x * (DemonicsFloat)transform.root.localScale.x, (DemonicsFloat)_offset.y); } set { _offset = new Vector2((float)value.x, (float)value.y); } }
-    public DemonicsVector2 Position
+    public DemonVector2 Size { get { return new DemonVector2((DemonFloat)_size.x, (DemonFloat)_size.y); } set { _size = new Vector2((float)value.x, (float)value.y); } }
+    public DemonVector2 Offset { get { return new DemonVector2((DemonFloat)_offset.x * (DemonFloat)transform.root.localScale.x, (DemonFloat)_offset.y); } set { _offset = new Vector2((float)value.x, (float)value.y); } }
+    public DemonVector2 Position
     {
         get
         {
             if (_physics != null)
             {
-                return new DemonicsVector2((_physics.Position.x + Offset.x), (_physics.Position.y + Offset.y));
+                return new DemonVector2((_physics.Position.x + Offset.x), (_physics.Position.y + Offset.y));
             }
             else
             {
@@ -34,7 +34,7 @@ public class DemonicsCollider : MonoBehaviour
     }
 
 
-    private static bool valueInRange(DemonicsFloat value, DemonicsFloat min, DemonicsFloat max)
+    private static bool valueInRange(DemonFloat value, DemonFloat min, DemonFloat max)
     { return (value >= min) && (value <= max); }
 
     public static bool Colliding(ColliderNetwork a, ColliderNetwork b)

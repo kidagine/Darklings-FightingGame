@@ -8,7 +8,7 @@ public class GiveUpState : State
         {
             GameSimulation.Run = false;
             GameSimulation.GlobalHitstop = 1;
-            player.velocity = DemonicsVector2.Zero;
+            player.velocity = DemonVector2.Zero;
             player.enter = true;
             player.animationFrames = 0;
             player.player.StopShakeCoroutine();
@@ -18,7 +18,7 @@ public class GiveUpState : State
             ResetCombo(player);
             return;
         }
-        player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+        player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         player.animation = "Death";
         player.animationFrames++;
         if (player.animationFrames >= 725)

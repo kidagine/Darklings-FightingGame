@@ -51,10 +51,11 @@ public class State
     }
     protected void RedFrenzy(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.RedFrenzy)
+        if (player.inputBuffer.GetRedFrenzy())
         {
             if (player.healthRecoverable > player.health)
             {
+                Debug.Log("R");
                 AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
                 player.attackNetwork = SetAttack(player.attackInput, attack);
                 EnterState(player, "RedFrenzy");
@@ -110,12 +111,12 @@ public class State
         AttackNetwork attackNetwork = new AttackNetwork()
         {
             damage = attack.damage,
-            travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
+            travelDistance = new DemonVector2((DemonFloat)attack.travelDistance.x, (DemonFloat)attack.travelDistance.y),
             name = attack.name,
             moveName = attack.moveName,
             attackSound = attack.attackSound,
             hurtEffect = attack.hurtEffect,
-            knockbackForce = (DemonicsFloat)attack.knockbackForce.x,
+            knockbackForce = (DemonFloat)attack.knockbackForce.x,
             knockbackDuration = attack.knockbackDuration,
             hitstop = attack.hitstop,
             impactSound = attack.impactSound,
@@ -125,11 +126,11 @@ public class State
             jumpCancelable = attack.jumpCancelable,
             softKnockdown = attack.causesSoftKnockdown,
             hardKnockdown = attack.causesKnockdown,
-            projectilePosition = new DemonicsVector2((DemonicsFloat)attack.hitEffectPosition.x, (DemonicsFloat)attack.hitEffectPosition.y),
+            projectilePosition = new DemonVector2((DemonFloat)attack.hitEffectPosition.x, (DemonFloat)attack.hitEffectPosition.y),
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
             superArmor = attack.superArmor,
-            projectileSpeed = (DemonicsFloat)attack.projectileSpeed,
+            projectileSpeed = (DemonFloat)attack.projectileSpeed,
             projectileDestroyOnHit = attack.projectileDestroyOnHit,
             projectilePriority = attack.projectilePriority
         };
@@ -144,12 +145,12 @@ public class State
         AttackNetwork attackNetwork = new AttackNetwork()
         {
             damage = attack.damage,
-            travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
+            travelDistance = new DemonVector2((DemonFloat)attack.travelDistance.x, (DemonFloat)attack.travelDistance.y),
             name = attack.name,
             moveName = attack.moveName,
             attackSound = attack.attackSound,
             hurtEffect = attack.hurtEffect,
-            knockbackForce = (DemonicsFloat)attack.knockbackForce.x,
+            knockbackForce = (DemonFloat)attack.knockbackForce.x,
             knockbackDuration = attack.knockbackDuration,
             hitstop = attack.hitstop,
             impactSound = attack.impactSound,
@@ -159,7 +160,7 @@ public class State
             jumpCancelable = attack.jumpCancelable,
             softKnockdown = attack.causesSoftKnockdown,
             hardKnockdown = attack.causesKnockdown,
-            projectilePosition = new DemonicsVector2((DemonicsFloat)attack.hitEffectPosition.x, (DemonicsFloat)attack.hitEffectPosition.y),
+            projectilePosition = new DemonVector2((DemonFloat)attack.hitEffectPosition.x, (DemonFloat)attack.hitEffectPosition.y),
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
             superArmor = attack.superArmor,
@@ -196,13 +197,13 @@ public class State
     }
     protected int CalculateDamage(PlayerNetwork player, int damage, float defense)
     {
-        DemonicsFloat calculatedDamage = (DemonicsFloat)damage / (DemonicsFloat)defense;
+        DemonFloat calculatedDamage = (DemonFloat)damage / (DemonFloat)defense;
         if (player.combo > 1)
         {
-            DemonicsFloat damageScale = (DemonicsFloat)1;
+            DemonFloat damageScale = (DemonFloat)1;
             for (int i = 0; i < player.combo; i++)
             {
-                damageScale *= (DemonicsFloat)0.97;
+                damageScale *= (DemonFloat)0.97;
             }
             calculatedDamage *= damageScale;
         }
@@ -212,13 +213,13 @@ public class State
     }
     protected int CalculateRecoverableDamage(PlayerNetwork player, int damage, float defense)
     {
-        DemonicsFloat calculatedDamage = ((DemonicsFloat)damage / (DemonicsFloat)defense) - 120;
+        DemonFloat calculatedDamage = ((DemonFloat)damage / (DemonFloat)defense) - 120;
         if (player.combo > 1)
         {
-            DemonicsFloat damageScale = (DemonicsFloat)1;
+            DemonFloat damageScale = (DemonFloat)1;
             for (int i = 0; i < player.combo; i++)
             {
-                damageScale *= (DemonicsFloat)0.97;
+                damageScale *= (DemonFloat)0.97;
             }
             calculatedDamage *= damageScale;
         }
@@ -250,13 +251,13 @@ public class State
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
-            player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+            player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
         }
         else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
         {
-            player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+            player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
         }
-        player.SetParticle(player.attackHurtNetwork.hurtEffect, new DemonicsVector2(player.position.x, player.position.y));
+        player.SetParticle(player.attackHurtNetwork.hurtEffect, new DemonVector2(player.position.x, player.position.y));
         GameSimulation.Hitstop = 3;
         HitstopFully(player);
         HitstopFully(player.otherPlayer);
@@ -316,7 +317,7 @@ public class State
         {
             if (TrainingSettings.OnHit)
             {
-                if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
                 {
                     player.isAir = true;
                 }
@@ -368,7 +369,7 @@ public class State
                 player.otherPlayer.shadow.projectile.hitstop = true;
                 player.otherPlayer.shadow.projectile.hitbox.enter = true;
                 player.otherPlayer.shadow.projectile.hitstop = true;
-                player.hurtPosition = new DemonicsVector2(player.otherPlayer.shadow.projectile.hitbox.position.x + ((player.otherPlayer.shadow.projectile.hitbox.size.x / 2) * -player.flip), player.otherPlayer.shadow.projectile.hitbox.position.y);
+                player.hurtPosition = new DemonVector2(player.otherPlayer.shadow.projectile.hitbox.position.x + ((player.otherPlayer.shadow.projectile.hitbox.size.x / 2) * -player.flip), player.otherPlayer.shadow.projectile.hitbox.position.y);
                 if (player.otherPlayer.shadow.projectile.destroyOnHit)
                 {
                     player.otherPlayer.shadow.projectile.hitbox.enter = false;
@@ -392,7 +393,7 @@ public class State
                     player.hitstop = true;
                     player.otherPlayer.projectiles[i].hitbox.enter = true;
                     player.otherPlayer.projectiles[i].hitstop = true;
-                    player.hurtPosition = new DemonicsVector2(player.position.x, player.position.y + (player.pushbox.size.y / 2));
+                    player.hurtPosition = new DemonVector2(player.position.x, player.position.y + (player.pushbox.size.y / 2));
                     if (player.otherPlayer.projectiles[i].destroyOnHit)
                     {
                         player.otherPlayer.projectiles[i].hitbox.enter = false;
@@ -408,7 +409,7 @@ public class State
         }
         if (DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox) && !player.otherPlayer.hitbox.enter)
         {
-            if (player.otherPlayer.attackNetwork.attackType == AttackTypeEnum.Throw && player.stunFrames == 0 && (DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+            if (player.otherPlayer.attackNetwork.attackType == AttackTypeEnum.Throw && player.stunFrames == 0 && (DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
             {
                 return false;
             }
@@ -419,11 +420,11 @@ public class State
             player.otherPlayer.hitstop = true;
             if (player.otherPlayer.isAir)
             {
-                player.hurtPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
+                player.hurtPosition = new DemonVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
             }
             else
             {
-                player.hurtPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
+                player.hurtPosition = new DemonVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
             }
             player.gotHit = true;
             return true;
@@ -467,7 +468,7 @@ public class State
                 player.shadow.animationFrames = 0;
                 player.shadow.isOnScreen = true;
                 player.shadow.flip = player.flip;
-                player.shadow.position = new DemonicsVector2(player.position.x + (player.shadow.spawnPoint.x * player.flip), player.position.y + player.shadow.spawnPoint.y);
+                player.shadow.position = new DemonVector2(player.position.x + (player.shadow.spawnPoint.x * player.flip), player.position.y + player.shadow.spawnPoint.y);
                 player.shadowGauge -= GameSimulation.maxShadowGauge / 2;
             }
         }
@@ -480,7 +481,7 @@ public class State
             {
                 ResetCombo(player);
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-                player.velocity = DemonicsVector2.Zero;
+                player.velocity = DemonVector2.Zero;
                 player.shadowGauge -= 2000;
                 EnterState(player, "Shadowbreak");
             }

@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public struct EffectGroupNetwork
 {
-    public DemonicsVector2 position;
+    public DemonVector2 position;
     public int animationFrames;
     public bool active;
     public bool flip;
@@ -21,8 +21,8 @@ public struct EffectGroupNetwork
 
     public void Deserialize(BinaryReader br)
     {
-        position.x = (DemonicsFloat)br.ReadSingle();
-        position.y = (DemonicsFloat)br.ReadSingle();
+        position.x = (DemonFloat)br.ReadSingle();
+        position.y = (DemonFloat)br.ReadSingle();
         animationFrames = br.ReadInt32();
         active = br.ReadBoolean();
         flip = br.ReadBoolean();

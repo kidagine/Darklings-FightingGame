@@ -24,13 +24,13 @@ public class ShadowbreakState : State
             player.sound = "Shadowbreak";
             player.canChainAttack = false;
             player.usedShadowbreak = true;
-            player.position = new DemonicsVector2(player.position.x, player.position.y + 15);
-            player.InitializeProjectile("Shadowbreak", player.attackNetwork, (DemonicsFloat)0, 0, false);
-            player.SetProjectile("Shadowbreak", new DemonicsVector2(player.position.x, player.position.y + player.pushbox.size.y), false);
+            player.position = new DemonVector2(player.position.x, player.position.y + 15);
+            player.InitializeProjectile("Shadowbreak", player.attackNetwork, (DemonFloat)0, 0, false);
+            player.SetProjectile("Shadowbreak", new DemonVector2(player.position.x, player.position.y + player.pushbox.size.y), false);
             CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
             return;
         }
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
         player.animation = "Shadowbreak";
         player.animationFrames++;
         ToHurtState(player);

@@ -10,7 +10,7 @@ public class FallState : AirParentState
             player.animationFrames = 0;
             return;
         }
-        player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+        player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         if (!player.usedShadowbreak)
             base.UpdateLogic(player);
         else

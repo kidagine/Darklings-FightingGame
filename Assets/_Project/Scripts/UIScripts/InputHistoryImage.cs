@@ -16,7 +16,7 @@ public class InputHistoryImage : MonoBehaviour
     {
         _frame = 0;
         _frames.gameObject.SetActive(true);
-        UpdateSequencesDisplay(0);
+        UpdateSequencesDisplay(sequenceIndex);
         UpdateTriggersDisplay(triggerIndexes);
     }
 
