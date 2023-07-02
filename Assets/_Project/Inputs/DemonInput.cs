@@ -46,15 +46,6 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Throw"",
-                    ""type"": ""Button"",
-                    ""id"": ""40b9f47c-9919-436a-9a64-426a259ababf"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Movement"",
                     ""type"": ""Value"",
                     ""id"": ""7ca3a05e-cb40-4977-b9aa-f9c734e7db88"",
@@ -118,6 +109,15 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Throw"",
+                    ""type"": ""Button"",
+                    ""id"": ""40b9f47c-9919-436a-9a64-426a259ababf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Heavy"",
                     ""type"": ""Button"",
                     ""id"": ""9ad06ff6-fd9b-4172-9064-386dc14dd5ff"",
@@ -169,7 +169,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5ab39dcb-5594-42f3-b7bb-2f5e2f15e55e"",
-                    ""path"": ""<Keyboard>/j"",
+                    ""path"": ""<Keyboard>/u"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -202,7 +202,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""684523b7-a8a8-41c1-850e-19dc87ba353e"",
-                    ""path"": ""<Keyboard>/l"",
+                    ""path"": ""<Keyboard>/j"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -455,7 +455,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""1b473ec7-58b7-47a4-ab76-f6d371e67eb6"",
-                    ""path"": ""<Keyboard>/i"",
+                    ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -488,7 +488,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""20e38642-b7ec-4cb5-9e05-3b12696478c9"",
-                    ""path"": ""<Keyboard>/u"",
+                    ""path"": ""<Keyboard>/o"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -559,39 +559,6 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KeyboardTwo"",
                     ""action"": ""BlueFrenzy"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2b232ebd-fbbe-4dac-9b5c-edb0aa6984e3"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Xbox"",
-                    ""action"": ""Throw"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""25cb913a-5c2a-41ba-a561-c82b6606756a"",
-                    ""path"": ""<Keyboard>/o"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Throw"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""107ca082-ecee-44a0-9062-935eed5af666"",
-                    ""path"": ""<Keyboard>/y"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardTwo"",
-                    ""action"": ""Throw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -730,7 +697,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a7475318-16fe-4ba8-9d91-0ac082d98c93"",
-                    ""path"": ""<Keyboard>/k"",
+                    ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -746,6 +713,39 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""KeyboardTwo"",
                     ""action"": ""Medium"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2b232ebd-fbbe-4dac-9b5c-edb0aa6984e3"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25cb913a-5c2a-41ba-a561-c82b6606756a"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Throw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""107ca082-ecee-44a0-9062-935eed5af666"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardTwo"",
+                    ""action"": ""Throw"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1514,7 +1514,6 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_BlueFrenzy = m_Gameplay.FindAction("BlueFrenzy", throwIfNotFound: true);
         m_Gameplay_RedFrenzy = m_Gameplay.FindAction("RedFrenzy", throwIfNotFound: true);
-        m_Gameplay_Throw = m_Gameplay.FindAction("Throw", throwIfNotFound: true);
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Crouch = m_Gameplay.FindAction("Crouch", throwIfNotFound: true);
@@ -1522,6 +1521,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
         m_Gameplay_DashBack = m_Gameplay.FindAction("DashBack", throwIfNotFound: true);
         m_Gameplay_Light = m_Gameplay.FindAction("Light", throwIfNotFound: true);
         m_Gameplay_Medium = m_Gameplay.FindAction("Medium", throwIfNotFound: true);
+        m_Gameplay_Throw = m_Gameplay.FindAction("Throw", throwIfNotFound: true);
         m_Gameplay_Heavy = m_Gameplay.FindAction("Heavy", throwIfNotFound: true);
         m_Gameplay_Arcane = m_Gameplay.FindAction("Arcane", throwIfNotFound: true);
         m_Gameplay_Assist = m_Gameplay.FindAction("Assist", throwIfNotFound: true);
@@ -1611,7 +1611,6 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_BlueFrenzy;
     private readonly InputAction m_Gameplay_RedFrenzy;
-    private readonly InputAction m_Gameplay_Throw;
     private readonly InputAction m_Gameplay_Movement;
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_Crouch;
@@ -1619,6 +1618,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_DashBack;
     private readonly InputAction m_Gameplay_Light;
     private readonly InputAction m_Gameplay_Medium;
+    private readonly InputAction m_Gameplay_Throw;
     private readonly InputAction m_Gameplay_Heavy;
     private readonly InputAction m_Gameplay_Arcane;
     private readonly InputAction m_Gameplay_Assist;
@@ -1629,7 +1629,6 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
         public GameplayActions(@DemonInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @BlueFrenzy => m_Wrapper.m_Gameplay_BlueFrenzy;
         public InputAction @RedFrenzy => m_Wrapper.m_Gameplay_RedFrenzy;
-        public InputAction @Throw => m_Wrapper.m_Gameplay_Throw;
         public InputAction @Movement => m_Wrapper.m_Gameplay_Movement;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @Crouch => m_Wrapper.m_Gameplay_Crouch;
@@ -1637,6 +1636,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
         public InputAction @DashBack => m_Wrapper.m_Gameplay_DashBack;
         public InputAction @Light => m_Wrapper.m_Gameplay_Light;
         public InputAction @Medium => m_Wrapper.m_Gameplay_Medium;
+        public InputAction @Throw => m_Wrapper.m_Gameplay_Throw;
         public InputAction @Heavy => m_Wrapper.m_Gameplay_Heavy;
         public InputAction @Arcane => m_Wrapper.m_Gameplay_Arcane;
         public InputAction @Assist => m_Wrapper.m_Gameplay_Assist;
@@ -1656,9 +1656,6 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
             @RedFrenzy.started += instance.OnRedFrenzy;
             @RedFrenzy.performed += instance.OnRedFrenzy;
             @RedFrenzy.canceled += instance.OnRedFrenzy;
-            @Throw.started += instance.OnThrow;
-            @Throw.performed += instance.OnThrow;
-            @Throw.canceled += instance.OnThrow;
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
@@ -1680,6 +1677,9 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
             @Medium.started += instance.OnMedium;
             @Medium.performed += instance.OnMedium;
             @Medium.canceled += instance.OnMedium;
+            @Throw.started += instance.OnThrow;
+            @Throw.performed += instance.OnThrow;
+            @Throw.canceled += instance.OnThrow;
             @Heavy.started += instance.OnHeavy;
             @Heavy.performed += instance.OnHeavy;
             @Heavy.canceled += instance.OnHeavy;
@@ -1702,9 +1702,6 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
             @RedFrenzy.started -= instance.OnRedFrenzy;
             @RedFrenzy.performed -= instance.OnRedFrenzy;
             @RedFrenzy.canceled -= instance.OnRedFrenzy;
-            @Throw.started -= instance.OnThrow;
-            @Throw.performed -= instance.OnThrow;
-            @Throw.canceled -= instance.OnThrow;
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
@@ -1726,6 +1723,9 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
             @Medium.started -= instance.OnMedium;
             @Medium.performed -= instance.OnMedium;
             @Medium.canceled -= instance.OnMedium;
+            @Throw.started -= instance.OnThrow;
+            @Throw.performed -= instance.OnThrow;
+            @Throw.canceled -= instance.OnThrow;
             @Heavy.started -= instance.OnHeavy;
             @Heavy.performed -= instance.OnHeavy;
             @Heavy.canceled -= instance.OnHeavy;
@@ -2006,7 +2006,6 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
     {
         void OnBlueFrenzy(InputAction.CallbackContext context);
         void OnRedFrenzy(InputAction.CallbackContext context);
-        void OnThrow(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
@@ -2014,6 +2013,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
         void OnDashBack(InputAction.CallbackContext context);
         void OnLight(InputAction.CallbackContext context);
         void OnMedium(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
         void OnHeavy(InputAction.CallbackContext context);
         void OnArcane(InputAction.CallbackContext context);
         void OnAssist(InputAction.CallbackContext context);

@@ -11,7 +11,8 @@ public class GroundParentState : State
         player.canJump = true;
         if (ToBlueFrenzyState(player))
             return;
-        ToRedFrenzyState(player);
+        if (RedFrenzy(player))
+            return;
         ToGrabState(player);
         ToAttackState(player);
         ToArcanaState(player);
@@ -38,11 +39,7 @@ public class GroundParentState : State
         if (player.inputBuffer.CurrentTrigger().pressed)
             Arcana(player);
     }
-    private void ToRedFrenzyState(PlayerNetwork player)
-    {
-        if (player.inputBuffer.CurrentTrigger().pressed)
-            RedFrenzy(player);
-    }
+
     private void ToGrabState(PlayerNetwork player)
     {
         if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Throw)

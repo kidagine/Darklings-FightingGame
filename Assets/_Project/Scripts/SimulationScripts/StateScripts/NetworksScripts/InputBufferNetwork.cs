@@ -57,7 +57,7 @@ public struct InputBufferNetwork
         int previousIndex = indexTrigger - 1;
         if (previousIndex < 0 || previousIndex > triggers.Length - 1)
             return false;
-        if (CurrentTrigger().pressed && CurrentTrigger().inputEnum == InputEnum.Special)
+        if (CurrentTrigger().pressed && CurrentTrigger().inputEnum == InputEnum.Assist)
         {
             if (PreviousTrigger().inputEnum == InputEnum.Heavy)
             {

@@ -115,12 +115,10 @@ public struct GameSimulation : IGame
                 inputTriggers = new InputTrigger[]{
                     new InputTrigger() { inputEnum = InputEnum.Light },
                     new InputTrigger() { inputEnum = InputEnum.Medium },
-                    new InputTrigger() { inputEnum = InputEnum.Heavy },
                     new InputTrigger() { inputEnum = InputEnum.Assist },
+                    new InputTrigger() { inputEnum = InputEnum.Heavy },
                     new InputTrigger() { inputEnum = InputEnum.Special },
                     new InputTrigger() { inputEnum = InputEnum.Throw },
-                    new InputTrigger() { inputEnum = InputEnum.Parry },
-                    new InputTrigger() { inputEnum = InputEnum.RedFrenzy },
                     new InputTrigger() { inputEnum = InputEnum.ForwardDash },
                     new InputTrigger() { inputEnum = InputEnum.BackDash },
                 },

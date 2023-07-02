@@ -49,18 +49,18 @@ public class State
         }
         return false;
     }
-    protected void RedFrenzy(PlayerNetwork player)
+    protected bool RedFrenzy(PlayerNetwork player)
     {
         if (player.inputBuffer.GetRedFrenzy())
-        {
             if (player.healthRecoverable > player.health)
             {
                 Debug.Log("R");
                 AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
                 player.attackNetwork = SetAttack(player.attackInput, attack);
                 EnterState(player, "RedFrenzy");
+                return true;
             }
-        }
+        return false;
     }
     protected void Attack(PlayerNetwork player, bool air = false)
     {
