@@ -109,9 +109,9 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Throw"",
+                    ""name"": ""Assist"",
                     ""type"": ""Button"",
-                    ""id"": ""40b9f47c-9919-436a-9a64-426a259ababf"",
+                    ""id"": ""6de6d4b1-c14b-4371-b138-3d8e0bced557"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -136,9 +136,9 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Assist"",
+                    ""name"": ""Throw"",
                     ""type"": ""Button"",
-                    ""id"": ""6de6d4b1-c14b-4371-b138-3d8e0bced557"",
+                    ""id"": ""40b9f47c-9919-436a-9a64-426a259ababf"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -180,7 +180,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8f73470e-b0fb-427a-b6e1-2225e7cd85f9"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardTwo"",
@@ -213,7 +213,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""dd64b46b-0bf9-4f1d-ad70-848635fe1ace"",
-                    ""path"": ""<Keyboard>/h"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardTwo"",
@@ -466,44 +466,11 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3da60b33-e160-4e4e-b616-1316f1a9f65c"",
-                    ""path"": ""<Keyboard>/t"",
+                    ""path"": ""<Keyboard>/g"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardTwo"",
                     ""action"": ""Arcane"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0f80cd7f-8428-46cd-a8a1-9cc68dbf3f86"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Xbox"",
-                    ""action"": ""Assist"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""20e38642-b7ec-4cb5-9e05-3b12696478c9"",
-                    ""path"": ""<Keyboard>/o"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Assist"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9bf9b7da-0352-40d2-9e3e-adbb36bcd30d"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardTwo"",
-                    ""action"": ""Assist"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -708,11 +675,44 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4c312544-e02c-4f2f-b843-9e211eddf92c"",
-                    ""path"": ""<Keyboard>/g"",
+                    ""path"": ""<Keyboard>/t"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardTwo"",
                     ""action"": ""Medium"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f80cd7f-8428-46cd-a8a1-9cc68dbf3f86"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Xbox"",
+                    ""action"": ""Assist"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20e38642-b7ec-4cb5-9e05-3b12696478c9"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Assist"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9bf9b7da-0352-40d2-9e3e-adbb36bcd30d"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardTwo"",
+                    ""action"": ""Assist"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -741,7 +741,7 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""107ca082-ecee-44a0-9062-935eed5af666"",
-                    ""path"": ""<Keyboard>/y"",
+                    ""path"": ""<Keyboard>/h"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KeyboardTwo"",
@@ -1521,10 +1521,10 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
         m_Gameplay_DashBack = m_Gameplay.FindAction("DashBack", throwIfNotFound: true);
         m_Gameplay_Light = m_Gameplay.FindAction("Light", throwIfNotFound: true);
         m_Gameplay_Medium = m_Gameplay.FindAction("Medium", throwIfNotFound: true);
-        m_Gameplay_Throw = m_Gameplay.FindAction("Throw", throwIfNotFound: true);
+        m_Gameplay_Assist = m_Gameplay.FindAction("Assist", throwIfNotFound: true);
         m_Gameplay_Heavy = m_Gameplay.FindAction("Heavy", throwIfNotFound: true);
         m_Gameplay_Arcane = m_Gameplay.FindAction("Arcane", throwIfNotFound: true);
-        m_Gameplay_Assist = m_Gameplay.FindAction("Assist", throwIfNotFound: true);
+        m_Gameplay_Throw = m_Gameplay.FindAction("Throw", throwIfNotFound: true);
         m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1618,10 +1618,10 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_DashBack;
     private readonly InputAction m_Gameplay_Light;
     private readonly InputAction m_Gameplay_Medium;
-    private readonly InputAction m_Gameplay_Throw;
+    private readonly InputAction m_Gameplay_Assist;
     private readonly InputAction m_Gameplay_Heavy;
     private readonly InputAction m_Gameplay_Arcane;
-    private readonly InputAction m_Gameplay_Assist;
+    private readonly InputAction m_Gameplay_Throw;
     private readonly InputAction m_Gameplay_Pause;
     public struct GameplayActions
     {
@@ -1636,10 +1636,10 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
         public InputAction @DashBack => m_Wrapper.m_Gameplay_DashBack;
         public InputAction @Light => m_Wrapper.m_Gameplay_Light;
         public InputAction @Medium => m_Wrapper.m_Gameplay_Medium;
-        public InputAction @Throw => m_Wrapper.m_Gameplay_Throw;
+        public InputAction @Assist => m_Wrapper.m_Gameplay_Assist;
         public InputAction @Heavy => m_Wrapper.m_Gameplay_Heavy;
         public InputAction @Arcane => m_Wrapper.m_Gameplay_Arcane;
-        public InputAction @Assist => m_Wrapper.m_Gameplay_Assist;
+        public InputAction @Throw => m_Wrapper.m_Gameplay_Throw;
         public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
@@ -1677,18 +1677,18 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
             @Medium.started += instance.OnMedium;
             @Medium.performed += instance.OnMedium;
             @Medium.canceled += instance.OnMedium;
-            @Throw.started += instance.OnThrow;
-            @Throw.performed += instance.OnThrow;
-            @Throw.canceled += instance.OnThrow;
+            @Assist.started += instance.OnAssist;
+            @Assist.performed += instance.OnAssist;
+            @Assist.canceled += instance.OnAssist;
             @Heavy.started += instance.OnHeavy;
             @Heavy.performed += instance.OnHeavy;
             @Heavy.canceled += instance.OnHeavy;
             @Arcane.started += instance.OnArcane;
             @Arcane.performed += instance.OnArcane;
             @Arcane.canceled += instance.OnArcane;
-            @Assist.started += instance.OnAssist;
-            @Assist.performed += instance.OnAssist;
-            @Assist.canceled += instance.OnAssist;
+            @Throw.started += instance.OnThrow;
+            @Throw.performed += instance.OnThrow;
+            @Throw.canceled += instance.OnThrow;
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
@@ -1723,18 +1723,18 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
             @Medium.started -= instance.OnMedium;
             @Medium.performed -= instance.OnMedium;
             @Medium.canceled -= instance.OnMedium;
-            @Throw.started -= instance.OnThrow;
-            @Throw.performed -= instance.OnThrow;
-            @Throw.canceled -= instance.OnThrow;
+            @Assist.started -= instance.OnAssist;
+            @Assist.performed -= instance.OnAssist;
+            @Assist.canceled -= instance.OnAssist;
             @Heavy.started -= instance.OnHeavy;
             @Heavy.performed -= instance.OnHeavy;
             @Heavy.canceled -= instance.OnHeavy;
             @Arcane.started -= instance.OnArcane;
             @Arcane.performed -= instance.OnArcane;
             @Arcane.canceled -= instance.OnArcane;
-            @Assist.started -= instance.OnAssist;
-            @Assist.performed -= instance.OnAssist;
-            @Assist.canceled -= instance.OnAssist;
+            @Throw.started -= instance.OnThrow;
+            @Throw.performed -= instance.OnThrow;
+            @Throw.canceled -= instance.OnThrow;
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
@@ -2013,10 +2013,10 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
         void OnDashBack(InputAction.CallbackContext context);
         void OnLight(InputAction.CallbackContext context);
         void OnMedium(InputAction.CallbackContext context);
-        void OnThrow(InputAction.CallbackContext context);
+        void OnAssist(InputAction.CallbackContext context);
         void OnHeavy(InputAction.CallbackContext context);
         void OnArcane(InputAction.CallbackContext context);
-        void OnAssist(InputAction.CallbackContext context);
+        void OnThrow(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
     }
     public interface IUIActions
