@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 19893640}
   - component: {fileID: 19901096}
   m_Layer: 3
-  m_Name: SpikyBlastRed
+  m_Name: HurtMedium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -251,8 +251,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 4
-      minScalar: 3.5
+      scalar: 3.7
+      minScalar: 3.3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1293,19 +1293,19 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.9811321, g: 0.77523834, b: 0.6247775, a: 1}
-        key1: {r: 1, g: 0.272347, b: 0, a: 1}
-        key2: {r: 1, g: 0, b: 0, a: 1}
-        key3: {r: 1, g: 0.13333334, b: 0, a: 0}
-        key4: {r: 0, g: 0, b: 0, a: 0}
+        key0: {r: 1, g: 1, b: 1, a: 1}
+        key1: {r: 1, g: 0.92892253, b: 0, a: 1}
+        key2: {r: 1, g: 0.6744842, b: 0, a: 1}
+        key3: {r: 1, g: 0.39527005, b: 0, a: 0}
+        key4: {r: 1, g: 0.44493103, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
-        ctime0: 1157
-        ctime1: 28913
-        ctime2: 65388
-        ctime3: 60550
-        ctime4: 0
+        ctime0: 10263
+        ctime1: 34695
+        ctime2: 59174
+        ctime3: 65535
+        ctime4: 65388
         ctime5: 0
         ctime6: 0
         ctime7: 0
@@ -1318,7 +1318,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 3
+        m_NumColorKeys: 4
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
@@ -4785,7 +4785,7 @@ Transform:
   m_GameObject: {fileID: 161854}
   m_LocalRotation: {x: -0.00000003959903, y: 1, z: -0.0000001490116, w: -0.00000002362124}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 12, y: 12, z: 12}
+  m_LocalScale: {x: 11, y: 11, z: 11}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 461590}
@@ -6013,18 +6013,18 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0.2326675, b: 0, a: 1}
-        key1: {r: 1, g: 0.2326675, b: 0, a: 1}
-        key2: {r: 1, g: 1, b: 1, a: 1}
-        key3: {r: 0.03529412, g: 1, b: 0.03529412, a: 0}
+        key0: {r: 1, g: 0.9622972, b: 0, a: 1}
+        key1: {r: 1, g: 0.7392711, b: 0, a: 1}
+        key2: {r: 1, g: 0.5643389, b: 0, a: 1}
+        key3: {r: 1, g: 0.31209642, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 65535
-        ctime2: 65535
-        ctime3: 65535
+        ctime1: 35273
+        ctime2: 58982
+        ctime3: 64379
         ctime4: 0
         ctime5: 0
         ctime6: 0
@@ -6038,7 +6038,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 2
+        m_NumColorKeys: 4
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2

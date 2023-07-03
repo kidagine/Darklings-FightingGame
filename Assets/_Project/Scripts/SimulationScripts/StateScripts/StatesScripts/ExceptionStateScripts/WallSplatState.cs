@@ -14,13 +14,9 @@ public class WallSplatState : State
             player.wasWallSplatted = true;
             DemonVector2 effectPosition = new DemonVector2(player.position.x + ((DemonFloat)2.25 * player.flip), player.position.y);
             if (player.flip == 1)
-            {
-                player.SetParticle("WallSplat", effectPosition, true);
-            }
+                player.SetParticle("WallSplat", effectPosition);
             else
-            {
-                player.SetParticle("WallSplat", effectPosition, false);
-            }
+                player.SetParticle("WallSplat", effectPosition);
             player.sound = "WallSplat";
             player.enter = true;
             player.animationFrames = 0;

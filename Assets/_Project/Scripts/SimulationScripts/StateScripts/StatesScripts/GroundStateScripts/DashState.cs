@@ -12,12 +12,12 @@ public class DashState : State
             if (player.dashDirection > 0)
             {
                 DemonVector2 effectPosition = new DemonVector2(player.position.x - 1, player.position.y);
-                player.SetEffect("Dash", effectPosition, false);
+                player.SetParticle("Dash", effectPosition, new Vector2(-90, 90));
             }
             else
             {
                 DemonVector2 effectPosition = new DemonVector2(player.position.x + 1, player.position.y);
-                player.SetEffect("Dash", effectPosition, true);
+                player.SetParticle("Dash", effectPosition, new Vector2(-90, -90));
             }
             player.dashFrames = 15;
             player.velocity = new DemonVector2(player.dashDirection * player.playerStats.DashForce, 0);

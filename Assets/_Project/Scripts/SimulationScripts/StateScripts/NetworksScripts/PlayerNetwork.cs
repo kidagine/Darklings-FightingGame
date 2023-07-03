@@ -261,16 +261,14 @@ public class PlayerNetwork
             }
         }
     }
-    public void SetParticle(string name, DemonVector2 position, bool flip = false)
+    public void SetParticle(string name, DemonVector2 position, Vector2 flip = default)
     {
         for (int i = 0; i < particles.Length; i++)
-        {
             if (name == particles[i].name)
             {
-                GameSimulationView.UpdateParticles(player.IsPlayerOne ? 0 : 1, particles[i], position);
+                GameSimulationView.UpdateParticles(player.IsPlayerOne ? 0 : 1, particles[i], position, flip);
                 return;
             }
-        }
     }
     public void SetProjectile(string name, DemonVector2 position, bool flip = false)
     {
