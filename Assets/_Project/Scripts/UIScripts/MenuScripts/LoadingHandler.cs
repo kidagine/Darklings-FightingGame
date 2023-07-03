@@ -38,7 +38,7 @@ public class LoadingHandler : MonoBehaviour
 
     IEnumerator LoadingCoroutine()
     {
-        AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(3);
+        AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(2);
         loadingOperation.allowSceneActivation = false;
         while (!loadingOperation.isDone)
         {

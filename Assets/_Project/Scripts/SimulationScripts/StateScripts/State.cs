@@ -54,7 +54,6 @@ public class State
         if (player.inputBuffer.GetRedFrenzy())
             if (player.healthRecoverable > player.health)
             {
-                Debug.Log("R");
                 AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
                 player.attackNetwork = SetAttack(player.attackInput, attack);
                 EnterState(player, "RedFrenzy");

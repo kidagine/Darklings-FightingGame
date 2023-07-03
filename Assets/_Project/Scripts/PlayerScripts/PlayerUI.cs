@@ -457,7 +457,7 @@ public class PlayerUI : MonoBehaviour
         Time.timeScale = 1.0f;
         SceneSettings.SceneSettingsDecide = false;
         SceneSettings.ChangeCharacter = true;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     public void QuitMatch()
@@ -467,7 +467,7 @@ public class PlayerUI : MonoBehaviour
         SceneSettings.SceneSettingsDecide = false;
         SceneSettings.ChangeCharacter = false;
         SceneSettings.ReplayMode = false;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     public void OpenPause(bool isPlayerOne)

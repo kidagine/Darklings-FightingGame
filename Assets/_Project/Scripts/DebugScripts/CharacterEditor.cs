@@ -387,6 +387,6 @@ public class CharacterEditor : MonoBehaviour
     public void LoadFightScene()
     {
         SceneSettings.PlayerOne = 0;
-        SceneManager.LoadScene(3);
+        SceneManager.LoadScene(2);
     }
 }
