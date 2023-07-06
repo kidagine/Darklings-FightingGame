@@ -8,7 +8,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Audio))]
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(Animator))]
-public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] public UnityEvent _onClickedAnimationEnd = default;
     [SerializeField] public UnityEvent _onSelected = default;
@@ -25,7 +25,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     private bool _wasClicked;
     private Coroutine _moveVerticalCoroutine;
     private Vector2 _defaultPosition;
-    private readonly int _moveVerticalAmount = 7;
+    private readonly int _moveVerticalAmount = 5;
 
 
     void Awake()
@@ -42,27 +42,21 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         _onSelected?.Invoke();
         if (!_isIgnoringFirstSelectSound)
         {
-            // _audio.Sound("Selected").Play();
         }
-        _animator.SetBool("IsSelected", true);
         _isIgnoringFirstSelectSound = false;
-    }
-
-    public void OnDeselect(BaseEventData eventData)
-    {
-        _animator.SetBool("IsSelected", false);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        _animator.SetBool("IsHover", true);
         _audio.Sound("Selected").Play();
         Cursor.SetCursor(MouseSetup.Instance.HoverCursor, Vector2.zero, CursorMode.Auto);
         _button.Select();
     }
 
-
     public void OnPointerExit(PointerEventData eventData)
     {
+        _animator.SetBool("IsHover", false);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
@@ -71,8 +65,6 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         if (!_wasClicked)
         {
             _wasClicked = true;
-            _audio.Sound("Pressed").Play();
-            _animator.SetTrigger("Pressed");
         }
     }
 
@@ -85,8 +77,6 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
             {
                 _wasClicked = true;
             }
-            _audio.Sound("Pressed").Play();
-            _animator.SetTrigger("Pressed");
         }
     }
 
@@ -140,15 +130,14 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     {
         _wasClicked = false;
         if (_ignoreFirstSelectSound)
-        {
             _isIgnoringFirstSelectSound = true;
-        }
-        //EventSystem.current.SetSelectedGameObject(null);
         _animator.Rebind();
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        _audio.Sound("Pressed").Play();
+        _animator.SetBool("IsPress", true);
         if (_moveVerticalCoroutine != null)
             StopCoroutine(_moveVerticalCoroutine);
         _rect.anchoredPosition = _defaultPosition;
@@ -157,6 +146,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        _animator.SetBool("IsPress", false);
         if (_moveVerticalCoroutine != null)
             StopCoroutine(_moveVerticalCoroutine);
         _rect.anchoredPosition = _defaultPosition + (-_moveVerticalAmount * Vector2.up);
@@ -166,7 +156,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     IEnumerator MoveVerticalCoroutine(int moveY)
     {
         float elapsedTime = 0f;
-        float waitTime = 0.08f;
+        float waitTime = 0.05f;
         Vector2 currentPosition = _rect.anchoredPosition;
         Vector2 endPosition = _rect.anchoredPosition + (moveY * Vector2.up);
         while (elapsedTime < waitTime)
