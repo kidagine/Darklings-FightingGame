@@ -14,7 +14,8 @@ public class GroundParentState : State
         if (RedFrenzy(player))
             return;
         ToGrabState(player);
-        ToAttackState(player);
+        if (ToAttackState(player))
+            return;
         ToArcanaState(player);
         Shadow(player);
         ToHurtState(player);
@@ -29,10 +30,14 @@ public class GroundParentState : State
         }
         return false;
     }
-    public void ToAttackState(PlayerNetwork player)
+    public bool ToAttackState(PlayerNetwork player)
     {
         if (player.inputBuffer.CurrentTrigger().pressed)
+        {
             Attack(player);
+            return true;
+        }
+        return false;
     }
     public void ToArcanaState(PlayerNetwork player)
     {

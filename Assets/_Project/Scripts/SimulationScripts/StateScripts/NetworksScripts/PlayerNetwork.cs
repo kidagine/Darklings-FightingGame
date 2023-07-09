@@ -317,16 +317,16 @@ public class PlayerNetwork
         switch (arcanaGainTypes)
         {
             case ArcanaGainTypes.AttackOnHit:
-                arcanaGauge += (int)DemonFloat.Floor(meter * 1);
+                arcanaGauge += (int)DemonFloat.Floor(meter * 1.3);
                 break;
             case ArcanaGainTypes.AttackOnBlock:
-                arcanaGauge += (int)DemonFloat.Floor(meter * 0.5);
+                arcanaGauge += (int)DemonFloat.Floor(meter * 0.8);
                 break;
             case ArcanaGainTypes.DefendOnHit:
-                arcanaGauge += (int)DemonFloat.Floor(meter * 0.25);
+                arcanaGauge += (int)DemonFloat.Floor(meter * 0.6);
                 break;
             case ArcanaGainTypes.DefendOnBlock:
-                arcanaGauge += (int)DemonFloat.Floor(meter * 0.3);
+                arcanaGauge += (int)DemonFloat.Floor(meter * 0.75);
                 break;
         }
         int maxArcana = PlayerStatsSO.ARCANA_MULTIPLIER * playerStats.arcanaLevel;

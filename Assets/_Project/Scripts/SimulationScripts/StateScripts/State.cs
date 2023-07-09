@@ -202,7 +202,7 @@ public class State
             DemonFloat damageScale = (DemonFloat)1;
             for (int i = 0; i < player.combo; i++)
             {
-                damageScale *= (DemonFloat)0.97;
+                damageScale *= (DemonFloat)0.96;
             }
             calculatedDamage *= damageScale;
         }
