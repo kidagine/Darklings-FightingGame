@@ -27,7 +27,7 @@ public class State
     }
     public bool IsBlocking(PlayerNetwork player)
     {
-        if (player.attackHurtNetwork.attackType == AttackTypeEnum.Break)
+        if (player.attackHurtNetwork.guardBreak)
         {
             return false;
         }

@@ -11,6 +11,7 @@ public class TopBarMenu : MonoBehaviour
     [SerializeField] private Sprite _fullScreenOffSprite = default;
     [SerializeField] private Image _musicImage = default;
     [SerializeField] private Image _fullScreenImage = default;
+    [SerializeField] private BaseMenu _previousMenu = default;
     private AudioSource _mainMenuAudio;
 
     private void Start()
@@ -34,4 +35,11 @@ public class TopBarMenu : MonoBehaviour
     public void OpenControls() => _controlsMenu.Show();
 
     public void OpenSettings() => _optionsMenu.Show();
+
+    public void ShowMenu(BaseMenu menu)
+    {
+        _previousMenu.Hide();
+        menu.Show();
+        _previousMenu = menu;
+    }
 }

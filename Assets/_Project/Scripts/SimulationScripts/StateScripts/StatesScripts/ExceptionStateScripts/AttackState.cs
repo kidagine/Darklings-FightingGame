@@ -14,16 +14,19 @@ public class AttackState : State
             }
             if (player.attackNetwork.attackType == AttackTypeEnum.Break)
             {
-                if (player.health > _guardBreakSelfDamage)
-                    player.health -= _guardBreakSelfDamage;
-                else
-                    player.health = 1;
-                player.healthRecoverable -= _guardBreakSelfDamage - 100;
-                player.player.StartShakeContact();
-                player.player.PlayerUI.Damaged();
-                player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-                DemonVector2 effectPosition = new DemonVector2(player.position.x, player.position.y + 20);
-                player.SetParticle("GuardBreak", effectPosition);
+                if (player.healthRecoverable == player.health)
+                {
+                    if (player.health > _guardBreakSelfDamage)
+                        player.health -= _guardBreakSelfDamage;
+                    else
+                        player.health = 1;
+                    player.healthRecoverable -= _guardBreakSelfDamage - 100;
+                    player.player.StartShakeContact();
+                    player.player.PlayerUI.Damaged();
+                    player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+                    DemonVector2 effectPosition = new DemonVector2(player.position.x, player.position.y + 20);
+                    player.SetParticle("GuardBreak", effectPosition);
+                }
                 //CheckTrainingComboEnd(player);
             }
             player.animationFrames = 0;

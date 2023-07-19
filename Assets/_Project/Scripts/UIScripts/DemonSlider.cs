@@ -13,13 +13,8 @@ public class DemonSlider : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoi
     [SerializeField] private bool _showAsPercentage = default;
     [SerializeField] private PlayerPreferences _playerPreferences = default;
     [SerializeField] private UnityEventInt _eventInt = default;
-    private Slider _slider;
+    [SerializeField] private Slider _slider;
 
-
-    private void Awake()
-    {
-        _slider = GetComponent<Slider>();
-    }
 
     private void Start()
     {

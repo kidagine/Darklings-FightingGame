@@ -43,8 +43,8 @@ public class PlayerUIRender : DemonicsAnimator
         return skinNumber;
     }
 
-    void OnDisable()
-    {
-        gameObject.SetActive(false);
-    }
+    // void OnDisable()
+    // {
+    //     gameObject.SetActive(false);
+    // }
 }

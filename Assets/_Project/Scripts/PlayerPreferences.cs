@@ -34,7 +34,7 @@ public class PlayerPreferences : MonoBehaviour
     [SerializeField] private int _stageStyleSelectorInitial = default;
     [Header("OPTIONS")]
     [Header("Audio")]
-    [SerializeField] private DemonSlider _vfxSlider = default;
+    [SerializeField] private DemonSlider _sfxSlider = default;
     [Range(0, 100)]
     [SerializeField] private int _sfxSelectorInitial = default;
     [SerializeField] private DemonSlider _uiSlider = default;
@@ -118,7 +118,7 @@ public class PlayerPreferences : MonoBehaviour
 
     private void LoadOptionPreferences()
     {
-        _vfxSlider.SetValue(int.Parse(DemonicsSaver.Load("sfx", _sfxSelectorInitial.ToString())));
+        _sfxSlider.SetValue(int.Parse(DemonicsSaver.Load("sfx", _sfxSelectorInitial.ToString())));
         _uiSlider.SetValue(int.Parse(DemonicsSaver.Load("ui", _uiSelectorInitial.ToString())));
         _musicSlider.SetValue(int.Parse(DemonicsSaver.Load("music", _musicSelectorInitial.ToString())));
     }

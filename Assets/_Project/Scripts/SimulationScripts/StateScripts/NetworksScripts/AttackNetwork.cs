@@ -31,6 +31,7 @@ public struct AttackNetwork
     public bool jumpCancelable;
     public bool softKnockdown;
     public bool hardKnockdown;
+    public bool guardBreak;
     public int superArmor;
     public bool projectileDestroyOnHit;
 
@@ -61,6 +62,7 @@ public struct AttackNetwork
         bw.Write(softKnockdown);
         bw.Write(hardKnockdown);
         bw.Write(superArmor);
+        bw.Write(guardBreak);
         cameraShakerNetwork.Serialize(bw);
     }
 
@@ -91,6 +93,7 @@ public struct AttackNetwork
         softKnockdown = br.ReadBoolean();
         hardKnockdown = br.ReadBoolean();
         superArmor = br.ReadInt32();
+        guardBreak = br.ReadBoolean();
         cameraShakerNetwork.Deserialize(br);
     }
 };
