@@ -93,6 +93,7 @@ public class BlockParentState : State
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 EnterState(player, "Grabbed");
+                return;
             }
             if (DemonicsPhysics.IsInCorner(player))
             {

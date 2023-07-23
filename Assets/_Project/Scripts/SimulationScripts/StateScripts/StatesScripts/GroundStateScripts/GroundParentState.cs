@@ -14,9 +14,9 @@ public class GroundParentState : State
         if (RedFrenzy(player))
             return;
         ToGrabState(player);
+        ToArcanaState(player);
         if (ToAttackState(player))
             return;
-        ToArcanaState(player);
         Shadow(player);
         ToHurtState(player);
     }
@@ -58,6 +58,11 @@ public class GroundParentState : State
     {
         if (IsColliding(player))
         {
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
+            {
+                EnterState(player, "Grabbed");
+                return;
+            }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 EnterState(player, "Grabbed");

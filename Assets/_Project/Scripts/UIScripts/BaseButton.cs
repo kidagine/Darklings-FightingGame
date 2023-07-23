@@ -130,6 +130,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
 
     void OnDisable()
     {
+        _isPressed = false;
         _wasClicked = false;
         if (_ignoreFirstSelectSound)
             _isIgnoringFirstSelectSound = true;
@@ -140,7 +141,6 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
     {
         if (_isPressed)
             return;
-        _isPressed = true;
         _audio.Sound("Pressed").Play();
         _animator.SetBool("IsPress", true);
         if (_moveVerticalCoroutine != null)

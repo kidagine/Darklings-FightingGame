@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
     public void SetPosition(DemonVector2 position)
     {
         Vector2Int fixedPosition = new Vector2Int((int)(position.x * 1) / 1, (int)(position.y * 1) / 1);
-        Physics.SetPositionWithRender(new DemonVector2((DemonFloat)fixedPosition.x, (DemonFloat)fixedPosition.y));
+        Physics.SetPositionWithRender(new DemonVector2((DemonFloat)position.x, (DemonFloat)position.y));
     }
 
     public void TravelDistance(DemonVector2 travelDistance)

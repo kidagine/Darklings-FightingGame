@@ -27,6 +27,7 @@ public class BaseToggle : BaseButton
 
     public override void OnPointerDown(PointerEventData eventData)
     {
+        _isPressed = true;
         _baseTogglesGroup.CheckToggles();
         base.OnPointerDown(eventData);
     }

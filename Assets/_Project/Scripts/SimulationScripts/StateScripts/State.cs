@@ -28,25 +28,15 @@ public class State
     public bool IsBlocking(PlayerNetwork player)
     {
         if (player.attackHurtNetwork.guardBreak)
-        {
             return false;
-        }
         if (AIBlocking(player, player.attackHurtNetwork.attackType))
-        {
             return true;
-        }
         if (player.attackHurtNetwork.attackType == AttackTypeEnum.Low && player.direction.y >= 0)
-        {
             return false;
-        }
         if (player.attackHurtNetwork.attackType == AttackTypeEnum.Overhead && player.direction.y < 0)
-        {
             return false;
-        }
         if (player.flip == 1 && player.direction.x < 0 || player.flip == -1 && player.direction.x > 0)
-        {
             return true;
-        }
         return false;
     }
     protected bool RedFrenzy(PlayerNetwork player)
@@ -409,9 +399,7 @@ public class State
         if (DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox) && !player.otherPlayer.hitbox.enter)
         {
             if (player.otherPlayer.attackNetwork.attackType == AttackTypeEnum.Throw && player.stunFrames == 0 && (DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
-            {
                 return false;
-            }
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
             player.hitstop = true;

@@ -12,10 +12,12 @@ public class AttackState : State
                 player.position = new DemonVector2((DemonFloat)player.position.x, (DemonFloat)player.position.y + 7);
                 player.juggleBounce = false;
             }
+            player.attackNetwork.guardBreak = false;
             if (player.attackNetwork.attackType == AttackTypeEnum.Break)
             {
                 if (player.healthRecoverable == player.health)
                 {
+                    player.attackNetwork.guardBreak = true;
                     if (player.health > _guardBreakSelfDamage)
                         player.health -= _guardBreakSelfDamage;
                     else
