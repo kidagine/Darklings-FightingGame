@@ -4,6 +4,7 @@ using UnityEngine;
 public class BaseTogglesGroup : MonoBehaviour
 {
     private List<BaseToggle> _toggles = new List<BaseToggle>();
+    public BaseToggle ActiveToggle { get; set; }
 
     public void CheckToggles()
     {

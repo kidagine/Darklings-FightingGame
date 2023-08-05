@@ -115,14 +115,6 @@ public class GameplayManager : MonoBehaviour
     void Awake()
     {
         keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
-        if (InputSystem.devices.Count > 1)
-        {
-            if (InputSystem.devices[1].name == "Mouse")
-            {
-                InputSystem.RemoveDevice(InputSystem.devices[1]);
-            }
-        }
-
         HasGameStarted = false;
         GameSpeed = _gameSpeed;
         CheckInstance();

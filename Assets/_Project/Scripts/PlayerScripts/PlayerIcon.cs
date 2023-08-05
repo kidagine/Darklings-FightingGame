@@ -67,7 +67,7 @@ public class PlayerIcon : MonoBehaviour
                             _audio.Sound("Selected").Play();
                             transform.GetChild(1).gameObject.SetActive(false);
                             _playersMenu.CpuTextRight.SetActive(false);
-                            _rectTransform.anchoredPosition = new Vector2(_right, 275.0f);
+                            _rectTransform.anchoredPosition = new Vector2(_right, 190.0f);
                         }
                     }
                     else if (movement < 0.0f)
@@ -82,7 +82,7 @@ public class PlayerIcon : MonoBehaviour
                             _audio.Sound("Selected").Play();
                             transform.GetChild(0).gameObject.SetActive(false);
                             _playersMenu.CpuTextLeft.SetActive(false);
-                            _rectTransform.anchoredPosition = new Vector2(_left, 275.0f);
+                            _rectTransform.anchoredPosition = new Vector2(_left, 190.0f);
                         }
                     }
                 }
@@ -116,7 +116,7 @@ public class PlayerIcon : MonoBehaviour
             if (callbackContext.performed)
             {
                 _audio.Sound("Selected").Play();
-                _rectTransform.anchoredPosition = new Vector2(_left, 275.0f);
+                _rectTransform.anchoredPosition = new Vector2(_left, 190.0f);
                 _playersMenu.UpdateLeftRightCpu();
             }
         }
