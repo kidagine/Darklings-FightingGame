@@ -12,7 +12,7 @@ public class IdleState : GroundParentState
             return;
         }
         player.animationFrames++;
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
         CheckFlip(player);
         base.UpdateLogic(player);
         ToWalkState(player);
@@ -54,15 +54,15 @@ public class IdleState : GroundParentState
     }
     private void ToDashState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
-            if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.ForwardDash)
+            if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.ForwardDash)
             {
                 player.dashDirection = 1;
                 EnterState(player, "Dash");
 
             }
-            else if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.BackDash)
+            else if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.BackDash)
             {
                 player.dashDirection = -1;
                 EnterState(player, "Dash");

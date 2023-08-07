@@ -28,6 +28,7 @@ public class BaseMenu : MonoBehaviour
 
     public void Hide()
     {
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         EventSystem.current.SetSelectedGameObject(null);
         gameObject.SetActive(false);
     }

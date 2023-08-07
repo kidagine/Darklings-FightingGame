@@ -21,8 +21,8 @@ public class ThrowState : State
         player.otherPlayer.pushbox.active = false;
         player.animationFrames++;
         player.attackFrames--;
-        DemonicsVector2 grabPoint = player.player.PlayerAnimator.GetGrabPoint(player.animation, player.animationFrames);
-        player.otherPlayer.position = new DemonicsVector2(player.position.x + (grabPoint.x * player.flip), player.position.y + grabPoint.y);
+        DemonVector2 grabPoint = player.player.PlayerAnimator.GetGrabPoint(player.animation, player.animationFrames);
+        player.otherPlayer.position = new DemonVector2(player.position.x + (grabPoint.x * player.flip), player.position.y + grabPoint.y);
         // if (player.player.PlayerAnimator.GetThrowArcanaEnd(player.animation, player.animationFrames) && player.otherPlayer.state == "Grabbed")
         // {
         // }
@@ -50,11 +50,11 @@ public class ThrowState : State
                 player.otherPlayer.player.StartShakeContact();
                 if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.flip == 1)
                 {
-                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT - player.pushbox.size.x, player.position.y);
+                    player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT - player.pushbox.size.x, player.position.y);
                 }
                 else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.flip == -1)
                 {
-                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT + player.pushbox.size.x, player.position.y);
+                    player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT + player.pushbox.size.x, player.position.y);
                 }
                 ThrowEnd(player.otherPlayer);
                 CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);

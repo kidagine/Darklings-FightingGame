@@ -11,16 +11,16 @@ public class DashState : State
             player.animationFrames = 0;
             if (player.dashDirection > 0)
             {
-                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x - 1, player.position.y);
-                player.SetEffect("Dash", effectPosition, false);
+                DemonVector2 effectPosition = new DemonVector2(player.position.x - 1, player.position.y);
+                player.SetParticle("Dash", effectPosition, new Vector2(-90, 90));
             }
             else
             {
-                DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
-                player.SetEffect("Dash", effectPosition, true);
+                DemonVector2 effectPosition = new DemonVector2(player.position.x + 1, player.position.y);
+                player.SetParticle("Dash", effectPosition, new Vector2(-90, -90));
             }
             player.dashFrames = 15;
-            player.velocity = new DemonicsVector2(player.dashDirection * player.playerStats.DashForce, 0);
+            player.velocity = new DemonVector2(player.dashDirection * player.playerStats.DashForce, 0);
             return;
         }
         ToHurtState(player);
@@ -37,12 +37,12 @@ public class DashState : State
             {
                 if (player.flip > 0)
                 {
-                    DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x - 1, player.position.y);
+                    DemonVector2 effectPosition = new DemonVector2(player.position.x - 1, player.position.y);
                     player.SetEffect("Ghost", effectPosition, false);
                 }
                 else
                 {
-                    DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + 1, player.position.y);
+                    DemonVector2 effectPosition = new DemonVector2(player.position.x + 1, player.position.y);
                     player.SetEffect("Ghost", effectPosition, true);
                 }
             }
@@ -50,7 +50,7 @@ public class DashState : State
         }
         else
         {
-            player.velocity = DemonicsVector2.Zero;
+            player.velocity = DemonVector2.Zero;
             if (player.direction.x * player.flip > 0 && player.dashDirection == player.flip)
             {
                 player.dashDirection = 0;
@@ -85,7 +85,7 @@ public class DashState : State
             {
                 player.otherPlayer.knockback = 0;
                 player.otherPlayer.pushbackStart = player.otherPlayer.position;
-                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
             if (IsBlocking(player))

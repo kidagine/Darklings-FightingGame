@@ -22,23 +22,23 @@ public class BlueFrenzyState : State
             player.attackFrames--;
             if (player.pushbackDuration > 0 && player.knockback <= player.pushbackDuration)
             {
-                DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.pushbackDuration;
-                DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
-                DemonicsVector2 nextPosition = new DemonicsVector2(nextX, player.position.y);
+                DemonFloat ratio = (DemonFloat)player.knockback / (DemonFloat)player.pushbackDuration;
+                DemonFloat nextX = DemonFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+                DemonVector2 nextPosition = new DemonVector2(nextX, player.position.y);
                 player.position = nextPosition;
                 player.knockback++;
                 if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
                 {
-                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+                    player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
                 }
                 else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
                 {
-                    player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+                    player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
                 }
             }
         }
         UpdateFramedata(player);
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
 
         bool isParrying = player.player.PlayerAnimator.GetParrying(player.animation, player.animationFrames);
         if (IsColliding(player))
@@ -69,7 +69,7 @@ public class BlueFrenzyState : State
     }
     private void ToParryState(PlayerNetwork player, bool isParrying)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Parry)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Parry)
         {
             if (isParrying)
             {
@@ -82,22 +82,22 @@ public class BlueFrenzyState : State
     {
         int parryDistance = 37;
         player.sound = "Parry";
-        DemonicsVector2 hurtEffectPosition = new DemonicsVector2(player.position.x + (20 * player.flip), player.otherPlayer.hitbox.position.y);
-        player.SetEffect("Parry", hurtEffectPosition);
+        DemonVector2 hurtEffectPosition = new DemonVector2(player.position.x + (20 * player.flip), player.position.y + 25);
+        player.SetParticle("Parry", hurtEffectPosition);
         player.otherPlayer.canChainAttack = true;
         GameSimulation.Hitstop = 10;
         if (DemonicsPhysics.IsInCorner(player.otherPlayer))
         {
             player.knockback = 0;
             player.pushbackStart = player.position;
-            player.pushbackEnd = new DemonicsVector2(player.position.x + (parryDistance * -player.flip), DemonicsPhysics.GROUND_POINT);
+            player.pushbackEnd = new DemonVector2(player.position.x + (parryDistance * -player.flip), DemonicsPhysics.GROUND_POINT);
             player.pushbackDuration = 10;
         }
         else
         {
             player.otherPlayer.knockback = 0;
             player.otherPlayer.pushbackStart = player.otherPlayer.position;
-            player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (parryDistance * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+            player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (parryDistance * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
             player.otherPlayer.pushbackDuration = 10;
         }
         player.health = player.healthRecoverable;
@@ -109,7 +109,7 @@ public class BlueFrenzyState : State
         {
             player.otherPlayer.knockback = 0;
             player.otherPlayer.pushbackStart = player.otherPlayer.position;
-            player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+            player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
             player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
         }
         if (IsBlocking(player))

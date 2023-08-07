@@ -19,7 +19,7 @@ public class GrabState : State
         UpdateFramedata(player);
         player.animationFrames++;
         player.attackFrames--;
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
 
         ToIdleState(player);
         ToHurtState(player);
@@ -45,7 +45,7 @@ public class GrabState : State
             {
                 player.otherPlayer.knockback = 0;
                 player.otherPlayer.pushbackStart = player.otherPlayer.position;
-                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
             player.player.StopShakeCoroutine();

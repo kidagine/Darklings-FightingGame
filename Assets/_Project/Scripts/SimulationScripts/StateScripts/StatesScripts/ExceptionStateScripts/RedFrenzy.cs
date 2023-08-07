@@ -17,6 +17,8 @@ public class RedFrenzyState : State
             player.healthRecoverable = player.health;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+            DemonVector2 effectPosition = new DemonVector2(player.position.x, player.position.y + 20);
+            player.SetParticle("RedFrenzy", effectPosition);
             UpdateFramedata(player);
             return;
         }
@@ -25,7 +27,7 @@ public class RedFrenzyState : State
             player.animationFrames++;
             player.attackFrames--;
         }
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
         player.dashFrames++;
         UpdateFramedata(player);
 
@@ -39,7 +41,7 @@ public class RedFrenzyState : State
         }
         if (player.dashFrames == 22)
         {
-            player.position = new DemonicsVector2(player.otherPlayer.position.x - (22 * player.flip), player.otherPlayer.position.y);
+            player.position = new DemonVector2(player.otherPlayer.position.x - (22 * player.flip), player.otherPlayer.position.y);
             player.SetEffect("VanishAppear", player.position);
         }
         if (player.dashFrames == 33)
@@ -75,30 +77,16 @@ public class RedFrenzyState : State
                 EnterState(player, "Grabbed");
                 return;
             }
-            if (player.attackNetwork.superArmor && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
+            if (player.attackNetwork.superArmor > 0 && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
             {
-                player.sound = player.attackHurtNetwork.impactSound;
-                if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
-                {
-                    CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
-                }
-                player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
-                player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
-                player.canChainAttack = false;
-                if (GameSimulation.Hitstop <= 0)
-                {
-                    GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
-                }
-                player.player.PlayerAnimator.SpriteSuperArmorEffect();
-                player.player.PlayerUI.Damaged();
-                player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+                SuperArmorHurt(player);
                 return;
             }
             if (DemonicsPhysics.IsInCorner(player))
             {
                 player.otherPlayer.knockback = 0;
                 player.otherPlayer.pushbackStart = player.otherPlayer.position;
-                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
             if (IsBlocking(player))

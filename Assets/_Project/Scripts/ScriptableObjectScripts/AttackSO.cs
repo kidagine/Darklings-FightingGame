@@ -16,7 +16,7 @@ public class AttackSO : ScriptableObject
     public int knockbackArc;
 
     [Header("Properties")]
-    public bool hasSuperArmor;
+    public int superArmor;
     public bool isAirAttack;
     public bool isProjectile;
     public bool isArcana;

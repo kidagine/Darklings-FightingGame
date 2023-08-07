@@ -51,7 +51,7 @@ public class ReplaysMenu : BaseMenu
             SceneSettings.IsTrainingMode = false;
             SceneSettings.ReplayIndex = index;
             ReplayManager.Instance.SetReplay();
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(1);
         }
         else
         {

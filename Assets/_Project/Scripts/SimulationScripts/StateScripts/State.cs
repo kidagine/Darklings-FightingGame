@@ -27,47 +27,37 @@ public class State
     }
     public bool IsBlocking(PlayerNetwork player)
     {
-        if (player.attackHurtNetwork.attackType == AttackTypeEnum.Break)
-        {
+        if (player.attackHurtNetwork.guardBreak)
             return false;
-        }
         if (AIBlocking(player, player.attackHurtNetwork.attackType))
-        {
             return true;
-        }
         if (player.attackHurtNetwork.attackType == AttackTypeEnum.Low && player.direction.y >= 0)
-        {
             return false;
-        }
         if (player.attackHurtNetwork.attackType == AttackTypeEnum.Overhead && player.direction.y < 0)
-        {
             return false;
-        }
         if (player.flip == 1 && player.direction.x < 0 || player.flip == -1 && player.direction.x > 0)
-        {
             return true;
-        }
         return false;
     }
-    protected void RedFrenzy(PlayerNetwork player)
+    protected bool RedFrenzy(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.RedFrenzy)
-        {
+        if (player.inputBuffer.GetRedFrenzy())
             if (player.healthRecoverable > player.health)
             {
                 AttackSO attack = PlayerComboSystem.GetRedFrenzy(player.playerStats);
                 player.attackNetwork = SetAttack(player.attackInput, attack);
                 EnterState(player, "RedFrenzy");
+                return true;
             }
-        }
+        return false;
     }
     protected void Attack(PlayerNetwork player, bool air = false)
     {
-        if ((player.inputBuffer.CurrentInput().inputEnum == InputEnum.Light || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Medium
-        || player.inputBuffer.CurrentInput().inputEnum == InputEnum.Heavy))
+        if ((player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Light || player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Medium
+        || player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Heavy))
         {
             player.pushbackDuration = 0;
-            player.attackInput = player.inputBuffer.CurrentInput().inputEnum;
+            player.attackInput = player.inputBuffer.CurrentTrigger().inputEnum;
             player.isCrouch = false;
             player.isAir = air;
             if (player.direction.y < 0)
@@ -88,9 +78,9 @@ public class State
     }
     protected void Arcana(PlayerNetwork player, bool air = false)
     {
-        if (player.arcanaGauge >= 1000 && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Special)
+        if (player.arcanaGauge >= 1000 && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Special)
         {
-            player.attackInput = player.inputBuffer.CurrentInput().inputEnum;
+            player.attackInput = player.inputBuffer.CurrentTrigger().inputEnum;
             player.isAir = air;
             player.isCrouch = false;
             if (player.direction.y < 0)
@@ -110,12 +100,12 @@ public class State
         AttackNetwork attackNetwork = new AttackNetwork()
         {
             damage = attack.damage,
-            travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
+            travelDistance = new DemonVector2((DemonFloat)attack.travelDistance.x, (DemonFloat)attack.travelDistance.y),
             name = attack.name,
             moveName = attack.moveName,
             attackSound = attack.attackSound,
             hurtEffect = attack.hurtEffect,
-            knockbackForce = (DemonicsFloat)attack.knockbackForce.x,
+            knockbackForce = (DemonFloat)attack.knockbackForce.x,
             knockbackDuration = attack.knockbackDuration,
             hitstop = attack.hitstop,
             impactSound = attack.impactSound,
@@ -125,11 +115,11 @@ public class State
             jumpCancelable = attack.jumpCancelable,
             softKnockdown = attack.causesSoftKnockdown,
             hardKnockdown = attack.causesKnockdown,
-            projectilePosition = new DemonicsVector2((DemonicsFloat)attack.hitEffectPosition.x, (DemonicsFloat)attack.hitEffectPosition.y),
+            projectilePosition = new DemonVector2((DemonFloat)attack.hitEffectPosition.x, (DemonFloat)attack.hitEffectPosition.y),
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
-            superArmor = attack.hasSuperArmor,
-            projectileSpeed = (DemonicsFloat)attack.projectileSpeed,
+            superArmor = attack.superArmor,
+            projectileSpeed = (DemonFloat)attack.projectileSpeed,
             projectileDestroyOnHit = attack.projectileDestroyOnHit,
             projectilePriority = attack.projectilePriority
         };
@@ -144,12 +134,12 @@ public class State
         AttackNetwork attackNetwork = new AttackNetwork()
         {
             damage = attack.damage,
-            travelDistance = new DemonicsVector2((DemonicsFloat)attack.travelDistance.x, (DemonicsFloat)attack.travelDistance.y),
+            travelDistance = new DemonVector2((DemonFloat)attack.travelDistance.x, (DemonFloat)attack.travelDistance.y),
             name = attack.name,
             moveName = attack.moveName,
             attackSound = attack.attackSound,
             hurtEffect = attack.hurtEffect,
-            knockbackForce = (DemonicsFloat)attack.knockbackForce.x,
+            knockbackForce = (DemonFloat)attack.knockbackForce.x,
             knockbackDuration = attack.knockbackDuration,
             hitstop = attack.hitstop,
             impactSound = attack.impactSound,
@@ -159,10 +149,10 @@ public class State
             jumpCancelable = attack.jumpCancelable,
             softKnockdown = attack.causesSoftKnockdown,
             hardKnockdown = attack.causesKnockdown,
-            projectilePosition = new DemonicsVector2((DemonicsFloat)attack.hitEffectPosition.x, (DemonicsFloat)attack.hitEffectPosition.y),
+            projectilePosition = new DemonVector2((DemonFloat)attack.hitEffectPosition.x, (DemonFloat)attack.hitEffectPosition.y),
             comboTimerStarter = input == InputEnum.Heavy ? ComboTimerStarterEnum.Red : ComboTimerStarterEnum.Yellow,
             attackType = attack.attackTypeEnum,
-            superArmor = attack.hasSuperArmor,
+            superArmor = attack.superArmor,
         };
         if (attack.cameraShaker != null)
         {
@@ -175,7 +165,7 @@ public class State
         player.dashDirection = 0;
         player.healthRecoverable = 10000;
         player.health = 10000;
-        player.shadowGauge = 2000;
+        player.shadowGauge = GameSimulation.maxShadowGauge;
         player.arcanaGauge = 0;
         player.player.PlayerUI.CheckDemonLimit(player.health);
         player.enter = false;
@@ -196,13 +186,13 @@ public class State
     }
     protected int CalculateDamage(PlayerNetwork player, int damage, float defense)
     {
-        DemonicsFloat calculatedDamage = (DemonicsFloat)damage / (DemonicsFloat)defense;
+        DemonFloat calculatedDamage = (DemonFloat)damage / (DemonFloat)defense;
         if (player.combo > 1)
         {
-            DemonicsFloat damageScale = (DemonicsFloat)1;
+            DemonFloat damageScale = (DemonFloat)1;
             for (int i = 0; i < player.combo; i++)
             {
-                damageScale *= (DemonicsFloat)0.97;
+                damageScale *= (DemonFloat)0.96;
             }
             calculatedDamage *= damageScale;
         }
@@ -212,13 +202,13 @@ public class State
     }
     protected int CalculateRecoverableDamage(PlayerNetwork player, int damage, float defense)
     {
-        DemonicsFloat calculatedDamage = ((DemonicsFloat)damage / (DemonicsFloat)defense) - 120;
+        DemonFloat calculatedDamage = ((DemonFloat)damage / (DemonFloat)defense) - 120;
         if (player.combo > 1)
         {
-            DemonicsFloat damageScale = (DemonicsFloat)1;
+            DemonFloat damageScale = (DemonFloat)1;
             for (int i = 0; i < player.combo; i++)
             {
-                damageScale *= (DemonicsFloat)0.97;
+                damageScale *= (DemonFloat)0.97;
             }
             calculatedDamage *= damageScale;
         }
@@ -248,15 +238,15 @@ public class State
         player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
-        player.SetEffect(player.attackHurtNetwork.hurtEffect, new DemonicsVector2(player.hurtPosition.x, player.hurtPosition.y - 5));
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
-            player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+            player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
         }
         else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
         {
-            player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+            player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
         }
+        player.SetParticle(player.attackHurtNetwork.hurtEffect, new DemonVector2(player.position.x, player.position.y));
         GameSimulation.Hitstop = 3;
         HitstopFully(player);
         HitstopFully(player.otherPlayer);
@@ -284,7 +274,7 @@ public class State
             }
             if (GameplayManager.Instance.InfiniteAssist)
             {
-                player.shadowGauge = 2000;
+                player.shadowGauge = GameSimulation.maxShadowGauge;
             }
         }
     }
@@ -316,7 +306,7 @@ public class State
         {
             if (TrainingSettings.OnHit)
             {
-                if ((DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
                 {
                     player.isAir = true;
                 }
@@ -343,6 +333,7 @@ public class State
     }
     protected void ResetCombo(PlayerNetwork player)
     {
+        player.otherPlayer.shadow.usedInCombo = false;
         player.otherPlayer.resultAttack.comboDamage = 0;
         player.player.PlayerUI.SetComboTimerActive(false);
         player.player.StopShakeCoroutine();
@@ -363,10 +354,11 @@ public class State
             {
                 player.attackHurtNetwork = player.otherPlayer.shadow.projectile.attackNetwork;
                 GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+                player.hitstop = true;
                 player.otherPlayer.shadow.projectile.hitstop = true;
                 player.otherPlayer.shadow.projectile.hitbox.enter = true;
                 player.otherPlayer.shadow.projectile.hitstop = true;
-                player.hurtPosition = new DemonicsVector2(player.otherPlayer.shadow.projectile.hitbox.position.x + ((player.otherPlayer.shadow.projectile.hitbox.size.x / 2) * -player.flip), player.otherPlayer.shadow.projectile.hitbox.position.y);
+                player.hurtPosition = new DemonVector2(player.otherPlayer.shadow.projectile.hitbox.position.x + ((player.otherPlayer.shadow.projectile.hitbox.size.x / 2) * -player.flip), player.otherPlayer.shadow.projectile.hitbox.position.y);
                 if (player.otherPlayer.shadow.projectile.destroyOnHit)
                 {
                     player.otherPlayer.shadow.projectile.hitbox.enter = false;
@@ -390,7 +382,7 @@ public class State
                     player.hitstop = true;
                     player.otherPlayer.projectiles[i].hitbox.enter = true;
                     player.otherPlayer.projectiles[i].hitstop = true;
-                    player.hurtPosition = new DemonicsVector2(player.position.x, player.position.y + (player.pushbox.size.y / 2));
+                    player.hurtPosition = new DemonVector2(player.position.x, player.position.y + (player.pushbox.size.y / 2));
                     if (player.otherPlayer.projectiles[i].destroyOnHit)
                     {
                         player.otherPlayer.projectiles[i].hitbox.enter = false;
@@ -406,10 +398,8 @@ public class State
         }
         if (DemonicsCollider.Colliding(player.otherPlayer.hitbox, player.hurtbox) && !player.otherPlayer.hitbox.enter)
         {
-            if (player.otherPlayer.attackNetwork.attackType == AttackTypeEnum.Throw && player.stunFrames == 0 && (DemonicsFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
-            {
+            if (player.otherPlayer.attackNetwork.attackType == AttackTypeEnum.Throw && player.stunFrames == 0 && (DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
                 return false;
-            }
             player.attackHurtNetwork = player.otherPlayer.attackNetwork;
             GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
             player.hitstop = true;
@@ -417,11 +407,11 @@ public class State
             player.otherPlayer.hitstop = true;
             if (player.otherPlayer.isAir)
             {
-                player.hurtPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
+                player.hurtPosition = new DemonVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y - (0.1f * -player.flip));
             }
             else
             {
-                player.hurtPosition = new DemonicsVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
+                player.hurtPosition = new DemonVector2(player.otherPlayer.hitbox.position.x + ((player.otherPlayer.hitbox.size.x / 2) * -player.flip) - (0.3f * -player.flip), player.otherPlayer.hitbox.position.y);
             }
             player.gotHit = true;
             return true;
@@ -429,33 +419,56 @@ public class State
         return false;
     }
 
+    protected void SuperArmorHurt(PlayerNetwork player)
+    {
+        player.attackNetwork.superArmor -= 1;
+        player.sound = "SuperArmor";
+        if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
+        {
+            CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
+        }
+        player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.otherPlayer.canChainAttack = true;
+        player.canChainAttack = false;
+        if (GameSimulation.Hitstop <= 0)
+        {
+            GameSimulation.Hitstop = player.attackHurtNetwork.hitstop;
+        }
+        player.SetParticle(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
+        player.player.PlayerAnimator.SpriteSuperArmorEffect();
+        player.player.PlayerUI.Damaged();
+        player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+    }
+
     protected void Shadow(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Assist)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Assist)
         {
-            if (!player.shadow.isOnScreen && player.shadowGauge >= 1000)
+            if (!player.shadow.isOnScreen && player.shadowGauge >= GameSimulation.maxShadowGauge / 2)
             {
                 player.sound = "Shadow";
+                player.shadow.usedInCombo = true;
                 player.shadow.projectile.attackNetwork = SetAttack(player.attackInput, player.shadow.attack);
                 player.shadow.projectile.flip = player.flip == 1 ? false : true;
                 player.shadow.projectile.fire = true;
                 player.shadow.animationFrames = 0;
                 player.shadow.isOnScreen = true;
                 player.shadow.flip = player.flip;
-                player.shadow.position = new DemonicsVector2(player.position.x + (player.shadow.spawnPoint.x * player.flip), player.position.y + player.shadow.spawnPoint.y);
-                player.shadowGauge -= 1000;
+                player.shadow.position = new DemonVector2(player.position.x + (player.shadow.spawnPoint.x * player.flip), player.position.y + player.shadow.spawnPoint.y);
+                player.shadowGauge -= GameSimulation.maxShadowGauge / 2;
             }
         }
     }
     protected void ToShadowbreakState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Assist)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Assist)
         {
-            if (player.shadowGauge == 2000)
+            if (player.shadowGauge == GameSimulation.maxShadowGauge)
             {
                 ResetCombo(player);
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-                player.velocity = DemonicsVector2.Zero;
+                player.velocity = DemonVector2.Zero;
                 player.shadowGauge -= 2000;
                 EnterState(player, "Shadowbreak");
             }

@@ -15,7 +15,7 @@ public class PlayerController : BaseController
     private readonly int _dashTime = 12;
     private Vector2Int _previousInput;
     public static UnityEvent<Vector2Int, bool> OnInputDirection = new UnityEvent<Vector2Int, bool>();
-    public static UnityEvent<InputEnum, bool, bool> OnInputAction = new UnityEvent<InputEnum, bool, bool>();
+
     void Start()
     {
         string rebinds = PlayerPrefs.GetString(_controlRebindKey);
@@ -24,6 +24,7 @@ public class PlayerController : BaseController
     }
 
     //GAMEPLAY
+    //Sequences
     public void Movement(CallbackContext callbackContext)
     {
         Vector2Int input = new Vector2Int(Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().x), Mathf.RoundToInt(callbackContext.ReadValue<Vector2>().y));
@@ -113,117 +114,42 @@ public class PlayerController : BaseController
         }
     }
 
-    public override bool Jump()
+    //Triggers
+    public void Light(CallbackContext callbackContext) => SetInput(callbackContext, ref NetworkInput.ONE_LIGHT_INPUT, ref NetworkInput.TWO_LIGHT_INPUT);
+
+    public void Medium(CallbackContext callbackContext) => SetInput(callbackContext, ref NetworkInput.ONE_MEDIUM_INPUT, ref NetworkInput.TWO_MEDIUM_INPUT);
+
+    public void Heavy(CallbackContext callbackContext) => SetInput(callbackContext, ref NetworkInput.ONE_HEAVY_INPUT, ref NetworkInput.TWO_HEAVY_INPUT);
+
+    public void Arcane(CallbackContext callbackContext) => SetInput(callbackContext, ref NetworkInput.ONE_ARCANA_INPUT, ref NetworkInput.TWO_ARCANA_INPUT);
+
+    public void Assist(CallbackContext callbackContext) => SetInput(callbackContext, ref NetworkInput.ONE_SHADOW_INPUT, ref NetworkInput.TWO_SHADOW_INPUT);
+
+    public void Throw(CallbackContext callbackContext) => SetInput(callbackContext, ref NetworkInput.ONE_GRAB_INPUT, ref NetworkInput.TWO_GRAB_INPUT);
+
+    public void Parry(CallbackContext callbackContext) => SetInput(callbackContext, ref NetworkInput.ONE_BLUE_FRENZY_INPUT, ref NetworkInput.TWO_BLUE_FRENZY_INPUT);
+
+    public void RedFrenzy(CallbackContext callbackContext) => SetInput(callbackContext, ref NetworkInput.ONE_RED_FRENZY_INPUT, ref NetworkInput.TWO_RED_FRENZY_INPUT);
+
+    private void SetInput(CallbackContext callbackContext, ref bool inputOne, ref bool InputTwo)
     {
-        if (InputDirection.y > 0)
+        if (callbackContext.performed && IsControllerEnabled)
+            if (_player.IsPlayerOne)
+                inputOne = true;
+            else
+                InputTwo = true;
+        else
         {
-            return true;
+            if (_player.IsPlayerOne)
+                inputOne = false;
+            else
+                InputTwo = false;
         }
-        return false;
-    }
-
-    public override bool Crouch()
-    {
-        if (InputDirection.y < 0)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public override bool StandUp()
-    {
-        if (InputDirection.y == 0)
-        {
-            _inputBuffer.AddInputBufferItem(InputEnum.Direction, InputDirectionEnum.NoneVertical);
-            return true;
-        }
-        return false;
-    }
-
-    public void Light(CallbackContext callbackContext)
-    {
-        OnInputAction?.Invoke(InputEnum.Light, callbackContext.performed, _player.IsPlayerOne);
-        if (callbackContext.performed && IsControllerEnabled)
-            if (_player.IsPlayerOne)
-                NetworkInput.ONE_LIGHT_INPUT = true;
-            else
-                NetworkInput.TWO_LIGHT_INPUT = true;
-    }
-
-    public void Medium(CallbackContext callbackContext)
-    {
-        OnInputAction?.Invoke(InputEnum.Medium, callbackContext.performed, _player.IsPlayerOne);
-        if (callbackContext.performed && IsControllerEnabled)
-            if (_player.IsPlayerOne)
-                NetworkInput.ONE_MEDIUM_INPUT = true;
-            else
-                NetworkInput.TWO_MEDIUM_INPUT = true;
-    }
-
-    public void Heavy(CallbackContext callbackContext)
-    {
-        OnInputAction?.Invoke(InputEnum.Heavy, callbackContext.performed, _player.IsPlayerOne);
-        if (callbackContext.performed && IsControllerEnabled)
-            if (_player.IsPlayerOne)
-                NetworkInput.ONE_HEAVY_INPUT = true;
-            else
-                NetworkInput.TWO_HEAVY_INPUT = true;
-    }
-
-    public void Arcane(CallbackContext callbackContext)
-    {
-        OnInputAction?.Invoke(InputEnum.Special, callbackContext.performed, _player.IsPlayerOne);
-        if (callbackContext.performed && IsControllerEnabled)
-            if (_player.IsPlayerOne)
-                NetworkInput.ONE_ARCANA_INPUT = true;
-            else
-                NetworkInput.TWO_ARCANA_INPUT = true;
-    }
-    public void Assist(CallbackContext callbackContext)
-    {
-        OnInputAction?.Invoke(InputEnum.Assist, callbackContext.performed, _player.IsPlayerOne);
-        if (callbackContext.performed && IsControllerEnabled)
-            if (_player.IsPlayerOne)
-                NetworkInput.ONE_SHADOW_INPUT = true;
-            else
-                NetworkInput.TWO_SHADOW_INPUT = true;
-    }
-
-    public void Throw(CallbackContext callbackContext)
-    {
-        OnInputAction?.Invoke(InputEnum.Throw, callbackContext.performed, _player.IsPlayerOne);
-        if (callbackContext.performed && IsControllerEnabled)
-            if (_player.IsPlayerOne)
-                NetworkInput.ONE_GRAB_INPUT = true;
-            else
-                NetworkInput.TWO_GRAB_INPUT = true;
-    }
-
-    public void Parry(CallbackContext callbackContext)
-    {
-        OnInputAction?.Invoke(InputEnum.Parry, callbackContext.performed, _player.IsPlayerOne);
-        if (callbackContext.performed && IsControllerEnabled)
-            if (_player.IsPlayerOne)
-                NetworkInput.ONE_BLUE_FRENZY_INPUT = true;
-            else
-                NetworkInput.TWO_BLUE_FRENZY_INPUT = true;
-    }
-
-    public void RedFrenzy(CallbackContext callbackContext)
-    {
-        OnInputAction?.Invoke(InputEnum.RedFrenzy, callbackContext.performed, _player.IsPlayerOne);
-        if (callbackContext.performed && IsControllerEnabled)
-            if (_player.IsPlayerOne)
-                NetworkInput.ONE_RED_FRENZY_INPUT = true;
-            else
-                NetworkInput.TWO_RED_FRENZY_INPUT = true;
     }
 
     public void DashForward(CallbackContext callbackContext)
     {
         if (callbackContext.performed && IsControllerEnabled)
-        {
             if (!_dashForwardPressed)
             {
                 _dashForwardPressed = true;
@@ -235,24 +161,25 @@ public class PlayerController : BaseController
                 if (timeSinceLastPress <= _dashTime)
                 {
                     if (_player.IsPlayerOne)
-                    {
                         NetworkInput.ONE_DASH_FORWARD_INPUT = true;
-                    }
                     else
-                    {
                         NetworkInput.TWO_DASH_FORWARD_INPUT = true;
-                    }
                     _dashForwardPressed = false;
                 }
                 _dashForwardLastInputTime = DemonicsWorld.Frame;
             }
+        else
+        {
+            if (_player.IsPlayerOne)
+                NetworkInput.ONE_DASH_FORWARD_INPUT = false;
+            else
+                NetworkInput.TWO_DASH_FORWARD_INPUT = false;
         }
     }
 
     public void DashBack(CallbackContext callbackContext)
     {
         if (callbackContext.performed && IsControllerEnabled)
-        {
             if (!_dashBackPressed)
             {
                 _dashBackPressed = true;
@@ -264,17 +191,19 @@ public class PlayerController : BaseController
                 if (timeSinceLastPress <= _dashTime)
                 {
                     if (_player.IsPlayerOne)
-                    {
                         NetworkInput.ONE_DASH_BACKWARD_INPUT = true;
-                    }
                     else
-                    {
                         NetworkInput.TWO_DASH_BACKWARD_INPUT = true;
-                    }
                     _dashBackPressed = false;
                 }
                 _dashBackLastInputTime = DemonicsWorld.Frame;
             }
+        else
+        {
+            if (_player.IsPlayerOne)
+                NetworkInput.ONE_DASH_BACKWARD_INPUT = false;
+            else
+                NetworkInput.TWO_DASH_BACKWARD_INPUT = false;
         }
     }
 
@@ -283,13 +212,9 @@ public class PlayerController : BaseController
         if (NetworkInput.IS_LOCAL)
         {
             if (callbackContext.performed)
-            {
                 _player.Pause(_brainController.IsPlayerOne);
-            }
             if (callbackContext.canceled)
-            {
                 _player.UnPause();
-            }
         }
     }
     //TRAINING
@@ -298,101 +223,75 @@ public class PlayerController : BaseController
         if (callbackContext.performed)
         {
             if (_player.IsPlayerOne)
-            {
                 GameplayManager.Instance.ResetRound(GameSimulation._players[0].direction);
-            }
             else
-            {
                 GameplayManager.Instance.ResetRound(GameSimulation._players[1].direction);
-            }
         }
     }
 
     public void Switch(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             GameplayManager.Instance.SwitchCharacters();
-        }
     }
     //UI
     public void Confirm(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             CurrentPrompts?.OnConfirm?.Invoke();
-        }
     }
 
     public void Back(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             CurrentPrompts?.OnBack?.Invoke();
-        }
     }
 
     public void Stage(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             CurrentPrompts?.OnStage?.Invoke();
-        }
     }
 
     public void Coop(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             CurrentPrompts?.OnCoop?.Invoke();
-        }
     }
 
     public void Controls(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             CurrentPrompts?.OnControls?.Invoke();
-        }
     }
 
     public void ToggleFramedata(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             CurrentPrompts?.OnToggleFramedata?.Invoke();
-        }
     }
 
     public void PageLeft(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             CurrentPrompts?.OnLeftPage?.Invoke();
-        }
     }
 
     public void PageRight(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             CurrentPrompts?.OnRightPage?.Invoke();
-        }
     }
 
     public void NavigationRight(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             CurrentPrompts?.OnRightNavigation?.Invoke();
-        }
     }
 
     public void NavigationLeft(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
-        {
             CurrentPrompts?.OnLeftNavigation?.Invoke();
-        }
     }
 }

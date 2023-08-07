@@ -176,7 +176,7 @@ public class CharacterMenu : BaseMenu
             {
                 SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
             }
-            _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(2));
+            _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(1));
             _fadeHandler.StartFadeTransition(true);
         }
     }

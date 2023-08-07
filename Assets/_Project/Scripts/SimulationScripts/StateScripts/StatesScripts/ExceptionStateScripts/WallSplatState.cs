@@ -12,15 +12,11 @@ public class WallSplatState : State
             if (player.CurrentState != this)
                 player.comboLocked = true;
             player.wasWallSplatted = true;
-            DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + ((DemonicsFloat)2.25 * player.flip), player.position.y);
+            DemonVector2 effectPosition = new DemonVector2(player.position.x + ((DemonFloat)2.25 * player.flip), player.position.y);
             if (player.flip == 1)
-            {
-                player.SetEffect("WallSplat", effectPosition, true);
-            }
+                player.SetParticle("WallSplat", effectPosition);
             else
-            {
-                player.SetEffect("WallSplat", effectPosition, false);
-            }
+                player.SetParticle("WallSplat", effectPosition);
             player.sound = "WallSplat";
             player.enter = true;
             player.animationFrames = 0;
@@ -29,7 +25,7 @@ public class WallSplatState : State
             return;
         }
         player.animationFrames++;
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
         player.hurtbox.active = false;
         player.animation = "Wallsplat";
         ToAirborneState(player);

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
   m_Name: 2A
   m_EditorClassIdentifier: 
-  damage: 650
+  damage: 250
   attackTypeEnum: 2
   hitStun: 30
   blockStun: 15
@@ -20,7 +20,7 @@ MonoBehaviour:
   knockbackForce: {x: 48, y: 0}
   knockbackDuration: 30
   knockbackArc: 48
-  hasSuperArmor: 0
+  superArmor: 0
   isAirAttack: 0
   isProjectile: 0
   isArcana: 1
@@ -33,7 +33,7 @@ MonoBehaviour:
   hitEffect: {fileID: 186600171355987556, guid: 547867d1b46bb89428c594bb21fd73a8, type: 3}
   hitEffectPosition: {x: 4, y: 0.1}
   hitEffectRotation: 0
-  hurtEffect: HurtHeavy
+  hurtEffect: HurtArcana
   hurtEffectPosition: {x: 8.801757, y: -2.9988635}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}

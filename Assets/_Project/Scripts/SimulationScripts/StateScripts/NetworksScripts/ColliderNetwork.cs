@@ -5,9 +5,9 @@ using UnityEngine;
 [Serializable]
 public struct ColliderNetwork
 {
-    public DemonicsVector2 position;
-    public DemonicsVector2 size;
-    public DemonicsVector2 offset;
+    public DemonVector2 position;
+    public DemonVector2 size;
+    public DemonVector2 offset;
     public bool active;
     public bool enter;
 
@@ -25,12 +25,12 @@ public struct ColliderNetwork
 
     public void Deserialize(BinaryReader br)
     {
-        position.x = (DemonicsFloat)br.ReadSingle();
-        position.y = (DemonicsFloat)br.ReadSingle();
-        size.x = (DemonicsFloat)br.ReadSingle();
-        size.y = (DemonicsFloat)br.ReadSingle();
-        offset.x = (DemonicsFloat)br.ReadSingle();
-        offset.y = (DemonicsFloat)br.ReadSingle();
+        position.x = (DemonFloat)br.ReadSingle();
+        position.y = (DemonFloat)br.ReadSingle();
+        size.x = (DemonFloat)br.ReadSingle();
+        size.y = (DemonFloat)br.ReadSingle();
+        offset.x = (DemonFloat)br.ReadSingle();
+        offset.y = (DemonFloat)br.ReadSingle();
         active = br.ReadBoolean();
         enter = br.ReadBoolean();
     }

@@ -1,12 +1,14 @@
+using Demonics.Manager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MouseSetup : MonoBehaviour
+public class MouseSetup : Singleton<MouseSetup>
 {
     [SerializeField] private CursorLockMode _cursorLockMode = default;
     [SerializeField] private bool _mouseVisible = default;
     [SerializeField] private PlayerInput _playerInput = default;
-
+    [SerializeField] private Texture2D _hoverTexture = default;
+    public Texture2D HoverCursor { get { return _hoverTexture; } private set { } }
 
     void OnApplicationFocus(bool hasFocus)
     {

@@ -6,18 +6,18 @@ using System.Runtime.CompilerServices;
 /// Represents a Q31.32 fixed-point number.
 /// </summary>
 [System.Serializable]
-public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<DemonicsFloat>
+public partial struct DemonFloat : IEquatable<DemonFloat>, IComparable<DemonFloat>
 {
     readonly long m_rawValue;
 
-    public static readonly decimal Precision = (decimal)(new DemonicsFloat(1L));
-    public static readonly DemonicsFloat One = new DemonicsFloat(ONE);
-    public static readonly DemonicsFloat Zero = new DemonicsFloat();
-    public static readonly DemonicsFloat PI = new DemonicsFloat(Pi);
-    public static readonly DemonicsFloat PITimes2 = new DemonicsFloat(PiTimes2);
-    public static readonly DemonicsFloat PIOver180 = new DemonicsFloat((long)72);
-    public static readonly DemonicsFloat Rad2Deg = DemonicsFloat.Pi * (DemonicsFloat)2 / (DemonicsFloat)360;
-    public static readonly DemonicsFloat Deg2Rad = (DemonicsFloat)360 / (DemonicsFloat.Pi * (DemonicsFloat)2);
+    public static readonly decimal Precision = (decimal)(new DemonFloat(1L));
+    public static readonly DemonFloat One = new DemonFloat(ONE);
+    public static readonly DemonFloat Zero = new DemonFloat();
+    public static readonly DemonFloat PI = new DemonFloat(Pi);
+    public static readonly DemonFloat PITimes2 = new DemonFloat(PiTimes2);
+    public static readonly DemonFloat PIOver180 = new DemonFloat((long)72);
+    public static readonly DemonFloat Rad2Deg = DemonFloat.Pi * (DemonFloat)2 / (DemonFloat)360;
+    public static readonly DemonFloat Deg2Rad = (DemonFloat)360 / (DemonFloat.Pi * (DemonFloat)2);
 
     const long Pi = 12868;
     const long PiTimes2 = 25736;
@@ -25,7 +25,7 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
     public const int FRACTIONAL_PLACES = 12;
     const long ONE = 1L << FRACTIONAL_PLACES;
 
-    public static int Sign(DemonicsFloat value)
+    public static int Sign(DemonFloat value)
     {
         return
             value.m_rawValue < 0 ? -1 :
@@ -33,271 +33,271 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
             0;
     }
 
-    public static DemonicsFloat Abs(DemonicsFloat value)
+    public static DemonFloat Abs(DemonFloat value)
     {
-        return new DemonicsFloat(value.m_rawValue > 0 ? value.m_rawValue : -value.m_rawValue);
+        return new DemonFloat(value.m_rawValue > 0 ? value.m_rawValue : -value.m_rawValue);
     }
 
-    public static DemonicsFloat Floor(DemonicsFloat value)
+    public static DemonFloat Floor(DemonFloat value)
     {
-        return new DemonicsFloat((long)((ulong)value.m_rawValue & 0xFFFFFFFFFFFFF000));
+        return new DemonFloat((long)((ulong)value.m_rawValue & 0xFFFFFFFFFFFFF000));
     }
 
-    public static DemonicsFloat Ceiling(DemonicsFloat value)
+    public static DemonFloat Ceiling(DemonFloat value)
     {
         var hasFractionalPart = (value.m_rawValue & 0x0000000000000FFF) != 0;
         return hasFractionalPart ? Floor(value) + One : value;
     }
 
-    public static DemonicsFloat operator +(DemonicsFloat x, DemonicsFloat y)
+    public static DemonFloat operator +(DemonFloat x, DemonFloat y)
     {
-        return new DemonicsFloat(x.m_rawValue + y.m_rawValue);
+        return new DemonFloat(x.m_rawValue + y.m_rawValue);
     }
 
-    public static DemonicsFloat operator +(DemonicsFloat x, int y)
+    public static DemonFloat operator +(DemonFloat x, int y)
     {
-        return x + (DemonicsFloat)y;
+        return x + (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator +(int x, DemonicsFloat y)
+    public static DemonFloat operator +(int x, DemonFloat y)
     {
-        return (DemonicsFloat)x + y;
+        return (DemonFloat)x + y;
     }
 
-    public static DemonicsFloat operator +(DemonicsFloat x, float y)
+    public static DemonFloat operator +(DemonFloat x, float y)
     {
-        return x + (DemonicsFloat)y;
+        return x + (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator +(float x, DemonicsFloat y)
+    public static DemonFloat operator +(float x, DemonFloat y)
     {
-        return (DemonicsFloat)x + y;
+        return (DemonFloat)x + y;
     }
 
-    public static DemonicsFloat operator +(DemonicsFloat x, double y)
+    public static DemonFloat operator +(DemonFloat x, double y)
     {
-        return x + (DemonicsFloat)y;
+        return x + (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator +(double x, DemonicsFloat y)
+    public static DemonFloat operator +(double x, DemonFloat y)
     {
-        return (DemonicsFloat)x + y;
+        return (DemonFloat)x + y;
     }
 
-    public static DemonicsFloat operator -(DemonicsFloat x, DemonicsFloat y)
+    public static DemonFloat operator -(DemonFloat x, DemonFloat y)
     {
-        return new DemonicsFloat(x.m_rawValue - y.m_rawValue);
+        return new DemonFloat(x.m_rawValue - y.m_rawValue);
     }
 
-    public static DemonicsFloat operator -(DemonicsFloat x, int y)
+    public static DemonFloat operator -(DemonFloat x, int y)
     {
-        return x - (DemonicsFloat)y;
+        return x - (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator -(int x, DemonicsFloat y)
+    public static DemonFloat operator -(int x, DemonFloat y)
     {
-        return (DemonicsFloat)x - y;
+        return (DemonFloat)x - y;
     }
 
-    public static DemonicsFloat operator -(DemonicsFloat x, float y)
+    public static DemonFloat operator -(DemonFloat x, float y)
     {
-        return x - (DemonicsFloat)y;
+        return x - (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator -(float x, DemonicsFloat y)
+    public static DemonFloat operator -(float x, DemonFloat y)
     {
-        return (DemonicsFloat)x + y;
+        return (DemonFloat)x + y;
     }
 
-    public static DemonicsFloat operator -(DemonicsFloat x, double y)
+    public static DemonFloat operator -(DemonFloat x, double y)
     {
-        return x - (DemonicsFloat)y;
+        return x - (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator -(double x, DemonicsFloat y)
+    public static DemonFloat operator -(double x, DemonFloat y)
     {
-        return (DemonicsFloat)x - y;
+        return (DemonFloat)x - y;
     }
 
 
-    public static DemonicsFloat operator *(DemonicsFloat x, DemonicsFloat y)
+    public static DemonFloat operator *(DemonFloat x, DemonFloat y)
     {
-        return new DemonicsFloat((x.m_rawValue * y.m_rawValue) >> FRACTIONAL_PLACES);
+        return new DemonFloat((x.m_rawValue * y.m_rawValue) >> FRACTIONAL_PLACES);
     }
 
-    public static DemonicsFloat operator *(DemonicsFloat x, int y)
+    public static DemonFloat operator *(DemonFloat x, int y)
     {
-        return x * (DemonicsFloat)y;
+        return x * (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator *(int x, DemonicsFloat y)
+    public static DemonFloat operator *(int x, DemonFloat y)
     {
-        return (DemonicsFloat)x * y;
+        return (DemonFloat)x * y;
     }
 
-    public static DemonicsFloat operator *(DemonicsFloat x, float y)
+    public static DemonFloat operator *(DemonFloat x, float y)
     {
-        return x * (DemonicsFloat)y;
+        return x * (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator *(float x, DemonicsFloat y)
+    public static DemonFloat operator *(float x, DemonFloat y)
     {
-        return (DemonicsFloat)x * y;
+        return (DemonFloat)x * y;
     }
 
-    public static DemonicsFloat operator *(DemonicsFloat x, double y)
+    public static DemonFloat operator *(DemonFloat x, double y)
     {
-        return x * (DemonicsFloat)y;
+        return x * (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator *(double x, DemonicsFloat y)
+    public static DemonFloat operator *(double x, DemonFloat y)
     {
-        return (DemonicsFloat)x * y;
+        return (DemonFloat)x * y;
     }
 
-    public static DemonicsFloat operator /(DemonicsFloat x, DemonicsFloat y)
+    public static DemonFloat operator /(DemonFloat x, DemonFloat y)
     {
-        return new DemonicsFloat((x.m_rawValue << FRACTIONAL_PLACES) / y.m_rawValue);
+        return new DemonFloat((x.m_rawValue << FRACTIONAL_PLACES) / y.m_rawValue);
     }
 
-    public static DemonicsFloat operator /(DemonicsFloat x, int y)
+    public static DemonFloat operator /(DemonFloat x, int y)
     {
-        return x / (DemonicsFloat)y;
+        return x / (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator /(int x, DemonicsFloat y)
+    public static DemonFloat operator /(int x, DemonFloat y)
     {
-        return (DemonicsFloat)x / y;
+        return (DemonFloat)x / y;
     }
 
-    public static DemonicsFloat operator /(DemonicsFloat x, float y)
+    public static DemonFloat operator /(DemonFloat x, float y)
     {
-        return x / (DemonicsFloat)y;
+        return x / (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator /(float x, DemonicsFloat y)
+    public static DemonFloat operator /(float x, DemonFloat y)
     {
-        return (DemonicsFloat)x / y;
+        return (DemonFloat)x / y;
     }
 
-    public static DemonicsFloat operator /(double x, DemonicsFloat y)
+    public static DemonFloat operator /(double x, DemonFloat y)
     {
-        return (DemonicsFloat)x / y;
+        return (DemonFloat)x / y;
     }
 
-    public static DemonicsFloat operator /(DemonicsFloat x, double y)
+    public static DemonFloat operator /(DemonFloat x, double y)
     {
-        return x / (DemonicsFloat)y;
+        return x / (DemonFloat)y;
     }
 
-    public static DemonicsFloat operator %(DemonicsFloat x, DemonicsFloat y)
+    public static DemonFloat operator %(DemonFloat x, DemonFloat y)
     {
-        return new DemonicsFloat(x.m_rawValue % y.m_rawValue);
+        return new DemonFloat(x.m_rawValue % y.m_rawValue);
     }
 
-    public static DemonicsFloat operator -(DemonicsFloat x)
+    public static DemonFloat operator -(DemonFloat x)
     {
-        return new DemonicsFloat(-x.m_rawValue);
+        return new DemonFloat(-x.m_rawValue);
     }
 
-    public static bool operator ==(DemonicsFloat x, DemonicsFloat y)
+    public static bool operator ==(DemonFloat x, DemonFloat y)
     {
         return x.m_rawValue == y.m_rawValue;
     }
 
-    public static bool operator !=(DemonicsFloat x, DemonicsFloat y)
+    public static bool operator !=(DemonFloat x, DemonFloat y)
     {
         return x.m_rawValue != y.m_rawValue;
     }
 
-    public static bool operator >(DemonicsFloat x, DemonicsFloat y)
+    public static bool operator >(DemonFloat x, DemonFloat y)
     {
         return x.m_rawValue > y.m_rawValue;
     }
 
-    public static bool operator >(DemonicsFloat x, int y)
+    public static bool operator >(DemonFloat x, int y)
     {
-        return x > (DemonicsFloat)y;
+        return x > (DemonFloat)y;
     }
-    public static bool operator <(DemonicsFloat x, int y)
+    public static bool operator <(DemonFloat x, int y)
     {
-        return x < (DemonicsFloat)y;
+        return x < (DemonFloat)y;
     }
-    public static bool operator >(DemonicsFloat x, float y)
+    public static bool operator >(DemonFloat x, float y)
     {
-        return x > (DemonicsFloat)y;
+        return x > (DemonFloat)y;
     }
-    public static bool operator <(DemonicsFloat x, float y)
+    public static bool operator <(DemonFloat x, float y)
     {
-        return x < (DemonicsFloat)y;
+        return x < (DemonFloat)y;
     }
 
-    public static bool operator <(DemonicsFloat x, DemonicsFloat y)
+    public static bool operator <(DemonFloat x, DemonFloat y)
     {
         return x.m_rawValue < y.m_rawValue;
     }
 
-    public static bool operator >=(DemonicsFloat x, DemonicsFloat y)
+    public static bool operator >=(DemonFloat x, DemonFloat y)
     {
         return x.m_rawValue >= y.m_rawValue;
     }
 
-    public static bool operator <=(DemonicsFloat x, DemonicsFloat y)
+    public static bool operator <=(DemonFloat x, DemonFloat y)
     {
         return x.m_rawValue <= y.m_rawValue;
     }
 
-    public static DemonicsFloat operator >>(DemonicsFloat x, int amount)
+    public static DemonFloat operator >>(DemonFloat x, int amount)
     {
-        return new DemonicsFloat(x.RawValue >> amount);
+        return new DemonFloat(x.RawValue >> amount);
     }
 
-    public static DemonicsFloat operator <<(DemonicsFloat x, int amount)
+    public static DemonFloat operator <<(DemonFloat x, int amount)
     {
-        return new DemonicsFloat(x.RawValue << amount);
+        return new DemonFloat(x.RawValue << amount);
     }
 
 
-    public static explicit operator DemonicsFloat(long value)
+    public static explicit operator DemonFloat(long value)
     {
-        return new DemonicsFloat(value * ONE);
+        return new DemonFloat(value * ONE);
     }
-    public static explicit operator long(DemonicsFloat value)
+    public static explicit operator long(DemonFloat value)
     {
         return value.m_rawValue >> FRACTIONAL_PLACES;
     }
-    public static explicit operator DemonicsFloat(float value)
+    public static explicit operator DemonFloat(float value)
     {
-        return new DemonicsFloat((long)(value * ONE));
+        return new DemonFloat((long)(value * ONE));
     }
-    public static explicit operator float(DemonicsFloat value)
+    public static explicit operator float(DemonFloat value)
     {
         return (float)value.m_rawValue / ONE;
     }
-    public static explicit operator int(DemonicsFloat value)
+    public static explicit operator int(DemonFloat value)
     {
         return (int)((float)value);
     }
-    public static explicit operator DemonicsFloat(double value)
+    public static explicit operator DemonFloat(double value)
     {
-        return new DemonicsFloat((long)(value * ONE));
+        return new DemonFloat((long)(value * ONE));
     }
-    public static explicit operator double(DemonicsFloat value)
+    public static explicit operator double(DemonFloat value)
     {
         return (double)value.m_rawValue / ONE;
     }
-    public static explicit operator DemonicsFloat(decimal value)
+    public static explicit operator DemonFloat(decimal value)
     {
-        return new DemonicsFloat((long)(value * ONE));
+        return new DemonFloat((long)(value * ONE));
     }
-    public static explicit operator decimal(DemonicsFloat value)
+    public static explicit operator decimal(DemonFloat value)
     {
         return (decimal)value.m_rawValue / ONE;
     }
 
     public override bool Equals(object obj)
     {
-        return obj is DemonicsFloat && ((DemonicsFloat)obj).m_rawValue == m_rawValue;
+        return obj is DemonFloat && ((DemonFloat)obj).m_rawValue == m_rawValue;
     }
 
     public override int GetHashCode()
@@ -305,12 +305,12 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
         return m_rawValue.GetHashCode();
     }
 
-    public bool Equals(DemonicsFloat other)
+    public bool Equals(DemonFloat other)
     {
         return m_rawValue == other.m_rawValue;
     }
 
-    public int CompareTo(DemonicsFloat other)
+    public int CompareTo(DemonFloat other)
     {
         return m_rawValue.CompareTo(other.m_rawValue);
     }
@@ -324,16 +324,16 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
         return (float)Math.Round((float)this, round) + "";
     }
 
-    public static DemonicsFloat FromRaw(long rawValue)
+    public static DemonFloat FromRaw(long rawValue)
     {
-        return new DemonicsFloat(rawValue);
+        return new DemonFloat(rawValue);
     }
 
-    public static DemonicsFloat Pow(DemonicsFloat x, int y)
+    public static DemonFloat Pow(DemonFloat x, int y)
     {
         if (y == 1) return x;
-        DemonicsFloat result = DemonicsFloat.Zero;
-        DemonicsFloat tmp = Pow(x, y / 2);
+        DemonFloat result = DemonFloat.Zero;
+        DemonFloat tmp = Pow(x, y / 2);
         if ((y & 1) != 0) //奇数    
         {
             result = x * tmp * tmp;
@@ -350,17 +350,17 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
     public long RawValue { get { return m_rawValue; } }
 
 
-    DemonicsFloat(long rawValue)
+    DemonFloat(long rawValue)
     {
         m_rawValue = rawValue;
     }
 
-    public DemonicsFloat(int value)
+    public DemonFloat(int value)
     {
         m_rawValue = value * ONE;
     }
 
-    public static DemonicsFloat Sqrt(DemonicsFloat f, int numberIterations)
+    public static DemonFloat Sqrt(DemonFloat f, int numberIterations)
     {
         if (f.RawValue < 0)
         {
@@ -368,9 +368,9 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
         }
 
         if (f.RawValue == 0)
-            return DemonicsFloat.Zero;
+            return DemonFloat.Zero;
 
-        DemonicsFloat k = f + DemonicsFloat.One >> 1;
+        DemonFloat k = f + DemonFloat.One >> 1;
         for (int i = 0; i < numberIterations; i++)
             k = (k + (f / k)) >> 1;
 
@@ -380,7 +380,7 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
             return k;
     }
 
-    public static DemonicsFloat Sqrt(DemonicsFloat f)
+    public static DemonFloat Sqrt(DemonFloat f)
     {
         byte numberOfIterations = 8;
         if (f.RawValue > 0x64000)
@@ -390,40 +390,40 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
         return Sqrt(f, numberOfIterations);
     }
 
-    public static DemonicsFloat Lerp(DemonicsFloat from, DemonicsFloat to, DemonicsFloat factor)
+    public static DemonFloat Lerp(DemonFloat from, DemonFloat to, DemonFloat factor)
     {
         return from * (1 - factor) + to * factor;
     }
     #region Sin
-    public static DemonicsFloat Sin(DemonicsFloat i)
+    public static DemonFloat Sin(DemonFloat i)
     {
-        DemonicsFloat j = (DemonicsFloat)0;
-        for (; i < DemonicsFloat.Zero; i += DemonicsFloat.FromRaw(PiTimes2)) ;
-        if (i > DemonicsFloat.FromRaw(PiTimes2))
-            i %= DemonicsFloat.FromRaw(PiTimes2);
+        DemonFloat j = (DemonFloat)0;
+        for (; i < DemonFloat.Zero; i += DemonFloat.FromRaw(PiTimes2)) ;
+        if (i > DemonFloat.FromRaw(PiTimes2))
+            i %= DemonFloat.FromRaw(PiTimes2);
 
-        DemonicsFloat k = (i * DemonicsFloat.FromRaw(100000000)) / DemonicsFloat.FromRaw(7145244444);
-        if (i != DemonicsFloat.Zero && i != DemonicsFloat.FromRaw(6434) && i != DemonicsFloat.FromRaw(Pi) &&
-            i != DemonicsFloat.FromRaw(19302) && i != DemonicsFloat.FromRaw(PiTimes2))
-            j = (i * DemonicsFloat.FromRaw(100000000)) / DemonicsFloat.FromRaw(7145244444) - k * DemonicsFloat.FromRaw(10);
-        if (k <= DemonicsFloat.FromRaw(90))
+        DemonFloat k = (i * DemonFloat.FromRaw(100000000)) / DemonFloat.FromRaw(7145244444);
+        if (i != DemonFloat.Zero && i != DemonFloat.FromRaw(6434) && i != DemonFloat.FromRaw(Pi) &&
+            i != DemonFloat.FromRaw(19302) && i != DemonFloat.FromRaw(PiTimes2))
+            j = (i * DemonFloat.FromRaw(100000000)) / DemonFloat.FromRaw(7145244444) - k * DemonFloat.FromRaw(10);
+        if (k <= DemonFloat.FromRaw(90))
             return sin_lookup(k, j);
-        if (k <= DemonicsFloat.FromRaw(180))
-            return sin_lookup(DemonicsFloat.FromRaw(180) - k, j);
-        if (k <= DemonicsFloat.FromRaw(270))
-            return -sin_lookup(k - DemonicsFloat.FromRaw(180), j);
+        if (k <= DemonFloat.FromRaw(180))
+            return sin_lookup(DemonFloat.FromRaw(180) - k, j);
+        if (k <= DemonFloat.FromRaw(270))
+            return -sin_lookup(k - DemonFloat.FromRaw(180), j);
         else
-            return -sin_lookup(DemonicsFloat.FromRaw(360) - k, j);
+            return -sin_lookup(DemonFloat.FromRaw(360) - k, j);
     }
 
-    private static DemonicsFloat sin_lookup(DemonicsFloat i, DemonicsFloat j)
+    private static DemonFloat sin_lookup(DemonFloat i, DemonFloat j)
     {
-        if (j > 0 && j < DemonicsFloat.FromRaw(10) && i < DemonicsFloat.FromRaw(90))
-            return DemonicsFloat.FromRaw(SIN_TABLE[i.RawValue]) +
-                ((DemonicsFloat.FromRaw(SIN_TABLE[i.RawValue + 1]) - DemonicsFloat.FromRaw(SIN_TABLE[i.RawValue])) /
-                DemonicsFloat.FromRaw(10)) * j;
+        if (j > 0 && j < DemonFloat.FromRaw(10) && i < DemonFloat.FromRaw(90))
+            return DemonFloat.FromRaw(SIN_TABLE[i.RawValue]) +
+                ((DemonFloat.FromRaw(SIN_TABLE[i.RawValue + 1]) - DemonFloat.FromRaw(SIN_TABLE[i.RawValue])) /
+                DemonFloat.FromRaw(10)) * j;
         else
-            return DemonicsFloat.FromRaw(SIN_TABLE[i.RawValue]);
+            return DemonFloat.FromRaw(SIN_TABLE[i.RawValue]);
     }
 
     private static int[] SIN_TABLE = {
@@ -442,85 +442,85 @@ public partial struct DemonicsFloat : IEquatable<DemonicsFloat>, IComparable<Dem
 
 
     #region Cos, Tan, Asin
-    public static DemonicsFloat Cos(DemonicsFloat i)
+    public static DemonFloat Cos(DemonFloat i)
     {
-        return Sin(i + DemonicsFloat.FromRaw(6435));
+        return Sin(i + DemonFloat.FromRaw(6435));
     }
 
-    public static DemonicsFloat Tan(DemonicsFloat i)
+    public static DemonFloat Tan(DemonFloat i)
     {
         return Sin(i) / Cos(i);
     }
 
-    public static DemonicsFloat Asin(DemonicsFloat F)
+    public static DemonFloat Asin(DemonFloat F)
     {
         bool isNegative = F < 0;
         F = Abs(F);
 
-        if (F > DemonicsFloat.One)
+        if (F > DemonFloat.One)
             throw new ArithmeticException("Bad Asin Input:" + (double)F);
 
-        DemonicsFloat f1 = ((((DemonicsFloat.FromRaw(145103 >> FRACTIONAL_PLACES) * F) -
-            DemonicsFloat.FromRaw(599880 >> FRACTIONAL_PLACES) * F) +
-            DemonicsFloat.FromRaw(1420468 >> FRACTIONAL_PLACES) * F) -
-            DemonicsFloat.FromRaw(3592413 >> FRACTIONAL_PLACES) * F) +
-            DemonicsFloat.FromRaw(26353447 >> FRACTIONAL_PLACES);
-        DemonicsFloat f2 = PI / (DemonicsFloat)2 - (Sqrt(DemonicsFloat.One - F) * f1);
+        DemonFloat f1 = ((((DemonFloat.FromRaw(145103 >> FRACTIONAL_PLACES) * F) -
+            DemonFloat.FromRaw(599880 >> FRACTIONAL_PLACES) * F) +
+            DemonFloat.FromRaw(1420468 >> FRACTIONAL_PLACES) * F) -
+            DemonFloat.FromRaw(3592413 >> FRACTIONAL_PLACES) * F) +
+            DemonFloat.FromRaw(26353447 >> FRACTIONAL_PLACES);
+        DemonFloat f2 = PI / (DemonFloat)2 - (Sqrt(DemonFloat.One - F) * f1);
 
         return isNegative ? -f2 : f2;
     }
     #endregion
 
     #region ATan, ATan2
-    public static DemonicsFloat Atan(DemonicsFloat F)
+    public static DemonFloat Atan(DemonFloat F)
     {
-        return Asin(F / Sqrt(DemonicsFloat.One + (F * F)));
+        return Asin(F / Sqrt(DemonFloat.One + (F * F)));
     }
 
-    public static DemonicsFloat Atan2(DemonicsFloat F1, DemonicsFloat F2)
+    public static DemonFloat Atan2(DemonFloat F1, DemonFloat F2)
     {
         if (F2.RawValue == 0 && F1.RawValue == 0)
-            return (DemonicsFloat)0;
+            return (DemonFloat)0;
 
-        DemonicsFloat result = (DemonicsFloat)0;
+        DemonFloat result = (DemonFloat)0;
         if (F2 > 0)
             result = Atan(F1 / F2);
         else if (F2 < 0)
         {
-            if (F1 >= (DemonicsFloat)0)
+            if (F1 >= (DemonFloat)0)
                 result = (PI - Atan(Abs(F1 / F2)));
             else
                 result = -(PI - Atan(Abs(F1 / F2)));
         }
         else
-            result = (F1 >= (DemonicsFloat)0 ? PI : -PI) / (DemonicsFloat)2;
+            result = (F1 >= (DemonFloat)0 ? PI : -PI) / (DemonFloat)2;
 
         return result;
     }
     #endregion
 }
 
-public struct DemonicsVector3
+public struct DemonVector3
 {
-    public DemonicsFloat x;
-    public DemonicsFloat y;
-    public DemonicsFloat z;
+    public DemonFloat x;
+    public DemonFloat y;
+    public DemonFloat z;
 
-    public DemonicsVector3(DemonicsFloat x, DemonicsFloat y, DemonicsFloat z)
+    public DemonVector3(DemonFloat x, DemonFloat y, DemonFloat z)
     {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public DemonicsVector3(DemonicsVector3 v)
+    public DemonVector3(DemonVector3 v)
     {
         this.x = v.x;
         this.y = v.y;
         this.z = v.z;
     }
 
-    public DemonicsFloat this[int index]
+    public DemonFloat this[int index]
     {
         get
         {
@@ -542,85 +542,85 @@ public struct DemonicsVector3
         }
     }
 
-    public static DemonicsVector3 Zero
+    public static DemonVector3 Zero
     {
-        get { return new DemonicsVector3(DemonicsFloat.Zero, DemonicsFloat.Zero, DemonicsFloat.Zero); }
+        get { return new DemonVector3(DemonFloat.Zero, DemonFloat.Zero, DemonFloat.Zero); }
     }
 
-    public static DemonicsVector3 operator +(DemonicsVector3 a, DemonicsVector3 b)
+    public static DemonVector3 operator +(DemonVector3 a, DemonVector3 b)
     {
-        DemonicsFloat x = a.x + b.x;
-        DemonicsFloat y = a.y + b.y;
-        DemonicsFloat z = a.z + b.z;
-        return new DemonicsVector3(x, y, z);
+        DemonFloat x = a.x + b.x;
+        DemonFloat y = a.y + b.y;
+        DemonFloat z = a.z + b.z;
+        return new DemonVector3(x, y, z);
     }
 
-    public static DemonicsVector3 operator -(DemonicsVector3 a, DemonicsVector3 b)
+    public static DemonVector3 operator -(DemonVector3 a, DemonVector3 b)
     {
-        DemonicsFloat x = a.x - b.x;
-        DemonicsFloat y = a.y - b.y;
-        DemonicsFloat z = a.z - b.z;
-        return new DemonicsVector3(x, y, z);
+        DemonFloat x = a.x - b.x;
+        DemonFloat y = a.y - b.y;
+        DemonFloat z = a.z - b.z;
+        return new DemonVector3(x, y, z);
     }
 
-    public static DemonicsVector3 operator *(DemonicsFloat d, DemonicsVector3 a)
+    public static DemonVector3 operator *(DemonFloat d, DemonVector3 a)
     {
-        DemonicsFloat x = a.x * d;
-        DemonicsFloat y = a.y * d;
-        DemonicsFloat z = a.z * d;
-        return new DemonicsVector3(x, y, z);
+        DemonFloat x = a.x * d;
+        DemonFloat y = a.y * d;
+        DemonFloat z = a.z * d;
+        return new DemonVector3(x, y, z);
     }
 
-    public static DemonicsVector3 operator *(DemonicsVector3 a, DemonicsFloat d)
+    public static DemonVector3 operator *(DemonVector3 a, DemonFloat d)
     {
-        DemonicsFloat x = a.x * d;
-        DemonicsFloat y = a.y * d;
-        DemonicsFloat z = a.z * d;
-        return new DemonicsVector3(x, y, z);
+        DemonFloat x = a.x * d;
+        DemonFloat y = a.y * d;
+        DemonFloat z = a.z * d;
+        return new DemonVector3(x, y, z);
     }
 
-    public static DemonicsVector3 operator /(DemonicsVector3 a, DemonicsFloat d)
+    public static DemonVector3 operator /(DemonVector3 a, DemonFloat d)
     {
-        DemonicsFloat x = a.x / d;
-        DemonicsFloat y = a.y / d;
-        DemonicsFloat z = a.z / d;
-        return new DemonicsVector3(x, y, z);
+        DemonFloat x = a.x / d;
+        DemonFloat y = a.y / d;
+        DemonFloat z = a.z / d;
+        return new DemonVector3(x, y, z);
     }
 
-    public static bool operator ==(DemonicsVector3 lhs, DemonicsVector3 rhs)
+    public static bool operator ==(DemonVector3 lhs, DemonVector3 rhs)
     {
         return lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z;
     }
 
-    public static bool operator !=(DemonicsVector3 lhs, DemonicsVector3 rhs)
+    public static bool operator !=(DemonVector3 lhs, DemonVector3 rhs)
     {
         return lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z;
     }
 
-    public static DemonicsFloat SqrMagnitude(DemonicsVector3 a)
+    public static DemonFloat SqrMagnitude(DemonVector3 a)
     {
         return a.x * a.x + a.y * a.y + a.z * a.z;
     }
 
-    public static DemonicsFloat Distance(DemonicsVector3 a, DemonicsVector3 b)
+    public static DemonFloat Distance(DemonVector3 a, DemonVector3 b)
     {
         return Magnitude(a - b);
     }
 
-    public static DemonicsFloat Magnitude(DemonicsVector3 a)
+    public static DemonFloat Magnitude(DemonVector3 a)
     {
-        return DemonicsFloat.Sqrt(DemonicsVector3.SqrMagnitude(a));
+        return DemonFloat.Sqrt(DemonVector3.SqrMagnitude(a));
     }
 
     public void Normalize()
     {
-        DemonicsFloat n = x * x + y * y + z * z;
-        if (n == DemonicsFloat.Zero)
+        DemonFloat n = x * x + y * y + z * z;
+        if (n == DemonFloat.Zero)
             return;
 
-        n = DemonicsFloat.Sqrt(n);
+        n = DemonFloat.Sqrt(n);
 
-        if (n < (DemonicsFloat)0.0001)
+        if (n < (DemonFloat)0.0001)
         {
             return;
         }
@@ -631,9 +631,9 @@ public struct DemonicsVector3
         z *= n;
     }
 
-    public DemonicsVector3 GetNormalized()
+    public DemonVector3 GetNormalized()
     {
-        DemonicsVector3 v = new DemonicsVector3(this);
+        DemonVector3 v = new DemonVector3(this);
         v.Normalize();
         return v;
     }
@@ -645,7 +645,7 @@ public struct DemonicsVector3
 
     public override bool Equals(object obj)
     {
-        return obj is DemonicsVector2 && ((DemonicsVector3)obj) == this;
+        return obj is DemonVector2 && ((DemonVector3)obj) == this;
     }
 
     public override int GetHashCode()
@@ -653,7 +653,7 @@ public struct DemonicsVector3
         return this.x.GetHashCode() + this.y.GetHashCode() + this.z.GetHashCode();
     }
 
-    public static DemonicsVector3 Lerp(DemonicsVector3 from, DemonicsVector3 to, DemonicsFloat factor)
+    public static DemonVector3 Lerp(DemonVector3 from, DemonVector3 to, DemonFloat factor)
     {
         return from * (1 - factor) + to * factor;
     }
@@ -665,40 +665,40 @@ public struct DemonicsVector3
 #endif
 }
 
-public struct DemonicsVector2
+public struct DemonVector2
 {
-    public DemonicsFloat x;
-    public DemonicsFloat y;
+    public DemonFloat x;
+    public DemonFloat y;
 
-    public DemonicsVector2(DemonicsFloat x, DemonicsFloat y)
+    public DemonVector2(DemonFloat x, DemonFloat y)
     {
         this.x = x;
         this.y = y;
     }
-    public DemonicsVector2(DemonicsFloat x, int y)
+    public DemonVector2(DemonFloat x, int y)
     {
         this.x = x;
-        this.y = (DemonicsFloat)y;
+        this.y = (DemonFloat)y;
     }
 
-    public DemonicsVector2(int x, int y)
+    public DemonVector2(int x, int y)
     {
-        this.x = (DemonicsFloat)x;
-        this.y = (DemonicsFloat)y;
+        this.x = (DemonFloat)x;
+        this.y = (DemonFloat)y;
     }
-    public DemonicsVector2(DemonicsVector2 v)
+    public DemonVector2(DemonVector2 v)
     {
         this.x = v.x;
         this.y = v.y;
     }
-    public static DemonicsVector2 operator -(DemonicsVector2 a, int b)
+    public static DemonVector2 operator -(DemonVector2 a, int b)
     {
-        DemonicsFloat x = a.x - b;
-        DemonicsFloat y = a.y - b;
-        return new DemonicsVector2(x, y);
+        DemonFloat x = a.x - b;
+        DemonFloat y = a.y - b;
+        return new DemonVector2(x, y);
     }
 
-    public DemonicsFloat this[int index]
+    public DemonFloat this[int index]
     {
         get { return index == 0 ? x : y; }
         set
@@ -714,59 +714,59 @@ public struct DemonicsVector2
         }
     }
 
-    public static DemonicsVector2 Zero
+    public static DemonVector2 Zero
     {
-        get { return new DemonicsVector2(DemonicsFloat.Zero, DemonicsFloat.Zero); }
+        get { return new DemonVector2(DemonFloat.Zero, DemonFloat.Zero); }
     }
 
-    public static DemonicsVector2 operator +(DemonicsVector2 a, DemonicsVector2 b)
+    public static DemonVector2 operator +(DemonVector2 a, DemonVector2 b)
     {
-        DemonicsFloat x = a.x + b.x;
-        DemonicsFloat y = a.y + b.y;
-        return new DemonicsVector2(x, y);
+        DemonFloat x = a.x + b.x;
+        DemonFloat y = a.y + b.y;
+        return new DemonVector2(x, y);
     }
 
-    public static DemonicsVector2 operator -(DemonicsVector2 a, DemonicsVector2 b)
+    public static DemonVector2 operator -(DemonVector2 a, DemonVector2 b)
     {
-        DemonicsFloat x = a.x - b.x;
-        DemonicsFloat y = a.y - b.y;
-        return new DemonicsVector2(x, y);
+        DemonFloat x = a.x - b.x;
+        DemonFloat y = a.y - b.y;
+        return new DemonVector2(x, y);
     }
 
-    public static DemonicsVector2 operator *(DemonicsFloat d, DemonicsVector2 a)
+    public static DemonVector2 operator *(DemonFloat d, DemonVector2 a)
     {
-        DemonicsFloat x = a.x * d;
-        DemonicsFloat y = a.y * d;
-        return new DemonicsVector2(x, y);
+        DemonFloat x = a.x * d;
+        DemonFloat y = a.y * d;
+        return new DemonVector2(x, y);
     }
 
-    public static DemonicsVector2 operator *(DemonicsVector2 a, DemonicsFloat d)
+    public static DemonVector2 operator *(DemonVector2 a, DemonFloat d)
     {
-        DemonicsFloat x = a.x * d;
-        DemonicsFloat y = a.y * d;
-        return new DemonicsVector2(x, y);
+        DemonFloat x = a.x * d;
+        DemonFloat y = a.y * d;
+        return new DemonVector2(x, y);
     }
 
-    public static DemonicsVector2 operator /(DemonicsVector2 a, DemonicsFloat d)
+    public static DemonVector2 operator /(DemonVector2 a, DemonFloat d)
     {
-        DemonicsFloat x = a.x / d;
-        DemonicsFloat y = a.y / d;
-        return new DemonicsVector2(x, y);
+        DemonFloat x = a.x / d;
+        DemonFloat y = a.y / d;
+        return new DemonVector2(x, y);
     }
 
-    public static bool operator ==(DemonicsVector2 lhs, DemonicsVector2 rhs)
+    public static bool operator ==(DemonVector2 lhs, DemonVector2 rhs)
     {
         return lhs.x == rhs.x && lhs.y == rhs.y;
     }
 
-    public static bool operator !=(DemonicsVector2 lhs, DemonicsVector2 rhs)
+    public static bool operator !=(DemonVector2 lhs, DemonVector2 rhs)
     {
         return lhs.x != rhs.x || lhs.y != rhs.y;
     }
 
     public override bool Equals(object obj)
     {
-        return obj is DemonicsVector2 && ((DemonicsVector2)obj) == this;
+        return obj is DemonVector2 && ((DemonVector2)obj) == this;
     }
 
     public override int GetHashCode()
@@ -775,30 +775,30 @@ public struct DemonicsVector2
     }
 
 
-    public static DemonicsFloat SqrMagnitude(DemonicsVector2 a)
+    public static DemonFloat SqrMagnitude(DemonVector2 a)
     {
         return a.x * a.x + a.y * a.y;
     }
 
-    public static DemonicsFloat Distance(DemonicsVector2 a, DemonicsVector2 b)
+    public static DemonFloat Distance(DemonVector2 a, DemonVector2 b)
     {
         return Magnitude(a - b);
     }
 
-    public static DemonicsFloat Magnitude(DemonicsVector2 a)
+    public static DemonFloat Magnitude(DemonVector2 a)
     {
-        return DemonicsFloat.Sqrt(DemonicsVector2.SqrMagnitude(a));
+        return DemonFloat.Sqrt(DemonVector2.SqrMagnitude(a));
     }
 
     public void Normalize()
     {
-        DemonicsFloat n = x * x + y * y;
-        if (n == DemonicsFloat.Zero)
+        DemonFloat n = x * x + y * y;
+        if (n == DemonFloat.Zero)
             return;
 
-        n = DemonicsFloat.Sqrt(n);
+        n = DemonFloat.Sqrt(n);
 
-        if (n < (DemonicsFloat)0.0001)
+        if (n < (DemonFloat)0.0001)
         {
             return;
         }
@@ -808,9 +808,9 @@ public struct DemonicsVector2
         y *= n;
     }
 
-    public DemonicsVector2 GetNormalized()
+    public DemonVector2 GetNormalized()
     {
-        DemonicsVector2 v = new DemonicsVector2(this);
+        DemonVector2 v = new DemonVector2(this);
         v.Normalize();
         return v;
     }

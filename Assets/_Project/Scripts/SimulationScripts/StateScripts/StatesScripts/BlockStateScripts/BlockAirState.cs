@@ -20,7 +20,7 @@ public class BlockAirState : BlockParentState
     {
         if (player.attackHurtNetwork.knockbackArc > 0 && player.knockback <= 1)
             return;
-        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
+        if ((DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
             player.player.StopShakeCoroutine();
             CheckTrainingComboEnd(player);
@@ -29,7 +29,7 @@ public class BlockAirState : BlockParentState
             else
             {
                 player.stunFrames = player.attackHurtNetwork.blockStun + _extraLandBlockStun;
-                player.velocity = DemonicsVector2.Zero;
+                player.velocity = DemonVector2.Zero;
                 player.animationFrames = 0;
                 EnterState(player, "Block");
             }

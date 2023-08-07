@@ -216,12 +216,7 @@ public class ReplayManager : MonoBehaviour
                     {
                         NetworkInput.ONE_RIGHT_INPUT = true;
                     }
-                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.NoneVertical)
-                    {
-                        NetworkInput.ONE_UP_INPUT = false;
-                        NetworkInput.ONE_DOWN_INPUT = false;
-                    }
-                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.NoneHorizontal)
+                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Neutral)
                     {
                         NetworkInput.ONE_LEFT_INPUT = false;
                         NetworkInput.ONE_RIGHT_INPUT = false;
@@ -296,12 +291,7 @@ public class ReplayManager : MonoBehaviour
                     {
                         NetworkInput.TWO_RIGHT_INPUT = true;
                     }
-                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.NoneVertical)
-                    {
-                        NetworkInput.TWO_UP_INPUT = false;
-                        NetworkInput.TWO_DOWN_INPUT = false;
-                    }
-                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.NoneHorizontal)
+                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Neutral)
                     {
                         NetworkInput.TWO_LEFT_INPUT = false;
                         NetworkInput.TWO_RIGHT_INPUT = false;

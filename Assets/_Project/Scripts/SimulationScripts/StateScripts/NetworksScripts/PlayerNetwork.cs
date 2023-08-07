@@ -11,11 +11,11 @@ public class PlayerNetwork
     public ShadowNetwork shadow;
     public ResultAttack resultAttack;
     public PlayerStatsSO playerStats;
-    public DemonicsVector2 position;
-    public DemonicsVector2 velocity;
-    public DemonicsVector2 pushbackStart;
-    public DemonicsVector2 pushbackEnd;
-    public DemonicsVector2 hurtPosition;
+    public DemonVector2 position;
+    public DemonVector2 velocity;
+    public DemonVector2 pushbackStart;
+    public DemonVector2 pushbackEnd;
+    public DemonVector2 hurtPosition;
     public AttackNetwork attackNetwork;
     public AttackNetwork attackHurtNetwork;
     public Vector2Int direction;
@@ -62,17 +62,20 @@ public class PlayerNetwork
     public bool enter;
     public bool wasWallSplatted;
     public bool canChainAttack;
+    public bool usedShadowbreak;
     public bool hitstop;
     public bool juggleBounce;
     public string state;
     public int spriteOrder;
     public State CurrentState;
+    public InputList inputList;
     public ColliderNetwork hurtbox;
     public ColliderNetwork hitbox;
     public ColliderNetwork pushbox;
     public InputBufferNetwork inputBuffer;
     public FramedataTypesEnum framedataEnum;
     public EffectNetwork[] effects;
+    public EffectNetwork[] particles;
     public ProjectileNetwork[] projectiles;
     public void Serialize(BinaryWriter bw)
     {
@@ -128,6 +131,7 @@ public class PlayerNetwork
         bw.Write(hitstop);
         bw.Write(inPushback);
         bw.Write(canChainAttack);
+        bw.Write(usedShadowbreak);
         bw.Write(juggleBounce);
         bw.Write(flip);
         bw.Write(spriteOrder);
@@ -142,6 +146,10 @@ public class PlayerNetwork
         {
             projectiles[i].Serialize(bw);
         }
+        for (int i = 0; i < particles.Length; ++i)
+        {
+            particles[i].Serialize(bw);
+        }
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Serialize(bw);
@@ -150,16 +158,16 @@ public class PlayerNetwork
 
     public void Deserialize(BinaryReader br)
     {
-        position.x = (DemonicsFloat)br.ReadSingle();
-        position.y = (DemonicsFloat)br.ReadSingle();
-        velocity.x = (DemonicsFloat)br.ReadSingle();
-        velocity.y = (DemonicsFloat)br.ReadSingle();
-        pushbackStart.x = (DemonicsFloat)br.ReadSingle();
-        pushbackStart.y = (DemonicsFloat)br.ReadSingle();
-        pushbackEnd.x = (DemonicsFloat)br.ReadSingle();
-        pushbackEnd.y = (DemonicsFloat)br.ReadSingle();
-        hurtPosition.x = (DemonicsFloat)br.ReadSingle();
-        hurtPosition.y = (DemonicsFloat)br.ReadSingle();
+        position.x = (DemonFloat)br.ReadSingle();
+        position.y = (DemonFloat)br.ReadSingle();
+        velocity.x = (DemonFloat)br.ReadSingle();
+        velocity.y = (DemonFloat)br.ReadSingle();
+        pushbackStart.x = (DemonFloat)br.ReadSingle();
+        pushbackStart.y = (DemonFloat)br.ReadSingle();
+        pushbackEnd.x = (DemonFloat)br.ReadSingle();
+        pushbackEnd.y = (DemonFloat)br.ReadSingle();
+        hurtPosition.x = (DemonFloat)br.ReadSingle();
+        hurtPosition.y = (DemonFloat)br.ReadSingle();
         direction.x = br.ReadInt32();
         direction.y = br.ReadInt32();
         inputDirection = (InputDirectionEnum)br.ReadInt32();
@@ -202,6 +210,7 @@ public class PlayerNetwork
         hitstop = br.ReadBoolean();
         inPushback = br.ReadBoolean();
         canChainAttack = br.ReadBoolean();
+        usedShadowbreak = br.ReadBoolean();
         juggleBounce = br.ReadBoolean();
         flip = br.ReadInt32();
         spriteOrder = br.ReadInt32();
@@ -216,6 +225,10 @@ public class PlayerNetwork
         {
             projectiles[i].Deserialize(br);
         }
+        for (int i = 0; i < particles.Length; ++i)
+        {
+            particles[i].Deserialize(br);
+        }
         for (int i = 0; i < effects.Length; ++i)
         {
             effects[i].Deserialize(br);
@@ -229,7 +242,7 @@ public class PlayerNetwork
         return hashCode;
     }
 
-    public void SetEffect(string name, DemonicsVector2 position, bool flip = false)
+    public void SetEffect(string name, DemonVector2 position, bool flip = false)
     {
         for (int i = 0; i < effects.Length; i++)
         {
@@ -248,7 +261,16 @@ public class PlayerNetwork
             }
         }
     }
-    public void SetProjectile(string name, DemonicsVector2 position, bool flip = false)
+    public void SetParticle(string name, DemonVector2 position, Vector2 flip = default)
+    {
+        for (int i = 0; i < particles.Length; i++)
+            if (name == particles[i].name)
+            {
+                GameSimulationView.UpdateParticles(player.IsPlayerOne ? 0 : 1, particles[i], position, flip);
+                return;
+            }
+    }
+    public void SetProjectile(string name, DemonVector2 position, bool flip = false)
     {
         for (int i = 0; i < projectiles.Length; i++)
         {
@@ -264,7 +286,7 @@ public class PlayerNetwork
             }
         }
     }
-    public void SetAssist(string name, DemonicsVector2 position, DemonicsFloat speed, bool flip = false)
+    public void SetAssist(string name, DemonVector2 position, DemonFloat speed, bool flip = false)
     {
         if (name == shadow.projectile.name)
         {
@@ -276,7 +298,7 @@ public class PlayerNetwork
             }
         }
     }
-    public void InitializeProjectile(string name, AttackNetwork attackNetwork, DemonicsFloat speed, int priority, bool destroyOnHit)
+    public void InitializeProjectile(string name, AttackNetwork attackNetwork, DemonFloat speed, int priority, bool destroyOnHit)
     {
         for (int i = 0; i < projectiles.Length; i++)
         {
@@ -288,5 +310,27 @@ public class PlayerNetwork
                 projectiles[i].attackNetwork = attackNetwork;
             }
         }
+    }
+    public void ArcanaGain(ArcanaGainTypes arcanaGainTypes)
+    {
+        DemonFloat meter = (DemonFloat)70;
+        switch (arcanaGainTypes)
+        {
+            case ArcanaGainTypes.AttackOnHit:
+                arcanaGauge += (int)DemonFloat.Floor(meter * 1.3);
+                break;
+            case ArcanaGainTypes.AttackOnBlock:
+                arcanaGauge += (int)DemonFloat.Floor(meter * 0.8);
+                break;
+            case ArcanaGainTypes.DefendOnHit:
+                arcanaGauge += (int)DemonFloat.Floor(meter * 0.6);
+                break;
+            case ArcanaGainTypes.DefendOnBlock:
+                arcanaGauge += (int)DemonFloat.Floor(meter * 0.75);
+                break;
+        }
+        int maxArcana = PlayerStatsSO.ARCANA_MULTIPLIER * playerStats.arcanaLevel;
+        if (arcanaGauge > maxArcana)
+            arcanaGauge = maxArcana;
     }
 };

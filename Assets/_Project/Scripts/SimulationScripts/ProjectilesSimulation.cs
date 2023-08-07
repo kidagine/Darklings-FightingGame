@@ -64,14 +64,14 @@ public class ProjectilesSimulation
         }
         if (player.shadow.projectile.active)
         {
-            DemonicsVector2 t = (new DemonicsVector2((DemonicsFloat)player.shadow.spawnRotation.x * (DemonicsFloat)player.shadow.flip, (DemonicsFloat)player.shadow.spawnRotation.y) * (DemonicsFloat)player.shadow.projectile.speed);
-            player.shadow.projectile.position = new DemonicsVector2(player.shadow.projectile.position.x + t.x, player.shadow.projectile.position.y + t.y);
+            DemonVector2 t = (new DemonVector2((DemonFloat)player.shadow.spawnRotation.x * (DemonFloat)player.shadow.flip, (DemonFloat)player.shadow.spawnRotation.y) * (DemonFloat)player.shadow.projectile.speed);
+            player.shadow.projectile.position = new DemonVector2(player.shadow.projectile.position.x + t.x, player.shadow.projectile.position.y + t.y);
             AnimationBox[] hitboxes = ObjectPoolingManager.Instance.GetAssistPoolAnimation(index, player.shadow.projectile.name).GetHitboxes("Idle", player.shadow.projectile.animationFrames);
             if (hitboxes.Length > 0)
             {
-                player.shadow.projectile.hitbox.size = new DemonicsVector2((DemonicsFloat)hitboxes[0].size.x, (DemonicsFloat)hitboxes[0].size.y);
-                player.shadow.projectile.hitbox.offset = new DemonicsVector2((DemonicsFloat)hitboxes[0].offset.x, (DemonicsFloat)hitboxes[0].offset.y);
-                player.shadow.projectile.hitbox.position = new DemonicsVector2(player.shadow.projectile.position.x + (player.shadow.projectile.hitbox.offset.x * player.flip), player.shadow.projectile.position.y + player.shadow.projectile.hitbox.offset.y);
+                player.shadow.projectile.hitbox.size = new DemonVector2((DemonFloat)hitboxes[0].size.x, (DemonFloat)hitboxes[0].size.y);
+                player.shadow.projectile.hitbox.offset = new DemonVector2((DemonFloat)hitboxes[0].offset.x, (DemonFloat)hitboxes[0].offset.y);
+                player.shadow.projectile.hitbox.position = new DemonVector2(player.shadow.projectile.position.x + (player.shadow.projectile.hitbox.offset.x * player.flip), player.shadow.projectile.position.y + player.shadow.projectile.hitbox.offset.y);
                 player.shadow.projectile.hitbox.active = true;
             }
         }
@@ -111,13 +111,13 @@ public class ProjectilesSimulation
         }
         if (player.projectiles[i].active)
         {
-            player.projectiles[i].position = new DemonicsVector2(player.projectiles[i].position.x + (player.projectiles[i].speed * player.flip), player.projectiles[i].position.y);
+            player.projectiles[i].position = new DemonVector2(player.projectiles[i].position.x + (player.projectiles[i].speed * player.flip), player.projectiles[i].position.y);
             AnimationBox[] hitboxes = ObjectPoolingManager.Instance.GetObjectPoolAnimation(index, player.projectiles[i].name).GetHitboxes("Idle", player.projectiles[i].animationFrames);
             if (hitboxes.Length > 0)
             {
-                player.projectiles[i].hitbox.size = new DemonicsVector2((DemonicsFloat)hitboxes[0].size.x, (DemonicsFloat)hitboxes[0].size.y);
-                player.projectiles[i].hitbox.offset = new DemonicsVector2((DemonicsFloat)hitboxes[0].offset.x, (DemonicsFloat)hitboxes[0].offset.y);
-                player.projectiles[i].hitbox.position = new DemonicsVector2(player.projectiles[i].position.x + (player.projectiles[i].hitbox.offset.x * player.flip), player.projectiles[i].position.y + player.projectiles[i].hitbox.offset.y);
+                player.projectiles[i].hitbox.size = new DemonVector2((DemonFloat)hitboxes[0].size.x, (DemonFloat)hitboxes[0].size.y);
+                player.projectiles[i].hitbox.offset = new DemonVector2((DemonFloat)hitboxes[0].offset.x, (DemonFloat)hitboxes[0].offset.y);
+                player.projectiles[i].hitbox.position = new DemonVector2(player.projectiles[i].position.x + (player.projectiles[i].hitbox.offset.x * player.flip), player.projectiles[i].position.y + player.projectiles[i].hitbox.offset.y);
                 player.projectiles[i].hitbox.active = true;
             }
         }

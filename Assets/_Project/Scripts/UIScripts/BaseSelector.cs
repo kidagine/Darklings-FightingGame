@@ -38,13 +38,9 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
         if (value >= 0 && value < _values.childCount)
         {
             if (_audio != null)
-            {
                 _audio.Sound("Selected").Play();
-            }
             for (int i = 0; i < _values.childCount; i++)
-            {
                 _values.GetChild(i).gameObject.SetActive(false);
-            }
             Value = value;
             _values.GetChild(Value).gameObject.SetActive(true);
 
@@ -74,9 +70,7 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
     public void OnSelect(BaseEventData eventData)
     {
         if (!_isIgnoringFirstSelectSound)
-        {
             _audio.Sound("Selected").Play();
-        }
         _animator.SetBool("IsSelected", true);
         _isIgnoringFirstSelectSound = false;
     }
@@ -95,31 +89,23 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
     {
         AxisEventData axisEventData = eventData as AxisEventData;
         if (axisEventData.moveDir == MoveDirection.Right)
-        {
             NextValue();
-        }
         if (axisEventData.moveDir == MoveDirection.Left)
-        {
             PreviousValue();
-        }
     }
 
     public void MoveScrollDown(BaseEventData eventData)
     {
         AxisEventData axisEventData = eventData as AxisEventData;
         if (axisEventData.moveDir == MoveDirection.Down)
-        {
             _scrollView.anchoredPosition += new Vector2(0.0f, _scrollDownAmount);
-        }
     }
 
     public void MoveScrollUp(BaseEventData eventData)
     {
         AxisEventData axisEventData = eventData as AxisEventData;
         if (axisEventData.moveDir == MoveDirection.Up)
-        {
             _scrollView.anchoredPosition += new Vector2(0.0f, _scrollUpAmount);
-        }
     }
 
     public void NextValue()
@@ -140,9 +126,7 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
     void OnDisable()
     {
         if (_ignoreFirstSelectSound)
-        {
             _isIgnoringFirstSelectSound = true;
-        }
         _animator.Rebind();
     }
 }

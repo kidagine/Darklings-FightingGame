@@ -34,14 +34,14 @@ public class PlayerPreferences : MonoBehaviour
     [SerializeField] private int _stageStyleSelectorInitial = default;
     [Header("OPTIONS")]
     [Header("Audio")]
-    [SerializeField] private BaseSelector _vfxSelector = default;
-    [Range(0, 10)]
-    [SerializeField] private int _vfxSelectorInitial = default;
-    [SerializeField] private BaseSelector _uiSelector = default;
-    [Range(0, 10)]
+    [SerializeField] private DemonSlider _sfxSlider = default;
+    [Range(0, 100)]
+    [SerializeField] private int _sfxSelectorInitial = default;
+    [SerializeField] private DemonSlider _uiSlider = default;
+    [Range(0, 100)]
     [SerializeField] private int _uiSelectorInitial = default;
-    [SerializeField] private BaseSelector _musicSelector = default;
-    [Range(0, 10)]
+    [SerializeField] private DemonSlider _musicSlider = default;
+    [Range(0, 100)]
     [SerializeField] private int _musicSelectorInitial = default;
     [Header("TRAINING")]
     [Header("General")]
@@ -80,9 +80,7 @@ public class PlayerPreferences : MonoBehaviour
     void Start()
     {
         if (_checkOnline)
-        {
             LoadOnlinePreferences();
-        }
         if (_checkStage)
         {
             _onlineSetupMenu.SetMusicSelectorValues();
@@ -92,16 +90,10 @@ public class PlayerPreferences : MonoBehaviour
             LoadStagePreferences();
         }
         if (_checkOptions)
-        {
             LoadOptionPreferences();
-        }
         if (_checkTraining)
-        {
             if (GameplayManager.Instance.IsTrainingMode)
-            {
                 LoadTrainingPreferences();
-            }
-        }
     }
 
     private void LoadOnlinePreferences()
@@ -126,9 +118,9 @@ public class PlayerPreferences : MonoBehaviour
 
     private void LoadOptionPreferences()
     {
-        _vfxSelector.SetValue(int.Parse(DemonicsSaver.Load("vfx", _vfxSelectorInitial.ToString())));
-        _uiSelector.SetValue(int.Parse(DemonicsSaver.Load("ui", _uiSelectorInitial.ToString())));
-        _musicSelector.SetValue(int.Parse(DemonicsSaver.Load("music", _musicSelectorInitial.ToString())));
+        _sfxSlider.SetValue(int.Parse(DemonicsSaver.Load("sfx", _sfxSelectorInitial.ToString())));
+        _uiSlider.SetValue(int.Parse(DemonicsSaver.Load("ui", _uiSelectorInitial.ToString())));
+        _musicSlider.SetValue(int.Parse(DemonicsSaver.Load("music", _musicSelectorInitial.ToString())));
     }
 
     private void LoadTrainingPreferences()
@@ -136,7 +128,7 @@ public class PlayerPreferences : MonoBehaviour
         //General
         _healthSelector.SetValue(int.Parse(DemonicsSaver.Load("health", _healthSelectorInitial.ToString())));
         _arcanaSelector.SetValue(int.Parse(DemonicsSaver.Load("arcana", _arcanaSelectorInitial.ToString())));
-        _assistSelector.SetValue(int.Parse(DemonicsSaver.Load("assist", _assistSelectorInitial.ToString())));
+        _assistSelector.SetValue(int.Parse(DemonicsSaver.Load("shadow", _assistSelectorInitial.ToString())));
 
         //Cpu
         _cpuSelector.SetValue(int.Parse(DemonicsSaver.Load("cpu", _cpuSelectorInitial.ToString())));

@@ -7,11 +7,11 @@ public struct AttackNetwork
 {
     public CameraShakerNetwork cameraShakerNetwork;
 
-    public DemonicsVector2 travelDistance;
-    public DemonicsFloat knockbackForce;
+    public DemonVector2 travelDistance;
+    public DemonFloat knockbackForce;
     public AttackTypeEnum attackType;
     public ComboTimerStarterEnum comboTimerStarter;
-    public DemonicsVector2 projectilePosition;
+    public DemonVector2 projectilePosition;
     public int knockbackDuration;
     public int knockbackArc;
     public int hitstop;
@@ -22,7 +22,7 @@ public struct AttackNetwork
     public int startup;
     public int active;
     public int recovery;
-    public DemonicsFloat projectileSpeed;
+    public DemonFloat projectileSpeed;
     public string name;
     public string moveName;
     public string attackSound;
@@ -31,7 +31,8 @@ public struct AttackNetwork
     public bool jumpCancelable;
     public bool softKnockdown;
     public bool hardKnockdown;
-    public bool superArmor;
+    public bool guardBreak;
+    public int superArmor;
     public bool projectileDestroyOnHit;
 
     public void Serialize(BinaryWriter bw)
@@ -61,16 +62,17 @@ public struct AttackNetwork
         bw.Write(softKnockdown);
         bw.Write(hardKnockdown);
         bw.Write(superArmor);
+        bw.Write(guardBreak);
         cameraShakerNetwork.Serialize(bw);
     }
 
     public void Deserialize(BinaryReader br)
     {
-        travelDistance.x = (DemonicsFloat)br.ReadSingle();
-        travelDistance.y = (DemonicsFloat)br.ReadSingle();
-        projectilePosition.x = (DemonicsFloat)br.ReadSingle();
-        projectilePosition.y = (DemonicsFloat)br.ReadSingle();
-        knockbackForce = (DemonicsFloat)br.ReadSingle();
+        travelDistance.x = (DemonFloat)br.ReadSingle();
+        travelDistance.y = (DemonFloat)br.ReadSingle();
+        projectilePosition.x = (DemonFloat)br.ReadSingle();
+        projectilePosition.y = (DemonFloat)br.ReadSingle();
+        knockbackForce = (DemonFloat)br.ReadSingle();
         comboTimerStarter = (ComboTimerStarterEnum)br.ReadInt32();
         attackType = (AttackTypeEnum)br.ReadInt32();
         knockbackDuration = br.ReadInt32();
@@ -80,7 +82,7 @@ public struct AttackNetwork
         hitStun = br.ReadInt32();
         blockStun = br.ReadInt32();
         projectilePriority = br.ReadInt32();
-        projectileSpeed = (DemonicsFloat)br.ReadSingle();
+        projectileSpeed = (DemonFloat)br.ReadSingle();
         projectileDestroyOnHit = br.ReadBoolean();
         name = br.ReadString();
         moveName = br.ReadString();
@@ -90,7 +92,8 @@ public struct AttackNetwork
         jumpCancelable = br.ReadBoolean();
         softKnockdown = br.ReadBoolean();
         hardKnockdown = br.ReadBoolean();
-        superArmor = br.ReadBoolean();
+        superArmor = br.ReadInt32();
+        guardBreak = br.ReadBoolean();
         cameraShakerNetwork.Deserialize(br);
     }
 };

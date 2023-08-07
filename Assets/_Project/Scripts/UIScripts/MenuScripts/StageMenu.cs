@@ -102,7 +102,7 @@ public class StageMenu : BaseMenu
     {
         if (_optionsGroup.activeSelf)
         {
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(1);
         }
     }
 

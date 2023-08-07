@@ -13,7 +13,7 @@ namespace SharedGame
 
     public interface IGame
     {
-        int Framenumber { get; }
+        int Frames { get; }
         int Checksum { get; }
 
         void Update(long[] inputs, int disconnectFlags);

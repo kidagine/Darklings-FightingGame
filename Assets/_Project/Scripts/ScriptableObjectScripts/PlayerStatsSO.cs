@@ -10,6 +10,7 @@ public class PlayerStatsSO : ScriptableObject
     public AnimationSO _animation;
     public DialogueSO _dialogue;
     public EffectsLibrarySO _effectsLibrary;
+    public EffectsLibrarySO _particlesLibrary;
     public EffectsLibrarySO _projectilesLibrary;
     public CharacterTypeEnum characterName;
     [Header("Stats")]
@@ -40,146 +41,146 @@ public class PlayerStatsSO : ScriptableObject
 
     public int Arcana { get { return arcanaLevel * ARCANA_MULTIPLIER; } set { } }
     public float Defense { get { return (defenseLevel - 1) * 0.05f + 0.95f; } set { } }
-    public DemonicsFloat SpeedWalk
+    public DemonFloat SpeedWalk
     {
         get
         {
             switch (speedLevel)
             {
                 case 1:
-                    return (DemonicsFloat)0.48;
+                    return (DemonFloat)0.48;
                 case 2:
-                    return (DemonicsFloat)0.8;
+                    return (DemonFloat)0.8;
                 case 3:
-                    return (DemonicsFloat)1.12;
+                    return (DemonFloat)1.12;
                 default:
-                    return (DemonicsFloat)0;
+                    return (DemonFloat)0;
             }
         }
         set { }
     }
-    public DemonicsFloat SpeedWalkBackwards
+    public DemonFloat SpeedWalkBackwards
     {
         get
         {
             switch (speedLevel)
             {
                 case 1:
-                    return (DemonicsFloat)0.43;
+                    return (DemonFloat)0.43;
                 case 2:
-                    return (DemonicsFloat)0.7;
+                    return (DemonFloat)0.7;
                 case 3:
-                    return (DemonicsFloat)1.0;
+                    return (DemonFloat)1.0;
                 default:
-                    return (DemonicsFloat)0;
+                    return (DemonFloat)0;
             }
         }
         set { }
     }
-    public DemonicsFloat SpeedRun
+    public DemonFloat SpeedRun
     {
         get
         {
             switch (speedLevel)
             {
                 case 1:
-                    return (DemonicsFloat)2.4;
+                    return (DemonFloat)2.4;
                 case 2:
-                    return (DemonicsFloat)2.88;
+                    return (DemonFloat)2.88;
                 case 3:
-                    return (DemonicsFloat)3.36;
+                    return (DemonFloat)3.36;
                 default:
-                    return (DemonicsFloat)0;
+                    return (DemonFloat)0;
             }
         }
         set { }
     }
-    public DemonicsFloat JumpForce
+    public DemonFloat JumpForce
     {
         get
         {
             switch (jumpLevel)
             {
                 case 1:
-                    return (DemonicsFloat)5.44;
+                    return (DemonFloat)5.44;
                 case 2:
-                    return (DemonicsFloat)5.6;
+                    return (DemonFloat)5.6;
                 case 3:
-                    return (DemonicsFloat)5.92;
+                    return (DemonFloat)5.92;
                 default:
-                    return (DemonicsFloat)0;
+                    return (DemonFloat)0;
             }
         }
         set { }
     }
-    public DemonicsFloat DashForce
+    public DemonFloat DashForce
     {
         get
         {
             switch (dashLevel)
             {
                 case 1:
-                    return (DemonicsFloat)3.8;
+                    return (DemonFloat)3.8;
                 case 2:
-                    return (DemonicsFloat)4;
+                    return (DemonFloat)4;
                 case 3:
-                    return (DemonicsFloat)4.2;
+                    return (DemonFloat)4.2;
                 default:
-                    return (DemonicsFloat)0;
+                    return (DemonFloat)0;
             }
         }
         set { }
     }
-    public DemonicsFloat DashBackForce
+    public DemonFloat DashBackForce
     {
         get
         {
             switch (dashLevel)
             {
                 case 1:
-                    return (DemonicsFloat)3.2;
+                    return (DemonFloat)3.2;
                 case 2:
-                    return (DemonicsFloat)3.4;
+                    return (DemonFloat)3.4;
                 case 3:
-                    return (DemonicsFloat)3.6;
+                    return (DemonFloat)3.6;
                 default:
-                    return (DemonicsFloat)0;
+                    return (DemonFloat)0;
             }
         }
         set { }
     }
-    public DemonicsFloat DashAirForce
+    public DemonFloat DashAirForce
     {
         get
         {
             switch (dashLevel)
             {
                 case 1:
-                    return (DemonicsFloat)3.6;
+                    return (DemonFloat)3.6;
                 case 2:
-                    return (DemonicsFloat)3.8;
+                    return (DemonFloat)3.8;
                 case 3:
-                    return (DemonicsFloat)4.0;
+                    return (DemonFloat)4.0;
                 default:
-                    return (DemonicsFloat)0;
+                    return (DemonFloat)0;
             }
         }
         set { }
     }
-    public DemonicsFloat DashBackAirForce
+    public DemonFloat DashBackAirForce
     {
         get
         {
             switch (dashLevel)
             {
                 case 1:
-                    return (DemonicsFloat)3.2;
+                    return (DemonFloat)3.2;
                 case 2:
-                    return (DemonicsFloat)3.4;
+                    return (DemonFloat)3.4;
                 case 3:
-                    return (DemonicsFloat)3.6;
+                    return (DemonFloat)3.6;
                 default:
-                    return (DemonicsFloat)0;
+                    return (DemonFloat)0;
             }
         }
         set { }

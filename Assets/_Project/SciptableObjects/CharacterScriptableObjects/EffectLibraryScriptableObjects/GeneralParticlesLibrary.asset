@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6330d5bbeabd1b14fa5a92f3bcaf733a, type: 3}
+  m_Name: GeneralParticlesLibrary
+  m_EditorClassIdentifier: 
+  _objectPools:
+  - groupName: HurtNormal
+    prefab: {fileID: 146714, guid: 0ca81ccf433929c4b9d002b5e03f4e82, type: 3}
+    size: 5
+  - groupName: HurtHeavy
+    prefab: {fileID: 138252, guid: 4931652d30b558448b41c30f9bbc7a65, type: 3}
+    size: 3
+  - groupName: HurtMedium
+    prefab: {fileID: 138252, guid: 2810299a6ebf57144af790983dc2c430, type: 3}
+    size: 3
+  - groupName: HurtArcana
+    prefab: {fileID: 191092, guid: 9214dae178b89904ea348f6bee7c17e9, type: 3}
+    size: 3
+  - groupName: GuardBreak
+    prefab: {fileID: 109840, guid: 6528369279a55f847bfc34ff87001f5d, type: 3}
+    size: 3
+  - groupName: KnockdownSoft
+    prefab: {fileID: 171188, guid: 7cd05a3ad87d2c44c9db5f6045e977fa, type: 3}
+    size: 3
+  - groupName: KnockdownHard
+    prefab: {fileID: 171188, guid: a6b66c55641a7704da9de37735da9b04, type: 3}
+    size: 3
+  - groupName: RedFrenzy
+    prefab: {fileID: 109840, guid: 0e05903dcb9885349b3d67b2a9d4d54e, type: 3}
+    size: 3
+  - groupName: Jump
+    prefab: {fileID: 110814, guid: 1ee3bc51a3949df4b8feecc3bf285c9a, type: 3}
+    size: 5
+  - groupName: JumpRight
+    prefab: {fileID: 110814, guid: fe8cb97346e5e9d43997bca7e12efbf8, type: 3}
+    size: 5
+  - groupName: JumpLeft
+    prefab: {fileID: 110814, guid: 65754cc506574604ea41c000281e45b3, type: 3}
+    size: 5
+  - groupName: WallSplat
+    prefab: {fileID: 175648, guid: 922d2fa90ebdb384a9fcddc60e2f15e3, type: 3}
+    size: 3
+  - groupName: Fall
+    prefab: {fileID: 110814, guid: 0e823150cf1d92048af485f7d26058ed, type: 3}
+    size: 3
+  - groupName: Block
+    prefab: {fileID: 109840, guid: 795900cdc7960c045a406f19df48096f, type: 3}
+    size: 3
+  - groupName: Chip
+    prefab: {fileID: 109840, guid: eebb6fe81913f0f44958bcd1df34a908, type: 3}
+    size: 3
+  - groupName: Parry
+    prefab: {fileID: 138252, guid: ca3d7fc79430c8a409d071c869b6e140, type: 3}
+    size: 3
+  - groupName: DashAirForward
+    prefab: {fileID: 129404, guid: e0738bcbae125614d8d257714a6136e4, type: 3}
+    size: 5
+  - groupName: DashAirBackwards
+    prefab: {fileID: 129404, guid: 7c5a98bca19e0ac4795f66e24920cf7d, type: 3}
+    size: 5
+  - groupName: Dash
+    prefab: {fileID: 110814, guid: 6a8a57f3b4c0c1c4e8b26696b67463fe, type: 3}
+    size: 5

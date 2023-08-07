@@ -36,8 +36,8 @@ public class Player : MonoBehaviour, IHitstop
     public int HealthRecoverable { get; set; }
     public int Lives { get; set; } = 2;
     public bool IsPlayerOne { get; set; }
-    public DemonicsFloat AssistGauge { get; set; } = (DemonicsFloat)1;
-    public DemonicsFloat ArcanaGauge { get; set; }
+    public DemonFloat AssistGauge { get; set; } = (DemonFloat)1;
+    public DemonFloat ArcanaGauge { get; set; }
     public Assist Assist { get { return _assist; } private set { } }
     public bool CanSkipAttack { get; set; }
     public bool LockChain { get; set; }
@@ -63,7 +63,7 @@ public class Player : MonoBehaviour, IHitstop
         _playerUI.SetAssistName(assistStats.name[0].ToString());
     }
 
-    public void ThrowTechPrefab(DemonicsVector2 pos)
+    public void ThrowTechPrefab(DemonVector2 pos)
     {
         Instantiate(_throwTechPrefab, new Vector3((float)pos.x, (float)pos.y, 0), Quaternion.identity);
     }
@@ -89,16 +89,16 @@ public class Player : MonoBehaviour, IHitstop
         RecallAssist();
         _playerMovement.StopKnockback();
         int index = IsPlayerOne ? 0 : 1;
-        GameSimulation._players[index].position = new DemonicsVector2((DemonicsFloat)resetPosition.x, (DemonicsFloat)resetPosition.y);
-        _playerMovement.Physics.SetPositionWithRender(new DemonicsVector2((DemonicsFloat)GameSimulation._players[index].position.x, (DemonicsFloat)GameSimulation._players[index].position.y));
+        GameSimulation._players[index].position = new DemonVector2((DemonFloat)resetPosition.x, (DemonFloat)resetPosition.y);
+        _playerMovement.Physics.SetPositionWithRender(new DemonVector2((DemonFloat)GameSimulation._players[index].position.x, (DemonFloat)GameSimulation._players[index].position.y));
         transform.rotation = Quaternion.identity;
         _effectsParent.gameObject.SetActive(true);
         SetHurtbox(true);
-        AssistGauge = (DemonicsFloat)1;
+        AssistGauge = (DemonFloat)1;
         transform.SetParent(null);
         if (!GameplayManager.Instance.InfiniteArcana)
         {
-            ArcanaGauge = (DemonicsFloat)0;
+            ArcanaGauge = (DemonFloat)0;
         }
         StopAllCoroutines();
         StopComboTimer();
