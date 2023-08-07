@@ -7,13 +7,9 @@ public class GrabbedState : State
         if (!player.enter)
         {
             if (player.otherPlayer.state == "Arcana")
-            {
                 EnterState(player.otherPlayer, "ArcanaEnd");
-            }
             else
-            {
                 EnterState(player.otherPlayer, "Throw");
-            }
             player.animation = "HurtAir";
             player.enter = true;
             player.animationFrames = 0;

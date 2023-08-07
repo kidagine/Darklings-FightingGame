@@ -10,6 +10,7 @@ public class PlayersMenu : BaseMenu
     [SerializeField] private GameObject _cpuTextLeft = default;
     [SerializeField] private BaseMenu _versusMenu = default;
     [SerializeField] private BaseMenu _practiceMenu = default;
+    [SerializeField] private BaseMenu[] _childMenues = default;
     private Audio _audio;
     private readonly float _left = -375.0f;
     private readonly float _right = 375.0f;

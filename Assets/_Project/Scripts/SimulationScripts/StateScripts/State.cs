@@ -345,9 +345,7 @@ public class State
     protected bool IsColliding(PlayerNetwork player)
     {
         if (player.invincible && player.health <= 0)
-        {
             return false;
-        }
         if (player.otherPlayer.shadow.projectile.active)
         {
             if (DemonicsCollider.Colliding(player.otherPlayer.shadow.projectile.hitbox, player.hurtbox) && !player.otherPlayer.shadow.projectile.hitbox.enter)

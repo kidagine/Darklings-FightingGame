@@ -88,23 +88,18 @@ public class AirParentState : State
     }
     protected void ToHurtState(PlayerNetwork player)
     {
-        if (IsColliding(player))
+        if (player.attackHurtNetwork.attackType != AttackTypeEnum.Throw)
         {
-            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
-                return;
-            if (IsBlocking(player))
+            if (IsColliding(player))
             {
-                EnterState(player, "BlockAir");
-            }
-            else
-            {
-                if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.moveName == "Shadowbreak" || player.attackHurtNetwork.softKnockdown && player.position.y > DemonicsPhysics.GROUND_POINT)
-                {
-                    EnterState(player, "Airborne");
-                }
+                if (IsBlocking(player))
+                    EnterState(player, "BlockAir");
                 else
                 {
-                    EnterState(player, "HurtAir");
+                    if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.moveName == "Shadowbreak" || player.attackHurtNetwork.softKnockdown && player.position.y > DemonicsPhysics.GROUND_POINT)
+                        EnterState(player, "Airborne");
+                    else
+                        EnterState(player, "HurtAir");
                 }
             }
         }

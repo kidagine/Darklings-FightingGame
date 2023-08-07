@@ -25,9 +25,7 @@ public class IdleState : GroundParentState
     private void ToCrouchState(PlayerNetwork player)
     {
         if (player.direction.y < 0)
-        {
             EnterState(player, "Crouch");
-        }
     }
     private void ToJumpState(PlayerNetwork player)
     {
@@ -48,9 +46,7 @@ public class IdleState : GroundParentState
     private void ToWalkState(PlayerNetwork player)
     {
         if (player.direction.x != 0)
-        {
             EnterState(player, "Walk");
-        }
     }
     private void ToDashState(PlayerNetwork player)
     {

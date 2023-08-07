@@ -31,22 +31,19 @@ public class PreJumpState : GroundParentState
     }
     private void ToHurtState(PlayerNetwork player)
     {
-        if (IsColliding(player))
+        if (player.attackHurtNetwork.attackType != AttackTypeEnum.Throw)
         {
-            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            if (IsColliding(player))
             {
-                EnterState(player, "Knockback");
-                return;
-            }
-            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
-                return;
-            if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown && player.position.y > DemonicsPhysics.GROUND_POINT)
-            {
-                EnterState(player, "Airborne");
-            }
-            else
-            {
-                EnterState(player, "HurtAir");
+                if (player.attackHurtNetwork.moveName == "Shadowbreak")
+                {
+                    EnterState(player, "Knockback");
+                    return;
+                }
+                if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown && player.position.y > DemonicsPhysics.GROUND_POINT)
+                    EnterState(player, "Airborne");
+                else
+                    EnterState(player, "HurtAir");
             }
         }
     }

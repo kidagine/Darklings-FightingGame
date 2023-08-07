@@ -2,16 +2,13 @@ using UnityEngine;
 
 public class ThrowState : State
 {
-    private static bool _k;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
         {
             SetTopPriority(player);
             if (player.direction.x < 0 && player.flip == 1 || player.direction.x > 0 && player.flip == -1)
-            {
                 player.flip *= -1;
-            }
             player.enter = true;
             player.animationFrames = 0;
             player.animation = "Throw";
@@ -49,13 +46,9 @@ public class ThrowState : State
             {
                 player.otherPlayer.player.StartShakeContact();
                 if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.flip == 1)
-                {
                     player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT - player.pushbox.size.x, player.position.y);
-                }
                 else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.flip == -1)
-                {
                     player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT + player.pushbox.size.x, player.position.y);
-                }
                 ThrowEnd(player.otherPlayer);
                 CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
                 player.sound = "Impact1";
