@@ -28,6 +28,7 @@ public class OnlineSetupMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _hpText = default;
     [SerializeField] private TextMeshProUGUI _arcanaText = default;
     [SerializeField] private TextMeshProUGUI _speedText = default;
+    [SerializeField] private HomeMenu _homeMenu = default;
     [Header("Stage")]
     [SerializeField] private Image _stageShowcaseImage = default;
     [SerializeField] private GameObject _selectorTextPrefab = default;
@@ -43,6 +44,7 @@ public class OnlineSetupMenu : BaseMenu
     {
         DemonicsSaver.Save("playerName", demonName);
         DemonData.demonName = demonName;
+        _homeMenu.SetCharacter(DemonData.character, DemonData.color, DemonData.demonName);
     }
 
     public void SetAssist(int assist)
@@ -54,6 +56,7 @@ public class OnlineSetupMenu : BaseMenu
     {
         _playerUIRender.SetSpriteLibraryAsset(color);
         DemonData.color = color;
+        _homeMenu.SetCharacter(DemonData.character, DemonData.color, DemonData.demonName);
     }
 
     public override void Show()
@@ -212,6 +215,7 @@ public class OnlineSetupMenu : BaseMenu
     public void SetCharacter(int index)
     {
         DemonData.character = index;
+        _homeMenu.SetCharacter(DemonData.character, DemonData.color, DemonData.demonName);
     }
 }
 
