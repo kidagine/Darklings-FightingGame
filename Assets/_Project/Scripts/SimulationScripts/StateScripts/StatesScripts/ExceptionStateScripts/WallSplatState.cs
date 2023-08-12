@@ -9,8 +9,7 @@ public class WallSplatState : State
         {
             player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
             CameraShake.Instance.Zoom(-4, 0.2f);
-            if (player.CurrentState != this)
-                player.comboLocked = true;
+            player.comboLocked = true;
             player.wasWallSplatted = true;
             DemonVector2 effectPosition = new DemonVector2(player.position.x + ((DemonFloat)2.25 * player.flip), player.position.y);
             if (player.flip == 1)

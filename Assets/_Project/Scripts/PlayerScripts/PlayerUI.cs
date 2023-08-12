@@ -245,18 +245,12 @@ public class PlayerUI : MonoBehaviour
 
     public void SetAssist(int value)
     {
-        if (value >= 2000)
-        {
+        if (value >= GameSimulation.maxShadowGauge)
             _assistBorder.sprite = _assistFull;
-        }
-        else if (value >= 1000)
-        {
+        else if (value >= GameSimulation.maxShadowGauge / 2)
             _assistBorder.sprite = _assistHalf;
-        }
         else
-        {
             _assistBorder.sprite = _assistEmpty;
-        }
         _assistSlider.value = value;
     }
 
@@ -399,7 +393,6 @@ public class PlayerUI : MonoBehaviour
 
     public void SetComboTimer(DemonFloat value, Color color)
     {
-        _hitsNumberText.color = color;
         _comboTimerImage.color = color;
         _comboTimerSlider.value = (float)value;
     }
@@ -410,10 +403,7 @@ public class PlayerUI : MonoBehaviour
         _comboTimerSlider.transform.GetChild(1).gameObject.SetActive(state);
     }
 
-    public void SetComboTimerLock(bool state)
-    {
-        _comboTimerLock.gameObject.SetActive(state);
-    }
+    public void SetComboTimerLock(bool state) => _comboTimerLock.gameObject.SetActive(state);
 
     public void ResetLives()
     {
