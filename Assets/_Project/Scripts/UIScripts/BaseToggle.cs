@@ -7,7 +7,6 @@ public class BaseToggle : BaseButton
     [SerializeField] private BaseTogglesGroup _baseTogglesGroup = default;
     [SerializeField] private bool _selectOnStart = default;
     [SerializeField] private BaseMenu[] _childMenues = default;
-    private Button _button;
     protected override void Awake()
     {
         base.Awake();
@@ -15,7 +14,6 @@ public class BaseToggle : BaseButton
         _resetToDefault = false;
         if (_selectOnStart)
         {
-            _button = GetComponent<Button>();
             _button.onClick?.Invoke();
             _isPressed = true;
             _animator.SetBool("IsPress", true);
