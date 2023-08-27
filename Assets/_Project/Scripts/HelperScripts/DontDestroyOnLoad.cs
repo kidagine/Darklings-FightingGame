@@ -14,7 +14,7 @@ namespace Demonics.Utility
             }
             else
             {
-                this.transform.parent = null;
+                this.transform.SetParent(null);
                 instance = this;
             }
             DontDestroyOnLoad(this.gameObject);

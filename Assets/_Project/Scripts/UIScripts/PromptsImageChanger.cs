@@ -7,8 +7,8 @@ public class PromptsImageChanger : MonoBehaviour
     [SerializeField] private InputActionReference _actionReference = default;
     [SerializeField] private DeviceConfigurator _deviceConfigurator = default;
     [SerializeField] private InputManager _inputManager = default;
+    [SerializeField] private Image _image = default;
     private PlayerInput _playerInput;
-    private Image _image;
 
 
     private void SetCorrectPromptSprite()
@@ -22,23 +22,13 @@ public class PromptsImageChanger : MonoBehaviour
     void Awake()
     {
         _playerInput = _inputManager.GetComponent<PlayerInput>();
-        _image = transform.GetChild(1).GetComponent<Image>();
     }
 
     void OnEnable()
     {
-        if (_inputManager != null)
-        {
-            _inputManager.OnInputChange.AddListener(SetCorrectPromptSprite);
-        }
+        _inputManager?.OnInputChange.AddListener(SetCorrectPromptSprite);
         SetCorrectPromptSprite();
     }
 
-    void OnDisable()
-    {
-        if (_inputManager != null)
-        {
-            _inputManager.OnInputChange.RemoveListener(SetCorrectPromptSprite);
-        }
-    }
+    void OnDisable() => _inputManager?.OnInputChange.RemoveListener(SetCorrectPromptSprite);
 }

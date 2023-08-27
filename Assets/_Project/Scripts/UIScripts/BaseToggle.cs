@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class BaseToggle : BaseButton
 {
-    [SerializeField] private BaseTogglesGroup _baseTogglesGroup = default;
-    [SerializeField] private bool _selectOnStart = default;
+    [SerializeField] protected BaseTogglesGroup _baseTogglesGroup = default;
+    [SerializeField] protected bool _selectOnStart = default;
     [SerializeField] private BaseMenu[] _childMenues = default;
     protected override void Awake()
     {
@@ -20,7 +20,7 @@ public class BaseToggle : BaseButton
         }
     }
 
-    public void ResetToggle()
+    public virtual void ResetToggle()
     {
         for (int i = 0; i < _childMenues.Length; i++)
             _childMenues[i].Hide();
@@ -35,6 +35,19 @@ public class BaseToggle : BaseButton
         _isPressed = true;
         _baseTogglesGroup.CheckToggles();
         base.OnPointerDown(eventData);
+    }
+
+    public override void OnSelect(BaseEventData eventData)
+    {
+        //_baseTogglesGroup.CheckToggles();
+        _audio.Sound("Pressed").Play();
+        _animator.SetBool("IsHover", true);
+    }
+    public override void OnDeselect(BaseEventData eventData)
+    {
+        _isPressed = false;
+        _animator.SetBool("IsHover", false);
+        _animator.SetBool("IsPress", false);
     }
 
     private void OnEnable()

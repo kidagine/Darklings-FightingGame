@@ -201,7 +201,6 @@ public class GameplayManager : MonoBehaviour
 
     public void InitializePlayers(GameObject playerOneObject, GameObject playerTwoObject)
     {
-        _fadeHandler.StartFadeTransition(true);
         playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];
         playerTwoObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerTwo];
         Time.timeScale = GameplayManager.Instance.GameSpeed;
@@ -392,7 +391,6 @@ public class GameplayManager : MonoBehaviour
 
     public void SetupGame()
     {
-        _fadeHandler.StartFadeTransition(false);
         GameSimulation._players[0].player = GameplayManager.Instance.PlayerOne;
         GameSimulation._players[1].player = GameplayManager.Instance.PlayerTwo;
         _uiInput.gameObject.SetActive(true);

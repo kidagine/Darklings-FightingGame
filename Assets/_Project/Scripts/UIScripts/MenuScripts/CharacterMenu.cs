@@ -11,7 +11,6 @@ using UnityEngine.UI;
 public class CharacterMenu : BaseMenu
 {
     [SerializeField] private PlayerInput _playerInput = default;
-    [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] private GameObject _rebindOnePrompt = default;
     [SerializeField] private GameObject _assistOne = default;
     [SerializeField] private GameObject _assistTwo = default;
@@ -173,20 +172,15 @@ public class CharacterMenu : BaseMenu
             SceneSettings.IsOnline = false;
             SceneSettings.SceneSettingsDecide = true;
             if (SceneSettings.RandomStage)
-            {
                 SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
-            }
-            _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(1));
-            _fadeHandler.StartFadeTransition(true);
+            SceneManager.LoadScene(1);
         }
     }
 
     public void GoBack(BaseMenu otherMenu)
     {
         if (_changeStageMenu.IsOpen)
-        {
             _changeStageMenu.ChangeStageClose();
-        }
         else
         {
             if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
@@ -206,7 +200,6 @@ public class CharacterMenu : BaseMenu
     public void OpenRebind()
     {
         if (UsedController())
-        {
             if (!_changeStageMenu.IsOpen)
             {
                 if (!FirstCharacterSelected && SceneSettings.ControllerOne != null)
@@ -221,20 +214,15 @@ public class CharacterMenu : BaseMenu
                 }
                 _currentEventSystem.sendNavigationEvents = true;
             }
-        }
     }
 
     private bool UsedController()
     {
         InputDevice device;
         if (!FirstCharacterSelected)
-        {
             device = SceneSettings.ControllerOne;
-        }
         else
-        {
             device = SceneSettings.ControllerTwo;
-        }
         if (device == _playerInput.devices[0])
         {
             _rebindOnePrompt.SetActive(true);
@@ -250,9 +238,7 @@ public class CharacterMenu : BaseMenu
         if (!SceneSettings.SceneSettingsDecide)
         {
             if (_tauntCoroutine != null)
-            {
                 StopCoroutine(_tauntCoroutine);
-            }
             _iconsOne.gameObject.SetActive(false);
             _iconsTwo.gameObject.SetActive(false);
             _currentEventSystem.SetSelectedGameObject(null);
@@ -269,6 +255,5 @@ public class CharacterMenu : BaseMenu
             _assistOneUIRenderer.gameObject.SetActive(false);
             _assistTwoUIRenderer.gameObject.SetActive(false);
         }
-        _fadeHandler.onFadeEnd.RemoveAllListeners();
     }
 }

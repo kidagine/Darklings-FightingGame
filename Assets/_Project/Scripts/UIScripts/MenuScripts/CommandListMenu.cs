@@ -32,7 +32,6 @@ public class CommandListMenu : BaseMenu
     [SerializeField] private GameObject _videoMenu = default;
     [SerializeField] private GameObject _framedataMenu = default;
     private int _currentPage;
-    private readonly string _baseUrl = "https://kidagine.github.io/Darklings-CommandListVideos/";
     private Player _playerOne;
     private Player _playerTwo;
     private Player _currentlyDisplayedPlayer;

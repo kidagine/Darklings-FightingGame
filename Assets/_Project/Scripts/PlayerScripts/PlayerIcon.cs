@@ -8,6 +8,7 @@ public class PlayerIcon : MonoBehaviour
     [SerializeField] private PlayersMenu _playersMenu = default;
     [SerializeField] private PlayerInput _playerInput = default;
     [SerializeField] private TextMeshProUGUI _controllerText = default;
+    [SerializeField] private TopBarMenu _hotBar = default;
     private RectTransform _rectTransform;
     private Audio _audio;
     private readonly float _left = -375.0f;
@@ -47,6 +48,8 @@ public class PlayerIcon : MonoBehaviour
 
     public void Movement(CallbackContext callbackContext)
     {
+        if (_hotBar.Active)
+            return;
         if (gameObject.activeInHierarchy)
         {
             float movement = callbackContext.ReadValue<Vector2>().x;

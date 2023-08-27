@@ -8,7 +8,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Audio))]
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(Animator))]
-public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] public UnityEvent _onClickedAnimationEnd = default;
     [SerializeField] public UnityEvent _onSelected = default;
@@ -40,7 +40,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
         _defaultPosition = _rect.anchoredPosition;
     }
 
-    public void OnSelect(BaseEventData eventData)
+    public virtual void OnSelect(BaseEventData eventData)
     {
         _onSelected?.Invoke();
         if (!_isIgnoringFirstSelectSound)
@@ -63,7 +63,6 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
     {
         if (_isPressed)
             return;
-        _animator.SetBool("IsHover", false);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
@@ -111,13 +110,13 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
         }
     }
 
-    public void Activate()
+    public virtual void Activate()
     {
         _button.enabled = true;
         _animator.SetBool("IsDeactivated", false);
     }
 
-    public void Deactivate()
+    public virtual void Deactivate()
     {
         _button.enabled = false;
         _animator.SetBool("IsDeactivated", true);
@@ -178,5 +177,9 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
         }
         _rect.anchoredPosition = endPosition;
         yield return null;
+    }
+
+    public virtual void OnDeselect(BaseEventData eventData)
+    {
     }
 }

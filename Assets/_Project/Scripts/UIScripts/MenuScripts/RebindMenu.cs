@@ -86,9 +86,7 @@ public class RebindMenu : BaseMenu
         Hide();
         _backgroundDarken.SetActive(false);
         if (!_characterAssistSelector.gameObject.activeSelf && !_characterColorSelector.gameObject.activeSelf)
-        {
             _firstCharacterButton.Select();
-        }
         _inputManager.CurrentPrompts = PreviousPromptsInput;
     }
 

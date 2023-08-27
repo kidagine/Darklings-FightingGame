@@ -27,52 +27,34 @@ public class PlayersMenu : BaseMenu
     private void UpdateVisiblePlayers(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
     {
         for (int i = 0; i < _playerIcons.Length; i++)
-        {
             _playerIcons[i].GetComponent<PlayerIcon>().SetController();
-        }
     }
 
     public void UpdateLeftRightCpu()
     {
         if (IsOnRight())
-        {
             _cpuTextRight.SetActive(false);
-        }
         else
-        {
             _cpuTextRight.SetActive(true);
-        }
         if (IsOnLeft())
-        {
             _cpuTextLeft.SetActive(false);
-        }
         else
-        {
             _cpuTextLeft.SetActive(true);
-        }
     }
 
     public bool IsOnRight()
     {
         for (int i = 0; i < _playerIcons.Length; i++)
-        {
             if (_playerIcons[i].anchoredPosition.x == _right)
-            {
                 return true;
-            }
-        }
         return false;
     }
 
     public bool IsOnLeft()
     {
         for (int i = 0; i < _playerIcons.Length; i++)
-        {
             if (_playerIcons[i].anchoredPosition.x == _left)
-            {
                 return true;
-            }
-        }
         return false;
     }
 
@@ -132,24 +114,16 @@ public class PlayersMenu : BaseMenu
     public bool ArePlayerIconsLeft()
     {
         for (int i = 0; i < _playerIcons.Length; i++)
-        {
             if (_playerIcons[i].anchoredPosition.x != _left)
-            {
                 return false;
-            }
-        }
         return true;
     }
 
     public bool ArePlayerIconsRight()
     {
         for (int i = 0; i < _playerIcons.Length; i++)
-        {
             if (_playerIcons[i].anchoredPosition.x != _right)
-            {
                 return false;
-            }
-        }
         return true;
     }
 
@@ -178,12 +152,8 @@ public class PlayersMenu : BaseMenu
     public void Back()
     {
         if (SceneSettings.IsTrainingMode)
-        {
             OpenMenuHideCurrent(_practiceMenu);
-        }
         else
-        {
             OpenMenuHideCurrent(_versusMenu);
-        }
     }
 }

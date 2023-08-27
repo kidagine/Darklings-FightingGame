@@ -4,29 +4,22 @@ using UnityEngine;
 public class PatchNotesMenu : BaseMenu
 {
     [SerializeField] private InputManager _inputManager = default;
-    [SerializeField] private BaseMenu[] _menues = default;
-    [SerializeField] private PromptsInput[] _prompts = default;
+    [SerializeField] private PromptsInput _homePrompts = default;
     [SerializeField] private RectTransform _scrollView = default;
     [SerializeField] private RectTransform _patchNotes = default;
     private readonly int _scrollSpeed = 350;
-    private int _previousMenuIndex = 0;
     private float bottomScrollLimit = 0.0f;
+    private int _previousMenuIndex = 0;
 
     public void Back()
     {
-        _inputManager.CurrentPrompts = _prompts[_previousMenuIndex];
-        OpenMenuHideCurrent(_menues[_previousMenuIndex]);
+        _inputManager.CurrentPrompts = _homePrompts;
+        Hide();
     }
 
-    public void SetPreviousMenuIndex(int index)
-    {
-        _previousMenuIndex = index;
-    }
+    public void SetPreviousMenuIndex(int index) => _previousMenuIndex = index;
 
-    void Update()
-    {
-        Scroll();
-    }
+    void Update() => Scroll();
 
     private void Scroll()
     {
@@ -45,15 +38,9 @@ public class PatchNotesMenu : BaseMenu
         }
     }
 
-    void OnEnable()
-    {
-        _scrollView.anchoredPosition = Vector2.zero;
-    }
+    void OnEnable() => _scrollView.anchoredPosition = Vector2.zero;
 
-    void Start()
-    {
-        StartCoroutine(SetUpPatchNotesCoroutine());
-    }
+    void Start() => StartCoroutine(SetUpPatchNotesCoroutine());
 
     IEnumerator SetUpPatchNotesCoroutine()
     {
