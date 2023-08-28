@@ -10,6 +10,7 @@ public class PlayersMenu : BaseMenu
     [SerializeField] private GameObject _cpuTextLeft = default;
     [SerializeField] private BaseMenu _versusMenu = default;
     [SerializeField] private BaseMenu _practiceMenu = default;
+    [SerializeField] private PromptsInput _prompts = default;
     [SerializeField] private BaseMenu[] _childMenues = default;
     private Audio _audio;
     private readonly float _left = -375.0f;
@@ -145,6 +146,7 @@ public class PlayersMenu : BaseMenu
 
     private void OnEnable()
     {
+        _prompts.gameObject.SetActive(true);
         InputSystem.onDeviceChange += UpdateVisiblePlayers;
         UpdateVisiblePlayers(null, default);
     }

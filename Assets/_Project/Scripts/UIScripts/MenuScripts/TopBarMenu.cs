@@ -17,6 +17,7 @@ public class TopBarMenu : MonoBehaviour
     [SerializeField] private GameObject _backgroundImage = default;
     [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private Animator _animator;
+    [SerializeField] private Canvas _canvas;
     private AudioSource _mainMenuAudio;
     private GameObject _previousSelectable;
     private bool _test;
@@ -54,6 +55,7 @@ public class TopBarMenu : MonoBehaviour
 
     public void HideHotBar(GameObject hotBarToggle)
     {
+        _canvas.sortingOrder = 0;
         _backgroundImage.SetActive(false);
         _previousSelectable = hotBarToggle;
         _animator.SetBool("Appear", false);
@@ -62,6 +64,7 @@ public class TopBarMenu : MonoBehaviour
 
     public void ShowHotBar()
     {
+        _canvas.sortingOrder = 1;
         _inputManager.CurrentPrompts = null;
         _backgroundImage.SetActive(true);
         _animator.SetBool("Appear", true);

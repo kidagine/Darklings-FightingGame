@@ -41,4 +41,23 @@ public class HotBarToggle : BaseToggle
         base.ResetToggle();
         _activationBar.SetActive(false);
     }
+
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        if (_isPressed)
+            return;
+        _animator.SetBool("IsHover", true);
+        _audio.Sound("Selected").Play();
+        Cursor.SetCursor(MouseSetup.Instance.HoverCursor, Vector2.zero, CursorMode.Auto);
+        _button.Select();
+    }
+
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        if (_isPressed)
+            return;
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
 }
