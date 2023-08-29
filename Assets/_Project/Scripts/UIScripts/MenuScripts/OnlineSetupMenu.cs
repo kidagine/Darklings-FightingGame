@@ -201,7 +201,7 @@ public class OnlineSetupMenu : BaseMenu
         _nameChangeInputField.text = _nameInputField.text;
         _nameChangeGroup.SetActive(true);
         _nameChangeInputField.Select();
-        _inputManager.CurrentPrompts = _namePrompts;
+        _inputManager.SetPrompts(_namePrompts);
     }
 
     public void CloseChangeName()
@@ -209,7 +209,7 @@ public class OnlineSetupMenu : BaseMenu
         _nameInputField.text = _nameChangeInputField.text;
         _nameChangeGroup.SetActive(false);
         _characterSelectable.Select();
-        _inputManager.CurrentPrompts = _characterPrompts;
+        _inputManager.SetPrompts(_characterPrompts);
     }
 
     public void SetCharacter(int index)

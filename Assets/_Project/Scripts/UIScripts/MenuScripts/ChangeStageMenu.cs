@@ -95,7 +95,7 @@ public class ChangeStageMenu : MonoBehaviour
             {
                 _currentEventSystem.sendNavigationEvents = false;
             }
-            _inputManager.CurrentPrompts = PreviousPromptsInput;
+            _inputManager.SetPrompts(PreviousPromptsInput);
             IsOpen = false;
         }
     }

@@ -9,12 +9,19 @@ public class InputManager : MonoBehaviour
     [SerializeField] private PlayerInput _playerInput;
 
     public PromptsInput CurrentPrompts;
+    public PromptsInput PreviousPrompts;
     public Vector2 NavigationInput { get; private set; }
     public string InputScheme { get { return _playerInput.devices[0].displayName; } set { } }
     public PlayerInput PlayerInput { get { return _playerInput; } private set { } }
 
     public void InputChange(PlayerInput playerInput) => OnInputChange?.Invoke();
     public void Navigation(CallbackContext callbackContext) => NavigationInput = callbackContext.ReadValue<Vector2>();
+
+    public void SetPrompts(PromptsInput prompts)
+    {
+        PreviousPrompts = CurrentPrompts;
+        CurrentPrompts = prompts;
+    }
 
     public void Confirm(CallbackContext callbackContext)
     {
@@ -70,4 +77,9 @@ public class InputManager : MonoBehaviour
             CurrentPrompts?.OnRightPage?.Invoke();
     }
 
+    public void Options(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+            CurrentPrompts?.OnOptions?.Invoke();
+    }
 }

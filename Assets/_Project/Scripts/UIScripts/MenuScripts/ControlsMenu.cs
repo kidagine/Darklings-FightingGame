@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ControlsMenu : BaseMenu
 {
+    [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private GameObject[] _controlSchemes = default;
     private Audio _audio;
     private int _currentControlSchemeIndex;
@@ -25,5 +27,11 @@ public class ControlsMenu : BaseMenu
             _controlSchemes[i].SetActive(false);
         }
         _controlSchemes[_currentControlSchemeIndex].SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        _inputManager.SetPrompts(_inputManager.PreviousPrompts);
+        EventSystem.current.SetSelectedGameObject(HotBarToggle.PreviousSelected.gameObject);
     }
 }

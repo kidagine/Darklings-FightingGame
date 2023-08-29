@@ -8,6 +8,7 @@ public class HotBarToggle : BaseToggle
     [SerializeField] private GameObject _activationBar;
     [SerializeField] private TextMeshProUGUI _explanationText;
     [SerializeField] private string _explanation;
+    public static HotBarToggle PreviousSelected;
 
     protected override void Awake()
     {
@@ -23,6 +24,7 @@ public class HotBarToggle : BaseToggle
 
     public override void OnSelect(BaseEventData eventData)
     {
+        PreviousSelected = this;
         _explanationText.text = _explanation;
         base.OnSelect(eventData);
     }

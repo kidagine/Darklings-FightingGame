@@ -78,14 +78,14 @@ public class OnlineClientMenu : BaseMenu
         _lobbyIdChangeInputField.text = _lobbyIdInputField.text;
         _idChangeGroup.SetActive(true);
         _lobbyIdChangeInputField.Select();
-        _inputManager.CurrentPrompts = _idPrompts;
+        _inputManager.SetPrompts(_idPrompts);
     }
 
     public void CloseChangeId()
     {
         _lobbyIdInputField.text = _lobbyIdChangeInputField.text;
         _idChangeGroup.SetActive(false);
-        _inputManager.CurrentPrompts = _searchPrompts;
+        _inputManager.SetPrompts(_searchPrompts);
         StartCoroutine(SelectOption());
     }
 

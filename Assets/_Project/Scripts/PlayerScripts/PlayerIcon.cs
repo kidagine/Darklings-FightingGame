@@ -32,18 +32,12 @@ public class PlayerIcon : MonoBehaviour
         if (_playerInput.devices.Count > 0)
         {
             if (_playerInput.devices[0].displayName == "Keyboard")
-            {
                 _controllerText.text = "Keyboard";
-            }
             else
-            {
                 _controllerText.text = "Controller";
-            }
         }
         else
-        {
             gameObject.SetActive(false);
-        }
     }
 
     public void Movement(CallbackContext callbackContext)
@@ -68,9 +62,7 @@ public class PlayerIcon : MonoBehaviour
                         else if (!_playersMenu.IsOnRight())
                         {
                             _audio.Sound("Selected").Play();
-                            transform.GetChild(1).gameObject.SetActive(false);
-                            _playersMenu.CpuTextRight.SetActive(false);
-                            _rectTransform.anchoredPosition = new Vector2(_right, 190.0f);
+                            MoveRight();
                         }
                     }
                     else if (movement < 0.0f)
@@ -83,19 +75,29 @@ public class PlayerIcon : MonoBehaviour
                         else if (!_playersMenu.IsOnLeft())
                         {
                             _audio.Sound("Selected").Play();
-                            transform.GetChild(0).gameObject.SetActive(false);
-                            _playersMenu.CpuTextLeft.SetActive(false);
-                            _rectTransform.anchoredPosition = new Vector2(_left, 190.0f);
+                            MoveLeft();
                         }
                     }
                 }
                 _playersMenu.UpdateLeftRightCpu();
             }
             if (movement == 0.0f)
-            {
                 _isMovenentInUse = false;
-            }
         }
+    }
+
+    public void MoveRight()
+    {
+        transform.GetChild(1).gameObject.SetActive(false);
+        _playersMenu.CpuTextRight.SetActive(false);
+        _rectTransform.anchoredPosition = new Vector2(_right, 190.0f);
+    }
+
+    public void MoveLeft()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
+        _playersMenu.CpuTextLeft.SetActive(false);
+        _rectTransform.anchoredPosition = new Vector2(_left, 190.0f);
     }
 
     public void OpenOtherMenu(CallbackContext callbackContext)

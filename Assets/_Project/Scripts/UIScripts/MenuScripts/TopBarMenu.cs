@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class TopBarMenu : MonoBehaviour
 {
     [SerializeField] private OptionsMenu _optionsMenu = default;
+    [SerializeField] private PromptsInput _hotBarPrompts = default;
     [SerializeField] private ControlsMenu _controlsMenu = default;
     [SerializeField] private Sprite _musicOnSprite = default;
     [SerializeField] private Sprite _musicOffSprite = default;
@@ -65,7 +66,7 @@ public class TopBarMenu : MonoBehaviour
     public void ShowHotBar()
     {
         _canvas.sortingOrder = 1;
-        _inputManager.CurrentPrompts = null;
+        _inputManager.SetPrompts(_hotBarPrompts);
         _backgroundImage.SetActive(true);
         _animator.SetBool("Appear", true);
         _animator.SetBool("Disappear", false);
