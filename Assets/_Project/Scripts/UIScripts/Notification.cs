@@ -16,6 +16,7 @@ public class Notification : MonoBehaviour
     [SerializeField] private Color _reversalColor = Color.yellow;
     [SerializeField] private Color _wallSplatColor = Color.yellow;
     [SerializeField] private Color _throwBreakColor = Color.white;
+    [SerializeField] private Color _lockColor = Color.white;
 
     public void SetNotification(NotificationTypeEnum notificationType)
     {
@@ -50,6 +51,10 @@ public class Notification : MonoBehaviour
             case NotificationTypeEnum.ThrowBreak:
                 _notificationSlide.color = _throwBreakColor;
                 _notificationText.color = _throwBreakColor;
+                break;
+            case NotificationTypeEnum.Lock:
+                _notificationSlide.color = _lockColor;
+                _notificationText.color = _lockColor;
                 break;
             case NotificationTypeEnum.SoftKnockdown:
                 _notificationText.text = "S.Knockdown";

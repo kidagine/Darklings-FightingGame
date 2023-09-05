@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,8 +7,6 @@ public class PlayersMenu : BaseMenu
     [SerializeField] private RectTransform[] _playerIcons = default;
     [SerializeField] private GameObject _cpuTextRight = default;
     [SerializeField] private GameObject _cpuTextLeft = default;
-    [SerializeField] private BaseMenu _versusMenu = default;
-    [SerializeField] private BaseMenu _practiceMenu = default;
     [SerializeField] private PromptsInput _prompts = default;
     [SerializeField] private BaseMenu[] _childMenues = default;
     private Audio _audio;
@@ -149,13 +146,5 @@ public class PlayersMenu : BaseMenu
         _prompts.gameObject.SetActive(true);
         InputSystem.onDeviceChange += UpdateVisiblePlayers;
         UpdateVisiblePlayers(null, default);
-    }
-
-    public void Back()
-    {
-        if (SceneSettings.IsTrainingMode)
-            OpenMenuHideCurrent(_practiceMenu);
-        else
-            OpenMenuHideCurrent(_versusMenu);
     }
 }

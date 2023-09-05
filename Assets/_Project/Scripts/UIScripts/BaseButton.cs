@@ -21,11 +21,11 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     protected Audio _audio;
     protected Button _button;
     protected Animator _animator;
-    private RectTransform _rect;
+    protected RectTransform _rect;
     private bool _isIgnoringFirstSelectSound;
     private bool _wasClicked;
     private Coroutine _moveVerticalCoroutine;
-    private Vector2 _defaultPosition;
+    protected Vector2 _defaultPosition;
     private readonly int _moveVerticalAmount = 5;
     protected bool _resetToDefault = true;
     protected bool _isPressed;
@@ -96,18 +96,14 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     {
         AxisEventData axisEventData = eventData as AxisEventData;
         if (axisEventData.moveDir == MoveDirection.Down)
-        {
             _scrollView.anchoredPosition += new Vector2(0.0f, _scrollDownAmount);
-        }
     }
 
     public void MoveScrollUp(BaseEventData eventData)
     {
         AxisEventData axisEventData = eventData as AxisEventData;
         if (axisEventData.moveDir == MoveDirection.Up)
-        {
             _scrollView.anchoredPosition += new Vector2(0.0f, _scrollUpAmount);
-        }
     }
 
     public virtual void Activate()

@@ -25,9 +25,11 @@ public class State
         player.spriteOrder = 1;
         player.otherPlayer.spriteOrder = 0;
     }
-    public bool IsBlocking(PlayerNetwork player)
+    public bool IsBlocking(PlayerNetwork player, bool ignoreGuardBreak = false)
     {
-        if (player.attackHurtNetwork.guardBreak)
+        if (ignoreGuardBreak && player.attackHurtNetwork.guardBreak)
+            player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.Lock);
+        if (player.attackHurtNetwork.guardBreak && !ignoreGuardBreak)
             return false;
         if (AIBlocking(player, player.attackHurtNetwork.attackType))
             return true;

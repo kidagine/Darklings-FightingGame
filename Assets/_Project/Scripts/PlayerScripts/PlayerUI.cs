@@ -529,9 +529,7 @@ public class PlayerUI : MonoBehaviour
         _notification.gameObject.SetActive(false);
         _notification.gameObject.SetActive(true);
         if (_notificiationCoroutine != null)
-        {
             StopCoroutine(_notificiationCoroutine);
-        }
         _notificiationCoroutine = StartCoroutine(ResetDisplayNotificationCoroutine());
     }
 

@@ -10,7 +10,6 @@ public class BaseToggle : BaseButton
     protected override void Awake()
     {
         base.Awake();
-        _baseTogglesGroup.AddToggle(this);
         _resetToDefault = false;
         if (_selectOnStart)
         {
@@ -49,6 +48,22 @@ public class BaseToggle : BaseButton
         _animator.SetBool("IsHover", false);
         _animator.SetBool("IsPress", false);
     }
+
+    public override void Activate()
+    {
+        _baseTogglesGroup.ActiveToggle = this;
+        _isPressed = true;
+        _baseTogglesGroup.CheckToggles();
+        _audio.Sound("Pressed").Play();
+        _animator.SetBool("IsHover", true);
+        _button.onClick?.Invoke();
+    }
+
+    // public override void Deactivate()
+    // {
+    //     _button.enabled = false;
+    //     _animator.SetBool("IsDeactivated", true);
+    // }
 
     private void OnEnable()
     {

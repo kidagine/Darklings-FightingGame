@@ -1,10 +1,15 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BaseTogglesGroup : MonoBehaviour
 {
-    private List<BaseToggle> _toggles = new();
+    [SerializeField] private BaseToggle _initialActiveToggle = default;
+    [SerializeField] private List<BaseToggle> _toggles = default;
     public BaseToggle ActiveToggle { get; set; }
+    public bool LockPage { get; set; }
+
+    private void Awake() => ActiveToggle = _initialActiveToggle;
 
     public void CheckToggles()
     {
@@ -14,4 +19,24 @@ public class BaseTogglesGroup : MonoBehaviour
     }
 
     public void AddToggle(BaseToggle toggle) => _toggles.Add(toggle);
+
+    public void NextPage()
+    {
+        if (LockPage)
+            return;
+        int index = _toggles.FindIndex(a => a == ActiveToggle) + 1;
+        if (index > _toggles.Count - 1)
+            index = 0;
+        _toggles[index].Activate();
+    }
+
+    public void PreviousPage()
+    {
+        if (LockPage)
+            return;
+        int index = _toggles.FindIndex(a => a == ActiveToggle) - 1;
+        if (index < 0)
+            index = _toggles.Count - 1;
+        _toggles[index].Activate();
+    }
 }

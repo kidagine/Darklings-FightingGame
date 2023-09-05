@@ -102,7 +102,7 @@ public class BlockParentState : State
                 player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
-            if (IsBlocking(player))
+            if (IsBlocking(player, true))
             {
                 if ((DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0)
                 {

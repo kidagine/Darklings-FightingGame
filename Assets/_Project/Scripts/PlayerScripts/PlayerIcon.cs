@@ -88,20 +88,28 @@ public class PlayerIcon : MonoBehaviour
 
     public void MoveRight()
     {
+        if (_hotBar.Active)
+            return;
         transform.GetChild(1).gameObject.SetActive(false);
         _playersMenu.CpuTextRight.SetActive(false);
         _rectTransform.anchoredPosition = new Vector2(_right, 190.0f);
+        _playersMenu.UpdateLeftRightCpu();
     }
 
     public void MoveLeft()
     {
+        if (_hotBar.Active)
+            return;
         transform.GetChild(0).gameObject.SetActive(false);
         _playersMenu.CpuTextLeft.SetActive(false);
         _rectTransform.anchoredPosition = new Vector2(_left, 190.0f);
+        _playersMenu.UpdateLeftRightCpu();
     }
 
     public void OpenOtherMenu(CallbackContext callbackContext)
     {
+        if (_hotBar.Active)
+            return;
         if (gameObject.activeInHierarchy)
         {
             if (callbackContext.performed)
@@ -116,6 +124,8 @@ public class PlayerIcon : MonoBehaviour
 
     public void ConfirmQuickAssign(CallbackContext callbackContext)
     {
+        if (_hotBar.Active)
+            return;
         if (gameObject.activeInHierarchy && !_playersMenu.IsOnLeft())
         {
             if (callbackContext.performed)

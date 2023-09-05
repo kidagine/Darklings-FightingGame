@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class HotBarToggle : BaseToggle
 {
@@ -12,10 +13,14 @@ public class HotBarToggle : BaseToggle
 
     protected override void Awake()
     {
-        base.Awake();
+        _audio = GetComponent<Audio>();
+        _button = GetComponent<Button>();
+        _animator = GetComponent<Animator>();
+        _rect = GetComponent<RectTransform>();
+        _defaultPosition = _rect.anchoredPosition;
+        _baseTogglesGroup.AddToggle(this);
         if (_selectOnStart)
         {
-            _button.onClick?.Invoke();
             _isPressed = true;
             _animator.SetBool("IsHover", true);
             _activationBar.SetActive(true);

@@ -21,19 +21,13 @@ public class PromptsInput : MonoBehaviour
     void OnEnable()
     {
         if (_inputManager != null)
-        {
             _inputManager.SetPrompts(this);
-        }
         else
         {
             if (_pauseMenu != null)
-            {
                 GameplayManager.Instance.PauseMenu.PlayerInput.GetComponent<PlayerController>().CurrentPrompts = GetComponent<PromptsInput>();
-            }
             else
-            {
                 GameplayManager.Instance.PlayerOne.GetComponent<PlayerController>().CurrentPrompts = GetComponent<PromptsInput>();
-            }
         }
     }
 
