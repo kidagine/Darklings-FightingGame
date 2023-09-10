@@ -5,6 +5,7 @@ public class PlayersMenu : BaseMenu
 {
     [SerializeField] private CharacterMenu _characterMenu = default;
     [SerializeField] private RectTransform[] _playerIcons = default;
+    [SerializeField] private RectTransform[] _playerGroups = default;
     [SerializeField] private GameObject _cpuTextRight = default;
     [SerializeField] private GameObject _cpuTextLeft = default;
     [SerializeField] private PromptsInput _prompts = default;
@@ -15,6 +16,7 @@ public class PlayersMenu : BaseMenu
     private readonly float _center = 0.0f;
     public GameObject CpuTextRight { get { return _cpuTextRight; } private set { } }
     public GameObject CpuTextLeft { get { return _cpuTextLeft; } private set { } }
+    public RectTransform[] PlayerGroups { get { return _playerGroups; } set { } }
 
 
     void Awake()

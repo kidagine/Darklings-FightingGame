@@ -9221,7 +9221,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &195322038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10600,7 +10599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -10904,7 +10903,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &238011509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14432,7 +14430,6 @@ MonoBehaviour:
   _scrollDownAmount: 100
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &331162978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14992,7 +14989,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &340226586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16900,7 +16896,6 @@ MonoBehaviour:
   _scrollDownAmount: 100
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &370283204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19122,7 +19117,6 @@ MonoBehaviour:
   _scrollDownAmount: -1400
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &433678999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20214,7 +20208,6 @@ MonoBehaviour:
   _scrollDownAmount: 100
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &446958748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22125,7 +22118,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &498971140 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -23530,7 +23522,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &528785064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28281,7 +28272,6 @@ MonoBehaviour:
   _scrollDownAmount: -1400
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &643352895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29198,7 +29188,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &648355717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29666,11 +29655,11 @@ MonoBehaviour:
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
-  m_PointAction: {fileID: 0}
+  m_PointAction: {fileID: 1054132383583890850, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   m_MoveAction: {fileID: 4875369870055060632, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   m_SubmitAction: {fileID: -8610638692812447094, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   m_CancelAction: {fileID: 8462929126762520957, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
-  m_LeftClickAction: {fileID: 0}
+  m_LeftClickAction: {fileID: 4745456900535354360, guid: e6bf999afe4c67a42868f6c676409c04, type: 3}
   m_MiddleClickAction: {fileID: 0}
   m_RightClickAction: {fileID: 0}
   m_ScrollWheelAction: {fileID: 0}
@@ -29907,6 +29896,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0306d6f2-a2bc-4bdc-8fa1-a7e4b78b925f
     m_ActionName: UI/Click
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ff047904-44a4-4826-ac15-f677187cb418
+    m_ActionName: UI/Options[/Keyboard/p]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
@@ -31417,7 +31410,6 @@ MonoBehaviour:
   _scrollDownAmount: 200
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &697765342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33673,9 +33665,9 @@ RectTransform:
   m_Father: {fileID: 534647981}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -475}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 700, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &750415173
@@ -33692,7 +33684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -40693,7 +40685,6 @@ MonoBehaviour:
   _scrollDownAmount: 200
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &874359824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47793,7 +47784,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1037334573 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -48166,7 +48156,6 @@ MonoBehaviour:
   _scrollDownAmount: 200
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1039164222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50268,7 +50257,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1103024091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51605,7 +51593,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1142198865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56117,7 +56104,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1263741167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57302,7 +57288,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1284895885 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -63040,7 +63025,6 @@ MonoBehaviour:
   _scrollDownAmount: 200
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1416771430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64099,7 +64083,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!1 &1442515868
 GameObject:
   m_ObjectHideFlags: 0
@@ -64260,7 +64243,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1446713971}
   - component: {fileID: 1446713973}
-  - component: {fileID: 1446713972}
   m_Layer: 5
   m_Name: PauseMenuBorder_image
   m_TagString: Untagged
@@ -64289,36 +64271,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 700, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1446713972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446713970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 91a5a934d36f4964e9e9bfeb149cf70b, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 2
 --- !u!222 &1446713973
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -65259,7 +65211,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1474495970 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1474495970, guid: 3129472ef778c844ca6a975934fa6bbe, type: 3}
@@ -67183,7 +67134,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1507760706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68395,7 +68345,6 @@ MonoBehaviour:
   _scrollDownAmount: 200
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1542470754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69130,7 +69079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -70043,7 +69992,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1576503720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72707,7 +72655,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!1 &1626111773
 GameObject:
   m_ObjectHideFlags: 0
@@ -73095,7 +73042,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!1 &1632313049
 GameObject:
   m_ObjectHideFlags: 0
@@ -73464,7 +73410,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1636014908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75675,7 +75620,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!1 &1682405804
 GameObject:
   m_ObjectHideFlags: 0
@@ -77102,7 +77046,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1702887907 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -77850,7 +77793,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1713447189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81042,7 +80984,6 @@ MonoBehaviour:
   _scrollDownAmount: -200
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1758844276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81962,7 +81903,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1779541212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82396,7 +82336,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!1 &1787492347
 GameObject:
   m_ObjectHideFlags: 0
@@ -85354,7 +85293,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!1 &1860459048
 GameObject:
   m_ObjectHideFlags: 0
@@ -85849,7 +85787,6 @@ MonoBehaviour:
   _scrollDownAmount: 200
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1878458738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87403,7 +87340,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!1 &1907392402
 GameObject:
   m_ObjectHideFlags: 0
@@ -90456,7 +90392,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!1 &1972092851
 GameObject:
   m_ObjectHideFlags: 0
@@ -91261,7 +91196,6 @@ MonoBehaviour:
   _scrollDownAmount: 200
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &1998409240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93105,7 +93039,6 @@ MonoBehaviour:
   _scrollDownAmount: 200
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &2040158830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95214,7 +95147,6 @@ MonoBehaviour:
   _scrollDownAmount: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
-  _resetCursorOnClick: 0
 --- !u!114 &2075597782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98751,7 +98683,7 @@ MonoBehaviour:
   _arcanaAnimator: {fileID: 758689716}
   _pauseSlider: {fileID: 1300078400}
   _comboTimerSlider: {fileID: 707372567}
-  _comboTimerImage: {fileID: 1860459051}
+  _comboTimerImage: {fileID: 1954218063}
   _arcanaFill: {fileID: 2113286081}
   _comboTimerLock: {fileID: 1947609902}
   _borderHealth: {fileID: 1749494935}
@@ -99260,7 +99192,7 @@ MonoBehaviour:
   _arcanaAnimator: {fileID: 22157825}
   _pauseSlider: {fileID: 1300078400}
   _comboTimerSlider: {fileID: 1086280880}
-  _comboTimerImage: {fileID: 1004397805}
+  _comboTimerImage: {fileID: 1569440937}
   _arcanaFill: {fileID: 1282009096}
   _comboTimerLock: {fileID: 108831350}
   _borderHealth: {fileID: 2048904581}
