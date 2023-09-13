@@ -17,6 +17,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     [SerializeField] public float _scrollDownAmount = default;
     [SerializeField] private bool _ignoreFirstSelectSound = default;
     [SerializeField] private bool _allowMultiplePresses = default;
+    [SerializeField] private Selectable selectableParent = default;
     protected Audio _audio;
     protected Button _button;
     protected Animator _animator;
@@ -46,6 +47,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         {
         }
         _isIgnoringFirstSelectSound = false;
+
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
@@ -64,6 +66,8 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         _animator.SetBool("IsHover", false);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
+
+    public void SelectParent() => selectableParent?.Select();
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -124,6 +128,11 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     void OnDisable()
     {
+        if (_moveVerticalCoroutine != null)
+        {
+            StopCoroutine(_moveVerticalCoroutine);
+            _rect.anchoredPosition = _defaultPosition;
+        }
         _isPressed = false;
         _wasClicked = false;
         if (_ignoreFirstSelectSound)

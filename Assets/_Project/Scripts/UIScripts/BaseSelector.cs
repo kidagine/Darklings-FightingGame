@@ -32,13 +32,14 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
 
     public void SetValue(int value)
     {
+        if (_values.Length == 0)
+            return;
         if (value < 0)
             value = _values.Length - 1;
         if (value > _values.Length - 1)
             value = 0;
 
         _audio?.Sound("Selected").Play();
-
         Value = value;
         _valueText.text = _values[Value];
         _playerPreferences.SavePreference(gameObject.name.Substring(0, gameObject.name.IndexOf("_")), value);
@@ -84,6 +85,8 @@ public class BaseSelector : MonoBehaviour, ISelectHandler, IDeselectHandler, IPo
         if (axisEventData.moveDir == MoveDirection.Up)
             _scrollView.anchoredPosition += new Vector2(0.0f, _scrollUpAmount);
     }
+
+    public void SetValues(string[] values) => _values = values;
 
     public void NextValue() => SetValue(Value + 1);
 

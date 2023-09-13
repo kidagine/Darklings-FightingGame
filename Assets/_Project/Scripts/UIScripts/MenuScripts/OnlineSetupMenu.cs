@@ -31,9 +31,8 @@ public class OnlineSetupMenu : BaseMenu
     [SerializeField] private HomeMenu _homeMenu = default;
     [Header("Stage")]
     [SerializeField] private Image _stageShowcaseImage = default;
-    [SerializeField] private GameObject _selectorTextPrefab = default;
-    [SerializeField] private Transform _stageSelectorValues = default;
-    [SerializeField] private Transform _musicSelectorValues = default;
+    [SerializeField] private BaseSelector _stageSelector = default;
+    [SerializeField] private BaseSelector _musicSelector = default;
     [SerializeField] private MusicSO _musicSO = default;
     [SerializeField] private StageSO[] _stagesSO = default;
     private StageSO _currentStage;
@@ -91,45 +90,29 @@ public class OnlineSetupMenu : BaseMenu
 
     public void SetStageSelectorValues()
     {
+        List<string> stages = new();
         for (int i = 0; i < _stagesSO.Length; i++)
-        {
-            GameObject selector = Instantiate(_selectorTextPrefab, _stageSelectorValues);
-            TextMeshProUGUI selectorText = selector.GetComponent<TextMeshProUGUI>();
-            selectorText.text = _stagesSO[i].stageName;
-            if (i == 0)
-            {
-                selector.SetActive(true);
-            }
-        }
+            stages.Add(_stagesSO[i].stageName);
+        _stageSelector.SetValues(stages.ToArray());
     }
+
     public void SetMusicSelectorValues()
     {
+        List<string> music = new();
         for (int i = 0; i < _musicSO.songs.Length; i++)
-        {
-            GameObject selector = Instantiate(_selectorTextPrefab, _musicSelectorValues);
-            TextMeshProUGUI selectorText = selector.GetComponent<TextMeshProUGUI>();
-            selectorText.text = _musicSO.songs[i].ToString();
-            if (i == 0)
-            {
-                selector.SetActive(true);
-            }
-        }
+            music.Add(_musicSO.songs[i].ToString());
+        _musicSelector.SetValues(music.ToArray());
     }
+
     public void SetStage(int index)
     {
         _currentStage = _stagesSO[index];
         if (SceneSettings.Bit1)
-        {
             _stageShowcaseImage.sprite = _stagesSO[index].bit1Stage;
-        }
         else
-        {
             _stageShowcaseImage.sprite = _stagesSO[index].colorStage;
-        }
         if (index == 0)
-        {
             SceneSettings.OnlineStageRandom = true;
-        }
         else
         {
             SceneSettings.OnlineStageRandom = false;
@@ -170,28 +153,13 @@ public class OnlineSetupMenu : BaseMenu
 
     private void SetColorValues(PlayerStatsSO playerStats)
     {
-        // foreach (Transform child in _colorsValues.transform)
-        // {
-        //     Destroy(child.gameObject);
-        // }
-        // for (int i = 0; i < playerStats._animation.spriteAtlas.Length; i++)
-        // {
-        //     GameObject selector = Instantiate(_selectorTextPrefab, _colorsValues.transform);
-        //     TextMeshProUGUI selectorText = selector.GetComponent<TextMeshProUGUI>();
-        //     selectorText.text = (i + 1).ToString();
-        //     if (i == DemonData.assist)
-        //     {
-        //         selector.SetActive(true);
-        //     }
-        // }
+
     }
 
     public void SelectCharacterImage(PlayerStatsSO playerStats)
     {
         for (int i = 0; i < _characterSelectables.Length; i++)
-        {
             _characterSelectables[i].Deactivate();
-        }
         DemonicsSaver.Save("character", playerStats.characterIndex.ToString());
         SetCharacter(playerStats.characterIndex);
     }

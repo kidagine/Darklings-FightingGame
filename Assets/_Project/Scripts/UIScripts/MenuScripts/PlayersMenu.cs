@@ -30,17 +30,6 @@ public class PlayersMenu : BaseMenu
             _playerIcons[i].GetComponent<PlayerIcon>().SetController();
     }
 
-    public void UpdateLeftRightCpu()
-    {
-        if (IsOnRight())
-            _cpuTextRight.SetActive(false);
-        else
-            _cpuTextRight.SetActive(true);
-        if (IsOnLeft())
-            _cpuTextLeft.SetActive(false);
-        else
-            _cpuTextLeft.SetActive(true);
-    }
 
     public bool IsOnRight()
     {
@@ -63,44 +52,40 @@ public class PlayersMenu : BaseMenu
         if (_playerIcons[0].anchoredPosition.x != _center || _playerIcons[1].anchoredPosition.x != _center || _playerIcons[2].anchoredPosition.x != _center)
         {
             _audio.Sound("Pressed").Play();
-            if (_playerIcons[0].anchoredPosition.x == _right)
+            if (_playerIcons[0].parent == _playerGroups[2])
             {
                 SceneSettings.ControllerTwoScheme = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
                 SceneSettings.ControllerTwo = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
             }
-            else if (_playerIcons[1].anchoredPosition.x == _right)
+            else if (_playerIcons[1].parent == _playerGroups[2])
             {
                 SceneSettings.ControllerTwoScheme = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
                 SceneSettings.ControllerTwo = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.devices[0];
             }
-            else if (_playerIcons[2].anchoredPosition.x == _right)
+            else if (_playerIcons[2].parent == _playerGroups[2])
             {
                 SceneSettings.ControllerTwoScheme = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
                 SceneSettings.ControllerTwo = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.devices[0];
             }
             else
-            {
                 SceneSettings.ControllerTwo = null;
-            }
-            if (_playerIcons[0].anchoredPosition.x == _left)
+            if (_playerIcons[0].parent == _playerGroups[0])
             {
                 SceneSettings.ControllerOneScheme = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
                 SceneSettings.ControllerOne = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
             }
-            else if (_playerIcons[1].anchoredPosition.x == _left)
+            else if (_playerIcons[1].parent == _playerGroups[0])
             {
                 SceneSettings.ControllerOneScheme = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
                 SceneSettings.ControllerOne = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.devices[0];
             }
-            else if (_playerIcons[2].anchoredPosition.x == _left)
+            else if (_playerIcons[2].parent == _playerGroups[0])
             {
                 SceneSettings.ControllerOneScheme = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
                 SceneSettings.ControllerOne = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.devices[0];
             }
             else
-            {
                 SceneSettings.ControllerOne = null;
-            }
             gameObject.SetActive(false);
             for (int i = 0; i < _playerIcons.Length; i++)
             {

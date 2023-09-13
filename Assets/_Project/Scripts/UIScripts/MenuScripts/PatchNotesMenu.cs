@@ -4,7 +4,6 @@ using UnityEngine;
 public class PatchNotesMenu : BaseMenu
 {
     [SerializeField] private InputManager _inputManager = default;
-    [SerializeField] private PromptsInput _homePrompts = default;
     [SerializeField] private RectTransform _scrollView = default;
     [SerializeField] private RectTransform _patchNotes = default;
     private readonly int _scrollSpeed = 350;

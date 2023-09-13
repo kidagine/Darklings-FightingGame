@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,9 +14,8 @@ public class PlayerIcon : MonoBehaviour
     private Audio _audio;
     private readonly float _left = -375.0f;
     private readonly float _right = 375.0f;
-    private readonly float _center = 0.0f;
+    private GameObject _cpuText;
     private bool _isMovenentInUse;
-    private float _originalPositionY;
     public PlayerInput PlayerInput { get { return _playerInput; } private set { } }
 
 
@@ -23,7 +23,6 @@ public class PlayerIcon : MonoBehaviour
     {
         _audio = GetComponent<Audio>();
         _rectTransform = GetComponent<RectTransform>();
-        _originalPositionY = _rectTransform.anchoredPosition.y;
     }
 
     public void SetController()
@@ -54,7 +53,7 @@ public class PlayerIcon : MonoBehaviour
                     _isMovenentInUse = true;
                     if (movement > 0.0f)
                     {
-                        if (_rectTransform.anchoredPosition.x == _left)
+                        if (_rectTransform.parent == _playersMenu.PlayerGroups[0])
                         {
                             _audio.Sound("Selected").Play();
                             Center();
@@ -67,7 +66,7 @@ public class PlayerIcon : MonoBehaviour
                     }
                     else if (movement < 0.0f)
                     {
-                        if (_rectTransform.anchoredPosition.x == _right)
+                        if (_rectTransform.parent == _playersMenu.PlayerGroups[2])
                         {
                             _audio.Sound("Selected").Play();
                             Center();
@@ -79,7 +78,6 @@ public class PlayerIcon : MonoBehaviour
                         }
                     }
                 }
-                _playersMenu.UpdateLeftRightCpu();
             }
             if (movement == 0.0f)
                 _isMovenentInUse = false;
@@ -92,8 +90,8 @@ public class PlayerIcon : MonoBehaviour
             return;
         transform.GetChild(1).gameObject.SetActive(false);
         _playersMenu.CpuTextRight.SetActive(false);
+        _cpuText = _playersMenu.CpuTextRight;
         _rectTransform.SetParent(_playersMenu.PlayerGroups[2]);
-        _playersMenu.UpdateLeftRightCpu();
     }
 
     public void MoveLeft()
@@ -102,8 +100,8 @@ public class PlayerIcon : MonoBehaviour
             return;
         transform.GetChild(0).gameObject.SetActive(false);
         _playersMenu.CpuTextLeft.SetActive(false);
+        _cpuText = _playersMenu.CpuTextLeft;
         _rectTransform.SetParent(_playersMenu.PlayerGroups[0]);
-        _playersMenu.UpdateLeftRightCpu();
     }
 
     public void OpenOtherMenu(CallbackContext callbackContext)
@@ -111,41 +109,44 @@ public class PlayerIcon : MonoBehaviour
         if (_hotBar.Active)
             return;
         if (gameObject.activeInHierarchy)
-        {
             if (callbackContext.performed)
-            {
-                if (_rectTransform.anchoredPosition.x == _left || _rectTransform.anchoredPosition.x == _right)
-                {
+                if (_rectTransform.parent != _playersMenu.PlayerGroups[1])
                     _playersMenu.OpenOtherMenu();
-                }
-            }
-        }
     }
 
     public void ConfirmQuickAssign(CallbackContext callbackContext)
     {
         if (_hotBar.Active)
             return;
-        if (gameObject.activeInHierarchy && !_playersMenu.IsOnLeft())
-        {
+        if (gameObject.activeInHierarchy && _rectTransform.parent == _playersMenu.PlayerGroups[1])
             if (callbackContext.performed)
             {
+                _playersMenu.CpuTextLeft.SetActive(false);
                 _audio.Sound("Selected").Play();
                 _rectTransform.SetParent(_playersMenu.PlayerGroups[0]);
-                _playersMenu.UpdateLeftRightCpu();
             }
-        }
     }
 
     void OnDisable()
     {
-        _rectTransform.anchoredPosition = new Vector2(_center, _originalPositionY);
+        _hotBar.StartCoroutine(ResetPlayerIcon());
+    }
+
+    IEnumerator ResetPlayerIcon()
+    {
+        yield return null;
+        _rectTransform.SetParent(_playersMenu.PlayerGroups[1], false);
     }
 
     public void Center()
     {
         if (gameObject.activeSelf)
         {
+            if (_cpuText != null)
+            {
+                _cpuText.SetActive(true);
+                _cpuText = null;
+            }
             transform.GetChild(0).gameObject.SetActive(true);
             transform.GetChild(1).gameObject.SetActive(true);
             _rectTransform.SetParent(_playersMenu.PlayerGroups[1]);
