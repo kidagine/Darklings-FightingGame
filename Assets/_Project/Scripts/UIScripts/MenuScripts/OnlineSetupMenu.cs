@@ -29,6 +29,7 @@ public class OnlineSetupMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _arcanaText = default;
     [SerializeField] private TextMeshProUGUI _speedText = default;
     [SerializeField] private HomeMenu _homeMenu = default;
+    [SerializeField] private PlayerStatsSO[] _playerStatsSO = default;
     [Header("Stage")]
     [SerializeField] private Image _stageShowcaseImage = default;
     [SerializeField] private BaseSelector _stageSelector = default;
@@ -182,7 +183,10 @@ public class OnlineSetupMenu : BaseMenu
 
     public void SetCharacter(int index)
     {
+        _characterSelectables[index].Select();
         DemonData.character = index;
+        _playerUIRender.SetAnimator(_playerStatsSO[DemonData.character]._animation);
+        _playerUIRender.SetSpriteLibraryAsset(DemonData.color);
         _homeMenu.SetCharacter(DemonData.character, DemonData.color, DemonData.demonName);
     }
 }

@@ -13,10 +13,7 @@ public class CharacterOnlineButton : MonoBehaviour, ISelectHandler, IDeselectHan
 
     public PlayerStatsSO PlayerStatsSO { get { return _playerStatsSO; } set { } }
 
-    void Awake()
-    {
-        _audio = GetComponent<Audio>();
-    }
+    void Awake() => _audio = GetComponent<Audio>();
 
     public void OnSelect(BaseEventData eventData)
     {
@@ -31,25 +28,18 @@ public class CharacterOnlineButton : MonoBehaviour, ISelectHandler, IDeselectHan
         _backgroundImage.SetActive(true);
     }
 
-    public void Deactivate()
-    {
-        _backgroundImage.SetActive(false);
-    }
+    public void Deactivate() => _backgroundImage.SetActive(false);
 
-    public void OnDeselect(BaseEventData eventData)
-    {
-        _playerSelector.SetActive(false);
-    }
+    public void OnDeselect(BaseEventData eventData) => _playerSelector.SetActive(false);
 
     public void Click()
     {
         _audio.Sound("Pressed").Play();
         _onlineSetupMenu.SelectCharacterImage(PlayerStatsSO);
-        _backgroundImage.SetActive(true);
+        Select();
     }
 
-    private void OnDisable()
-    {
-        _playerSelector.SetActive(false);
-    }
+    public void Select() => _backgroundImage.SetActive(true);
+
+    private void OnDisable() => _playerSelector.SetActive(false);
 }

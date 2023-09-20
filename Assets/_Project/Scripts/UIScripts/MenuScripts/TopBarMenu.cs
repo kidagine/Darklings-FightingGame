@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -19,10 +18,9 @@ public class TopBarMenu : MonoBehaviour
     [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private Animator _animator;
     [SerializeField] private Canvas _canvas;
+    [SerializeField] private GameObject _previousSelectable;
     private AudioSource _mainMenuAudio;
-    private GameObject _previousSelectable;
     public bool Active { get { return _backgroundImage.activeSelf; } private set { } }
-
     private void Start() => _mainMenuAudio = Camera.main.GetComponent<AudioSource>();
 
     public void JoinDiscord() => Application.OpenURL("https://discord.gg/4k7PfbgN");
@@ -53,9 +51,9 @@ public class TopBarMenu : MonoBehaviour
     {
         _canvas.sortingOrder = 0;
         _backgroundImage.SetActive(false);
-        _previousSelectable = hotBarToggle;
         _animator.SetBool("Appear", false);
         _animator.SetBool("Disappear", true);
+        _previousSelectable = hotBarToggle;
     }
 
     public void ShowHotBar()

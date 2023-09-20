@@ -6,21 +6,22 @@ public class PatchNotesMenu : BaseMenu
     [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private RectTransform _scrollView = default;
     [SerializeField] private RectTransform _patchNotes = default;
+    [SerializeField] private Vector2 _boundaries = default;
     private readonly int _scrollSpeed = 350;
     private float bottomScrollLimit = 0.0f;
 
-    void Update() => Scroll(_inputManager.NavigationInput.y);
+    void Update() => Scroll(_inputManager.NavigationInput.y * 4);
 
     public void Scroll(float navigationInput)
     {
         float movement = navigationInput * Time.deltaTime * _scrollSpeed * -1;
-        if (movement < 0 && _scrollView.anchoredPosition.y > 0 || movement > 0 && _scrollView.anchoredPosition.y <= bottomScrollLimit)
+        if (movement < 0 && _patchNotes.anchoredPosition.y > _boundaries.x || movement > 0 && _patchNotes.anchoredPosition.y <= _boundaries.y)
         {
-            _scrollView.anchoredPosition += new Vector2(0.0f, movement);
-            if (_scrollView.anchoredPosition.y < 0.0f)
-                _scrollView.anchoredPosition = new Vector2(0.0f, 0.0f);
-            else if (_scrollView.anchoredPosition.y > bottomScrollLimit)
-                _scrollView.anchoredPosition = new Vector2(0.0f, bottomScrollLimit);
+            _patchNotes.anchoredPosition += new Vector2(0.0f, movement);
+            if (_patchNotes.anchoredPosition.y < _boundaries.x)
+                _patchNotes.anchoredPosition = new Vector2(0.0f, _boundaries.x);
+            else if (_patchNotes.anchoredPosition.y > _boundaries.y)
+                _patchNotes.anchoredPosition = new Vector2(0.0f, _boundaries.y);
         }
     }
 
@@ -33,8 +34,8 @@ public class PatchNotesMenu : BaseMenu
     IEnumerator SetUpPatchNotesCoroutine()
     {
         yield return null;
-        _patchNotes.anchoredPosition = new Vector2(0.0f, -(_patchNotes.rect.height / 2.0f));
         bottomScrollLimit = _patchNotes.rect.height - 300.0f;
-        _scrollView.anchoredPosition = Vector2.zero;
+        _boundaries = new Vector2(-_patchNotes.rect.height, _scrollView.rect.height);
+        _patchNotes.anchoredPosition = new Vector2(0.0f, -_patchNotes.rect.height);
     }
 }
