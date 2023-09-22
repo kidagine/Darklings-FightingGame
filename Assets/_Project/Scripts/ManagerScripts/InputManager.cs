@@ -82,4 +82,10 @@ public class InputManager : MonoBehaviour
         if (callbackContext.performed)
             CurrentPrompts?.OnOptions?.Invoke();
     }
+
+    public void Hotbar(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+            CurrentPrompts?.OnHotbar?.Invoke();
+    }
 }

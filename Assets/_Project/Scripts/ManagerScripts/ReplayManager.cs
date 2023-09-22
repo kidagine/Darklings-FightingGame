@@ -1,15 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ReplayManager : MonoBehaviour
 {
+    [SerializeField] private ReplaySO _replaySO = default;
     [SerializeField] private PauseMenu _replayPauseMenu = default;
     [SerializeField] private TextAsset _versionTextAsset = default;
     [SerializeField] private GameObject _replayPrompts = default;
@@ -21,11 +18,6 @@ public class ReplayManager : MonoBehaviour
     [SerializeField] private bool _isReplayMode;
     [Range(0, 99)]
     [SerializeField] private int _replayIndex;
-    private BrainController _playerOneController;
-    private BrainController _playerTwoController;
-    private InputBuffer _playerOneInputBuffer;
-    private InputBuffer _playerTwoInputBuffer;
-    private string[] _replays;
     private readonly string _versionSplit = "Version:";
     private readonly string _dateSplit = "Date:";
     private readonly string _patchNotesSplit = "Patch Notes:";
@@ -38,7 +30,7 @@ public class ReplayManager : MonoBehaviour
 
     public string VersionNumber { get; private set; }
     public int Skip { get; set; }
-    public int ReplayAmount { get { return _replays.Length; } private set { } }
+    public int ReplayAmount { get { return _replaySO.replays.Count; } private set { } }
     public static ReplayManager Instance { get; private set; }
 
     void Awake()
@@ -48,7 +40,6 @@ public class ReplayManager : MonoBehaviour
             SceneSettings.ReplayMode = _isReplayMode;
             SceneSettings.ReplayIndex = _replayIndex;
         }
-        _replays = DemonicsSaver.Load("replay", "").Split('@');
 
         if (SceneSettings.ReplayMode)
         {
@@ -60,17 +51,16 @@ public class ReplayManager : MonoBehaviour
 
     public void SetReplay()
     {
-        ReplayCardData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
-
-        SceneSettings.PlayerOne = replayCardData.characterOne;
-        SceneSettings.ColorOne = replayCardData.colorOne;
-        SceneSettings.AssistOne = replayCardData.assistOne;
-        SceneSettings.PlayerTwo = replayCardData.characterTwo;
-        SceneSettings.ColorTwo = replayCardData.colorTwo;
-        SceneSettings.AssistTwo = replayCardData.assistTwo;
+        ReplayData replayCardData = GetReplayData(SceneSettings.ReplayIndex);
+        SceneSettings.PlayerOne = replayCardData.playerOneCharacter;
+        SceneSettings.ColorOne = replayCardData.playerOneColor;
+        SceneSettings.AssistOne = replayCardData.playerOneAssist;
+        SceneSettings.PlayerTwo = replayCardData.playerTwoCharacter;
+        SceneSettings.ColorTwo = replayCardData.playerTwoColor;
+        SceneSettings.AssistTwo = replayCardData.playerTwoAssist;
         SceneSettings.StageIndex = replayCardData.stage;
-        SceneSettings.MusicName = replayCardData.musicName;
-        SceneSettings.Bit1 = replayCardData.bit1;
+        SceneSettings.MusicName = replayCardData.music;
+        SceneSettings.Bit1 = replayCardData.theme;
         SceneSettings.ControllerOne = InputSystem.devices[0];
         SceneSettings.ControllerTwo = InputSystem.devices[0];
         SceneSettings.ReplayMode = true;
@@ -100,15 +90,6 @@ public class ReplayManager : MonoBehaviour
         if (SceneSettings.ReplayMode)
         {
             LoadReplay();
-        }
-    }
-
-    public void Setup()
-    {
-        if (GameplayManager.Instance != null)
-        {
-            _playerOneInputBuffer = GameplayManager.Instance.PlayerOne.GetComponent<InputBuffer>();
-            _playerTwoInputBuffer = GameplayManager.Instance.PlayerTwo.GetComponent<InputBuffer>();
         }
     }
 
@@ -156,19 +137,19 @@ public class ReplayManager : MonoBehaviour
     public void LoadReplay()
     {
         SceneSettings.ReplayMode = true;
-        _playerOneController = GameplayManager.Instance.PlayerOne.GetComponent<BrainController>();
-        _playerTwoController = GameplayManager.Instance.PlayerTwo.GetComponent<BrainController>();
         GameplayManager.Instance.PlayerOne.GetComponent<PlayerInput>().enabled = false;
         GameplayManager.Instance.PlayerTwo.GetComponent<PlayerInput>().enabled = false;
         replayCardData = GetReplayData(SceneSettings.ReplayIndex);
         initialReplayStart = true;
     }
 
-    private ReplayCardData replayCardData;
+    private ReplayData replayCardData;
     bool runReplay;
     bool initialReplayStart;
     private int i;
     private int j;
+
+    public ReplayData GetReplayData(int index) => _replaySO.replays[SceneSettings.ReplayIndex];
 
     public void StartLoadReplay()
     {
@@ -179,7 +160,7 @@ public class ReplayManager : MonoBehaviour
     {
         if (initialReplayStart)
         {
-            if (DemonicsWorld.Frame == replayCardData.skip && replayCardData.skip > 0)
+            if (DemonicsWorld.Frame == replayCardData.skipTime && replayCardData.skipTime > 0)
             {
                 GameSimulation.Skip = true;
                 initialReplayStart = false;
@@ -194,7 +175,7 @@ public class ReplayManager : MonoBehaviour
     }
     private void NextReplayAction()
     {
-        if (i < replayCardData.playerOneInputs.Length)
+        if (i < replayCardData.playerOneInputs.Count)
         {
             if (DemonicsWorld.Frame >= replayCardData.playerOneInputs[i].time)
             {
@@ -269,7 +250,7 @@ public class ReplayManager : MonoBehaviour
     }
     private void NextReplayAction2()
     {
-        if (j < replayCardData.playerTwoInputs.Length)
+        if (j < replayCardData.playerTwoInputs.Count)
         {
             if (DemonicsWorld.Frame >= replayCardData.playerTwoInputs[j].time)
             {
@@ -343,81 +324,10 @@ public class ReplayManager : MonoBehaviour
         }
     }
 
-    public ReplayCardData GetReplayData(int index)
-    {
-        string replayText = _replays[index];
-        int versionTextPosition = replayText.IndexOf(_versionSplit) + _versionSplit.Length;
-        string versionNumber = replayText[versionTextPosition..replayText.LastIndexOf(_dateSplit)].Trim();
-
-        int dateTextPosition = replayText.IndexOf(_dateSplit) + _dateSplit.Length;
-        string dateNumber = replayText[dateTextPosition..replayText.LastIndexOf(_playerOneSplit)].Trim();
-
-        int playerOneTextPosition = replayText.IndexOf(_playerOneSplit) + _playerOneSplit.Length;
-        string playerOneTextWhole = replayText[playerOneTextPosition..replayText.LastIndexOf(_playerTwoSplit)].Trim();
-        string[] playerOneInfo = playerOneTextWhole.Split(',');
-
-        int playerTwoTextPosition = replayText.IndexOf(_playerTwoSplit) + _playerTwoSplit.Length;
-        string playerTwoTextWhole = replayText[playerTwoTextPosition..replayText.LastIndexOf(_stageSplit)].Trim();
-        string[] playerTwoInfo = playerTwoTextWhole.Split(',');
-
-        int stageTextPosition = replayText.IndexOf(_stageSplit) + _stageSplit.Length;
-        string stageTextWhole = replayText[stageTextPosition..replayText.LastIndexOf(_playerOneInputsSplit)].Trim();
-        string[] stageInfo = stageTextWhole.Split(',');
-
-        int playerOneInputTextPosition = replayText.IndexOf(_playerOneInputsSplit) + _playerOneInputsSplit.Length;
-        string playerOneInputTextWhole = replayText[playerOneInputTextPosition..replayText.LastIndexOf(_playerTwoInputsSplit)].Trim();
-        string[] playerOneInputInfo = playerOneInputTextWhole.Split('|');
-
-
-        int playerTwoInputTextPosition = replayText.IndexOf(_playerTwoInputsSplit) + _playerTwoInputsSplit.Length;
-        string playerTwoInputTextWhole = replayText[playerTwoInputTextPosition..replayText.LastIndexOf(_skipSplit)].Trim();
-        string[] playerTwoInputInfo = playerTwoInputTextWhole.Split('|');
-
-        string skipTextWhole = replayText[(replayText.IndexOf(_skipSplit) + _skipSplit.Length)..].Trim();
-
-        List<ReplayInput> replayOneInputs = new();
-        if (playerOneInputInfo[0] != "")
-        {
-            for (int i = 0; i < playerOneInputInfo.Length; i++)
-            {
-                string[] playerInput = playerOneInputInfo[i].Split(',');
-                replayOneInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = int.Parse(playerInput[2]) });
-            }
-        }
-        List<ReplayInput> replayTwoInputs = new();
-        if (playerTwoInputInfo[0] != "")
-        {
-            for (int i = 0; i < playerTwoInputInfo.Length; i++)
-            {
-                string[] playerInput = playerTwoInputInfo[i].Split(',');
-                replayTwoInputs.Add(new ReplayInput() { input = Enum.Parse<InputEnum>(playerInput[0]), direction = Enum.Parse<InputDirectionEnum>(playerInput[1]), time = int.Parse(playerInput[2]) });
-            }
-
-        }
-
-        ReplayCardData replayData = new()
-        {
-            versionNumber = versionNumber,
-            date = dateNumber,
-            characterOne = int.Parse(playerOneInfo[0]),
-            colorOne = int.Parse(playerOneInfo[1]),
-            assistOne = int.Parse(playerOneInfo[2]),
-            characterTwo = int.Parse(playerTwoInfo[0]),
-            colorTwo = int.Parse(playerTwoInfo[1]),
-            assistTwo = int.Parse(playerTwoInfo[2]),
-            stage = int.Parse(stageInfo[0]),
-            musicName = stageInfo[1].Trim(),
-            bit1 = bool.Parse(stageInfo[2]),
-            playerOneInputs = replayOneInputs.ToArray(),
-            playerTwoInputs = replayTwoInputs.ToArray(),
-            skip = float.Parse(skipTextWhole)
-        };
-        return replayData;
-    }
-
     private void DeleteReplay()
     {
-        File.Delete(_replays[0]);
+        if (_replaySO.replays.Count > 0)
+            _replaySO.replays.Remove(_replaySO.replays[0]);
     }
 
     public void Pause()
@@ -456,9 +366,7 @@ public class ReplayManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.CapsLock) && !SceneSettings.IsTrainingMode)
-        {
             SaveReplay();
-        }
     }
 #endif
 }

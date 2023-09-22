@@ -330,19 +330,14 @@ public class GameplayManager : MonoBehaviour
         _inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
         _cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
         _cinemachineTargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
-        ReplayManager.Instance.Setup();
     }
 
     private void CheckInstance()
     {
         if (Instance != null && Instance != this)
-        {
             Destroy(gameObject);
-        }
         else
-        {
             Instance = this;
-        }
     }
 
     public void CheckSceneSettings()

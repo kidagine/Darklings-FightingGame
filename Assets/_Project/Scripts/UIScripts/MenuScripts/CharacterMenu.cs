@@ -32,13 +32,14 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _hpTextTwo = default;
     [SerializeField] private TextMeshProUGUI _arcanaTextTwo = default;
     [SerializeField] private TextMeshProUGUI _speedTextTwo = default;
+    [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] private PlayerStatsSO[] _playerStatsArray = default;
     [SerializeField] private RebindMenu[] _rebindMenues = default;
     private PlayerStatsSO _playerStats;
     private EventSystem _currentEventSystem;
     private Coroutine _tauntCoroutine;
+    private AsyncOperation _asyncLoad;
     public bool FirstCharacterSelected { get; private set; }
-
 
     void Awake()
     {
@@ -143,23 +144,19 @@ public class CharacterMenu : BaseMenu
     public void SetCharacter(bool isPlayerOne)
     {
         if (isPlayerOne)
-        {
             _playerUIRenderOne.Taunt();
-        }
         else
-        {
             _playerUIRenderTwo.Taunt();
-        }
         if (FirstCharacterSelected)
-        {
             EventSystem.current.gameObject.SetActive(false);
-        }
         _tauntCoroutine = StartCoroutine(TauntEndCoroutine());
     }
 
     IEnumerator TauntEndCoroutine()
     {
-        yield return new WaitForSeconds(1.0f);
+        if (FirstCharacterSelected)
+            StartCoroutine(LoadYourAsyncScene());
+        yield return new WaitForSeconds(1.5f);
         _currentEventSystem.sendNavigationEvents = true;
         if (!FirstCharacterSelected)
         {
@@ -173,8 +170,17 @@ public class CharacterMenu : BaseMenu
             SceneSettings.SceneSettingsDecide = true;
             if (SceneSettings.RandomStage)
                 SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
-            SceneManager.LoadScene(1);
+            _fadeHandler.onFadeEnd.AddListener(() => _asyncLoad.allowSceneActivation = true);
+            _fadeHandler.StartFadeTransition(true, 0.35f);
         }
+    }
+
+    IEnumerator LoadYourAsyncScene()
+    {
+        _asyncLoad = SceneManager.LoadSceneAsync(1);
+        _asyncLoad.allowSceneActivation = false;
+        while (!_asyncLoad.isDone)
+            yield return null;
     }
 
     public void GoBack(BaseMenu otherMenu)

@@ -9,13 +9,17 @@ public class PlayerIcon : MonoBehaviour
     [SerializeField] private PlayersMenu _playersMenu = default;
     [SerializeField] private PlayerInput _playerInput = default;
     [SerializeField] private TextMeshProUGUI _controllerText = default;
+    [SerializeField] private TextMeshProUGUI _numberText = default;
     [SerializeField] private TopBarMenu _hotBar = default;
+    [SerializeField] private GameObject _leftArrow = default;
+    [SerializeField] private GameObject _rightArrow = default;
+    [SerializeField] private Color[] _colors = default;
     private RectTransform _rectTransform;
     private Audio _audio;
-    private readonly float _left = -375.0f;
-    private readonly float _right = 375.0f;
     private GameObject _cpuText;
     private bool _isMovenentInUse;
+    private int _number;
+    private static int LastNumber;
     public PlayerInput PlayerInput { get { return _playerInput; } private set { } }
 
 
@@ -30,6 +34,14 @@ public class PlayerIcon : MonoBehaviour
         gameObject.SetActive(true);
         if (_playerInput.devices.Count > 0)
         {
+            if (_number == 0)
+            {
+                LastNumber++;
+                _number = LastNumber;
+                _numberText.text = _number.ToString();
+                _numberText.color = _colors[_number - 1];
+            }
+
             if (_playerInput.devices[0].displayName == "Keyboard")
                 _controllerText.text = "Keyboard";
             else
@@ -47,38 +59,26 @@ public class PlayerIcon : MonoBehaviour
         {
             float movement = callbackContext.ReadValue<Vector2>().x;
             if (movement != 0.0f)
-            {
                 if (!_isMovenentInUse)
                 {
                     _isMovenentInUse = true;
                     if (movement > 0.0f)
                     {
+                        _audio.Sound("Selected").Play();
                         if (_rectTransform.parent == _playersMenu.PlayerGroups[0])
-                        {
-                            _audio.Sound("Selected").Play();
                             Center();
-                        }
-                        else if (!_playersMenu.IsOnRight())
-                        {
-                            _audio.Sound("Selected").Play();
+                        else
                             MoveRight();
-                        }
                     }
                     else if (movement < 0.0f)
                     {
+                        _audio.Sound("Selected").Play();
                         if (_rectTransform.parent == _playersMenu.PlayerGroups[2])
-                        {
-                            _audio.Sound("Selected").Play();
                             Center();
-                        }
-                        else if (!_playersMenu.IsOnLeft())
-                        {
-                            _audio.Sound("Selected").Play();
+                        else
                             MoveLeft();
-                        }
                     }
                 }
-            }
             if (movement == 0.0f)
                 _isMovenentInUse = false;
         }
@@ -86,9 +86,11 @@ public class PlayerIcon : MonoBehaviour
 
     public void MoveRight()
     {
+        if (_playersMenu.PlayerGroups[2].childCount > 0)
+            return;
         if (_hotBar.Active)
             return;
-        transform.GetChild(1).gameObject.SetActive(false);
+        _rightArrow.SetActive(false);
         _playersMenu.CpuTextRight.SetActive(false);
         _cpuText = _playersMenu.CpuTextRight;
         _rectTransform.SetParent(_playersMenu.PlayerGroups[2]);
@@ -96,35 +98,22 @@ public class PlayerIcon : MonoBehaviour
 
     public void MoveLeft()
     {
+        if (_playersMenu.PlayerGroups[0].childCount > 0)
+            return;
         if (_hotBar.Active)
             return;
-        transform.GetChild(0).gameObject.SetActive(false);
+        _leftArrow.gameObject.SetActive(false);
         _playersMenu.CpuTextLeft.SetActive(false);
         _cpuText = _playersMenu.CpuTextLeft;
         _rectTransform.SetParent(_playersMenu.PlayerGroups[0]);
     }
 
-    public void OpenOtherMenu(CallbackContext callbackContext)
+    public void ConfirmQuickAssign()
     {
-        if (_hotBar.Active)
-            return;
-        if (gameObject.activeInHierarchy)
-            if (callbackContext.performed)
-                if (_rectTransform.parent != _playersMenu.PlayerGroups[1])
-                    _playersMenu.OpenOtherMenu();
-    }
-
-    public void ConfirmQuickAssign(CallbackContext callbackContext)
-    {
-        if (_hotBar.Active)
-            return;
-        if (gameObject.activeInHierarchy && _rectTransform.parent == _playersMenu.PlayerGroups[1])
-            if (callbackContext.performed)
-            {
-                _playersMenu.CpuTextLeft.SetActive(false);
-                _audio.Sound("Selected").Play();
-                _rectTransform.SetParent(_playersMenu.PlayerGroups[0]);
-            }
+        _playersMenu.CpuTextLeft.SetActive(false);
+        _audio.Sound("Selected").Play();
+        _rectTransform.SetParent(_playersMenu.PlayerGroups[0]);
+        _cpuText = _playersMenu.CpuTextLeft;
     }
 
     void OnDisable()
@@ -147,9 +136,24 @@ public class PlayerIcon : MonoBehaviour
                 _cpuText.SetActive(true);
                 _cpuText = null;
             }
-            transform.GetChild(0).gameObject.SetActive(true);
-            transform.GetChild(1).gameObject.SetActive(true);
+            _leftArrow.SetActive(true);
+            _rightArrow.SetActive(true);
             _rectTransform.SetParent(_playersMenu.PlayerGroups[1]);
+            _rectTransform.SetSiblingIndex(_number - 1);
         }
+    }
+
+    public void CheckCPU()
+    {
+        if (_cpuText != null)
+        {
+            _cpuText.SetActive(true);
+            _cpuText = null;
+        }
+    }
+
+    private void OnEnable()
+    {
+        _rectTransform.SetSiblingIndex(_number - 1);
     }
 }

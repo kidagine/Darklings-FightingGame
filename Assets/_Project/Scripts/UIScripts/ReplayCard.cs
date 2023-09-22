@@ -10,15 +10,15 @@ public class ReplayCard : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _versionText = default;
     [SerializeField] private TextMeshProUGUI _dateText = default;
     [SerializeField] private Sprite[] _characterPortraits = default;
-    public ReplayCardData ReplayCardData { get; private set; }
+    public ReplayData ReplayData { get; private set; }
 
 
-    public void SetData(ReplayCardData replayData)
+    public void SetData(ReplayData replayData)
     {
-        ReplayCardData = replayData;
-        _playerOneImage.sprite = GetCharacterPortrait(replayData.characterOne);
-        _playerTwoImage.sprite = GetCharacterPortrait(replayData.characterTwo);
-        _versionText.text = $"Ver {replayData.versionNumber}";
+        ReplayData = replayData;
+        _playerOneImage.sprite = GetCharacterPortrait(replayData.playerOneCharacter);
+        _playerTwoImage.sprite = GetCharacterPortrait(replayData.playerTwoCharacter);
+        _versionText.text = $"Ver {replayData.version}";
         _dateText.text = replayData.date;
     }
 
@@ -45,7 +45,7 @@ public struct ReplayCardData
     public ReplayInput[] playerTwoInputs;
     public float skip;
 }
-
+[Serializable]
 public struct ReplayInput
 {
     public InputEnum input;

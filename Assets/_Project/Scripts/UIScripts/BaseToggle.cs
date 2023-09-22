@@ -56,6 +56,7 @@ public class BaseToggle : BaseButton
         _baseTogglesGroup.CheckToggles();
         _audio.Sound("Pressed").Play();
         _animator.SetBool("IsHover", true);
+        _animator.SetBool("IsPress", true);
         _button.onClick?.Invoke();
     }
 

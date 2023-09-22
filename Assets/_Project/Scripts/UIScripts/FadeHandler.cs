@@ -24,13 +24,9 @@ public class FadeHandler : MonoBehaviour
     public void StartFadeTransition(bool fadeOut, float duration = default)
     {
         if (duration == 0)
-        {
             duration = _fadeDuration;
-        }
         if (_fadeTransitionCoroutine != null)
-        {
             StopCoroutine(_fadeTransitionCoroutine);
-        }
         _fadeTransitionCoroutine = StartCoroutine(FadeTransitionCoroutine(fadeOut, duration));
     }
 

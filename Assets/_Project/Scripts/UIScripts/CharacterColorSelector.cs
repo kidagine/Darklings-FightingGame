@@ -27,11 +27,6 @@ public class CharacterColorSelector : MonoBehaviour
         _audio = GetComponent<Audio>();
     }
 
-    private void OnEnable()
-    {
-
-    }
-
     private void Update()
     {
         Movement();
@@ -42,21 +37,31 @@ public class CharacterColorSelector : MonoBehaviour
         if (!_inputDeactivated && !_changeStageMenu.IsOpen && !_rebindMenu.gameObject.activeSelf)
         {
             _directionInput = _inputManager.NavigationInput;
-            if (_directionInput.x == 1.0f)
-            {
-                _audio.Sound("Pressed").Play();
-                ColorNumber++;
-                StartCoroutine(ResetInput());
-            }
             if (_directionInput.x == -1.0f)
             {
                 _audio.Sound("Pressed").Play();
-                ColorNumber--;
-                StartCoroutine(ResetInput());
+                MoveLeft();
+            }
+            if (_directionInput.x == 1.0f)
+            {
+                _audio.Sound("Pressed").Play();
+                MoveRight();
             }
             ColorNumber = _playerUIRender.SetSpriteLibraryAsset(ColorNumber);
             _playerOneColorNumber.text = $"Color {ColorNumber + 1}";
         }
+    }
+
+    public void MoveLeft()
+    {
+        ColorNumber--;
+        StartCoroutine(ResetInput());
+    }
+
+    public void MoveRight()
+    {
+        ColorNumber++;
+        StartCoroutine(ResetInput());
     }
 
     public void Confirm()
@@ -65,13 +70,9 @@ public class CharacterColorSelector : MonoBehaviour
         {
             _pressed = true;
             if (_isPlayerOne)
-            {
                 SceneSettings.ColorOne = ColorNumber;
-            }
             else
-            {
                 SceneSettings.ColorTwo = ColorNumber;
-            }
             _audio.Sound("Selected").Play();
             _inputDeactivated = true;
             _arrows.SetActive(false);
