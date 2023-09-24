@@ -23,8 +23,9 @@ public class MouseSetup : Singleton<MouseSetup>
 
         if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
             _mouseVisible = true;
-        if (!_playerInput.currentControlScheme.Contains("Keyboard"))
-            _mouseVisible = false;
+        if (_playerInput.currentControlScheme != null)
+            if (!_playerInput.currentControlScheme.Contains("Keyboard"))
+                _mouseVisible = false;
         if (Input.anyKeyDown)
             if (!Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1))
                 _mouseVisible = false;

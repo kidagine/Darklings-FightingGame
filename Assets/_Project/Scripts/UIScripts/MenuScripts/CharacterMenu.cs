@@ -33,6 +33,7 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _arcanaTextTwo = default;
     [SerializeField] private TextMeshProUGUI _speedTextTwo = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
+    [SerializeField] private Button[] _characterButtons = default;
     [SerializeField] private PlayerStatsSO[] _playerStatsArray = default;
     [SerializeField] private RebindMenu[] _rebindMenues = default;
     private PlayerStatsSO _playerStats;
@@ -40,6 +41,8 @@ public class CharacterMenu : BaseMenu
     private Coroutine _tauntCoroutine;
     private AsyncOperation _asyncLoad;
     public bool FirstCharacterSelected { get; private set; }
+    public bool FirstCharacterLocked { get; private set; }
+    public bool SecondCharacterLocked { get; private set; }
 
     void Awake()
     {
@@ -100,11 +103,14 @@ public class CharacterMenu : BaseMenu
 
     public void SelectCharacterImage()
     {
+        for (int i = 0; i < _characterButtons.Length; i++)
+            _characterButtons[i].enabled = false;
         _currentEventSystem.sendNavigationEvents = false;
         _playerOneName.enabled = true;
         _playerTwoName.enabled = true;
         if (!FirstCharacterSelected)
         {
+            FirstCharacterLocked = true;
             _assistOneUIRenderer.gameObject.SetActive(true);
             _assistOne.SetActive(true);
             if (_playerStats == null)
@@ -123,6 +129,7 @@ public class CharacterMenu : BaseMenu
         }
         else
         {
+            SecondCharacterLocked = true;
             _assistTwoUIRenderer.gameObject.SetActive(true);
             _assistTwo.SetActive(true);
             if (_playerStats == null)
@@ -160,6 +167,8 @@ public class CharacterMenu : BaseMenu
         _currentEventSystem.sendNavigationEvents = true;
         if (!FirstCharacterSelected)
         {
+            for (int i = 0; i < _characterButtons.Length; i++)
+                _characterButtons[i].enabled = true;
             FirstCharacterSelected = true;
             _currentEventSystem.SetSelectedGameObject(null);
             _firstCharacterButton.Select();
@@ -250,6 +259,8 @@ public class CharacterMenu : BaseMenu
             _currentEventSystem.SetSelectedGameObject(null);
             _currentEventSystem.sendNavigationEvents = true;
             FirstCharacterSelected = false;
+            FirstCharacterLocked = false;
+            SecondCharacterLocked = false;
             _hpTextOne.text = "";
             _arcanaTextOne.text = "";
             _speedTextOne.text = "";

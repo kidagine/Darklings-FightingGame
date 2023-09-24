@@ -31,9 +31,9 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void OnDeselect(BaseEventData eventData)
     {
-        if (!_characterMenu.FirstCharacterSelected)
+        if (!_characterMenu.FirstCharacterSelected && !_characterMenu.FirstCharacterLocked)
             _firstPlayerSelector.SetActive(false);
-        else
+        else if (!_characterMenu.SecondCharacterLocked)
             _secondPlayerSelector.SetActive(false);
     }
 

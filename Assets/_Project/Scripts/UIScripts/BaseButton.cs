@@ -8,7 +8,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Audio))]
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(Animator))]
-public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] public UnityEvent _onClickedAnimationEnd = default;
     [SerializeField] public UnityEvent _onSelected = default;
@@ -52,8 +52,6 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if (_isPressed)
-            return;
         _animator.SetBool("IsHover", true);
         _audio.Sound("Selected").Play();
         Cursor.SetCursor(MouseSetup.Instance.HoverCursor, Vector2.zero, CursorMode.Auto);
@@ -61,18 +59,11 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        if (_isPressed)
-            return;
         _animator.SetBool("IsHover", false);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
     public void SelectParent() => selectableParent?.Select();
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-
-    }
 
     public virtual void OnPress()
     {
