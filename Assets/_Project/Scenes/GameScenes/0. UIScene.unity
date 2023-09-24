@@ -372,7 +372,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1809697917}
+    m_TransformParent: {fileID: 326892374}
     m_Modifications:
     - target: {fileID: 1439075139381376838, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_UpdateMode
@@ -516,11 +516,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -810
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 150
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076745, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -543,6 +543,14 @@ PrefabInstance:
       value: Copy
       objectReference: {fileID: 0}
     - target: {fileID: 4703080450183459385, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_fontSize
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080450183459385, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: f316c2e790739e34aa50c78a0b780df3, type: 2}
+    - target: {fileID: 4703080450183459385, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_fontColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -555,8 +563,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4703080450183459385, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080450183459385, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080450183459385, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
@@ -603,6 +619,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 1
   selectableParent: {fileID: 0}
@@ -925,6 +942,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -1705,6 +1723,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -1830,6 +1849,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -3186,6 +3206,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Host_demonNameplate
       objectReference: {fileID: 0}
+    - target: {fileID: 739335789255711172, guid: 2f8f9e9ef902a9a499785d42a6d0525c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 739335789255711173, guid: 2f8f9e9ef902a9a499785d42a6d0525c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3220,7 +3244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 739335789255711173, guid: 2f8f9e9ef902a9a499785d42a6d0525c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 739335789255711173, guid: 2f8f9e9ef902a9a499785d42a6d0525c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3256,7 +3280,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 739335789255711173, guid: 2f8f9e9ef902a9a499785d42a6d0525c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -150
+      value: -415
       objectReference: {fileID: 0}
     - target: {fileID: 739335789255711173, guid: 2f8f9e9ef902a9a499785d42a6d0525c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4865,6 +4889,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -5647,6 +5672,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -6041,6 +6067,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -6562,6 +6589,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -7494,6 +7522,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -8007,6 +8036,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -10887,13 +10917,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 27153230}
   m_Father: {fileID: 1809697917}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -580, y: 230}
+  m_AnchoredPosition: {x: 350, y: -340}
   m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &326892375
@@ -10918,8 +10949,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Room ID: '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
-  m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f316c2e790739e34aa50c78a0b780df3, type: 2}
+  m_sharedMaterial: {fileID: 1051677855046753872, guid: f316c2e790739e34aa50c78a0b780df3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10943,8 +10974,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26
-  m_fontSizeBase: 26
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10982,7 +11013,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &326892376
@@ -11636,6 +11667,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -11810,6 +11842,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -12404,6 +12437,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -15224,8 +15258,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444084334}
-  m_LocalRotation: {x: 1e-45, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -20.48194, z: -191}
+  m_LocalRotation: {x: 1.435e-42, y: 2.103892e-25, z: -0, w: 1}
+  m_LocalPosition: {x: -8.0368676e-23, y: -20.48194, z: -191}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -17000,6 +17034,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -18516,6 +18551,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -18749,7 +18785,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1809697917}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -21407,6 +21443,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -21909,6 +21946,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -21929,6 +21970,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 114763691}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -21937,12 +21982,20 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: Activate
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
       value: SetHotBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TopBarMenu, Scripts
       objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -21956,6 +22009,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 9123090234613714751}
+    - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: BaseMenu, Scripts
+      objectReference: {fileID: 0}
     - target: {fileID: 4703080449929076744, guid: 5a5a937ee0030df4e83be476f60879c4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
@@ -22188,6 +22245,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -23994,6 +24052,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -25547,7 +25606,7 @@ RectTransform:
   - {fileID: 1200759631}
   - {fileID: 2122707690}
   m_Father: {fileID: 1809697917}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -26104,6 +26163,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -26444,6 +26504,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -27160,6 +27221,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -27886,6 +27948,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -28055,6 +28118,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -29368,6 +29432,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -29763,6 +29828,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -31399,7 +31465,7 @@ MonoBehaviour:
   _startingOption: {fileID: 2124469701}
   _networkManager: {fileID: 1648980305}
   _onlineMainMenu: {fileID: 0}
-  _onlineSetupMenu: {fileID: 0}
+  _onlineSetupMenu: {fileID: 1328516421}
   _nameplates:
   - {fileID: 2077998982}
   - {fileID: 1879126254}
@@ -31435,6 +31501,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -31604,6 +31671,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -32904,6 +32972,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -33044,8 +33113,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998273396}
-  m_LocalRotation: {x: 1e-45, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -42, z: -190}
+  m_LocalRotation: {x: 1.435e-42, y: 2.103892e-25, z: -0, w: 1}
+  m_LocalPosition: {x: -4.207784e-24, y: -42, z: -190}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -33427,6 +33496,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -35842,6 +35912,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -36209,6 +36280,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -36920,6 +36992,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -37624,6 +37697,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 1
   selectableParent: {fileID: 0}
@@ -39244,6 +39318,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -40255,6 +40330,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -40929,6 +41005,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -41425,6 +41502,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -41761,6 +41839,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -41938,11 +42017,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1809697917}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -580, y: 0}
+  m_AnchoredPosition: {x: 350, y: -250}
   m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1242995551
@@ -41969,8 +42048,8 @@ MonoBehaviour:
 
     Xbox Controller'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
-  m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f316c2e790739e34aa50c78a0b780df3, type: 2}
+  m_sharedMaterial: {fileID: 1051677855046753872, guid: f316c2e790739e34aa50c78a0b780df3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -41994,8 +42073,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26
-  m_fontSizeBase: 26
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -42006,7 +42085,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 98
+  m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -42224,8 +42303,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Creating Lobby...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
-  m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f316c2e790739e34aa50c78a0b780df3, type: 2}
+  m_sharedMaterial: {fileID: 1051677855046753872, guid: f316c2e790739e34aa50c78a0b780df3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -42249,13 +42328,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26
-  m_fontSizeBase: 26
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -42288,7 +42367,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1252357457
@@ -44815,6 +44894,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -47583,6 +47663,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -49446,10 +49527,10 @@ RectTransform:
   m_Father: {fileID: 1809697917}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 610, y: 0}
-  m_SizeDelta: {x: 600, y: 700}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -300, y: 0}
+  m_SizeDelta: {x: 600, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1431752901
 MonoBehaviour:
@@ -49468,10 +49549,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 1
-  m_Spacing: 0
+  m_ChildAlignment: 4
+  m_Spacing: 50
   m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -49837,6 +49918,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -51248,6 +51330,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -52103,6 +52186,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -52733,6 +52817,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -53135,6 +53220,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -57565,6 +57651,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -59316,6 +59403,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -60157,6 +60245,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -60834,6 +60923,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -62310,21 +62400,20 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 27153230}
+  - {fileID: 1242995550}
   - {fileID: 326892374}
   - {fileID: 1248121704}
   - {fileID: 1431752900}
   - {fileID: 335225753}
-  - {fileID: 1242995550}
   - {fileID: 764588875}
   - {fileID: 575084012}
   m_Father: {fileID: 922976184}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1817035429
 GameObject:
@@ -63257,6 +63346,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -64750,7 +64840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 739335789255711173, guid: 2f8f9e9ef902a9a499785d42a6d0525c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 739335789255711173, guid: 2f8f9e9ef902a9a499785d42a6d0525c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -64786,7 +64876,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 739335789255711173, guid: 2f8f9e9ef902a9a499785d42a6d0525c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -500
+      value: -665
       objectReference: {fileID: 0}
     - target: {fileID: 739335789255711173, guid: 2f8f9e9ef902a9a499785d42a6d0525c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -66172,6 +66262,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -66657,6 +66748,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -67135,6 +67227,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -68674,6 +68767,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -69533,6 +69627,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -70817,6 +70912,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -71296,6 +71392,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -73203,6 +73300,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -73501,6 +73599,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -74734,6 +74833,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -75236,6 +75336,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -75987,6 +76088,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
@@ -78668,6 +78770,7 @@ MonoBehaviour:
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
+  _selectOnHover: 0
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}

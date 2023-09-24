@@ -15,6 +15,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     [SerializeField] public RectTransform _scrollView = default;
     [SerializeField] public float _scrollUpAmount = default;
     [SerializeField] public float _scrollDownAmount = default;
+    [SerializeField] private bool _selectOnHover = default;
     [SerializeField] private bool _ignoreFirstSelectSound = default;
     [SerializeField] private bool _allowMultiplePresses = default;
     [SerializeField] private Selectable selectableParent = default;
@@ -52,6 +53,8 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
+        if (_selectOnHover)
+            _button.Select();
         _animator.SetBool("IsHover", true);
         _audio.Sound("Selected").Play();
         Cursor.SetCursor(MouseSetup.Instance.HoverCursor, Vector2.zero, CursorMode.Auto);
@@ -59,7 +62,6 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        _animator.SetBool("IsHover", false);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
@@ -176,5 +178,6 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
+        _animator.SetBool("IsHover", false);
     }
 }
