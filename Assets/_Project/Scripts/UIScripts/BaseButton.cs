@@ -62,6 +62,8 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
+        if (!_selectOnHover)
+            _animator.SetBool("IsHover", false);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
@@ -152,7 +154,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         if (_resetToDefault)
         {
             _isPressed = false;
-            _animator.SetBool("IsPress", false);
+            // _animator.SetBool("IsPress", false);
         }
         if (_moveVerticalCoroutine != null)
             StopCoroutine(_moveVerticalCoroutine);
