@@ -26,7 +26,7 @@ public class TopBarMenu : MonoBehaviour
     public bool Active { get { return _backgroundImage.activeSelf; } private set { } }
     private void Start() => _mainMenuAudio = Camera.main.GetComponent<AudioSource>();
 
-    public void JoinDiscord() => Application.OpenURL("https://discord.gg/4k7PfbgN");
+    public void JoinDiscord() => Application.OpenURL("https://discord.com/invite/wPw9fV6aQg");
 
     public void ToggleFullScreen()
     {

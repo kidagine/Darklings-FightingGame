@@ -74,7 +74,7 @@ public class HotBarToggle : BaseToggle
         _button.Select();
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
-    {
-    }
+    public override void OnPointerDown(PointerEventData eventData) { }
+
+    public override void OnPointerExit(PointerEventData eventData) { }
 }

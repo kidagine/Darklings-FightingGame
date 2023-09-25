@@ -99,13 +99,13 @@ public class PlayerPreferences : MonoBehaviour
 
     private void LoadOnlinePreferences()
     {
-        _homeMenu.SetCharacter(int.Parse(DemonicsSaver.Load("character", _characterSelectorInitial.ToString())),
-        int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.ToString())),
-         DemonicsSaver.Load("playerName", _playerNameInputFieldInitial.ToString()));
-        _onlineSetupMenu.SetCharacter(int.Parse(DemonicsSaver.Load("character", _characterSelectorInitial.ToString())));
         _playerNameInputField.text = DemonicsSaver.Load("playerName", _playerNameInputFieldInitial.ToString());
         _charactersAssistSelector.SetValue(int.Parse(DemonicsSaver.Load("characterassist", _characterAssistSelectorInitial.ToString())));
         _characterColorSelector.SetValue(int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.ToString())));
+        _onlineSetupMenu.SetCharacter(int.Parse(DemonicsSaver.Load("character", _characterSelectorInitial.ToString())));
+        _homeMenu.SetCharacter(int.Parse(DemonicsSaver.Load("character", _characterSelectorInitial.ToString())),
+int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.ToString())),
+ DemonicsSaver.Load("playerName", _playerNameInputFieldInitial.ToString()));
     }
 
     private void LoadStagePreferences()
