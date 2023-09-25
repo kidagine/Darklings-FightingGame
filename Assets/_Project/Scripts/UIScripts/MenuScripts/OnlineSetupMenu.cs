@@ -37,7 +37,7 @@ public class OnlineSetupMenu : BaseMenu
     [SerializeField] private MusicSO _musicSO = default;
     [SerializeField] private StageSO[] _stagesSO = default;
     private StageSO _currentStage;
-    public DemonData DemonData { get; set; } = new DemonData() { demonName = "DemonFighter", character = 0, assist = 0, color = 0 };
+    public DemonData DemonData { get; set; } = new DemonData() { demonName = "Darkling", character = 0, assist = 0, color = 0 };
 
 
     public void SetDemonName(string demonName)

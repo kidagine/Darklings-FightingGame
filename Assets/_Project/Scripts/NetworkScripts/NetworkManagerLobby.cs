@@ -142,7 +142,7 @@ public class NetworkManagerLobby : MonoBehaviour
         }
         if (lobbies.Length == 0)
         {
-            _onlineErrorMenu.Show("No lobbies found");
+            _onlineErrorMenu.Show("No rooms found");
             return null;
         }
         return lobbies;

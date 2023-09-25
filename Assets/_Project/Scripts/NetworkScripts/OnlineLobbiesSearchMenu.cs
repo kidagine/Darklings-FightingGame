@@ -25,7 +25,7 @@ public class OnlineLobbiesSearchMenu : BaseMenu
             LobbyButton lobbyButton = Instantiate(_lobbyPrefab, _lobbiesGroup).GetComponent<LobbyButton>();
             lobbyButton.SetData($"{lobbies[i].Players[0].Data["DemonName"].Value}'s Lobby");
             string id = lobbies[i].Id;
-            lobbyButton._onClickedAnimationEnd.AddListener(() => JoinLobby(id));
+            lobbyButton.GetComponent<Button>().onClick.AddListener(() => JoinLobby(id));
             if (i == 0)
                 _firstSelectable = lobbyButton.GetComponent<Selectable>();
         }
@@ -43,7 +43,7 @@ public class OnlineLobbiesSearchMenu : BaseMenu
             Hide();
             return;
         }
-        List<DemonData> demonDatas = new List<DemonData>();
+        List<DemonData> demonDatas = new();
         foreach (var player in lobby.Players)
         {
             demonDatas.Add(new DemonData()

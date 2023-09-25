@@ -208,8 +208,8 @@ public class OnlineHostMenu : BaseMenu
         else
             SceneSettings.StageIndex = SceneSettings.OnlineStageIndex;
         SceneSettings.MusicName = SceneSettings.OnlineMusicName;
-        _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
-        _fadeHandler.StartFadeTransition(true);
+        _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(1, LoadSceneMode.Single));
+        _fadeHandler.StartFadeTransition(true, 0.35f);
     }
 
     public async void QuitLobby()

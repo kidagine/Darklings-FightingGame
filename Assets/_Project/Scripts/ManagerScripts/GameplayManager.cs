@@ -842,7 +842,7 @@ public class GameplayManager : MonoBehaviour
                                 if (PlayerTwo.Lives == 0)
                                 {
                                     _playerOneWins++;
-                                    _winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
+                                    _winsText.text = $"{_playerOneWins} - {_playerTwoWins}";
                                     MatchOver();
                                 }
                                 else
@@ -856,7 +856,7 @@ public class GameplayManager : MonoBehaviour
                                 if (PlayerOne.Lives == 0)
                                 {
                                     _playerTwoWins++;
-                                    _winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
+                                    _winsText.text = $"{_playerOneWins} - {_playerTwoWins}";
                                     MatchOver();
                                 }
                                 else
