@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CharacterOnlineButton : MonoBehaviour, ISelectHandler, IDeselectHandler
+public class CharacterOnlineButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private PlayerStatsSO _playerStatsSO = default;
     [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
@@ -17,7 +17,6 @@ public class CharacterOnlineButton : MonoBehaviour, ISelectHandler, IDeselectHan
     {
         _audio.Sound("Selected").Play();
         _playerSelector.SetActive(true);
-        _onlineSetupMenu.SetCharacterImage(PlayerStatsSO);
     }
 
     public void Activate()
@@ -34,10 +33,15 @@ public class CharacterOnlineButton : MonoBehaviour, ISelectHandler, IDeselectHan
     {
         _audio.Sound("Pressed").Play();
         _onlineSetupMenu.SelectCharacterImage(PlayerStatsSO);
+        _onlineSetupMenu.SetCharacterImage(PlayerStatsSO);
         Select();
     }
 
     public void Select() => _backgroundImage.SetActive(true);
 
     private void OnDisable() => _playerSelector.SetActive(false);
+
+    public void OnPointerEnter(PointerEventData eventData) => Cursor.SetCursor(MouseSetup.Instance.HoverCursor, Vector2.zero, CursorMode.Auto);
+
+    public void OnPointerExit(PointerEventData eventData) => Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
 }

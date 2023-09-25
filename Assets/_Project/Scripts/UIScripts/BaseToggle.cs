@@ -28,6 +28,8 @@ public class BaseToggle : BaseButton
         _animator.SetBool("IsPress", false);
     }
 
+    public virtual void ResetHover() { }
+
     public override void OnPointerDown(PointerEventData eventData)
     {
         _baseTogglesGroup.ActiveToggle = this;

@@ -7,6 +7,7 @@ public class HotBarToggle : BaseToggle
 {
     [SerializeField] private TopBarMenu _topBarMenu;
     [SerializeField] private GameObject _activationBar;
+    [SerializeField] private GameObject _options;
     [SerializeField] private TextMeshProUGUI _explanationText;
     [SerializeField] private string _explanation;
     public static HotBarToggle PreviousSelected;
@@ -30,8 +31,16 @@ public class HotBarToggle : BaseToggle
     public override void OnSelect(BaseEventData eventData)
     {
         PreviousSelected = this;
+        _options.SetActive(true);
         _explanationText.text = _explanation;
+        _baseTogglesGroup.CheckHover(this);
         base.OnSelect(eventData);
+    }
+
+    public override void OnDeselect(BaseEventData eventData)
+    {
+        //_options.SetActive(false);
+        //base.OnDeselect(eventData);
     }
 
     public override void Activate()
@@ -43,28 +52,29 @@ public class HotBarToggle : BaseToggle
         _activationBar.SetActive(true);
     }
 
+    public override void ResetHover()
+    {
+        _isPressed = false;
+        _options.SetActive(false);
+        _animator.SetBool("IsHover", false);
+        _animator.SetBool("IsPress", false);
+    }
+
     public override void ResetToggle()
     {
         base.ResetToggle();
+        ResetHover();
         _activationBar.SetActive(false);
     }
-
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
         if (_isPressed)
             return;
-        _animator.SetBool("IsHover", true);
-        _audio.Sound("Selected").Play();
-        Cursor.SetCursor(MouseSetup.Instance.HoverCursor, Vector2.zero, CursorMode.Auto);
         _button.Select();
     }
 
-
-    public override void OnPointerExit(PointerEventData eventData)
+    public override void OnPointerDown(PointerEventData eventData)
     {
-        if (_isPressed)
-            return;
-        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 }

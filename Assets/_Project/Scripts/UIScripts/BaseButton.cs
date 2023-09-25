@@ -16,6 +16,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     [SerializeField] public float _scrollUpAmount = default;
     [SerializeField] public float _scrollDownAmount = default;
     [SerializeField] private bool _selectOnHover = default;
+    [SerializeField] private bool _clickAnimation = true;
     [SerializeField] private bool _ignoreFirstSelectSound = default;
     [SerializeField] private bool _allowMultiplePresses = default;
     [SerializeField] private Selectable selectableParent = default;
@@ -133,6 +134,8 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         if (_ignoreFirstSelectSound)
             _isIgnoringFirstSelectSound = true;
         _animator.Rebind();
+        _animator.SetBool("IsHover", false);
+        _animator.SetBool("IsPress", false);
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
@@ -141,6 +144,8 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
             return;
         _audio.Sound("Pressed").Play();
         _animator.SetBool("IsPress", true);
+        if (!_clickAnimation)
+            return;
         if (_moveVerticalCoroutine != null)
             StopCoroutine(_moveVerticalCoroutine);
         _rect.anchoredPosition = _defaultPosition;
@@ -154,8 +159,10 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         if (_resetToDefault)
         {
             _isPressed = false;
-            // _animator.SetBool("IsPress", false);
+            _animator.SetBool("IsPress", false);
         }
+        if (!_clickAnimation)
+            return;
         if (_moveVerticalCoroutine != null)
             StopCoroutine(_moveVerticalCoroutine);
         _rect.anchoredPosition = _defaultPosition + (-_moveVerticalAmount * Vector2.up);

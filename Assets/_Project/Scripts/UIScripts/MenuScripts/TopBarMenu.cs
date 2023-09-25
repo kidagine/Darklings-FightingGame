@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,6 +17,8 @@ public class TopBarMenu : MonoBehaviour
     [SerializeField] private BaseMenu _previousMenu = default;
     [SerializeField] private GameObject _backgroundImage = default;
     [SerializeField] private InputManager _inputManager = default;
+    [SerializeField] private GameObject _menuTitle = default;
+    [SerializeField] private TextMeshProUGUI _menuTitleText = default;
     [SerializeField] private Animator _animator;
     [SerializeField] private Canvas _canvas;
     [SerializeField] private GameObject _previousSelectable;
@@ -64,5 +67,11 @@ public class TopBarMenu : MonoBehaviour
         _animator.SetBool("Appear", true);
         _animator.SetBool("Disappear", false);
         EventSystem.current.SetSelectedGameObject(_previousSelectable);
+    }
+
+    public void SetMenuTitle(string text)
+    {
+        _menuTitleText.text = text;
+        _menuTitle.SetActive(text != "");
     }
 }

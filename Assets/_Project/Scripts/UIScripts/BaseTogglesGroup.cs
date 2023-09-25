@@ -18,6 +18,14 @@ public class BaseTogglesGroup : MonoBehaviour
                 _toggles[i].ResetToggle();
     }
 
+    public void CheckHover(BaseToggle baseToggle)
+    {
+        if (_toggles.Count > 0)
+            for (int i = 0; i < _toggles.Count; i++)
+                if (_toggles[i] != baseToggle)
+                    _toggles[i].ResetHover();
+    }
+
     public void AddToggle(BaseToggle toggle) => _toggles.Add(toggle);
 
     public void NextPage()
