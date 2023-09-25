@@ -11011,7 +11011,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 5
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -15378,8 +15378,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444084334}
-  m_LocalRotation: {x: 1.7827645e-28, y: 7.5950165e-23, z: -0, w: 1}
-  m_LocalPosition: {x: -2.901296e-20, y: -20.48194, z: -191}
+  m_LocalRotation: {x: -0, y: 9.8980035e-18, z: -0, w: 1}
+  m_LocalPosition: {x: -3.7810373e-15, y: -20.48194, z: -191}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -31963,7 +31963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abfa8ae57f7a99489a2e421e58fa7ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startingOption: {fileID: 4703080448793614862}
+  _startingOption: {fileID: 1042859987}
   _networkManager: {fileID: 1648980305}
   _onlineMainMenu: {fileID: 0}
   _onlineSetupMenu: {fileID: 1328516421}
@@ -33800,8 +33800,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998273396}
-  m_LocalRotation: {x: 1.7827645e-28, y: 7.5950165e-23, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5190017e-21, y: -42, z: -190}
+  m_LocalRotation: {x: -0, y: 9.8980035e-18, z: -0, w: 1}
+  m_LocalPosition: {x: -1.9796007e-16, y: -42, z: -190}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -35975,7 +35975,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6447556989222551188, guid: 979ae828fb161e04d90bb5c5a3fd0c7c, type: 3}
       propertyPath: m_Navigation.m_Mode
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6447556989222551189, guid: 979ae828fb161e04d90bb5c5a3fd0c7c, type: 3}
       propertyPath: m_Pivot.x
@@ -47795,19 +47795,7 @@ MonoBehaviour:
       m_Calls: []
   OnBack:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114763691}
-        m_TargetAssemblyTypeName: TopBarMenu, Scripts
-        m_MethodName: ShowHotBar
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   OnCoop:
     m_PersistentCalls:
       m_Calls: []
@@ -47840,7 +47828,19 @@ MonoBehaviour:
       m_Calls: []
   OnHotbar:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114763691}
+        m_TargetAssemblyTypeName: TopBarMenu, Scripts
+        m_MethodName: ShowHotBar
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &1347841018
 GameObject:
   m_ObjectHideFlags: 0
@@ -79445,7 +79445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6447556989222551188, guid: 979ae828fb161e04d90bb5c5a3fd0c7c, type: 3}
       propertyPath: m_Navigation.m_Mode
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6447556989222551188, guid: 979ae828fb161e04d90bb5c5a3fd0c7c, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
@@ -79587,17 +79587,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4703080448793614862 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6447556989222551188, guid: 979ae828fb161e04d90bb5c5a3fd0c7c, type: 3}
-  m_PrefabInstance: {fileID: 1747080184107885722}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &4703080448793614863 stripped

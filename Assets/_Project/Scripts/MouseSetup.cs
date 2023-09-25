@@ -29,6 +29,8 @@ public class MouseSetup : Singleton<MouseSetup>
         if (Input.anyKeyDown)
             if (!Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1))
                 _mouseVisible = false;
+        if (Input.GetKeyDown(KeyCode.Space))
+            _mouseVisible = true;
         Cursor.visible = _mouseVisible;
     }
 }
