@@ -435,6 +435,7 @@ public class GameplayManager : MonoBehaviour
         RunReady();
         RunRoundOver();
     }
+
     public void SetCountdown(int timer)
     {
         if (!_isTrainingMode && GameSimulation.Run)
@@ -446,12 +447,9 @@ public class GameplayManager : MonoBehaviour
                 RoundOver(true);
             }
             else if (timer <= 10)
-            {
                 _timerMainAnimator.SetTrigger("TimerLow");
-            }
         }
     }
-
 
     public void SkipIntro()
     {
