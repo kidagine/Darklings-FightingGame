@@ -47,7 +47,7 @@ public class OnlineHostMenu : BaseMenu
                 Hide();
                 return;
             }
-            _lobbyIdText.text = $"Lobby ID: {_lobbyId}";
+            _lobbyIdText.text = $"Room ID: {_lobbyId}";
             _creatingLobby.SetActive(false);
             _lobbyCreated.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null);
@@ -138,7 +138,7 @@ public class OnlineHostMenu : BaseMenu
         if (lobbyId == null)
             _lobbyIdText.text = "";
         else
-            _lobbyIdText.text = $"Lobby ID: {lobbyId.ToUpper()}";
+            _lobbyIdText.text = $"Room ID: {lobbyId.ToUpper()}";
     }
 
     public void Ready()
