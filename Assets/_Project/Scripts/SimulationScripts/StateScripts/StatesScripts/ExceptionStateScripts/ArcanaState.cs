@@ -38,7 +38,6 @@ public class ArcanaState : State
             player.attackFrames--;
         }
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
-
         UpdateFramedata(player);
         ToIdleState(player);
 

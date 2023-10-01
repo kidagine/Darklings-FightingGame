@@ -41,6 +41,17 @@ public class PlayersMenu : BaseMenu
         }
     }
 
+    public void OpenNextMenu(int intToCheck)
+    {
+        if (PlayerGroups[intToCheck].childCount == 0)
+            return;
+        if (gameObject.activeInHierarchy)
+        {
+            gameObject.SetActive(false);
+            _characterMenu.Show();
+        }
+    }
+
     public void OpenKeyboardCoOp()
     {
         _audio.Sound("Pressed").Play();

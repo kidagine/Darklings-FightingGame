@@ -1,11 +1,11 @@
-using System.Collections;
 using Demonics;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class PlayerAnimator : DemonicsAnimator
 {
     [SerializeField] private Player _player = default;
+    [SerializeField] private Material _normal = default;
+    [SerializeField] private Material _invincible = default;
     private Shadow _shadow;
 
 
@@ -18,6 +18,9 @@ public class PlayerAnimator : DemonicsAnimator
     {
         _animation = _player.playerStats._animation;
     }
+
+    public void NormalMaterial() => _spriteRenderer.material = _normal;
+    public void InvinciblelMaterial() => _spriteRenderer.material = _invincible;
 
     public bool GetProjectile(string name, int frame)
     {

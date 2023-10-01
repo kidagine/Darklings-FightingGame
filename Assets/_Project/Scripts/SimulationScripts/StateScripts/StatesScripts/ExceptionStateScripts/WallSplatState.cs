@@ -11,7 +11,7 @@ public class WallSplatState : State
             CameraShake.Instance.Zoom(-4, 0.2f);
             player.comboLocked = true;
             player.wasWallSplatted = true;
-            DemonVector2 effectPosition = new DemonVector2(player.position.x + ((DemonFloat)2.25 * player.flip), player.position.y);
+            DemonVector2 effectPosition = new(player.position.x + ((DemonFloat)(-30) * player.flip), player.position.y);
             if (player.flip == 1)
                 player.SetParticle("WallSplat", effectPosition);
             else

@@ -45,17 +45,13 @@ public class PlayerStatsSO : ScriptableObject
     {
         get
         {
-            switch (speedLevel)
+            return speedLevel switch
             {
-                case 1:
-                    return (DemonFloat)0.48;
-                case 2:
-                    return (DemonFloat)0.8;
-                case 3:
-                    return (DemonFloat)1.12;
-                default:
-                    return (DemonFloat)0;
-            }
+                1 => (DemonFloat)0.48,
+                2 => (DemonFloat)0.74,
+                3 => (DemonFloat)1.05,
+                _ => (DemonFloat)0,
+            };
         }
         set { }
     }
@@ -63,17 +59,13 @@ public class PlayerStatsSO : ScriptableObject
     {
         get
         {
-            switch (speedLevel)
+            return speedLevel switch
             {
-                case 1:
-                    return (DemonFloat)0.43;
-                case 2:
-                    return (DemonFloat)0.7;
-                case 3:
-                    return (DemonFloat)1.0;
-                default:
-                    return (DemonFloat)0;
-            }
+                1 => (DemonFloat)0.43,
+                2 => (DemonFloat)0.68,
+                3 => (DemonFloat)0.95,
+                _ => (DemonFloat)0,
+            };
         }
         set { }
     }
@@ -81,17 +73,13 @@ public class PlayerStatsSO : ScriptableObject
     {
         get
         {
-            switch (speedLevel)
+            return speedLevel switch
             {
-                case 1:
-                    return (DemonFloat)2.4;
-                case 2:
-                    return (DemonFloat)2.88;
-                case 3:
-                    return (DemonFloat)3.36;
-                default:
-                    return (DemonFloat)0;
-            }
+                1 => (DemonFloat)2.3,
+                2 => (DemonFloat)2.7,
+                3 => (DemonFloat)3.1,
+                _ => (DemonFloat)0,
+            };
         }
         set { }
     }
@@ -99,17 +87,13 @@ public class PlayerStatsSO : ScriptableObject
     {
         get
         {
-            switch (jumpLevel)
+            return jumpLevel switch
             {
-                case 1:
-                    return (DemonFloat)5.44;
-                case 2:
-                    return (DemonFloat)5.6;
-                case 3:
-                    return (DemonFloat)5.92;
-                default:
-                    return (DemonFloat)0;
-            }
+                1 => (DemonFloat)5.44,
+                2 => (DemonFloat)5.6,
+                3 => (DemonFloat)5.92,
+                _ => (DemonFloat)0,
+            };
         }
         set { }
     }
@@ -117,17 +101,13 @@ public class PlayerStatsSO : ScriptableObject
     {
         get
         {
-            switch (dashLevel)
+            return dashLevel switch
             {
-                case 1:
-                    return (DemonFloat)3.8;
-                case 2:
-                    return (DemonFloat)4;
-                case 3:
-                    return (DemonFloat)4.2;
-                default:
-                    return (DemonFloat)0;
-            }
+                1 => (DemonFloat)3.5,
+                2 => (DemonFloat)3.7,
+                3 => (DemonFloat)3.9,
+                _ => (DemonFloat)0,
+            };
         }
         set { }
     }
@@ -135,17 +115,13 @@ public class PlayerStatsSO : ScriptableObject
     {
         get
         {
-            switch (dashLevel)
+            return dashLevel switch
             {
-                case 1:
-                    return (DemonFloat)3.2;
-                case 2:
-                    return (DemonFloat)3.4;
-                case 3:
-                    return (DemonFloat)3.6;
-                default:
-                    return (DemonFloat)0;
-            }
+                1 => (DemonFloat)2.8,
+                2 => (DemonFloat)3.0,
+                3 => (DemonFloat)3.2,
+                _ => (DemonFloat)0,
+            };
         }
         set { }
     }
@@ -153,17 +129,13 @@ public class PlayerStatsSO : ScriptableObject
     {
         get
         {
-            switch (dashLevel)
+            return dashLevel switch
             {
-                case 1:
-                    return (DemonFloat)3.6;
-                case 2:
-                    return (DemonFloat)3.8;
-                case 3:
-                    return (DemonFloat)4.0;
-                default:
-                    return (DemonFloat)0;
-            }
+                1 => (DemonFloat)3.3,
+                2 => (DemonFloat)3.5,
+                3 => (DemonFloat)3.7,
+                _ => (DemonFloat)0,
+            };
         }
         set { }
     }
@@ -171,17 +143,13 @@ public class PlayerStatsSO : ScriptableObject
     {
         get
         {
-            switch (dashLevel)
+            return dashLevel switch
             {
-                case 1:
-                    return (DemonFloat)3.2;
-                case 2:
-                    return (DemonFloat)3.4;
-                case 3:
-                    return (DemonFloat)3.6;
-                default:
-                    return (DemonFloat)0;
-            }
+                1 => (DemonFloat)2.8,
+                2 => (DemonFloat)3.0,
+                3 => (DemonFloat)3.2,
+                _ => (DemonFloat)0,
+            };
         }
         set { }
     }

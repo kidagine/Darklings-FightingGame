@@ -1,3 +1,4 @@
+using System.Numerics;
 using Demonics;
 
 public class KnockdownSoftState : State
@@ -11,7 +12,7 @@ public class KnockdownSoftState : State
             player.enter = true;
             player.animationFrames = 0;
             player.sound = "Landed";
-            player.SetParticle("KnockdownSoft", player.position);
+            player.SetParticle("KnockdownSoft", new DemonVector2(player.position.x, player.position.y - 15));
             player.framedataEnum = FramedataTypesEnum.Knockdown;
             return;
         }
@@ -24,8 +25,6 @@ public class KnockdownSoftState : State
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.animationFrames >= 30)
-        {
             EnterState(player, "WakeUp");
-        }
     }
 }

@@ -9,7 +9,7 @@ public class AttackState : State
         {
             if (player.juggleBounce & player.isAir)
             {
-                player.position = new DemonVector2((DemonFloat)player.position.x, (DemonFloat)player.position.y + 7);
+                player.position = new DemonVector2(player.position.x, player.position.y + 7);
                 player.juggleBounce = false;
             }
             player.attackNetwork.guardBreak = false;

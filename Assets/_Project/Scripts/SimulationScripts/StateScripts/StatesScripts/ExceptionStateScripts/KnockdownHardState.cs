@@ -12,7 +12,7 @@ public class KnockdownHardState : State
             player.enter = true;
             player.animationFrames = 0;
             player.sound = "Landed";
-            player.SetParticle("KnockdownHard", player.position);
+            player.SetParticle("KnockdownHard", new DemonVector2(player.position.x, player.position.y - 15));
             player.framedataEnum = FramedataTypesEnum.Knockdown;
             return;
         }
@@ -25,8 +25,6 @@ public class KnockdownHardState : State
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.animationFrames >= 60)
-        {
             EnterState(player, "WakeUp");
-        }
     }
 }
