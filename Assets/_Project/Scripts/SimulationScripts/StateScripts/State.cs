@@ -285,6 +285,7 @@ public class State
     {
         if (!player.gotHit || name.Contains("Hurt") || name.Contains("Airborne") || name.Contains("Grabbed") || name.Contains("Block") || name.Contains("Knockback"))
         {
+            player.player.PlayerAnimator.NormalMaterial();
             player.framedataEnum = Demonics.FramedataTypesEnum.None;
             player.enter = skipEnter;
             player.state = name;

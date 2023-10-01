@@ -6,6 +6,8 @@ public class PlayerAnimator : DemonicsAnimator
     [SerializeField] private Player _player = default;
     [SerializeField] private Material _normal = default;
     [SerializeField] private Material _invincible = default;
+    [SerializeField] private Material _armor = default;
+    [SerializeField] private Material _parry = default;
     private Shadow _shadow;
 
 
@@ -21,7 +23,8 @@ public class PlayerAnimator : DemonicsAnimator
 
     public void NormalMaterial() => _spriteRenderer.material = _normal;
     public void InvinciblelMaterial() => _spriteRenderer.material = _invincible;
-
+    public void ArmorMaterial() => _spriteRenderer.material = _armor;
+    public void ParryMaterial() => _spriteRenderer.material = _parry;
     public bool GetProjectile(string name, int frame)
     {
         return GetEvent(name, frame, out _).projectile;

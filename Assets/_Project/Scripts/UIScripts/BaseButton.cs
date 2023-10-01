@@ -48,8 +48,8 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         if (!_isIgnoringFirstSelectSound)
         {
         }
+        _animator.SetBool("IsHover", true);
         _isIgnoringFirstSelectSound = false;
-
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
@@ -74,11 +74,10 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     {
         if (!_wasClicked)
         {
+            _animator.SetBool("IsPress", true);
             EventSystem.current.sendNavigationEvents = false;
             if (!_allowMultiplePresses)
-            {
                 _wasClicked = true;
-            }
         }
     }
 

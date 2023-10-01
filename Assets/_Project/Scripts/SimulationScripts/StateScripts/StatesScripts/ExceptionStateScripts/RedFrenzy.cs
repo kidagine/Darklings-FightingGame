@@ -17,8 +17,9 @@ public class RedFrenzyState : State
             player.healthRecoverable = player.health;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-            DemonVector2 effectPosition = new DemonVector2(player.position.x, player.position.y + 20);
+            DemonVector2 effectPosition = new(player.position.x, player.position.y + 20);
             player.SetParticle("RedFrenzy", effectPosition);
+            player.player.PlayerAnimator.ArmorMaterial();
             UpdateFramedata(player);
             return;
         }
@@ -58,13 +59,9 @@ public class RedFrenzyState : State
         {
             player.dashFrames = 0;
             if (player.position.y > DemonicsPhysics.GROUND_POINT)
-            {
                 EnterState(player, "Fall");
-            }
             else
-            {
                 EnterState(player, "Idle");
-            }
         }
     }
     private void ToHurtState(PlayerNetwork player)

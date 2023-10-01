@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 344c00355f060794ea582079ebb0a81f, type: 3}
+  m_Name: Wind
+  m_EditorClassIdentifier: 
+  shaderDescription: '- Adds dynamic wind sway with optional interaction.
+
+    -
+    Add the <b>InteractiveWindSSU</b> component for interaction.
+
+    - Have one
+    <b>WindManagerSSU</b> component in your scene.'
+  hints:
+  - property: _WindFlip
+    text: '- Set to <b>-1</b> to flip the effect upside-down.'
+  - property: _WindXPosition
+    text: '- Requires the <b>WindParallaxSSU</b> component.'
+  lines:
+  - _WindRotationWindFactor
+  spaceHint: 
+  requiresFullRectMesh: 1
+  requiresSpriteSheetFix: 1
+  requiresInstancing: 1
+  benchmarkValue: 1300
+  textureSamples: 0
+  textureToggle: 
+  textureToggleExtra: 

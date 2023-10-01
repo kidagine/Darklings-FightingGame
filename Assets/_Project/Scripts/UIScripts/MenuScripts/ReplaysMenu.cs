@@ -24,13 +24,9 @@ public class ReplaysMenu : BaseMenu
                 ReplayCard replayCard = Instantiate(_replayPrefab, _replaysGroup).GetComponent<ReplayCard>();
                 replayCard.SetData(ReplayManager.Instance.GetReplayData(i));
                 int index = i;
-                replayCard.GetComponent<BaseButton>()._onClickedAnimationEnd.AddListener(() => LoadReplayMatch(index));
-                replayCard.GetComponent<BaseButton>()._scrollView = _scrollView;
+                replayCard.Initialize(index, this, _scrollView);
                 _replayCards.Add(replayCard);
             }
-            _replayCards[0].GetComponent<BaseButton>()._scrollUpAmount = 0.0f;
-            _replayCards[^1].GetComponent<BaseButton>()._scrollDownAmount = 0.0f;
-            _replayCards[0].GetComponent<Button>().Select();
         }
         else
             _noReplaysFound.SetActive(true);

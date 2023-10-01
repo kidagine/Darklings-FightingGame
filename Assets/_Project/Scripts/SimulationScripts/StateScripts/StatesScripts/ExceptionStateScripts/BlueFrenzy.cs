@@ -13,6 +13,7 @@ public class BlueFrenzyState : State
             player.animationFrames = 0;
             player.animation = "Parry";
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
+            player.player.PlayerAnimator.ParryMaterial();
             UpdateFramedata(player);
             return;
         }

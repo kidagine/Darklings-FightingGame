@@ -268,7 +268,6 @@ public struct GameSimulation : IGame
             if (_players[index].inputBuffer.triggers[i].frame + 25 < Frames)
                 _players[index].inputBuffer.triggers[i].frame = 0;
         }
-
         _players[index].gotHit = false;
         for (int i = 0; i < _players[index].inputList.inputTriggers.Length; i++)
             _players[index].inputList.inputTriggers[i].pressed = false;

@@ -31,6 +31,8 @@ public class AttackState : State
                 }
                 //CheckTrainingComboEnd(player);
             }
+            if (player.attackNetwork.superArmor > 0)
+                player.player.PlayerAnimator.ArmorMaterial();
             player.animationFrames = 0;
             SetTopPriority(player);
             player.canChainAttack = false;
@@ -108,12 +110,12 @@ public class AttackState : State
         {
             if (player.flip > 0)
             {
-                DemonVector2 effectPosition = new DemonVector2(player.position.x - 1, player.position.y);
+                DemonVector2 effectPosition = new(player.position.x - 1, player.position.y);
                 player.SetEffect("Ghost", player.position, false);
             }
             else
             {
-                DemonVector2 effectPosition = new DemonVector2(player.position.x + 1, player.position.y);
+                DemonVector2 effectPosition = new(player.position.x + 1, player.position.y);
                 player.SetEffect("Ghost", player.position, true);
             }
         }
@@ -142,15 +144,9 @@ public class AttackState : State
                     if (input.inputEnum == InputEnum.Heavy && input.inputDirection != InputDirectionEnum.Down && player.attackInput != InputEnum.Light)
                         return;
                     if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
-                    {
                         if (input.inputEnum != InputEnum.Throw)
-                        {
                             if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && input.inputEnum == InputEnum.Heavy && player.direction.y >= 0))
-                            {
                                 Attack(player, player.isAir);
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -163,9 +159,7 @@ public class AttackState : State
             if (player.direction.y > 0)
             {
                 if (player.isAir)
-                {
                     player.canDoubleJump = false;
-                }
                 player.juggleBounce = true;
                 player.isCrouch = false;
                 player.isAir = false;
@@ -181,9 +175,7 @@ public class AttackState : State
             if (player.direction.y > 0 && player.direction.x != 0)
             {
                 if (player.isAir)
-                {
                     player.canDoubleJump = false;
-                }
                 player.jumpDirection = (int)player.direction.x;
                 player.juggleBounce = true;
                 player.isCrouch = false;
@@ -270,18 +262,12 @@ public class AttackState : State
                 if ((DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
-                    {
                         EnterState(player, "Hurt");
-                    }
                     else
-                    {
                         EnterState(player, "HurtAir");
-                    }
                 }
                 else
-                {
                     EnterState(player, "HurtAir");
-                }
             }
         }
     }

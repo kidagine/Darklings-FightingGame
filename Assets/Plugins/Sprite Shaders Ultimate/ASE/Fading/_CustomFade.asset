@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b2425a2284af743826c689403a4924, type: 3}
+  m_Name: _CustomFade
+  m_EditorClassIdentifier: 
+  m_functionInfo: "// Made with Amplify Shader Editor\n// Available at the Unity
+    Asset Store - http://u3d.as/y3X \n/*ASEBEGIN\nVersion=18935\n183;363;1803;812;2029.018;412.1936;1.465572;True;False\nNode;AmplifyShaderEditor.FunctionInput;1;-216,-66;Inherit;False;In
+    Color;5;2;False;1;0;COLOR;0,0,0,0;False;1;COLOR;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;34;-595.2643,79.59399;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionInput;57;-1534.655,500.9676;Inherit;False;In
+    UV;2;0;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.TextureCoordinatesNode;58;-1791.608,464.8521;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4\nNode;AmplifyShaderEditor.Vector2Node;40;-1516.174,709.9883;Inherit;False;Property;_CustomFadeNoiseScale;Custom
+    Fade: Noise Scale;2;0;Create;True;0;0;0;False;0;False;1,1;1,1;0;3;FLOAT2;0;FLOAT;1;FLOAT;2\nNode;AmplifyShaderEditor.FunctionInput;56;-1360.872,860.9884;Inherit;False;Noise
+    Texture;9;1;False;1;0;SAMPLER2D;0;False;1;SAMPLER2D;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;42;-826.4465,790.0983;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleDivideOpNode;50;-101.7185,620.4097;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;43;-1143.211,951.8683;Inherit;False;Property;_CustomFadeNoiseFactor;Custom
+    Fade: Noise Factor;3;0;Create;True;0;0;0;False;0;False;0;0;0;0.5;0;1;FLOAT;0\nNode;AmplifyShaderEditor.DynamicAppendNode;13;1057.866,-84.75348;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;33;-287.6952,329.0899;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;15;818.0127,43.00973;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.TexturePropertyNode;2;-1422.056,233.7331;Inherit;True;Property;_CustomFadeFadeMask;Custom
+    Fade: Fade Mask;0;0;Create;True;0;0;0;False;0;False;91f759c7694b66c41b5a9e587c22f40e;0dc94c6eb3e463a479c839873ff17314;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1\nNode;AmplifyShaderEditor.SimpleMaxOpNode;52;-302.3028,628.2375;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0.05;False;1;FLOAT;0\nNode;AmplifyShaderEditor.VertexColorNode;4;-950.2176,-157.3839;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4\nNode;AmplifyShaderEditor.RangedFloatNode;47;-390.2672,729.48;Inherit;False;Property;_CustomFadeSmoothness;Custom
+    Fade: Smoothness;1;0;Create;True;0;0;0;False;0;False;2;2;0;0;0;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;48;-575.1073,400.9639;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.ClampOpNode;37;97.90979,342.8038;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0\nNode;AmplifyShaderEditor.BreakToComponentsNode;14;537.1303,26.26826;Inherit;False;COLOR;1;0;COLOR;0,0,0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15\nNode;AmplifyShaderEditor.FunctionNode;38;-1162.75,723.1277;Inherit;False;NoiseTexture;-1;;1;7fe1e2210473a53449e5b562606d8e1a;0;3;1;FLOAT2;0,0;False;5;FLOAT2;1,1;False;3;SAMPLER2D;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SamplerNode;3;-1116.51,366.1427;Inherit;True;Property;_TextureSample0;Texture
+    Sample 0;1;0;Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4\nNode;AmplifyShaderEditor.TexturePropertyNode;39;-1681.105,942.8765;Inherit;True;Property;_CustomFadeNoiseTexture;Custom
+    Fade: Noise Texture;4;0;Create;True;0;0;0;False;0;False;cd21d0de17dcd734691f79979be13330;cd21d0de17dcd734691f79979be13330;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1\nNode;AmplifyShaderEditor.PowerNode;44;406.1183,552.4395;Inherit;False;False;2;0;FLOAT;0;False;1;FLOAT;10;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;53;440.7005,236.8984;Inherit;False;Property;_CustomFadeAlpha;Custom
+    Fade: Alpha;5;0;Create;True;0;0;0;False;0;False;1;0;0;1;0;1;FLOAT;0\nNode;AmplifyShaderEditor.ComponentMaskNode;6;584.6541,-381.9507;Inherit;False;True;True;True;False;1;0;COLOR;0,0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.SimpleSubtractOpNode;35;-434.2643,156.594;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionOutput;0;1376.302,-27.98392;Inherit;False;True;-1;Out
+    Color;0;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0\nWireConnection;34;0;4;4\nWireConnection;57;0;58;0\nWireConnection;56;0;39;0\nWireConnection;42;0;38;0\nWireConnection;42;1;43;0\nWireConnection;50;0;47;0\nWireConnection;50;1;52;0\nWireConnection;13;0;6;0\nWireConnection;13;3;15;0\nWireConnection;33;0;35;0\nWireConnection;33;1;48;0\nWireConnection;15;0;14;3\nWireConnection;15;1;44;0\nWireConnection;15;2;53;0\nWireConnection;52;0;3;1\nWireConnection;48;0;3;1\nWireConnection;48;1;42;0\nWireConnection;37;0;33;0\nWireConnection;14;0;1;0\nWireConnection;38;1;57;0\nWireConnection;38;5;40;0\nWireConnection;38;3;56;0\nWireConnection;3;0;2;0\nWireConnection;3;1;57;0\nWireConnection;44;0;37;0\nWireConnection;44;1;50;0\nWireConnection;6;0;1;0\nWireConnection;35;0;34;0\nWireConnection;0;0;13;0\nASEEND*/\n//CHKSM=2D5968A7C7556C3EFF5DA4829C48DEA1C33C237E"
+  m_functionName: 
+  m_description: 
+  m_additionalIncludes:
+    m_additionalIncludes: []
+    m_outsideIncludes: []
+  m_additionalPragmas:
+    m_additionalPragmas: []
+    m_outsidePragmas: []
+  m_additionalDirectives:
+    m_validData: 0
+    m_isDirty: 0
+    m_moduleName: ' Additional Directives'
+    m_independentModule: 1
+    m_customEdited: 0
+    m_additionalDirectives: []
+    m_shaderFunctionDirectives: []
+    m_nativeDirectives: []
+    m_nativeDirectivesIndex: -1
+    m_nativeDirectivesFoldout: 0
+    m_directivesSaveItems: []
+  m_nodeCategory: 3
+  m_customNodeCategory: 
+  m_previewPosition: 0
+  m_hidden: 0
+  m_url: 
