@@ -1091,6 +1091,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
   _spacing: 2
+  _mainText: {fileID: 0}
+  _outlineTextGroup: {fileID: 0}
 --- !u!114 &24306043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2975,6 +2977,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
   _spacing: 2
+  _mainText: {fileID: 0}
+  _outlineTextGroup: {fileID: 0}
 --- !u!114 &62678228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15409,8 +15413,6 @@ GameObject:
   - component: {fileID: 351332431}
   - component: {fileID: 351332435}
   - component: {fileID: 351332434}
-  - component: {fileID: 351332433}
-  - component: {fileID: 351332432}
   m_Layer: 5
   m_Name: Hits_text
   m_TagString: Untagged
@@ -15438,41 +15440,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -2}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &351332432
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 351332430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b829383902dc9db4a96bf689b6a55349, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
-  _spacing: 5
---- !u!95 &351332433
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 351332430}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 83a9baad5c9e04841aeb7e3213f94b28, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &351332434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16339,6 +16306,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
   _spacing: 2
+  _mainText: {fileID: 0}
+  _outlineTextGroup: {fileID: 0}
 --- !u!114 &366165250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20364,6 +20333,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
   _spacing: 2
+  _mainText: {fileID: 0}
+  _outlineTextGroup: {fileID: 0}
 --- !u!1 &451178212
 GameObject:
   m_ObjectHideFlags: 0
@@ -21088,6 +21059,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
   _spacing: 2
+  _mainText: {fileID: 0}
+  _outlineTextGroup: {fileID: 0}
 --- !u!1001 &487612142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42556,6 +42529,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
   _spacing: 2
+  _mainText: {fileID: 0}
+  _outlineTextGroup: {fileID: 0}
 --- !u!114 &950397701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48104,7 +48079,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052570239}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1.539e-42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -63788,6 +63763,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
   _spacing: 4
+  _mainText: {fileID: 0}
+  _outlineTextGroup: {fileID: 0}
 --- !u!114 &1442515871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68453,7 +68430,6 @@ GameObject:
   - component: {fileID: 1559233398}
   - component: {fileID: 1559233401}
   - component: {fileID: 1559233400}
-  - component: {fileID: 1559233399}
   m_Layer: 5
   m_Name: Hits_text
   m_TagString: Untagged
@@ -68481,27 +68457,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -5}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!95 &1559233399
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559233397}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 83a9baad5c9e04841aeb7e3213f94b28, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1559233400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69015,7 +68970,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 214.42, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1570194254
@@ -73595,7 +73550,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 214.42, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1643923610
@@ -83374,6 +83329,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
   _spacing: 2
+  _mainText: {fileID: 0}
+  _outlineTextGroup: {fileID: 0}
 --- !u!114 &1820438072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87409,6 +87366,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
   _spacing: 2
+  _mainText: {fileID: 0}
+  _outlineTextGroup: {fileID: 0}
 --- !u!1 &1918725125
 GameObject:
   m_ObjectHideFlags: 0
@@ -89253,6 +89212,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
   _spacing: 2
+  _mainText: {fileID: 0}
+  _outlineTextGroup: {fileID: 0}
 --- !u!114 &1950533753
 MonoBehaviour:
   m_ObjectHideFlags: 0

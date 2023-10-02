@@ -10,7 +10,6 @@ public class PlayerIcon : MonoBehaviour
     [SerializeField] private PlayerInput _playerInput = default;
     [SerializeField] private TextMeshProUGUI _controllerText = default;
     [SerializeField] private TextMeshProUGUI _numberText = default;
-    [SerializeField] private TopBarMenu _hotBar = default;
     [SerializeField] private GameObject _leftArrow = default;
     [SerializeField] private GameObject _rightArrow = default;
     [SerializeField] private Color[] _colors = default;
@@ -53,8 +52,6 @@ public class PlayerIcon : MonoBehaviour
 
     public void Movement(CallbackContext callbackContext)
     {
-        if (_hotBar.Active)
-            return;
         if (gameObject.activeInHierarchy)
         {
             float movement = callbackContext.ReadValue<Vector2>().x;
@@ -88,8 +85,6 @@ public class PlayerIcon : MonoBehaviour
     {
         if (_playersMenu.PlayerGroups[2].childCount > 0)
             return;
-        if (_hotBar.Active)
-            return;
         _rightArrow.SetActive(false);
         _playersMenu.CpuTextRight.SetActive(false);
         _cpuText = _playersMenu.CpuTextRight;
@@ -99,8 +94,6 @@ public class PlayerIcon : MonoBehaviour
     public void MoveLeft()
     {
         if (_playersMenu.PlayerGroups[0].childCount > 0)
-            return;
-        if (_hotBar.Active)
             return;
         _leftArrow.gameObject.SetActive(false);
         _playersMenu.CpuTextLeft.SetActive(false);
@@ -114,11 +107,6 @@ public class PlayerIcon : MonoBehaviour
         _audio.Sound("Selected").Play();
         _rectTransform.SetParent(_playersMenu.PlayerGroups[0]);
         _cpuText = _playersMenu.CpuTextLeft;
-    }
-
-    void OnDisable()
-    {
-        _hotBar.StartCoroutine(ResetPlayerIcon());
     }
 
     IEnumerator ResetPlayerIcon()

@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 public class PlayersMenu : BaseMenu
 {
-    [SerializeField] private TopBarMenu _hotBar = default;
     [SerializeField] private CharacterMenu _characterMenu = default;
     [SerializeField] private PlayerIcon[] _playerIcons = default;
     [SerializeField] private RectTransform[] _playerGroups = default;
@@ -30,8 +29,6 @@ public class PlayersMenu : BaseMenu
     public void OpenOtherMenu()
     {
         _audio.Sound("Pressed").Play();
-        if (_hotBar.Active)
-            return;
         if (PlayerGroups[0].childCount == 0 && PlayerGroups[2].childCount == 0)
             _playerIcons[0].ConfirmQuickAssign();
         else if (gameObject.activeInHierarchy)

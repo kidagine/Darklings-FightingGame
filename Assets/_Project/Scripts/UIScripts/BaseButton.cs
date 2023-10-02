@@ -12,6 +12,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 {
     [SerializeField] public UnityEvent _onClickedAnimationEnd = default;
     [SerializeField] public UnityEvent _onSelected = default;
+    [SerializeField] public UnityEvent _onDeselected = default;
     [SerializeField] public RectTransform _scrollView = default;
     [SerializeField] public float _scrollUpAmount = default;
     [SerializeField] public float _scrollDownAmount = default;
@@ -29,7 +30,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     private Coroutine _moveVerticalCoroutine;
     protected Vector2 _defaultPosition;
     private readonly int _moveVerticalAmount = 5;
-    protected bool _resetToDefault = true;
+    protected bool _resetToDefault = false;
     protected bool _isPressed;
 
 
@@ -186,6 +187,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     public virtual void OnDeselect(BaseEventData eventData)
     {
+        _onDeselected?.Invoke();
         _animator.SetBool("IsHover", false);
     }
 }

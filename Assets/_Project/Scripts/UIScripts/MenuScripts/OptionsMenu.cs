@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class OptionsMenu : BaseMenu
 {
@@ -30,6 +29,5 @@ public class OptionsMenu : BaseMenu
     private void OnDisable()
     {
         _inputManager.SetPrompts(_inputManager.PreviousPrompts);
-        EventSystem.current.SetSelectedGameObject(HotBarToggle.PreviousSelected.gameObject);
     }
 }
