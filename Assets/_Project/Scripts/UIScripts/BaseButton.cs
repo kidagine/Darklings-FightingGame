@@ -21,6 +21,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     [SerializeField] private bool _ignoreFirstSelectSound = default;
     [SerializeField] private bool _allowMultiplePresses = default;
     [SerializeField] private Selectable selectableParent = default;
+    [SerializeField] protected bool _resetToDefault = false;
     protected Audio _audio;
     protected Button _button;
     protected Animator _animator;
@@ -30,7 +31,6 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     private Coroutine _moveVerticalCoroutine;
     protected Vector2 _defaultPosition;
     private readonly int _moveVerticalAmount = 5;
-    protected bool _resetToDefault = false;
     protected bool _isPressed;
 
 

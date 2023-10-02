@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayersMenu : BaseMenu
 {
+    [SerializeField] private HomeMenu _homeMenu = default;
     [SerializeField] private CharacterMenu _characterMenu = default;
     [SerializeField] private PlayerIcon[] _playerIcons = default;
     [SerializeField] private RectTransform[] _playerGroups = default;
@@ -34,6 +35,7 @@ public class PlayersMenu : BaseMenu
         else if (gameObject.activeInHierarchy)
         {
             gameObject.SetActive(false);
+            Hide();
             _characterMenu.Show();
         }
     }
@@ -45,6 +47,7 @@ public class PlayersMenu : BaseMenu
         if (gameObject.activeInHierarchy)
         {
             gameObject.SetActive(false);
+            Hide();
             _characterMenu.Show();
         }
     }
@@ -55,6 +58,7 @@ public class PlayersMenu : BaseMenu
         SceneSettings.ControllerOne = _playerIcons[0].PlayerInput.devices[0];
         SceneSettings.ControllerTwo = _playerIcons[0].PlayerInput.devices[0];
         gameObject.SetActive(false);
+        Hide();
         _characterMenu.Show();
     }
 
@@ -72,6 +76,7 @@ public class PlayersMenu : BaseMenu
             SceneSettings.ControllerTwo = _playerGroups[2].GetChild(0).GetComponent<PlayerIcon>().PlayerInput.devices[0];
         _cpuTextLeft.SetActive(true);
         _cpuTextRight.SetActive(true);
+        _homeMenu.Hide();
         InputSystem.onDeviceChange -= UpdateVisiblePlayers;
     }
 
