@@ -36,6 +36,7 @@ public class PlayersMenu : BaseMenu
         {
             gameObject.SetActive(false);
             Hide();
+            _homeMenu.Hide();
             _characterMenu.Show();
         }
     }
@@ -48,6 +49,7 @@ public class PlayersMenu : BaseMenu
         {
             gameObject.SetActive(false);
             Hide();
+            _homeMenu.Hide();
             _characterMenu.Show();
         }
     }
@@ -59,6 +61,7 @@ public class PlayersMenu : BaseMenu
         SceneSettings.ControllerTwo = _playerIcons[0].PlayerInput.devices[0];
         gameObject.SetActive(false);
         Hide();
+        _homeMenu.Hide();
         _characterMenu.Show();
     }
 
@@ -76,7 +79,6 @@ public class PlayersMenu : BaseMenu
             SceneSettings.ControllerTwo = _playerGroups[2].GetChild(0).GetComponent<PlayerIcon>().PlayerInput.devices[0];
         _cpuTextLeft.SetActive(true);
         _cpuTextRight.SetActive(true);
-        _homeMenu.Hide();
         InputSystem.onDeviceChange -= UpdateVisiblePlayers;
     }
 

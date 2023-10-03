@@ -14,9 +14,10 @@ public class OnlineSetupMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _stageText = default;
     [SerializeField] private GameObject _characterGroup = default;
     [SerializeField] private GameObject _stageGroup = default;
+    [SerializeField] private Selectable _firstSelectable = default;
     [SerializeField] private Selectable _characterSelectable = default;
     [SerializeField] private Selectable _stageSelectable = default;
-    [SerializeField] private TMP_InputField _nameInputField = default;
+    [SerializeField] private TextMeshProUGUI _nameInputField = default;
     [SerializeField] private TMP_InputField _nameChangeInputField = default;
     [SerializeField] private PromptsInput _characterPrompts = default;
     [SerializeField] private PromptsInput _namePrompts = default;
@@ -154,7 +155,6 @@ public class OnlineSetupMenu : BaseMenu
 
     private void SetColorValues(PlayerStatsSO playerStats)
     {
-
     }
 
     public void SelectCharacterImage(PlayerStatsSO playerStats)
@@ -177,7 +177,7 @@ public class OnlineSetupMenu : BaseMenu
     {
         _nameInputField.text = _nameChangeInputField.text;
         _nameChangeGroup.SetActive(false);
-        _characterSelectable.Select();
+        _firstSelectable.Select();
         _inputManager.SetPrompts(_characterPrompts);
     }
 
@@ -187,6 +187,7 @@ public class OnlineSetupMenu : BaseMenu
         DemonData.character = index;
         _playerUIRender.SetAnimator(_playerStatsSO[DemonData.character]._animation);
         _playerUIRender.SetSpriteLibraryAsset(DemonData.color);
+        _playerName.text = Regex.Replace(_playerStatsSO[DemonData.character].characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
         _homeMenu.SetCharacter(DemonData.character, DemonData.color, DemonData.demonName);
     }
 }

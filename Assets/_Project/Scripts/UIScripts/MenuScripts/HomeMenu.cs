@@ -7,6 +7,7 @@ public class HomeMenu : BaseMenu
 {
     [SerializeField] private PlayerUIRender _playerUIRender = default;
     [SerializeField] private TextMeshProUGUI _playerName = default;
+    [SerializeField] private TextMeshProUGUI _playerProfileName = default;
     [SerializeField] private PlayerStatsSO[] _playerStatsSO = default;
 
 
@@ -20,6 +21,7 @@ public class HomeMenu : BaseMenu
     {
         _playerUIRender.gameObject.SetActive(true);
         _playerName.text = playerName;
+        _playerProfileName.text = playerName;
         _playerUIRender.SetAnimator(_playerStatsSO[character]._animation);
         _playerUIRender.SetSpriteLibraryAsset(color);
     }
