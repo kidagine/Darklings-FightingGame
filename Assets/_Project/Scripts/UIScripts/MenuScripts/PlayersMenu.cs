@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayersMenu : BaseMenu
 {
+    [SerializeField] private TopBarMenu _topBarMenu = default;
     [SerializeField] private HomeMenu _homeMenu = default;
     [SerializeField] private CharacterMenu _characterMenu = default;
     [SerializeField] private PlayerIcon[] _playerIcons = default;
@@ -37,6 +38,10 @@ public class PlayersMenu : BaseMenu
             gameObject.SetActive(false);
             Hide();
             _homeMenu.Hide();
+            if (SceneSettings.IsTrainingMode)
+                _topBarMenu.SetMenuTitle("Training");
+            else
+                _topBarMenu.SetMenuTitle("Versus");
             _characterMenu.Show();
         }
     }
@@ -50,6 +55,10 @@ public class PlayersMenu : BaseMenu
             gameObject.SetActive(false);
             Hide();
             _homeMenu.Hide();
+            if (SceneSettings.IsTrainingMode)
+                _topBarMenu.SetMenuTitle("Training");
+            else
+                _topBarMenu.SetMenuTitle("Versus");
             _characterMenu.Show();
         }
     }
@@ -62,6 +71,10 @@ public class PlayersMenu : BaseMenu
         gameObject.SetActive(false);
         Hide();
         _homeMenu.Hide();
+        if (SceneSettings.IsTrainingMode)
+            _topBarMenu.SetMenuTitle("Training");
+        else
+            _topBarMenu.SetMenuTitle("Versus");
         _characterMenu.Show();
     }
 

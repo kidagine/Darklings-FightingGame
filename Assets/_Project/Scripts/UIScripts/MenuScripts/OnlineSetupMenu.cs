@@ -21,7 +21,7 @@ public class OnlineSetupMenu : BaseMenu
     [SerializeField] private TMP_InputField _nameChangeInputField = default;
     [SerializeField] private PromptsInput _characterPrompts = default;
     [SerializeField] private PromptsInput _namePrompts = default;
-    [SerializeField] private GameObject _nameChangeGroup = default;
+    [SerializeField] private BaseMenu _nameChangeMenu = default;
     [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private CharacterOnlineButton[] _characterSelectables = default;
     [SerializeField] private PlayerUIRender _playerUIRender = default;
@@ -168,7 +168,7 @@ public class OnlineSetupMenu : BaseMenu
     public void OpenChangeName()
     {
         _nameChangeInputField.text = _nameInputField.text;
-        _nameChangeGroup.SetActive(true);
+        _nameChangeMenu.Show();
         _nameChangeInputField.Select();
         _inputManager.SetPrompts(_namePrompts);
     }
@@ -176,7 +176,7 @@ public class OnlineSetupMenu : BaseMenu
     public void CloseChangeName()
     {
         _nameInputField.text = _nameChangeInputField.text;
-        _nameChangeGroup.SetActive(false);
+        _nameChangeMenu.Hide();
         _firstSelectable.Select();
         _inputManager.SetPrompts(_characterPrompts);
     }

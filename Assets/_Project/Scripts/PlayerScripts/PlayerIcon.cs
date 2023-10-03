@@ -109,12 +109,6 @@ public class PlayerIcon : MonoBehaviour
         _cpuText = _playersMenu.CpuTextLeft;
     }
 
-    IEnumerator ResetPlayerIcon()
-    {
-        yield return null;
-        _rectTransform.SetParent(_playersMenu.PlayerGroups[1], false);
-    }
-
     public void Center()
     {
         if (gameObject.activeSelf)
@@ -142,6 +136,6 @@ public class PlayerIcon : MonoBehaviour
 
     private void OnEnable()
     {
-        _rectTransform.SetSiblingIndex(_number - 1);
+        Center();
     }
 }

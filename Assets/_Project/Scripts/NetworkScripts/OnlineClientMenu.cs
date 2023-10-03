@@ -8,13 +8,13 @@ public class OnlineClientMenu : BaseMenu
     [SerializeField] private NetworkManagerLobby _networkManager = default;
     [SerializeField] private OnlineHostMenu _onlineHostMenu = default;
     [SerializeField] private OnlineLobbiesSearchMenu _onlineLobbiesSearchMenu = default;
+    [SerializeField] private BaseMenu _roomIdMenu = default;
     [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
-    [SerializeField] private TMP_InputField _lobbyIdInputField = default;
+    [SerializeField] private TextMeshProUGUI _lobbyIdInputField = default;
     [SerializeField] private TMP_InputField _lobbyIdChangeInputField = default;
     [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private PromptsInput _searchPrompts = default;
     [SerializeField] private PromptsInput _idPrompts = default;
-    [SerializeField] private GameObject _idChangeGroup = default;
     [SerializeField] private GameObject _joiningLobbyGroup = default;
     [SerializeField] private GameObject _lobbyJoinGroup = default;
 
@@ -76,7 +76,7 @@ public class OnlineClientMenu : BaseMenu
     public void OpenChangeId()
     {
         _lobbyIdChangeInputField.text = _lobbyIdInputField.text;
-        _idChangeGroup.SetActive(true);
+        _roomIdMenu.Show();
         _lobbyIdChangeInputField.Select();
         _inputManager.SetPrompts(_idPrompts);
     }
@@ -84,7 +84,7 @@ public class OnlineClientMenu : BaseMenu
     public void CloseChangeId()
     {
         _lobbyIdInputField.text = _lobbyIdChangeInputField.text;
-        _idChangeGroup.SetActive(false);
+        _roomIdMenu.Hide();
         _inputManager.SetPrompts(_searchPrompts);
         StartCoroutine(SelectOption());
     }

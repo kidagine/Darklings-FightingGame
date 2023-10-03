@@ -17,7 +17,6 @@ public class PromptsInput : MonoBehaviour
     public UnityEvent OnLeftNavigation;
     public UnityEvent OnRightNavigation;
     public UnityEvent OnOptions;
-    public UnityEvent OnHotbar;
 
     void OnEnable()
     {

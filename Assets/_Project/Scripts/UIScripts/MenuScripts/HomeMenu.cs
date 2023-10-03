@@ -5,6 +5,7 @@ using Unity.Services.Core;
 
 public class HomeMenu : BaseMenu
 {
+    [SerializeField] private TopBarMenu _topBarMenu = default;
     [SerializeField] private PlayerUIRender _playerUIRender = default;
     [SerializeField] private TextMeshProUGUI _playerName = default;
     [SerializeField] private TextMeshProUGUI _playerProfileName = default;
@@ -24,5 +25,10 @@ public class HomeMenu : BaseMenu
         _playerProfileName.text = playerName;
         _playerUIRender.SetAnimator(_playerStatsSO[character]._animation);
         _playerUIRender.SetSpriteLibraryAsset(color);
+    }
+
+    private void OnEnable()
+    {
+        _topBarMenu.SetMenuTitle("");
     }
 }
