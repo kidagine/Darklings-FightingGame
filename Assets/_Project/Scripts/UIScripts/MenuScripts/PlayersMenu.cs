@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayersMenu : BaseMenu
 {
@@ -11,6 +13,7 @@ public class PlayersMenu : BaseMenu
     [SerializeField] private GameObject _cpuTextRight = default;
     [SerializeField] private GameObject _cpuTextLeft = default;
     [SerializeField] private PromptsInput _prompts = default;
+    [SerializeField] private Selectable _firstSelectable = default;
     private Audio _audio;
     public GameObject CpuTextRight { get { return _cpuTextRight; } private set { } }
     public GameObject CpuTextLeft { get { return _cpuTextLeft; } private set { } }
@@ -86,6 +89,7 @@ public class PlayersMenu : BaseMenu
 
     void OnDisable()
     {
+        _firstSelectable.Select();
         if (_playerGroups[0].childCount > 0)
             SceneSettings.ControllerOne = _playerGroups[0].GetChild(0).GetComponent<PlayerIcon>().PlayerInput.devices[0];
         if (_playerGroups[2].childCount > 0)
@@ -97,6 +101,7 @@ public class PlayersMenu : BaseMenu
 
     private void OnEnable()
     {
+        EventSystem.current.SetSelectedGameObject(null);
         _prompts.gameObject.SetActive(true);
         InputSystem.onDeviceChange += UpdateVisiblePlayers;
         UpdateVisiblePlayers(null, default);

@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PatchNotesMenu : BaseMenu
 {
@@ -7,8 +9,8 @@ public class PatchNotesMenu : BaseMenu
     [SerializeField] private RectTransform _scrollView = default;
     [SerializeField] private RectTransform _patchNotes = default;
     [SerializeField] private Vector2 _boundaries = default;
+    [SerializeField] private Selectable _firstSelectable = default;
     private readonly int _scrollSpeed = 350;
-    private float bottomScrollLimit = 0.0f;
 
     void Update() => Scroll(_inputManager.NavigationInput.y * 4);
 
@@ -25,16 +27,23 @@ public class PatchNotesMenu : BaseMenu
         }
     }
 
-    void OnEnable() => _scrollView.anchoredPosition = Vector2.zero;
+    void OnEnable()
+    {
+        _scrollView.anchoredPosition = Vector2.zero;
+        EventSystem.current.SetSelectedGameObject(null);
+    }
 
-    void OnDisable() => _inputManager.SetPrompts(_inputManager.PreviousPrompts);
+    void OnDisable()
+    {
+        _inputManager.SetPrompts(_inputManager.PreviousPrompts);
+        _firstSelectable.Select();
+    }
 
     void Start() => StartCoroutine(SetUpPatchNotesCoroutine());
 
     IEnumerator SetUpPatchNotesCoroutine()
     {
         yield return null;
-        bottomScrollLimit = _patchNotes.rect.height - 300.0f;
         _boundaries = new Vector2(-_patchNotes.rect.height, _scrollView.rect.height);
         _patchNotes.anchoredPosition = new Vector2(0.0f, -_patchNotes.rect.height);
     }

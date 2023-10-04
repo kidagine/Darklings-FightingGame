@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class OptionsMenu : BaseMenu
 {
     [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private AudioMixer _audioMixer = default;
-    private GameObject _previousSelectable;
+    [SerializeField] private Selectable _firstSelectable = default;
 
     public void SetVFX(int value)
     {
@@ -28,6 +28,7 @@ public class OptionsMenu : BaseMenu
 
     private void OnDisable()
     {
+        _firstSelectable.Select();
         _inputManager.SetPrompts(_inputManager.PreviousPrompts);
     }
 }

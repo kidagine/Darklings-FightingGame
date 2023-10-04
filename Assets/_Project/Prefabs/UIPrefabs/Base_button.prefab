@@ -391,6 +391,9 @@ MonoBehaviour:
   _onSelected:
     m_PersistentCalls:
       m_Calls: []
+  _onDeselected:
+    m_PersistentCalls:
+      m_Calls: []
   _scrollView: {fileID: 0}
   _scrollUpAmount: 0
   _scrollDownAmount: 0
@@ -399,6 +402,7 @@ MonoBehaviour:
   _ignoreFirstSelectSound: 0
   _allowMultiplePresses: 0
   selectableParent: {fileID: 0}
+  _resetToDefault: 0
 --- !u!1 &6447556989369618717
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,7 +462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.89411765, g: 0, b: 0.4862745, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
