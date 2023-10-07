@@ -70,9 +70,7 @@ public class CameraShake : MonoBehaviour
         {
             _shakeTimer -= Time.unscaledDeltaTime;
             if (_shakeTimer <= 0)
-            {
                 _cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
-            }
         }
         if (_zoomTimer > 0)
         {
