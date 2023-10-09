@@ -12,13 +12,9 @@ public class PromptsPause : MonoBehaviour
     void Awake()
     {
         if (transform.childCount > 0)
-        {
-            _image = transform.GetChild(1).GetComponent<Image>();
-        }
+            _image = transform.GetChild(0).GetComponent<Image>();
         else
-        {
             _image = GetComponent<Image>();
-        }
     }
 
     void OnEnable()
@@ -30,9 +26,7 @@ public class PromptsPause : MonoBehaviour
     {
         int index = 0;
         if (GameplayManager.Instance.PauseMenu.PlayerInput.currentControlScheme == ControllerTypeEnum.Keyboard.ToString())
-        {
             index = 1;
-        }
         InputAction inputAction = _actionReference.action;
         string currentBindingInput = InputControlPath.ToHumanReadableString(inputAction.bindings[index].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice);
         _image.sprite = _deviceConfigurator.GetDeviceBindingIcon(GameplayManager.Instance.PauseMenu.PlayerInput, currentBindingInput);
