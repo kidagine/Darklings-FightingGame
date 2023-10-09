@@ -30,16 +30,24 @@ public class ReplayCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         _dateText.text = replayData.date;
     }
 
-    public void Initialize(int index, ReplaysMenu replaysMenu, RectTransform scrollView)
+    public void Initialize(int index, ReplaysMenu replaysMenu, RectTransform scrollView, Selectable previous = null, bool last = false)
     {
         _button.onClick.AddListener(() => replaysMenu.LoadReplayMatch(index));
         _baseButton._scrollView = scrollView;
-        // _replayCards[^1].GetComponent<BaseButton>()._scrollDownAmount = 0.0f;
         if (index == 0)
         {
             _baseButton._scrollUpAmount = 0.0f;
             _button.Select();
         }
+        if (last)
+        {
+            Navigation customNav = new();
+            customNav.mode = Navigation.Mode.Explicit;
+            customNav.selectOnUp = previous;
+            _button.navigation = customNav;
+            _baseButton._scrollDownAmount = 0.0f;
+        }
+
     }
 
     private Sprite GetCharacterPortrait(int index)

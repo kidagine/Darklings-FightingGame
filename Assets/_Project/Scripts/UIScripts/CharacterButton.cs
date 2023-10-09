@@ -55,7 +55,9 @@ public class CharacterButton : MonoBehaviour, ISelectHandler, IDeselectHandler, 
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!_characterMenu.FirstCharacterSelected && !_characterMenu.FirstCharacterLocked)
+        if (!_characterMenu.FirstCharacterSelected && _characterMenu.FirstCharacterLocked)
+            return;
+        if (_characterMenu.SecondCharacterLocked)
             return;
         Cursor.SetCursor(MouseSetup.Instance.HoverCursor, Vector2.zero, CursorMode.Auto);
         _button.Select();

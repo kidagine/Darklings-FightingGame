@@ -27,16 +27,17 @@ public class PatchNotesMenu : BaseMenu
         }
     }
 
-    void OnEnable()
+    protected override void OnEnable()
     {
         _scrollView.anchoredPosition = Vector2.zero;
+        base.OnEnable();
         EventSystem.current.SetSelectedGameObject(null);
     }
 
     void OnDisable()
     {
+        PreviousSelectable.Select();
         _inputManager.SetPrompts(_inputManager.PreviousPrompts);
-        _firstSelectable.Select();
     }
 
     void Start() => StartCoroutine(SetUpPatchNotesCoroutine());

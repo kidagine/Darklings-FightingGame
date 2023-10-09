@@ -33,7 +33,7 @@ public class ControlsMenu : BaseMenu
 
     private void OnDisable()
     {
-        _firstSelectable.Select();
+        PreviousSelectable.Select();
         _inputManager.SetPrompts(_inputManager.PreviousPrompts);
         if (HotBarToggle.PreviousSelected != null)
             EventSystem.current.SetSelectedGameObject(HotBarToggle.PreviousSelected.gameObject);

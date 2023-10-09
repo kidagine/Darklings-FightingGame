@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -36,6 +37,7 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     protected virtual void Awake()
     {
+        HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
         _audio = GetComponent<Audio>();
         _button = GetComponent<Button>();
         _animator = GetComponent<Animator>();

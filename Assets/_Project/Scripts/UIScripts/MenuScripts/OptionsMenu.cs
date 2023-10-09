@@ -28,7 +28,7 @@ public class OptionsMenu : BaseMenu
 
     private void OnDisable()
     {
-        _firstSelectable.Select();
+        PreviousSelectable.Select();
         _inputManager.SetPrompts(_inputManager.PreviousPrompts);
     }
 }

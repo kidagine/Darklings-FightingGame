@@ -161,8 +161,6 @@ public class CharacterMenu : BaseMenu
 
     IEnumerator TauntEndCoroutine()
     {
-        if (FirstCharacterSelected)
-            StartCoroutine(LoadYourAsyncScene());
         yield return new WaitForSeconds(1.5f);
         _currentEventSystem.sendNavigationEvents = true;
         if (!FirstCharacterSelected)
@@ -179,6 +177,7 @@ public class CharacterMenu : BaseMenu
             SceneSettings.SceneSettingsDecide = true;
             if (SceneSettings.RandomStage)
                 SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
+            StartCoroutine(LoadYourAsyncScene());
             _fadeHandler.onFadeEnd.AddListener(() => _asyncLoad.allowSceneActivation = true);
             _fadeHandler.StartFadeTransition(true, 0.35f);
         }
