@@ -27,8 +27,9 @@ public class HomeMenu : BaseMenu
         _playerUIRender.SetSpriteLibraryAsset(color);
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         _topBarMenu.SetMenuTitle("");
+        base.OnEnable();
     }
 }

@@ -110,12 +110,14 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
     public virtual void Activate()
     {
         _button.enabled = true;
+        gameObject.SetActive(true);
         _animator.SetBool("IsDeactivated", false);
     }
 
     public virtual void Deactivate()
     {
         _button.enabled = false;
+        gameObject.SetActive(false);
         _animator.SetBool("IsDeactivated", true);
     }
 
