@@ -10,6 +10,8 @@ public class BlockParentState : State
     {
         if (!player.enter)
         {
+            CameraShake.Instance.Shake(new CameraShakerNetwork()
+            { intensity = player.attackHurtNetwork.cameraShakerNetwork.intensity - 3, timer = player.attackHurtNetwork.cameraShakerNetwork.timer });
             OnEnter(player);
             return;
         }

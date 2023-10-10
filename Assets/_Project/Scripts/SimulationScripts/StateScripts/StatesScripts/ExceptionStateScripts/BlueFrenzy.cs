@@ -86,7 +86,8 @@ public class BlueFrenzyState : State
         DemonVector2 hurtEffectPosition = new DemonVector2(player.position.x + (20 * player.flip), player.position.y + 25);
         player.SetParticle("Parry", hurtEffectPosition);
         player.otherPlayer.canChainAttack = true;
-        GameSimulation.Hitstop = 10;
+        GameSimulation.Hitstop = 13;
+        CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 10, timer = 0.12f });
         if (DemonicsPhysics.IsInCorner(player.otherPlayer))
         {
             player.knockback = 0;

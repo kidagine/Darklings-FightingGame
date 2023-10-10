@@ -1,3 +1,4 @@
+using SharedGame;
 using UnityEngine;
 
 public class ShadowbreakState : State
@@ -13,8 +14,8 @@ public class ShadowbreakState : State
                 impactSound = "",
                 attackSound = "",
                 hurtEffect = "",
-                hitstop = 10,
-                blockStun = 10,
+                hitstop = 20,
+                blockStun = 15,
                 cameraShakerNetwork = new CameraShakerNetwork() { intensity = 35, timer = 0.15f }
             };
             SetTopPriority(player);
@@ -25,6 +26,7 @@ public class ShadowbreakState : State
             player.canChainAttack = false;
             player.usedShadowbreak = true;
             player.position = new DemonVector2(player.position.x, player.position.y + 15);
+            GameplayManager.Instance.SetCameraTargets(1f, 0.0f);
             player.InitializeProjectile("Shadowbreak", player.attackNetwork, (DemonFloat)0, 0, false);
             player.SetProjectile("Shadowbreak", new DemonVector2(player.position.x, player.position.y + player.pushbox.size.y), false);
             CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
@@ -40,6 +42,7 @@ public class ShadowbreakState : State
     {
         if (player.animationFrames >= 60)
         {
+            GameplayManager.Instance.SetCameraTargets(0.5f, 0.5f);
             CheckTrainingGauges(player);
             EnterState(player, "Fall");
         }
@@ -50,6 +53,7 @@ public class ShadowbreakState : State
         {
             if (player.attackHurtNetwork.moveName == "Shadowbreak")
             {
+                GameplayManager.Instance.SetCameraTargets(0.5f, 0.5f);
                 EnterState(player, "Knockback");
                 return;
             }
@@ -57,10 +61,12 @@ public class ShadowbreakState : State
                 return;
             if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown && player.position.y > DemonicsPhysics.GROUND_POINT)
             {
+                GameplayManager.Instance.SetCameraTargets(0.5f, 0.5f);
                 EnterState(player, "Airborne");
             }
             else
             {
+                GameplayManager.Instance.SetCameraTargets(0.5f, 0.5f);
                 EnterState(player, "HurtAir");
             }
         }

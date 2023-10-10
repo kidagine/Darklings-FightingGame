@@ -1,6 +1,7 @@
 using Cinemachine;
 using Demonics.Manager;
 using SharedGame;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,6 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private BaseMenu _matchOverReplayMenu = default;
     [SerializeField] private BaseMenu _matchOverOnlineMenu = default;
     [SerializeField] private Animator _readyAnimator = default;
-    [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [SerializeField] private Audio _musicAudio = default;
     [SerializeField] private Audio _uiAudio = default;
     protected BrainController _playerOneController;
@@ -107,6 +107,7 @@ public class GameplayManager : MonoBehaviour
     public bool InfiniteAssist { get; set; }
     public Player PlayerOne { get; private set; }
     public Player PlayerTwo { get; private set; }
+    public CinemachineTargetGroup TargetGroup { get { return _targetGroup; } private set { } }
     public PauseMenu PauseMenu { get; set; }
     public static GameplayManager Instance { get; private set; }
     public BrainController PausedController { get; set; }
@@ -328,8 +329,32 @@ public class GameplayManager : MonoBehaviour
         }
         _inputHistories[0].PlayerController = PlayerOne.GetComponent<PlayerController>();
         _inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
-        _cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
-        _cinemachineTargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
+        TargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
+        TargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
+    }
+
+    public void SetCameraTargets(float targetOne, float targetTwo, float time = 0.12f)
+    {
+        _targetGroup.m_Targets[0].weight = targetOne;
+        StartCoroutine(SetCameraTargetsCoroutine(targetOne, targetTwo, time));
+    }
+
+    private IEnumerator SetCameraTargetsCoroutine(float targetOne, float targetTwo, float time)
+    {
+        float elapsedTime = 0;
+        float waitTime = time;
+        float currentTargetOne = _targetGroup.m_Targets[0].weight;
+        float currentTargetTwo = _targetGroup.m_Targets[1].weight;
+        while (elapsedTime < waitTime)
+        {
+            _targetGroup.m_Targets[0].weight = Mathf.Lerp(currentTargetOne, targetOne, elapsedTime / waitTime);
+            _targetGroup.m_Targets[1].weight = Mathf.Lerp(currentTargetTwo, targetTwo, elapsedTime / waitTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        _targetGroup.m_Targets[0].weight = targetOne;
+        _targetGroup.m_Targets[1].weight = targetTwo;
+        yield return null;
     }
 
     private void CheckInstance()
@@ -1062,7 +1087,7 @@ public class GameplayManager : MonoBehaviour
         if (SceneSettings.RandomStage)
         {
             _currentStage.SetActive(false);
-            int randomStageIndex = Random.Range(0, _stages.Length);
+            int randomStageIndex = UnityEngine.Random.Range(0, _stages.Length);
             _currentStage = _stages[randomStageIndex];
             _currentStage.SetActive(true);
         }

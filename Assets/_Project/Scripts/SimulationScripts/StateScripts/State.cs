@@ -249,7 +249,7 @@ public class State
             player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
         }
         player.SetParticle(player.attackHurtNetwork.hurtEffect, new DemonVector2(player.position.x, player.position.y));
-        GameSimulation.Hitstop = 3;
+        GameSimulation.Hitstop = 10;
         HitstopFully(player);
         HitstopFully(player.otherPlayer);
     }
