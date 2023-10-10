@@ -29,10 +29,12 @@ public class PauseMenu : BaseMenu
             _whoPaused.text = "P2 Paused";
     }
 
-    void OnEnable()
+    protected override void OnEnable()
     {
         _trainingTopBar.Show();
-        StartCoroutine(PromptEnablerCoroutine());
+        if (gameObject.activeSelf)
+            StartCoroutine(PromptEnablerCoroutine());
+        base.OnEnable();
     }
 
     public void Restart()

@@ -23,7 +23,8 @@ public class BaseMenu : MonoBehaviour
     public virtual void Show()
     {
         gameObject.SetActive(true);
-        StartCoroutine(ActivateCoroutine());
+        if (gameObject.activeSelf)
+            StartCoroutine(ActivateCoroutine());
     }
 
     public void Hide()

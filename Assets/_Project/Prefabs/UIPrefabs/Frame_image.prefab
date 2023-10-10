@@ -189,7 +189,6 @@ GameObject:
   - component: {fileID: 7829440570145332764}
   - component: {fileID: 8782650705724783981}
   - component: {fileID: 2265288627169471054}
-  - component: {fileID: 5235470726480068784}
   m_Layer: 0
   m_Name: Frame_text
   m_TagString: Untagged
@@ -247,8 +246,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
-  m_sharedMaterial: {fileID: 5478749285274194410, guid: 17db50d561d268846b184edda8d5e7a7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2ae1b6aa0c6e3ab47addbd48dd7fdc1c, type: 2}
+  m_sharedMaterial: {fileID: -8242411305896092031, guid: 2ae1b6aa0c6e3ab47addbd48dd7fdc1c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -278,7 +277,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -314,17 +313,3 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &5235470726480068784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8015977962630751708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b829383902dc9db4a96bf689b6a55349, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _outlineTextPrefab: {fileID: 400445512674581430, guid: f1bd07601af0ae241a89fe586a9d8d5e, type: 3}
-  _spacing: 2

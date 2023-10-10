@@ -138,7 +138,7 @@ int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.To
         _cpuSelector.SetValue(int.Parse(DemonicsSaver.Load("cpu", _cpuSelectorInitial.ToString())));
         _blockSelector.SetValue(int.Parse(DemonicsSaver.Load("block", _blockSelectorInitial.ToString())));
         _onHitSelector.SetValue(int.Parse(DemonicsSaver.Load("onhit", _onHitSelectorInitial.ToString())));
-        _stanceSelector.SetValue(int.Parse(DemonicsSaver.Load("stance", _stanceSelectorInitial.ToString())));
+        //_stanceSelector.SetValue(int.Parse(DemonicsSaver.Load("stance", _stanceSelectorInitial.ToString())));
 
         //Misc
         _hitboxesSelector.SetValue(int.Parse(DemonicsSaver.Load("hitboxes", _hitboxesSelectorInitial.ToString())));
