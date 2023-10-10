@@ -36,7 +36,8 @@ public class BaseMenu : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        StartCoroutine(ActivateCoroutine());
+        if (gameObject.activeSelf)
+            StartCoroutine(ActivateCoroutine());
     }
 
     IEnumerator ActivateCoroutine()
