@@ -13,7 +13,7 @@ public class JumpForwardState : AirParentState
                 player.SetParticle(player.jumpDirection == 1 ? "JumpLeft" : "JumpRight", player.position);
             player.hasJumped = true;
             player.animationFrames = 0;
-            player.velocity = new DemonVector2(2 * (DemonFloat)player.jumpDirection, player.playerStats.JumpForce);
+            player.velocity = new DemonVector2((DemonFloat)1.7f * (DemonFloat)player.jumpDirection, player.playerStats.JumpForce);
             if (player.inputBuffer.CurrentTrigger().frame != 0)
             {
                 player.isAir = true;

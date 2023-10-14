@@ -28,7 +28,8 @@ public class ArcanaEndState : State
             player.otherPlayer.position = new DemonVector2(player.position.x + (grabPoint.x * player.flip), player.position.y + grabPoint.y);
         }
 
-        if (player.player.PlayerAnimator.GetThrowArcanaEnd(player.animation, player.animationFrames) && player.otherPlayer.state == "Grabbed")
+        bool arcanaEnd = player.player.PlayerAnimator.GetThrowArcanaEnd(player.animation, player.animationFrames);
+        if (arcanaEnd && player.otherPlayer.state == "Grabbed")
         {
             EnterState(player.otherPlayer, "Airborne");
         }
@@ -46,9 +47,7 @@ public class ArcanaEndState : State
         if (player.attackFrames <= 0)
         {
             if (player.attackNetwork.cameraShakerNetwork.timer > 0)
-            {
                 CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
-            }
             player.sound = "Impact1";
             EnterState(player, "Fall");
         }
