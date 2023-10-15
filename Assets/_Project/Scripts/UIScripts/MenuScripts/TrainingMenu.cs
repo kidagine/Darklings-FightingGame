@@ -219,15 +219,11 @@ public class TrainingMenu : BaseMenu
         {
             case 0:
                 for (int i = 0; i < _uiCanvases.Length; i++)
-                {
-                    _uiCanvases[i].enabled = true;
-                }
+                    _uiCanvases[i].enabled = false;
                 break;
             case 1:
                 for (int i = 0; i < _uiCanvases.Length; i++)
-                {
-                    _uiCanvases[i].enabled = false;
-                }
+                    _uiCanvases[i].enabled = true;
                 break;
         }
     }
