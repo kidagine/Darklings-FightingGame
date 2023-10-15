@@ -744,7 +744,7 @@ public class GameplayManager : MonoBehaviour
                     if (PlayerOne.PlayerStats.maxHealth == GameSimulation._players[0].health && GameSimulation._players[1].health <= 0
                         || PlayerTwo.PlayerStats.maxHealth == GameSimulation._players[1].health && GameSimulation._players[0].health <= 0)
                     {
-                        roundOverCause = "PERFECT KO";
+                        roundOverCause = "PERFECT\nKO";
                     }
                     else
                     {
