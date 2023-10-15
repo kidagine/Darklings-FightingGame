@@ -13,9 +13,11 @@ public class KnockdownHardState : State
             player.animationFrames = 0;
             player.sound = "Landed";
             player.SetParticle("KnockdownHard", new DemonVector2(player.position.x, player.position.y - 15));
+            player.velocity = new DemonVector2((DemonFloat)0, (DemonFloat)2.1f);
             player.framedataEnum = FramedataTypesEnum.Knockdown;
             return;
         }
+        player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         player.animationFrames++;
         player.framedataEnum = FramedataTypesEnum.Knockdown;
         player.hurtbox.active = false;
