@@ -32,8 +32,7 @@ public class ThrowState : State
             if (player.attackFrames <= -1 && !player.hitstop)
             {
                 ResetCombo(player.otherPlayer);
-                player.otherPlayer.player.PlayerUI.Damaged();
-                player.otherPlayer.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+
                 player.otherPlayer.pushbox.active = true;
                 if (player.health <= 0)
                     EnterState(player.otherPlayer, "Death");

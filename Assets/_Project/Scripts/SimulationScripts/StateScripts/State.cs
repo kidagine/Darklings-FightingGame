@@ -239,6 +239,8 @@ public class State
         player.combo++;
         player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.player.PlayerUI.Damaged();
+        player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {

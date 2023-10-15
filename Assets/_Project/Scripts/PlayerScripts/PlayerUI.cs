@@ -327,9 +327,7 @@ public class PlayerUI : MonoBehaviour
     public void Damaged()
     {
         if (_damagedCoroutine != null)
-        {
             StopCoroutine(_damagedCoroutine);
-        }
         _damagedCoroutine = StartCoroutine(DamagedCoroutine());
     }
 
@@ -345,17 +343,13 @@ public class PlayerUI : MonoBehaviour
     public void ResetHealthDamaged()
     {
         if (_damagedHealthCoroutine != null)
-        {
             StopCoroutine(_damagedHealthCoroutine);
-        }
         _healthDamagedSlider.value = _healthSlider.maxValue;
     }
     public void SetHealthDamaged(float value)
     {
         if (_damagedHealthCoroutine != null)
-        {
             StopCoroutine(_damagedHealthCoroutine);
-        }
         _healthDamagedSlider.value = value;
     }
 
@@ -363,9 +357,7 @@ public class PlayerUI : MonoBehaviour
     {
         SetRecoverableHealth(healthRecoverable);
         if (_damagedHealthCoroutine != null)
-        {
             StopCoroutine(_damagedHealthCoroutine);
-        }
         _damagedHealthCoroutine = StartCoroutine(SetHealthDamagedCoroutine(_healthRecoverableSlider.value));
     }
 
