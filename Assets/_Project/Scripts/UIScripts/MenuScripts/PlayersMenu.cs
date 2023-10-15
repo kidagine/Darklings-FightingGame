@@ -41,10 +41,6 @@ public class PlayersMenu : BaseMenu
             gameObject.SetActive(false);
             Hide();
             _homeMenu.Hide();
-            if (SceneSettings.IsTrainingMode)
-                _topBarMenu.SetMenuTitle("Training");
-            else
-                _topBarMenu.SetMenuTitle("Versus");
             _characterMenu.Show();
         }
     }
@@ -58,10 +54,6 @@ public class PlayersMenu : BaseMenu
             gameObject.SetActive(false);
             Hide();
             _homeMenu.Hide();
-            if (SceneSettings.IsTrainingMode)
-                _topBarMenu.SetMenuTitle("Training");
-            else
-                _topBarMenu.SetMenuTitle("Versus");
             _characterMenu.Show();
         }
     }
@@ -74,10 +66,6 @@ public class PlayersMenu : BaseMenu
         gameObject.SetActive(false);
         Hide();
         _homeMenu.Hide();
-        if (SceneSettings.IsTrainingMode)
-            _topBarMenu.SetMenuTitle("Training");
-        else
-            _topBarMenu.SetMenuTitle("Versus");
         _characterMenu.Show();
     }
 

@@ -26,10 +26,4 @@ public class HomeMenu : BaseMenu
         _playerUIRender.SetAnimator(_playerStatsSO[character]._animation);
         _playerUIRender.SetSpriteLibraryAsset(color);
     }
-
-    protected override void OnEnable()
-    {
-        _topBarMenu.SetMenuTitle("");
-        base.OnEnable();
-    }
 }

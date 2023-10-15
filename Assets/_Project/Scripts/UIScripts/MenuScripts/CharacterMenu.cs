@@ -24,6 +24,7 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private Button _firstCharacterButton = default;
     [SerializeField] private PlayerUIRender _playerUIRenderOne = default;
     [SerializeField] private PlayerUIRender _playerUIRenderTwo = default;
+    [SerializeField] private TextMeshProUGUI _menuText = default;
     [SerializeField] private TextMeshProUGUI _playerOneName = default;
     [SerializeField] private TextMeshProUGUI _playerTwoName = default;
     [SerializeField] private TextMeshProUGUI _hpTextOne = default;
@@ -244,6 +245,15 @@ public class CharacterMenu : BaseMenu
         }
         _rebindOnePrompt.SetActive(false);
         return false;
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        if (SceneSettings.IsTrainingMode)
+            _menuText.text = "Training";
+        else
+            _menuText.text = "Versus";
     }
 
     private void OnDisable()

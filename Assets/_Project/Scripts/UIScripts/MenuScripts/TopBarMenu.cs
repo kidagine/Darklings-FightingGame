@@ -68,10 +68,4 @@ public class TopBarMenu : MonoBehaviour
         _animator.SetBool("Disappear", false);
         EventSystem.current.SetSelectedGameObject(_previousSelectable);
     }
-
-    public void SetMenuTitle(string text)
-    {
-        _menuTitleText.text = text;
-        _menuTitle.SetActive(text != "");
-    }
 }
