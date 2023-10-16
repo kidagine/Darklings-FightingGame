@@ -63,11 +63,6 @@ public class Player : MonoBehaviour, IHitstop
         _playerUI.SetAssistName(assistStats.name[0].ToString());
     }
 
-    public void ThrowTechPrefab(DemonVector2 pos)
-    {
-        Instantiate(_throwTechPrefab, new Vector3((float)pos.x, (float)pos.y, 0), Quaternion.identity);
-    }
-
     void Start()
     {
         InitializeStats();
