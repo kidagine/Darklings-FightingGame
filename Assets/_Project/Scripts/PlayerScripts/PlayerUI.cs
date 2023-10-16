@@ -14,6 +14,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Slider _healthRecoverableSlider = default;
     [SerializeField] private Slider _arcanaSlider = default;
     [SerializeField] private Slider _assistSlider = default;
+    [SerializeField] private Image _arcanaBackground = default;
     [SerializeField] private Image _portraitImage = default;
     [SerializeField] private Image _assistBorder = default;
     [SerializeField] private Notification _notification = default;
@@ -45,8 +46,10 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Color _healthDamagedColor = default;
     [SerializeField] private Color _arcanaAvailableColor = default;
     [SerializeField] private Color _arcanaUnavailableColor = default;
-    [SerializeField] private Color _arcanaAvailableMeterColor = default;
-    [SerializeField] private Color _arcanaUnavailableMeterColor = default;
+    [SerializeField] private Color _arcanaMeterBackColor = default;
+    [SerializeField] private Color _arcanaMeter1Color = default;
+    [SerializeField] private Color _arcanaMeter2Color = default;
+    [SerializeField] private Color _arcanaMeter3Color = default;
     [Header("1BitVisuals")]
     [SerializeField] private Image _healthImage = default;
     private GameObject[] _playerIcons;
@@ -214,35 +217,25 @@ public class PlayerUI : MonoBehaviour
         _arcanaAmountText.text = arcana.ToString();
         if (arcana == 0)
         {
-            if (_arcanaCoroutine != null)
-            {
-                StopCoroutine(_arcanaCoroutine);
-                _arcanaCoroutine = null;
-            }
-            _arcanaFill.color = _arcanaUnavailableMeterColor;
             _arcanaAmountText.color = _arcanaUnavailableColor;
+            _arcanaBackground.color = _arcanaMeterBackColor;
+            _arcanaFill.color = _arcanaMeter1Color;
         }
         else
         {
             _arcanaAmountText.color = _arcanaAvailableColor;
-            if (_arcanaCoroutine == null)
+            if (arcana == 1)
             {
-                _arcanaCoroutine = StartCoroutine(ArcanaBlinkCoroutine());
+                _arcanaBackground.color = _arcanaMeter1Color;
+                _arcanaFill.color = _arcanaMeter2Color;
+            }
+            if (arcana == 2)
+            {
+                _arcanaBackground.color = _arcanaMeter2Color;
+                _arcanaFill.color = _arcanaMeter3Color;
             }
         }
     }
-
-    private IEnumerator ArcanaBlinkCoroutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.2f);
-            _arcanaFill.color = _arcanaAvailableMeterColor;
-            yield return new WaitForSeconds(0.2f);
-            _arcanaFill.color = _arcanaUnavailableMeterColor;
-        }
-    }
-
     public void SetAssist(int value)
     {
         if (value >= GameSimulation.maxShadowGauge)
