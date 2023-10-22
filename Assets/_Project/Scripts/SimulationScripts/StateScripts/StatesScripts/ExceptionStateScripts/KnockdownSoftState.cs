@@ -1,5 +1,5 @@
-using System.Numerics;
 using Demonics;
+using UnityEngine;
 
 public class KnockdownSoftState : State
 {
@@ -17,7 +17,10 @@ public class KnockdownSoftState : State
             player.framedataEnum = FramedataTypesEnum.Knockdown;
             return;
         }
-        player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+        if (player.position.y > DemonicsPhysics.GROUND_POINT)
+            player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+        else
+            player.velocity = new DemonVector2(player.velocity.x, 0);
         player.animationFrames++;
         player.framedataEnum = FramedataTypesEnum.Knockdown;
         player.hurtbox.active = false;
