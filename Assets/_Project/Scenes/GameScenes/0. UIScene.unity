@@ -17892,8 +17892,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444084334}
-  m_LocalRotation: {x: 1.7827645e-28, y: 7.5950165e-23, z: -0, w: 1}
-  m_LocalPosition: {x: -2.901296e-20, y: -20.48194, z: -191}
+  m_LocalRotation: {x: 1e-45, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -20.48169, z: -191}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23527,12 +23527,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 922976189}
-        m_TargetAssemblyTypeName: BaseMenu, Scripts
-        m_MethodName: OpenMenuHideCurrent
-        m_Mode: 2
+        m_TargetAssemblyTypeName: OnlineHostMenu, Scripts
+        m_MethodName: QuitLobby
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 9123090234613714751}
-          m_ObjectArgumentAssemblyTypeName: BaseMenu, Scripts
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -32994,7 +32994,7 @@ MonoBehaviour:
   _onlineHostMenu: {fileID: 922976189}
   _onlineLobbiesSearchMenu: {fileID: 1351988072}
   _roomIdMenu: {fileID: 2130842990}
-  _onlineSetupMenu: {fileID: 0}
+  _onlineSetupMenu: {fileID: 1328516421}
   _lobbyIdInputField: {fileID: 1636575988}
   _lobbyIdChangeInputField: {fileID: 6399147}
   _inputManager: {fileID: 1856510700}
@@ -36686,7 +36686,7 @@ MonoBehaviour:
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 9123090234613714751}
+          m_ObjectArgument: {fileID: 625518735}
           m_ObjectArgumentAssemblyTypeName: BaseMenu, Scripts
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -39179,7 +39179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingOption: {fileID: 1042859987}
   _networkManager: {fileID: 1648980305}
-  _onlineMainMenu: {fileID: 0}
+  _onlineMainMenu: {fileID: 625518735}
   _onlineSetupMenu: {fileID: 1328516421}
   _nameplates:
   - {fileID: 2077998982}
@@ -41733,8 +41733,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998273396}
-  m_LocalRotation: {x: 1.7827645e-28, y: 7.5950165e-23, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5190017e-21, y: -42, z: -190}
+  m_LocalRotation: {x: 1e-45, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -42, z: -190}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -42558,7 +42558,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 922976189}
         m_TargetAssemblyTypeName: OnlineHostMenu, Scripts
-        m_MethodName: CopyLobbyId
+        m_MethodName: QuitLobby
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -65964,6 +65964,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 67162385}
     m_Modifications:
+    - target: {fileID: 4412047261963210949, guid: de50e5c5019fc3648a5ce9bbbdfa5464, type: 3}
+      propertyPath: _clickAnimation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4779844664754732583, guid: de50e5c5019fc3648a5ce9bbbdfa5464, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -82731,7 +82735,7 @@ MonoBehaviour:
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 9123090234613714751}
+          m_ObjectArgument: {fileID: 625518735}
           m_ObjectArgumentAssemblyTypeName: BaseMenu, Scripts
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -94093,6 +94097,10 @@ PrefabInstance:
       propertyPath: m_fontStyle
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 4412047261963210949, guid: de50e5c5019fc3648a5ce9bbbdfa5464, type: 3}
+      propertyPath: _clickAnimation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4779844664754732580, guid: de50e5c5019fc3648a5ce9bbbdfa5464, type: 3}
       propertyPath: m_text
       value: (Optional) Room ID
@@ -95622,7 +95630,7 @@ MonoBehaviour:
         m_MethodName: OpenMenuHideCurrent
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 9123090234613714751}
+          m_ObjectArgument: {fileID: 625518735}
           m_ObjectArgumentAssemblyTypeName: BaseMenu, Scripts
           m_IntArgument: 0
           m_FloatArgument: 0

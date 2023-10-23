@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public class OnlineHostMenu : BaseMenu
 {
     [SerializeField] private NetworkManagerLobby _networkManager = default;
-    [SerializeField] private OnlineMainMenu _onlineMainMenu = default;
+    [SerializeField] private BaseMenu _onlineMainMenu = default;
     [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
     [SerializeField] private DemonNameplate[] _nameplates = default;
     [SerializeField] private TextMeshProUGUI _readyText = default;
