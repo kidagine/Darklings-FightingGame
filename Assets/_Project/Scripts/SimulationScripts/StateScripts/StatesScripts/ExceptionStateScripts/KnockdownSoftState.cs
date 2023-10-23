@@ -15,6 +15,7 @@ public class KnockdownSoftState : State
             player.SetParticle("KnockdownSoft", new DemonVector2(player.position.x, player.position.y - 15));
             player.velocity = new DemonVector2((DemonFloat)0, (DemonFloat)1.45f);
             player.framedataEnum = FramedataTypesEnum.Knockdown;
+            CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 13, timer = 0.12f });
             return;
         }
         if (player.position.y > DemonicsPhysics.GROUND_POINT)

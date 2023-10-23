@@ -15,7 +15,8 @@ public class HomeMenu : BaseMenu
     async private void Awake()
     {
         await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        if (!AuthenticationService.Instance.IsAuthorized)
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
     public void SetCharacter(int character, int color, string playerName)
