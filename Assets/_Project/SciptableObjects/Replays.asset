@@ -13,48 +13,29 @@ MonoBehaviour:
   m_Name: Replays
   m_EditorClassIdentifier: 
   replays:
-  - version: 1.1.1
+  - version: 0.2.12
     date: 01/01/1970 12:00
     stage: 1
-    music: 
+    music: Random
     theme: 0
-    playerOneCharacter: 1
+    playerOneCharacter: 4
     playerOneColor: 1
-    playerOneAssist: 1
+    playerOneAssist: 3
     playerTwoCharacter: 2
     playerTwoColor: 2
     playerTwoAssist: 2
-    playerOneInputs: []
-    playerTwoInputs: []
-    skipTime: 0
-  - version: 1.1.1
-    date: 01/01/1970 12:00
-    stage: 0
-    music: 
-    theme: 0
-    playerOneCharacter: 0
-    playerOneColor: 0
-    playerOneAssist: 0
-    playerTwoCharacter: 0
-    playerTwoColor: 0
-    playerTwoAssist: 0
-    playerOneInputs: []
-    playerTwoInputs: []
-    skipTime: 0
-  - version: 
-    date: 
-    stage: 0
-    music: 
-    theme: 0
-    playerOneCharacter: 0
-    playerOneColor: 0
-    playerOneAssist: 0
-    playerTwoCharacter: 0
-    playerTwoColor: 0
-    playerTwoAssist: 0
-    playerOneInputs: []
-    playerTwoInputs: []
-    skipTime: 0
+    playerOneInputs:
+    - input: 1
+      direction: 0
+      time: 23
+    - input: 8
+      direction: 4
+      time: 500
+    playerTwoInputs:
+    - input: 1
+      direction: 0
+      time: 0
+    skipTime: 155
   - version: 
     date: 
     stage: 0

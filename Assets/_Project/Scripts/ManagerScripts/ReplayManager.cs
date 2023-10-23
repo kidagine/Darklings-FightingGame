@@ -340,8 +340,8 @@ public class ReplayManager : MonoBehaviour
 
     public void ShowReplayPrompts()
     {
-        _replayInput.SetActive(true);
-        _replayPrompts.SetActive(true);
+        // _replayInput.SetActive(true);
+        // _replayPrompts.SetActive(true);
     }
 
     public void ToggleReplayInputHistory()

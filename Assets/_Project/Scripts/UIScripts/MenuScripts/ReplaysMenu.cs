@@ -17,11 +17,11 @@ public class ReplaysMenu : BaseMenu
     void Start()
     {
         _replaysGroup.anchoredPosition = new Vector2(0.0f, _replaysGroup.anchoredPosition.y);
-        if (ReplayManager.Instance.ReplayAmount > 1)
+        if (ReplayManager.Instance.ReplayAmount > 0)
         {
             for (int i = 0; i < ReplayManager.Instance.ReplayAmount; i++)
             {
-                ReplayCard replayCard = Instantiate(_replayPrefab, _replaysGroup).GetComponent<ReplayCard>();
+                ReplayCard replayCard = Instantiate(_replayPrefab, _replaysGroup).transform.GetChild(0).GetComponent<ReplayCard>();
                 replayCard.SetData(ReplayManager.Instance.GetReplayData(i));
                 int index = i;
                 if (index == ReplayManager.Instance.ReplayAmount - 1)
@@ -35,7 +35,6 @@ public class ReplaysMenu : BaseMenu
             _noReplaysFound.SetActive(true);
         StartCoroutine(SetUpScrollViewCoroutine());
     }
-
 
     public void LoadReplayMatch(int index)
     {
