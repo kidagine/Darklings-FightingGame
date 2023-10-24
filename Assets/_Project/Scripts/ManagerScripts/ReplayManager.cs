@@ -100,23 +100,26 @@ public class ReplayManager : MonoBehaviour
                 replayData.stage = SceneSettings.StageIndex;
                 replayData.music = GameplayManager.Instance.CurrentMusic.name;
                 replayData.theme = SceneSettings.Bit1;
-                Debug.Log(_playerOneInputHistory.Inputs.Count);
-                for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
-                {
-                    ReplayInput replayInput = new();
-                    replayInput.input = _playerOneInputHistory.Inputs[i];
-                    replayInput.direction = _playerOneInputHistory.Directions[i];
-                    replayInput.time = _playerOneInputHistory.InputTimes[i];
-                    replayData.playerOneInputs.Add(replayInput);
-                }
-                for (int i = 0; i < _playerTwoInputHistory.Inputs.Count; i++)
-                {
-                    ReplayInput replayInput = new();
-                    replayInput.input = _playerOneInputHistory.Inputs[i];
-                    replayInput.direction = _playerOneInputHistory.Directions[i];
-                    replayInput.time = _playerOneInputHistory.InputTimes[i];
-                    replayData.playerTwoInputs.Add(replayInput);
-                }
+                // Debug.Log(_playerOneInputHistory.InputBuffer.triggers.Length + "a");
+                // for (int i = 0; i < _playerOneInputHistory.InputBuffer.triggers.Length; i++)
+                // {
+                //     InputItemNetwork inputItem = _playerOneInputHistory.InputBuffer.triggers[i];
+                //     ReplayInput replayInput = new()
+                //     {
+                //         input = inputItem.inputEnum,
+                //         direction = inputItem.inputDirection,
+                //         time = inputItem.frame
+                //     };
+                //     replayData.playerOneInputs.Add(replayInput);
+                // }
+                // for (int i = 0; i < _playerTwoInputHistory.InputList.inputTriggers.Length; i++)
+                // {
+                // ReplayInput replayInput = new();
+                // replayInput.input = _playerOneInputHistory.Inputs[i];
+                // replayInput.direction = _playerOneInputHistory.Directions[i];
+                // replayInput.time = _playerOneInputHistory.InputTimes[i];
+                // replayData.playerTwoInputs.Add(replayInput);
+                // }
                 replayData.skipTime = Skip;
                 _replayNotificationAnimator.SetTrigger("Save");
                 _replaySO.replays.Add(replayData);
