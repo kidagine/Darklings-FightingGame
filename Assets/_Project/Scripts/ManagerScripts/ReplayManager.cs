@@ -19,14 +19,8 @@ public class ReplayManager : MonoBehaviour
     [Range(0, 99)]
     [SerializeField] private int _replayIndex;
     private readonly string _versionSplit = "Version:";
-    private readonly string _dateSplit = "Date:";
     private readonly string _patchNotesSplit = "Patch Notes:";
-    private readonly string _playerOneSplit = "Player One:";
-    private readonly string _playerTwoSplit = "Player Two:";
-    private readonly string _stageSplit = "Stage:";
-    private readonly string _skipSplit = "Skip:";
-    private readonly string _playerOneInputsSplit = "Player One Inputs:";
-    private readonly string _playerTwoInputsSplit = "Player Two Inputs:";
+
 
     public string VersionNumber { get; private set; }
     public int Skip { get; set; }
@@ -69,13 +63,9 @@ public class ReplayManager : MonoBehaviour
     private void CheckInstance()
     {
         if (Instance != null && Instance != this)
-        {
             Destroy(gameObject);
-        }
         else
-        {
             Instance = this;
-        }
     }
 
     private void Start()
@@ -88,9 +78,7 @@ public class ReplayManager : MonoBehaviour
     public void StartReplay()
     {
         if (SceneSettings.ReplayMode)
-        {
             LoadReplay();
-        }
     }
 
     public void SaveReplay()
@@ -99,37 +87,39 @@ public class ReplayManager : MonoBehaviour
         {
             if (!SceneSettings.IsTrainingMode && !SceneSettings.ReplayMode && _replayNotificationAnimator != null)
             {
-                string replayName = "replay";
-                string replayData = "";
-                replayData += $"Version:\n{VersionNumber}";
-                replayData += $"\nDate:\n{DateTime.Now.ToString("MM/dd/yyyy HH:mm")}";
-                replayData += $"\nPlayer One:\n{SceneSettings.PlayerOne}, {SceneSettings.ColorOne}, {SceneSettings.AssistOne}";
-                replayData += $"\nPlayer Two:\n{SceneSettings.PlayerTwo}, {SceneSettings.ColorTwo}, {SceneSettings.AssistTwo}";
-                replayData += $"\nStage:\n{SceneSettings.StageIndex}, {GameplayManager.Instance.CurrentMusic.name}, {SceneSettings.Bit1}";
-                string playerOneInputsHistory = "";
+
+                ReplayData replayData = new();
+                replayData.version = VersionNumber;
+                replayData.date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+                replayData.playerOneCharacter = SceneSettings.PlayerOne;
+                replayData.playerOneAssist = SceneSettings.ColorOne;
+                replayData.playerOneColor = SceneSettings.AssistOne;
+                replayData.playerTwoCharacter = SceneSettings.PlayerTwo;
+                replayData.playerTwoAssist = SceneSettings.ColorTwo;
+                replayData.playerTwoColor = SceneSettings.AssistTwo;
+                replayData.stage = SceneSettings.StageIndex;
+                replayData.music = GameplayManager.Instance.CurrentMusic.name;
+                replayData.theme = SceneSettings.Bit1;
+                Debug.Log(_playerOneInputHistory.Inputs.Count);
                 for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
                 {
-                    playerOneInputsHistory += $"{_playerOneInputHistory.Inputs[i]},{_playerOneInputHistory.Directions[i]},{_playerOneInputHistory.InputTimes[i]}";
-                    if (i != _playerOneInputHistory.Inputs.Count - 1)
-                    {
-                        playerOneInputsHistory += "|";
-                    }
+                    ReplayInput replayInput = new();
+                    replayInput.input = _playerOneInputHistory.Inputs[i];
+                    replayInput.direction = _playerOneInputHistory.Directions[i];
+                    replayInput.time = _playerOneInputHistory.InputTimes[i];
+                    replayData.playerOneInputs.Add(replayInput);
                 }
-                replayData += $"\nPlayer One Inputs:\n{playerOneInputsHistory}";
-                string playerTwoInputsHistory = "";
                 for (int i = 0; i < _playerTwoInputHistory.Inputs.Count; i++)
                 {
-                    playerTwoInputsHistory += $"{_playerTwoInputHistory.Inputs[i]},{_playerTwoInputHistory.Directions[i]},{_playerTwoInputHistory.InputTimes[i]}";
-                    if (i != _playerTwoInputHistory.Inputs.Count - 1)
-                    {
-                        playerTwoInputsHistory += "|";
-                    }
+                    ReplayInput replayInput = new();
+                    replayInput.input = _playerOneInputHistory.Inputs[i];
+                    replayInput.direction = _playerOneInputHistory.Directions[i];
+                    replayInput.time = _playerOneInputHistory.InputTimes[i];
+                    replayData.playerTwoInputs.Add(replayInput);
                 }
-                replayData += $"\nPlayer Two Inputs:\n{playerTwoInputsHistory}";
-                replayData += $"\nSkip:\n{Skip}";
-                replayData += $"\n@";
+                replayData.skipTime = Skip;
                 _replayNotificationAnimator.SetTrigger("Save");
-                DemonicsSaver.Save(replayName, replayData, true);
+                _replaySO.replays.Add(replayData);
             }
         }
     }
@@ -149,7 +139,7 @@ public class ReplayManager : MonoBehaviour
     private int i;
     private int j;
 
-    public ReplayData GetReplayData(int index) => _replaySO.replays[SceneSettings.ReplayIndex];
+    public ReplayData GetReplayData(int index) => _replaySO.replays[index];
 
     public void StartLoadReplay()
     {
@@ -177,26 +167,19 @@ public class ReplayManager : MonoBehaviour
     {
         if (i < replayCardData.playerOneInputs.Count)
         {
+            Debug.Log(replayCardData.playerOneInputs[i].time);
             if (DemonicsWorld.Frame >= replayCardData.playerOneInputs[i].time)
             {
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Direction)
                 {
                     if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Up)
-                    {
                         NetworkInput.ONE_UP_INPUT = true;
-                    }
                     if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Down)
-                    {
                         NetworkInput.ONE_DOWN_INPUT = true;
-                    }
                     if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Left)
-                    {
                         NetworkInput.ONE_LEFT_INPUT = true;
-                    }
                     if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Right)
-                    {
                         NetworkInput.ONE_RIGHT_INPUT = true;
-                    }
                     if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Neutral)
                     {
                         NetworkInput.ONE_LEFT_INPUT = false;
@@ -204,45 +187,25 @@ public class ReplayManager : MonoBehaviour
                     }
                 }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Light)
-                {
                     NetworkInput.ONE_LIGHT_INPUT = true;
-                }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Medium)
-                {
                     NetworkInput.ONE_MEDIUM_INPUT = true;
-                }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Heavy)
-                {
                     NetworkInput.ONE_HEAVY_INPUT = true;
-                }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Assist)
-                {
                     NetworkInput.ONE_SHADOW_INPUT = true;
-                }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Special)
-                {
                     NetworkInput.ONE_ARCANA_INPUT = true;
-                }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.ForwardDash)
-                {
                     NetworkInput.ONE_DASH_FORWARD_INPUT = true;
-                }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.BackDash)
-                {
                     NetworkInput.ONE_DASH_BACKWARD_INPUT = true;
-                }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Throw)
-                {
                     NetworkInput.ONE_GRAB_INPUT = true;
-                }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.Parry)
-                {
                     NetworkInput.ONE_BLUE_FRENZY_INPUT = true;
-                }
                 if (replayCardData.playerOneInputs[i].input == InputEnum.RedFrenzy)
-                {
                     NetworkInput.ONE_RED_FRENZY_INPUT = true;
-                }
                 i++;
                 NextReplayAction();
             }
@@ -250,78 +213,78 @@ public class ReplayManager : MonoBehaviour
     }
     private void NextReplayAction2()
     {
-        if (j < replayCardData.playerTwoInputs.Count)
-        {
-            if (DemonicsWorld.Frame >= replayCardData.playerTwoInputs[j].time)
-            {
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.Direction)
-                {
-                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Up)
-                    {
-                        NetworkInput.TWO_UP_INPUT = true;
-                    }
-                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Down)
-                    {
-                        NetworkInput.TWO_DOWN_INPUT = true;
-                    }
-                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Left)
-                    {
-                        NetworkInput.TWO_LEFT_INPUT = true;
-                    }
-                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Right)
-                    {
-                        NetworkInput.TWO_RIGHT_INPUT = true;
-                    }
-                    if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Neutral)
-                    {
-                        NetworkInput.TWO_LEFT_INPUT = false;
-                        NetworkInput.TWO_RIGHT_INPUT = false;
-                    }
-                }
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.Light)
-                {
-                    NetworkInput.TWO_LIGHT_INPUT = true;
-                }
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.Medium)
-                {
-                    NetworkInput.TWO_MEDIUM_INPUT = true;
-                }
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.Heavy)
-                {
-                    NetworkInput.TWO_HEAVY_INPUT = true;
-                }
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.Assist)
-                {
-                    NetworkInput.TWO_SHADOW_INPUT = true;
-                }
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.Special)
-                {
-                    NetworkInput.TWO_ARCANA_INPUT = true;
-                }
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.ForwardDash)
-                {
-                    NetworkInput.TWO_DASH_FORWARD_INPUT = true;
-                }
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.BackDash)
-                {
-                    NetworkInput.TWO_DASH_BACKWARD_INPUT = true;
-                }
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.Throw)
-                {
-                    NetworkInput.TWO_GRAB_INPUT = true;
-                }
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.Parry)
-                {
-                    NetworkInput.TWO_BLUE_FRENZY_INPUT = true;
-                }
-                if (replayCardData.playerTwoInputs[i].input == InputEnum.RedFrenzy)
-                {
-                    NetworkInput.TWO_RED_FRENZY_INPUT = true;
-                }
-                j++;
-                NextReplayAction2();
-            }
-        }
+        // if (j < replayCardData.playerTwoInputs.Count)
+        // {
+        //     if (DemonicsWorld.Frame >= replayCardData.playerTwoInputs[j].time)
+        //     {
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Direction)
+        //         {
+        //             if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Up)
+        //             {
+        //                 NetworkInput.TWO_UP_INPUT = true;
+        //             }
+        //             if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Down)
+        //             {
+        //                 NetworkInput.TWO_DOWN_INPUT = true;
+        //             }
+        //             if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Left)
+        //             {
+        //                 NetworkInput.TWO_LEFT_INPUT = true;
+        //             }
+        //             if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Right)
+        //             {
+        //                 NetworkInput.TWO_RIGHT_INPUT = true;
+        //             }
+        //             if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Neutral)
+        //             {
+        //                 NetworkInput.TWO_LEFT_INPUT = false;
+        //                 NetworkInput.TWO_RIGHT_INPUT = false;
+        //             }
+        //         }
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Light)
+        //         {
+        //             NetworkInput.TWO_LIGHT_INPUT = true;
+        //         }
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Medium)
+        //         {
+        //             NetworkInput.TWO_MEDIUM_INPUT = true;
+        //         }
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Heavy)
+        //         {
+        //             NetworkInput.TWO_HEAVY_INPUT = true;
+        //         }
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Assist)
+        //         {
+        //             NetworkInput.TWO_SHADOW_INPUT = true;
+        //         }
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Special)
+        //         {
+        //             NetworkInput.TWO_ARCANA_INPUT = true;
+        //         }
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.ForwardDash)
+        //         {
+        //             NetworkInput.TWO_DASH_FORWARD_INPUT = true;
+        //         }
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.BackDash)
+        //         {
+        //             NetworkInput.TWO_DASH_BACKWARD_INPUT = true;
+        //         }
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Throw)
+        //         {
+        //             NetworkInput.TWO_GRAB_INPUT = true;
+        //         }
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Parry)
+        //         {
+        //             NetworkInput.TWO_BLUE_FRENZY_INPUT = true;
+        //         }
+        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.RedFrenzy)
+        //         {
+        //             NetworkInput.TWO_RED_FRENZY_INPUT = true;
+        //         }
+        //         j++;
+        //         NextReplayAction2();
+        //     }
+        // }
     }
 
     private void DeleteReplay()

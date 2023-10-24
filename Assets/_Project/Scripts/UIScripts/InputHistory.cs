@@ -8,7 +8,7 @@ public class InputHistory : MonoBehaviour
     private InputHistoryImage _inputHistoryImage;
     public List<InputEnum> Inputs { get; private set; } = new();
     public List<InputDirectionEnum> Directions { get; private set; } = new();
-    public List<float> InputTimes { get; private set; } = new();
+    public List<int> InputTimes { get; private set; } = new();
     public PlayerController PlayerController { get; set; }
     private List<int> previousTriggers = new List<int>();
     private int previousSequence = -1;

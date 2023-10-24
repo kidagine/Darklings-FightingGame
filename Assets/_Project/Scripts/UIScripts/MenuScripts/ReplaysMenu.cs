@@ -50,7 +50,6 @@ public class ReplaysMenu : BaseMenu
         }
         else
         {
-            Debug.Log("Replay version incompatible:" + _currentReplayCard.ReplayData.version.Trim() + "," + ReplayManager.Instance.VersionNumber);
             _currentReplayCard.GetComponent<Animator>().Rebind();
             _replayIncompatibleMenu.Show();
         }
