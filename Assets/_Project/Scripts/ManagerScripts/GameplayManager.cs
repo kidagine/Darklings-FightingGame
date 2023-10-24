@@ -570,7 +570,7 @@ public class GameplayManager : MonoBehaviour
     public virtual void StartRound()
     {
         _networkCanvas.SetActive(!NetworkInput.IS_LOCAL);
-        //_fadeHandler.StartFadeTransition(false);
+        _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
             ReplayManager.Instance.ShowReplayPrompts();
         _timerMainAnimator.Rebind();
