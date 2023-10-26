@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -87,39 +88,51 @@ public class ReplayManager : MonoBehaviour
         {
             if (!SceneSettings.IsTrainingMode && !SceneSettings.ReplayMode && _replayNotificationAnimator != null)
             {
+                ReplayData replayData = new()
+                {
+                    version = VersionNumber,
+                    date = DateTime.Now.ToString("MM/dd/yyyy HH:mm"),
+                    playerOneCharacter = SceneSettings.PlayerOne,
+                    playerOneAssist = SceneSettings.AssistOne,
+                    playerOneColor = SceneSettings.ColorOne,
+                    playerTwoCharacter = SceneSettings.PlayerTwo,
+                    playerTwoAssist = SceneSettings.AssistTwo,
+                    playerTwoColor = SceneSettings.ColorTwo,
+                    stage = SceneSettings.StageIndex,
+                    music = GameplayManager.Instance.CurrentMusic.name,
+                    theme = SceneSettings.Bit1,
+                    playerOneInputs = new List<ReplayInput>(),
+                    playerTwoInputs = new List<ReplayInput>()
+                };
 
-                ReplayData replayData = new();
-                replayData.version = VersionNumber;
-                replayData.date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-                replayData.playerOneCharacter = SceneSettings.PlayerOne;
-                replayData.playerOneAssist = SceneSettings.ColorOne;
-                replayData.playerOneColor = SceneSettings.AssistOne;
-                replayData.playerTwoCharacter = SceneSettings.PlayerTwo;
-                replayData.playerTwoAssist = SceneSettings.ColorTwo;
-                replayData.playerTwoColor = SceneSettings.AssistTwo;
-                replayData.stage = SceneSettings.StageIndex;
-                replayData.music = GameplayManager.Instance.CurrentMusic.name;
-                replayData.theme = SceneSettings.Bit1;
-                // Debug.Log(_playerOneInputHistory.InputBuffer.triggers.Length + "a");
-                // for (int i = 0; i < _playerOneInputHistory.InputBuffer.triggers.Length; i++)
-                // {
-                //     InputItemNetwork inputItem = _playerOneInputHistory.InputBuffer.triggers[i];
-                //     ReplayInput replayInput = new()
-                //     {
-                //         input = inputItem.inputEnum,
-                //         direction = inputItem.inputDirection,
-                //         time = inputItem.frame
-                //     };
-                //     replayData.playerOneInputs.Add(replayInput);
-                // }
-                // for (int i = 0; i < _playerTwoInputHistory.InputList.inputTriggers.Length; i++)
-                // {
-                // ReplayInput replayInput = new();
-                // replayInput.input = _playerOneInputHistory.Inputs[i];
-                // replayInput.direction = _playerOneInputHistory.Directions[i];
-                // replayInput.time = _playerOneInputHistory.InputTimes[i];
-                // replayData.playerTwoInputs.Add(replayInput);
-                // }
+                for (int i = 0; i < _playerOneInputHistory.Inputs.Count; i++)
+                {
+                    InputItemNetwork inputItem = _playerOneInputHistory.Inputs[i];
+                    if (inputItem.time > 0)
+                    {
+                        ReplayInput replayInput = new()
+                        {
+                            input = inputItem.inputEnum,
+                            time = inputItem.time
+                        };
+                        replayData.playerOneInputs.Add(replayInput);
+                    }
+                }
+                replayData.playerOneInputs = replayData.playerOneInputs.OrderBy(d => d.time).ToList();
+                for (int i = 0; i < _playerTwoInputHistory.Inputs.Count; i++)
+                {
+                    InputItemNetwork inputItem = _playerTwoInputHistory.Inputs[i];
+                    if (inputItem.time > 0)
+                    {
+                        ReplayInput replayInput = new()
+                        {
+                            input = inputItem.inputEnum,
+                            time = inputItem.time
+                        };
+                        replayData.playerTwoInputs.Add(replayInput);
+                    }
+                }
+                replayData.playerTwoInputs = replayData.playerTwoInputs.OrderBy(d => d.time).ToList();
                 replayData.skipTime = Skip;
                 _replayNotificationAnimator.SetTrigger("Save");
                 _replaySO.replays.Add(replayData);
@@ -139,8 +152,8 @@ public class ReplayManager : MonoBehaviour
     private ReplayData replayCardData;
     bool runReplay;
     bool initialReplayStart;
-    private int i;
-    private int j;
+    private int playerOneReplayIndex;
+    private int playerTwoReplayIndex;
 
     public ReplayData GetReplayData(int index) => _replaySO.replays[index];
 
@@ -149,8 +162,12 @@ public class ReplayManager : MonoBehaviour
         replayCardData = GetReplayData(SceneSettings.ReplayIndex);
         runReplay = true;
     }
-    private void FixedUpdate()
+    private void Update()
     {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.CapsLock) && !SceneSettings.IsTrainingMode)
+            SaveReplay();
+#endif
         if (initialReplayStart)
         {
             if (DemonicsWorld.Frame == replayCardData.skipTime && replayCardData.skipTime > 0)
@@ -162,132 +179,148 @@ public class ReplayManager : MonoBehaviour
         }
         if (runReplay)
         {
+            NetworkInput.ONE_NEUTRAL_INPUT = false;
+            NetworkInput.ONE_UP_INPUT = false;
+            NetworkInput.ONE_DOWN_INPUT = false;
+            NetworkInput.ONE_LEFT_INPUT = false;
+            NetworkInput.ONE_RIGHT_INPUT = false;
+            NetworkInput.ONE_UP_RIGHT_INPUT = false;
+            NetworkInput.ONE_UP_LEFT_INPUT = false;
+            NetworkInput.ONE_DOWN_RIGHT_INPUT = false;
+            NetworkInput.ONE_DOWN_LEFT_INPUT = false;
+
+            NetworkInput.ONE_LIGHT_INPUT = false;
+            NetworkInput.ONE_MEDIUM_INPUT = false;
+            NetworkInput.ONE_HEAVY_INPUT = false;
+            NetworkInput.ONE_SHADOW_INPUT = false;
+            NetworkInput.ONE_ARCANA_INPUT = false;
+            NetworkInput.ONE_DASH_FORWARD_INPUT = false;
+            NetworkInput.ONE_DASH_BACKWARD_INPUT = false;
+            NetworkInput.ONE_GRAB_INPUT = false;
+            NetworkInput.ONE_BLUE_FRENZY_INPUT = false;
+            NetworkInput.ONE_RED_FRENZY_INPUT = false;
+
+            NetworkInput.TWO_NEUTRAL_INPUT = false;
+            NetworkInput.TWO_UP_INPUT = false;
+            NetworkInput.TWO_DOWN_INPUT = false;
+            NetworkInput.TWO_LEFT_INPUT = false;
+            NetworkInput.TWO_RIGHT_INPUT = false;
+            NetworkInput.TWO_UP_RIGHT_INPUT = false;
+            NetworkInput.TWO_UP_LEFT_INPUT = false;
+            NetworkInput.TWO_DOWN_RIGHT_INPUT = false;
+            NetworkInput.TWO_DOWN_LEFT_INPUT = false;
+
+            NetworkInput.TWO_LIGHT_INPUT = false;
+            NetworkInput.TWO_MEDIUM_INPUT = false;
+            NetworkInput.TWO_HEAVY_INPUT = false;
+            NetworkInput.TWO_SHADOW_INPUT = false;
+            NetworkInput.TWO_ARCANA_INPUT = false;
+            NetworkInput.TWO_DASH_FORWARD_INPUT = false;
+            NetworkInput.TWO_DASH_BACKWARD_INPUT = false;
+            NetworkInput.TWO_GRAB_INPUT = false;
+            NetworkInput.TWO_BLUE_FRENZY_INPUT = false;
+            NetworkInput.TWO_RED_FRENZY_INPUT = false;
             NextReplayAction();
             NextReplayAction2();
         }
     }
     private void NextReplayAction()
     {
-        if (i < replayCardData.playerOneInputs.Count)
+        if (playerOneReplayIndex < replayCardData.playerOneInputs.Count)
         {
-            Debug.Log(replayCardData.playerOneInputs[i].time);
-            if (DemonicsWorld.Frame >= replayCardData.playerOneInputs[i].time)
+            if (DemonicsWorld.Frame >= replayCardData.playerOneInputs[playerOneReplayIndex].time)
             {
-                if (replayCardData.playerOneInputs[i].input == InputEnum.Direction)
-                {
-                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Up)
-                        NetworkInput.ONE_UP_INPUT = true;
-                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Down)
-                        NetworkInput.ONE_DOWN_INPUT = true;
-                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Left)
-                        NetworkInput.ONE_LEFT_INPUT = true;
-                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Right)
-                        NetworkInput.ONE_RIGHT_INPUT = true;
-                    if (replayCardData.playerOneInputs[i].direction == InputDirectionEnum.Neutral)
-                    {
-                        NetworkInput.ONE_LEFT_INPUT = false;
-                        NetworkInput.ONE_RIGHT_INPUT = false;
-                    }
-                }
-                if (replayCardData.playerOneInputs[i].input == InputEnum.Light)
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Neutral)
+                    NetworkInput.ONE_NEUTRAL_INPUT = true;
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Up)
+                    NetworkInput.ONE_UP_INPUT = true;
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Down)
+                    NetworkInput.ONE_DOWN_INPUT = true;
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Left)
+                    NetworkInput.ONE_LEFT_INPUT = true;
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Right)
+                    NetworkInput.ONE_RIGHT_INPUT = true;
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.UpRight)
+                    NetworkInput.ONE_UP_RIGHT_INPUT = true;
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.UpLeft)
+                    NetworkInput.ONE_UP_LEFT_INPUT = true;
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.DownRight)
+                    NetworkInput.ONE_DOWN_RIGHT_INPUT = true;
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.DownLeft)
+                    NetworkInput.ONE_DOWN_LEFT_INPUT = true;
+
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Light)
                     NetworkInput.ONE_LIGHT_INPUT = true;
-                if (replayCardData.playerOneInputs[i].input == InputEnum.Medium)
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Medium)
                     NetworkInput.ONE_MEDIUM_INPUT = true;
-                if (replayCardData.playerOneInputs[i].input == InputEnum.Heavy)
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Heavy)
                     NetworkInput.ONE_HEAVY_INPUT = true;
-                if (replayCardData.playerOneInputs[i].input == InputEnum.Assist)
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Assist)
                     NetworkInput.ONE_SHADOW_INPUT = true;
-                if (replayCardData.playerOneInputs[i].input == InputEnum.Special)
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Special)
                     NetworkInput.ONE_ARCANA_INPUT = true;
-                if (replayCardData.playerOneInputs[i].input == InputEnum.ForwardDash)
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.ForwardDash)
                     NetworkInput.ONE_DASH_FORWARD_INPUT = true;
-                if (replayCardData.playerOneInputs[i].input == InputEnum.BackDash)
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.BackDash)
                     NetworkInput.ONE_DASH_BACKWARD_INPUT = true;
-                if (replayCardData.playerOneInputs[i].input == InputEnum.Throw)
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Throw)
                     NetworkInput.ONE_GRAB_INPUT = true;
-                if (replayCardData.playerOneInputs[i].input == InputEnum.Parry)
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.Parry)
                     NetworkInput.ONE_BLUE_FRENZY_INPUT = true;
-                if (replayCardData.playerOneInputs[i].input == InputEnum.RedFrenzy)
+                if (replayCardData.playerOneInputs[playerOneReplayIndex].input == InputEnum.RedFrenzy)
                     NetworkInput.ONE_RED_FRENZY_INPUT = true;
-                i++;
-                NextReplayAction();
+                playerOneReplayIndex++;
             }
         }
     }
     private void NextReplayAction2()
     {
-        // if (j < replayCardData.playerTwoInputs.Count)
-        // {
-        //     if (DemonicsWorld.Frame >= replayCardData.playerTwoInputs[j].time)
-        //     {
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Direction)
-        //         {
-        //             if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Up)
-        //             {
-        //                 NetworkInput.TWO_UP_INPUT = true;
-        //             }
-        //             if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Down)
-        //             {
-        //                 NetworkInput.TWO_DOWN_INPUT = true;
-        //             }
-        //             if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Left)
-        //             {
-        //                 NetworkInput.TWO_LEFT_INPUT = true;
-        //             }
-        //             if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Right)
-        //             {
-        //                 NetworkInput.TWO_RIGHT_INPUT = true;
-        //             }
-        //             if (replayCardData.playerTwoInputs[i].direction == InputDirectionEnum.Neutral)
-        //             {
-        //                 NetworkInput.TWO_LEFT_INPUT = false;
-        //                 NetworkInput.TWO_RIGHT_INPUT = false;
-        //             }
-        //         }
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Light)
-        //         {
-        //             NetworkInput.TWO_LIGHT_INPUT = true;
-        //         }
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Medium)
-        //         {
-        //             NetworkInput.TWO_MEDIUM_INPUT = true;
-        //         }
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Heavy)
-        //         {
-        //             NetworkInput.TWO_HEAVY_INPUT = true;
-        //         }
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Assist)
-        //         {
-        //             NetworkInput.TWO_SHADOW_INPUT = true;
-        //         }
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Special)
-        //         {
-        //             NetworkInput.TWO_ARCANA_INPUT = true;
-        //         }
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.ForwardDash)
-        //         {
-        //             NetworkInput.TWO_DASH_FORWARD_INPUT = true;
-        //         }
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.BackDash)
-        //         {
-        //             NetworkInput.TWO_DASH_BACKWARD_INPUT = true;
-        //         }
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Throw)
-        //         {
-        //             NetworkInput.TWO_GRAB_INPUT = true;
-        //         }
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.Parry)
-        //         {
-        //             NetworkInput.TWO_BLUE_FRENZY_INPUT = true;
-        //         }
-        //         if (replayCardData.playerTwoInputs[i].input == InputEnum.RedFrenzy)
-        //         {
-        //             NetworkInput.TWO_RED_FRENZY_INPUT = true;
-        //         }
-        //         j++;
-        //         NextReplayAction2();
-        //     }
-        // }
+        if (playerTwoReplayIndex < replayCardData.playerTwoInputs.Count)
+        {
+            if (DemonicsWorld.Frame >= replayCardData.playerTwoInputs[playerTwoReplayIndex].time)
+            {
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Neutral)
+                    NetworkInput.TWO_NEUTRAL_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Up)
+                    NetworkInput.TWO_UP_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Down)
+                    NetworkInput.TWO_DOWN_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Left)
+                    NetworkInput.TWO_LEFT_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Right)
+                    NetworkInput.TWO_RIGHT_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.UpRight)
+                    NetworkInput.TWO_UP_RIGHT_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.UpLeft)
+                    NetworkInput.TWO_UP_LEFT_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.DownRight)
+                    NetworkInput.TWO_DOWN_RIGHT_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.DownLeft)
+                    NetworkInput.TWO_DOWN_LEFT_INPUT = true;
+
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Light)
+                    NetworkInput.TWO_LIGHT_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Medium)
+                    NetworkInput.TWO_MEDIUM_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Heavy)
+                    NetworkInput.TWO_HEAVY_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Assist)
+                    NetworkInput.TWO_SHADOW_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Special)
+                    NetworkInput.TWO_ARCANA_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.ForwardDash)
+                    NetworkInput.TWO_DASH_FORWARD_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.BackDash)
+                    NetworkInput.TWO_DASH_BACKWARD_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Throw)
+                    NetworkInput.TWO_GRAB_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.Parry)
+                    NetworkInput.TWO_BLUE_FRENZY_INPUT = true;
+                if (replayCardData.playerTwoInputs[playerTwoReplayIndex].input == InputEnum.RedFrenzy)
+                    NetworkInput.TWO_RED_FRENZY_INPUT = true;
+                playerTwoReplayIndex++;
+            }
+        }
     }
 
     private void DeleteReplay()
@@ -306,8 +339,8 @@ public class ReplayManager : MonoBehaviour
 
     public void ShowReplayPrompts()
     {
-        // _replayInput.SetActive(true);
-        // _replayPrompts.SetActive(true);
+        _replayInput.SetActive(true);
+        _replayPrompts.SetActive(true);
     }
 
     public void ToggleReplayInputHistory()
@@ -326,14 +359,5 @@ public class ReplayManager : MonoBehaviour
             playerTwoInputHistory.SetActive(true);
         }
     }
-
-
-#if UNITY_EDITOR
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.CapsLock) && !SceneSettings.IsTrainingMode)
-            SaveReplay();
-    }
-#endif
 }
 

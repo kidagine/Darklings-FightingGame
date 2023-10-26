@@ -6,15 +6,16 @@ public class InputHistory : MonoBehaviour
 {
     [SerializeField] Transform _inputHistoryContainer = default;
     private InputHistoryImage _inputHistoryImage;
-    public List<InputEnum> Inputs { get; private set; } = new();
-    public List<InputDirectionEnum> Directions { get; private set; } = new();
-    public List<int> InputTimes { get; private set; } = new();
     public PlayerController PlayerController { get; set; }
-    private List<int> previousTriggers = new List<int>();
+    private List<int> previousTriggers = new();
     private int previousSequence = -1;
-
-    public void UpdateDisplay(InputList inputList)
+    public List<InputItemNetwork> Inputs { get; set; } = new();
+    public InputItemNetwork[] Sequences { get; set; }
+    public void UpdateDisplay(InputList inputList, InputBufferNetwork inputBuffer)
     {
+        Inputs.Clear();
+        Inputs.AddRange(inputBuffer.triggers);
+        Inputs.AddRange(inputBuffer.sequences);
         int sequence = (int)inputList.inputSequence.inputDirectionEnum;
         List<int> triggers = new List<int>();
         for (int i = 0; i < inputList.inputTriggers.Length; i++)

@@ -31,7 +31,8 @@ public class PauseMenu : BaseMenu
 
     protected override void OnEnable()
     {
-        _trainingTopBar.Show();
+        if (_trainingTopBar != null)
+            _trainingTopBar.Show();
         if (gameObject.activeSelf)
             StartCoroutine(PromptEnablerCoroutine());
         base.OnEnable();

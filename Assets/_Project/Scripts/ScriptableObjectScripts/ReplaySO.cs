@@ -25,8 +25,8 @@ public struct ReplayData
     public int playerTwoCharacter;
     public int playerTwoColor;
     public int playerTwoAssist;
+    public int skipTime;
     //inputs
     public List<ReplayInput> playerOneInputs;
     public List<ReplayInput> playerTwoInputs;
-    public int skipTime;
 }

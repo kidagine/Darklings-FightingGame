@@ -90,7 +90,8 @@ public struct GameSimulation : IGame
         {
             _players[i] = new PlayerNetwork();
             _players[i].resultAttack = new ResultAttack();
-            _players[i].inputBuffer.triggers = new InputItemNetwork[20];
+            _players[i].inputBuffer.triggers = new InputItemNetwork[2000];
+            _players[i].inputBuffer.sequences = new InputItemNetwork[2000];
             _players[i].state = "Idle";
             _players[i].CurrentState = new IdleState();
             _players[i].flip = 1;
@@ -113,17 +114,27 @@ public struct GameSimulation : IGame
             _players[i].inputList = new InputList()
             {
                 inputTriggers = new InputTrigger[]{
-                    new InputTrigger() { inputEnum = InputEnum.Light },
-                    new InputTrigger() { inputEnum = InputEnum.Medium },
-                    new InputTrigger() { inputEnum = InputEnum.Assist },
-                    new InputTrigger() { inputEnum = InputEnum.Heavy },
-                    new InputTrigger() { inputEnum = InputEnum.Special },
-                    new InputTrigger() { inputEnum = InputEnum.Throw },
-                    new InputTrigger() { inputEnum = InputEnum.ForwardDash },
-                    new InputTrigger() { inputEnum = InputEnum.BackDash },
+                    new() { inputEnum = InputEnum.Light },
+                    new() { inputEnum = InputEnum.Medium },
+                    new() { inputEnum = InputEnum.Assist },
+                    new() { inputEnum = InputEnum.Heavy },
+                    new() { inputEnum = InputEnum.Special },
+                    new() { inputEnum = InputEnum.Throw },
+                    new() { inputEnum = InputEnum.ForwardDash },
+                    new() { inputEnum = InputEnum.BackDash },
+                    new() { inputEnum = InputEnum.Up , sequence = true },
+                    new() { inputEnum = InputEnum.Down, sequence = true  },
+                    new() { inputEnum = InputEnum.Left, sequence = true  },
+                    new() { inputEnum = InputEnum.Right, sequence = true },
+                    new() { inputEnum = InputEnum.UpRight, sequence = true },
+                    new() { inputEnum = InputEnum.UpLeft, sequence = true },
+                    new() { inputEnum = InputEnum.DownRight, sequence = true },
+                    new() { inputEnum = InputEnum.DownLeft, sequence = true },
+                    new() { inputEnum = InputEnum.Neutral, sequence = true },
                 },
                 inputSequence = new InputSequence() { inputEnum = InputEnum.Direction, inputDirectionEnum = InputDirectionEnum.Neutral },
             };
+            _players[i].inputHistory.InputItems = new InputItemNetwork[1000];
             _players[i].attackNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
             _players[i].attackHurtNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
             _players[i].effects = new EffectNetwork[playerStats[i]._effectsLibrary._objectPools.Count];
@@ -175,11 +186,21 @@ public struct GameSimulation : IGame
     {
         if (GameSimulation.Run)
         {
-            _players[index].inputDirection = _players[index].inputList.inputSequence.inputDirectionEnum;
-            _players[index].direction = InputDirectionTypes.GetDirectionValue(_players[index].inputDirection);
+            _players[index].direction = InputDirectionTypes.GetDirectionValue(_players[index].inputBuffer.CurrentSequence().inputEnum);
             for (int i = 0; i < _players[index].inputList.inputTriggers.Length; i++)
                 if (_players[index].inputList.inputTriggers[i].pressed)
-                    _players[index].inputBuffer.AddTrigger(new InputItemNetwork() { inputEnum = _players[index].inputList.inputTriggers[i].inputEnum, inputDirection = _players[index].inputDirection, frame = Frames, pressed = true });
+                {
+                    _players[index].inputBuffer.AddTrigger(new InputItemNetwork()
+                    {
+                        inputEnum = _players[index].inputList.inputTriggers[i].inputEnum,
+                        inputDirection = _players[index].inputDirection,
+                        frame = Frames,
+                        time = Frames,
+                        sequence = _players[index].inputList.inputTriggers[i].sequence,
+                        pressed = true
+                    });
+                }
+
 
             if (_players[index].shadowGauge >= maxShadowGauge)
                 _players[index].shadowGauge = maxShadowGauge;

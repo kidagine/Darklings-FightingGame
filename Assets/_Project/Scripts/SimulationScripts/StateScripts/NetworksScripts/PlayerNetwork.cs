@@ -73,6 +73,7 @@ public class PlayerNetwork
     public ColliderNetwork hitbox;
     public ColliderNetwork pushbox;
     public InputBufferNetwork inputBuffer;
+    public InputHistoryNetwork inputHistory;
     public FramedataTypesEnum framedataEnum;
     public EffectNetwork[] effects;
     public EffectNetwork[] particles;
@@ -137,23 +138,18 @@ public class PlayerNetwork
         bw.Write(spriteOrder);
         bw.Write(state);
         inputBuffer.Serialize(bw);
+        inputHistory.Serialize(bw);
         hurtbox.Serialize(bw);
         hitbox.Serialize(bw);
         shadow.Serialize(bw);
         attackNetwork.Serialize(bw);
         attackHurtNetwork.Serialize(bw);
         for (int i = 0; i < projectiles.Length; ++i)
-        {
             projectiles[i].Serialize(bw);
-        }
         for (int i = 0; i < particles.Length; ++i)
-        {
             particles[i].Serialize(bw);
-        }
         for (int i = 0; i < effects.Length; ++i)
-        {
             effects[i].Serialize(bw);
-        }
     }
 
     public void Deserialize(BinaryReader br)
@@ -216,23 +212,18 @@ public class PlayerNetwork
         spriteOrder = br.ReadInt32();
         state = br.ReadString();
         inputBuffer.Deserialize(br);
+        inputHistory.Deserialize(br);
         hurtbox.Deserialize(br);
         hitbox.Deserialize(br);
         shadow.Deserialize(br);
         attackNetwork.Deserialize(br);
         attackHurtNetwork.Deserialize(br);
         for (int i = 0; i < projectiles.Length; ++i)
-        {
             projectiles[i].Deserialize(br);
-        }
         for (int i = 0; i < particles.Length; ++i)
-        {
             particles[i].Deserialize(br);
-        }
         for (int i = 0; i < effects.Length; ++i)
-        {
             effects[i].Deserialize(br);
-        }
     }
 
     public override int GetHashCode()

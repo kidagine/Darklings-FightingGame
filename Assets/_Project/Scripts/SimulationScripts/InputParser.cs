@@ -17,6 +17,19 @@ public class InputParser
                 input |= NetworkInput.LEFT_BYTE;
             if (NetworkInput.ONE_RIGHT_INPUT)
                 input |= NetworkInput.RIGHT_BYTE;
+            if (NetworkInput.ONE_NEUTRAL_INPUT)
+                input |= NetworkInput.NEUTRAL_BYTE;
+            if (NetworkInput.ONE_UP_RIGHT_INPUT)
+                input |= NetworkInput.UP_RIGHT_BYTE;
+            if (NetworkInput.ONE_UP_LEFT_INPUT)
+                input |= NetworkInput.UP_LEFT_BYTE;
+            if (NetworkInput.ONE_DOWN_RIGHT_INPUT)
+                input |= NetworkInput.DOWN_RIGHT_BYTE;
+            if (NetworkInput.ONE_DOWN_LEFT_INPUT)
+                input |= NetworkInput.DOWN_LEFT_BYTE;
+            if (NetworkInput.ONE_NEUTRAL_INPUT)
+                input |= NetworkInput.NEUTRAL_BYTE;
+
             if (NetworkInput.ONE_LIGHT_INPUT)
                 input |= NetworkInput.LIGHT_BYTE;
             if (NetworkInput.ONE_MEDIUM_INPUT)
@@ -50,6 +63,17 @@ public class InputParser
                 input |= NetworkInput.LEFT_BYTE;
             if (NetworkInput.TWO_RIGHT_INPUT)
                 input |= NetworkInput.RIGHT_BYTE;
+            if (NetworkInput.TWO_UP_RIGHT_INPUT)
+                input |= NetworkInput.UP_RIGHT_BYTE;
+            if (NetworkInput.TWO_UP_LEFT_INPUT)
+                input |= NetworkInput.UP_LEFT_BYTE;
+            if (NetworkInput.TWO_DOWN_RIGHT_INPUT)
+                input |= NetworkInput.DOWN_RIGHT_BYTE;
+            if (NetworkInput.TWO_DOWN_LEFT_INPUT)
+                input |= NetworkInput.DOWN_LEFT_BYTE;
+            if (NetworkInput.TWO_NEUTRAL_INPUT)
+                input |= NetworkInput.NEUTRAL_BYTE;
+
             if (NetworkInput.TWO_LIGHT_INPUT)
                 input |= NetworkInput.LIGHT_BYTE;
             if (NetworkInput.TWO_MEDIUM_INPUT)
@@ -80,8 +104,6 @@ public class InputParser
             skip = true;
         else
             skip = false;
-
-        ParseSequence(inputs, ref inputTriggers.inputSequence);
         ParseTrigger(inputs, ref inputTriggers.inputTriggers[0], NetworkInput.LIGHT_BYTE, NetworkInput.BLUE_FRENZY_BYTE);
         ParseTrigger(inputs, ref inputTriggers.inputTriggers[1], NetworkInput.MEDIUM_BYTE, NetworkInput.BLUE_FRENZY_BYTE);
         ParseTrigger(inputs, ref inputTriggers.inputTriggers[2], NetworkInput.SHADOW_BYTE);
@@ -90,43 +112,15 @@ public class InputParser
         ParseTrigger(inputs, ref inputTriggers.inputTriggers[5], NetworkInput.GRAB_BYTE);
         ParseTrigger(inputs, ref inputTriggers.inputTriggers[6], NetworkInput.DASH_FORWARD_BYTE);
         ParseTrigger(inputs, ref inputTriggers.inputTriggers[7], NetworkInput.DASH_BACKWARD_BYTE);
-    }
-
-    private static void ParseSequence(long inputs, ref InputSequence inputSequence)
-    {
-        bool up = (inputs & NetworkInput.UP_BYTE) != 0;
-        bool down = (inputs & NetworkInput.DOWN_BYTE) != 0;
-        bool left = (inputs & NetworkInput.LEFT_BYTE) != 0;
-        bool right = (inputs & NetworkInput.RIGHT_BYTE) != 0;
-        if (left && right)
-        {
-            left = false;
-            right = false;
-        }
-        if (up && down)
-        {
-            up = false;
-            down = false;
-        }
-
-        if (up & left)
-            inputSequence.inputDirectionEnum = InputDirectionEnum.UpLeft;
-        else if (up & right)
-            inputSequence.inputDirectionEnum = InputDirectionEnum.UpRight;
-        else if (down & left)
-            inputSequence.inputDirectionEnum = InputDirectionEnum.DownLeft;
-        else if (down & right)
-            inputSequence.inputDirectionEnum = InputDirectionEnum.DownRight;
-        else if (up)
-            inputSequence.inputDirectionEnum = InputDirectionEnum.Up;
-        else if (down)
-            inputSequence.inputDirectionEnum = InputDirectionEnum.Down;
-        else if (left)
-            inputSequence.inputDirectionEnum = InputDirectionEnum.Left;
-        else if (right)
-            inputSequence.inputDirectionEnum = InputDirectionEnum.Right;
-        else
-            inputSequence.inputDirectionEnum = InputDirectionEnum.Neutral;
+        ParseTrigger(inputs, ref inputTriggers.inputTriggers[8], NetworkInput.UP_BYTE);
+        ParseTrigger(inputs, ref inputTriggers.inputTriggers[9], NetworkInput.DOWN_BYTE);
+        ParseTrigger(inputs, ref inputTriggers.inputTriggers[10], NetworkInput.LEFT_BYTE);
+        ParseTrigger(inputs, ref inputTriggers.inputTriggers[11], NetworkInput.RIGHT_BYTE);
+        ParseTrigger(inputs, ref inputTriggers.inputTriggers[12], NetworkInput.UP_RIGHT_BYTE);
+        ParseTrigger(inputs, ref inputTriggers.inputTriggers[13], NetworkInput.UP_LEFT_BYTE);
+        ParseTrigger(inputs, ref inputTriggers.inputTriggers[14], NetworkInput.DOWN_RIGHT_BYTE);
+        ParseTrigger(inputs, ref inputTriggers.inputTriggers[15], NetworkInput.DOWN_LEFT_BYTE);
+        ParseTrigger(inputs, ref inputTriggers.inputTriggers[16], NetworkInput.NEUTRAL_BYTE);
     }
 
     private static void ParseTrigger(long inputs, ref InputTrigger inputTrigger, int inputByte, int optionalInputByte = 0)

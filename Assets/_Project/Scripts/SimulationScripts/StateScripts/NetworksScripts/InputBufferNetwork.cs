@@ -6,6 +6,7 @@ using UnityEngine;
 public struct InputBufferNetwork
 {
     public InputItemNetwork[] triggers;
+    public InputItemNetwork[] sequences;
     public int indexTrigger;
     public int indexSequence;
 
@@ -15,6 +16,8 @@ public struct InputBufferNetwork
         bw.Write(indexSequence);
         for (int i = 0; i < triggers.Length; ++i)
             triggers[i].Serialize(bw);
+        for (int i = 0; i < sequences.Length; ++i)
+            sequences[i].Serialize(bw);
     }
 
     public void Deserialize(BinaryReader br)
@@ -23,15 +26,30 @@ public struct InputBufferNetwork
         indexSequence = br.ReadInt32();
         for (int i = 0; i < triggers.Length; ++i)
             triggers[i].Deserialize(br);
+        for (int i = 0; i < sequences.Length; ++i)
+            sequences[i].Deserialize(br);
     }
 
     public void AddTrigger(InputItemNetwork inputItem)
     {
-        indexTrigger++;
-        if (indexTrigger >= triggers.Length)
-            indexTrigger = 0;
-        triggers[indexTrigger] = inputItem;
+        if (inputItem.sequence)
+        {
+            indexSequence++;
+            if (indexSequence >= sequences.Length)
+                indexSequence = 0;
+            sequences[indexSequence] = inputItem;
+        }
+        else
+        {
+            indexTrigger++;
+            if (indexTrigger >= triggers.Length)
+                indexTrigger = 0;
+            triggers[indexTrigger] = inputItem;
+        }
     }
+
+    public InputItemNetwork CurrentSequence() => sequences[indexSequence];
+    private InputItemNetwork PreviousSequence() => sequences[indexSequence - 1];
     public InputItemNetwork CurrentTrigger() => triggers[indexTrigger];
     private InputItemNetwork PreviousTrigger() => triggers[indexTrigger - 1];
 

@@ -15,12 +15,22 @@ public class NetworkInput
     public const int RED_FRENZY_BYTE = (1 << 12);
     public const int DASH_FORWARD_BYTE = (1 << 13);
     public const int DASH_BACKWARD_BYTE = (1 << 14);
+    public const int NEUTRAL_BYTE = (1 << 15);
+    public const int UP_RIGHT_BYTE = (1 << 16);
+    public const int UP_LEFT_BYTE = (1 << 17);
+    public const int DOWN_RIGHT_BYTE = (1 << 18);
+    public const int DOWN_LEFT_BYTE = (1 << 19);
 
     public static bool IS_LOCAL = true;
     public static bool ONE_UP_INPUT;
     public static bool ONE_DOWN_INPUT;
     public static bool ONE_LEFT_INPUT;
     public static bool ONE_RIGHT_INPUT;
+    public static bool ONE_UP_RIGHT_INPUT;
+    public static bool ONE_UP_LEFT_INPUT;
+    public static bool ONE_DOWN_RIGHT_INPUT;
+    public static bool ONE_DOWN_LEFT_INPUT;
+    public static bool ONE_NEUTRAL_INPUT;
     public static bool ONE_LIGHT_INPUT;
     public static bool ONE_MEDIUM_INPUT;
     public static bool ONE_HEAVY_INPUT;
@@ -31,10 +41,16 @@ public class NetworkInput
     public static bool ONE_RED_FRENZY_INPUT;
     public static bool ONE_DASH_FORWARD_INPUT;
     public static bool ONE_DASH_BACKWARD_INPUT;
+
     public static bool TWO_UP_INPUT;
     public static bool TWO_DOWN_INPUT;
     public static bool TWO_LEFT_INPUT;
     public static bool TWO_RIGHT_INPUT;
+    public static bool TWO_UP_RIGHT_INPUT;
+    public static bool TWO_UP_LEFT_INPUT;
+    public static bool TWO_DOWN_RIGHT_INPUT;
+    public static bool TWO_DOWN_LEFT_INPUT;
+    public static bool TWO_NEUTRAL_INPUT;
     public static bool TWO_LIGHT_INPUT;
     public static bool TWO_MEDIUM_INPUT;
     public static bool TWO_HEAVY_INPUT;

@@ -76,14 +76,13 @@ public struct ReplayCardData
     public int stage;
     public string musicName;
     public bool bit1;
+    public int skip;
     public ReplayInput[] playerOneInputs;
     public ReplayInput[] playerTwoInputs;
-    public float skip;
 }
 [Serializable]
 public struct ReplayInput
 {
     public InputEnum input;
-    public InputDirectionEnum direction;
     public int time;
 }
