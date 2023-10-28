@@ -141,7 +141,7 @@ public class AttackState : State
                 }
                 else
                 {
-                    if (input.inputEnum == InputEnum.Heavy && input.inputDirection != InputDirectionEnum.Down && player.attackInput != InputEnum.Light)
+                    if (input.inputEnum == InputEnum.Heavy && player.attackInput != InputEnum.Light)
                         return;
                     if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
                         if (input.inputEnum != InputEnum.Throw)

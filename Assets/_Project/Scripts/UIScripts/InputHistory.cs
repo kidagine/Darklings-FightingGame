@@ -16,12 +16,16 @@ public class InputHistory : MonoBehaviour
         Inputs.Clear();
         Inputs.AddRange(inputBuffer.triggers);
         Inputs.AddRange(inputBuffer.sequences);
-        int sequence = (int)inputList.inputSequence.inputDirectionEnum;
-        List<int> triggers = new List<int>();
+        List<int> triggers = new();
         for (int i = 0; i < inputList.inputTriggers.Length; i++)
-            if (inputList.inputTriggers[i].held)
+            if (inputList.inputTriggers[i].held && !inputList.inputTriggers[i].sequence)
                 if (!triggers.Contains(i))
                     triggers.Add(i);
+
+        int sequence = 0;
+        for (int i = 0; i < inputList.inputTriggers.Length; i++)
+            if (inputList.inputTriggers[i].held && inputList.inputTriggers[i].sequence)
+                sequence = (int)inputList.inputTriggers[i].inputEnum;
 
         if (triggers.Count != previousTriggers.Count || sequence != previousSequence)
         {

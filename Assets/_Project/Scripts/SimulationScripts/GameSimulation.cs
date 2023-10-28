@@ -100,7 +100,7 @@ public struct GameSimulation : IGame
             _players[i].health = playerStats[i].maxHealth;
             _players[i].healthRecoverable = playerStats[i].maxHealth;
             _players[i].shadowGauge = maxShadowGauge;
-            _players[i].attackInput = InputEnum.Direction;
+            _players[i].attackInput = InputEnum.Neutral;
             _players[i].animation = "Idle";
             _players[i].sound = "";
             _players[i].soundGroup = "";
@@ -132,7 +132,7 @@ public struct GameSimulation : IGame
                     new() { inputEnum = InputEnum.DownLeft, sequence = true },
                     new() { inputEnum = InputEnum.Neutral, sequence = true },
                 },
-                inputSequence = new InputSequence() { inputEnum = InputEnum.Direction, inputDirectionEnum = InputDirectionEnum.Neutral },
+                inputSequence = new InputSequence() { inputEnum = InputEnum.Neutral, inputDirectionEnum = InputDirectionEnum.Neutral },
             };
             _players[i].inputHistory.InputItems = new InputItemNetwork[1000];
             _players[i].attackNetwork = new AttackNetwork() { name = "", attackSound = "", hurtEffect = "", impactSound = "", moveName = "" };
@@ -193,7 +193,6 @@ public struct GameSimulation : IGame
                     _players[index].inputBuffer.AddTrigger(new InputItemNetwork()
                     {
                         inputEnum = _players[index].inputList.inputTriggers[i].inputEnum,
-                        inputDirection = _players[index].inputDirection,
                         frame = Frames,
                         time = Frames,
                         sequence = _players[index].inputList.inputTriggers[i].sequence,
