@@ -61,9 +61,7 @@ public class AttackState : State
             }
         }
         if (!player.hitstop)
-        {
             AttackCancel(player);
-        }
         if (!player.isAir)
         {
             if (player.pushbackDuration > 0 && player.knockback <= player.pushbackDuration)
@@ -74,13 +72,9 @@ public class AttackState : State
                 player.position = nextPosition;
                 player.knockback++;
                 if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
-                {
                     player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
-                }
                 else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
-                {
                     player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
-                }
             }
         }
         UpdateFramedata(player);
@@ -99,13 +93,9 @@ public class AttackState : State
         int recoveryFrames = forwardDash ? 2 : 3;
         DemonFloat dashforce = forwardDash ? player.playerStats.DashAirForce : player.playerStats.DashBackAirForce;
         if (player.dashFrames < startUpFrames && player.dashFrames > recoveryFrames)
-        {
             player.velocity = new DemonVector2(player.dashDirection * dashforce, 0);
-        }
         else
-        {
             player.velocity = new DemonVector2(player.dashDirection * (dashforce - (DemonFloat)1), 0);
-        }
         if (player.dashFrames % 3 == 0)
         {
             if (player.flip > 0)
@@ -132,13 +122,9 @@ public class AttackState : State
             if (input.frame != 0)
             {
                 if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
-                {
                     player.isAir = true;
-                }
                 if (input.inputEnum == InputEnum.Special)
-                {
                     Arcana(player, player.isAir);
-                }
                 else
                 {
                     if (input.inputEnum == InputEnum.Heavy && player.attackInput != InputEnum.Light)

@@ -63,13 +63,9 @@ public class State
             player.isCrouch = false;
             player.isAir = air;
             if (player.direction.y < 0)
-            {
                 player.isCrouch = true;
-            }
             if (player.isAir)
-            {
                 player.isCrouch = false;
-            }
             AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
             if (attack != null)
             {

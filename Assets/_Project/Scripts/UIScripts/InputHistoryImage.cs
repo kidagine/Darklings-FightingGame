@@ -28,8 +28,6 @@ public class InputHistoryImage : MonoBehaviour
 
     private void UpdateTriggersDisplay(int[] triggerIndexes)
     {
-        for (int i = 0; i < triggerIndexes.Length; i++)
-            Debug.Log(triggerIndexes[i]);
         for (int i = 0; i < _triggers.Length; i++)
             _triggers[i].SetActive(false);
         for (int i = 0; i < triggerIndexes.Length; i++)
