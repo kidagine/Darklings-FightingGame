@@ -232,21 +232,15 @@ public class Player : MonoBehaviour, IHitstop
     public void Pause(bool isPlayerOne)
     {
         if (GameplayManager.Instance.IsTrainingMode)
-        {
             _playerUI.OpenTrainingPause(isPlayerOne);
-        }
         else
-        {
             _playerUI.OpenPauseHold(isPlayerOne);
-        }
     }
 
     public void UnPause()
     {
         if (!GameplayManager.Instance.IsTrainingMode)
-        {
             _playerUI.ClosePauseHold();
-        }
     }
 
     public bool IsAnimationFinished(string name, int frames)
