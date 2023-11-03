@@ -40,7 +40,7 @@ public class BaseMenu : MonoBehaviour
             StartCoroutine(ActivateCoroutine());
     }
 
-    IEnumerator ActivateCoroutine()
+    protected IEnumerator ActivateCoroutine()
     {
         GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
         if (currentSelected != null)

@@ -35,8 +35,6 @@ public class CommandListMenu : BaseMenu
     private Player _playerOne;
     private Player _playerTwo;
     private Player _currentlyDisplayedPlayer;
-    private Player _otherDisplayedPlayer;
-
 
     public PauseMenu CurrentPauseMenu { get; private set; }
 
@@ -44,6 +42,10 @@ public class CommandListMenu : BaseMenu
     {
         _playerOne = GameplayManager.Instance.PlayerOne;
         _playerTwo = GameplayManager.Instance.PlayerTwo;
+        string playerOne = Regex.Replace(_playerOne.PlayerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+        string playerTwo = Regex.Replace(_playerTwo.PlayerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+        _characterText[0].text = playerOne;
+        _characterText[1].text = playerTwo;
     }
 
     public void NextSubPage()
@@ -68,58 +70,36 @@ public class CommandListMenu : BaseMenu
         }
     }
 
-    public void NextPage()
+    public void SetCharacterMenu(int index)
     {
-        _currentPage++;
-        if (AreBothCharactersSame())
-        {
-            _currentPage++;
-        }
-        if (_currentPage > _slides.Length - 1)
-        {
-            _currentPage = 0;
-        }
-        if (_currentPage == 0)
-        {
+        if (_playerOne == null)
+            return;
+        if (index == 0)
             SetCommandListData(_playerOne.playerStats);
-        }
         else
-        {
             SetCommandListData(_playerTwo.playerStats);
-        }
-        EventSystem.current.SetSelectedGameObject(null);
-        SetPageInfo();
     }
 
-    public void PreviousPage()
+    public void SetInfoMenu(int index)
     {
-        _currentPage--;
-        if (AreBothCharactersSame())
-        {
-            _currentPage--;
-        }
-        if (_currentPage < 0)
-        {
-            _currentPage = _slides.Length - 1;
-        }
-        if (_currentPage == 0)
-        {
-            SetCommandListData(_playerOne.playerStats);
-        }
-        else
-        {
-            SetCommandListData(_playerTwo.playerStats);
-        }
-        EventSystem.current.SetSelectedGameObject(null);
-        SetPageInfo();
+        for (int i = 0; i < _subSlides.Length; i++)
+            _subSlides[i].SetActive(false);
+        _subSlides[index].SetActive(true);
+        _currentPage = index;
+        if (index == 0)
+            _startingOption.Select();
+        else if (index == 1)
+            _normalMovesButton.Select();
+        else if (index == 2)
+            _commonMovesButton.Select();
+        _normalsContent.anchoredPosition = Vector2.zero;
+        _characterContent.anchoredPosition = Vector2.zero;
     }
 
     private bool AreBothCharactersSame()
     {
         if (_playerOne.playerStats.characterIndex == _playerTwo.playerStats.characterIndex)
-        {
             return true;
-        }
         return false;
     }
 
@@ -127,63 +107,18 @@ public class CommandListMenu : BaseMenu
     {
         _demonLimitPage.SetActive(false);
         for (int i = 0; i < _slides.Length; i++)
-        {
             _slides[i].SetActive(false);
-        }
-        string playerOne = Regex.Replace(_playerOne.PlayerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-        string playerTwo = Regex.Replace(_playerTwo.PlayerStats.characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
-        if (_currentPage == 0)
-        {
-            _subSlides[0].SetActive(false);
-            _subSlides[1].SetActive(true);
-            _characterContent.anchoredPosition = Vector2.zero;
-            _characterMovesButton.Select();
-            _characterMovesPage.SetActive(true);
-            _commonMovesPage.SetActive(false);
-            _characterText[0].text = playerOne;
-            if (AreBothCharactersSame())
-            {
-                _characterText[1].text = "Common Moves";
-            }
-            _characterText[2].text = "Common Moves";
-        }
-        else if (_currentPage == 1)
-        {
-            _subSlides[0].SetActive(false);
-            _subSlides[1].SetActive(true);
-            _characterContent.anchoredPosition = Vector2.zero;
-            _characterMovesButton.Select();
-            _characterMovesPage.SetActive(true);
-            _commonMovesPage.SetActive(false);
-            _characterText[0].text = playerTwo;
-            _characterText[1].text = "Common Moves";
-            _characterText[2].text = playerOne;
-        }
-        else
-        {
-            _commonContent.anchoredPosition = Vector2.zero;
-            _commonMovesButton.Select();
-            _characterMovesPage.SetActive(false);
-            _commonMovesPage.SetActive(true);
-            _characterText[0].text = "Common Moves";
-            _characterText[1].text = playerOne;
-            _characterText[2].text = playerTwo;
-        }
-        _slides[_currentPage].SetActive(true);
-    }
 
-    public void ChangePage()
-    {
-        _currentPage++;
-        if (_playerOne == _currentlyDisplayedPlayer)
-        {
-            _currentlyDisplayedPlayer = _playerTwo;
-        }
-        else
-        {
-            _currentlyDisplayedPlayer = _playerOne;
-        }
-        SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
+        _characterContent.anchoredPosition = Vector2.zero;
+        _characterMovesPage.SetActive(true);
+        _commonMovesPage.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        if (_currentPage == 0)
+            _startingOption.Select();
+        else if (_currentPage == 1)
+            _normalMovesButton.Select();
+        else if (_currentPage == 2)
+            _commonMovesButton.Select();
     }
 
     private void SetCommandListData(PlayerStatsSO playerStats)
@@ -196,9 +131,7 @@ public class CommandListMenu : BaseMenu
             _commandListButtons[2].gameObject.SetActive(true);
         }
         else
-        {
             _commandListButtons[2].gameObject.SetActive(false);
-        }
         _commandListButtons[3].SetData(playerStats.m5L);
         _commandListButtons[4].SetData(playerStats.m2L);
         _commandListButtons[5].SetData(playerStats.jL);
@@ -229,17 +162,11 @@ public class CommandListMenu : BaseMenu
         _knockdownImage.SetActive(false);
         _projectileImage.SetActive(false);
         if (command.reversal)
-        {
             _reversalImage.SetActive(true);
-        }
         if (command.causesKnockdown)
-        {
             _knockdownImage.SetActive(true);
-        }
         if (command.isProjectile)
-        {
             _projectileImage.SetActive(true);
-        }
         _commandFramedata.SetFramedata(command);
         _toggleFramedataPrompt.SetActive(true);
         if (!_toggleFramedata)
@@ -295,32 +222,21 @@ public class CommandListMenu : BaseMenu
         Hide();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         _characterContent.anchoredPosition = Vector2.zero;
         _commonContent.anchoredPosition = Vector2.zero;
         if (GameplayManager.Instance.IsTrainingMode)
-        {
             CurrentPauseMenu = _pauseTrainingMenu;
-        }
         else
-        {
             CurrentPauseMenu = _pauseMenu;
-        }
         if (AreBothCharactersSame())
-        {
             _slides[1].transform.parent.gameObject.SetActive(false);
-        }
         if (CurrentPauseMenu.PlayerOnePaused)
-        {
             _currentlyDisplayedPlayer = _playerOne;
-            _otherDisplayedPlayer = _playerTwo;
-        }
         else
-        {
             _currentlyDisplayedPlayer = _playerTwo;
-            _otherDisplayedPlayer = _playerOne;
-        }
         SetCommandListData(_currentlyDisplayedPlayer.PlayerStats);
     }
 }

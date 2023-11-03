@@ -90,7 +90,8 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
         if (_allowMultiplePresses)
             _animator.SetBool("IsSelected", true);
         EventSystem.current.sendNavigationEvents = true;
-        _onClickedAnimationEnd?.Invoke();
+        if (_onClickedAnimationEnd != null)
+            _onClickedAnimationEnd?.Invoke();
     }
 
     public void MoveScrollDown(BaseEventData eventData)
