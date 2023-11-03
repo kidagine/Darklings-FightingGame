@@ -77,6 +77,18 @@ public class InputManager : MonoBehaviour
             CurrentPrompts?.OnRightPage?.Invoke();
     }
 
+    public void NavigationRight(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+            CurrentPrompts?.OnRightNavigation?.Invoke();
+    }
+
+    public void NavigationLeft(CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+            CurrentPrompts?.OnLeftNavigation?.Invoke();
+    }
+
     public void Options(CallbackContext callbackContext)
     {
         if (callbackContext.performed)
