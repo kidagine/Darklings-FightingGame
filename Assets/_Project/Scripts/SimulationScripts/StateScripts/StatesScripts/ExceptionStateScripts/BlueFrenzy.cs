@@ -71,6 +71,7 @@ public class BlueFrenzyState : State
 
     private void Parry(PlayerNetwork player)
     {
+        player.animationFrames = 6;
         int parryDistance = 37;
         player.sound = "Parry";
         DemonVector2 hurtEffectPosition = new DemonVector2(player.position.x + (20 * player.flip), player.position.y + 25);

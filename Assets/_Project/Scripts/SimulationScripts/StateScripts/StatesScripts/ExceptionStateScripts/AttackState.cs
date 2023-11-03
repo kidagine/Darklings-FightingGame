@@ -26,7 +26,7 @@ public class AttackState : State
                     player.player.StartShakeContact();
                     player.player.PlayerUI.Damaged();
                     player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
-                    DemonVector2 effectPosition = new DemonVector2(player.position.x, player.position.y + 20);
+                    DemonVector2 effectPosition = new(player.position.x, player.position.y + 20);
                     player.SetParticle("GuardBreak", effectPosition);
                 }
                 //CheckTrainingComboEnd(player);
@@ -88,7 +88,7 @@ public class AttackState : State
 
     private void Dash(PlayerNetwork player)
     {
-        bool forwardDash = player.dashDirection * player.flip == 1 ? true : false;
+        bool forwardDash = player.dashDirection * player.flip == 1;
         int startUpFrames = forwardDash ? 9 : 13;
         int recoveryFrames = forwardDash ? 2 : 3;
         DemonFloat dashforce = forwardDash ? player.playerStats.DashAirForce : player.playerStats.DashBackAirForce;
@@ -173,15 +173,16 @@ public class AttackState : State
     }
     private void ToIdleFallState(PlayerNetwork player)
     {
-        if (player.isAir && (DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0)
-        {
-            player.SetParticle("Fall", player.position);
-            player.sound = "Landed";
-            player.inPushback = false;
-            player.isCrouch = false;
-            player.isAir = false;
-            EnterState(player, "Idle");
-        }
+        if (!player.hitstop)
+            if (player.isAir && (DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0)
+            {
+                player.SetParticle("Fall", player.position);
+                player.sound = "Landed";
+                player.inPushback = false;
+                player.isCrouch = false;
+                player.isAir = false;
+                EnterState(player, "Idle");
+            }
     }
     private void ToIdleState(PlayerNetwork player)
     {
