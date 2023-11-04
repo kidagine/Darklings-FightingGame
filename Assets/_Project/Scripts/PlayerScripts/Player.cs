@@ -218,7 +218,7 @@ public class Player : MonoBehaviour, IHitstop
     public void LoseLife()
     {
         Lives--;
-        _playerUI.SetLives();
+        OtherPlayerUI.SetLives();
     }
 
     public void SetHurtbox(bool state)
