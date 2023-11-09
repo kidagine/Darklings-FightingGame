@@ -23,7 +23,7 @@ public class FallState : AirParentState
         {
             player.usedShadowbreak = false;
             player.sound = "Landed";
-            player.SetParticle("Fall", new DemonVector2(player.position.x, DemonicsPhysics.FOOT_POINT));
+            player.SetParticle("Fall", new DemonVector2(player.position.x, DemonicsPhysics.GROUND_POINT));
             EnterState(player, "Idle");
         }
     }
