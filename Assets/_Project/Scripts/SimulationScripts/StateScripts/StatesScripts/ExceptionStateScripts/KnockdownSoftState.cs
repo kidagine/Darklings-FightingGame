@@ -12,7 +12,7 @@ public class KnockdownSoftState : State
             player.enter = true;
             player.animationFrames = 0;
             player.sound = "Landed";
-            player.SetParticle("KnockdownSoft", new DemonVector2(player.position.x, player.position.y - 15));
+            player.SetParticle("KnockdownSoft", new DemonVector2(player.position.x, player.position.y - 5));
             player.velocity = new DemonVector2((DemonFloat)0, (DemonFloat)1.45f);
             player.framedataEnum = FramedataTypesEnum.Knockdown;
             CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 13, timer = 0.12f });

@@ -252,7 +252,7 @@ public class PlayerNetwork
             }
         }
     }
-    public void SetParticle(string name, DemonVector2 position, Vector2 flip = default)
+    public void SetParticle(string name, DemonVector2 position, Vector3 flip = default)
     {
         for (int i = 0; i < particles.Length; i++)
             if (name == particles[i].name)
