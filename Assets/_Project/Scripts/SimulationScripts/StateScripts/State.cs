@@ -232,6 +232,7 @@ public class State
 
     protected void ThrowEnd(PlayerNetwork player)
     {
+        CameraShake.Instance.ZoomDefault(0.05f);
         player.combo++;
         player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
@@ -239,13 +240,9 @@ public class State
         player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
-        {
             player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
-        }
         else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
-        {
             player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
-        }
         player.SetParticle(player.attackHurtNetwork.hurtEffect, new DemonVector2(player.position.x, player.position.y));
         GameSimulation.Hitstop = 10;
         HitstopFully(player);

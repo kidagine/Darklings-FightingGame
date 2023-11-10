@@ -6,6 +6,7 @@ public class GrabbedState : State
     {
         if (!player.enter)
         {
+            CameraShake.Instance.Zoom(40, 0.05f);
             if (player.otherPlayer.state == "Arcana")
                 EnterState(player.otherPlayer, "ArcanaEnd");
             else
@@ -27,6 +28,7 @@ public class GrabbedState : State
         {
             if (player.otherPlayer.state != "Arcana" && player.animationFrames <= 6)
             {
+                CameraShake.Instance.ZoomDefault(0.1f);
                 player.SetParticle("ThrowTech", new DemonVector2((player.position.x + player.otherPlayer.position.x) / 2, player.position.y + (player.pushbox.size.y / 2)));
                 player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.ThrowBreak);
                 player.sound = "ParryStart";
