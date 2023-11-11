@@ -11,7 +11,6 @@ using UnityEngine.UI;
 public class CharacterMenu : BaseMenu
 {
     [SerializeField] private PlayerInput _playerInput = default;
-    [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] private GameObject _rebindOnePrompt = default;
     [SerializeField] private GameObject _assistOne = default;
     [SerializeField] private GameObject _assistTwo = default;
@@ -25,6 +24,7 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private Button _firstCharacterButton = default;
     [SerializeField] private PlayerUIRender _playerUIRenderOne = default;
     [SerializeField] private PlayerUIRender _playerUIRenderTwo = default;
+    [SerializeField] private TextMeshProUGUI _menuText = default;
     [SerializeField] private TextMeshProUGUI _playerOneName = default;
     [SerializeField] private TextMeshProUGUI _playerTwoName = default;
     [SerializeField] private TextMeshProUGUI _hpTextOne = default;
@@ -33,13 +33,17 @@ public class CharacterMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _hpTextTwo = default;
     [SerializeField] private TextMeshProUGUI _arcanaTextTwo = default;
     [SerializeField] private TextMeshProUGUI _speedTextTwo = default;
+    [SerializeField] private FadeHandler _fadeHandler = default;
+    [SerializeField] private Button[] _characterButtons = default;
     [SerializeField] private PlayerStatsSO[] _playerStatsArray = default;
     [SerializeField] private RebindMenu[] _rebindMenues = default;
     private PlayerStatsSO _playerStats;
     private EventSystem _currentEventSystem;
     private Coroutine _tauntCoroutine;
+    private AsyncOperation _asyncLoad;
     public bool FirstCharacterSelected { get; private set; }
-
+    public bool FirstCharacterLocked { get; private set; }
+    public bool SecondCharacterLocked { get; private set; }
 
     void Awake()
     {
@@ -100,11 +104,14 @@ public class CharacterMenu : BaseMenu
 
     public void SelectCharacterImage()
     {
+        for (int i = 0; i < _characterButtons.Length; i++)
+            _characterButtons[i].enabled = false;
         _currentEventSystem.sendNavigationEvents = false;
         _playerOneName.enabled = true;
         _playerTwoName.enabled = true;
         if (!FirstCharacterSelected)
         {
+            FirstCharacterLocked = true;
             _assistOneUIRenderer.gameObject.SetActive(true);
             _assistOne.SetActive(true);
             if (_playerStats == null)
@@ -123,6 +130,7 @@ public class CharacterMenu : BaseMenu
         }
         else
         {
+            SecondCharacterLocked = true;
             _assistTwoUIRenderer.gameObject.SetActive(true);
             _assistTwo.SetActive(true);
             if (_playerStats == null)
@@ -144,26 +152,22 @@ public class CharacterMenu : BaseMenu
     public void SetCharacter(bool isPlayerOne)
     {
         if (isPlayerOne)
-        {
             _playerUIRenderOne.Taunt();
-        }
         else
-        {
             _playerUIRenderTwo.Taunt();
-        }
         if (FirstCharacterSelected)
-        {
             EventSystem.current.gameObject.SetActive(false);
-        }
         _tauntCoroutine = StartCoroutine(TauntEndCoroutine());
     }
 
     IEnumerator TauntEndCoroutine()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(1.5f);
         _currentEventSystem.sendNavigationEvents = true;
         if (!FirstCharacterSelected)
         {
+            for (int i = 0; i < _characterButtons.Length; i++)
+                _characterButtons[i].enabled = true;
             FirstCharacterSelected = true;
             _currentEventSystem.SetSelectedGameObject(null);
             _firstCharacterButton.Select();
@@ -173,20 +177,25 @@ public class CharacterMenu : BaseMenu
             SceneSettings.IsOnline = false;
             SceneSettings.SceneSettingsDecide = true;
             if (SceneSettings.RandomStage)
-            {
                 SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
-            }
-            _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(1));
-            _fadeHandler.StartFadeTransition(true);
+            StartCoroutine(LoadYourAsyncScene());
+            _fadeHandler.onFadeEnd.AddListener(() => _asyncLoad.allowSceneActivation = true);
+            _fadeHandler.StartFadeTransition(true, 0.35f);
         }
+    }
+
+    IEnumerator LoadYourAsyncScene()
+    {
+        _asyncLoad = SceneManager.LoadSceneAsync(1);
+        _asyncLoad.allowSceneActivation = false;
+        while (!_asyncLoad.isDone)
+            yield return null;
     }
 
     public void GoBack(BaseMenu otherMenu)
     {
         if (_changeStageMenu.IsOpen)
-        {
             _changeStageMenu.ChangeStageClose();
-        }
         else
         {
             if (!_rebindMenues[0].gameObject.activeSelf && !_rebindMenues[1].gameObject.activeSelf)
@@ -206,7 +215,6 @@ public class CharacterMenu : BaseMenu
     public void OpenRebind()
     {
         if (UsedController())
-        {
             if (!_changeStageMenu.IsOpen)
             {
                 if (!FirstCharacterSelected && SceneSettings.ControllerOne != null)
@@ -221,20 +229,15 @@ public class CharacterMenu : BaseMenu
                 }
                 _currentEventSystem.sendNavigationEvents = true;
             }
-        }
     }
 
     private bool UsedController()
     {
         InputDevice device;
         if (!FirstCharacterSelected)
-        {
             device = SceneSettings.ControllerOne;
-        }
         else
-        {
             device = SceneSettings.ControllerTwo;
-        }
         if (device == _playerInput.devices[0])
         {
             _rebindOnePrompt.SetActive(true);
@@ -244,20 +247,29 @@ public class CharacterMenu : BaseMenu
         return false;
     }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        if (SceneSettings.IsTrainingMode)
+            _menuText.text = "Training";
+        else
+            _menuText.text = "Versus";
+    }
+
     private void OnDisable()
     {
         _currentEventSystem.sendNavigationEvents = true;
         if (!SceneSettings.SceneSettingsDecide)
         {
             if (_tauntCoroutine != null)
-            {
                 StopCoroutine(_tauntCoroutine);
-            }
             _iconsOne.gameObject.SetActive(false);
             _iconsTwo.gameObject.SetActive(false);
             _currentEventSystem.SetSelectedGameObject(null);
             _currentEventSystem.sendNavigationEvents = true;
             FirstCharacterSelected = false;
+            FirstCharacterLocked = false;
+            SecondCharacterLocked = false;
             _hpTextOne.text = "";
             _arcanaTextOne.text = "";
             _speedTextOne.text = "";
@@ -269,6 +281,5 @@ public class CharacterMenu : BaseMenu
             _assistOneUIRenderer.gameObject.SetActive(false);
             _assistTwoUIRenderer.gameObject.SetActive(false);
         }
-        _fadeHandler.onFadeEnd.RemoveAllListeners();
     }
 }

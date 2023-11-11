@@ -14,13 +14,14 @@ public class OnlineSetupMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _stageText = default;
     [SerializeField] private GameObject _characterGroup = default;
     [SerializeField] private GameObject _stageGroup = default;
+    [SerializeField] private Selectable _firstSelectable = default;
     [SerializeField] private Selectable _characterSelectable = default;
     [SerializeField] private Selectable _stageSelectable = default;
-    [SerializeField] private TMP_InputField _nameInputField = default;
+    [SerializeField] private TextMeshProUGUI _nameInputField = default;
     [SerializeField] private TMP_InputField _nameChangeInputField = default;
     [SerializeField] private PromptsInput _characterPrompts = default;
     [SerializeField] private PromptsInput _namePrompts = default;
-    [SerializeField] private GameObject _nameChangeGroup = default;
+    [SerializeField] private BaseMenu _nameChangeMenu = default;
     [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private CharacterOnlineButton[] _characterSelectables = default;
     [SerializeField] private PlayerUIRender _playerUIRender = default;
@@ -28,21 +29,23 @@ public class OnlineSetupMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _hpText = default;
     [SerializeField] private TextMeshProUGUI _arcanaText = default;
     [SerializeField] private TextMeshProUGUI _speedText = default;
+    [SerializeField] private HomeMenu _homeMenu = default;
+    [SerializeField] private PlayerStatsSO[] _playerStatsSO = default;
     [Header("Stage")]
     [SerializeField] private Image _stageShowcaseImage = default;
-    [SerializeField] private GameObject _selectorTextPrefab = default;
-    [SerializeField] private Transform _stageSelectorValues = default;
-    [SerializeField] private Transform _musicSelectorValues = default;
+    [SerializeField] private BaseSelector _stageSelector = default;
+    [SerializeField] private BaseSelector _musicSelector = default;
     [SerializeField] private MusicSO _musicSO = default;
     [SerializeField] private StageSO[] _stagesSO = default;
     private StageSO _currentStage;
-    public DemonData DemonData { get; set; } = new DemonData() { demonName = "DemonFighter", character = 0, assist = 0, color = 0 };
+    public DemonData DemonData { get; set; } = new DemonData() { demonName = "Darkling", character = 0, assist = 0, color = 0 };
 
 
     public void SetDemonName(string demonName)
     {
         DemonicsSaver.Save("playerName", demonName);
         DemonData.demonName = demonName;
+        _homeMenu.SetCharacter(DemonData.character, DemonData.color, DemonData.demonName);
     }
 
     public void SetAssist(int assist)
@@ -54,6 +57,7 @@ public class OnlineSetupMenu : BaseMenu
     {
         _playerUIRender.SetSpriteLibraryAsset(color);
         DemonData.color = color;
+        _homeMenu.SetCharacter(DemonData.character, DemonData.color, DemonData.demonName);
     }
 
     public override void Show()
@@ -88,45 +92,29 @@ public class OnlineSetupMenu : BaseMenu
 
     public void SetStageSelectorValues()
     {
+        List<string> stages = new();
         for (int i = 0; i < _stagesSO.Length; i++)
-        {
-            GameObject selector = Instantiate(_selectorTextPrefab, _stageSelectorValues);
-            TextMeshProUGUI selectorText = selector.GetComponent<TextMeshProUGUI>();
-            selectorText.text = _stagesSO[i].stageName;
-            if (i == 0)
-            {
-                selector.SetActive(true);
-            }
-        }
+            stages.Add(_stagesSO[i].stageName);
+        _stageSelector.SetValues(stages.ToArray());
     }
+
     public void SetMusicSelectorValues()
     {
+        List<string> music = new();
         for (int i = 0; i < _musicSO.songs.Length; i++)
-        {
-            GameObject selector = Instantiate(_selectorTextPrefab, _musicSelectorValues);
-            TextMeshProUGUI selectorText = selector.GetComponent<TextMeshProUGUI>();
-            selectorText.text = _musicSO.songs[i].ToString();
-            if (i == 0)
-            {
-                selector.SetActive(true);
-            }
-        }
+            music.Add(_musicSO.songs[i].ToString());
+        _musicSelector.SetValues(music.ToArray());
     }
+
     public void SetStage(int index)
     {
         _currentStage = _stagesSO[index];
         if (SceneSettings.Bit1)
-        {
             _stageShowcaseImage.sprite = _stagesSO[index].bit1Stage;
-        }
         else
-        {
             _stageShowcaseImage.sprite = _stagesSO[index].colorStage;
-        }
         if (index == 0)
-        {
             SceneSettings.OnlineStageRandom = true;
-        }
         else
         {
             SceneSettings.OnlineStageRandom = false;
@@ -167,28 +155,12 @@ public class OnlineSetupMenu : BaseMenu
 
     private void SetColorValues(PlayerStatsSO playerStats)
     {
-        // foreach (Transform child in _colorsValues.transform)
-        // {
-        //     Destroy(child.gameObject);
-        // }
-        // for (int i = 0; i < playerStats._animation.spriteAtlas.Length; i++)
-        // {
-        //     GameObject selector = Instantiate(_selectorTextPrefab, _colorsValues.transform);
-        //     TextMeshProUGUI selectorText = selector.GetComponent<TextMeshProUGUI>();
-        //     selectorText.text = (i + 1).ToString();
-        //     if (i == DemonData.assist)
-        //     {
-        //         selector.SetActive(true);
-        //     }
-        // }
     }
 
     public void SelectCharacterImage(PlayerStatsSO playerStats)
     {
         for (int i = 0; i < _characterSelectables.Length; i++)
-        {
             _characterSelectables[i].Deactivate();
-        }
         DemonicsSaver.Save("character", playerStats.characterIndex.ToString());
         SetCharacter(playerStats.characterIndex);
     }
@@ -196,22 +168,27 @@ public class OnlineSetupMenu : BaseMenu
     public void OpenChangeName()
     {
         _nameChangeInputField.text = _nameInputField.text;
-        _nameChangeGroup.SetActive(true);
+        _nameChangeMenu.Show();
         _nameChangeInputField.Select();
-        _inputManager.CurrentPrompts = _namePrompts;
+        _inputManager.SetPrompts(_namePrompts);
     }
 
     public void CloseChangeName()
     {
         _nameInputField.text = _nameChangeInputField.text;
-        _nameChangeGroup.SetActive(false);
-        _characterSelectable.Select();
-        _inputManager.CurrentPrompts = _characterPrompts;
+        _nameChangeMenu.Hide();
+        _firstSelectable.Select();
+        _inputManager.SetPrompts(_characterPrompts);
     }
 
     public void SetCharacter(int index)
     {
+        _characterSelectables[index].Select();
         DemonData.character = index;
+        _playerUIRender.SetAnimator(_playerStatsSO[DemonData.character]._animation);
+        _playerUIRender.SetSpriteLibraryAsset(DemonData.color);
+        _playerName.text = Regex.Replace(_playerStatsSO[DemonData.character].characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
+        _homeMenu.SetCharacter(DemonData.character, DemonData.color, DemonData.demonName);
     }
 }
 

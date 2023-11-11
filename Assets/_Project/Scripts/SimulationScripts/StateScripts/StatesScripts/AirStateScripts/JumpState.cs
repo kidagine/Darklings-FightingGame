@@ -10,7 +10,9 @@ public class JumpState : AirParentState
             player.enter = true;
             player.sound = "Jump";
             if (!player.hasJumped)
-                player.SetParticle("Jump", player.position);
+                player.SetParticle("Jump", new DemonVector2(player.position.x, DemonicsPhysics.GROUND_POINT));
+            else
+                player.SetParticle("Fall", new DemonVector2(player.position.x, player.position.y + 18));
             player.hasJumped = true;
             player.animationFrames = 0;
             player.velocity = new DemonVector2((DemonFloat)0, player.playerStats.JumpForce);
@@ -19,9 +21,7 @@ public class JumpState : AirParentState
                 player.isAir = true;
                 player.inputBuffer.triggers[player.inputBuffer.indexTrigger].frame = 0;
                 if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Special)
-                {
                     Arcana(player, player.isAir);
-                }
                 else
                 {
                     if (!(player.attackInput == InputEnum.Medium && player.isCrouch))

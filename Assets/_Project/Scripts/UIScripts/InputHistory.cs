@@ -6,21 +6,26 @@ public class InputHistory : MonoBehaviour
 {
     [SerializeField] Transform _inputHistoryContainer = default;
     private InputHistoryImage _inputHistoryImage;
-    public List<InputEnum> Inputs { get; private set; } = new();
-    public List<InputDirectionEnum> Directions { get; private set; } = new();
-    public List<float> InputTimes { get; private set; } = new();
     public PlayerController PlayerController { get; set; }
-    private List<int> previousTriggers = new List<int>();
+    private List<int> previousTriggers = new();
     private int previousSequence = -1;
-
-    public void UpdateDisplay(InputList inputList)
+    public List<InputItemNetwork> Inputs { get; set; } = new();
+    public InputItemNetwork[] Sequences { get; set; }
+    public void UpdateDisplay(InputList inputList, InputBufferNetwork inputBuffer)
     {
-        int sequence = (int)inputList.inputSequence.inputDirectionEnum;
-        List<int> triggers = new List<int>();
+        Inputs.Clear();
+        Inputs.AddRange(inputBuffer.triggers);
+        Inputs.AddRange(inputBuffer.sequences);
+        List<int> triggers = new();
         for (int i = 0; i < inputList.inputTriggers.Length; i++)
-            if (inputList.inputTriggers[i].held)
+            if (inputList.inputTriggers[i].held && !inputList.inputTriggers[i].sequence)
                 if (!triggers.Contains(i))
                     triggers.Add(i);
+
+        int sequence = 0;
+        for (int i = 0; i < inputList.inputTriggers.Length; i++)
+            if (inputList.inputTriggers[i].held && inputList.inputTriggers[i].sequence)
+                sequence = (int)inputList.inputTriggers[i].inputEnum;
 
         if (triggers.Count != previousTriggers.Count || sequence != previousSequence)
         {

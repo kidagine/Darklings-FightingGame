@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b2425a2284af743826c689403a4924, type: 3}
+  m_Name: _Glitch
+  m_EditorClassIdentifier: 
+  m_functionInfo: "// Made with Amplify Shader Editor\n// Available at the Unity
+    Asset Store - http://u3d.as/y3X \n/*ASEBEGIN\nVersion=18900\n0;0;1920;1019;1196.764;624.6061;1.75951;True;True\nNode;AmplifyShaderEditor.FunctionInput;1;-466.1998,-82.84997;Inherit;False;In
+    Color;5;4;False;1;0;COLOR;0,0,0,0;False;1;COLOR;0\nNode;AmplifyShaderEditor.FunctionInput;34;-257.559,401.8046;Inherit;False;Time;1;0;False;1;0;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.ComponentMaskNode;22;380.8596,-29.4263;Inherit;False;True;True;True;False;1;0;COLOR;0,0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.RangedFloatNode;25;875.9827,163.719;Inherit;False;Property;_GlitchBrightness;Glitch:
+    Brightness;1;0;Create;True;0;0;0;False;0;False;4;0;0;0;0;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionNode;7;316.7712,315.5347;Inherit;True;NoiseTexture;-1;;10;7fe1e2210473a53449e5b562606d8e1a;0;3;1;FLOAT2;0,0;False;5;FLOAT2;1,1;False;3;SAMPLER2D;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.DynamicAppendNode;27;1727.151,-241.208;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.FunctionInput;29;1034.722,-176.0862;Inherit;False;Fade;1;3;False;1;0;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionNode;21;345.0444,-116.4789;Inherit;False;Brightness;-1;;11;53a132be222008b439a5a8c99b79b131;0;1;1;FLOAT4;0,0,0,0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;24;1100.658,128.5685;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;12;707.717,469.0634;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;35;475.5075,632.5985;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionInput;33;93.13174,546.8405;Inherit;False;Noise;9;2;False;1;0;SAMPLER2D;0;False;1;SAMPLER2D;0\nNode;AmplifyShaderEditor.SimpleTimeNode;20;-497.283,458.0634;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0\nNode;AmplifyShaderEditor.LerpOp;23;1442.658,-72.43152;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;18;88.71704,226.0634;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;19;-88.28296,322.0634;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT;0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.Vector2Node;17;-375.283,248.0634;Inherit;False;Property;_GlitchNoiseSpeed;Glitch:
+    Noise Speed;3;0;Create;True;0;0;0;False;0;False;0,1;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2\nNode;AmplifyShaderEditor.FunctionInput;31;-254.6527,101.4447;Inherit;False;Shader
+    Position;2;1;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.BreakToComponentsNode;28;592.754,-453.7003;Inherit;False;COLOR;1;0;COLOR;0,0,0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15\nNode;AmplifyShaderEditor.Vector2Node;8;73.8932,371.1168;Inherit;False;Property;_GlitchNoiseScale;Glitch:
+    Noise Scale;2;0;Create;True;0;0;0;False;0;False;0,3;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2\nNode;AmplifyShaderEditor.TexturePropertyNode;32;-185.2269,627.1357;Inherit;True;Property;_GlitchNoiseTexture;Glitch:
+    Noise Texture;4;0;Create;True;0;0;0;False;0;False;cd21d0de17dcd734691f79979be13330;cd21d0de17dcd734691f79979be13330;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1\nNode;AmplifyShaderEditor.FunctionNode;11;856.717,260.0634;Inherit;True;Simple
+    HUE;-1;;12;32abb5f0db087604486c2db83a2e817a;0;1;1;FLOAT;0;False;4;FLOAT3;6;FLOAT;7;FLOAT;5;FLOAT;8\nNode;AmplifyShaderEditor.RangedFloatNode;15;212.6888,700.6019;Inherit;False;Property;_GlitchHueSpeed;Glitch:
+    Hue Speed;0;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionOutput;0;1954.94,-146.2608;Inherit;False;True;-1;Out
+    Color;0;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0\nWireConnection;34;0;20;0\nWireConnection;22;0;1;0\nWireConnection;7;1;18;0\nWireConnection;7;5;8;0\nWireConnection;7;3;33;0\nWireConnection;27;0;23;0\nWireConnection;27;3;28;3\nWireConnection;21;1;1;0\nWireConnection;24;0;21;0\nWireConnection;24;1;25;0\nWireConnection;24;2;11;6\nWireConnection;12;0;7;0\nWireConnection;12;1;35;0\nWireConnection;35;0;34;0\nWireConnection;35;1;15;0\nWireConnection;33;0;32;0\nWireConnection;23;0;22;0\nWireConnection;23;1;24;0\nWireConnection;23;2;29;0\nWireConnection;18;0;31;0\nWireConnection;18;1;19;0\nWireConnection;19;0;17;0\nWireConnection;19;1;34;0\nWireConnection;28;0;1;0\nWireConnection;11;1;12;0\nWireConnection;0;0;27;0\nASEEND*/\n//CHKSM=DBBCF49504344B3DD7ABEE097AA52666A601BBBF"
+  m_functionName: 
+  m_description: 
+  m_additionalIncludes:
+    m_additionalIncludes: []
+    m_outsideIncludes: []
+  m_additionalPragmas:
+    m_additionalPragmas: []
+    m_outsidePragmas: []
+  m_additionalDirectives:
+    m_validData: 0
+    m_isDirty: 0
+    m_moduleName: ' Additional Directives'
+    m_independentModule: 1
+    m_customEdited: 0
+    m_additionalDirectives: []
+    m_shaderFunctionDirectives: []
+    m_nativeDirectives: []
+    m_nativeDirectivesIndex: -1
+    m_nativeDirectivesFoldout: 0
+    m_directivesSaveItems: []
+  m_nodeCategory: 3
+  m_customNodeCategory: 
+  m_previewPosition: 0
+  m_hidden: 0

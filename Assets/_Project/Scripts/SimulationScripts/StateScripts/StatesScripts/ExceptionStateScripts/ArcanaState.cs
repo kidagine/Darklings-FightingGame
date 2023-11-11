@@ -24,6 +24,8 @@ public class ArcanaState : State
             player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
             if (player.invincible)
                 player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.Reversal);
+            if (player.attackNetwork.superArmor > 0)
+                player.player.PlayerAnimator.ArmorMaterial();
             UpdateFramedata(player);
             return;
         }
@@ -38,7 +40,10 @@ public class ArcanaState : State
             player.attackFrames--;
         }
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
-
+        if (player.invincible)
+            player.player.PlayerAnimator.InvinciblelMaterial();
+        else
+            player.player.PlayerAnimator.NormalMaterial();
         UpdateFramedata(player);
         ToIdleState(player);
 
@@ -111,7 +116,6 @@ public class ArcanaState : State
     {
         if (IsColliding(player))
         {
-
             if (player.attackNetwork.superArmor > 0 && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
             {
                 SuperArmorHurt(player);

@@ -2,7 +2,6 @@ public class GrabState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-
         if (!player.enter)
         {
             SetTopPriority(player);
@@ -51,19 +50,13 @@ public class GrabState : State
             player.player.StopShakeCoroutine();
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             if (player.attackHurtNetwork.hardKnockdown)
-            {
                 EnterState(player, "Airborne");
-            }
             else
             {
                 if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
-                {
                     EnterState(player, "Hurt");
-                }
                 else
-                {
                     EnterState(player, "HurtAir");
-                }
             }
         }
     }

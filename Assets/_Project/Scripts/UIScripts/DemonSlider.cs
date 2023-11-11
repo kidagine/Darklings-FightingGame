@@ -16,10 +16,7 @@ public class DemonSlider : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoi
     [SerializeField] private Slider _slider;
 
 
-    private void Start()
-    {
-        _slider.onValueChanged.AddListener(UpdateValue);
-    }
+    private void Start() => _slider.onValueChanged.AddListener(UpdateValue);
 
     private void UpdateValue(float value)
     {
@@ -55,6 +52,7 @@ public class DemonSlider : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoi
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        EventSystem.current.SetSelectedGameObject(gameObject);
         Cursor.SetCursor(MouseSetup.Instance.HoverCursor, Vector2.zero, CursorMode.Auto);
     }
 
@@ -62,5 +60,4 @@ public class DemonSlider : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoi
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
-
 }

@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class OptionsMenu : BaseMenu
 {
+    [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private AudioMixer _audioMixer = default;
-
+    [SerializeField] private Selectable _firstSelectable = default;
 
     public void SetVFX(int value)
     {
@@ -22,5 +24,11 @@ public class OptionsMenu : BaseMenu
     {
         float parsedValue = ((float)value / 100) + 0.00001f;
         _audioMixer.SetFloat("MusicVolume", Mathf.Log10(parsedValue) * 20);
+    }
+
+    private void OnDisable()
+    {
+        PreviousSelectable.Select();
+        _inputManager.SetPrompts(_inputManager.PreviousPrompts);
     }
 }

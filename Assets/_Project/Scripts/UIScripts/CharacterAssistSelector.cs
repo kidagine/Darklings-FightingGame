@@ -26,51 +26,60 @@ public class CharacterAssistSelector : MonoBehaviour
     public bool HasSelected { get; set; }
 
 
-    void Awake()
-    {
-        _audio = GetComponent<Audio>();
-    }
+    void Awake() => _audio = GetComponent<Audio>();
 
-    private void Update()
-    {
-        Movement();
-    }
+    private void Update() => Movement();
 
     public void Movement()
     {
         if (!_inputDeactivated && !_changeStageMenu.IsOpen && !_rebindMenu.gameObject.activeSelf)
         {
             _directionInput = _inputManager.NavigationInput;
-            if (_directionInput.x == 1.0f && _assistCount < assistStatsSO.Length - 1)
+            if (_directionInput.x == -1.0f)
             {
                 _audio.Sound("Pressed").Play();
-                AssistLetter++;
-                _assistCount++;
-                StartCoroutine(ResetInput());
+                MoveLeft();
             }
-            else if (_directionInput.x == 1.0f && _assistCount >= assistStatsSO.Length - 1)
+            if (_directionInput.x == 1.0f)
             {
                 _audio.Sound("Pressed").Play();
-                AssistLetter = 'A';
-                _assistCount = 0;
-                StartCoroutine(ResetInput());
+                MoveRight();
             }
-            if (_directionInput.x == -1.0f && _assistCount > 0)
-            {
-                _audio.Sound("Pressed").Play();
-                AssistLetter--;
-                _assistCount--;
-                StartCoroutine(ResetInput());
-            }
-            else if (_directionInput.x == -1.0f && _assistCount <= 0)
-            {
-                _audio.Sound("Pressed").Play();
-                AssistLetter = 'C';
-                _assistCount = assistStatsSO.Length - 1;
-                StartCoroutine(ResetInput());
-            }
-            _playerOneColorNumber.text = $"Shadow {AssistLetter}";
         }
+    }
+
+    public void MoveLeft()
+    {
+        if (_assistCount > 0)
+        {
+            AssistLetter--;
+            _assistCount--;
+            StartCoroutine(ResetInput());
+        }
+        else if (_assistCount <= 0)
+        {
+            AssistLetter = 'C';
+            _assistCount = assistStatsSO.Length - 1;
+            StartCoroutine(ResetInput());
+        }
+        _playerOneColorNumber.text = $"Shadow {AssistLetter}";
+    }
+
+    public void MoveRight()
+    {
+        if (_assistCount < assistStatsSO.Length - 1)
+        {
+            AssistLetter++;
+            _assistCount++;
+            StartCoroutine(ResetInput());
+        }
+        else if (_assistCount >= assistStatsSO.Length - 1)
+        {
+            AssistLetter = 'A';
+            _assistCount = 0;
+            StartCoroutine(ResetInput());
+        }
+        _playerOneColorNumber.text = $"Shadow {AssistLetter}";
     }
 
     public void Confirm()
@@ -79,13 +88,9 @@ public class CharacterAssistSelector : MonoBehaviour
         {
             _pressed = true;
             if (_isPlayerOne)
-            {
                 SceneSettings.AssistOne = _assistCount;
-            }
             else
-            {
                 SceneSettings.AssistTwo = _assistCount;
-            }
             _audio.Sound("Selected").Play();
             _assistAnimator.Play("AssistSelectorTaunt");
             _colors.SetActive(true);
@@ -117,8 +122,6 @@ public class CharacterAssistSelector : MonoBehaviour
         _pressed = false;
         transform.GetChild(0).gameObject.SetActive(true);
         if (_assistAnimator != null)
-        {
             _assistAnimator.Rebind();
-        }
     }
 }

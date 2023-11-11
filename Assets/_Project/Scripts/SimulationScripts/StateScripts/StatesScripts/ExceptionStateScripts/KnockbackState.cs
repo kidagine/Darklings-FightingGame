@@ -25,13 +25,9 @@ public class KnockbackState : State
         DemonVector2 nextPosition = new DemonVector2(nextX, baseY + arc);
         player.position = nextPosition;
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
-        {
             player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
-        }
         else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
-        {
             player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
-        }
         player.knockback++;
         ToKnockdown(player, ratio);
     }

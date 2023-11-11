@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b2425a2284af743826c689403a4924, type: 3}
+  m_Name: _FullDistortion
+  m_EditorClassIdentifier: 
+  m_functionInfo: "// Made with Amplify Shader Editor\n// Available at the Unity
+    Asset Store - http://u3d.as/y3X \n/*ASEBEGIN\nVersion=18900\n0;0;1920;1019;2976.426;3206.683;2.121907;True;True\nNode;AmplifyShaderEditor.SimpleSubtractOpNode;185;-917.4425,-2295.116;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0.5;False;1;FLOAT;0\nNode;AmplifyShaderEditor.TexturePropertyNode;164;-1878.508,-2164.605;Inherit;True;Property;_FullDistortionNoiseTexture;Full
+    Distortion: Noise Texture;4;0;Create;True;0;0;0;False;0;False;cd21d0de17dcd734691f79979be13330;cd21d0de17dcd734691f79979be13330;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1\nNode;AmplifyShaderEditor.FunctionInput;194;-1576.328,-2152.65;Inherit;False;Noise;9;2;False;1;0;SAMPLER2D;0;False;1;SAMPLER2D;0\nNode;AmplifyShaderEditor.Vector2Node;165;-1641.291,-2318.738;Inherit;False;Property;_FullDistortionNoiseScale;Full
+    Distortion: Noise Scale;3;0;Create;True;0;0;0;False;0;False;0.5,0.5;50,50;0;3;FLOAT2;0;FLOAT;1;FLOAT;2\nNode;AmplifyShaderEditor.SimpleSubtractOpNode;186;-875.814,-2023.17;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0.5;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionNode;163;-1289.082,-2348.696;Inherit;False;NoiseTexture;-1;;56;7fe1e2210473a53449e5b562606d8e1a;0;3;1;FLOAT2;0,0;False;5;FLOAT2;1,1;False;3;SAMPLER2D;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;184;-1321.079,-2139.624;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT2;0.321,0.321;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.Vector2Node;192;-705.8867,-2071.327;Inherit;False;Property;_FullDistortionDistortion;Full
+    Distortion: Distortion;2;0;Create;True;0;0;0;False;0;False;0.2,0.2;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2\nNode;AmplifyShaderEditor.SimpleAddOpNode;173;-147.2548,-2473.332;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.OneMinusNode;193;-685.064,-2470.601;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.DynamicAppendNode;189;-679.7466,-2195.467;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;190;-467.7466,-2334.467;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT2;0,0;False;2;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.FunctionNode;182;-1196.766,-1987.105;Inherit;False;NoiseTexture;-1;;55;7fe1e2210473a53449e5b562606d8e1a;0;3;1;FLOAT2;0,0;False;5;FLOAT2;1,1;False;3;SAMPLER2D;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;191;-1020.143,-2548.655;Inherit;False;Property;_FullDistortionFade;Full
+    Distortion: Fade;0;0;Create;True;0;0;0;False;0;False;1;0;0;1;0;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionInput;160;-342.8009,-2560.776;Inherit;False;In
+    UV;2;1;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.FunctionInput;195;-1654.716,-2611.509;Inherit;False;Shader
+    Position;2;0;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.FunctionOutput;174;79.59552,-2465.339;Inherit;False;False;-1;Out
+    UV;0;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.FunctionOutput;0;-28.93183,-2334.068;Inherit;False;True;-1;Out
+    Alpha;1;False;1;0;FLOAT;0;False;1;FLOAT;0\nWireConnection;185;0;163;0\nWireConnection;194;0;164;0\nWireConnection;186;0;182;0\nWireConnection;163;1;195;0\nWireConnection;163;5;165;0\nWireConnection;163;3;194;0\nWireConnection;184;0;195;0\nWireConnection;173;0;160;0\nWireConnection;173;1;190;0\nWireConnection;193;0;191;0\nWireConnection;189;0;185;0\nWireConnection;189;1;186;0\nWireConnection;190;0;193;0\nWireConnection;190;1;189;0\nWireConnection;190;2;192;0\nWireConnection;182;1;184;0\nWireConnection;182;5;165;0\nWireConnection;182;3;194;0\nWireConnection;174;0;173;0\nWireConnection;0;0;191;0\nASEEND*/\n//CHKSM=882B7C7297803A875D1982BA1D1CAC8DF9A5DDFE"
+  m_functionName: 
+  m_description: 
+  m_additionalIncludes:
+    m_additionalIncludes: []
+    m_outsideIncludes: []
+  m_additionalPragmas:
+    m_additionalPragmas: []
+    m_outsidePragmas: []
+  m_additionalDirectives:
+    m_validData: 0
+    m_isDirty: 0
+    m_moduleName: ' Additional Directives'
+    m_independentModule: 1
+    m_customEdited: 0
+    m_additionalDirectives: []
+    m_shaderFunctionDirectives: []
+    m_nativeDirectives: []
+    m_nativeDirectivesIndex: -1
+    m_nativeDirectivesFoldout: 0
+    m_directivesSaveItems: []
+  m_nodeCategory: 3
+  m_customNodeCategory: 
+  m_previewPosition: 0
+  m_hidden: 0

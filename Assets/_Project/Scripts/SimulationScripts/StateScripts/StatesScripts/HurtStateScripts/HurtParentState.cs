@@ -36,21 +36,18 @@ public class HurtParentState : State
         player.otherPlayer.canChainAttack = true;
         player.sound = player.attackHurtNetwork.impactSound;
         if (!player.wasWallSplatted)
-        {
             player.SetParticle(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
-        }
         if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
-        {
             CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
-        }
         player.stunFrames = player.attackHurtNetwork.hitStun;
         player.knockback = 0;
         player.pushbackStart = player.position;
         player.pushbackEnd = new DemonVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         if (player.health <= 0)
         {
+            CameraShake.Instance.Zoom(30, 0.2f);
             player.invincible = true;
-            CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 30, timer = 0.4f });
+            CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 30, timer = 0.5f });
             if (!SceneSettings.IsTrainingMode)
             {
                 GameSimulation.GlobalHitstop = 4;

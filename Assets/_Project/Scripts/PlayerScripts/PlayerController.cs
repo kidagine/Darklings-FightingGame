@@ -31,69 +31,96 @@ public class PlayerController : BaseController
         OnInputDirection?.Invoke(input, _player.IsPlayerOne);
         if (callbackContext.performed && IsControllerEnabled && _previousInput != input)
         {
-            if (input.x == 1)
+            if (input.y != 0 && input.x != 0)
             {
-                _previousInput = input;
-                if (_player.IsPlayerOne)
+                if (input.y == 1 && input.x == 1)
                 {
-                    NetworkInput.ONE_RIGHT_INPUT = true;
+                    _previousInput = input;
+                    if (_player.IsPlayerOne)
+                        NetworkInput.ONE_UP_RIGHT_INPUT = true;
+                    else
+                        NetworkInput.TWO_UP_RIGHT_INPUT = true;
                 }
-                else
+                if (input.y == 1 && input.x == -1)
                 {
-                    NetworkInput.TWO_RIGHT_INPUT = true;
+                    _previousInput = input;
+                    if (_player.IsPlayerOne)
+                        NetworkInput.ONE_UP_LEFT_INPUT = true;
+                    else
+                        NetworkInput.TWO_UP_LEFT_INPUT = true;
+                }
+                if (input.y == -1 && input.x == 1)
+                {
+                    _previousInput = input;
+                    if (_player.IsPlayerOne)
+                        NetworkInput.ONE_DOWN_RIGHT_INPUT = true;
+                    else
+                        NetworkInput.TWO_DOWN_RIGHT_INPUT = true;
+                }
+                if (input.y == -1 && input.x == -1)
+                {
+                    _previousInput = input;
+                    if (_player.IsPlayerOne)
+                        NetworkInput.ONE_DOWN_LEFT_INPUT = true;
+                    else
+                        NetworkInput.TWO_DOWN_LEFT_INPUT = true;
                 }
             }
-            if (input.x == -1)
+            else
             {
-                _previousInput = input;
-                if (_player.IsPlayerOne)
+                if (input.y == 1)
                 {
-                    NetworkInput.ONE_LEFT_INPUT = true;
+                    _previousInput = input;
+                    if (_player.IsPlayerOne)
+                        NetworkInput.ONE_UP_INPUT = true;
+                    else
+                        NetworkInput.TWO_UP_INPUT = true;
                 }
-                else
+                if (input.y == -1)
                 {
-                    NetworkInput.TWO_LEFT_INPUT = true;
+                    _previousInput = input;
+                    if (_player.IsPlayerOne)
+                        NetworkInput.ONE_DOWN_INPUT = true;
+                    else
+                        NetworkInput.TWO_DOWN_INPUT = true;
                 }
-            }
-            if (input.y == 1)
-            {
-                _previousInput = input;
-                if (_player.IsPlayerOne)
+                if (input.x == 1)
                 {
-                    NetworkInput.ONE_UP_INPUT = true;
+                    _previousInput = input;
+                    if (_player.IsPlayerOne)
+                        NetworkInput.ONE_RIGHT_INPUT = true;
+                    else
+                        NetworkInput.TWO_RIGHT_INPUT = true;
                 }
-                else
+                if (input.x == -1)
                 {
-                    NetworkInput.TWO_UP_INPUT = true;
-                }
-            }
-            if (input.y == -1)
-            {
-                _previousInput = input;
-                if (_player.IsPlayerOne)
-                {
-                    NetworkInput.ONE_DOWN_INPUT = true;
-                }
-                else
-                {
-                    NetworkInput.TWO_DOWN_INPUT = true;
+                    _previousInput = input;
+                    if (_player.IsPlayerOne)
+                        NetworkInput.ONE_LEFT_INPUT = true;
+                    else
+                        NetworkInput.TWO_LEFT_INPUT = true;
                 }
             }
         }
         if (input == Vector2Int.zero)
-        {
             _previousInput = Vector2Int.zero;
-        }
-
         if (input.x == 0)
         {
             if (_player.IsPlayerOne)
             {
+                NetworkInput.ONE_UP_RIGHT_INPUT = false;
+                NetworkInput.ONE_UP_LEFT_INPUT = false;
+                NetworkInput.ONE_DOWN_RIGHT_INPUT = false;
+                NetworkInput.ONE_DOWN_LEFT_INPUT = false;
                 NetworkInput.ONE_RIGHT_INPUT = false;
                 NetworkInput.ONE_LEFT_INPUT = false;
             }
             else
             {
+                NetworkInput.TWO_UP_RIGHT_INPUT = false;
+                NetworkInput.TWO_UP_LEFT_INPUT = false;
+                NetworkInput.TWO_DOWN_RIGHT_INPUT = false;
+                NetworkInput.TWO_DOWN_LEFT_INPUT = false;
                 NetworkInput.TWO_RIGHT_INPUT = false;
                 NetworkInput.TWO_LEFT_INPUT = false;
             }
@@ -103,14 +130,36 @@ public class PlayerController : BaseController
         {
             if (_player.IsPlayerOne)
             {
+                NetworkInput.ONE_UP_RIGHT_INPUT = false;
+                NetworkInput.ONE_UP_LEFT_INPUT = false;
+                NetworkInput.ONE_DOWN_RIGHT_INPUT = false;
+                NetworkInput.ONE_DOWN_LEFT_INPUT = false;
                 NetworkInput.ONE_UP_INPUT = false;
                 NetworkInput.ONE_DOWN_INPUT = false;
             }
             else
             {
+                NetworkInput.TWO_UP_RIGHT_INPUT = false;
+                NetworkInput.TWO_UP_LEFT_INPUT = false;
+                NetworkInput.TWO_DOWN_RIGHT_INPUT = false;
+                NetworkInput.TWO_DOWN_LEFT_INPUT = false;
                 NetworkInput.TWO_UP_INPUT = false;
                 NetworkInput.TWO_DOWN_INPUT = false;
             }
+        }
+        if (input == Vector2.zero)
+        {
+            if (_player.IsPlayerOne)
+                NetworkInput.ONE_NEUTRAL_INPUT = true;
+            else
+                NetworkInput.TWO_NEUTRAL_INPUT = true;
+        }
+        else
+        {
+            if (_player.IsPlayerOne)
+                NetworkInput.ONE_NEUTRAL_INPUT = false;
+            else
+                NetworkInput.TWO_NEUTRAL_INPUT = false;
         }
     }
 

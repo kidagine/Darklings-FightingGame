@@ -84,7 +84,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
         }
     }
 
-    public static void UpdateParticles(int index, EffectNetwork particle, DemonVector2 position, Vector2 flip = default)
+    public static void UpdateParticles(int index, EffectNetwork particle, DemonVector2 position, Vector3 flip = default)
     {
         GameObject[] particlesObjects = ObjectPoolingManager.Instance.GetParticlePool(index, particle.name);
         if (particlesObjects.Length > 0)
@@ -96,7 +96,7 @@ public class GameSimulationView : MonoBehaviour, IGameView
                     particlesObjects[i].SetActive(true);
                     particlesObjects[i].transform.position = new Vector2((int)position.x, (int)position.y);
                     if (flip != default)
-                        particlesObjects[i].transform.localRotation = Quaternion.Euler(flip.x, flip.y, 0);
+                        particlesObjects[i].transform.localRotation = Quaternion.Euler(flip.x, flip.y, flip.z);
                     return;
                 }
             }

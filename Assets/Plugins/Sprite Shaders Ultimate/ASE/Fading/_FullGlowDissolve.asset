@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b2425a2284af743826c689403a4924, type: 3}
+  m_Name: _FullGlowDissolve
+  m_EditorClassIdentifier: 
+  m_functionInfo: "// Made with Amplify Shader Editor\n// Available at the Unity
+    Asset Store - http://u3d.as/y3X \n/*ASEBEGIN\nVersion=18900\n0;0;1920;1019;1473.484;-72.21619;1;True;True\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;39;1549.267,57.82144;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionInput;72;-663.606,621.9217;Inherit;False;Noise;9;1;False;1;0;SAMPLER2D;0;False;1;SAMPLER2D;0\nNode;AmplifyShaderEditor.RangedFloatNode;14;-528.6538,50.12578;Inherit;False;Property;_FullGlowDissolveFade;Full
+    Glow Dissolve: Fade;0;0;Create;True;0;0;0;False;0;False;0.5;0;0;1;0;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleSubtractOpNode;64;710.291,-210.3366;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.ComponentMaskNode;66;874.3987,-461.5237;Inherit;False;True;True;True;False;1;0;COLOR;0,0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.Vector2Node;10;-825.4655,470.7231;Inherit;False;Property;_FullGlowDissolveNoiseScale;Full
+    Glow Dissolve: Noise Scale;4;0;Create;True;0;0;0;False;0;False;0.1,0.1;0.2,0.2;0;3;FLOAT2;0;FLOAT;1;FLOAT;2\nNode;AmplifyShaderEditor.FunctionInput;1;943.4482,-175.0467;Inherit;False;In
+    Color;5;2;False;1;0;COLOR;0,0,0,0;False;1;COLOR;0\nNode;AmplifyShaderEditor.BreakToComponentsNode;4;1301.745,-62.63142;Inherit;False;COLOR;1;0;COLOR;0,0,0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15\nNode;AmplifyShaderEditor.FunctionNode;5;-447.0426,453.193;Inherit;False;NoiseTexture;-1;;22;7fe1e2210473a53449e5b562606d8e1a;0;3;1;FLOAT2;0,0;False;5;FLOAT2;1,1;False;3;SAMPLER2D;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.ComponentMaskNode;2;1272.851,-223.5146;Inherit;False;True;True;True;False;1;0;COLOR;0,0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;68;119.4498,249.5882;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;67;1560.279,-344.5157;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.DynamicAppendNode;3;1759.394,-148.263;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.ColorNode;58;546.6928,-543.8709;Inherit;False;Property;_FullGlowDissolveEdgeColor;Full
+    Glow Dissolve: Edge Color;3;1;[HDR];Create;True;0;0;0;False;0;False;11.98431,0.627451,0.627451,0;8,0.4000001,0.4000001,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4\nNode;AmplifyShaderEditor.RangedFloatNode;27;-518.2361,749.3718;Inherit;False;Property;_FullGlowDissolveWidth;Full
+    Glow Dissolve: Width;2;0;Create;True;0;0;0;False;0;False;0.5;0;0;0;0;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMaxOpNode;53;-242.938,754.3706;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0.001;False;1;FLOAT;0\nNode;AmplifyShaderEditor.StepOpNode;61;451.3975,155.0311;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleSubtractOpNode;63;302.8539,379.1699;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.StepOpNode;62;453.4364,463.5863;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;65;1111.36,-408.8517;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;69;-8.741762,302.4508;Inherit;False;2;2;0;FLOAT;1.01;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;71;-175.7925,339.8419;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.TexturePropertyNode;11;-973.2395,670.7475;Inherit;True;Property;_FullGlowDissolveNoiseTexture;Full
+    Glow Dissolve: Noise Texture;5;0;Create;True;0;0;0;False;0;False;cd21d0de17dcd734691f79979be13330;cd21d0de17dcd734691f79979be13330;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1\nNode;AmplifyShaderEditor.FunctionInput;73;-760.4841,365.2162;Inherit;False;Shader
+    Position;2;0;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.FunctionOutput;0;2049.827,-2.840269;Inherit;False;True;-1;Out
+    Color;0;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0\nWireConnection;39;0;4;3\nWireConnection;39;1;61;0\nWireConnection;72;0;11;0\nWireConnection;64;0;61;0\nWireConnection;64;1;62;0\nWireConnection;66;0;58;0\nWireConnection;4;0;1;0\nWireConnection;5;1;73;0\nWireConnection;5;5;10;0\nWireConnection;5;3;72;0\nWireConnection;2;0;1;0\nWireConnection;68;0;14;0\nWireConnection;68;1;69;0\nWireConnection;67;0;65;0\nWireConnection;67;1;2;0\nWireConnection;3;0;67;0\nWireConnection;3;3;39;0\nWireConnection;53;0;71;0\nWireConnection;61;0;5;0\nWireConnection;61;1;14;0\nWireConnection;63;0;68;0\nWireConnection;63;1;53;0\nWireConnection;62;0;5;0\nWireConnection;62;1;63;0\nWireConnection;65;0;66;0\nWireConnection;65;1;64;0\nWireConnection;69;1;53;0\nWireConnection;71;0;14;0\nWireConnection;71;1;27;0\nWireConnection;0;0;3;0\nASEEND*/\n//CHKSM=44D4BE4A97EA528EE94EFDFE62733EB4683038F5"
+  m_functionName: 
+  m_description: 
+  m_additionalIncludes:
+    m_additionalIncludes: []
+    m_outsideIncludes: []
+  m_additionalPragmas:
+    m_additionalPragmas: []
+    m_outsidePragmas: []
+  m_additionalDirectives:
+    m_validData: 0
+    m_isDirty: 0
+    m_moduleName: ' Additional Directives'
+    m_independentModule: 1
+    m_customEdited: 0
+    m_additionalDirectives: []
+    m_shaderFunctionDirectives: []
+    m_nativeDirectives: []
+    m_nativeDirectivesIndex: -1
+    m_nativeDirectivesFoldout: 0
+    m_directivesSaveItems: []
+  m_nodeCategory: 3
+  m_customNodeCategory: 
+  m_previewPosition: 0
+  m_hidden: 0

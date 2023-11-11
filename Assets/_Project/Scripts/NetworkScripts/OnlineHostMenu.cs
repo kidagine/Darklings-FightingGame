@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public class OnlineHostMenu : BaseMenu
 {
     [SerializeField] private NetworkManagerLobby _networkManager = default;
-    [SerializeField] private OnlineMainMenu _onlineMainMenu = default;
+    [SerializeField] private BaseMenu _onlineMainMenu = default;
     [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
     [SerializeField] private DemonNameplate[] _nameplates = default;
     [SerializeField] private TextMeshProUGUI _readyText = default;
@@ -47,7 +47,7 @@ public class OnlineHostMenu : BaseMenu
                 Hide();
                 return;
             }
-            _lobbyIdText.text = $"Lobby ID: {_lobbyId}";
+            _lobbyIdText.text = $"Room ID: {_lobbyId}";
             _creatingLobby.SetActive(false);
             _lobbyCreated.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null);
@@ -138,7 +138,7 @@ public class OnlineHostMenu : BaseMenu
         if (lobbyId == null)
             _lobbyIdText.text = "";
         else
-            _lobbyIdText.text = $"Lobby ID: {lobbyId.ToUpper()}";
+            _lobbyIdText.text = $"Room ID: {lobbyId.ToUpper()}";
     }
 
     public void Ready()
@@ -208,8 +208,8 @@ public class OnlineHostMenu : BaseMenu
         else
             SceneSettings.StageIndex = SceneSettings.OnlineStageIndex;
         SceneSettings.MusicName = SceneSettings.OnlineMusicName;
-        _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
-        _fadeHandler.StartFadeTransition(true);
+        _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(1, LoadSceneMode.Single));
+        _fadeHandler.StartFadeTransition(true, 0.35f);
     }
 
     public async void QuitLobby()

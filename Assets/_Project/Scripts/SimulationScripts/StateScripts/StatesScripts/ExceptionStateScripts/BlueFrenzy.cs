@@ -28,19 +28,20 @@ public class BlueFrenzyState : State
                 player.position = nextPosition;
                 player.knockback++;
                 if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
-                {
                     player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
-                }
                 else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
-                {
                     player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
-                }
             }
         }
         UpdateFramedata(player);
         player.velocity = DemonVector2.Zero;
 
         bool isParrying = player.player.PlayerAnimator.GetParrying(player.animation, player.animationFrames);
+        if (isParrying)
+            player.player.PlayerAnimator.ParryMaterial();
+        else
+            player.player.PlayerAnimator.NormalMaterial();
+
         if (IsColliding(player))
         {
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
@@ -49,13 +50,9 @@ public class BlueFrenzyState : State
                 return;
             }
             if (isParrying)
-            {
                 Parry(player);
-            }
             else
-            {
                 ToHurtState(player);
-            }
         }
         ToIdleState(player);
         ToParryState(player, isParrying);
@@ -63,29 +60,25 @@ public class BlueFrenzyState : State
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.attackFrames <= 0)
-        {
             EnterState(player, "Idle");
-        }
     }
     private void ToParryState(PlayerNetwork player, bool isParrying)
     {
         if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Parry)
-        {
             if (isParrying)
-            {
                 EnterState(player, "BlueFrenzy");
-            }
-        }
     }
 
     private void Parry(PlayerNetwork player)
     {
+        player.animationFrames = 6;
         int parryDistance = 37;
         player.sound = "Parry";
         DemonVector2 hurtEffectPosition = new DemonVector2(player.position.x + (20 * player.flip), player.position.y + 25);
         player.SetParticle("Parry", hurtEffectPosition);
         player.otherPlayer.canChainAttack = true;
-        GameSimulation.Hitstop = 10;
+        GameSimulation.Hitstop = 13;
+        CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 10, timer = 0.12f });
         if (DemonicsPhysics.IsInCorner(player.otherPlayer))
         {
             player.knockback = 0;
@@ -112,34 +105,14 @@ public class BlueFrenzyState : State
             player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
             player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
         }
-        if (IsBlocking(player))
-        {
-            if (player.direction.y < 0)
-            {
-                EnterState(player, "BlockLow");
-            }
-            else
-            {
-                EnterState(player, "Block");
-            }
-        }
+        if (player.attackHurtNetwork.hardKnockdown)
+            EnterState(player, "Airborne");
         else
         {
-            if (player.attackHurtNetwork.hardKnockdown)
-            {
-                EnterState(player, "Airborne");
-            }
+            if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
+                EnterState(player, "Hurt");
             else
-            {
-                if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
-                {
-                    EnterState(player, "Hurt");
-                }
-                else
-                {
-                    EnterState(player, "HurtAir");
-                }
-            }
+                EnterState(player, "HurtAir");
         }
     }
 }

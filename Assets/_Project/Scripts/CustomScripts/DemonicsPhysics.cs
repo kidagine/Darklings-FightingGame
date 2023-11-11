@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DemonicsPhysics : MonoBehaviour
@@ -10,24 +8,17 @@ public class DemonicsPhysics : MonoBehaviour
     public bool OnGround { get { return Position.y <= GROUND_POINT ? true : false; } private set { } }
     public bool OnWall { get { return Position.x >= WALL_RIGHT_POINT || Position.x <= WALL_LEFT_POINT ? true : false; } private set { } }
     private DemonVector2 _freezePosition;
-    private DemonFloat _gravity;
-    private static Camera _camera;
     private bool _freeze;
+    public static DemonFloat FOOT_POINT = (DemonFloat)(-80);
     public static DemonFloat GROUND_POINT = (DemonFloat)(-72);
-    public static DemonFloat CELLING_POINT = (DemonFloat)(120);
+    public static DemonFloat CELLING_POINT = (DemonFloat)120;
     public static DemonFloat WALL_RIGHT_POINT;
     public static DemonFloat WALL_LEFT_POINT;
-    public static DemonFloat GRAVITY = (DemonFloat)0.288f;
+    public static DemonFloat GRAVITY = (DemonFloat)0.235f;
     public static DemonFloat JUGGLE_GRAVITY = (DemonFloat)0.208f;
-    private static DemonFloat WALL_OFFSET = (DemonFloat)10;
     public DemonicsPhysics OtherPhysics { get; set; }
     public bool IgnoreWalls { get { return _ignoreWalls; } set { _ignoreWalls = value; } }
 
-
-    void Awake()
-    {
-        _camera = Camera.main;
-    }
 
     public void OnCollision(DemonicsPhysics otherPhysics)
     {

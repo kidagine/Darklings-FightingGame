@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BaseMenu : MonoBehaviour
 {
     [SerializeField] protected Selectable _startingOption = default;
-
+    public Selectable PreviousSelectable { get; private set; }
 
     public void OpenMenuHideCurrent(BaseMenu menu)
     {
@@ -23,7 +23,8 @@ public class BaseMenu : MonoBehaviour
     public virtual void Show()
     {
         gameObject.SetActive(true);
-        StartCoroutine(ActivateCoroutine());
+        if (gameObject.activeSelf)
+            StartCoroutine(ActivateCoroutine());
     }
 
     public void Hide()
@@ -33,13 +34,17 @@ public class BaseMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    void OnEnable()
+    protected virtual void OnEnable()
     {
-        StartCoroutine(ActivateCoroutine());
+        if (gameObject.activeSelf)
+            StartCoroutine(ActivateCoroutine());
     }
 
-    IEnumerator ActivateCoroutine()
+    protected IEnumerator ActivateCoroutine()
     {
+        GameObject currentSelected = EventSystem.current.currentSelectedGameObject;
+        if (currentSelected != null)
+            PreviousSelectable = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>();
         yield return null;
         if (_startingOption != null)
             _startingOption.Select();

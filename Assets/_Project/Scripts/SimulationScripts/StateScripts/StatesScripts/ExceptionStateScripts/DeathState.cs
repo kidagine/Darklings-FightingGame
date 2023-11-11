@@ -7,6 +7,7 @@ public class DeathState : State
     {
         if (!player.enter)
         {
+            CameraShake.Instance.ZoomDefault(0.3f);
             if (!SceneSettings.IsTrainingMode)
                 GameSimulation.Run = false;
             GameSimulation.GlobalHitstop = 1;

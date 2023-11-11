@@ -25,9 +25,11 @@ public class State
         player.spriteOrder = 1;
         player.otherPlayer.spriteOrder = 0;
     }
-    public bool IsBlocking(PlayerNetwork player)
+    public bool IsBlocking(PlayerNetwork player, bool ignoreGuardBreak = false)
     {
-        if (player.attackHurtNetwork.guardBreak)
+        if (ignoreGuardBreak && player.attackHurtNetwork.guardBreak)
+            player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.Lock);
+        if (player.attackHurtNetwork.guardBreak && !ignoreGuardBreak)
             return false;
         if (AIBlocking(player, player.attackHurtNetwork.attackType))
             return true;
@@ -60,14 +62,10 @@ public class State
             player.attackInput = player.inputBuffer.CurrentTrigger().inputEnum;
             player.isCrouch = false;
             player.isAir = air;
-            if (player.direction.y < 0)
-            {
+            if ((player.direction.y < 0) || player.inputBuffer.RecentDownInput())
                 player.isCrouch = true;
-            }
             if (player.isAir)
-            {
                 player.isCrouch = false;
-            }
             AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
             if (attack != null)
             {
@@ -234,20 +232,19 @@ public class State
 
     protected void ThrowEnd(PlayerNetwork player)
     {
+        CameraShake.Instance.ZoomDefault(0.05f);
         player.combo++;
         player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
         player.healthRecoverable -= CalculateRecoverableDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
+        player.player.PlayerUI.Damaged();
+        player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
         player.player.OtherPlayerUI.IncreaseCombo(player.combo);
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
-        {
             player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
-        }
         else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
-        {
             player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
-        }
         player.SetParticle(player.attackHurtNetwork.hurtEffect, new DemonVector2(player.position.x, player.position.y));
-        GameSimulation.Hitstop = 3;
+        GameSimulation.Hitstop = 10;
         HitstopFully(player);
         HitstopFully(player.otherPlayer);
     }
@@ -283,6 +280,7 @@ public class State
     {
         if (!player.gotHit || name.Contains("Hurt") || name.Contains("Airborne") || name.Contains("Grabbed") || name.Contains("Block") || name.Contains("Knockback"))
         {
+            player.player.PlayerAnimator.NormalMaterial();
             player.framedataEnum = Demonics.FramedataTypesEnum.None;
             player.enter = skipEnter;
             player.state = name;
@@ -345,9 +343,7 @@ public class State
     protected bool IsColliding(PlayerNetwork player)
     {
         if (player.invincible && player.health <= 0)
-        {
             return false;
-        }
         if (player.otherPlayer.shadow.projectile.active)
         {
             if (DemonicsCollider.Colliding(player.otherPlayer.shadow.projectile.hitbox, player.hurtbox) && !player.otherPlayer.shadow.projectile.hitbox.enter)

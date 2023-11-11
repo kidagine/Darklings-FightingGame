@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -8,31 +9,35 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Audio))]
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(Animator))]
-public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] public UnityEvent _onClickedAnimationEnd = default;
     [SerializeField] public UnityEvent _onSelected = default;
+    [SerializeField] public UnityEvent _onDeselected = default;
     [SerializeField] public RectTransform _scrollView = default;
     [SerializeField] public float _scrollUpAmount = default;
     [SerializeField] public float _scrollDownAmount = default;
+    [SerializeField] private bool _selectOnHover = default;
+    [SerializeField] private bool _clickAnimation = true;
     [SerializeField] private bool _ignoreFirstSelectSound = default;
     [SerializeField] private bool _allowMultiplePresses = default;
-    [SerializeField] private bool _resetCursorOnClick = default;
+    [SerializeField] private Selectable selectableParent = default;
+    [SerializeField] protected bool _resetToDefault = false;
     protected Audio _audio;
     protected Button _button;
     protected Animator _animator;
-    private RectTransform _rect;
+    protected RectTransform _rect;
     private bool _isIgnoringFirstSelectSound;
     private bool _wasClicked;
     private Coroutine _moveVerticalCoroutine;
-    private Vector2 _defaultPosition;
+    protected Vector2 _defaultPosition;
     private readonly int _moveVerticalAmount = 5;
-    protected bool _resetToDefault = true;
     protected bool _isPressed;
 
 
     protected virtual void Awake()
     {
+        HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
         _audio = GetComponent<Audio>();
         _button = GetComponent<Button>();
         _animator = GetComponent<Animator>();
@@ -40,47 +45,42 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
         _defaultPosition = _rect.anchoredPosition;
     }
 
-    public void OnSelect(BaseEventData eventData)
+    public virtual void OnSelect(BaseEventData eventData)
     {
         _onSelected?.Invoke();
         if (!_isIgnoringFirstSelectSound)
         {
         }
+        _animator.SetBool("IsHover", true);
         _isIgnoringFirstSelectSound = false;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if (_isPressed)
-            return;
+        if (_selectOnHover)
+            _button.Select();
         _animator.SetBool("IsHover", true);
         _audio.Sound("Selected").Play();
         Cursor.SetCursor(MouseSetup.Instance.HoverCursor, Vector2.zero, CursorMode.Auto);
-        _button.Select();
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public virtual void OnPointerExit(PointerEventData eventData)
     {
-        if (_isPressed)
-            return;
-        _animator.SetBool("IsHover", false);
+        if (!_selectOnHover)
+            _animator.SetBool("IsHover", false);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-
-    }
+    public void SelectParent() => selectableParent?.Select();
 
     public virtual void OnPress()
     {
         if (!_wasClicked)
         {
+            _animator.SetBool("IsPress", true);
             EventSystem.current.sendNavigationEvents = false;
             if (!_allowMultiplePresses)
-            {
                 _wasClicked = true;
-            }
         }
     }
 
@@ -90,36 +90,35 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
         if (_allowMultiplePresses)
             _animator.SetBool("IsSelected", true);
         EventSystem.current.sendNavigationEvents = true;
-        _onClickedAnimationEnd?.Invoke();
+        if (_onClickedAnimationEnd != null)
+            _onClickedAnimationEnd?.Invoke();
     }
 
     public void MoveScrollDown(BaseEventData eventData)
     {
         AxisEventData axisEventData = eventData as AxisEventData;
         if (axisEventData.moveDir == MoveDirection.Down)
-        {
             _scrollView.anchoredPosition += new Vector2(0.0f, _scrollDownAmount);
-        }
     }
 
     public void MoveScrollUp(BaseEventData eventData)
     {
         AxisEventData axisEventData = eventData as AxisEventData;
         if (axisEventData.moveDir == MoveDirection.Up)
-        {
             _scrollView.anchoredPosition += new Vector2(0.0f, _scrollUpAmount);
-        }
     }
 
-    public void Activate()
+    public virtual void Activate()
     {
         _button.enabled = true;
+        gameObject.SetActive(true);
         _animator.SetBool("IsDeactivated", false);
     }
 
-    public void Deactivate()
+    public virtual void Deactivate()
     {
         _button.enabled = false;
+        gameObject.SetActive(false);
         _animator.SetBool("IsDeactivated", true);
     }
 
@@ -130,11 +129,18 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
 
     void OnDisable()
     {
+        if (_moveVerticalCoroutine != null)
+        {
+            StopCoroutine(_moveVerticalCoroutine);
+            _rect.anchoredPosition = _defaultPosition;
+        }
         _isPressed = false;
         _wasClicked = false;
         if (_ignoreFirstSelectSound)
             _isIgnoringFirstSelectSound = true;
         _animator.Rebind();
+        _animator.SetBool("IsHover", false);
+        _animator.SetBool("IsPress", false);
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
@@ -143,6 +149,8 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
             return;
         _audio.Sound("Pressed").Play();
         _animator.SetBool("IsPress", true);
+        if (!_clickAnimation)
+            return;
         if (_moveVerticalCoroutine != null)
             StopCoroutine(_moveVerticalCoroutine);
         _rect.anchoredPosition = _defaultPosition;
@@ -158,6 +166,8 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
             _isPressed = false;
             _animator.SetBool("IsPress", false);
         }
+        if (!_clickAnimation)
+            return;
         if (_moveVerticalCoroutine != null)
             StopCoroutine(_moveVerticalCoroutine);
         _rect.anchoredPosition = _defaultPosition + (-_moveVerticalAmount * Vector2.up);
@@ -178,5 +188,11 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, I
         }
         _rect.anchoredPosition = endPosition;
         yield return null;
+    }
+
+    public virtual void OnDeselect(BaseEventData eventData)
+    {
+        _onDeselected?.Invoke();
+        _animator.SetBool("IsHover", false);
     }
 }

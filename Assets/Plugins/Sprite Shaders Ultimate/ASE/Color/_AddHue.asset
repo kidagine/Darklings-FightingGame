@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b2425a2284af743826c689403a4924, type: 3}
+  m_Name: _AddHue
+  m_EditorClassIdentifier: 
+  m_functionInfo: "// Made with Amplify Shader Editor\n// Available at the Unity
+    Asset Store - http://u3d.as/y3X \n/*ASEBEGIN\nVersion=18935\n155;117;1803;955;1831.337;1403.749;1.416083;True;False\nNode;AmplifyShaderEditor.PowerNode;27;-657.9688,-418.551;Inherit;False;True;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionNode;21;-211.0229,-259.2362;Inherit;False;ShaderMasker;-1;;21;3d25b55dbfdd24f48b9bd371bdde0e97;0;2;1;FLOAT;0;False;2;SAMPLER2D;;False;1;FLOAT;0\nNode;AmplifyShaderEditor.StaticSwitch;33;-7.406558,-457.1131;Inherit;False;Property;_AddHueMaskToggle;Add
+    Hue: Mask Toggle;5;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT;0;False;0;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;25;-1001.968,-328.551;Inherit;False;Property;_AddHueContrast;Add
+    Hue: Contrast;4;0;Create;True;0;0;0;False;0;False;0.5;1;0;0;0;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;12;912.2179,-291.9705;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionInput;1;-1370.066,-9.000317;Inherit;False;In
+    Color;5;1;False;1;0;COLOR;0,0,0,0;False;1;COLOR;0\nNode;AmplifyShaderEditor.BreakToComponentsNode;5;-230.3765,178.9019;Inherit;False;COLOR;1;0;COLOR;0,0,0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15\nNode;AmplifyShaderEditor.DynamicAppendNode;6;1148.098,-95.93266;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.ComponentMaskNode;4;645.1289,-115.0661;Inherit;False;True;True;True;False;1;0;COLOR;0,0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.RangedFloatNode;22;-549.3417,-326.8529;Inherit;False;Property;_AddHueFade;Add
+    Hue: Fade;0;0;Create;True;0;0;0;False;0;False;1;0;0;1;0;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;20;349.0902,-611.1223;Inherit;True;3;3;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.SimpleMaxOpNode;26;-781.9684,-312.9832;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0.001;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;18;-296.4298,-730.2476;Inherit;False;Property;_AddHueBrightness;Add
+    Hue: Brightness;2;0;Create;True;0;0;0;False;0;False;2;0;0;0;0;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;29;-902.9526,-843.1718;Inherit;False;Property;_AddHueSpeed;Add
+    Hue: Speed;1;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleTimeNode;28;-1074.375,-1025.009;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;31;-620.9736,-969.9344;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;16;-348.5717,-838.9268;Inherit;False;Property;_AddHueSaturation;Add
+    Hue: Saturation;3;0;Create;True;0;0;0;False;0;False;1;0;0;1;0;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleRemainderNode;32;-364.9416,-985.1711;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionInput;30;-838.1346,-1031.929;Inherit;False;Time;1;0;False;1;0;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionNode;24;-972.4031,-438.0531;Inherit;False;Brightness;-1;;22;53a132be222008b439a5a8c99b79b131;0;1;1;FLOAT4;0,0,0,0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.HSVToRGBNode;19;38.38428,-864.4551;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3\nNode;AmplifyShaderEditor.TexturePropertyNode;23;-504.8207,-221.1707;Inherit;True;Property;_AddHueMask;Add
+    Hue: Mask;6;0;Create;True;0;0;0;False;0;False;None;None;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1\nNode;AmplifyShaderEditor.FunctionOutput;0;1401.141,-92.5176;Inherit;False;True;-1;Output;0;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0\nWireConnection;27;0;24;0\nWireConnection;27;1;26;0\nWireConnection;21;1;22;0\nWireConnection;21;2;23;0\nWireConnection;33;1;22;0\nWireConnection;33;0;21;0\nWireConnection;12;0;20;0\nWireConnection;12;1;4;0\nWireConnection;5;0;1;0\nWireConnection;6;0;12;0\nWireConnection;6;3;5;3\nWireConnection;4;0;1;0\nWireConnection;20;0;19;0\nWireConnection;20;1;27;0\nWireConnection;20;2;33;0\nWireConnection;26;0;25;0\nWireConnection;31;0;30;0\nWireConnection;31;1;29;0\nWireConnection;32;0;31;0\nWireConnection;30;0;28;0\nWireConnection;24;1;1;0\nWireConnection;19;0;32;0\nWireConnection;19;1;16;0\nWireConnection;19;2;18;0\nWireConnection;0;0;6;0\nASEEND*/\n//CHKSM=D72A7C3CC6D7220767059585DB1A646E8AB66F88"
+  m_functionName: 
+  m_description: 
+  m_additionalIncludes:
+    m_additionalIncludes: []
+    m_outsideIncludes: []
+  m_additionalPragmas:
+    m_additionalPragmas: []
+    m_outsidePragmas: []
+  m_additionalDirectives:
+    m_validData: 0
+    m_isDirty: 0
+    m_moduleName: ' Additional Directives'
+    m_independentModule: 1
+    m_customEdited: 0
+    m_additionalDirectives: []
+    m_shaderFunctionDirectives: []
+    m_nativeDirectives: []
+    m_nativeDirectivesIndex: -1
+    m_nativeDirectivesFoldout: 0
+    m_directivesSaveItems: []
+  m_nodeCategory: 3
+  m_customNodeCategory: 
+  m_previewPosition: 0
+  m_hidden: 0
+  m_url: 

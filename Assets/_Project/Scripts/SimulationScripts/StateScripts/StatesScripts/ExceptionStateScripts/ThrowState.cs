@@ -2,16 +2,13 @@ using UnityEngine;
 
 public class ThrowState : State
 {
-    private static bool _k;
     public override void UpdateLogic(PlayerNetwork player)
     {
         if (!player.enter)
         {
             SetTopPriority(player);
             if (player.direction.x < 0 && player.flip == 1 || player.direction.x > 0 && player.flip == -1)
-            {
                 player.flip *= -1;
-            }
             player.enter = true;
             player.animationFrames = 0;
             player.animation = "Throw";
@@ -35,8 +32,7 @@ public class ThrowState : State
             if (player.attackFrames <= -1 && !player.hitstop)
             {
                 ResetCombo(player.otherPlayer);
-                player.otherPlayer.player.PlayerUI.Damaged();
-                player.otherPlayer.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
+
                 player.otherPlayer.pushbox.active = true;
                 if (player.health <= 0)
                     EnterState(player.otherPlayer, "Death");
@@ -49,13 +45,9 @@ public class ThrowState : State
             {
                 player.otherPlayer.player.StartShakeContact();
                 if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.flip == 1)
-                {
                     player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT - player.pushbox.size.x, player.position.y);
-                }
                 else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.flip == -1)
-                {
                     player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT + player.pushbox.size.x, player.position.y);
-                }
                 ThrowEnd(player.otherPlayer);
                 CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
                 player.sound = "Impact1";

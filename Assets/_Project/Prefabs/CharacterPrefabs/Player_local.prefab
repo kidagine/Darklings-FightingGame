@@ -271,7 +271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7684445122000850538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 40, z: 0}
+  m_LocalPosition: {x: 0, y: 30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -416,6 +416,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _player: {fileID: 8073473790702501988}
+  _normal: {fileID: 2100000, guid: 172c6f84ccb447847a7fc7babc01fa16, type: 2}
+  _invincible: {fileID: 2100000, guid: ed67456006c23fe47ae0b480988bc1cc, type: 2}
+  _armor: {fileID: 2100000, guid: 1fe5d52a48071fe4aa7c7a7d1189648c, type: 2}
+  _parry: {fileID: 2100000, guid: 73d333b1b585b8149b6b4c387dbf6661, type: 2}
 --- !u!212 &8073473789928578676
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -436,7 +440,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: 172c6f84ccb447847a7fc7babc01fa16, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -457,15 +461,15 @@ SpriteRenderer:
   m_SortingLayerID: -906744669
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -813616090576528131, guid: 0cbac8b7a203a6e4b8fa13001ec56a06, type: 3}
+  m_Sprite: {fileID: -1394641665, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.25, y: 2.75}
+  m_Size: {x: 80, y: 80}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &1790606702567451895
@@ -1429,6 +1433,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0306d6f2-a2bc-4bdc-8fa1-a7e4b78b925f
     m_ActionName: UI/Click
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ff047904-44a4-4826-ac15-f677187cb418
+    m_ActionName: UI/Options[/Keyboard/p,/XInputControllerWindows/select]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: affa4d6e-17ef-42aa-8854-5f9ae9921146
+    m_ActionName: UI/Hotbar[/Keyboard/space,/XInputControllerWindows/select]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay

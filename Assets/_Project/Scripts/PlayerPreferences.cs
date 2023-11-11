@@ -11,6 +11,7 @@ public class PlayerPreferences : MonoBehaviour
     [SerializeField] private bool _checkTraining = default;
     [SerializeField] private ChangeStageMenu _changeStageMenu = default;
     [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
+    [SerializeField] private HomeMenu _homeMenu = default;
     [Header("ONLINE")]
     [SerializeField] private string _playerNameInputFieldInitial = "Demon";
     [SerializeField] private TMP_InputField _playerNameInputField = default;
@@ -98,10 +99,13 @@ public class PlayerPreferences : MonoBehaviour
 
     private void LoadOnlinePreferences()
     {
-        _onlineSetupMenu.SetCharacter(int.Parse(DemonicsSaver.Load("character", _characterSelectorInitial.ToString())));
         _playerNameInputField.text = DemonicsSaver.Load("playerName", _playerNameInputFieldInitial.ToString());
         _charactersAssistSelector.SetValue(int.Parse(DemonicsSaver.Load("characterassist", _characterAssistSelectorInitial.ToString())));
         _characterColorSelector.SetValue(int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.ToString())));
+        _onlineSetupMenu.SetCharacter(int.Parse(DemonicsSaver.Load("character", _characterSelectorInitial.ToString())));
+        _homeMenu.SetCharacter(int.Parse(DemonicsSaver.Load("character", _characterSelectorInitial.ToString())),
+int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.ToString())),
+ DemonicsSaver.Load("playerName", _playerNameInputFieldInitial.ToString()));
     }
 
     private void LoadStagePreferences()
@@ -134,7 +138,7 @@ public class PlayerPreferences : MonoBehaviour
         _cpuSelector.SetValue(int.Parse(DemonicsSaver.Load("cpu", _cpuSelectorInitial.ToString())));
         _blockSelector.SetValue(int.Parse(DemonicsSaver.Load("block", _blockSelectorInitial.ToString())));
         _onHitSelector.SetValue(int.Parse(DemonicsSaver.Load("onhit", _onHitSelectorInitial.ToString())));
-        _stanceSelector.SetValue(int.Parse(DemonicsSaver.Load("stance", _stanceSelectorInitial.ToString())));
+        //_stanceSelector.SetValue(int.Parse(DemonicsSaver.Load("stance", _stanceSelectorInitial.ToString())));
 
         //Misc
         _hitboxesSelector.SetValue(int.Parse(DemonicsSaver.Load("hitboxes", _hitboxesSelectorInitial.ToString())));

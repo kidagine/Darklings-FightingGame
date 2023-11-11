@@ -19,9 +19,7 @@ public class DemonicsWorld : MonoBehaviour
     {
         frames--;
         if (frames <= 0)
-        {
             return true;
-        }
         return false;
     }
 
@@ -29,9 +27,7 @@ public class DemonicsWorld : MonoBehaviour
     {
         frames--;
         if (frames == 0)
-        {
             return true;
-        }
         return false;
     }
 

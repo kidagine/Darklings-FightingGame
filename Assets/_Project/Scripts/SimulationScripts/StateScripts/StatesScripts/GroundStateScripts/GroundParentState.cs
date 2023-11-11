@@ -78,30 +78,20 @@ public class GroundParentState : State
             if (IsBlocking(player))
             {
                 if (player.direction.y < 0)
-                {
                     EnterState(player, "BlockLow");
-                }
                 else
-                {
                     EnterState(player, "Block");
-                }
             }
             else
             {
                 if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.moveName == "Shadowbreak")
-                {
                     EnterState(player, "Airborne");
-                }
                 else
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
-                    {
                         EnterState(player, "Hurt");
-                    }
                     else
-                    {
                         EnterState(player, "HurtAir");
-                    }
                 }
             }
         }

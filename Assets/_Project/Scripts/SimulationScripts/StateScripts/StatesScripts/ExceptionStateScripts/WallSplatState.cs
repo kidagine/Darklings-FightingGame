@@ -8,15 +8,14 @@ public class WallSplatState : State
         if (!player.enter)
         {
             player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
-            CameraShake.Instance.Zoom(-4, 0.2f);
-            if (player.CurrentState != this)
-                player.comboLocked = true;
+            CameraShake.Instance.Zoom(-8, 0.2f);
+            player.comboLocked = true;
             player.wasWallSplatted = true;
-            DemonVector2 effectPosition = new DemonVector2(player.position.x + ((DemonFloat)2.25 * player.flip), player.position.y);
+            DemonVector2 effectPosition = new(player.position.x + ((DemonFloat)(-10) * player.flip), player.position.y);
             if (player.flip == 1)
-                player.SetParticle("WallSplat", effectPosition);
+                player.SetParticle("WallSplat", effectPosition, new Vector3(0, 0, 270));
             else
-                player.SetParticle("WallSplat", effectPosition);
+                player.SetParticle("WallSplat", effectPosition, new Vector3(0, 0, 90));
             player.sound = "WallSplat";
             player.enter = true;
             player.animationFrames = 0;

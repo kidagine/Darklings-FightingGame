@@ -11,9 +11,9 @@ public class InputBuffer : MonoBehaviour
         _inputHistory = inputHistory;
     }
 
-    public void UpdateBuffer(InputList inputList)
+    public void UpdateBuffer(InputList inputList, InputBufferNetwork inputBuffer)
     {
         _inputDisplay.UpdateDisplay(inputList);
-        _inputHistory.UpdateDisplay(inputList);
+        _inputHistory.UpdateDisplay(inputList, inputBuffer);
     }
 }

@@ -1,6 +1,7 @@
 using Cinemachine;
 using Demonics.Manager;
 using SharedGame;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +77,6 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private BaseMenu _matchOverReplayMenu = default;
     [SerializeField] private BaseMenu _matchOverOnlineMenu = default;
     [SerializeField] private Animator _readyAnimator = default;
-    [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [SerializeField] private Audio _musicAudio = default;
     [SerializeField] private Audio _uiAudio = default;
     protected BrainController _playerOneController;
@@ -107,6 +107,7 @@ public class GameplayManager : MonoBehaviour
     public bool InfiniteAssist { get; set; }
     public Player PlayerOne { get; private set; }
     public Player PlayerTwo { get; private set; }
+    public CinemachineTargetGroup TargetGroup { get { return _targetGroup; } private set { } }
     public PauseMenu PauseMenu { get; set; }
     public static GameplayManager Instance { get; private set; }
     public BrainController PausedController { get; set; }
@@ -114,6 +115,7 @@ public class GameplayManager : MonoBehaviour
     private Keyboard keyboardTwo;
     void Awake()
     {
+        MouseSetup.Instance.SetCursor(false);
         keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
         HasGameStarted = false;
         GameSpeed = _gameSpeed;
@@ -201,7 +203,6 @@ public class GameplayManager : MonoBehaviour
 
     public void InitializePlayers(GameObject playerOneObject, GameObject playerTwoObject)
     {
-        _fadeHandler.StartFadeTransition(true);
         playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];
         playerTwoObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerTwo];
         Time.timeScale = GameplayManager.Instance.GameSpeed;
@@ -329,21 +330,40 @@ public class GameplayManager : MonoBehaviour
         }
         _inputHistories[0].PlayerController = PlayerOne.GetComponent<PlayerController>();
         _inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
-        _cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
-        _cinemachineTargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
-        ReplayManager.Instance.Setup();
+        TargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
+        TargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
+    }
+
+    public void SetCameraTargets(float targetOne, float targetTwo, float time = 0.12f)
+    {
+        _targetGroup.m_Targets[0].weight = targetOne;
+        StartCoroutine(SetCameraTargetsCoroutine(targetOne, targetTwo, time));
+    }
+
+    private IEnumerator SetCameraTargetsCoroutine(float targetOne, float targetTwo, float time)
+    {
+        float elapsedTime = 0;
+        float waitTime = time;
+        float currentTargetOne = _targetGroup.m_Targets[0].weight;
+        float currentTargetTwo = _targetGroup.m_Targets[1].weight;
+        while (elapsedTime < waitTime)
+        {
+            _targetGroup.m_Targets[0].weight = Mathf.Lerp(currentTargetOne, targetOne, elapsedTime / waitTime);
+            _targetGroup.m_Targets[1].weight = Mathf.Lerp(currentTargetTwo, targetTwo, elapsedTime / waitTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        _targetGroup.m_Targets[0].weight = targetOne;
+        _targetGroup.m_Targets[1].weight = targetTwo;
+        yield return null;
     }
 
     private void CheckInstance()
     {
         if (Instance != null && Instance != this)
-        {
             Destroy(gameObject);
-        }
         else
-        {
             Instance = this;
-        }
     }
 
     public void CheckSceneSettings()
@@ -392,7 +412,6 @@ public class GameplayManager : MonoBehaviour
 
     public void SetupGame()
     {
-        _fadeHandler.StartFadeTransition(false);
         GameSimulation._players[0].player = GameplayManager.Instance.PlayerOne;
         GameSimulation._players[1].player = GameplayManager.Instance.PlayerTwo;
         _uiInput.gameObject.SetActive(true);
@@ -442,6 +461,7 @@ public class GameplayManager : MonoBehaviour
         RunReady();
         RunRoundOver();
     }
+
     public void SetCountdown(int timer)
     {
         if (!_isTrainingMode && GameSimulation.Run)
@@ -453,12 +473,9 @@ public class GameplayManager : MonoBehaviour
                 RoundOver(true);
             }
             else if (timer <= 10)
-            {
                 _timerMainAnimator.SetTrigger("TimerLow");
-            }
         }
     }
-
 
     public void SkipIntro()
     {
@@ -493,6 +510,7 @@ public class GameplayManager : MonoBehaviour
         _winnerNameText.text = "";
         _readyText.text = "";
         _currentRound = 1;
+        MouseSetup.Instance.SetCursor(true);
         if (SceneSettings.ReplayMode)
         {
             GameplayManager.Instance.PausedController = _playerOneController;
@@ -556,9 +574,7 @@ public class GameplayManager : MonoBehaviour
         _networkCanvas.SetActive(!NetworkInput.IS_LOCAL);
         _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
-        {
             ReplayManager.Instance.ShowReplayPrompts();
-        }
         _timerMainAnimator.Rebind();
         IsDialogueRunning = false;
         for (int i = 0; i < _arcanaObjects.Length; i++)
@@ -728,7 +744,7 @@ public class GameplayManager : MonoBehaviour
                     if (PlayerOne.PlayerStats.maxHealth == GameSimulation._players[0].health && GameSimulation._players[1].health <= 0
                         || PlayerTwo.PlayerStats.maxHealth == GameSimulation._players[1].health && GameSimulation._players[0].health <= 0)
                     {
-                        roundOverCause = "PERFECT KO";
+                        roundOverCause = "PERFECT\nKO";
                     }
                     else
                     {
@@ -849,7 +865,7 @@ public class GameplayManager : MonoBehaviour
                                 if (PlayerTwo.Lives == 0)
                                 {
                                     _playerOneWins++;
-                                    _winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
+                                    _winsText.text = $"{_playerOneWins} - {_playerTwoWins}";
                                     MatchOver();
                                 }
                                 else
@@ -863,7 +879,7 @@ public class GameplayManager : MonoBehaviour
                                 if (PlayerOne.Lives == 0)
                                 {
                                     _playerTwoWins++;
-                                    _winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
+                                    _winsText.text = $"{_playerOneWins} - {_playerTwoWins}";
                                     MatchOver();
                                 }
                                 else
@@ -1066,12 +1082,13 @@ public class GameplayManager : MonoBehaviour
 
     public void StartMatch()
     {
+        MouseSetup.Instance.SetCursor(false);
         Time.timeScale = 1;
         GameplayManager.Instance.EnableAllInput();
         if (SceneSettings.RandomStage)
         {
             _currentStage.SetActive(false);
-            int randomStageIndex = Random.Range(0, _stages.Length);
+            int randomStageIndex = UnityEngine.Random.Range(0, _stages.Length);
             _currentStage = _stages[randomStageIndex];
             _currentStage.SetActive(true);
         }

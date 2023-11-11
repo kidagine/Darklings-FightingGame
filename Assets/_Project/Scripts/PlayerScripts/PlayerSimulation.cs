@@ -35,7 +35,7 @@ public class PlayerSimulation : MonoBehaviour
         _player.PlayerUI.SetArcana(playerGs.arcanaGauge);
         _player.PlayerUI.SetComboTimerLock(playerGs.otherPlayer.comboLocked);
         _player.Assist.Simulate(playerGs);
-        _inputBuffer.UpdateBuffer(playerGs.inputList);
+        _inputBuffer.UpdateBuffer(playerGs.inputList, playerGs.inputBuffer);
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         _playerAnimator.SetInvinsible(playerGs.invisible);
         _playerAnimator.SetSpriteOrder(playerGs.spriteOrder);
