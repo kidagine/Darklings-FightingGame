@@ -62,7 +62,7 @@ public class State
             player.attackInput = player.inputBuffer.CurrentTrigger().inputEnum;
             player.isCrouch = false;
             player.isAir = air;
-            if (player.direction.y < 0)
+            if ((player.direction.y < 0) || player.inputBuffer.RecentDownInput())
                 player.isCrouch = true;
             if (player.isAir)
                 player.isCrouch = false;

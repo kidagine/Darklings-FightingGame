@@ -48,6 +48,23 @@ public struct InputBufferNetwork
         }
     }
 
+    public bool RecentDownInput()
+    {
+        bool foundItem = false;
+        InputItemNetwork inputItem = default;
+        for (int i = sequences.Length; i-- > 0;)
+            if (sequences[i].inputEnum == InputEnum.Down)
+            {
+                foundItem = true;
+                inputItem = sequences[i];
+                break;
+            }
+        if (foundItem)
+            if (GameSimulation.FramesStatic - inputItem.frame <= 15)
+                return true;
+        return false;
+    }
+
     public InputItemNetwork CurrentSequence() => sequences[indexSequence];
     private InputItemNetwork PreviousSequence() => sequences[indexSequence - 1];
     public InputItemNetwork CurrentTrigger() => triggers[indexTrigger];

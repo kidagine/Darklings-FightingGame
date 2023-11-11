@@ -8,6 +8,7 @@ using UnityEngine;
 public struct GameSimulation : IGame
 {
     public int Frames { get; private set; }
+    public static int FramesStatic { get; private set; }
     public static int Timer { get; set; }
     public static int GlobalHitstop { get; set; }
     public static int Hitstop { get; set; }
@@ -25,6 +26,7 @@ public struct GameSimulation : IGame
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(Frames);
+        bw.Write(FramesStatic);
         bw.Write(GlobalHitstop);
         bw.Write(Timer);
         bw.Write(Hitstop);
@@ -39,6 +41,7 @@ public struct GameSimulation : IGame
     public void Deserialize(BinaryReader br)
     {
         Frames = br.ReadInt32();
+        FramesStatic = br.ReadInt32();
         GlobalHitstop = br.ReadInt32();
         Timer = br.ReadInt32();
         Hitstop = br.ReadInt32();
@@ -302,6 +305,7 @@ public struct GameSimulation : IGame
             if (Frames == 0)
                 GameSimulation.Start = true;
             Frames++;
+            FramesStatic = Frames;
             DemonicsWorld.Frame = Frames;
             if (Frames % GlobalHitstop == 0)
             {
