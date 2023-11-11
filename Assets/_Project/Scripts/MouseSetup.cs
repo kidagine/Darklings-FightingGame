@@ -16,6 +16,14 @@ public class MouseSetup : Singleton<MouseSetup>
         Cursor.visible = _mouseVisible;
     }
 
+    public void SetCursor(bool enable)
+    {
+        _cursorLockMode = enable ? CursorLockMode.None : CursorLockMode.Locked;
+        _mouseVisible = enable;
+        Cursor.lockState = _cursorLockMode;
+        Cursor.visible = _mouseVisible;
+    }
+
     private void Update()
     {
         if (_playerInput == null)

@@ -115,8 +115,7 @@ public class GameplayManager : MonoBehaviour
     private Keyboard keyboardTwo;
     void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        MouseSetup.Instance.SetCursor(false);
         keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
         HasGameStarted = false;
         GameSpeed = _gameSpeed;
@@ -511,6 +510,7 @@ public class GameplayManager : MonoBehaviour
         _winnerNameText.text = "";
         _readyText.text = "";
         _currentRound = 1;
+        MouseSetup.Instance.SetCursor(true);
         if (SceneSettings.ReplayMode)
         {
             GameplayManager.Instance.PausedController = _playerOneController;
@@ -1082,6 +1082,7 @@ public class GameplayManager : MonoBehaviour
 
     public void StartMatch()
     {
+        MouseSetup.Instance.SetCursor(false);
         Time.timeScale = 1;
         GameplayManager.Instance.EnableAllInput();
         if (SceneSettings.RandomStage)
