@@ -92,9 +92,7 @@ public class Player : MonoBehaviour, IHitstop
         AssistGauge = (DemonFloat)1;
         transform.SetParent(null);
         if (!GameplayManager.Instance.InfiniteArcana)
-        {
             ArcanaGauge = (DemonFloat)0;
-        }
         StopAllCoroutines();
         StopComboTimer();
         _playerMovement.StopAllCoroutines();

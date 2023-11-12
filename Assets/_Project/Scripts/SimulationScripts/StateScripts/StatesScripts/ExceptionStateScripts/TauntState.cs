@@ -8,13 +8,9 @@ public class TauntState : State
         if (!player.enter)
         {
             if (player.otherPlayer.health <= 0)
-            {
                 player.comboLocked = true;
-            }
             else
-            {
                 player.comboLocked = false;
-            }
             player.enter = true;
             player.animationFrames = 0;
             player.animation = "Taunt";

@@ -835,15 +835,9 @@ public class GameplayManager : MonoBehaviour
                     if (DemonicsWorld.WaitFramesOnce(ref _roundOverThirdFrame))
                     {
                         if (_playerOneWon)
-                        {
                             StartCoroutine(CameraCenterCoroutine(1));
-
-                        }
                         else if (_playerTwoWon)
-                        {
                             StartCoroutine(CameraCenterCoroutine(0));
-
-                        }
                         else
                         {
 
@@ -938,9 +932,7 @@ public class GameplayManager : MonoBehaviour
     public void SwitchCharacters()
     {
         if (IsTrainingMode && _canCallSwitchCharacter && Time.timeScale > 0)
-        {
             StartCoroutine(SwitchCharactersCoroutine());
-        }
     }
 
     IEnumerator SwitchCharactersCoroutine()

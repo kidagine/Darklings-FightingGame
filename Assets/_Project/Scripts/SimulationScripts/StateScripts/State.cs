@@ -164,7 +164,6 @@ public class State
         player.healthRecoverable = 10000;
         player.health = 10000;
         player.shadowGauge = GameSimulation.maxShadowGauge;
-        player.arcanaGauge = 0;
         player.player.PlayerUI.CheckDemonLimit(player.health);
         player.enter = false;
         CheckTrainingGauges(player);
