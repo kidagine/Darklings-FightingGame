@@ -1,3 +1,6 @@
+
+using UnityEngine;
+
 public class GrabState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
@@ -15,11 +18,11 @@ public class GrabState : State
             UpdateFramedata(player);
             return;
         }
+
         UpdateFramedata(player);
         player.animationFrames++;
         player.attackFrames--;
         player.velocity = DemonVector2.Zero;
-
         ToIdleState(player);
         ToHurtState(player);
     }

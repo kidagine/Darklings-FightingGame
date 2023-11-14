@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
+  m_Name: 5AR
+  m_EditorClassIdentifier: 
+  damage: 650
+  attackTypeEnum: 2
+  hitStun: 32
+  blockStun: 25
+  travelDistance: {x: 0, y: 0}
+  knockbackForce: {x: 58, y: 0}
+  knockbackDuration: 35
+  knockbackArc: 52
+  superArmor: 0
+  isAirAttack: 0
+  isProjectile: 1
+  isArcana: 1
+  jumpCancelable: 0
+  causesKnockdown: 1
+  causesSoftKnockdown: 0
+  attackSound: Slam
+  impactSound: Impact5
+  hitstop: 15
+  hitEffect: {fileID: 186600171355987556, guid: 547867d1b46bb89428c594bb21fd73a8, type: 3}
+  hitEffectPosition: {x: 64, y: -2}
+  hitEffectRotation: 0
+  hurtEffect: HurtArcana
+  hurtEffectPosition: {x: 2.5292969, y: -3.9848633}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}
+  moveName: Dark Quake
+  moveDescription: Slamming on the ground causing a quake that can hit the opponent
+    and cause knockdown.
+  moveVideo: {fileID: 32900000, guid: dcc076ebbe253394f905a0e8bd1390d1, type: 3}
+  airOk: 0
+  reversal: 0
+  projectileSpeed: 0
+  projectilePriority: -1
+  projectileDestroyOnHit: 0

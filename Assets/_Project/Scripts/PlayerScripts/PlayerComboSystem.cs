@@ -53,12 +53,21 @@ public class PlayerComboSystem : MonoBehaviour
 
     public static AttackSO GetRedFrenzy(PlayerStatsSO playerStats) => playerStats.mRedFrenzy;
 
-    public static ArcanaSO GetArcana(PlayerStatsSO playerStats, bool isCrouching = false, bool isAir = false)
+    public static ArcanaSO GetArcana(PlayerStatsSO playerStats, bool isCrouching = false, bool isAir = false, bool frenzied = false)
     {
         if (isAir)
-            return playerStats.jArcana;
+            if (frenzied)
+                return playerStats.jArcanaFrenzy;
+            else
+                return playerStats.jArcana;
         if (isCrouching)
-            return playerStats.m2Arcana;
-        return playerStats.m5Arcana;
+            if (frenzied)
+                return playerStats.m2ArcanaFrenzy;
+            else
+                return playerStats.m2Arcana;
+        if (frenzied)
+            return playerStats.m5ArcanaFrenzy;
+        else
+            return playerStats.m5Arcana;
     }
 }

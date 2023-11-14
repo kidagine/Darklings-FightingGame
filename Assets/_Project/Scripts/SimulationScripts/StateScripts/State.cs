@@ -74,18 +74,20 @@ public class State
             }
         }
     }
-    protected void Arcana(PlayerNetwork player, bool air = false)
+    protected void Arcana(PlayerNetwork player, bool air = false, bool skipCheck = false)
     {
-        if (player.arcanaGauge >= 1000 && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Special)
+        if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Special || skipCheck)
         {
             player.attackInput = player.inputBuffer.CurrentTrigger().inputEnum;
             player.isAir = air;
             player.isCrouch = false;
-            if (player.direction.y < 0)
-            {
+            if ((player.direction.y < 0) || player.inputBuffer.RecentDownInput())
                 player.isCrouch = true;
-            }
-            ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir);
+            //bool frenzied = player.inputBuffer.RecentTrigger(InputEnum.Throw);
+            bool frenzied = true;
+            if (player.arcanaGauge < PlayerStatsSO.ARCANA_MULTIPLIER)
+                frenzied = false;
+            ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir, frenzied);
             if (attack != null)
             {
                 player.attackNetwork = SetArcana(player.attackInput, attack);

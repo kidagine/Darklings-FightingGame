@@ -13,9 +13,9 @@ public class GroundParentState : State
             return;
         if (RedFrenzy(player))
             return;
+        ToArcanaState(player);
         ToGrabState(player);
         Shadow(player);
-        ToArcanaState(player);
         if (ToAttackState(player))
             return;
         ToHurtState(player);

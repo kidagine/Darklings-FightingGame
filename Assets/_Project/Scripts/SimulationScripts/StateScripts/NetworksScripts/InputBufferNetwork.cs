@@ -48,7 +48,7 @@ public struct InputBufferNetwork
         }
     }
 
-    public bool RecentDownInput()
+    public readonly bool RecentDownInput()
     {
         bool foundItem = false;
         InputItemNetwork inputItem = default;
@@ -57,6 +57,23 @@ public struct InputBufferNetwork
             {
                 foundItem = true;
                 inputItem = sequences[i];
+                break;
+            }
+        if (foundItem)
+            if (GameSimulation.FramesStatic - inputItem.frame <= 15)
+                return true;
+        return false;
+    }
+
+    public readonly bool RecentTrigger(InputEnum inputEnum)
+    {
+        bool foundItem = false;
+        InputItemNetwork inputItem = default;
+        for (int i = triggers.Length; i-- > 0;)
+            if (triggers[i].inputEnum == inputEnum)
+            {
+                foundItem = true;
+                inputItem = triggers[i];
                 break;
             }
         if (foundItem)

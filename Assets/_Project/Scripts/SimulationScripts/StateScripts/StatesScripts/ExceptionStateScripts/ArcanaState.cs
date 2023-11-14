@@ -11,7 +11,8 @@ public class ArcanaState : State
                 return;
             SetTopPriority(player);
             player.dashFrames = 0;
-            player.arcanaGauge -= PlayerStatsSO.ARCANA_MULTIPLIER;
+            if (player.attackNetwork.name.Contains("R"))
+                player.arcanaGauge -= PlayerStatsSO.ARCANA_MULTIPLIER;
             player.enter = true;
             player.canChainAttack = false;
             player.animation = player.attackNetwork.name;
@@ -46,9 +47,10 @@ public class ArcanaState : State
             player.player.PlayerAnimator.NormalMaterial();
         UpdateFramedata(player);
         ToIdleState(player);
-
         Projectile(player);
         ToHurtState(player);
+        if (!player.hitstop)
+            AttackCancel(player);
     }
     private void Projectile(PlayerNetwork player)
     {
@@ -85,6 +87,22 @@ public class ArcanaState : State
             EnterState(player, "Idle");
         }
     }
+
+    private void AttackCancel(PlayerNetwork player)
+    {
+        if (player.canChainAttack)
+        {
+            // InputItemNetwork input = player.inputBuffer.CurrentTrigger();
+            // if (input.frame != 0)
+            // {
+            //     if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+            //         player.isAir = true;
+            //     if (input.inputEnum == InputEnum.Special)
+            //         Arcana(player, player.isAir);
+            // }
+        }
+    }
+
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.attackFrames <= 0)

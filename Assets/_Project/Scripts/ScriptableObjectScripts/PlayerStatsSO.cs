@@ -37,6 +37,9 @@ public class PlayerStatsSO : ScriptableObject
     public ArcanaSO m5Arcana;
     public ArcanaSO m2Arcana;
     public ArcanaSO jArcana;
+    public ArcanaSO m5ArcanaFrenzy;
+    public ArcanaSO m2ArcanaFrenzy;
+    public ArcanaSO jArcanaFrenzy;
     [HideInInspector] public int maxHealth = 10000;
 
     public int Arcana { get { return arcanaLevel * ARCANA_MULTIPLIER; } set { } }

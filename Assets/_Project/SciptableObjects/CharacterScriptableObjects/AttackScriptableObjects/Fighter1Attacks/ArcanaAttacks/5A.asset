@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
   m_Name: 5A
   m_EditorClassIdentifier: 
-  damage: 650
-  attackTypeEnum: 2
+  damage: 500
+  attackTypeEnum: 1
   hitStun: 32
   blockStun: 25
   travelDistance: {x: 0, y: 0}
-  knockbackForce: {x: 58, y: 0}
-  knockbackDuration: 35
-  knockbackArc: 52
+  knockbackForce: {x: 15, y: 0}
+  knockbackDuration: 13
+  knockbackArc: 15
   superArmor: 0
   isAirAttack: 0
-  isProjectile: 1
+  isProjectile: 0
   isArcana: 1
   jumpCancelable: 0
-  causesKnockdown: 1
+  causesKnockdown: 0
   causesSoftKnockdown: 0
   attackSound: Slam
   impactSound: Impact5
@@ -33,7 +33,7 @@ MonoBehaviour:
   hitEffect: {fileID: 186600171355987556, guid: 547867d1b46bb89428c594bb21fd73a8, type: 3}
   hitEffectPosition: {x: 64, y: -2}
   hitEffectRotation: 0
-  hurtEffect: HurtArcana
+  hurtEffect: HurtHeavy
   hurtEffectPosition: {x: 2.5292969, y: -3.9848633}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}
