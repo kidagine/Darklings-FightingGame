@@ -6,7 +6,7 @@ public class GrabbedState : State
     {
         if (!player.enter)
         {
-            CameraShake.Instance.Zoom(40, 0.05f);
+            CameraShake.Instance.Zoom(30, 0.05f);
             if (player.otherPlayer.state == "Arcana")
                 EnterState(player.otherPlayer, "ArcanaEnd");
             else

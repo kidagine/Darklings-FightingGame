@@ -420,6 +420,9 @@ MonoBehaviour:
   _invincible: {fileID: 2100000, guid: ed67456006c23fe47ae0b480988bc1cc, type: 2}
   _armor: {fileID: 2100000, guid: 1fe5d52a48071fe4aa7c7a7d1189648c, type: 2}
   _parry: {fileID: 2100000, guid: 73d333b1b585b8149b6b4c387dbf6661, type: 2}
+  _ar: {fileID: 2100000, guid: dd87ae3660cce184e96bec7fb7b056c2, type: 2}
+  _arArmor: {fileID: 2100000, guid: 968238646f68ef541ae708c53b259863, type: 2}
+  _arInvincible: {fileID: 2100000, guid: cdf294b2866f17f418ef70f5c752a968, type: 2}
 --- !u!212 &8073473789928578676
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1437,10 +1440,6 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ff047904-44a4-4826-ac15-f677187cb418
     m_ActionName: UI/Options[/Keyboard/p,/XInputControllerWindows/select]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: affa4d6e-17ef-42aa-8854-5f9ae9921146
-    m_ActionName: UI/Hotbar[/Keyboard/space,/XInputControllerWindows/select]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay

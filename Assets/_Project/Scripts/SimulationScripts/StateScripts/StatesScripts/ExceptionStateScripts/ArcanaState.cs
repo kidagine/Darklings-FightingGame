@@ -41,10 +41,25 @@ public class ArcanaState : State
             player.attackFrames--;
         }
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
-        if (player.invincible)
-            player.player.PlayerAnimator.InvinciblelMaterial();
+        player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
+        if (player.attackNetwork.name.Contains("R"))
+        {
+            if (player.invincible)
+                player.player.PlayerAnimator.ARInvincibleMaterial();
+            else if (player.attackNetwork.superArmor > 0)
+                player.player.PlayerAnimator.ARArmorMaterial();
+            else
+                player.player.PlayerAnimator.ARMaterial();
+        }
         else
-            player.player.PlayerAnimator.NormalMaterial();
+        {
+            if (player.invincible)
+                player.player.PlayerAnimator.InvincibleMaterial();
+            else if (player.attackNetwork.superArmor > 0)
+                player.player.PlayerAnimator.ArmorMaterial();
+            else
+                player.player.PlayerAnimator.NormalMaterial();
+        }
         UpdateFramedata(player);
         ToIdleState(player);
         Projectile(player);
