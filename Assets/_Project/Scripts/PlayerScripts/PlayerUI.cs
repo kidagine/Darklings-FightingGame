@@ -209,6 +209,8 @@ public class PlayerUI : MonoBehaviour
         }
         else if (!_maxArcanaText.gameObject.activeSelf)
         {
+            _arcanaBackground.color = _arcanaMeter2Color;
+            _arcanaFill.color = _arcanaMeter3Color;
             _audio.Sound("MaxArcana").Play();
             _maxArcanaText.gameObject.SetActive(true);
         }
@@ -228,7 +230,7 @@ public class PlayerUI : MonoBehaviour
                 _arcanaBackground.color = _arcanaMeter1Color;
                 _arcanaFill.color = _arcanaMeter2Color;
             }
-            if (arcana == 2)
+            else if (arcana == 2)
             {
                 _arcanaBackground.color = _arcanaMeter2Color;
                 _arcanaFill.color = _arcanaMeter3Color;
