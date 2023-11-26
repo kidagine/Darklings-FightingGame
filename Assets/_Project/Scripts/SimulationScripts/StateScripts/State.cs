@@ -162,6 +162,14 @@ public class State
     }
     public void ResetPlayer(PlayerNetwork player)
     {
+        player.inputBuffer.AddTrigger(new InputItemNetwork()
+        {
+            inputEnum = InputEnum.Neutral,
+            frame = GameSimulation.FramesStatic,
+            time = GameSimulation.FramesStatic,
+            sequence = true,
+            pressed = true
+        });
         player.dashDirection = 0;
         player.healthRecoverable = 10000;
         player.health = 10000;
