@@ -14,7 +14,7 @@ public class ShadowbreakState : State
                 impactSound = "",
                 attackSound = "",
                 hurtEffect = "",
-                hitstop = 20,
+                hitstop = 5,
                 blockStun = 15,
                 cameraShakerNetwork = new CameraShakerNetwork() { intensity = 35, timer = 0.15f }
             };
@@ -26,7 +26,10 @@ public class ShadowbreakState : State
             player.canChainAttack = false;
             player.usedShadowbreak = true;
             player.position = new DemonVector2(player.position.x, player.position.y + 15);
-            GameplayManager.Instance.SetCameraTargets(1f, 0.0f);
+            if (player.player.IsPlayerOne)
+                GameplayManager.Instance.SetCameraTargets(0.8f, 0.2f);
+            else
+                GameplayManager.Instance.SetCameraTargets(0.2f, 0.8f);
             player.InitializeProjectile("Shadowbreak", player.attackNetwork, (DemonFloat)0, 0, false);
             player.SetProjectile("Shadowbreak", new DemonVector2(player.position.x, player.position.y + player.pushbox.size.y), false);
             CameraShake.Instance.Shake(player.attackNetwork.cameraShakerNetwork);
