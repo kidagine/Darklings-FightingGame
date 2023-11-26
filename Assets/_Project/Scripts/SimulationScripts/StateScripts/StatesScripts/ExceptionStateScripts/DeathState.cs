@@ -41,7 +41,7 @@ public class DeathState : State
         }
         else
         {
-            if (player.animationFrames >= 375)
+            if (player.animationFrames >= 370)
             {
                 GameSimulation.Timer = GameSimulation._timerMax;
                 player.invincible = false;

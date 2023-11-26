@@ -572,7 +572,8 @@ public class GameplayManager : MonoBehaviour
     public virtual void StartRound()
     {
         _networkCanvas.SetActive(!NetworkInput.IS_LOCAL);
-        _fadeHandler.StartFadeTransition(false);
+        if (!IsDialogueRunning)
+            _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
             ReplayManager.Instance.ShowReplayPrompts();
         _timerMainAnimator.Rebind();
@@ -779,7 +780,7 @@ public class GameplayManager : MonoBehaviour
                 _roundOver = true;
                 _roundOverSecondFrame = 120;
                 _roundOverThirdFrame = 120;
-                _roundOverFourthFrame = 120;
+                _roundOverFourthFrame = 130;
                 _roundOverSecond = false;
                 _roundOverThird = false;
                 _startRoundOver = false;
@@ -795,7 +796,7 @@ public class GameplayManager : MonoBehaviour
 
     private int _roundOverSecondFrame = 60;
     private int _roundOverThirdFrame = 120;
-    private int _roundOverFourthFrame = 120;
+    private int _roundOverFourthFrame = 130;
     private bool _roundOver;
     private bool _roundOverSecond;
     private bool _roundOverThird;
