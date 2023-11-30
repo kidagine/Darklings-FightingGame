@@ -12,13 +12,18 @@ public class ArcanaState : State
             SetTopPriority(player);
             player.dashFrames = 0;
             if (player.attackNetwork.name.Contains("R"))
+            {
                 player.arcanaGauge -= PlayerStatsSO.ARCANA_MULTIPLIER;
+                DemonVector2 effectPosition = new(player.position.x, player.position.y + 20);
+                player.SetParticle("Arcana", effectPosition);
+            }
             player.enter = true;
             player.canChainAttack = false;
             player.animation = player.attackNetwork.name;
             player.sound = player.attackNetwork.attackSound;
             player.animationFrames = 0;
             player.hitbox.enter = false;
+
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.velocity = new DemonVector2(player.attackNetwork.travelDistance.x * (DemonFloat)player.flip, (DemonFloat)player.attackNetwork.travelDistance.y);
             player.InitializeProjectile(player.attackNetwork.moveName, player.attackNetwork, player.attackNetwork.projectileSpeed, player.attackNetwork.projectilePriority, player.attackNetwork.projectileDestroyOnHit);
@@ -42,24 +47,12 @@ public class ArcanaState : State
         }
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
-        if (player.attackNetwork.name.Contains("R"))
-        {
-            if (player.invincible)
-                player.player.PlayerAnimator.ARInvincibleMaterial();
-            else if (player.attackNetwork.superArmor > 0)
-                player.player.PlayerAnimator.ARArmorMaterial();
-            else
-                player.player.PlayerAnimator.ARMaterial();
-        }
+        if (player.invincible)
+            player.player.PlayerAnimator.InvincibleMaterial();
+        else if (player.attackNetwork.superArmor > 0)
+            player.player.PlayerAnimator.ArmorMaterial();
         else
-        {
-            if (player.invincible)
-                player.player.PlayerAnimator.InvincibleMaterial();
-            else if (player.attackNetwork.superArmor > 0)
-                player.player.PlayerAnimator.ArmorMaterial();
-            else
-                player.player.PlayerAnimator.NormalMaterial();
-        }
+            player.player.PlayerAnimator.NormalMaterial();
         UpdateFramedata(player);
         ToIdleState(player);
         Projectile(player);
