@@ -119,21 +119,24 @@ public class AttackState : State
         if (player.canChainAttack)
         {
             InputItemNetwork input = player.inputBuffer.CurrentTrigger();
-            if (input.frame != 0)
+            if (input.frame == 0)
+                return;
+            // if ((int)input.inputEnum < (int)player.attackInput)
+            //     return;
+            if (input.inputEnum == InputEnum.Throw)
+                return;
+            if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                player.isAir = true;
+
+            if (input.inputEnum == InputEnum.Special)
+                Arcana(player, player.isAir);
+            else
             {
-                if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
-                    player.isAir = true;
-                if (input.inputEnum == InputEnum.Special)
-                    Arcana(player, player.isAir);
-                else
-                {
-                    if (input.inputEnum == InputEnum.Heavy && player.attackInput != InputEnum.Light)
-                        return;
-                    if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
-                        if (input.inputEnum != InputEnum.Throw)
-                            if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && input.inputEnum == InputEnum.Heavy && player.direction.y >= 0))
-                                Attack(player, player.isAir);
-                }
+                if (input.inputEnum == InputEnum.Heavy && player.attackInput != InputEnum.Light)
+                    return;
+                if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
+                    if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && input.inputEnum == InputEnum.Heavy && player.direction.y >= 0))
+                        Attack(player, player.isAir);
             }
         }
     }
