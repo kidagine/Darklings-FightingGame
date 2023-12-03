@@ -121,12 +121,22 @@ public class AttackState : State
             InputItemNetwork input = player.inputBuffer.CurrentTrigger();
             if (input.frame == 0)
                 return;
-            if ((int)input.inputEnum < (int)player.attackInput && (player.attackInput != InputEnum.Heavy))
-                return;
+
             if (input.inputEnum == InputEnum.Throw)
                 return;
             if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
                 player.isAir = true;
+            if (!player.isAir)
+            {
+                bool crouching = player.attackNetwork.name.Contains("2");
+                if (player.attackInput != InputEnum.Heavy && !crouching)
+                {
+                    if ((int)input.inputEnum == (int)player.attackInput && input.crouch == crouching)
+                        return;
+                    if ((int)input.inputEnum < (int)player.attackInput)
+                        return;
+                }
+            }
 
             if (input.inputEnum == InputEnum.Special)
                 Arcana(player, player.isAir);
@@ -137,7 +147,9 @@ public class AttackState : State
                 if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
                     if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && input.inputEnum == InputEnum.Heavy && player.direction.y >= 0))
                         Attack(player, player.isAir);
+
             }
+
         }
     }
 
