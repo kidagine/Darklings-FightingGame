@@ -28,7 +28,7 @@ public class HomeMenu : BaseMenu
         _onlineInfoAnimator.Play("ButtonDisable");
 #endif
 #if !UNITY_WEBGL
-        _onlineInfoText.text = "Alpha";
+        _onlineInfoText.text = "Early Version";
 #endif
     }
 

@@ -110,12 +110,11 @@ public class FrameMeter : MonoBehaviour
 
     public void SetRecovery(int value)
     {
-        _recoveryText.text = $"Recovery {value}F";
         if (value > 0)
-            _recoveryText.color = Color.green;
+            _recoveryText.text = $"Recovery <color=green>{value}F</color>";
         else if (value < 0)
-            _recoveryText.color = Color.red;
+            _recoveryText.text = $"Recovery <color=red>{value}F</color>";
         else
-            _recoveryText.color = Color.white;
+            _recoveryText.text = $"Recovery <color=white>{value}F</color>";
     }
 }

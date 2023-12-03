@@ -121,8 +121,8 @@ public class AttackState : State
             InputItemNetwork input = player.inputBuffer.CurrentTrigger();
             if (input.frame == 0)
                 return;
-            // if ((int)input.inputEnum < (int)player.attackInput)
-            //     return;
+            if ((int)input.inputEnum < (int)player.attackInput && (player.attackInput != InputEnum.Heavy))
+                return;
             if (input.inputEnum == InputEnum.Throw)
                 return;
             if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
