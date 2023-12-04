@@ -1,3 +1,4 @@
+using SharedGame;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -58,6 +59,8 @@ public class OptionsMenu : BaseMenu
     protected override void OnEnable()
     {
         base.OnEnable();
+        if (GameManager.Instance == null)
+            return;
         if (GameplayManager.Instance.IsTrainingMode)
             CurrentPauseMenu = _pauseTrainingMenu;
         else

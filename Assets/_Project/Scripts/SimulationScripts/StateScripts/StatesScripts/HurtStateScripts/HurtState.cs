@@ -26,6 +26,8 @@ public class HurtState : HurtParentState
     {
         if (player.stunFrames <= 0 || player.comboTimer <= 0)
         {
+            if (SceneSettings.IsTrainingMode && player.isAi)
+                TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
             ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             player.velocity = DemonVector2.Zero;

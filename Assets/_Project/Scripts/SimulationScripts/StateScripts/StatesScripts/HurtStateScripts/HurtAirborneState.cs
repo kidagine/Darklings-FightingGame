@@ -67,6 +67,8 @@ public class HurtAirborneState : HurtParentState
     {
         if ((DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0 && player.knockback > 1)
         {
+            if (SceneSettings.IsTrainingMode && player.isAi)
+                TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
             player.pushbox.active = true;
             player.comboLocked = false;
             ResetCombo(player);

@@ -48,6 +48,8 @@ public class HurtAirState : HurtParentState
             }
             if (player.stunFrames <= 0 || player.comboTimer <= 0)
             {
+                if (SceneSettings.IsTrainingMode && player.isAi)
+                    TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
                 ResetCombo(player);
                 player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
                 EnterState(player, "Idle");
@@ -70,6 +72,8 @@ public class HurtAirState : HurtParentState
         }
         if (player.stunFrames <= 0 || player.comboTimer <= 0)
         {
+            if (SceneSettings.IsTrainingMode && player.isAi)
+                TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
             ResetCombo(player);
             player.player.PlayerUI.UpdateHealthDamaged(player.healthRecoverable);
             if (AIHurt(player))

@@ -14,6 +14,8 @@ public class BlockLowState : BlockParentState
     {
         if (player.stunFrames <= 0)
         {
+            if (SceneSettings.IsTrainingMode && player.isAi)
+                TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
             player.player.StopShakeCoroutine();
             CheckTrainingComboEnd(player);
             if (player.direction.y < 0)

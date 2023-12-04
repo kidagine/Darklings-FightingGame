@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static TrainingSettings;
 
 [Serializable]
 public class State
@@ -329,7 +330,16 @@ public class State
     public bool AIBlocking(PlayerNetwork player, AttackTypeEnum attackType)
     {
         if (SceneSettings.IsTrainingMode && player.isAi)
-            if (TrainingSettings.BlockAlways)
+        {
+            bool canBlock = false;
+            if (TrainingSettings.Block == BlockType.BlockAlways)
+                canBlock = true;
+            if (TrainingSettings.Block == BlockType.BlockCount && TrainingSettings.BlockCountCurrent > 0)
+            {
+                TrainingSettings.BlockCountCurrent--;
+                canBlock = true;
+            }
+            if (canBlock)
             {
                 if (attackType == AttackTypeEnum.Low)
                     player.direction.y = -1;
@@ -337,6 +347,8 @@ public class State
                     player.direction.y = 0;
                 return true;
             }
+        }
+        TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
         return false;
     }
     protected void ResetCombo(PlayerNetwork player)

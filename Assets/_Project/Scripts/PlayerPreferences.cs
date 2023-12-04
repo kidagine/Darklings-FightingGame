@@ -62,6 +62,8 @@ public class PlayerPreferences : MonoBehaviour
     [SerializeField] private int _cpuSelectorInitial = default;
     [SerializeField] private BaseSelector _blockSelector = default;
     [SerializeField] private int _blockSelectorInitial = default;
+    [SerializeField] private BaseSelector _blockCountSelector = default;
+    [SerializeField] private int _blockCountSelectorInitial = default;
     [SerializeField] private BaseSelector _onHitSelector = default;
     [SerializeField] private int _onHitSelectorInitial = default;
     [SerializeField] private BaseSelector _stanceSelector = default;
@@ -144,6 +146,7 @@ int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.To
         //Cpu
         _cpuSelector.SetValue(int.Parse(DemonicsSaver.Load("cpu", _cpuSelectorInitial.ToString())));
         _blockSelector.SetValue(int.Parse(DemonicsSaver.Load("block", _blockSelectorInitial.ToString())));
+        _blockCountSelector.SetValue(int.Parse(DemonicsSaver.Load("blockCount", _blockCountSelectorInitial.ToString())));
         _onHitSelector.SetValue(int.Parse(DemonicsSaver.Load("onhit", _onHitSelectorInitial.ToString())));
         //_stanceSelector.SetValue(int.Parse(DemonicsSaver.Load("stance", _stanceSelectorInitial.ToString())));
 

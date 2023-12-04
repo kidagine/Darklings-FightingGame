@@ -16,7 +16,6 @@ public class AirParentState : State
 
     private void ToJumpState(PlayerNetwork player)
     {
-        Debug.Log(player.canChainAttack);
         if (player.canDoubleJump && player.canChainAttack)
         {
             if (player.direction.y > 0 && !player.hasJumped)

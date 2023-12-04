@@ -25,7 +25,11 @@ public class BlockAirState : BlockParentState
             player.player.StopShakeCoroutine();
             CheckTrainingComboEnd(player);
             if (player.stunFrames <= 0)
+            {
+                if (SceneSettings.IsTrainingMode && player.isAi)
+                    TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
                 EnterState(player, "Idle");
+            }
             else
             {
                 player.stunFrames = player.attackHurtNetwork.blockStun + _extraLandBlockStun;
@@ -38,7 +42,11 @@ public class BlockAirState : BlockParentState
     private void ToFallState(PlayerNetwork player)
     {
         if (player.stunFrames <= 0)
+        {
+            if (SceneSettings.IsTrainingMode && player.isAi)
+                TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
             EnterState(player, "Fall");
+        }
     }
     protected override void OnEnter(PlayerNetwork player)
     {
