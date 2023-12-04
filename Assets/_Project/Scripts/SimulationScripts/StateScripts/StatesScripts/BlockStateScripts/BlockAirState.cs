@@ -26,8 +26,6 @@ public class BlockAirState : BlockParentState
             CheckTrainingComboEnd(player);
             if (player.stunFrames <= 0)
             {
-                if (SceneSettings.IsTrainingMode && player.isAi)
-                    TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
                 EnterState(player, "Idle");
             }
             else
@@ -43,8 +41,6 @@ public class BlockAirState : BlockParentState
     {
         if (player.stunFrames <= 0)
         {
-            if (SceneSettings.IsTrainingMode && player.isAi)
-                TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
             EnterState(player, "Fall");
         }
     }

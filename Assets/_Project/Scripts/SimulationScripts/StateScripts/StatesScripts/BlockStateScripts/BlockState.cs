@@ -14,8 +14,6 @@ public class BlockState : BlockParentState
     {
         if (player.stunFrames <= 0)
         {
-            if (SceneSettings.IsTrainingMode && player.isAi)
-                TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
             BlockParentState.skipKnockback = false;
             player.player.StopShakeCoroutine();
             CheckTrainingComboEnd(player);
