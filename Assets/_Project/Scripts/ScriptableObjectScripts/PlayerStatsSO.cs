@@ -92,9 +92,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return jumpLevel switch
             {
-                1 => (DemonFloat)4.3,
-                2 => (DemonFloat)4.3,
-                3 => (DemonFloat)4.3,
+                1 => (DemonFloat)4.6,
+                2 => (DemonFloat)4.6,
+                3 => (DemonFloat)4.6,
                 _ => (DemonFloat)0,
             };
         }

@@ -13,7 +13,7 @@ public class AttackState : State
                 player.juggleBounce = false;
             }
             player.attackNetwork.guardBreak = false;
-            if (player.attackNetwork.attackType == AttackTypeEnum.Break)
+            if (player.attackNetwork.attackType == AttackTypeEnum.Break && !player.isAir)
             {
                 if (player.healthRecoverable == player.health)
                 {
@@ -78,8 +78,8 @@ public class AttackState : State
             }
         }
         UpdateFramedata(player);
-        ToJumpState(player);
         ToJumpForwardState(player);
+        ToJumpState(player);
         ToIdleState(player);
         ToIdleFallState(player);
         ToHurtState(player);
@@ -164,6 +164,7 @@ public class AttackState : State
                 player.juggleBounce = true;
                 player.isCrouch = false;
                 player.isAir = false;
+                player.canChainAttack = false;
                 GameSimulation.Hitstop = 0;
                 EnterState(player, "Jump");
             }
@@ -181,6 +182,7 @@ public class AttackState : State
                 player.juggleBounce = true;
                 player.isCrouch = false;
                 player.isAir = false;
+                player.canChainAttack = false;
                 GameSimulation.Hitstop = 0;
                 EnterState(player, "JumpForward");
             }
@@ -191,6 +193,7 @@ public class AttackState : State
         if (!player.hitstop)
             if (player.isAir && (DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0)
             {
+                player.canChainAttack = false;
                 player.SetParticle("Fall", player.position);
                 player.sound = "Landed";
                 player.inPushback = false;
@@ -205,6 +208,7 @@ public class AttackState : State
         {
             if (player.isAir || (DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
             {
+                player.canChainAttack = false;
                 player.isCrouch = false;
                 player.isAir = false;
                 EnterState(player, "Fall");
@@ -213,12 +217,14 @@ public class AttackState : State
             {
                 if (player.direction.y < 0)
                 {
+                    player.canChainAttack = false;
                     player.isCrouch = false;
                     player.isAir = false;
                     EnterState(player, "Crouch");
                 }
                 else
                 {
+                    player.canChainAttack = false;
                     player.isCrouch = false;
                     player.isAir = false;
                     EnterState(player, "Idle");
@@ -231,6 +237,7 @@ public class AttackState : State
     {
         if (IsColliding(player))
         {
+            player.canChainAttack = false;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 EnterState(player, "Grabbed");

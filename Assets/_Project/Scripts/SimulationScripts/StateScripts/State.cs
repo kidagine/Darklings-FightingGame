@@ -90,6 +90,7 @@ public class State
             ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir, frenzied);
             if (attack != null)
             {
+                player.canChainAttack = false;
                 player.attackNetwork = SetArcana(player.attackInput, attack);
                 EnterState(player, "Arcana");
             }

@@ -39,6 +39,7 @@ public class ArcanaState : State
         {
             if (player.attackNetwork.travelDistance.y > 0)
             {
+                player.canChainAttack = false;
                 player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
                 ToIdleFallState(player);
             }
@@ -57,8 +58,8 @@ public class ArcanaState : State
         ToIdleState(player);
         Projectile(player);
         ToHurtState(player);
-        if (!player.hitstop)
-            AttackCancel(player);
+        // if (!player.hitstop)
+        //     AttackCancel(player);
     }
     private void Projectile(PlayerNetwork player)
     {
@@ -85,6 +86,7 @@ public class ArcanaState : State
     {
         if (player.isAir && player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0)
         {
+            player.canChainAttack = false;
             player.SetParticle("Fall", player.position);
             player.sound = "Landed";
             CheckTrainingGauges(player);
@@ -115,6 +117,7 @@ public class ArcanaState : State
     {
         if (player.attackFrames <= 0)
         {
+            player.canChainAttack = false;
             CheckTrainingGauges(player);
             player.dashFrames = 0;
             if (player.isAir || player.position.y > DemonicsPhysics.GROUND_POINT)
@@ -142,6 +145,7 @@ public class ArcanaState : State
     {
         if (IsColliding(player))
         {
+            player.canChainAttack = false;
             if (player.attackNetwork.superArmor > 0 && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
             {
                 SuperArmorHurt(player);
