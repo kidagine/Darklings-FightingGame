@@ -38,7 +38,7 @@ public class OptionsMenu : BaseMenu
 
     public void SetDisplay(int value)
     {
-        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, (FullScreenMode)value);
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, (FullScreenMode)value + 1);
     }
 
     private void OnDisable()
