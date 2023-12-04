@@ -448,7 +448,7 @@ public class PlayerUI : MonoBehaviour
 
     public void OpenPause(bool isPlayerOne)
     {
-        MouseSetup.Instance.SetCursor(true);
+        MouseSetup.Instance.SetLock(false);
         _pauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
         GameplayManager.Instance.PausedController = _controller;
@@ -460,7 +460,7 @@ public class PlayerUI : MonoBehaviour
 
     public void OpenTrainingPause(bool isPlayerOne)
     {
-        MouseSetup.Instance.SetCursor(true);
+        MouseSetup.Instance.SetLock(false);
         _trainingPauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
         GameplayManager.Instance.PausedController = _controller;
@@ -472,7 +472,7 @@ public class PlayerUI : MonoBehaviour
 
     public void ClosePause()
     {
-        MouseSetup.Instance.SetCursor(false);
+        MouseSetup.Instance.SetLock(true);
         Time.timeScale = GameplayManager.Instance.GameSpeed;
         GameplayManager.Instance.EnableAllInput();
         GameplayManager.Instance.PlayMusic();

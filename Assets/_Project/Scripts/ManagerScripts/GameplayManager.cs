@@ -115,7 +115,7 @@ public class GameplayManager : MonoBehaviour
     private Keyboard keyboardTwo;
     void Awake()
     {
-        MouseSetup.Instance.SetCursor(false);
+        MouseSetup.Instance.SetLock(true);
         keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
         HasGameStarted = false;
         GameSpeed = _gameSpeed;

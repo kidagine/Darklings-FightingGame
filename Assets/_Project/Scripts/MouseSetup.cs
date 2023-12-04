@@ -9,6 +9,7 @@ public class MouseSetup : Singleton<MouseSetup>
     [SerializeField] private PlayerInput _playerInput = default;
     [SerializeField] private Texture2D _hoverTexture = default;
     public Texture2D HoverCursor { get { return _hoverTexture; } private set { } }
+    public bool LockCamera { get; private set; }
 
     void OnApplicationFocus(bool hasFocus)
     {
@@ -24,16 +25,26 @@ public class MouseSetup : Singleton<MouseSetup>
         Cursor.visible = _mouseVisible;
     }
 
+    public void SetLock(bool state)
+    {
+        _cursorLockMode = !state ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.lockState = _cursorLockMode;
+        Cursor.visible = !state;
+        LockCamera = state;
+    }
+
     private void Update()
     {
-        if (_playerInput == null)
+        if (LockCamera)
             return;
-
         if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
             _mouseVisible = true;
-        if (_playerInput.currentControlScheme != null)
-            if (!_playerInput.currentControlScheme.Contains("Keyboard"))
-                _mouseVisible = false;
+        if (_playerInput != null)
+        {
+            if (_playerInput.currentControlScheme != null)
+                if (!_playerInput.currentControlScheme.Contains("Keyboard"))
+                    _mouseVisible = false;
+        }
         if (Input.anyKeyDown)
             if (!Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1))
                 _mouseVisible = false;
