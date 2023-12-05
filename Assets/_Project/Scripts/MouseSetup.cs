@@ -50,6 +50,9 @@ public class MouseSetup : Singleton<MouseSetup>
                 _mouseVisible = false;
         if (Input.GetKeyDown(KeyCode.Space))
             _mouseVisible = true;
+        if (Cursor.lockState == CursorLockMode.Locked)
+            _mouseVisible = false;
         Cursor.visible = _mouseVisible;
+
     }
 }
