@@ -7,6 +7,7 @@ public struct InputItemNetwork
     public int time;
     public int frame;
     public InputEnum inputEnum;
+    public bool crouch;
     public bool pressed;
     public bool sequence;
 
@@ -16,6 +17,7 @@ public struct InputItemNetwork
         bw.Write(frame);
         bw.Write((int)inputEnum);
         bw.Write(pressed);
+        bw.Write(crouch);
     }
 
     public void Deserialize(BinaryReader br)
@@ -24,5 +26,6 @@ public struct InputItemNetwork
         frame = br.ReadInt32();
         inputEnum = (InputEnum)br.ReadInt32();
         pressed = br.ReadBoolean();
+        crouch = br.ReadBoolean();
     }
 };

@@ -199,7 +199,8 @@ public struct GameSimulation : IGame
                         frame = Frames,
                         time = Frames,
                         sequence = _players[index].inputList.inputTriggers[i].sequence,
-                        pressed = true
+                        pressed = true,
+                        crouch = _players[index].direction.y == -1
                     });
                 }
 

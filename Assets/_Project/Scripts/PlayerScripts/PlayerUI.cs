@@ -209,6 +209,8 @@ public class PlayerUI : MonoBehaviour
         }
         else if (!_maxArcanaText.gameObject.activeSelf)
         {
+            _arcanaBackground.color = _arcanaMeter2Color;
+            _arcanaFill.color = _arcanaMeter3Color;
             _audio.Sound("MaxArcana").Play();
             _maxArcanaText.gameObject.SetActive(true);
         }
@@ -228,7 +230,7 @@ public class PlayerUI : MonoBehaviour
                 _arcanaBackground.color = _arcanaMeter1Color;
                 _arcanaFill.color = _arcanaMeter2Color;
             }
-            if (arcana == 2)
+            else if (arcana == 2)
             {
                 _arcanaBackground.color = _arcanaMeter2Color;
                 _arcanaFill.color = _arcanaMeter3Color;
@@ -446,7 +448,7 @@ public class PlayerUI : MonoBehaviour
 
     public void OpenPause(bool isPlayerOne)
     {
-        MouseSetup.Instance.SetCursor(true);
+        MouseSetup.Instance.SetLock(false);
         _pauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
         GameplayManager.Instance.PausedController = _controller;
@@ -458,7 +460,7 @@ public class PlayerUI : MonoBehaviour
 
     public void OpenTrainingPause(bool isPlayerOne)
     {
-        MouseSetup.Instance.SetCursor(true);
+        MouseSetup.Instance.SetLock(false);
         _trainingPauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
         GameplayManager.Instance.PausedController = _controller;
@@ -470,7 +472,7 @@ public class PlayerUI : MonoBehaviour
 
     public void ClosePause()
     {
-        MouseSetup.Instance.SetCursor(false);
+        MouseSetup.Instance.SetLock(true);
         Time.timeScale = GameplayManager.Instance.GameSpeed;
         GameplayManager.Instance.EnableAllInput();
         GameplayManager.Instance.PlayMusic();

@@ -11,13 +11,19 @@ public class ArcanaState : State
                 return;
             SetTopPriority(player);
             player.dashFrames = 0;
-            player.arcanaGauge -= PlayerStatsSO.ARCANA_MULTIPLIER;
+            if (player.attackNetwork.name.Contains("R"))
+            {
+                player.arcanaGauge -= PlayerStatsSO.ARCANA_MULTIPLIER;
+                DemonVector2 effectPosition = new(player.position.x, player.position.y + 20);
+                player.SetParticle("Arcana", effectPosition);
+            }
             player.enter = true;
             player.canChainAttack = false;
             player.animation = player.attackNetwork.name;
             player.sound = player.attackNetwork.attackSound;
             player.animationFrames = 0;
             player.hitbox.enter = false;
+
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.velocity = new DemonVector2(player.attackNetwork.travelDistance.x * (DemonFloat)player.flip, (DemonFloat)player.attackNetwork.travelDistance.y);
             player.InitializeProjectile(player.attackNetwork.moveName, player.attackNetwork, player.attackNetwork.projectileSpeed, player.attackNetwork.projectilePriority, player.attackNetwork.projectileDestroyOnHit);
@@ -33,6 +39,7 @@ public class ArcanaState : State
         {
             if (player.attackNetwork.travelDistance.y > 0)
             {
+                player.canChainAttack = false;
                 player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
                 ToIdleFallState(player);
             }
@@ -40,15 +47,19 @@ public class ArcanaState : State
             player.attackFrames--;
         }
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
+        player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
         if (player.invincible)
-            player.player.PlayerAnimator.InvinciblelMaterial();
+            player.player.PlayerAnimator.InvincibleMaterial();
+        else if (player.attackNetwork.superArmor > 0)
+            player.player.PlayerAnimator.ArmorMaterial();
         else
             player.player.PlayerAnimator.NormalMaterial();
         UpdateFramedata(player);
         ToIdleState(player);
-
         Projectile(player);
         ToHurtState(player);
+        // if (!player.hitstop)
+        //     AttackCancel(player);
     }
     private void Projectile(PlayerNetwork player)
     {
@@ -75,6 +86,7 @@ public class ArcanaState : State
     {
         if (player.isAir && player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0)
         {
+            player.canChainAttack = false;
             player.SetParticle("Fall", player.position);
             player.sound = "Landed";
             CheckTrainingGauges(player);
@@ -85,10 +97,27 @@ public class ArcanaState : State
             EnterState(player, "Idle");
         }
     }
+
+    private void AttackCancel(PlayerNetwork player)
+    {
+        if (player.canChainAttack)
+        {
+            // InputItemNetwork input = player.inputBuffer.CurrentTrigger();
+            // if (input.frame != 0)
+            // {
+            //     if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+            //         player.isAir = true;
+            //     if (input.inputEnum == InputEnum.Special)
+            //         Arcana(player, player.isAir);
+            // }
+        }
+    }
+
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.attackFrames <= 0)
         {
+            player.canChainAttack = false;
             CheckTrainingGauges(player);
             player.dashFrames = 0;
             if (player.isAir || player.position.y > DemonicsPhysics.GROUND_POINT)
@@ -116,6 +145,7 @@ public class ArcanaState : State
     {
         if (IsColliding(player))
         {
+            player.canChainAttack = false;
             if (player.attackNetwork.superArmor > 0 && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
             {
                 SuperArmorHurt(player);

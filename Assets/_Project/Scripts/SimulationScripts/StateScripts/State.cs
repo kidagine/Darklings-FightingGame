@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static TrainingSettings;
 
 [Serializable]
 public class State
@@ -74,20 +75,23 @@ public class State
             }
         }
     }
-    protected void Arcana(PlayerNetwork player, bool air = false)
+    protected void Arcana(PlayerNetwork player, bool air = false, bool skipCheck = false)
     {
-        if (player.arcanaGauge >= 1000 && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Special)
+        if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Special || skipCheck)
         {
             player.attackInput = player.inputBuffer.CurrentTrigger().inputEnum;
             player.isAir = air;
             player.isCrouch = false;
-            if (player.direction.y < 0)
-            {
+            if ((player.direction.y < 0) || player.inputBuffer.RecentDownInput())
                 player.isCrouch = true;
-            }
-            ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir);
+            //bool frenzied = player.inputBuffer.RecentTrigger(InputEnum.Throw);
+            bool frenzied = true;
+            if (player.arcanaGauge < PlayerStatsSO.ARCANA_MULTIPLIER)
+                frenzied = false;
+            ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir, frenzied);
             if (attack != null)
             {
+                player.canChainAttack = false;
                 player.attackNetwork = SetArcana(player.attackInput, attack);
                 EnterState(player, "Arcana");
             }
@@ -160,11 +164,18 @@ public class State
     }
     public void ResetPlayer(PlayerNetwork player)
     {
+        player.inputBuffer.AddTrigger(new InputItemNetwork()
+        {
+            inputEnum = InputEnum.Neutral,
+            frame = GameSimulation.FramesStatic,
+            time = GameSimulation.FramesStatic,
+            sequence = true,
+            pressed = true
+        });
         player.dashDirection = 0;
         player.healthRecoverable = 10000;
         player.health = 10000;
         player.shadowGauge = GameSimulation.maxShadowGauge;
-        player.arcanaGauge = 0;
         player.player.PlayerUI.CheckDemonLimit(player.health);
         player.enter = false;
         CheckTrainingGauges(player);
@@ -319,7 +330,16 @@ public class State
     public bool AIBlocking(PlayerNetwork player, AttackTypeEnum attackType)
     {
         if (SceneSettings.IsTrainingMode && player.isAi)
-            if (TrainingSettings.BlockAlways)
+        {
+            bool canBlock = false;
+            if (TrainingSettings.Block == BlockType.BlockAlways)
+                canBlock = true;
+            if (TrainingSettings.Block == BlockType.BlockCount && TrainingSettings.BlockCountCurrent > 0)
+            {
+                TrainingSettings.BlockCountCurrent--;
+                canBlock = true;
+            }
+            if (canBlock)
             {
                 if (attackType == AttackTypeEnum.Low)
                     player.direction.y = -1;
@@ -327,6 +347,8 @@ public class State
                     player.direction.y = 0;
                 return true;
             }
+        }
+        TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
         return false;
     }
     protected void ResetCombo(PlayerNetwork player)

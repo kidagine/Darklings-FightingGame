@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using SharedGame;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -84,6 +85,8 @@ public class ReplayManager : MonoBehaviour
 
     public void SaveReplay()
     {
+        if (GameplayManager.Instance.PlayerOneController.ControllerInputName == "CPU" || GameplayManager.Instance.PlayerTwoController.ControllerInputName == "CPU")
+            return;
         if (NetworkInput.IS_LOCAL)
         {
             if (!SceneSettings.IsTrainingMode && !SceneSettings.ReplayMode && _replayNotificationAnimator != null)

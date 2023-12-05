@@ -36,7 +36,8 @@ public class PatchNotesMenu : BaseMenu
 
     void OnDisable()
     {
-        PreviousSelectable.Select();
+        if (PreviousSelectable != null)
+            PreviousSelectable.Select();
         _inputManager.SetPrompts(_inputManager.PreviousPrompts);
     }
 

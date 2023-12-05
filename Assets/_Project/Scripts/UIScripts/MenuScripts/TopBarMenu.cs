@@ -22,9 +22,8 @@ public class TopBarMenu : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private Canvas _canvas;
     [SerializeField] private GameObject _previousSelectable;
-    private AudioSource _mainMenuAudio;
+    [SerializeField] private AudioSource _mainMenuAudio;
     public bool Active { get { return _backgroundImage.activeSelf; } private set { } }
-    private void Start() => _mainMenuAudio = Camera.main.GetComponent<AudioSource>();
 
     public void JoinDiscord() => Application.OpenURL("https://discord.com/invite/wPw9fV6aQg");
 

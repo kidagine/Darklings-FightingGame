@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static TrainingSettings;
 
 public class TrainingMenu : BaseMenu
 {
@@ -364,15 +365,7 @@ public class TrainingMenu : BaseMenu
 
     public void SetBlock(int value)
     {
-        switch (value)
-        {
-            case 0:
-                TrainingSettings.BlockAlways = false;
-                break;
-            case 1:
-                TrainingSettings.BlockAlways = true;
-                break;
-        }
+        TrainingSettings.Block = (BlockType)value;
     }
 
     public void SetOnHit(int value)
@@ -386,6 +379,12 @@ public class TrainingMenu : BaseMenu
                 TrainingSettings.OnHit = true;
                 break;
         }
+    }
+
+    public void SetBlockCount(int value)
+    {
+        TrainingSettings.BlockCount = value + 1;
+        TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
     }
 
     public void ResetTrainingOptions()

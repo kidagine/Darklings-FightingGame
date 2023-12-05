@@ -9,6 +9,8 @@ public class HomeMenu : BaseMenu
     [SerializeField] private PlayerUIRender _playerUIRender = default;
     [SerializeField] private TextMeshProUGUI _playerName = default;
     [SerializeField] private TextMeshProUGUI _playerProfileName = default;
+    [SerializeField] private TextMeshProUGUI _onlineInfoText = default;
+    [SerializeField] private Animator _onlineInfoAnimator = default;
     [SerializeField] private PlayerStatsSO[] _playerStatsSO = default;
 
 
@@ -17,6 +19,17 @@ public class HomeMenu : BaseMenu
         await UnityServices.InitializeAsync();
         if (!AuthenticationService.Instance.IsAuthorized)
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
+    }
+
+    private void Start()
+    {
+#if UNITY_WEBGL
+        _onlineInfoText.text = "Unavailable on Web";
+        _onlineInfoAnimator.Play("ButtonDisable");
+#endif
+#if !UNITY_WEBGL
+        _onlineInfoText.text = "Early Version";
+#endif
     }
 
     public void SetCharacter(int character, int color, string playerName)

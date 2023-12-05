@@ -35,6 +35,7 @@ public class CommandListMenu : BaseMenu
     private Player _playerOne;
     private Player _playerTwo;
     private Player _currentlyDisplayedPlayer;
+    private readonly string _baseUrl = "https://kidagine.github.io/Darklings-CommandListVideos/";
 
     public PauseMenu CurrentPauseMenu { get; private set; }
 

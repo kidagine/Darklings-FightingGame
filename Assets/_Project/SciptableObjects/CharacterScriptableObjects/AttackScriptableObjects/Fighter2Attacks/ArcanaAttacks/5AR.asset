@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
+  m_Name: 5AR
+  m_EditorClassIdentifier: 
+  damage: 450
+  attackTypeEnum: 2
+  hitStun: 32
+  blockStun: 23
+  travelDistance: {x: 0, y: 0}
+  knockbackForce: {x: 64, y: 0}
+  knockbackDuration: 30
+  knockbackArc: 48
+  superArmor: 0
+  isAirAttack: 0
+  isProjectile: 1
+  isArcana: 1
+  jumpCancelable: 0
+  causesKnockdown: 1
+  causesSoftKnockdown: 0
+  attackSound: Slam
+  impactSound: Impact5
+  hitstop: 14
+  hitEffect: {fileID: 3294536446187043669, guid: ccfee90485797b448ba49f2fa458ca34, type: 3}
+  hitEffectPosition: {x: 40, y: 27.2}
+  hitEffectRotation: 0
+  hurtEffect: HurtArcana
+  hurtEffectPosition: {x: 5.6154785, y: -3.2600098}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: b6c04c6f8b446df4e996a2b115e6f0bf, type: 2}
+  moveName: Void Beam
+  moveDescription: Quick beam projectile that causes knockdown, good for zoning the
+    opponent.
+  moveVideo: {fileID: 32900000, guid: e78cbca02797c2742ab04b26a71697e5, type: 3}
+  airOk: 1
+  reversal: 0
+  projectileSpeed: 2
+  projectilePriority: 0
+  projectileDestroyOnHit: 1

@@ -37,6 +37,9 @@ public class PlayerStatsSO : ScriptableObject
     public ArcanaSO m5Arcana;
     public ArcanaSO m2Arcana;
     public ArcanaSO jArcana;
+    public ArcanaSO m5ArcanaFrenzy;
+    public ArcanaSO m2ArcanaFrenzy;
+    public ArcanaSO jArcanaFrenzy;
     [HideInInspector] public int maxHealth = 10000;
 
     public int Arcana { get { return arcanaLevel * ARCANA_MULTIPLIER; } set { } }
@@ -47,9 +50,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return speedLevel switch
             {
-                1 => (DemonFloat)0.45,
-                2 => (DemonFloat)0.62,
-                3 => (DemonFloat)0.75,
+                1 => (DemonFloat)0.54,
+                2 => (DemonFloat)0.65,
+                3 => (DemonFloat)0.78,
                 _ => (DemonFloat)0,
             };
         }
@@ -61,8 +64,8 @@ public class PlayerStatsSO : ScriptableObject
         {
             return speedLevel switch
             {
-                1 => (DemonFloat)0.39,
-                2 => (DemonFloat)0.58,
+                1 => (DemonFloat)0.47,
+                2 => (DemonFloat)0.61,
                 3 => (DemonFloat)0.72,
                 _ => (DemonFloat)0,
             };
@@ -75,8 +78,8 @@ public class PlayerStatsSO : ScriptableObject
         {
             return speedLevel switch
             {
-                1 => (DemonFloat)2.3,
-                2 => (DemonFloat)2.7,
+                1 => (DemonFloat)2.5,
+                2 => (DemonFloat)2.8,
                 3 => (DemonFloat)3.1,
                 _ => (DemonFloat)0,
             };
@@ -89,9 +92,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return jumpLevel switch
             {
-                1 => (DemonFloat)4.2,
-                2 => (DemonFloat)4.2,
-                3 => (DemonFloat)4.2,
+                1 => (DemonFloat)4.6,
+                2 => (DemonFloat)4.6,
+                3 => (DemonFloat)4.6,
                 _ => (DemonFloat)0,
             };
         }
@@ -103,9 +106,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return dashLevel switch
             {
-                1 => (DemonFloat)3.2,
-                2 => (DemonFloat)3.4,
-                3 => (DemonFloat)3.6,
+                1 => (DemonFloat)3.5,
+                2 => (DemonFloat)3.7,
+                3 => (DemonFloat)3.9,
                 _ => (DemonFloat)0,
             };
         }
@@ -117,9 +120,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return dashLevel switch
             {
-                1 => (DemonFloat)2.6,
-                2 => (DemonFloat)2.8,
-                3 => (DemonFloat)3.0,
+                1 => (DemonFloat)3.2,
+                2 => (DemonFloat)3.4,
+                3 => (DemonFloat)3.5,
                 _ => (DemonFloat)0,
             };
         }
@@ -131,9 +134,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return dashLevel switch
             {
-                1 => (DemonFloat)3.1,
-                2 => (DemonFloat)3.3,
-                3 => (DemonFloat)3.5,
+                1 => (DemonFloat)3.3,
+                2 => (DemonFloat)3.5,
+                3 => (DemonFloat)3.7,
                 _ => (DemonFloat)0,
             };
         }
@@ -145,9 +148,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return dashLevel switch
             {
-                1 => (DemonFloat)2.5,
-                2 => (DemonFloat)2.7,
-                3 => (DemonFloat)2.9,
+                1 => (DemonFloat)2.7,
+                2 => (DemonFloat)2.9,
+                3 => (DemonFloat)3.0,
                 _ => (DemonFloat)0,
             };
         }

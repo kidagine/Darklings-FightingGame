@@ -12,28 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
   m_Name: JA
   m_EditorClassIdentifier: 
-  damage: 550
+  damage: 450
   attackTypeEnum: 2
-  hitStun: 30
+  hitStun: 22
   blockStun: 15
-  travelDistance: {x: 0.8, y: 4.32}
-  knockbackForce: {x: 48, y: 0}
-  knockbackDuration: 35
-  knockbackArc: 70
+  travelDistance: {x: 0.5, y: 3.5}
+  knockbackForce: {x: 30, y: 0}
+  knockbackDuration: 12
+  knockbackArc: 15
   superArmor: 0
   isAirAttack: 0
   isProjectile: 0
   isArcana: 1
   jumpCancelable: 0
-  causesKnockdown: 1
+  causesKnockdown: 0
   causesSoftKnockdown: 0
-  attackSound: Slam
+  attackSound: Hit
   impactSound: Impact5
   hitstop: 15
   hitEffect: {fileID: 0}
   hitEffectPosition: {x: 4, y: 0.1}
   hitEffectRotation: 0
-  hurtEffect: HurtArcana
+  hurtEffect: HurtHeavy
   hurtEffectPosition: {x: -3.2612305, y: 2.1450195}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}

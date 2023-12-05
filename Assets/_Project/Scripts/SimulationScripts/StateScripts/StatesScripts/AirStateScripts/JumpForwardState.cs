@@ -27,15 +27,8 @@ public class JumpForwardState : AirParentState
                 else
                 {
                     if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
-                    {
                         if (player.inputBuffer.CurrentTrigger().inputEnum != InputEnum.Throw)
-                        {
-                            if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Heavy && player.direction.y >= 0))
-                            {
-                                Attack(player, player.isAir);
-                            }
-                        }
-                    }
+                            Attack(player, player.isAir);
                 }
             }
             return;

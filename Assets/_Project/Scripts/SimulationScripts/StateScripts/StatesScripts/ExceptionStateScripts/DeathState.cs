@@ -27,12 +27,8 @@ public class DeathState : State
         player.animation = "Death";
         player.animationFrames++;
         if (player.animationFrames >= 255)
-        {
             if (player.otherPlayer.state != "Taunt" && player.otherPlayer.health > 0)
-            {
                 EnterState(player.otherPlayer, "Taunt");
-            }
-        }
         if (SceneSettings.IsTrainingMode)
         {
             if (player.animationFrames >= 95)
@@ -45,7 +41,7 @@ public class DeathState : State
         }
         else
         {
-            if (player.animationFrames >= 375)
+            if (player.animationFrames >= 370)
             {
                 GameSimulation.Timer = GameSimulation._timerMax;
                 player.invincible = false;
@@ -56,9 +52,7 @@ public class DeathState : State
             }
         }
         if (!player.hitstop)
-        {
             Knockback(player);
-        }
     }
     private void Knockback(PlayerNetwork player)
     {
@@ -71,13 +65,9 @@ public class DeathState : State
             DemonFloat arc = player.attackHurtNetwork.knockbackArc * (nextX - player.pushbackStart.x) * (nextX - player.pushbackEnd.x) / ((-0.25f) * distance * distance);
             DemonVector2 nextPosition = DemonVector2.Zero;
             if (player.attackHurtNetwork.softKnockdown)
-            {
                 nextPosition = new DemonVector2(nextX, baseY + arc);
-            }
             else
-            {
                 nextPosition = new DemonVector2(nextX, baseY + arc);
-            }
             player.position = nextPosition;
             player.knockback++;
         }

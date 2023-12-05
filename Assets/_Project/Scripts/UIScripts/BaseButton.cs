@@ -37,7 +37,9 @@ public class BaseButton : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoin
 
     protected virtual void Awake()
     {
+#if UNITY_EDITOR
         HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
+#endif
         _audio = GetComponent<Audio>();
         _button = GetComponent<Button>();
         _animator = GetComponent<Animator>();

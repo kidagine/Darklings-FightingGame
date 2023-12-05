@@ -13,7 +13,7 @@ public class AttackState : State
                 player.juggleBounce = false;
             }
             player.attackNetwork.guardBreak = false;
-            if (player.attackNetwork.attackType == AttackTypeEnum.Break)
+            if (player.attackNetwork.attackType == AttackTypeEnum.Break && !player.isAir)
             {
                 if (player.healthRecoverable == player.health)
                 {
@@ -78,8 +78,8 @@ public class AttackState : State
             }
         }
         UpdateFramedata(player);
-        ToJumpState(player);
         ToJumpForwardState(player);
+        ToJumpState(player);
         ToIdleState(player);
         ToIdleFallState(player);
         ToHurtState(player);
@@ -119,22 +119,37 @@ public class AttackState : State
         if (player.canChainAttack)
         {
             InputItemNetwork input = player.inputBuffer.CurrentTrigger();
-            if (input.frame != 0)
+            if (input.frame == 0)
+                return;
+
+            if (input.inputEnum == InputEnum.Throw)
+                return;
+            if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
+                player.isAir = true;
+            if (!player.isAir)
             {
-                if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
-                    player.isAir = true;
-                if (input.inputEnum == InputEnum.Special)
-                    Arcana(player, player.isAir);
-                else
+                bool crouching = player.attackNetwork.name.Contains("2");
+                if (player.attackInput != InputEnum.Heavy && !crouching)
                 {
-                    if (input.inputEnum == InputEnum.Heavy && player.attackInput != InputEnum.Light)
+                    if ((int)input.inputEnum == (int)player.attackInput && input.crouch == crouching)
                         return;
-                    if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
-                        if (input.inputEnum != InputEnum.Throw)
-                            if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && input.inputEnum == InputEnum.Heavy && player.direction.y >= 0))
-                                Attack(player, player.isAir);
+                    if ((int)input.inputEnum < (int)player.attackInput)
+                        return;
                 }
             }
+
+            if (input.inputEnum == InputEnum.Special)
+                Arcana(player, player.isAir);
+            else
+            {
+                if (input.inputEnum == InputEnum.Heavy && player.attackInput != InputEnum.Light)
+                    return;
+                if (!(player.attackInput == InputEnum.Medium && player.isCrouch))
+                    if (!(player.attackInput == InputEnum.Heavy && !player.isCrouch && input.inputEnum == InputEnum.Heavy && player.direction.y >= 0))
+                        Attack(player, player.isAir);
+
+            }
+
         }
     }
 
@@ -149,6 +164,7 @@ public class AttackState : State
                 player.juggleBounce = true;
                 player.isCrouch = false;
                 player.isAir = false;
+                player.canChainAttack = false;
                 GameSimulation.Hitstop = 0;
                 EnterState(player, "Jump");
             }
@@ -166,6 +182,7 @@ public class AttackState : State
                 player.juggleBounce = true;
                 player.isCrouch = false;
                 player.isAir = false;
+                player.canChainAttack = false;
                 GameSimulation.Hitstop = 0;
                 EnterState(player, "JumpForward");
             }
@@ -176,6 +193,7 @@ public class AttackState : State
         if (!player.hitstop)
             if (player.isAir && (DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0)
             {
+                player.canChainAttack = false;
                 player.SetParticle("Fall", player.position);
                 player.sound = "Landed";
                 player.inPushback = false;
@@ -190,6 +208,7 @@ public class AttackState : State
         {
             if (player.isAir || (DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
             {
+                player.canChainAttack = false;
                 player.isCrouch = false;
                 player.isAir = false;
                 EnterState(player, "Fall");
@@ -198,12 +217,14 @@ public class AttackState : State
             {
                 if (player.direction.y < 0)
                 {
+                    player.canChainAttack = false;
                     player.isCrouch = false;
                     player.isAir = false;
                     EnterState(player, "Crouch");
                 }
                 else
                 {
+                    player.canChainAttack = false;
                     player.isCrouch = false;
                     player.isAir = false;
                     EnterState(player, "Idle");
@@ -216,6 +237,7 @@ public class AttackState : State
     {
         if (IsColliding(player))
         {
+            player.canChainAttack = false;
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
                 EnterState(player, "Grabbed");

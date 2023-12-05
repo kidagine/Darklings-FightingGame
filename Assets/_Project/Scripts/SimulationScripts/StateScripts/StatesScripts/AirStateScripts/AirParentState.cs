@@ -16,7 +16,7 @@ public class AirParentState : State
 
     private void ToJumpState(PlayerNetwork player)
     {
-        if (player.canDoubleJump)
+        if (player.canDoubleJump && player.canChainAttack)
         {
             if (player.direction.y > 0 && !player.hasJumped)
             {
@@ -32,7 +32,7 @@ public class AirParentState : State
     }
     private void ToJumpForwardState(PlayerNetwork player)
     {
-        if (player.canDoubleJump)
+        if (player.canDoubleJump && player.canChainAttack)
         {
             if (player.direction.y > 0 && player.direction.x != 0 && !player.hasJumped)
             {

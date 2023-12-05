@@ -34,6 +34,11 @@ public class PlayerPreferences : MonoBehaviour
     [SerializeField] private BaseSelector _stageStyleSelector = default;
     [SerializeField] private int _stageStyleSelectorInitial = default;
     [Header("OPTIONS")]
+    [Header("Graphics")]
+    [SerializeField] private BaseSelector _resolutionSelector = default;
+    [SerializeField] private int _resolutionSelectorInitial = default;
+    [SerializeField] private BaseSelector _displaySelector = default;
+    [SerializeField] private int _displaySelectorInitial = default;
     [Header("Audio")]
     [SerializeField] private DemonSlider _sfxSlider = default;
     [Range(0, 100)]
@@ -57,6 +62,8 @@ public class PlayerPreferences : MonoBehaviour
     [SerializeField] private int _cpuSelectorInitial = default;
     [SerializeField] private BaseSelector _blockSelector = default;
     [SerializeField] private int _blockSelectorInitial = default;
+    [SerializeField] private BaseSelector _blockCountSelector = default;
+    [SerializeField] private int _blockCountSelectorInitial = default;
     [SerializeField] private BaseSelector _onHitSelector = default;
     [SerializeField] private int _onHitSelectorInitial = default;
     [SerializeField] private BaseSelector _stanceSelector = default;
@@ -122,6 +129,8 @@ int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.To
 
     private void LoadOptionPreferences()
     {
+        _resolutionSelector.SetValue(int.Parse(DemonicsSaver.Load("resolution", _resolutionSelectorInitial.ToString())));
+        _displaySelector.SetValue(int.Parse(DemonicsSaver.Load("display", _displaySelectorInitial.ToString())));
         _sfxSlider.SetValue(int.Parse(DemonicsSaver.Load("sfx", _sfxSelectorInitial.ToString())));
         _uiSlider.SetValue(int.Parse(DemonicsSaver.Load("ui", _uiSelectorInitial.ToString())));
         _musicSlider.SetValue(int.Parse(DemonicsSaver.Load("music", _musicSelectorInitial.ToString())));
@@ -137,6 +146,7 @@ int.Parse(DemonicsSaver.Load("charactercolor", _characterColorSelectorInitial.To
         //Cpu
         _cpuSelector.SetValue(int.Parse(DemonicsSaver.Load("cpu", _cpuSelectorInitial.ToString())));
         _blockSelector.SetValue(int.Parse(DemonicsSaver.Load("block", _blockSelectorInitial.ToString())));
+        _blockCountSelector.SetValue(int.Parse(DemonicsSaver.Load("blockCount", _blockCountSelectorInitial.ToString())));
         _onHitSelector.SetValue(int.Parse(DemonicsSaver.Load("onhit", _onHitSelectorInitial.ToString())));
         //_stanceSelector.SetValue(int.Parse(DemonicsSaver.Load("stance", _stanceSelectorInitial.ToString())));
 

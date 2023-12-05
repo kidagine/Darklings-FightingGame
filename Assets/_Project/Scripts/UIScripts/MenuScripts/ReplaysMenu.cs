@@ -24,7 +24,7 @@ public class ReplaysMenu : BaseMenu
                 ReplayCard replayCard = Instantiate(_replayPrefab, _replaysGroup).transform.GetChild(0).GetComponent<ReplayCard>();
                 replayCard.SetData(ReplayManager.Instance.GetReplayData(i));
                 int index = i;
-                if (index == ReplayManager.Instance.ReplayAmount - 1)
+                if (index == ReplayManager.Instance.ReplayAmount - 1 && index > 0)
                     replayCard.Initialize(index, this, _replaysGroup, _replayCards[index - 1].GetComponent<Selectable>(), true);
                 else
                     replayCard.Initialize(index, this, _replaysGroup);

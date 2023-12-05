@@ -934,6 +934,17 @@ public partial class @DemonInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""3c326cda-7a50-4087-96b8-8d5f598a2205"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard;KeyboardTwo"",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c12c5062-021d-4246-ba9b-8e4935af7f97"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
