@@ -53,9 +53,15 @@ public class RebindMenu : BaseMenu
         }
     }
 
+    void OnDisable()
+    {
+        MouseSetup.Instance.SetCursor(true);
+    }
+
     //Set the binding rules based on the input device
     void OnEnable()
     {
+        MouseSetup.Instance.SetCursor(false);
         _backgroundDarken.SetActive(true);
         if (!_secondPlayer)
         {

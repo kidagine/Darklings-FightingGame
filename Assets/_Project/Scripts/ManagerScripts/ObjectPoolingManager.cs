@@ -325,9 +325,11 @@ public class ObjectPoolingManager : MonoBehaviour
             Destroy(child.gameObject);
         _objectsPoolOne.Clear();
         _objectsProjectilePoolOne.Clear();
+        _objectsParticlesPoolOne.Clear();
         _objectsAssistsPoolOne.Clear();
         _objectsPoolTwo.Clear();
         _objectsProjectilePoolTwo.Clear();
+        _objectsParticlesPoolTwo.Clear();
         _objectsAssistsPoolTwo.Clear();
         HasPooled = false;
     }

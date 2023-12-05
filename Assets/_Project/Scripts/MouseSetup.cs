@@ -27,8 +27,7 @@ public class MouseSetup : Singleton<MouseSetup>
 
     public void SetLock(bool state)
     {
-        _cursorLockMode = !state ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.lockState = _cursorLockMode;
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = !state;
         LockCamera = state;
     }
@@ -38,7 +37,10 @@ public class MouseSetup : Singleton<MouseSetup>
         if (LockCamera)
             return;
         if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+        {
+            Cursor.lockState = CursorLockMode.None;
             _mouseVisible = true;
+        }
         if (_playerInput != null)
         {
             if (_playerInput.currentControlScheme != null)
@@ -50,6 +52,9 @@ public class MouseSetup : Singleton<MouseSetup>
                 _mouseVisible = false;
         if (Input.GetKeyDown(KeyCode.Space))
             _mouseVisible = true;
+        if (Cursor.lockState == CursorLockMode.Locked)
+            _mouseVisible = false;
         Cursor.visible = _mouseVisible;
+
     }
 }

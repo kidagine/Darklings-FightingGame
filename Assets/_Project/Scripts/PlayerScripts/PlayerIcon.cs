@@ -134,6 +134,11 @@ public class PlayerIcon : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        LastNumber = 0;
+    }
+
     private void OnEnable()
     {
         Center();
