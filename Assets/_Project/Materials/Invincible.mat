@@ -11,7 +11,6 @@ Material:
   m_Shader: {fileID: 4800000, guid: 0803c241834332942abfcbd27c498b46, type: 3}
   m_ValidKeywords:
   - ETC1_EXTERNAL_ALPHA
-  - _ENABLEINNEROUTLINE_ON
   - _SHADERFADING_NONE
   - _SHADERSPACE_UV
   - _STRONGTINTCONTRASTTOGGLE_ON
@@ -158,10 +157,10 @@ Material:
     - _Brightness: 2
     - _BumpScale: 1
     - _BurnEdgeNoiseFactor: 0.5
-    - _BurnFade: 1
+    - _BurnFade: 0.32
     - _BurnInsideContrast: 2
     - _BurnInsideNoiseFactor: 0.05
-    - _BurnRadius: 5
+    - _BurnRadius: 15.5
     - _BurnSwirlFactor: 1
     - _BurnWidth: 0.1
     - _CamouflageAnimationToggle: 0
@@ -231,7 +230,7 @@ Material:
     - _EnableHologram: 0
     - _EnableHue: 0
     - _EnableInkSpread: 0
-    - _EnableInnerOutline: 1
+    - _EnableInnerOutline: 0
     - _EnableMetal: 0
     - _EnableNegative: 0
     - _EnableOuterOutline: 0
@@ -356,7 +355,7 @@ Material:
     - _PixelOutlineWidth: 1
     - _PixelPerfectSpace: 0
     - _PixelPerfectUV: 0
-    - _PixelateFade: 1
+    - _PixelateFade: 0
     - _PixelatePixelDensity: 16
     - _PixelatePixelsPerUnit: 100
     - _PixelsPerUnit: 100
