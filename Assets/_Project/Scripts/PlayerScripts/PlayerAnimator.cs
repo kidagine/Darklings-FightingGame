@@ -71,15 +71,9 @@ public class PlayerAnimator : DemonicsAnimator
     public override void SetAnimation(string name, int frame)
     {
         if (name == "Wallsplat")
-        {
-            transform.localPosition = new Vector2(10 * -transform.localScale.x, 0);
-            transform.localRotation = Quaternion.Euler(0, 0, -90);
-        }
+            transform.SetLocalPositionAndRotation(new Vector2(10 * -transform.localScale.x, 0), Quaternion.Euler(0, 0, -90));
         else
-        {
-            transform.localPosition = Vector2.zero;
-            transform.localRotation = Quaternion.identity;
-        }
+            transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
         base.SetAnimation(name, frame);
     }
 
