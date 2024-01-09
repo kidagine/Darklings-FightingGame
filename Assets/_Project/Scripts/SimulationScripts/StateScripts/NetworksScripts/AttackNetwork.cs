@@ -22,6 +22,8 @@ public struct AttackNetwork
     public int startup;
     public int active;
     public int recovery;
+    public bool teleport;
+    public DemonVector2 teleportPosition;
     public DemonFloat projectileSpeed;
     public string name;
     public string moveName;

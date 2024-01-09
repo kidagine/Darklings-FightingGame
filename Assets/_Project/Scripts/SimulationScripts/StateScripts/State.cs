@@ -123,7 +123,9 @@ public class State
             superArmor = attack.superArmor,
             projectileSpeed = (DemonFloat)attack.projectileSpeed,
             projectileDestroyOnHit = attack.projectileDestroyOnHit,
-            projectilePriority = attack.projectilePriority
+            projectilePriority = attack.projectilePriority,
+            teleport = attack.teleport,
+            teleportPosition = new DemonVector2((DemonFloat)attack.teleportPosition.x, (DemonFloat)attack.teleportPosition.y),
         };
         if (attack.cameraShaker != null)
         {

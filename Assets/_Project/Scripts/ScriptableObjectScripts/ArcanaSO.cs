@@ -9,4 +9,6 @@ public class ArcanaSO : AttackSO
     public float projectileSpeed;
     public int projectilePriority;
     public bool projectileDestroyOnHit;
+    public bool teleport;
+    public Vector2 teleportPosition;
 }
