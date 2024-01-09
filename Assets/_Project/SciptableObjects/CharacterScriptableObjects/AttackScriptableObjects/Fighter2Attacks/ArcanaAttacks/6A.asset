@@ -10,38 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
-  m_Name: JAR
+  m_Name: 6A
   m_EditorClassIdentifier: 
-  damage: 575
-  attackTypeEnum: 2
-  hitStun: 35
-  blockStun: 16
-  travelDistance: {x: 1.5, y: 2.5}
-  knockbackForce: {x: 12, y: 0}
-  knockbackDuration: 13
-  knockbackArc: 5
+  damage: 500
+  attackTypeEnum: 1
+  hitStun: 32
+  blockStun: 15
+  travelDistance: {x: 2, y: 3}
+  knockbackForce: {x: 25, y: 0}
+  knockbackDuration: 15
+  knockbackArc: 10
   superArmor: 0
-  isAirAttack: 1
+  isAirAttack: 0
   isProjectile: 0
   isArcana: 1
   jumpCancelable: 0
   causesKnockdown: 0
   causesSoftKnockdown: 0
-  attackSound: Slam
+  attackSound: Hit
   impactSound: Impact5
-  hitstop: 12
-  hitEffect: {fileID: 3294536446187043669, guid: 374c1239b4b31264eaed08600cb10305, type: 3}
-  hitEffectPosition: {x: 24, y: 27.2}
+  hitstop: 15
+  hitEffect: {fileID: 0}
+  hitEffectPosition: {x: 40, y: 27.2}
   hitEffectRotation: 0
-  hurtEffect: HurtArcana
-  hurtEffectPosition: {x: 9.540527, y: -0.3737793}
+  hurtEffect: HurtHeavy
+  hurtEffectPosition: {x: 6.4970703, y: -3.2600098}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: b6c04c6f8b446df4e996a2b115e6f0bf, type: 2}
-  moveName: Blazing Strike
-  moveDescription: Slow moving projectile, useful for rushing down your opponent
-    while keeping safe.
-  moveVideo: {fileID: 32900000, guid: a13d050202f42e24b8ae788b45766fc3, type: 3}
-  airOk: 0
+  moveName: Void Beam
+  moveDescription: Quick beam projectile that causes knockdown, good for zoning the
+    opponent.
+  moveVideo: {fileID: 32900000, guid: e78cbca02797c2742ab04b26a71697e5, type: 3}
+  airOk: 1
   reversal: 0
   projectileSpeed: 0
   projectilePriority: 0
