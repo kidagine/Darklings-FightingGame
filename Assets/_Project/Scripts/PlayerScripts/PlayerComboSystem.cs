@@ -8,7 +8,7 @@ public class PlayerComboSystem : MonoBehaviour
             return GetArcana(playerStats, direction, isAir);
         if (inputEnum == InputEnum.Throw)
             return playerStats.mThrow;
-        if (direction == Vector2.down)
+        if (direction.y == -1)
             return GetCrouchingAttackType(playerStats, inputEnum);
         else
             if (isAir)
@@ -60,7 +60,7 @@ public class PlayerComboSystem : MonoBehaviour
                 return playerStats.jArcanaFrenzy;
             else
                 return playerStats.jArcana;
-        if (direction == Vector2.down)
+        if (direction.y == -1)
         {
             if (frenzied)
                 return playerStats.m2ArcanaFrenzy;
