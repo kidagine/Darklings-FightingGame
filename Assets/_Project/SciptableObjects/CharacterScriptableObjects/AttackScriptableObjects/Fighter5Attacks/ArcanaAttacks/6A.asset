@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 425
   attackTypeEnum: 2
-  hitStun: 18
-  blockStun: 23
+  hitStun: 28
+  blockStun: 7
   travelDistance: {x: 4, y: 0}
-  knockbackForce: {x: -10, y: 0}
+  knockbackForce: {x: 15, y: 0}
   knockbackDuration: 20
   knockbackArc: 10
   superArmor: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
   hurtEffectPosition: {x: 7.300293, y: -1.4848633}
   hurtEffectRotation: 0
   cameraShaker: {fileID: 11400000, guid: b6c04c6f8b446df4e996a2b115e6f0bf, type: 2}
-  moveName: Whirlwind Soul
+  moveName: Silent Breeze
   moveDescription: Creates a whirlwind that slowly moves forward, useful for pressuring
     your opponent.
   moveVideo: {fileID: 32900000, guid: 02125157e46f99f408fdaee176e4f513, type: 3}
@@ -46,3 +46,5 @@ MonoBehaviour:
   projectileSpeed: 0
   projectilePriority: 0
   projectileDestroyOnHit: 0
+  teleport: 0
+  teleportPosition: {x: 0, y: 0}

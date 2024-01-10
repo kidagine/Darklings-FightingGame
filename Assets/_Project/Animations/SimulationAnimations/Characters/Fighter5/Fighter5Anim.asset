@@ -1970,7 +1970,7 @@ MonoBehaviour:
     loop: 0
     cameraShake: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}
     animationCel:
-    - frames: 4
+    - frames: 3
       sprite: {fileID: 392115239, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
       animationEvent:
         jump: 0
@@ -2038,7 +2038,7 @@ MonoBehaviour:
       hurtboxes:
       - size: {x: 28, y: 40}
         offset: {x: 0, y: 19}
-    - frames: 4
+    - frames: 3
       sprite: {fileID: -1258791216, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
       animationEvent:
         jump: 0
@@ -2051,7 +2051,9 @@ MonoBehaviour:
         throwEnd: 0
         throwArcanaEnd: 0
         grabPoint: {x: 0, y: 0}
-      hitboxes: []
+      hitboxes:
+      - size: {x: 32, y: 64}
+        offset: {x: 24, y: 32}
       hurtboxes:
       - size: {x: 28, y: 43}
         offset: {x: 0, y: 21}
@@ -2074,7 +2076,7 @@ MonoBehaviour:
       hurtboxes:
       - size: {x: 28, y: 40}
         offset: {x: 0, y: 26}
-    - frames: 7
+    - frames: 6
       sprite: {fileID: -419107515, guid: e35084ba433dbe04188a002ca11560bb, type: 3}
       animationEvent:
         jump: 0
