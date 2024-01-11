@@ -52,9 +52,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return speedLevel switch
             {
-                1 => (DemonFloat)0.54,
-                2 => (DemonFloat)0.65,
-                3 => (DemonFloat)0.78,
+                1 => (DemonFloat)0.85,
+                2 => (DemonFloat)0.95,
+                3 => (DemonFloat)1.05,
                 _ => (DemonFloat)0,
             };
         }
@@ -66,9 +66,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return speedLevel switch
             {
-                1 => (DemonFloat)0.47,
-                2 => (DemonFloat)0.61,
-                3 => (DemonFloat)0.72,
+                1 => (DemonFloat)0.55,
+                2 => (DemonFloat)0.65,
+                3 => (DemonFloat)0.75,
                 _ => (DemonFloat)0,
             };
         }
