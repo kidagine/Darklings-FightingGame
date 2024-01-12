@@ -108,9 +108,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return dashLevel switch
             {
-                1 => (DemonFloat)3.5,
-                2 => (DemonFloat)3.7,
-                3 => (DemonFloat)3.9,
+                1 => (DemonFloat)4.0,
+                2 => (DemonFloat)4.2,
+                3 => (DemonFloat)4.5,
                 _ => (DemonFloat)0,
             };
         }
@@ -122,9 +122,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return dashLevel switch
             {
-                1 => (DemonFloat)3.2,
-                2 => (DemonFloat)3.4,
-                3 => (DemonFloat)3.5,
+                1 => (DemonFloat)3.6,
+                2 => (DemonFloat)3.9,
+                3 => (DemonFloat)4.1,
                 _ => (DemonFloat)0,
             };
         }
