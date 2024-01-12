@@ -8,7 +8,7 @@ public class PlayerComboSystem : MonoBehaviour
             return GetArcana(playerStats, direction, isAir);
         if (inputEnum == InputEnum.Throw)
             return playerStats.mThrow;
-        if (direction.y == -1)
+        if (direction.y == -1 && !isAir)
             return GetCrouchingAttackType(playerStats, inputEnum);
         else
             if (isAir)
