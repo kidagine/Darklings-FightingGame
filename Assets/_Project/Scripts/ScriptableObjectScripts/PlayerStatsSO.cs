@@ -34,9 +34,11 @@ public class PlayerStatsSO : ScriptableObject
     public AttackSO mThrow;
     public AttackSO mParry;
     public AttackSO mRedFrenzy;
+    public ArcanaSO m6Arcana;
     public ArcanaSO m5Arcana;
     public ArcanaSO m2Arcana;
     public ArcanaSO jArcana;
+    public ArcanaSO m6ArcanaFrenzy;
     public ArcanaSO m5ArcanaFrenzy;
     public ArcanaSO m2ArcanaFrenzy;
     public ArcanaSO jArcanaFrenzy;
@@ -50,9 +52,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return speedLevel switch
             {
-                1 => (DemonFloat)0.54,
-                2 => (DemonFloat)0.65,
-                3 => (DemonFloat)0.78,
+                1 => (DemonFloat)0.85,
+                2 => (DemonFloat)0.95,
+                3 => (DemonFloat)1.05,
                 _ => (DemonFloat)0,
             };
         }
@@ -64,9 +66,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return speedLevel switch
             {
-                1 => (DemonFloat)0.47,
-                2 => (DemonFloat)0.61,
-                3 => (DemonFloat)0.72,
+                1 => (DemonFloat)0.55,
+                2 => (DemonFloat)0.65,
+                3 => (DemonFloat)0.75,
                 _ => (DemonFloat)0,
             };
         }
@@ -106,9 +108,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return dashLevel switch
             {
-                1 => (DemonFloat)3.5,
-                2 => (DemonFloat)3.7,
-                3 => (DemonFloat)3.9,
+                1 => (DemonFloat)4.0,
+                2 => (DemonFloat)4.2,
+                3 => (DemonFloat)4.5,
                 _ => (DemonFloat)0,
             };
         }
@@ -120,9 +122,9 @@ public class PlayerStatsSO : ScriptableObject
         {
             return dashLevel switch
             {
-                1 => (DemonFloat)3.2,
-                2 => (DemonFloat)3.4,
-                3 => (DemonFloat)3.5,
+                1 => (DemonFloat)3.6,
+                2 => (DemonFloat)3.9,
+                3 => (DemonFloat)4.1,
                 _ => (DemonFloat)0,
             };
         }

@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
+  m_Name: 6A
+  m_EditorClassIdentifier: 
+  damage: 650
+  attackTypeEnum: 2
+  hitStun: 30
+  blockStun: 11
+  travelDistance: {x: 2, y: 2.3}
+  knockbackForce: {x: 60, y: 0}
+  knockbackDuration: 15
+  knockbackArc: 15
+  superArmor: 0
+  isAirAttack: 0
+  isProjectile: 0
+  isArcana: 0
+  jumpCancelable: 0
+  causesKnockdown: 0
+  causesSoftKnockdown: 0
+  attackSound: Hit
+  impactSound: Impact5
+  hitstop: 16
+  hitEffect: {fileID: 0}
+  hitEffectPosition: {x: 1, y: 0.1}
+  hitEffectRotation: 0
+  hurtEffect: HurtHeavy
+  hurtEffectPosition: {x: -4.159424, y: -2.4848633}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: 84aadf3764a04334eae5102f731ca6e0, type: 2}
+  moveName: Devil Kick
+  moveDescription: Runs forward and grabs the opponent slamming them to the ground
+    causing knockdown, works well as a combo ender.
+  moveVideo: {fileID: 32900000, guid: 477c745577263024a9ec78d028c3bb02, type: 3}
+  airOk: 0
+  reversal: 0
+  projectileSpeed: 0
+  projectilePriority: 0
+  projectileDestroyOnHit: 0
+  teleport: 0
+  teleportPosition: {x: 0, y: 0}

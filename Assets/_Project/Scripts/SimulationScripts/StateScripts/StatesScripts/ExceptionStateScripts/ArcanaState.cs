@@ -23,7 +23,8 @@ public class ArcanaState : State
             player.sound = player.attackNetwork.attackSound;
             player.animationFrames = 0;
             player.hitbox.enter = false;
-
+            if (player.attackNetwork.teleport)
+                player.position = new DemonVector2(player.otherPlayer.position.x + player.attackNetwork.teleportPosition.x, player.otherPlayer.position.y + player.attackNetwork.teleportPosition.y);
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             player.velocity = new DemonVector2(player.attackNetwork.travelDistance.x * (DemonFloat)player.flip, (DemonFloat)player.attackNetwork.travelDistance.y);
             player.InitializeProjectile(player.attackNetwork.moveName, player.attackNetwork, player.attackNetwork.projectileSpeed, player.attackNetwork.projectilePriority, player.attackNetwork.projectileDestroyOnHit);

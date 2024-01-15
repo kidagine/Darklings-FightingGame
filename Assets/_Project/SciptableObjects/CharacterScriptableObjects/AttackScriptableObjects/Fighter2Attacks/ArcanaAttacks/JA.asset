@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
   m_Name: JA
   m_EditorClassIdentifier: 
-  damage: 550
-  attackTypeEnum: 2
+  damage: 500
+  attackTypeEnum: 1
   hitStun: 32
-  blockStun: 15
-  travelDistance: {x: 0, y: 0}
+  blockStun: 11
+  travelDistance: {x: 1.3, y: 2}
   knockbackForce: {x: 25, y: 0}
-  knockbackDuration: 15
-  knockbackArc: 10
+  knockbackDuration: 16
+  knockbackArc: 8
   superArmor: 0
   isAirAttack: 0
   isProjectile: 0
-  isArcana: 1
+  isArcana: 0
   jumpCancelable: 0
   causesKnockdown: 0
   causesSoftKnockdown: 0
@@ -46,3 +46,5 @@ MonoBehaviour:
   projectileSpeed: 2
   projectilePriority: 0
   projectileDestroyOnHit: 1
+  teleport: 0
+  teleportPosition: {x: 0, y: 0}

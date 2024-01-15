@@ -10,11 +10,13 @@ public class PauseMenu : BaseMenu
     [SerializeField] private TextMeshProUGUI _whoPaused = default;
     [SerializeField] private PromptsInput _prompts = default;
     [SerializeField] private BaseMenu _trainingTopBar = default;
+    [SerializeField] private InputManager _inputManager = default;
     public bool PlayerOnePaused { get; private set; }
     public PlayerInput PlayerInput { get; set; }
 
     public void ClosePause()
     {
+        _inputManager.SetPrompts(null);
         _playerUI.ClosePause();
         _prompts.enabled = false;
     }

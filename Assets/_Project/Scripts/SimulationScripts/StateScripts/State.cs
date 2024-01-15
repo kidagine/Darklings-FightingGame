@@ -67,7 +67,7 @@ public class State
                 player.isCrouch = true;
             if (player.isAir)
                 player.isCrouch = false;
-            AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, player.isCrouch, player.isAir);
+            AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, player.attackInput, new Vector2(player.direction.x * player.flip, player.direction.y), player.isAir);
             if (attack != null)
             {
                 player.attackNetwork = SetAttack(player.attackInput, attack);
@@ -88,7 +88,7 @@ public class State
             bool frenzied = true;
             if (player.arcanaGauge < PlayerStatsSO.ARCANA_MULTIPLIER)
                 frenzied = false;
-            ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, player.isCrouch, player.isAir, frenzied);
+            ArcanaSO attack = PlayerComboSystem.GetArcana(player.playerStats, new Vector2(player.direction.x * player.flip, player.direction.y), player.isAir, frenzied);
             if (attack != null)
             {
                 player.canChainAttack = false;
@@ -123,7 +123,9 @@ public class State
             superArmor = attack.superArmor,
             projectileSpeed = (DemonFloat)attack.projectileSpeed,
             projectileDestroyOnHit = attack.projectileDestroyOnHit,
-            projectilePriority = attack.projectilePriority
+            projectilePriority = attack.projectilePriority,
+            teleport = attack.teleport,
+            teleportPosition = new DemonVector2((DemonFloat)attack.teleportPosition.x, (DemonFloat)attack.teleportPosition.y),
         };
         if (attack.cameraShaker != null)
         {
@@ -319,7 +321,7 @@ public class State
                 {
                     player.isAir = true;
                 }
-                AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Light, false, player.isAir);
+                AttackSO attack = PlayerComboSystem.GetComboAttack(player.playerStats, InputEnum.Light, Vector2.zero, player.isAir);
                 player.attackNetwork = SetAttack(InputEnum.Light, attack);
                 EnterState(player, "Attack");
                 return true;

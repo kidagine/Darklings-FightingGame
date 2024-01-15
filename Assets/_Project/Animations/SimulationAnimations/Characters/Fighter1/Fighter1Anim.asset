@@ -90,7 +90,62 @@ MonoBehaviour:
       hurtboxes:
       - size: {x: 28, y: 40}
         offset: {x: 0, y: 19}
-  - celName: Walk
+  - celName: WalkForward
+    loop: 1
+    cameraShake: {fileID: 0}
+    animationCel:
+    - frames: 7
+      sprite: {fileID: 519898365, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 1
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
+    - frames: 7
+      sprite: {fileID: -549201043, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
+    - frames: 7
+      sprite: {fileID: -1382711926, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 1
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 28, y: 40}
+        offset: {x: 0, y: 19}
+  - celName: WalkBackward
     loop: 1
     cameraShake: {fileID: 0}
     animationCel:
@@ -2030,6 +2085,171 @@ MonoBehaviour:
       hurtboxes:
       - size: {x: 29, y: 48}
         offset: {x: 6.4, y: 29}
+  - celName: 6A
+    loop: 0
+    cameraShake: {fileID: 0}
+    animationCel:
+    - frames: 8
+      sprite: {fileID: 1905181962, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 32, y: 32}
+        offset: {x: 16, y: 22}
+    - frames: 5
+      sprite: {fileID: -1747650672, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 32, y: 32}
+        offset: {x: 16, y: 22}
+    - frames: 6
+      sprite: {fileID: 1780940303, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 32, y: 42}
+        offset: {x: 5, y: 26}
+    - frames: 6
+      sprite: {fileID: 835039112, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes:
+      - size: {x: 24, y: 32}
+        offset: {x: 12, y: 15}
+      hurtboxes:
+      - size: {x: 32, y: 42}
+        offset: {x: 5, y: 26}
+    - frames: 5
+      sprite: {fileID: 2092762443, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 32, y: 42}
+        offset: {x: 5, y: 26}
+  - celName: 6AR
+    loop: 0
+    cameraShake: {fileID: 0}
+    animationCel:
+    - frames: 15
+      sprite: {fileID: 1905181962, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 32, y: 32}
+        offset: {x: 16, y: 22}
+    - frames: 5
+      sprite: {fileID: -1747650672, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 32, y: 32}
+        offset: {x: 16, y: 22}
+    - frames: 6
+      sprite: {fileID: 1780940303, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes: []
+      hurtboxes:
+      - size: {x: 32, y: 42}
+        offset: {x: 5, y: 26}
+    - frames: 6
+      sprite: {fileID: 835039112, guid: b9a42f1b6c44d9a44b1613bd61fb364c, type: 3}
+      animationEvent:
+        jump: 0
+        jumpDirection: {x: 0, y: 0}
+        footstep: 0
+        parry: 0
+        projectile: 0
+        projectilePoint: {x: 0, y: 0}
+        invisibile: 0
+        throwEnd: 0
+        throwArcanaEnd: 0
+        grabPoint: {x: 0, y: 0}
+      hitboxes:
+      - size: {x: 24, y: 32}
+        offset: {x: 12, y: 15}
+      hurtboxes:
+      - size: {x: 32, y: 42}
+        offset: {x: 5, y: 26}
   - celName: JAR
     loop: 0
     cameraShake: {fileID: 0}
