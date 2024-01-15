@@ -1519,6 +1519,7 @@ MonoBehaviour:
   _hitsNumberText: {fileID: 4151805455861975710}
   _maxArcanaText: {fileID: 4151805457093448407}
   _arcanaAnimator: {fileID: 4151805456746704310}
+  _comboAnimator: {fileID: 4490955736996871743}
   _pauseSlider: {fileID: 0}
   _comboTimerSlider: {fileID: 4151805456831702037}
   _comboTimerImage: {fileID: 7634311345902693633}
@@ -3282,6 +3283,7 @@ GameObject:
   - component: {fileID: 4151805455861975705}
   - component: {fileID: 4151805455861975710}
   - component: {fileID: 4151805455861975704}
+  - component: {fileID: 4490955736996871743}
   m_Layer: 5
   m_Name: HitsNumber_text
   m_TagString: Untagged
@@ -3421,6 +3423,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!95 &4490955736996871743
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4151805455861975706}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 24e82d4bb38793e488e0c3261152db07, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4151805455979376903
 GameObject:
   m_ObjectHideFlags: 0

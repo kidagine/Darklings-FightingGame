@@ -2,7 +2,6 @@ public class FallState : AirParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        CheckFlip(player);
         if (!player.enter)
         {
             player.enter = true;
