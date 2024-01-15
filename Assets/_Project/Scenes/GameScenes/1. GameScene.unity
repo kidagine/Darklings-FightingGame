@@ -2300,6 +2300,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 34344230}
   m_CullTransparentMesh: 1
+--- !u!1 &35039040 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4151805457093448401, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+  m_PrefabInstance: {fileID: 4151805457466573314}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &35039044
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35039040}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1031ebe3afe250542b78bd05d57579f8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &37057243
 GameObject:
   m_ObjectHideFlags: 0
@@ -18856,7 +18882,7 @@ MonoBehaviour:
   _assistTwo: 0
   _controllerOne: 0
   _controllerOneType: 0
-  _controllerTwo: -1
+  _controllerTwo: 0
   _controllerTwoType: 0
   _music: 0
   _playerOneSkin: 0
@@ -37808,6 +37834,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 766470383}
   m_CullTransparentMesh: 1
+--- !u!1 &770594745 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4151805457093448401, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+  m_PrefabInstance: {fileID: 1816792008}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &770594749
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770594745}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1031ebe3afe250542b78bd05d57579f8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &771954185
 GameObject:
   m_ObjectHideFlags: 0
@@ -91913,6 +91965,22 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4151805457093448401, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151805457093448407, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151805457093448407, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151805457093448407, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4151805457119455821, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
       propertyPath: m_LocalScale.x
       value: -1
@@ -109703,6 +109771,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4151805457036902508, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
       propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151805457093448406, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151805457093448407, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+      propertyPath: m_enableWordWrapping
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4151805457291442477, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
