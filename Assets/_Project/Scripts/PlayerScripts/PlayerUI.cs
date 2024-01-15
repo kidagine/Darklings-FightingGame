@@ -76,11 +76,11 @@ public class PlayerUI : MonoBehaviour
     void Awake()
     {
         _animator = GetComponent<Animator>();
-        _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
+        _hitsNumberText.transform.parent.parent.gameObject.SetActive(false);
         _notification.gameObject.SetActive(false);
         _comboTimerSlider.transform.GetChild(0).gameObject.SetActive(false);
         _comboTimerSlider.transform.GetChild(1).gameObject.SetActive(false);
-        _comboGroup = _hitsNumberText.transform.parent.parent.parent.GetComponent<RectTransform>();
+        _comboGroup = _hitsNumberText.transform.parent.parent.GetComponent<RectTransform>();
     }
 
     public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
@@ -487,7 +487,7 @@ public class PlayerUI : MonoBehaviour
         {
             StopCoroutine(_resetComboCoroutine);
             _hasComboEnded = false;
-            _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
+            _hitsNumberText.transform.parent.parent.gameObject.SetActive(false);
             _hitsNumberText.text = "0 Hits";
             if (_comboGroup.anchoredPosition.x == -110.0f)
             {
@@ -497,8 +497,8 @@ public class PlayerUI : MonoBehaviour
         _hitsNumberText.text = combo.ToString();
         if (combo > 1)
         {
-            _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
-            _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(true);
+            _hitsNumberText.transform.parent.parent.gameObject.SetActive(false);
+            _hitsNumberText.transform.parent.parent.gameObject.SetActive(true);
         }
         if (combo >= 10 && _comboGroup.anchoredPosition.x == -40.0f)
         {
@@ -531,7 +531,7 @@ public class PlayerUI : MonoBehaviour
     IEnumerator ResetComboCoroutine()
     {
         yield return new WaitForSeconds(1.0f);
-        _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
+        _hitsNumberText.transform.parent.parent.gameObject.SetActive(false);
         CurrentComboCount = 0;
         _hitsNumberText.text = "";
     }

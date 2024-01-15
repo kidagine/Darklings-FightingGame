@@ -48,7 +48,6 @@ public class DashAirState : State
         if (player.dashFrames > 0)
         {
             bool forwardDash = player.dashDirection * player.flip == 1 ? true : false;
-            Debug.Log(forwardDash);
             int startUpFrames = forwardDash ? 9 : 13;
             int recoveryFrames = forwardDash ? 2 : 3;
             DemonFloat dashforce = forwardDash ? player.playerStats.DashAirForce : player.playerStats.DashBackAirForce;
