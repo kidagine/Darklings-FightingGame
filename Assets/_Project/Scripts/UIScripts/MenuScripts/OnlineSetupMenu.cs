@@ -163,6 +163,8 @@ public class OnlineSetupMenu : BaseMenu
             _characterSelectables[i].Deactivate();
         DemonicsSaver.Save("character", playerStats.characterIndex.ToString());
         SetCharacter(playerStats.characterIndex);
+        DemonData.character = playerStats.characterIndex;
+        _homeMenu.SetCharacter(playerStats.characterIndex, DemonData.color, DemonData.demonName);
     }
 
     public void OpenChangeName()
@@ -184,11 +186,15 @@ public class OnlineSetupMenu : BaseMenu
     public void SetCharacter(int index)
     {
         _characterSelectables[index].Select();
-        DemonData.character = index;
         _playerUIRender.SetAnimator(_playerStatsSO[DemonData.character]._animation);
         _playerUIRender.SetSpriteLibraryAsset(DemonData.color);
         _playerName.text = Regex.Replace(_playerStatsSO[DemonData.character].characterName.ToString(), "([a-z])([A-Z])", "$1 $2");
         _homeMenu.SetCharacter(DemonData.character, DemonData.color, DemonData.demonName);
+    }
+
+    public void SetDemonData(int character, int color, string playerName)
+    {
+        DemonData = new DemonData { character = character, demonName = playerName, color = color };
     }
 }
 

@@ -38,6 +38,7 @@ public class OnlineHostMenu : BaseMenu
         _readyButtonComponent = _readyButton.GetComponent<Button>();
         if (Hosting)
         {
+            Debug.Log(_onlineSetupMenu.DemonData.demonName);
             _nameplates[0].SetDemonData(_onlineSetupMenu.DemonData);
             _lobbyId = await _networkManager.CreateLobby(_onlineSetupMenu.DemonData);
             if (_lobbyId == null)
