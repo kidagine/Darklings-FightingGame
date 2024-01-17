@@ -15,7 +15,7 @@ public class PlayerSimulation : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(playerGs.soundGroup))
         {
-            _audio.SoundGroup(playerGs.soundGroup).PlayInRandom();
+            _audio.SoundGroup(playerGs.soundGroup).PlayInRandomChance();
             playerGs.soundGroup = "";
         }
         if (!string.IsNullOrEmpty(playerGs.sound))

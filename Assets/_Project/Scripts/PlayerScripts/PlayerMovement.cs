@@ -32,20 +32,6 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         CheckKnockback();
-        CheckGrounded();
-    }
-
-    private void CheckGrounded()
-    {
-        if (Physics.Position.y == DemonicsPhysics.GROUND_POINT)
-        {
-            _player.HasJuggleForce = true;
-            IsGrounded = true;
-        }
-        else
-        {
-            IsGrounded = false;
-        }
     }
 
     public void SetPosition(DemonVector2 position)

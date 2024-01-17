@@ -17,7 +17,6 @@ public class Player : MonoBehaviour, IHitstop
     [HideInInspector] public PlayerStatsSO playerStats;
     protected PlayerComboSystem _playerComboSystem;
     private BrainController _controller;
-    private InputBuffer _inputBuffer;
     private Coroutine _shakeContactCoroutine;
     [HideInInspector] public UnityEvent hitstopEvent;
     [HideInInspector] public UnityEvent hitConnectsEvent;
@@ -39,16 +38,14 @@ public class Player : MonoBehaviour, IHitstop
     public DemonFloat AssistGauge { get; set; } = (DemonFloat)1;
     public DemonFloat ArcanaGauge { get; set; }
     public Assist Assist { get { return _assist; } private set { } }
-    public bool CanSkipAttack { get; set; }
-    public bool LockChain { get; set; }
-    public bool HasJuggleForce { get; set; }
+    private Audio _audio;
 
     void Awake()
     {
-        _inputBuffer = GetComponent<InputBuffer>();
         _playerMovement = GetComponent<PlayerMovement>();
         _playerComboSystem = GetComponent<PlayerComboSystem>();
         PlayerSimulation = GetComponent<PlayerSimulation>();
+        _audio = GetComponent<Audio>();
         ResultAttack = new ResultAttack();
     }
 
@@ -101,7 +98,6 @@ public class Player : MonoBehaviour, IHitstop
         InitializeStats();
         _playerUI.ShowPlayerIcon();
         hitstopEvent.RemoveAllListeners();
-        LockChain = false;
     }
 
     public void ResetLives()
@@ -131,6 +127,8 @@ public class Player : MonoBehaviour, IHitstop
         Health = playerStats.maxHealth;
         HealthRecoverable = playerStats.maxHealth;
         _playerUI.SetHealth(Health);
+        for (int i = 0; i < playerStats.characterSounds.Count; i++)
+            _audio.AddSoundGroup(playerStats.characterSounds[i]);
     }
 
     public void StartShakeContact()

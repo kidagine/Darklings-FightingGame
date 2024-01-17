@@ -24,6 +24,202 @@ MonoBehaviour:
   _particlesLibrary: {fileID: 11400000, guid: 8f051eb2fd5dc8648b7a92c54ba01579, type: 2}
   _projectilesLibrary: {fileID: 11400000, guid: e514dc82d773eb04d95e83596b949442, type: 2}
   characterName: 2
+  characterSounds:
+  - name: L
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 809b1e54260ddd8479a90ec2ba70c5ac, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 15
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 95aeed947c5102141ab59134276fb201, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 15
+    - source: {fileID: 0}
+      clip: {fileID: 0}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 70
+  - name: M
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: cfd9ce0fbce15c74080916d98d991fc7, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 25
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 791750b2f751abe488c08181d9875398, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 25
+    - source: {fileID: 0}
+      clip: {fileID: 0}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 50
+  - name: H
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 14ac245f238d11c46a846e861805c298, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 30
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 518206445efc41640b5c4079e85b40f6, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 30
+    - source: {fileID: 0}
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 40
+  - name: A
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 27e32d4f4349c9149a677d171d202dff, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 40
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 8504e11509045444aa985309ab499f18, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 40
+    - source: {fileID: 0}
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 20
+  - name: AR
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 27e32d4f4349c9149a677d171d202dff, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 50
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 8504e11509045444aa985309ab499f18, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 50
+  - name: Hurt
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: fb4a658c56f06dd4988795ecb852166c, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 10
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 07606cb646933104581588257d632cb0, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 10
+    - source: {fileID: 0}
+      clip: {fileID: 0}
+      volume: 0.3
+      pitch: 0
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 0
+  - name: Death
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 4c9379d567b919648947e3f5350abc9f, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 100
+  - name: Throw
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 86bb59cce82d9b2479775694e43d5cb5, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 100
   defenseLevel: 2
   arcanaLevel: 3
   speedLevel: 3

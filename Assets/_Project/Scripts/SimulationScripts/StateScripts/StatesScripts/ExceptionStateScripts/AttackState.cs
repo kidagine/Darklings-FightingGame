@@ -39,6 +39,7 @@ public class AttackState : State
             player.enter = true;
             player.hitbox.enter = false;
             player.sound = player.attackNetwork.attackSound;
+            player.soundGroup = player.attackNetwork.name[1..];
             player.animation = player.attackNetwork.name;
             player.attackFrames = DemonicsAnimator.GetMaxAnimationFrames(player.playerStats._animation, player.animation);
             UpdateFramedata(player);
