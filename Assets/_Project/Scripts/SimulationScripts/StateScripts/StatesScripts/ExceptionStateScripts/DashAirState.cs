@@ -76,6 +76,7 @@ public class DashAirState : State
         }
         else
         {
+            CheckFlip(player);
             player.dashDirection = 0;
             EnterState(player, "Fall");
         }
