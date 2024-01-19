@@ -156,7 +156,7 @@ public class AttackState : State
 
     private void ToJumpState(PlayerNetwork player)
     {
-        if (player.attackNetwork.jumpCancelable && player.canChainAttack || player.isAir && player.canDoubleJump && player.canChainAttack)
+        if (player.attackNetwork.jumpCancelable && player.canChainAttack || player.isAir && player.canDoubleJump && player.canChainAttack && !player.hasJumped)
         {
             if (player.direction.y > 0)
             {
@@ -170,10 +170,12 @@ public class AttackState : State
                 EnterState(player, "Jump");
             }
         }
+        else if (player.direction.y <= 0 && player.hasJumped)
+            player.hasJumped = false;
     }
     private void ToJumpForwardState(PlayerNetwork player)
     {
-        if (player.attackNetwork.jumpCancelable && player.canChainAttack || player.isAir && player.canDoubleJump && player.canChainAttack)
+        if (player.attackNetwork.jumpCancelable && player.canChainAttack || player.isAir && player.canDoubleJump && player.canChainAttack && !player.hasJumped)
         {
             if (player.direction.y > 0 && player.direction.x != 0)
             {
@@ -188,6 +190,8 @@ public class AttackState : State
                 EnterState(player, "JumpForward");
             }
         }
+        else if (player.direction.y <= 0 && player.hasJumped)
+            player.hasJumped = false;
     }
     private void ToIdleFallState(PlayerNetwork player)
     {
