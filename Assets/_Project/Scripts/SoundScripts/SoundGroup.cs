@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Linq;
 
 
 [Serializable]
@@ -19,6 +20,29 @@ public class SoundGroup
         {
             lastPlayedSoundIndex = 0;
         }
+    }
+
+    public Sound PlayInRandomChance()
+    {
+        Sound randomSound = null;
+        int chance = UnityEngine.Random.Range(0, 100);
+        int cumulative = 0;
+        for (int i = 0; i < sounds.Length; i++)
+        {
+            if (sounds[i] != null)
+            {
+                cumulative += sounds[i].chance;
+                if (chance < cumulative)
+                {
+                    randomSound = sounds[i];
+                    break;
+                }
+            }
+        }
+        if (randomSound == null)
+            return null;
+        randomSound.source.Play();
+        return randomSound;
     }
 
     public Sound PlayInRandom()

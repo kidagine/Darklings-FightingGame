@@ -24,6 +24,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _hitsNumberText = default;
     [SerializeField] private TextMeshProUGUI _maxArcanaText = default;
     [SerializeField] private Animator _arcanaAnimator = default;
+    [SerializeField] private Animator _comboAnimator = default;
     [SerializeField] private Slider _pauseSlider = default;
     [SerializeField] private Slider _comboTimerSlider = default;
     [SerializeField] private Image _comboTimerImage = default;
@@ -485,6 +486,7 @@ public class PlayerUI : MonoBehaviour
     {
         if (_hasComboEnded)
         {
+            _comboAnimator.Rebind();
             StopCoroutine(_resetComboCoroutine);
             _hasComboEnded = false;
             _hitsNumberText.transform.parent.parent.gameObject.SetActive(false);
@@ -530,6 +532,7 @@ public class PlayerUI : MonoBehaviour
 
     IEnumerator ResetComboCoroutine()
     {
+        _comboAnimator.Play("ComboEnded");
         yield return new WaitForSeconds(1.0f);
         _hitsNumberText.transform.parent.parent.gameObject.SetActive(false);
         CurrentComboCount = 0;

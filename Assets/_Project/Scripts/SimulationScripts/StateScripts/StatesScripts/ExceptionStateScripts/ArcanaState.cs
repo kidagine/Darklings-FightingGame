@@ -21,6 +21,7 @@ public class ArcanaState : State
             player.canChainAttack = false;
             player.animation = player.attackNetwork.name;
             player.sound = player.attackNetwork.attackSound;
+            player.soundGroup = player.attackNetwork.name[1..];
             player.animationFrames = 0;
             player.hitbox.enter = false;
             if (player.attackNetwork.teleport)

@@ -14,6 +14,7 @@ public class HurtParentState : State
     }
     protected virtual void OnEnter(PlayerNetwork player)
     {
+        player.soundGroup = "Hurt";
         player.otherPlayer.ArcanaGain(ArcanaGainTypes.AttackOnHit);
         player.ArcanaGain(ArcanaGainTypes.DefendOnHit);
         CheckTrainingGauges(player);
@@ -45,6 +46,7 @@ public class HurtParentState : State
         player.pushbackEnd = new DemonVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         if (player.health <= 0)
         {
+            player.soundGroup = "Death";
             CameraShake.Instance.Zoom(30, 0.2f);
             player.invincible = true;
             CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 30, timer = 0.5f });

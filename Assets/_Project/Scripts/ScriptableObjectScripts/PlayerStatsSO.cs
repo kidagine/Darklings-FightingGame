@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.U2D.Animation;
 
 [CreateAssetMenu(fileName = "Player Stats", menuName = "Scriptable Objects/Player Stat", order = 1)]
 public class PlayerStatsSO : ScriptableObject
@@ -13,6 +13,7 @@ public class PlayerStatsSO : ScriptableObject
     public EffectsLibrarySO _particlesLibrary;
     public EffectsLibrarySO _projectilesLibrary;
     public CharacterTypeEnum characterName;
+    public List<SoundGroup> characterSounds;
     [Header("Stats")]
     public int defenseLevel;
     public int arcanaLevel;

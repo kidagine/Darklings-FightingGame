@@ -7,6 +7,7 @@ public class GrabState : State
     {
         if (!player.enter)
         {
+            player.soundGroup = "Throw";
             SetTopPriority(player);
             CheckFlip(player);
             player.enter = true;

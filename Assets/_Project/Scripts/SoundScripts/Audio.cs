@@ -1,5 +1,6 @@
 ﻿using Demonics.Utility;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -9,7 +10,7 @@ public class Audio : MonoBehaviour
     [SerializeField] private AudioMixerGroup _audioMixerGroup = default;
     [SerializeField] private Sound[] _sounds = default;
     [SerializeField] private Sound3D[] _sounds3D = default;
-    [SerializeField] private SoundGroup[] _soundGroups = default;
+    [SerializeField] private List<SoundGroup> _soundGroups = default;
     [SerializeField] private SoundGroup3D[] _soundGroups3D = default;
 
 
@@ -107,6 +108,23 @@ public class Audio : MonoBehaviour
         }
     }
 
+    public void AddSoundGroup(SoundGroup soundGroup)
+    {
+
+        foreach (Sound sound in soundGroup.sounds)
+        {
+            sound.source = gameObject.AddComponent<AudioSource>();
+            sound.source.clip = sound.clip;
+
+            sound.source.volume = sound.volume;
+            sound.source.pitch = sound.pitch;
+            sound.source.loop = sound.loop;
+            sound.source.playOnAwake = sound.playOnAwake;
+            sound.source.outputAudioMixerGroup = _audioMixerGroup;
+        }
+        _soundGroups.Add(soundGroup);
+    }
+
     public Sound Sound(string name)
     {
         Sound sound = Array.Find(_sounds, s => s.name == name);
@@ -121,7 +139,7 @@ public class Audio : MonoBehaviour
 
     public SoundGroup SoundGroup(string name)
     {
-        SoundGroup soundGroup = Array.Find(_soundGroups, s => s.name == name);
+        SoundGroup soundGroup = Array.Find<SoundGroup>(_soundGroups.ToArray(), s => s.name == name);
         return soundGroup;
     }
 
