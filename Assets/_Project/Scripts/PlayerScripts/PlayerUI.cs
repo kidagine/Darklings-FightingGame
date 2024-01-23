@@ -92,8 +92,6 @@ public class PlayerUI : MonoBehaviour
         _healthCurrentColor = _healthNormalColor;
         _healthImage.color = _healthCurrentColor;
         _controller = controller;
-        int index = _controller.IsPlayerOne == true ? 0 : 1;
-        _overheadText.text = $"P{index + 1}";
         if (!_initializedStats)
         {
             if (_controller.IsPlayerOne)
@@ -200,6 +198,19 @@ public class PlayerUI : MonoBehaviour
     public void DecreaseArcana()
     {
         _arcanaAnimator.SetTrigger("Decrease");
+    }
+
+    public void ShowYouOverhead()
+    {
+        StartCoroutine(ShowYouOverheadCoroutine());
+    }
+
+    private IEnumerator ShowYouOverheadCoroutine()
+    {
+        _overheadText.text = "You";
+        _overheadText.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(2.5f);
+        _overheadText.gameObject.SetActive(false);
     }
 
     public void SetArcana(float value)
@@ -543,6 +554,8 @@ public class PlayerUI : MonoBehaviour
 
     public void ShowPlayerIcon()
     {
+        if (!SceneSettings.IsTrainingMode)
+            return;
         if (_showPlayerIconCoroutine != null)
         {
             _overheadText.gameObject.SetActive(false);
@@ -554,6 +567,7 @@ public class PlayerUI : MonoBehaviour
     IEnumerator ShowPlayerIconCoroutine()
     {
         int index = _controller.IsPlayerOne == true ? 0 : 1;
+        _overheadText.text = $"P{index + 1}";
         _overheadText.gameObject.SetActive(true);
         yield return new WaitForSeconds(1.0f);
         _overheadText.gameObject.SetActive(false);
