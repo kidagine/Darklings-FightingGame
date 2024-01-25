@@ -653,6 +653,12 @@ public class GameplayManager : MonoBehaviour
                     _playerTwoUI.FadeIn();
                     _timerAnimator.SetTrigger("FadeIn");
                     _readyEnd = true;
+                    if (_currentRound == 1)
+                        if (SceneSettings.IsOnline)
+                            if (SceneSettings.OnlineIndex == 0)
+                                _playerOneUI.ShowYouOverhead();
+                            else
+                                _playerTwoUI.ShowYouOverhead();
                 }
                 if (_readyEnd)
                 {

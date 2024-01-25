@@ -40,6 +40,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private PauseMenu _replayPauseMenu = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
     [SerializeField] private DisconnectMenu _disconnectMenu = default;
+    [SerializeField] private TextMeshProUGUI _overheadText = default;
     [SerializeField] private Audio _audio = default;
     [SerializeField] private Color _healthNormalColor = default;
     [SerializeField] private Color _healthLimitColor = default;
@@ -52,7 +53,6 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Color _arcanaMeter3Color = default;
     [Header("1BitVisuals")]
     [SerializeField] private Image _healthImage = default;
-    private GameObject[] _playerIcons;
     private Coroutine _openPauseHoldCoroutine;
     private Coroutine _notificiationCoroutine;
     private Coroutine _resetComboCoroutine;
@@ -84,13 +84,13 @@ public class PlayerUI : MonoBehaviour
         _comboGroup = _hitsNumberText.transform.parent.parent.GetComponent<RectTransform>();
     }
 
-    public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
+    public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, TextMeshProUGUI overhead)
     {
+        _overheadText = overhead;
         _borderHealth.color = Color.white;
         _borderPortrait.color = Color.white;
         _healthCurrentColor = _healthNormalColor;
         _healthImage.color = _healthCurrentColor;
-        _playerIcons = playerIcons;
         _controller = controller;
         if (!_initializedStats)
         {
@@ -198,6 +198,19 @@ public class PlayerUI : MonoBehaviour
     public void DecreaseArcana()
     {
         _arcanaAnimator.SetTrigger("Decrease");
+    }
+
+    public void ShowYouOverhead()
+    {
+        StartCoroutine(ShowYouOverheadCoroutine());
+    }
+
+    private IEnumerator ShowYouOverheadCoroutine()
+    {
+        _overheadText.text = "You";
+        _overheadText.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(2.5f);
+        _overheadText.gameObject.SetActive(false);
     }
 
     public void SetArcana(float value)
@@ -541,12 +554,11 @@ public class PlayerUI : MonoBehaviour
 
     public void ShowPlayerIcon()
     {
+        if (!SceneSettings.IsTrainingMode)
+            return;
         if (_showPlayerIconCoroutine != null)
         {
-            for (int i = 0; i < _playerIcons.Length; i++)
-            {
-                _playerIcons[i].SetActive(false);
-            }
+            _overheadText.gameObject.SetActive(false);
             StopCoroutine(_showPlayerIconCoroutine);
         }
         _showPlayerIconCoroutine = StartCoroutine(ShowPlayerIconCoroutine());
@@ -555,8 +567,9 @@ public class PlayerUI : MonoBehaviour
     IEnumerator ShowPlayerIconCoroutine()
     {
         int index = _controller.IsPlayerOne == true ? 0 : 1;
-        _playerIcons[index].SetActive(true);
+        _overheadText.text = $"P{index + 1}";
+        _overheadText.gameObject.SetActive(true);
         yield return new WaitForSeconds(1.0f);
-        _playerIcons[index].SetActive(false);
+        _overheadText.gameObject.SetActive(false);
     }
 }

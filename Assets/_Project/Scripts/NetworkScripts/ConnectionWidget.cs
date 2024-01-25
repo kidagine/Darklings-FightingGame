@@ -91,11 +91,13 @@ namespace SharedGame
             }
             else
             {
+                SceneSettings.IsOnline = true;
                 NetworkInput.IS_LOCAL = false;
                 var connectionInfo = GetConnectionInfo();
                 var perf = FindObjectOfType<GgpoPerformancePanel>();
                 perf.Setup();
                 var playerIndex = int.Parse(inpPlayerIndex.text);
+                SceneSettings.OnlineIndex = playerIndex;
                 gameManager.StartGGPOGame(perf, connectionInfo, playerIndex);
             }
         }

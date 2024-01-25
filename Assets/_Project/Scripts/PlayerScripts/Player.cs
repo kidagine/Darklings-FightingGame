@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityGGPO;
@@ -11,7 +12,7 @@ public class Player : MonoBehaviour, IHitstop
     [SerializeField] private Transform _cameraPoint = default;
     [SerializeField] private Transform _keepFlip = default;
     [SerializeField] private GameObject _throwTechPrefab = default;
-    [SerializeField] private GameObject[] _playerIcons = default;
+    [SerializeField] private TextMeshProUGUI _overheadText = default;
     protected PlayerUI _playerUI;
     private PlayerMovement _playerMovement;
     [HideInInspector] public PlayerStatsSO playerStats;
@@ -123,7 +124,7 @@ public class Player : MonoBehaviour, IHitstop
 
     private void InitializeStats()
     {
-        _playerUI.InitializeUI(playerStats, _controller, _playerIcons);
+        _playerUI.InitializeUI(playerStats, _controller, _overheadText);
         Health = playerStats.maxHealth;
         HealthRecoverable = playerStats.maxHealth;
         _playerUI.SetHealth(Health);
@@ -159,7 +160,7 @@ public class Player : MonoBehaviour, IHitstop
 
     private void Flip(int xDirection)
     {
-        transform.localScale = new Vector2(xDirection, transform.localScale.y);
+        transform.localScale = new Vector3(xDirection, transform.localScale.y, 1);
         _keepFlip.localScale = transform.localScale;
     }
 
