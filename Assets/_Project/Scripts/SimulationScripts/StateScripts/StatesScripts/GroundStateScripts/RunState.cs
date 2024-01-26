@@ -45,6 +45,7 @@ public class RunState : GroundParentState
     {
         if (player.direction.y > 0 && player.direction.x != 0)
         {
+            player.runJump = true;
             player.jumpDirection = (int)player.direction.x;
             EnterState(player, "PreJump");
         }

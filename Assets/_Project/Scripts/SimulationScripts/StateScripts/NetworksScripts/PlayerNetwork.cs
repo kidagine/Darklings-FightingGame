@@ -65,6 +65,7 @@ public class PlayerNetwork
     public bool usedShadowbreak;
     public bool hitstop;
     public bool juggleBounce;
+    public bool runJump;
     public string state;
     public int spriteOrder;
     public State CurrentState;
@@ -137,6 +138,7 @@ public class PlayerNetwork
         bw.Write(flip);
         bw.Write(spriteOrder);
         bw.Write(state);
+        bw.Write(runJump);
         inputBuffer.Serialize(bw);
         inputHistory.Serialize(bw);
         hurtbox.Serialize(bw);
@@ -208,6 +210,7 @@ public class PlayerNetwork
         canChainAttack = br.ReadBoolean();
         usedShadowbreak = br.ReadBoolean();
         juggleBounce = br.ReadBoolean();
+        runJump = br.ReadBoolean();
         flip = br.ReadInt32();
         spriteOrder = br.ReadInt32();
         state = br.ReadString();
@@ -216,6 +219,7 @@ public class PlayerNetwork
         hurtbox.Deserialize(br);
         hitbox.Deserialize(br);
         shadow.Deserialize(br);
+
         attackNetwork.Deserialize(br);
         attackHurtNetwork.Deserialize(br);
         for (int i = 0; i < projectiles.Length; ++i)
