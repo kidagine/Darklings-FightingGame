@@ -26,6 +26,7 @@ public struct AttackNetwork
     public DemonVector2 teleportPosition;
     public DemonFloat projectileSpeed;
     public string name;
+    public string moveMaterial;
     public string moveName;
     public string attackSound;
     public string impactSound;
@@ -47,6 +48,7 @@ public struct AttackNetwork
         bw.Write((int)comboTimerStarter);
         bw.Write((int)attackType);
         bw.Write(knockbackDuration);
+        bw.Write(moveMaterial);
         bw.Write(hitstop);
         bw.Write(damage);
         bw.Write(knockbackArc);
@@ -86,6 +88,7 @@ public struct AttackNetwork
         projectilePriority = br.ReadInt32();
         projectileSpeed = (DemonFloat)br.ReadSingle();
         projectileDestroyOnHit = br.ReadBoolean();
+        moveMaterial = br.ReadString();
         name = br.ReadString();
         moveName = br.ReadString();
         attackSound = br.ReadString();

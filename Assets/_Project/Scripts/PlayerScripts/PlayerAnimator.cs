@@ -7,6 +7,7 @@ public class PlayerAnimator : DemonicsAnimator
     [SerializeField] private Material _normal = default;
     [SerializeField] private Material _invincible = default;
     [SerializeField] private Material _armor = default;
+    [SerializeField] private Material _fire = default;
     [SerializeField] private Material _parry = default;
     [SerializeField] private Material _ar = default;
     [SerializeField] private Material _arArmor = default;
@@ -28,6 +29,7 @@ public class PlayerAnimator : DemonicsAnimator
     public void NormalMaterial() => _spriteRenderer.material = _normal;
     public void InvincibleMaterial() => _spriteRenderer.material = _invincible;
     public void ArmorMaterial() => _spriteRenderer.material = _armor;
+    public void FireMaterial() => _spriteRenderer.material = _fire;
     public void ParryMaterial() => _spriteRenderer.material = _parry;
     public void ARMaterial() => _spriteRenderer.material = _ar;
     public void ARArmorMaterial() => _spriteRenderer.material = _arArmor;
