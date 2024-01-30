@@ -15,7 +15,11 @@ public class JumpForwardState : AirParentState
                 player.SetParticle("Fall", new DemonVector2(player.position.x, player.position.y + 18));
             player.hasJumped = true;
             player.animationFrames = 0;
-            player.velocity = new DemonVector2((DemonFloat)1.6f * (DemonFloat)player.jumpDirection, player.playerStats.JumpForce);
+            if (player.runJump)
+                player.velocity = new DemonVector2((DemonFloat)2.1f * (DemonFloat)player.jumpDirection, player.playerStats.JumpForce);
+            else
+                player.velocity = new DemonVector2((DemonFloat)1.6f * (DemonFloat)player.jumpDirection, player.playerStats.JumpForce);
+
             if (player.inputBuffer.CurrentTrigger().frame != 0)
             {
                 player.isAir = true;
@@ -33,6 +37,7 @@ public class JumpForwardState : AirParentState
             }
             return;
         }
+        player.runJump = false;
         player.animationFrames++;
         player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - (float)DemonicsPhysics.GRAVITY);
         ToFallState(player);
