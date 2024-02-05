@@ -11,6 +11,7 @@ public class TrainingMenu : BaseMenu
     [SerializeField] private GameObject _framedataMeterGroup = default;
     [SerializeField] private GameObject _inputDisplayOne = default;
     [SerializeField] private GameObject _inputDisplayTwo = default;
+    [SerializeField] private CanvasGroup _canvasGroup = default;
     [SerializeField] private FrameMeterSystem _frameMeterSystem = default;
     [SerializeField] private InputHistory _inputHistoryOne = default;
     [SerializeField] private InputHistory _inputHistoryTwo = default;
@@ -33,7 +34,7 @@ public class TrainingMenu : BaseMenu
     [SerializeField] private TrainingSubOption[] _trainingSubOptions = default;
     [Header("Selectors")]
     private int _currentTrainingSubOptionIndex;
-
+    public CanvasGroup CanvasGroup { get { return _canvasGroup; } private set { } }
 
     public void ConfigurePlayers(Player playerOne, Player playerTwo)
     {

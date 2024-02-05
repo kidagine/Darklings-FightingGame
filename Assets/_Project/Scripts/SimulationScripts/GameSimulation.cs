@@ -10,6 +10,7 @@ public struct GameSimulation : IGame
     public int Frames { get; private set; }
     public static int FramesStatic { get; private set; }
     public static int Timer { get; set; }
+    public static int GlobalFreezeFrames { get; set; }
     public static int GlobalHitstop { get; set; }
     public static int Hitstop { get; set; }
     public static int IntroFrame { get; set; }
@@ -27,6 +28,7 @@ public struct GameSimulation : IGame
     {
         bw.Write(Frames);
         bw.Write(FramesStatic);
+        bw.Write(GlobalFreezeFrames);
         bw.Write(GlobalHitstop);
         bw.Write(Timer);
         bw.Write(Hitstop);
@@ -42,6 +44,7 @@ public struct GameSimulation : IGame
     {
         Frames = br.ReadInt32();
         FramesStatic = br.ReadInt32();
+        GlobalFreezeFrames = br.ReadInt32();
         GlobalHitstop = br.ReadInt32();
         Timer = br.ReadInt32();
         Hitstop = br.ReadInt32();
@@ -308,6 +311,11 @@ public struct GameSimulation : IGame
             Frames++;
             FramesStatic = Frames;
             DemonicsWorld.Frame = Frames;
+            if (GlobalFreezeFrames > 0)
+            {
+                GlobalFreezeFrames--;
+                return;
+            }
             if (Frames % GlobalHitstop == 0)
             {
                 if (IntroFrame == 0 && !_introPlayed)

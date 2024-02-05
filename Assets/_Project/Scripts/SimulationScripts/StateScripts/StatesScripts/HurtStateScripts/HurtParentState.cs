@@ -65,6 +65,12 @@ public class HurtParentState : State
 
     protected virtual void AfterHitstop(PlayerNetwork player)
     {
+        if (player.attackHurtNetwork.name.Contains("A"))
+        {
+            player.otherPlayer.player.PlayerUI.SetDarkScreen(false);
+            GameSimulation.GlobalFreezeFrames = 0;
+        }
+
         GameSimulation.GlobalHitstop = 1;
         if (player.attackHurtNetwork.knockbackDuration > 0 && player.knockback <= player.attackHurtNetwork.knockbackDuration)
         {
