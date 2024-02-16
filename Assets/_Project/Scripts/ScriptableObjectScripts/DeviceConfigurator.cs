@@ -19,7 +19,7 @@ public class DeviceConfigurator : ScriptableObject
         public Color disconnectedDisplayColor;
     }
 
-    public List<DeviceSet> listDeviceSets = new List<DeviceSet>();
+    public List<DeviceSet> listDeviceSets = new();
 
     public DisconnectedSettings disconnectedDeviceSettings;
 
@@ -29,12 +29,8 @@ public class DeviceConfigurator : ScriptableObject
         string currentDeviceRawPath = playerInput.devices[0].ToString();
         Sprite displaySpriteIcon = null;
         for (int i = 0; i < listDeviceSets.Count; i++)
-        {
             if (listDeviceSets[i].deviceRawPath.Equals(currentDeviceRawPath))
-            {
                 displaySpriteIcon = FilterForDeviceInputBinding(listDeviceSets[i], playerInputDeviceInputBinding);
-            }
-        }
         return displaySpriteIcon;
     }
 
@@ -42,15 +38,9 @@ public class DeviceConfigurator : ScriptableObject
     {
         Sprite spriteIcon = null;
         for (int i = 0; i < targetDeviceSet.deviceDisplaySettings.promptIcons.Count; i++)
-        {
             if (targetDeviceSet.deviceDisplaySettings.promptIcons[i].customInputContextString == inputBinding)
-            {
                 if (targetDeviceSet.deviceDisplaySettings.promptIcons[i].customInputContextIcon != null)
-                {
                     spriteIcon = targetDeviceSet.deviceDisplaySettings.promptIcons[i].customInputContextIcon;
-                }
-            }
-        }
         return spriteIcon;
     }
 }

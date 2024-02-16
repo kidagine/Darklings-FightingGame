@@ -3,7 +3,14 @@ using UnityEngine;
 
 [Flags]
 [Serializable]
-public enum InputEnum { Direction = 1, Light = 2, Medium = 4, Heavy = 8, Special = 12, Assist = 16, Throw = 32, Parry = 64, ForwardDash = 128, BackDash = 264, RedFrenzy = 528 };
+public enum InputEnum
+{
+    Neutral = 0, Up = 1, Down = 2, Left = 3, Right = 4,
+    UpLeft = 5, UpRight = 6, DownLeft = 7, DownRight = 8,
+    Light = 9, Medium = 10, Heavy = 11, Special = 12,
+    Assist = 13, Throw = 14, Parry = 15,
+    ForwardDash = 16, BackDash = 17, RedFrenzy = 18,
+};
 
 
 public class InputTypes : MonoBehaviour

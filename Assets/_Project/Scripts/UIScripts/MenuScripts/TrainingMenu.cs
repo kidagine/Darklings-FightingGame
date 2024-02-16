@@ -1,11 +1,17 @@
+using Demonics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static TrainingSettings;
 
 public class TrainingMenu : BaseMenu
 {
     [SerializeField] private GameObject _p1 = default;
+    [SerializeField] private GameObject _framedataMeterGroup = default;
+    [SerializeField] private GameObject _inputDisplayOne = default;
+    [SerializeField] private GameObject _inputDisplayTwo = default;
+    [SerializeField] private FrameMeterSystem _frameMeterSystem = default;
     [SerializeField] private InputHistory _inputHistoryOne = default;
     [SerializeField] private InputHistory _inputHistoryTwo = default;
     [SerializeField] private TextMeshProUGUI _startupOneText = default;
@@ -214,15 +220,39 @@ public class TrainingMenu : BaseMenu
         {
             case 0:
                 for (int i = 0; i < _uiCanvases.Length; i++)
-                {
-                    _uiCanvases[i].enabled = true;
-                }
+                    _uiCanvases[i].enabled = false;
                 break;
             case 1:
                 for (int i = 0; i < _uiCanvases.Length; i++)
-                {
-                    _uiCanvases[i].enabled = false;
-                }
+                    _uiCanvases[i].enabled = true;
+                break;
+        }
+    }
+
+    public void SetInputDisplay(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                _inputDisplayOne.SetActive(false);
+                _inputDisplayTwo.SetActive(false);
+                break;
+            case 1:
+                _inputDisplayOne.SetActive(true);
+                _inputDisplayTwo.SetActive(true);
+                break;
+        }
+    }
+
+    public void SetFramedataMeter(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                _framedataMeterGroup.SetActive(false);
+                break;
+            case 1:
+                _framedataMeterGroup.SetActive(true);
                 break;
         }
     }
@@ -240,9 +270,9 @@ public class TrainingMenu : BaseMenu
         }
     }
 
-    public void SetState(bool isPlayerOne, string state)
+    public void SetState(int isPlayerOne, string state)
     {
-        if (isPlayerOne)
+        if (isPlayerOne == 0)
         {
             _stateOneText.text = state;
         }
@@ -252,13 +282,13 @@ public class TrainingMenu : BaseMenu
         }
     }
 
-    public void FramedataValue(bool isPlayerOne, ResultAttack attack)
+    public void FramedataValue(int isPlayerOne, ResultAttack attack)
     {
         if (attack == null)
         {
             return;
         }
-        if (isPlayerOne)
+        if (isPlayerOne == 0)
         {
             if (_startupOneText.gameObject.activeSelf)
             {
@@ -320,17 +350,22 @@ public class TrainingMenu : BaseMenu
         }
     }
 
+    public void FramedataMeterValue(int isPlayerOne, FramedataTypesEnum framedataEnum)
+    {
+        _frameMeterSystem.AddFrame(isPlayerOne, framedataEnum);
+    }
+    public void FramedataMeterRun()
+    {
+        if (!_frameMeterSystem.gameObject.activeInHierarchy)
+            return;
+        if (Time.timeScale == 0)
+            return;
+        _frameMeterSystem.RunFrame();
+    }
+
     public void SetBlock(int value)
     {
-        switch (value)
-        {
-            case 0:
-                TrainingSettings.BlockAlways = false;
-                break;
-            case 1:
-                TrainingSettings.BlockAlways = true;
-                break;
-        }
+        TrainingSettings.Block = (BlockType)value;
     }
 
     public void SetOnHit(int value)
@@ -344,6 +379,12 @@ public class TrainingMenu : BaseMenu
                 TrainingSettings.OnHit = true;
                 break;
         }
+    }
+
+    public void SetBlockCount(int value)
+    {
+        TrainingSettings.BlockCount = value + 1;
+        TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
     }
 
     public void ResetTrainingOptions()

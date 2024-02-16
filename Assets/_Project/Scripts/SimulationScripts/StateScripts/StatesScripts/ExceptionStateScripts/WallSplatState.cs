@@ -7,33 +7,33 @@ public class WallSplatState : State
         CheckFlip(player);
         if (!player.enter)
         {
+            player.player.PlayerUI.DisplayNotification(NotificationTypeEnum.WallSplat);
+            CameraShake.Instance.Zoom(-8, 0.2f);
             player.comboLocked = true;
             player.wasWallSplatted = true;
-            DemonicsVector2 effectPosition = new DemonicsVector2(player.position.x + ((DemonicsFloat)2.25 * player.flip), player.position.y);
+            DemonVector2 effectPosition = new(player.position.x + ((DemonFloat)(-10) * player.flip), player.position.y);
             if (player.flip == 1)
-            {
-                player.SetEffect("WallSplat", effectPosition, true);
-            }
+                player.SetParticle("WallSplat", effectPosition, new Vector3(0, 0, 270));
             else
-            {
-                player.SetEffect("WallSplat", effectPosition, false);
-            }
+                player.SetParticle("WallSplat", effectPosition, new Vector3(0, 0, 90));
             player.sound = "WallSplat";
             player.enter = true;
             player.animationFrames = 0;
             player.attackHurtNetwork.knockbackArc = 35;
             player.attackHurtNetwork.knockbackDuration = 27;
+            return;
         }
-        player.velocity = DemonicsVector2.Zero;
+        player.animationFrames++;
+        player.velocity = DemonVector2.Zero;
         player.hurtbox.active = false;
         player.animation = "Wallsplat";
-        player.animationFrames++;
         ToAirborneState(player);
     }
     private void ToAirborneState(PlayerNetwork player)
     {
-        if (player.animationFrames >= 15)
+        if (player.animationFrames >= 20)
         {
+            CameraShake.Instance.ZoomDefault(0.1f);
             player.flip *= -1;
             player.hurtbox.active = true;
             EnterState(player, "Airborne");

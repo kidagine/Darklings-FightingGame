@@ -9,11 +9,14 @@ public class PauseMenu : BaseMenu
     [SerializeField] private PlayerUI _playerUI = default;
     [SerializeField] private TextMeshProUGUI _whoPaused = default;
     [SerializeField] private PromptsInput _prompts = default;
+    [SerializeField] private BaseMenu _trainingTopBar = default;
+    [SerializeField] private InputManager _inputManager = default;
     public bool PlayerOnePaused { get; private set; }
     public PlayerInput PlayerInput { get; set; }
 
     public void ClosePause()
     {
+        _inputManager.SetPrompts(null);
         _playerUI.ClosePause();
         _prompts.enabled = false;
     }
@@ -23,18 +26,18 @@ public class PauseMenu : BaseMenu
         GameplayManager.Instance.PauseMenu = this;
         PlayerOnePaused = playerOnePaused;
         if (playerOnePaused)
-        {
-            _whoPaused.text = "Player 1 Paused";
-        }
+            _whoPaused.text = "P1 Paused";
         else
-        {
-            _whoPaused.text = "Player 2 Paused";
-        }
+            _whoPaused.text = "P2 Paused";
     }
 
-    void OnEnable()
+    protected override void OnEnable()
     {
-        StartCoroutine(PromptEnablerCoroutine());
+        if (_trainingTopBar != null)
+            _trainingTopBar.Show();
+        if (gameObject.activeSelf)
+            StartCoroutine(PromptEnablerCoroutine());
+        base.OnEnable();
     }
 
     public void Restart()
@@ -46,6 +49,5 @@ public class PauseMenu : BaseMenu
     {
         yield return new WaitForSecondsRealtime(0.1f);
         _prompts.enabled = true;
-
     }
 }

@@ -16,23 +16,18 @@ public class PromptsInput : MonoBehaviour
     public UnityEvent OnRightPage;
     public UnityEvent OnLeftNavigation;
     public UnityEvent OnRightNavigation;
+    public UnityEvent OnOptions;
 
     void OnEnable()
     {
         if (_inputManager != null)
-        {
-            _inputManager.CurrentPrompts = this;
-        }
+            _inputManager.SetPrompts(this);
         else
         {
             if (_pauseMenu != null)
-            {
                 GameplayManager.Instance.PauseMenu.PlayerInput.GetComponent<PlayerController>().CurrentPrompts = GetComponent<PromptsInput>();
-            }
             else
-            {
                 GameplayManager.Instance.PlayerOne.GetComponent<PlayerController>().CurrentPrompts = GetComponent<PromptsInput>();
-            }
         }
     }
 

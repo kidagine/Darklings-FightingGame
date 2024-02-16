@@ -1,0 +1,250 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b068f32a8318198458ebcc77c82afffc, type: 3}
+  m_Name: Fighter5
+  m_EditorClassIdentifier: 
+  characterIndex: 4
+  portraits:
+  - {fileID: 21300000, guid: 6f23d957ad418bd46a3e19b3a68e225f, type: 3}
+  - {fileID: 21300000, guid: a903de908db2b1242be0446773856892, type: 3}
+  - {fileID: 21300000, guid: 3aeb282e5b2afc3499c3525793ffb6fc, type: 3}
+  - {fileID: 21300000, guid: f5d98ea86cd328b48839601d7b3b81a6, type: 3}
+  _animation: {fileID: 11400000, guid: c57bc744493459f4e8da98859fba2649, type: 2}
+  _dialogue: {fileID: 11400000, guid: 6596b2c988f032840af4471ce64d59b9, type: 2}
+  _effectsLibrary: {fileID: 11400000, guid: ff598a8eef630644a8e1042cf97e22b9, type: 2}
+  _particlesLibrary: {fileID: 11400000, guid: 8f051eb2fd5dc8648b7a92c54ba01579, type: 2}
+  _projectilesLibrary: {fileID: 11400000, guid: eec1cb461c23b324ab4ff62624a62027, type: 2}
+  characterName: 4
+  characterSounds:
+  - name: L
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 5834127fcfe009444b0d8e8f80090873, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 15
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: a5e7455fceb830542bd1e2090d73d68c, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 15
+    - source: {fileID: 0}
+      clip: {fileID: 0}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 70
+  - name: M
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 00778b550f5f5654a9af8340610e8cdc, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 25
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 3fb8037724d11f44e97b3cf63f804b01, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 25
+    - source: {fileID: 0}
+      clip: {fileID: 0}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 50
+  - name: H
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 4847eaaa68f0a4446a82778e562a43b1, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 30
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 5ee7ac0e7af003443ae380264ae25ba1, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 30
+    - source: {fileID: 0}
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 40
+  - name: A
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: b742577cfd5488741856ef9d4b1a4ac9, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 40
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 294d861bfc58f944e83990a0b3e97f3b, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 40
+    - source: {fileID: 0}
+      clip: {fileID: 0}
+      volume: 0
+      pitch: 0
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 20
+  - name: AR
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 294d861bfc58f944e83990a0b3e97f3b, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 50
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: c8f9f68b9074e8a469514e46caf2d85d, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 50
+  - name: Hurt
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 0fffcf35c28b0734bb2355866cc56095, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 10
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 5da4d1da646f8884191f4364ebd3d20e, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 10
+    - source: {fileID: 0}
+      clip: {fileID: 0}
+      volume: 0.3
+      pitch: 0
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 0
+  - name: Death
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 0e460ada61e5ee540ab505e6a0194a2c, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 100
+  - name: Throw
+    lastPlayedSoundIndex: 0
+    sounds:
+    - source: {fileID: 0}
+      clip: {fileID: 8300000, guid: 1c7a874e9f2ee0a47976e36d7c6b4405, type: 3}
+      volume: 0.3
+      pitch: 1.2
+      name: 
+      loop: 0
+      playOnAwake: 0
+      playOneInstanceAtATime: 0
+      chance: 100
+  defenseLevel: 1
+  arcanaLevel: 3
+  speedLevel: 3
+  jumpLevel: 1
+  dashLevel: 3
+  canDoubleJump: 1
+  arcanaRecharge: 3
+  m2L: {fileID: 11400000, guid: b21a919650d67314cad65ef17231728f, type: 2}
+  m5L: {fileID: 11400000, guid: d6f930c2bf0b9bf4a82c24a505ec26d0, type: 2}
+  m2M: {fileID: 11400000, guid: b9416d0ac1604984fa0bb7fe584ace56, type: 2}
+  m5M: {fileID: 11400000, guid: a5e5372ae05fa414f9665292e6b3c80a, type: 2}
+  m2H: {fileID: 11400000, guid: 32ef9e2ca53e97f4d83f845fc4a37061, type: 2}
+  m5H: {fileID: 11400000, guid: bddd518c3a2504c4399bf89785ece737, type: 2}
+  jL: {fileID: 11400000, guid: 012a533d05e831e41b28e9f6aee891f6, type: 2}
+  jM: {fileID: 11400000, guid: 0e420bcf8f5407e43b546ff337e2e154, type: 2}
+  jH: {fileID: 11400000, guid: c33cde8c82e13704db180d03da31c9c8, type: 2}
+  mThrow: {fileID: 11400000, guid: ccd92c5686e7e514bb6436cf5544faab, type: 2}
+  mParry: {fileID: 11400000, guid: c58eccf7cfd3efb49b62f7069dc01ae5, type: 2}
+  mRedFrenzy: {fileID: 11400000, guid: e0be7b5387a69ac41a627719128b6e50, type: 2}
+  m6Arcana: {fileID: 11400000, guid: db7e1155c8078294abd078cd0eeac3f7, type: 2}
+  m5Arcana: {fileID: 11400000, guid: 6bfa23716aa456642bb7efd85ba53871, type: 2}
+  m2Arcana: {fileID: 11400000, guid: 0fa244893e913b24cb8de57b897098b5, type: 2}
+  jArcana: {fileID: 11400000, guid: 813d913122236a442b2f5420116cb406, type: 2}
+  m6ArcanaFrenzy: {fileID: 11400000, guid: 6d633a557640bd64ca4ea4b62b6f4f99, type: 2}
+  m5ArcanaFrenzy: {fileID: 11400000, guid: 4e2a37597fcdc0744a374abcf4cb4275, type: 2}
+  m2ArcanaFrenzy: {fileID: 11400000, guid: 82fc8dba98d4fbc40b953d2ca1c70094, type: 2}
+  jArcanaFrenzy: {fileID: 11400000, guid: de102654e66179e41ae7b303b676cdbc, type: 2}
+  maxHealth: 10000

@@ -12,23 +12,21 @@ public class FadeHandler : MonoBehaviour
     [SerializeField] private float _fadeDuration = 1.2f;
     [Range(0f, 5f)]
     private Coroutine _fadeTransitionCoroutine;
+    [SerializeField] private bool _fadeOnStart = true;
     [HideInInspector] public UnityEvent onFadeEnd;
 
     void Awake()
     {
-        StartFadeTransition(false, 1.0f);
+        if (_fadeOnStart)
+            StartFadeTransition(false, 1.0f);
     }
 
     public void StartFadeTransition(bool fadeOut, float duration = default)
     {
         if (duration == 0)
-        {
             duration = _fadeDuration;
-        }
         if (_fadeTransitionCoroutine != null)
-        {
             StopCoroutine(_fadeTransitionCoroutine);
-        }
         _fadeTransitionCoroutine = StartCoroutine(FadeTransitionCoroutine(fadeOut, duration));
     }
 

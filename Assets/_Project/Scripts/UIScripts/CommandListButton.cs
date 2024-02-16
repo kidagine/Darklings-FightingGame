@@ -22,17 +22,11 @@ public class CommandListButton : MonoBehaviour
         _knockdownImage.gameObject.SetActive(false);
         _projectileImage.gameObject.SetActive(false);
         if (_arcanaCommand.reversal)
-        {
             _reversalImage.gameObject.SetActive(true);
-        }
         if (_arcanaCommand.causesKnockdown)
-        {
             _knockdownImage.gameObject.SetActive(true);
-        }
         if (_arcanaCommand.isProjectile)
-        {
             _projectileImage.gameObject.SetActive(true);
-        }
     }
 
     public void SetData(AttackSO command)
@@ -42,7 +36,8 @@ public class CommandListButton : MonoBehaviour
 
     public void UpdateShowcase()
     {
-        _commandListMenu.SetCommandListShowcase(_arcanaCommand);
+        if (_arcanaCommand)
+            _commandListMenu.SetCommandListShowcase(_arcanaCommand);
     }
 
     public void UpdateShowcaseNormal()

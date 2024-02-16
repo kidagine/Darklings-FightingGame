@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
+  m_Name: 5A
+  m_EditorClassIdentifier: 
+  damage: 400
+  attackTypeEnum: 2
+  hitStun: 18
+  blockStun: 23
+  travelDistance: {x: 0, y: 0}
+  knockbackForce: {x: -10, y: 0}
+  knockbackDuration: 20
+  knockbackArc: 10
+  superArmor: 0
+  isAirAttack: 0
+  isProjectile: 1
+  isArcana: 1
+  jumpCancelable: 0
+  causesKnockdown: 0
+  causesSoftKnockdown: 0
+  attackSound: Hit
+  impactSound: Impact5
+  hitstop: 11
+  hitEffect: {fileID: 3294536446187043669, guid: 0ef7a0e300cdddc4bbfefe48990db866, type: 3}
+  hitEffectPosition: {x: 40, y: -5}
+  hitEffectRotation: 0
+  hurtEffect: HurtHeavy
+  hurtEffectPosition: {x: 7.300293, y: -1.4848633}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: b6c04c6f8b446df4e996a2b115e6f0bf, type: 2}
+  moveName: Whirlwind Soul
+  moveDescription: Creates a whirlwind that slowly moves forward, useful for pressuring
+    your opponent.
+  moveVideo: {fileID: 32900000, guid: 02125157e46f99f408fdaee176e4f513, type: 3}
+  airOk: 1
+  reversal: 0
+  projectileSpeed: 0.6
+  projectilePriority: 2
+  projectileDestroyOnHit: 0
+  teleport: 0
+  teleportPosition: {x: 0, y: 0}

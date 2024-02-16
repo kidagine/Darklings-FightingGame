@@ -1,21 +1,23 @@
-using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayersMenu : BaseMenu
 {
+    [SerializeField] private TopBarMenu _topBarMenu = default;
+    [SerializeField] private HomeMenu _homeMenu = default;
     [SerializeField] private CharacterMenu _characterMenu = default;
-    [SerializeField] private RectTransform[] _playerIcons = default;
+    [SerializeField] private PlayerIcon[] _playerIcons = default;
+    [SerializeField] private RectTransform[] _playerGroups = default;
     [SerializeField] private GameObject _cpuTextRight = default;
     [SerializeField] private GameObject _cpuTextLeft = default;
-    [SerializeField] private BaseMenu _versusMenu = default;
-    [SerializeField] private BaseMenu _practiceMenu = default;
+    [SerializeField] private PromptsInput _prompts = default;
+    [SerializeField] private Selectable _firstSelectable = default;
     private Audio _audio;
-    private readonly float _left = -375.0f;
-    private readonly float _right = 375.0f;
-    private readonly float _center = 0.0f;
     public GameObject CpuTextRight { get { return _cpuTextRight; } private set { } }
     public GameObject CpuTextLeft { get { return _cpuTextLeft; } private set { } }
+    public RectTransform[] PlayerGroups { get { return _playerGroups; } set { } }
 
 
     void Awake()
@@ -26,143 +28,60 @@ public class PlayersMenu : BaseMenu
     private void UpdateVisiblePlayers(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
     {
         for (int i = 0; i < _playerIcons.Length; i++)
-        {
-            _playerIcons[i].GetComponent<PlayerIcon>().SetController();
-        }
-    }
-
-    public void UpdateLeftRightCpu()
-    {
-        if (IsOnRight())
-        {
-            _cpuTextRight.SetActive(false);
-        }
-        else
-        {
-            _cpuTextRight.SetActive(true);
-        }
-        if (IsOnLeft())
-        {
-            _cpuTextLeft.SetActive(false);
-        }
-        else
-        {
-            _cpuTextLeft.SetActive(true);
-        }
-    }
-
-    public bool IsOnRight()
-    {
-        for (int i = 0; i < _playerIcons.Length; i++)
-        {
-            if (_playerIcons[i].anchoredPosition.x == _right)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public bool IsOnLeft()
-    {
-        for (int i = 0; i < _playerIcons.Length; i++)
-        {
-            if (_playerIcons[i].anchoredPosition.x == _left)
-            {
-                return true;
-            }
-        }
-        return false;
+            _playerIcons[i].SetController();
     }
 
     public void OpenOtherMenu()
     {
-        if (_playerIcons[0].anchoredPosition.x != _center || _playerIcons[1].anchoredPosition.x != _center || _playerIcons[2].anchoredPosition.x != _center)
+        _audio.Sound("Pressed").Play();
+        if (PlayerGroups[0].childCount == 0 && PlayerGroups[2].childCount == 0)
+            _playerIcons[0].ConfirmQuickAssign();
+        else if (gameObject.activeInHierarchy)
         {
-            _audio.Sound("Pressed").Play();
-            if (_playerIcons[0].anchoredPosition.x == _right)
-            {
-                SceneSettings.ControllerTwoScheme = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
-                SceneSettings.ControllerTwo = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
-            }
-            else if (_playerIcons[1].anchoredPosition.x == _right)
-            {
-                SceneSettings.ControllerTwoScheme = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
-                SceneSettings.ControllerTwo = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.devices[0];
-            }
-            else if (_playerIcons[2].anchoredPosition.x == _right)
-            {
-                SceneSettings.ControllerTwoScheme = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
-                SceneSettings.ControllerTwo = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.devices[0];
-            }
-            else
-            {
-                SceneSettings.ControllerTwo = null;
-            }
-            if (_playerIcons[0].anchoredPosition.x == _left)
-            {
-                SceneSettings.ControllerOneScheme = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
-                SceneSettings.ControllerOne = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
-            }
-            else if (_playerIcons[1].anchoredPosition.x == _left)
-            {
-                SceneSettings.ControllerOneScheme = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
-                SceneSettings.ControllerOne = _playerIcons[1].GetComponent<PlayerIcon>().PlayerInput.devices[0];
-            }
-            else if (_playerIcons[2].anchoredPosition.x == _left)
-            {
-                SceneSettings.ControllerOneScheme = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.currentControlScheme;
-                SceneSettings.ControllerOne = _playerIcons[2].GetComponent<PlayerIcon>().PlayerInput.devices[0];
-            }
-            else
-            {
-                SceneSettings.ControllerOne = null;
-            }
             gameObject.SetActive(false);
-            for (int i = 0; i < _playerIcons.Length; i++)
-            {
-                _playerIcons[i].GetComponent<PlayerIcon>().Center();
-                _playerIcons[i].gameObject.SetActive(false);
-            }
+            Hide();
+            _homeMenu.Hide();
             _characterMenu.Show();
         }
     }
 
-    public bool ArePlayerIconsLeft()
+    public void OpenNextMenu(int intToCheck)
     {
-        for (int i = 0; i < _playerIcons.Length; i++)
+        if (PlayerGroups[intToCheck].childCount == 0)
+            return;
+        if (gameObject.activeInHierarchy)
         {
-            if (_playerIcons[i].anchoredPosition.x != _left)
-            {
-                return false;
-            }
+            gameObject.SetActive(false);
+            Hide();
+            _homeMenu.Hide();
+            _characterMenu.Show();
         }
-        return true;
-    }
-
-    public bool ArePlayerIconsRight()
-    {
-        for (int i = 0; i < _playerIcons.Length; i++)
-        {
-            if (_playerIcons[i].anchoredPosition.x != _right)
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
     public void OpenKeyboardCoOp()
     {
         _audio.Sound("Pressed").Play();
-        SceneSettings.ControllerTwo = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
-        SceneSettings.ControllerOne = _playerIcons[0].GetComponent<PlayerIcon>().PlayerInput.devices[0];
+        SceneSettings.ControllerOne = _playerIcons[0].PlayerInput.devices[0];
+        SceneSettings.ControllerTwo = _playerIcons[0].PlayerInput.devices[0];
         gameObject.SetActive(false);
+        Hide();
+        _homeMenu.Hide();
         _characterMenu.Show();
+    }
+
+    public void CheckCPU()
+    {
+        _cpuTextLeft.gameObject.SetActive(_playerGroups[0].childCount == 0 ? true : false);
+        _cpuTextRight.gameObject.SetActive(_playerGroups[2].childCount == 0 ? true : false);
     }
 
     void OnDisable()
     {
+        _firstSelectable.Select();
+        if (_playerGroups[0].childCount > 0)
+            SceneSettings.ControllerOne = _playerGroups[0].GetChild(0).GetComponent<PlayerIcon>().PlayerInput.devices[0];
+        if (_playerGroups[2].childCount > 0)
+            SceneSettings.ControllerTwo = _playerGroups[2].GetChild(0).GetComponent<PlayerIcon>().PlayerInput.devices[0];
         _cpuTextLeft.SetActive(true);
         _cpuTextRight.SetActive(true);
         InputSystem.onDeviceChange -= UpdateVisiblePlayers;
@@ -170,19 +89,9 @@ public class PlayersMenu : BaseMenu
 
     private void OnEnable()
     {
+        EventSystem.current.SetSelectedGameObject(null);
+        _prompts.gameObject.SetActive(true);
         InputSystem.onDeviceChange += UpdateVisiblePlayers;
         UpdateVisiblePlayers(null, default);
-    }
-
-    public void Back()
-    {
-        if (SceneSettings.IsTrainingMode)
-        {
-            OpenMenuHideCurrent(_practiceMenu);
-        }
-        else
-        {
-            OpenMenuHideCurrent(_versusMenu);
-        }
     }
 }

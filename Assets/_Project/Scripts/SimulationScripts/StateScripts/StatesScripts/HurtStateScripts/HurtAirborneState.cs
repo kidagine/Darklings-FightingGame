@@ -1,15 +1,22 @@
+using Demonics;
 using UnityEngine;
 
 public class HurtAirborneState : HurtParentState
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
+        if (!player.enter)
+        {
+            OnEnter(player);
+            return;
+        }
+        if (player.enter)
+            if (player.animationFrames < 4)
+            {
+                player.animationFrames++;
+            }
         base.UpdateLogic(player);
         player.animation = "HurtAir";
-        if (player.animationFrames < 4)
-        {
-            player.animationFrames++;
-        }
         ToHurtState(player);
         ToKnockdownState(player);
         ToWallSplatState(player);
@@ -28,7 +35,7 @@ public class HurtAirborneState : HurtParentState
                 EnterState(player, "Grabbed");
                 return;
             }
-            if (player.attackHurtNetwork.hardKnockdown)
+            if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown)
             {
                 EnterState(player, "Airborne");
             }
@@ -50,6 +57,7 @@ public class HurtAirborneState : HurtParentState
             if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT && player.flip == 1
             || player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT && player.flip == -1)
             {
+                player.pushbox.active = true;
                 player.player.StopShakeCoroutine();
                 EnterState(player, "WallSplat");
             }
@@ -57,8 +65,10 @@ public class HurtAirborneState : HurtParentState
     }
     private void ToKnockdownState(PlayerNetwork player)
     {
-        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonicsFloat)player.velocity.y <= (DemonicsFloat)0 && player.knockback > 1)
+        if ((DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0 && player.knockback > 1)
         {
+            if (SceneSettings.IsTrainingMode && player.isAi)
+                TrainingSettings.BlockCountCurrent = TrainingSettings.BlockCount;
             player.pushbox.active = true;
             player.comboLocked = false;
             ResetCombo(player);
@@ -81,28 +91,28 @@ public class HurtAirborneState : HurtParentState
     }
     protected override void Knockback(PlayerNetwork player)
     {
-        DemonicsFloat ratio = (DemonicsFloat)player.knockback / (DemonicsFloat)player.attackHurtNetwork.knockbackDuration;
-        DemonicsFloat distance = player.pushbackEnd.x - player.pushbackStart.x;
-        DemonicsFloat nextX = DemonicsFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
-        DemonicsFloat baseY = DemonicsFloat.Lerp(player.pushbackStart.y, player.pushbackEnd.y, (nextX - player.pushbackStart.x) / distance);
-        DemonicsFloat arc = player.attackHurtNetwork.knockbackArc * (nextX - player.pushbackStart.x) * (nextX - player.pushbackEnd.x) / ((-0.25f) * distance * distance);
-        DemonicsVector2 nextPosition = DemonicsVector2.Zero;
+        DemonFloat ratio = (DemonFloat)player.knockback / (DemonFloat)player.attackHurtNetwork.knockbackDuration;
+        DemonFloat distance = player.pushbackEnd.x - player.pushbackStart.x;
+        DemonFloat nextX = DemonFloat.Lerp(player.pushbackStart.x, player.pushbackEnd.x, ratio);
+        DemonFloat baseY = DemonFloat.Lerp(player.pushbackStart.y, player.pushbackEnd.y, (nextX - player.pushbackStart.x) / distance);
+        DemonFloat arc = player.attackHurtNetwork.knockbackArc * (nextX - player.pushbackStart.x) * (nextX - player.pushbackEnd.x) / ((-0.25f) * distance * distance);
+        DemonVector2 nextPosition = DemonVector2.Zero;
         if (player.attackHurtNetwork.softKnockdown)
         {
-            nextPosition = new DemonicsVector2(nextX, baseY + arc);
+            nextPosition = new DemonVector2(nextX, baseY + arc);
         }
         else
         {
-            nextPosition = new DemonicsVector2(nextX, baseY + arc);
+            nextPosition = new DemonVector2(nextX, baseY + arc);
         }
         player.position = nextPosition;
         if (player.position.x >= DemonicsPhysics.WALL_RIGHT_POINT)
         {
-            player.position = new DemonicsVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
+            player.position = new DemonVector2(DemonicsPhysics.WALL_RIGHT_POINT, player.position.y);
         }
         else if (player.position.x <= DemonicsPhysics.WALL_LEFT_POINT)
         {
-            player.position = new DemonicsVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
+            player.position = new DemonVector2(DemonicsPhysics.WALL_LEFT_POINT, player.position.y);
         }
         player.knockback++;
     }

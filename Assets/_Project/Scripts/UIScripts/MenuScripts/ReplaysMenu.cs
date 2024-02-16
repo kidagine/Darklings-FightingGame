@@ -17,54 +17,45 @@ public class ReplaysMenu : BaseMenu
     void Start()
     {
         _replaysGroup.anchoredPosition = new Vector2(0.0f, _replaysGroup.anchoredPosition.y);
-        if (ReplayManager.Instance.ReplayAmount > 1)
+        if (ReplayManager.Instance.ReplayAmount > 0)
         {
-            for (int i = 0; i < ReplayManager.Instance.ReplayAmount - 1; i++)
+            for (int i = 0; i < ReplayManager.Instance.ReplayAmount; i++)
             {
-                ReplayCard replayCard = Instantiate(_replayPrefab, _replaysGroup).GetComponent<ReplayCard>();
+                ReplayCard replayCard = Instantiate(_replayPrefab, _replaysGroup).transform.GetChild(0).GetComponent<ReplayCard>();
                 replayCard.SetData(ReplayManager.Instance.GetReplayData(i));
                 int index = i;
-                replayCard.GetComponent<BaseButton>()._onClickedAnimationEnd.AddListener(() => LoadReplayMatch(index));
-                replayCard.GetComponent<BaseButton>()._scrollView = _scrollView;
-
+                if (index == ReplayManager.Instance.ReplayAmount - 1 && index > 0)
+                    replayCard.Initialize(index, this, _replaysGroup, _replayCards[index - 1].GetComponent<Selectable>(), true);
+                else
+                    replayCard.Initialize(index, this, _replaysGroup);
                 _replayCards.Add(replayCard);
             }
-            _replayCards[0].GetComponent<BaseButton>()._scrollUpAmount = 0.0f;
-            _replayCards[_replayCards.Count - 1].GetComponent<BaseButton>()._scrollDownAmount = 0.0f;
-            _replayCards[0].GetComponent<Button>().Select();
         }
         else
-        {
             _noReplaysFound.SetActive(true);
-        }
         StartCoroutine(SetUpScrollViewCoroutine());
     }
-
 
     public void LoadReplayMatch(int index)
     {
         _currentReplayCard = _replayCards[index];
-        if (_currentReplayCard.ReplayCardData.versionNumber.Trim() == ReplayManager.Instance.VersionNumber)
+        if (_currentReplayCard.ReplayData.version.Trim() == ReplayManager.Instance.VersionNumber)
         {
             SceneSettings.IsOnline = false;
             SceneSettings.SceneSettingsDecide = true;
             SceneSettings.IsTrainingMode = false;
             SceneSettings.ReplayIndex = index;
             ReplayManager.Instance.SetReplay();
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(1);
         }
         else
         {
-            Debug.Log("Replay version incompatible:" + _currentReplayCard.ReplayCardData.versionNumber.Trim() + "," + ReplayManager.Instance.VersionNumber);
             _currentReplayCard.GetComponent<Animator>().Rebind();
             _replayIncompatibleMenu.Show();
         }
     }
 
-    public void CloseIncompatible()
-    {
-        _currentReplayCard.GetComponent<Button>().Select();
-    }
+    public void CloseIncompatible() => _currentReplayCard.GetComponent<Button>().Select();
 
     void OnEnable()
     {
@@ -78,8 +69,6 @@ public class ReplaysMenu : BaseMenu
         _replaysGroup.anchoredPosition = new Vector2(0.0f, -(_replaysGroup.rect.height / 2.0f));
         _scrollView.anchoredPosition = Vector2.zero;
         if (_replayCards.Count > 0)
-        {
             _replayCards[0].GetComponent<Button>().Select();
-        }
     }
 }

@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc38aa9bd105964ea227944394dc39b, type: 3}
+  m_Name: 2H
+  m_EditorClassIdentifier: 
+  damage: 500
+  attackTypeEnum: 2
+  hitStun: 30
+  blockStun: 16
+  travelDistance: {x: 0, y: 0}
+  knockbackForce: {x: 12.8, y: 0}
+  knockbackDuration: 24
+  knockbackArc: 25
+  superArmor: 0
+  isAirAttack: 0
+  isProjectile: 0
+  isArcana: 0
+  jumpCancelable: 1
+  causesKnockdown: 0
+  causesSoftKnockdown: 0
+  attackSound: Hit
+  impactSound: Impact4
+  hitstop: 14
+  hitEffect: {fileID: 3782010356200484119, guid: 47b4915fae0034c45b98dedc650be9af, type: 3}
+  hitEffectPosition: {x: 1, y: 1.5}
+  hitEffectRotation: 50
+  hurtEffect: HurtHeavy
+  hurtEffectPosition: {x: -35.7512, y: -40}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: 1cd66c80ffdb25f46918cbaf3ad3e838, type: 2}
+  moveName: 
+  moveDescription: 
+  moveVideo: {fileID: 0}

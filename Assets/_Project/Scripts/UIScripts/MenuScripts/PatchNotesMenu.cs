@@ -1,65 +1,52 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class PatchNotesMenu : BaseMenu
 {
     [SerializeField] private InputManager _inputManager = default;
-    [SerializeField] private BaseMenu[] _menues = default;
-    [SerializeField] private PromptsInput[] _prompts = default;
     [SerializeField] private RectTransform _scrollView = default;
     [SerializeField] private RectTransform _patchNotes = default;
+    [SerializeField] private Vector2 _boundaries = default;
+    [SerializeField] private Selectable _firstSelectable = default;
     private readonly int _scrollSpeed = 350;
-    private int _previousMenuIndex = 0;
-    private float bottomScrollLimit = 0.0f;
 
-    public void Back()
-    {
-        _inputManager.CurrentPrompts = _prompts[_previousMenuIndex];
-        OpenMenuHideCurrent(_menues[_previousMenuIndex]);
-    }
+    void Update() => Scroll(_inputManager.NavigationInput.y * 4);
 
-    public void SetPreviousMenuIndex(int index)
+    public void Scroll(float navigationInput)
     {
-        _previousMenuIndex = index;
-    }
-
-    void Update()
-    {
-        Scroll();
-    }
-
-    private void Scroll()
-    {
-        float movement = (_inputManager.NavigationInput.y * Time.deltaTime * _scrollSpeed) * -1;
-        if (movement < 0 && _scrollView.anchoredPosition.y > 0 || movement > 0 && _scrollView.anchoredPosition.y <= bottomScrollLimit)
+        float movement = navigationInput * Time.deltaTime * _scrollSpeed * -1;
+        if (movement < 0 && _patchNotes.anchoredPosition.y > _boundaries.x || movement > 0 && _patchNotes.anchoredPosition.y <= _boundaries.y)
         {
-            _scrollView.anchoredPosition += new Vector2(0.0f, movement);
-            if (_scrollView.anchoredPosition.y < 0.0f)
-            {
-                _scrollView.anchoredPosition = new Vector2(0.0f, 0.0f);
-            }
-            else if (_scrollView.anchoredPosition.y > bottomScrollLimit)
-            {
-                _scrollView.anchoredPosition = new Vector2(0.0f, bottomScrollLimit);
-            }
+            _patchNotes.anchoredPosition += new Vector2(0.0f, movement);
+            if (_patchNotes.anchoredPosition.y < _boundaries.x)
+                _patchNotes.anchoredPosition = new Vector2(0.0f, _boundaries.x);
+            else if (_patchNotes.anchoredPosition.y > _boundaries.y)
+                _patchNotes.anchoredPosition = new Vector2(0.0f, _boundaries.y);
         }
     }
 
-    void OnEnable()
+    protected override void OnEnable()
     {
         _scrollView.anchoredPosition = Vector2.zero;
+        base.OnEnable();
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
-    void Start()
+    void OnDisable()
     {
-        StartCoroutine(SetUpPatchNotesCoroutine());
+        if (PreviousSelectable != null)
+            PreviousSelectable.Select();
+        _inputManager.SetPrompts(_inputManager.PreviousPrompts);
     }
+
+    void Start() => StartCoroutine(SetUpPatchNotesCoroutine());
 
     IEnumerator SetUpPatchNotesCoroutine()
     {
         yield return null;
-        _patchNotes.anchoredPosition = new Vector2(0.0f, -(_patchNotes.rect.height / 2.0f));
-        bottomScrollLimit = _patchNotes.rect.height - 300.0f;
-        _scrollView.anchoredPosition = Vector2.zero;
+        _boundaries = new Vector2(-_patchNotes.rect.height, _scrollView.rect.height);
+        _patchNotes.anchoredPosition = new Vector2(0.0f, -_patchNotes.rect.height);
     }
 }

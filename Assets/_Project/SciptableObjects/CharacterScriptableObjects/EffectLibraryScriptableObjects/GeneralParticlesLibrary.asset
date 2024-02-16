@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6330d5bbeabd1b14fa5a92f3bcaf733a, type: 3}
+  m_Name: GeneralParticlesLibrary
+  m_EditorClassIdentifier: 
+  _objectPools:
+  - groupName: HurtNormal
+    prefab: {fileID: 1360098173194778, guid: 6a3ea24a83f3e9e41a57f84301e93ced, type: 3}
+    size: 5
+  - groupName: HurtHeavy
+    prefab: {fileID: 1360098173194778, guid: 0fcc7a5b88e8fcb46890cca9ade939a4, type: 3}
+    size: 3
+  - groupName: HurtMedium
+    prefab: {fileID: 1360098173194778, guid: da95406ee0df9b74ab89da6e3213e716, type: 3}
+    size: 3
+  - groupName: HurtArcana
+    prefab: {fileID: 1360098173194778, guid: 3fdc13e913b2a0841823046f55c7d94d, type: 3}
+    size: 3
+  - groupName: GuardBreak
+    prefab: {fileID: 1360098173194778, guid: 96c7fee3d135cb44483c1b002042e941, type: 3}
+    size: 3
+  - groupName: KnockdownSoft
+    prefab: {fileID: 1950678767239328, guid: 3deff33d84631714d8a7a401507312a5, type: 3}
+    size: 3
+  - groupName: KnockdownHard
+    prefab: {fileID: 1950678767239328, guid: 4a1097a6b89c29a4387496c4ea5c80c1, type: 3}
+    size: 3
+  - groupName: RedFrenzy
+    prefab: {fileID: 1360098173194778, guid: 0b60fac4e8146aa4ab7bad56243e01ee, type: 3}
+    size: 3
+  - groupName: Jump
+    prefab: {fileID: 110814, guid: 1ee3bc51a3949df4b8feecc3bf285c9a, type: 3}
+    size: 5
+  - groupName: JumpRight
+    prefab: {fileID: 110814, guid: fe8cb97346e5e9d43997bca7e12efbf8, type: 3}
+    size: 5
+  - groupName: JumpLeft
+    prefab: {fileID: 110814, guid: 65754cc506574604ea41c000281e45b3, type: 3}
+    size: 5
+  - groupName: WallSplat
+    prefab: {fileID: 1435498851808430, guid: 1fa661912640d324f84a87e4e0740f02, type: 3}
+    size: 3
+  - groupName: Fall
+    prefab: {fileID: 110814, guid: 0e823150cf1d92048af485f7d26058ed, type: 3}
+    size: 3
+  - groupName: Block
+    prefab: {fileID: 109840, guid: 795900cdc7960c045a406f19df48096f, type: 3}
+    size: 3
+  - groupName: Chip
+    prefab: {fileID: 109840, guid: eebb6fe81913f0f44958bcd1df34a908, type: 3}
+    size: 3
+  - groupName: Parry
+    prefab: {fileID: 1360098173194778, guid: 68da0f2b1676dee48a9ec178d8be8760, type: 3}
+    size: 3
+  - groupName: DashAirForward
+    prefab: {fileID: 129404, guid: e0738bcbae125614d8d257714a6136e4, type: 3}
+    size: 5
+  - groupName: DashAirBackwards
+    prefab: {fileID: 129404, guid: 7c5a98bca19e0ac4795f66e24920cf7d, type: 3}
+    size: 5
+  - groupName: Dash
+    prefab: {fileID: 110814, guid: 6a8a57f3b4c0c1c4e8b26696b67463fe, type: 3}
+    size: 5
+  - groupName: ThrowTech
+    prefab: {fileID: 1360098173194778, guid: e3fbed26a0cab6943a6ddec02afe66cf, type: 3}
+    size: 1
+  - groupName: Arcana
+    prefab: {fileID: 1360098173194778, guid: ecad9cfda3411f443af0b180fdec6c1e, type: 3}
+    size: 4

@@ -9,14 +9,13 @@ public class PlayerSimulation : MonoBehaviour
     [SerializeField] private CollisionVisualizer _hurtBoxVisualizer = default;
     [SerializeField] private CollisionVisualizer _hitBoxVisualizer = default;
     [SerializeField] private CollisionVisualizer _pushBoxVisualizer = default;
-    [SerializeField] private DisconnectMenu _disconnectMenu = default;
 
 
     public void Simulate(PlayerNetwork playerGs, PlayerConnectionInfo info)
     {
         if (!string.IsNullOrEmpty(playerGs.soundGroup))
         {
-            _audio.SoundGroup(playerGs.soundGroup).PlayInRandom();
+            _audio.SoundGroup(playerGs.soundGroup).PlayInRandomChance();
             playerGs.soundGroup = "";
         }
         if (!string.IsNullOrEmpty(playerGs.sound))
@@ -30,20 +29,13 @@ public class PlayerSimulation : MonoBehaviour
             playerGs.soundStop = "";
         }
         if (info.state == PlayerConnectState.Disconnected && playerGs.health > 0)
-        {
             _player.PlayerUI.Disconnected();
-        }
+
         _player.Simulate(playerGs, info);
         _player.PlayerUI.SetArcana(playerGs.arcanaGauge);
         _player.PlayerUI.SetComboTimerLock(playerGs.otherPlayer.comboLocked);
         _player.Assist.Simulate(playerGs);
-        for (int i = 0; i < playerGs.inputBuffer.inputItems.Length; i++)
-        {
-            if (playerGs.inputBuffer.inputItems[i].pressed)
-            {
-                _inputBuffer.AddInputBufferItem(playerGs.inputBuffer.inputItems[i].inputEnum, playerGs.inputBuffer.inputItems[i].inputDirection);
-            }
-        }
+        _inputBuffer.UpdateBuffer(playerGs.inputList, playerGs.inputBuffer);
         _playerAnimator.SetAnimation(playerGs.animation, playerGs.animationFrames);
         _playerAnimator.SetInvinsible(playerGs.invisible);
         _playerAnimator.SetSpriteOrder(playerGs.spriteOrder);

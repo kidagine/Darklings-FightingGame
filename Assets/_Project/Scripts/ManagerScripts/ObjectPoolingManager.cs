@@ -6,12 +6,16 @@ public class ObjectPoolingManager : MonoBehaviour
     [SerializeField] private Transform _playerTwoPool = default;
     [SerializeField] private Transform _playerOneProjectilePool = default;
     [SerializeField] private Transform _playerTwoProjectilePool = default;
+    [SerializeField] private Transform _playerOneParticlesPool = default;
+    [SerializeField] private Transform _playerTwoParticlesPool = default;
     private List<GameObject> _objects = new List<GameObject>();
     public static ObjectPoolingManager Instance { get; private set; }
     private List<GameObject> _jumpOneEffects = new List<GameObject>();
     private List<GameObject> _jumpTwoEffects = new List<GameObject>();
     private List<ObjectPoolGroup> _objectsPoolOne = new List<ObjectPoolGroup>();
     private List<ObjectPoolGroup> _objectsPoolTwo = new List<ObjectPoolGroup>();
+    private List<ObjectPoolGroup> _objectsParticlesPoolOne = new List<ObjectPoolGroup>();
+    private List<ObjectPoolGroup> _objectsParticlesPoolTwo = new List<ObjectPoolGroup>();
     private List<ObjectPoolGroup> _objectsProjectilePoolOne = new List<ObjectPoolGroup>();
     private List<ObjectPoolGroup> _objectsProjectilePoolTwo = new List<ObjectPoolGroup>();
     private List<ObjectPoolGroup> _objectsAssistsPoolOne = new List<ObjectPoolGroup>();
@@ -50,6 +54,34 @@ public class ObjectPoolingManager : MonoBehaviour
             }
         }
     }
+
+    public void PoolParticlesInitialize(EffectsLibrarySO particlesLibraryOne, EffectsLibrarySO particlesLibraryTwo)
+    {
+        if (!HasPooled)
+        {
+            for (int i = 0; i < particlesLibraryOne._objectPools.Count; i++)
+            {
+                _objectsParticlesPoolOne.Add(new ObjectPoolGroup() { groupName = particlesLibraryOne._objectPools[i].groupName, objects = new List<GameObject>() });
+                for (int j = 0; j < particlesLibraryOne._objectPools[i].size; ++j)
+                {
+                    GameObject effect = Instantiate(particlesLibraryOne._objectPools[i].prefab, _playerOneParticlesPool).gameObject;
+                    effect.gameObject.SetActive(false);
+                    _objectsParticlesPoolOne[i].objects.Add(effect);
+                }
+            }
+            for (int i = 0; i < particlesLibraryTwo._objectPools.Count; i++)
+            {
+                _objectsParticlesPoolTwo.Add(new ObjectPoolGroup() { groupName = particlesLibraryTwo._objectPools[i].groupName, objects = new List<GameObject>() });
+                for (int j = 0; j < particlesLibraryTwo._objectPools[i].size; ++j)
+                {
+                    GameObject effect = Instantiate(particlesLibraryTwo._objectPools[i].prefab, _playerTwoParticlesPool).gameObject;
+                    effect.gameObject.SetActive(false);
+                    _objectsParticlesPoolTwo[i].objects.Add(effect);
+                }
+            }
+        }
+    }
+
     public void PoolProjectileInitialize(EffectsLibrarySO effectsLibraryOne, EffectsLibrarySO effectsLibraryTwo)
     {
         if (!HasPooled)
@@ -80,6 +112,7 @@ public class ObjectPoolingManager : MonoBehaviour
     {
         if (!HasPooled)
         {
+
             _objectsAssistsPoolOne.Add(new ObjectPoolGroup() { groupName = assistOne.groupName, objects = new List<GameObject>() });
             GameObject assistObjectOne = Instantiate(assistOne.prefab, _playerOneProjectilePool).gameObject;
             assistObjectOne.gameObject.SetActive(false);
@@ -122,6 +155,30 @@ public class ObjectPoolingManager : MonoBehaviour
                 if (_objectsPoolTwo[i].groupName == name)
                 {
                     return _objectsPoolTwo[i].objects.ToArray();
+                }
+            }
+        }
+        return null;
+    }
+    public GameObject[] GetParticlePool(int index, string name)
+    {
+        if (index == 0)
+        {
+            for (int i = 0; i < _objectsParticlesPoolOne.Count; i++)
+            {
+                if (_objectsParticlesPoolOne[i].groupName == name)
+                {
+                    return _objectsParticlesPoolOne[i].objects.ToArray();
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _objectsParticlesPoolTwo.Count; i++)
+            {
+                if (_objectsParticlesPoolTwo[i].groupName == name)
+                {
+                    return _objectsParticlesPoolTwo[i].objects.ToArray();
                 }
             }
         }
@@ -258,6 +315,23 @@ public class ObjectPoolingManager : MonoBehaviour
                 _objects[i].SetActive(false);
             }
         }
+    }
+
+    public void DestroyAllObjects()
+    {
+        foreach (Transform child in _playerOnePool)
+            Destroy(child.gameObject);
+        foreach (Transform child in _playerTwoPool)
+            Destroy(child.gameObject);
+        _objectsPoolOne.Clear();
+        _objectsProjectilePoolOne.Clear();
+        _objectsParticlesPoolOne.Clear();
+        _objectsAssistsPoolOne.Clear();
+        _objectsPoolTwo.Clear();
+        _objectsProjectilePoolTwo.Clear();
+        _objectsParticlesPoolTwo.Clear();
+        _objectsAssistsPoolTwo.Clear();
+        HasPooled = false;
     }
 }
 

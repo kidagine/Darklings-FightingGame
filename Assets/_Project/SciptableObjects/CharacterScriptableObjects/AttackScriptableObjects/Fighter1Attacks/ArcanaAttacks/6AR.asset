@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
+  m_Name: 6AR
+  m_EditorClassIdentifier: 
+  damage: 550
+  attackTypeEnum: 2
+  hitStun: 28
+  blockStun: 13
+  travelDistance: {x: 4, y: 3}
+  knockbackForce: {x: 30, y: 0}
+  knockbackDuration: 15
+  knockbackArc: 15
+  superArmor: 0
+  isAirAttack: 0
+  isProjectile: 0
+  isArcana: 1
+  jumpCancelable: 0
+  causesKnockdown: 0
+  causesSoftKnockdown: 0
+  attackSound: Slam
+  impactSound: Impact5
+  hitstop: 14
+  hitEffect: {fileID: 186600171355987556, guid: 547867d1b46bb89428c594bb21fd73a8, type: 3}
+  hitEffectPosition: {x: 4, y: 0.1}
+  hitEffectRotation: 0
+  hurtEffect: HurtHeavy
+  hurtEffectPosition: {x: -15.302539, y: -43.223526}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}
+  moveName: Dark Uppercut
+  moveDescription: Flings upwards kicking the opponent in a very fast motion knocking
+    them down.
+  moveVideo: {fileID: 32900000, guid: 81629217236dc9d478631809766be105, type: 3}
+  airOk: 1
+  reversal: 0
+  projectileSpeed: 0
+  projectilePriority: 0
+  projectileDestroyOnHit: 0

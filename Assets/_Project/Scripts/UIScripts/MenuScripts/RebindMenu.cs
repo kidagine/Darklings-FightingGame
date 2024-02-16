@@ -53,9 +53,15 @@ public class RebindMenu : BaseMenu
         }
     }
 
+    void OnDisable()
+    {
+        MouseSetup.Instance.SetCursor(true);
+    }
+
     //Set the binding rules based on the input device
     void OnEnable()
     {
+        MouseSetup.Instance.SetCursor(false);
         _backgroundDarken.SetActive(true);
         if (!_secondPlayer)
         {
@@ -86,10 +92,8 @@ public class RebindMenu : BaseMenu
         Hide();
         _backgroundDarken.SetActive(false);
         if (!_characterAssistSelector.gameObject.activeSelf && !_characterColorSelector.gameObject.activeSelf)
-        {
             _firstCharacterButton.Select();
-        }
-        _inputManager.CurrentPrompts = PreviousPromptsInput;
+        _inputManager.SetPrompts(PreviousPromptsInput);
     }
 
     //Called from UI, rebind the given button

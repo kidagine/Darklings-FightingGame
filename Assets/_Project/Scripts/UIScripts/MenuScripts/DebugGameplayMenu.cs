@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class DebugGameplayMenu : MonoBehaviour
 {
     [SerializeField] private TextAsset _versionTextAsset = default;
-    [SerializeField] private TextMeshProUGUI _versionText = default;
     [SerializeField] private TextMeshProUGUI _fpsText = default;
     [SerializeField] private TextMeshProUGUI _frameText = default;
     [SerializeField] private TextMeshProUGUI _p1PositionText = default;
@@ -28,8 +27,6 @@ public class DebugGameplayMenu : MonoBehaviour
         string versionText = _versionTextAsset.text;
         int versionTextPosition = versionText.IndexOf(_versionSplit) + _versionSplit.Length;
         string versionNumber = " " + versionText[versionTextPosition..versionText.LastIndexOf(_patchNotesSplit)].Trim();
-
-        _versionText.text = "Ver:" + versionNumber;
 #endif
     }
 #if UNITY_EDITOR

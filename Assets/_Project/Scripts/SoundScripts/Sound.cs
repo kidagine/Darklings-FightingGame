@@ -17,6 +17,8 @@ public class Sound
     public bool loop;
     public bool playOnAwake;
     public bool playOneInstanceAtATime;
+    [Range(0, 100)]
+    public int chance;
 
 
     public void Play()

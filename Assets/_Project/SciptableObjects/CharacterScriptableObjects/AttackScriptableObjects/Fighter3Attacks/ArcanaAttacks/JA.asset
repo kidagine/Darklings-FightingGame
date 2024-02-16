@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
+  m_Name: JA
+  m_EditorClassIdentifier: 
+  damage: 300
+  attackTypeEnum: 2
+  hitStun: 38
+  blockStun: 12
+  travelDistance: {x: 1.5, y: 2.5}
+  knockbackForce: {x: 12, y: 0}
+  knockbackDuration: 13
+  knockbackArc: 0
+  superArmor: 0
+  isAirAttack: 1
+  isProjectile: 0
+  isArcana: 1
+  jumpCancelable: 0
+  causesKnockdown: 0
+  causesSoftKnockdown: 0
+  attackSound: Hit
+  impactSound: Impact5
+  hitstop: 10
+  hitEffect: {fileID: 3294536446187043669, guid: 374c1239b4b31264eaed08600cb10305, type: 3}
+  hitEffectPosition: {x: 24, y: 27.2}
+  hitEffectRotation: 0
+  hurtEffect: HurtHeavy
+  moveMaterial: Fire
+  hurtEffectPosition: {x: 9.540527, y: -0.3737793}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: b6c04c6f8b446df4e996a2b115e6f0bf, type: 2}
+  moveName: Blazing Strike
+  moveDescription: Slow moving projectile, useful for rushing down your opponent
+    while keeping safe.
+  moveVideo: {fileID: 32900000, guid: a13d050202f42e24b8ae788b45766fc3, type: 3}
+  airOk: 0
+  reversal: 0
+  projectileSpeed: 0
+  projectilePriority: 0
+  projectileDestroyOnHit: 0
+  teleport: 0
+  teleportPosition: {x: 0, y: 0}

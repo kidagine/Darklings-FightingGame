@@ -6,12 +6,13 @@ public class IdleState : GroundParentState
     {
         if (!player.enter)
         {
+            player.animation = "Idle";
             player.enter = true;
             player.animationFrames = 0;
+            return;
         }
-        player.animation = "Idle";
         player.animationFrames++;
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
         CheckFlip(player);
         base.UpdateLogic(player);
         ToWalkState(player);
@@ -24,15 +25,14 @@ public class IdleState : GroundParentState
     private void ToCrouchState(PlayerNetwork player)
     {
         if (player.direction.y < 0)
-        {
             EnterState(player, "Crouch");
-        }
     }
     private void ToJumpState(PlayerNetwork player)
     {
         if (player.direction.y > 0)
         {
-            EnterState(player, "Jump");
+            player.jumpDirection = 0;
+            EnterState(player, "PreJump");
         }
     }
     private void ToJumpForwardState(PlayerNetwork player)
@@ -40,27 +40,25 @@ public class IdleState : GroundParentState
         if (player.direction.y > 0 && player.direction.x != 0)
         {
             player.jumpDirection = (int)player.direction.x;
-            EnterState(player, "JumpForward");
+            EnterState(player, "PreJump");
         }
     }
     private void ToWalkState(PlayerNetwork player)
     {
         if (player.direction.x != 0)
-        {
             EnterState(player, "Walk");
-        }
     }
     private void ToDashState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
-            if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.ForwardDash)
+            if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.ForwardDash)
             {
                 player.dashDirection = 1;
                 EnterState(player, "Dash");
 
             }
-            else if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.BackDash)
+            else if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.BackDash)
             {
                 player.dashDirection = -1;
                 EnterState(player, "Dash");

@@ -5,9 +5,9 @@
 Darklings is a free to play 2D fighting game with the intention of being an accessible fighter, that will keep getting updated periodically.
 <div align="center">
 
-[![GitHub](https://img.shields.io/badge/unity_version-2021.3.12-blue)](https://unity3d.com/get-unity/download/archive)
-[![GitHub](https://img.shields.io/badge/game_version-0.2.9-brightgreen)](https://gamejolt.com/games/darklings/640842)
-[![GitHub](https://img.shields.io/badge/game_views-1.3k-orange)](https://gamejolt.com/games/darklings/640842)
+[![GitHub](https://img.shields.io/badge/unity_version-2021.3.24-blue)](https://unity3d.com/get-unity/download/archive)
+[![GitHub](https://img.shields.io/badge/game_version-0.2.12-brightgreen)](https://gamejolt.com/games/darklings/640842)
+[![GitHub](https://img.shields.io/badge/game_views-2.8k-orange)](https://gamejolt.com/games/darklings/640842)
 </div>
 
 <p align="center">
@@ -45,7 +45,7 @@ Optional: use Clumsy (https://github.com/jagt/clumsy) to simulate lag.
 These are the sub-repositories that help in one way or another to make Darklings.
 
  * [Website repository](https://github.com/kidagine/Darklings-Website) <br>
- * [Launcher repository](https://github.com/kidagine/Darklings-Launcher) <br>
+ * [Launcher repository](https://github.com/kidagine/Darklings-FightingGame-Launcher) <br>
  * [Command videos for WebGL repository](https://github.com/kidagine/Darklings-CommandListVideos) <br>
  * [Demonics library repository](https://github.com/kidagine/Demonics-Base-UnityLibrary) <br>
 

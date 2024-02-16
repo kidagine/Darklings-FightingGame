@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public class OnlineHostMenu : BaseMenu
 {
     [SerializeField] private NetworkManagerLobby _networkManager = default;
-    [SerializeField] private OnlineMainMenu _onlineMainMenu = default;
+    [SerializeField] private BaseMenu _onlineMainMenu = default;
     [SerializeField] private OnlineSetupMenu _onlineSetupMenu = default;
     [SerializeField] private DemonNameplate[] _nameplates = default;
     [SerializeField] private TextMeshProUGUI _readyText = default;
@@ -38,6 +38,7 @@ public class OnlineHostMenu : BaseMenu
         _readyButtonComponent = _readyButton.GetComponent<Button>();
         if (Hosting)
         {
+            Debug.Log(_onlineSetupMenu.DemonData.demonName);
             _nameplates[0].SetDemonData(_onlineSetupMenu.DemonData);
             _lobbyId = await _networkManager.CreateLobby(_onlineSetupMenu.DemonData);
             if (_lobbyId == null)
@@ -47,7 +48,7 @@ public class OnlineHostMenu : BaseMenu
                 Hide();
                 return;
             }
-            _lobbyIdText.text = $"Lobby ID: {_lobbyId}";
+            _lobbyIdText.text = $"Room ID: {_lobbyId}";
             _creatingLobby.SetActive(false);
             _lobbyCreated.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null);
@@ -126,7 +127,7 @@ public class OnlineHostMenu : BaseMenu
         GUIUtility.systemCopyBuffer = _lobbyId;
     }
 
-    public void OpenAsClient(DemonData[] demonDatas, string lobbyId)
+    public void OpenAsClient(DemonData[] demonDatas, string lobbyId = null)
     {
         _networkManager.OnLobbyUpdate += UpdateLobby;
         Hosting = false;
@@ -135,7 +136,10 @@ public class OnlineHostMenu : BaseMenu
         _creatingLobby.SetActive(false);
         _lobbyCreated.SetActive(true);
         _copyLobbyId.SetActive(false);
-        _lobbyIdText.text = $"Lobby ID: {lobbyId.ToUpper()}";
+        if (lobbyId == null)
+            _lobbyIdText.text = "";
+        else
+            _lobbyIdText.text = $"Room ID: {lobbyId.ToUpper()}";
     }
 
     public void Ready()
@@ -199,11 +203,14 @@ public class OnlineHostMenu : BaseMenu
         SceneSettings.ColorOne = demonDatas[0].color;
         SceneSettings.ColorTwo = demonDatas[1].color;
         SceneSettings.SceneSettingsDecide = true;
-        SceneSettings.Bit1 = false;
-        SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
-        SceneSettings.MusicName = "Random";
-        _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene("3. LoadingVersusScene", LoadSceneMode.Single));
-        _fadeHandler.StartFadeTransition(true);
+        SceneSettings.Bit1 = SceneSettings.OnlineBit1;
+        if (SceneSettings.OnlineStageRandom)
+            SceneSettings.StageIndex = UnityEngine.Random.Range(0, Enum.GetNames(typeof(StageTypeEnum)).Length - 1);
+        else
+            SceneSettings.StageIndex = SceneSettings.OnlineStageIndex;
+        SceneSettings.MusicName = SceneSettings.OnlineMusicName;
+        _fadeHandler.onFadeEnd.AddListener(() => SceneManager.LoadScene(1, LoadSceneMode.Single));
+        _fadeHandler.StartFadeTransition(true, 0.35f);
     }
 
     public async void QuitLobby()

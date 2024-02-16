@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b2425a2284af743826c689403a4924, type: 3}
+  m_Name: _Smoke
+  m_EditorClassIdentifier: 
+  m_functionInfo: "// Made with Amplify Shader Editor\n// Available at the Unity
+    Asset Store - http://u3d.as/y3X \n/*ASEBEGIN\nVersion=18935\n183;363;1803;812;1038.249;409.2966;1.722786;True;False\nNode;AmplifyShaderEditor.RangedFloatNode;27;243.6222,-511.4896;Inherit;False;Property;_SmokeNoiseFactor;Smoke:
+    Noise Factor;3;0;Create;True;0;0;0;False;0;False;0.4;0.2015795;0;1;0;1;FLOAT;0\nNode;AmplifyShaderEditor.DistanceOpNode;15;-296.2498,-494.149;Inherit;True;2;0;FLOAT2;0,0;False;1;FLOAT2;0.5,0.5;False;1;FLOAT;0\nNode;AmplifyShaderEditor.TextureCoordinatesNode;14;-708.8004,-532.3402;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;29;1228.612,-224.5326;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleSubtractOpNode;17;-29.99036,-377.5706;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleDivideOpNode;19;-211.2822,-236.4954;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;2.5;False;1;FLOAT;0\nNode;AmplifyShaderEditor.DynamicAppendNode;31;1557.213,54.69099;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.OneMinusNode;35;790.0889,217.5585;Inherit;True;1;0;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;22;52.54056,-149.9239;Inherit;False;Property;_SmokeSmoothness;Smoke:
+    Smoothness;1;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;30;862.0622,-66.90615;Inherit;False;Property;_SmokeAlpha;Smoke:
+    Alpha;0;0;Create;True;0;0;0;False;0;False;1;1;0;1;0;1;FLOAT;0\nNode;AmplifyShaderEditor.BreakToComponentsNode;9;-485.828,-189.8437;Inherit;False;COLOR;1;0;COLOR;0,0,0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15\nNode;AmplifyShaderEditor.TexturePropertyNode;40;-82.30287,-689.7156;Inherit;True;Property;_SmokeNoiseTexture;Smoke:
+    Noise Texture;4;0;Create;True;0;0;0;False;0;False;cd21d0de17dcd734691f79979be13330;cd21d0de17dcd734691f79979be13330;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1\nNode;AmplifyShaderEditor.FunctionInput;42;160.4734,-780.843;Inherit;False;Noise;9;0;False;1;0;SAMPLER2D;0;False;1;SAMPLER2D;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;21;343.3906,-375.7781;Inherit;True;3;3;0;FLOAT;0;False;1;FLOAT;2.5;False;2;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.LerpOp;34;1277.179,147.6699;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionInput;43;-482.9463,-568.8077;Inherit;False;UV;2;1;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.VertexColorNode;4;-801.894,266.8441;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;26;557.7468,-558.8657;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionInput;1;-805.9,47.89998;Inherit;False;In
+    Color;5;2;False;1;0;COLOR;1,1,1,1;False;1;COLOR;0\nNode;AmplifyShaderEditor.ClampOpNode;28;887.6124,-386.578;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;24;709.2247,-471.442;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.ToggleSwitchNode;38;-902.0237,-731.0417;Inherit;False;Property;_SmokeVertexSeed;Smoke:
+    Vertex Seed;6;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT;0;False;1;FLOAT;5;False;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;36;1089.997,462.4102;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;37;750.9712,568.1746;Inherit;False;Property;_SmokeDarkEdge;Smoke:
+    Dark Edge;5;0;Create;True;0;0;0;False;0;False;1;0;0;1.5;0;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleSubtractOpNode;25;387.7369,-652.577;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0\nNode;AmplifyShaderEditor.FunctionNode;41;324.0095,-897.3901;Inherit;False;NoiseTexture;-1;;35;7fe1e2210473a53449e5b562606d8e1a;0;3;1;FLOAT2;0,0;False;5;FLOAT2;1,1;False;3;SAMPLER2D;0;False;1;FLOAT;0\nNode;AmplifyShaderEditor.RangedFloatNode;11;73.55781,-906.9178;Inherit;False;Property;_SmokeNoiseScale;Smoke:
+    Noise Scale;2;0;Create;True;0;0;0;False;0;False;0.5;10;0;0;0;1;FLOAT;0\nNode;AmplifyShaderEditor.SimpleMultiplyOpNode;32;-635.2609,-695.5986;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;10;False;1;FLOAT;0\nNode;AmplifyShaderEditor.ComponentMaskNode;2;-592.0547,92.26604;Inherit;False;True;True;True;False;1;0;COLOR;0,0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.SimpleAddOpNode;33;-66.99109,-780.6093;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0\nNode;AmplifyShaderEditor.FunctionOutput;0;1756.045,7.527636;Inherit;False;True;-1;Out
+    Color;0;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0\nWireConnection;15;0;43;0\nWireConnection;29;0;28;0\nWireConnection;29;1;30;0\nWireConnection;29;2;9;3\nWireConnection;17;0;19;0\nWireConnection;17;1;15;0\nWireConnection;19;0;4;4\nWireConnection;31;0;34;0\nWireConnection;31;3;29;0\nWireConnection;35;0;28;0\nWireConnection;9;0;1;0\nWireConnection;42;0;40;0\nWireConnection;21;0;17;0\nWireConnection;21;2;22;0\nWireConnection;34;0;2;0\nWireConnection;34;2;36;0\nWireConnection;43;0;14;0\nWireConnection;26;0;25;0\nWireConnection;26;1;27;0\nWireConnection;28;0;24;0\nWireConnection;24;0;26;0\nWireConnection;24;1;21;0\nWireConnection;36;0;35;0\nWireConnection;36;1;37;0\nWireConnection;25;0;41;0\nWireConnection;41;1;33;0\nWireConnection;41;5;11;0\nWireConnection;41;3;42;0\nWireConnection;32;0;4;1\nWireConnection;32;1;38;0\nWireConnection;2;0;1;0\nWireConnection;33;0;32;0\nWireConnection;33;1;43;0\nWireConnection;0;0;31;0\nASEEND*/\n//CHKSM=478E81026147A4B3A11F9DCCB983DDE782D09E09"
+  m_functionName: 
+  m_description: 
+  m_additionalIncludes:
+    m_additionalIncludes: []
+    m_outsideIncludes: []
+  m_additionalPragmas:
+    m_additionalPragmas: []
+    m_outsidePragmas: []
+  m_additionalDirectives:
+    m_validData: 0
+    m_isDirty: 0
+    m_moduleName: ' Additional Directives'
+    m_independentModule: 1
+    m_customEdited: 0
+    m_additionalDirectives: []
+    m_shaderFunctionDirectives: []
+    m_nativeDirectives: []
+    m_nativeDirectivesIndex: -1
+    m_nativeDirectivesFoldout: 0
+    m_directivesSaveItems: []
+  m_nodeCategory: 3
+  m_customNodeCategory: 
+  m_previewPosition: 0
+  m_hidden: 0
+  m_url: 

@@ -7,7 +7,7 @@ public class BlockState : BlockParentState
         base.UpdateLogic(player);
         player.animation = "Block";
         player.animationFrames++;
-        player.velocity = new DemonicsVector2(player.velocity.x, 0);
+        player.velocity = new DemonVector2(player.velocity.x, 0);
         ToIdleState(player);
     }
     private void ToIdleState(PlayerNetwork player)
@@ -16,6 +16,7 @@ public class BlockState : BlockParentState
         {
             BlockParentState.skipKnockback = false;
             player.player.StopShakeCoroutine();
+            CheckTrainingComboEnd(player);
             EnterState(player, "Idle");
         }
     }

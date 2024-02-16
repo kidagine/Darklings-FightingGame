@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
+  m_Name: 2AR
+  m_EditorClassIdentifier: 
+  damage: 575
+  attackTypeEnum: 2
+  hitStun: 35
+  blockStun: 25
+  travelDistance: {x: 0, y: 0}
+  knockbackForce: {x: 80, y: 0}
+  knockbackDuration: 25
+  knockbackArc: 48
+  superArmor: 0
+  isAirAttack: 0
+  isProjectile: 1
+  isArcana: 1
+  jumpCancelable: 0
+  causesKnockdown: 1
+  causesSoftKnockdown: 0
+  attackSound: Slam
+  impactSound: Impact5
+  hitstop: 15
+  hitEffect: {fileID: 3294536446187043669, guid: 374c1239b4b31264eaed08600cb10305, type: 3}
+  hitEffectPosition: {x: 16, y: 27.2}
+  hitEffectRotation: 0
+  hurtEffect: HurtArcana
+  moveMaterial: Fire
+  hurtEffectPosition: {x: 6.2475586, y: -1.8989258}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: b6c04c6f8b446df4e996a2b115e6f0bf, type: 2}
+  moveName: Deathly Spark
+  moveDescription: Slow moving projectile, useful for rushing down your opponent
+    while keeping safe.
+  moveVideo: {fileID: 32900000, guid: a13d050202f42e24b8ae788b45766fc3, type: 3}
+  airOk: 1
+  reversal: 0
+  projectileSpeed: 1.2
+  projectilePriority: 1
+  projectileDestroyOnHit: 1
+  teleport: 0
+  teleportPosition: {x: 0, y: 0}

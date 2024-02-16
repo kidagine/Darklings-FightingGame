@@ -7,49 +7,47 @@ public class GroundParentState : State
     {
         base.UpdateLogic(player);
         player.canDoubleJump = true;
-        player.canDash = true;
         player.hasJumped = false;
         player.canJump = true;
-        ToBlueFrenzyState(player);
-        ToRedFrenzyState(player);
-        ToGrabState(player);
-        ToAttackState(player);
+        if (ToBlueFrenzyState(player))
+            return;
+        if (RedFrenzy(player))
+            return;
         ToArcanaState(player);
+        ToGrabState(player);
         Shadow(player);
+        if (ToAttackState(player))
+            return;
         ToHurtState(player);
     }
 
-    private void ToBlueFrenzyState(PlayerNetwork player)
+    private bool ToBlueFrenzyState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Parry)
+        if (player.inputBuffer.GetBlueFrenzy())
         {
             EnterState(player, "BlueFrenzy");
+            return true;
         }
+        return false;
     }
-    public void ToAttackState(PlayerNetwork player)
+    public bool ToAttackState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             Attack(player);
+            return true;
         }
+        return false;
     }
     public void ToArcanaState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
-        {
+        if (player.inputBuffer.CurrentTrigger().pressed)
             Arcana(player);
-        }
     }
-    private void ToRedFrenzyState(PlayerNetwork player)
-    {
-        if (player.inputBuffer.CurrentInput().pressed)
-        {
-            RedFrenzy(player);
-        }
-    }
+
     private void ToGrabState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed && player.inputBuffer.CurrentInput().inputEnum == InputEnum.Throw)
+        if (player.inputBuffer.CurrentTrigger().pressed && player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.Throw)
         {
             AttackSO attack = PlayerComboSystem.GetThrow(player.playerStats);
             player.attackNetwork = SetAttack(player.attackInput, attack);
@@ -60,9 +58,9 @@ public class GroundParentState : State
     {
         if (IsColliding(player))
         {
-            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
             {
-                EnterState(player, "Knockback");
+                EnterState(player, "Grabbed");
                 return;
             }
             if (player.attackHurtNetwork.attackType == AttackTypeEnum.Throw)
@@ -74,36 +72,26 @@ public class GroundParentState : State
             {
                 player.otherPlayer.knockback = 0;
                 player.otherPlayer.pushbackStart = player.otherPlayer.position;
-                player.otherPlayer.pushbackEnd = new DemonicsVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
+                player.otherPlayer.pushbackEnd = new DemonVector2(player.otherPlayer.position.x + (player.attackHurtNetwork.knockbackForce * -player.otherPlayer.flip), DemonicsPhysics.GROUND_POINT);
                 player.otherPlayer.pushbackDuration = player.attackHurtNetwork.knockbackDuration;
             }
             if (IsBlocking(player))
             {
                 if (player.direction.y < 0)
-                {
                     EnterState(player, "BlockLow");
-                }
                 else
-                {
                     EnterState(player, "Block");
-                }
             }
             else
             {
-                if (player.attackHurtNetwork.hardKnockdown)
-                {
+                if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.moveName == "Shadowbreak")
                     EnterState(player, "Airborne");
-                }
                 else
                 {
                     if (player.attackHurtNetwork.knockbackArc == 0 || player.attackHurtNetwork.softKnockdown)
-                    {
                         EnterState(player, "Hurt");
-                    }
                     else
-                    {
                         EnterState(player, "HurtAir");
-                    }
                 }
             }
         }

@@ -8,11 +8,14 @@ public class WalkState : GroundParentState
         {
             player.enter = true;
             player.animationFrames = 0;
+            return;
         }
         player.canDoubleJump = true;
-        player.animation = "Walk";
         player.animationFrames++;
-        player.velocity = new DemonicsVector2(player.direction.x * player.playerStats.SpeedWalk, 0);
+        bool forwardWalk = player.direction.x * player.flip == 1 ? true : false;
+        DemonFloat walkSpeed = forwardWalk ? player.playerStats.SpeedWalk : player.playerStats.SpeedWalkBackwards;
+        player.animation = forwardWalk ? "WalkForward" : "WalkBackward";
+        player.velocity = new DemonVector2(player.direction.x * walkSpeed, 0);
         bool footstep = player.player.PlayerAnimator.GetFootstep(player.animation, player.animationFrames, out int cel);
         if (cel != player.cel && footstep)
         {
@@ -37,7 +40,8 @@ public class WalkState : GroundParentState
     {
         if (player.direction.y > 0)
         {
-            EnterState(player, "Jump");
+            player.jumpDirection = 0;
+            EnterState(player, "PreJump");
         }
     }
     private void ToJumpForwardState(PlayerNetwork player)
@@ -45,7 +49,7 @@ public class WalkState : GroundParentState
         if (player.direction.y > 0 && player.direction.x != 0)
         {
             player.jumpDirection = (int)player.direction.x;
-            EnterState(player, "JumpForward");
+            EnterState(player, "PreJump");
         }
     }
     private void ToIdleState(PlayerNetwork player)

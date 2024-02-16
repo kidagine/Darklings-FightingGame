@@ -16,7 +16,7 @@ public class AirParentState : State
 
     private void ToJumpState(PlayerNetwork player)
     {
-        if (player.canDoubleJump)
+        if (player.canDoubleJump && player.canChainAttack)
         {
             if (player.direction.y > 0 && !player.hasJumped)
             {
@@ -32,7 +32,7 @@ public class AirParentState : State
     }
     private void ToJumpForwardState(PlayerNetwork player)
     {
-        if (player.canDoubleJump)
+        if (player.canDoubleJump && player.canChainAttack)
         {
             if (player.direction.y > 0 && player.direction.x != 0 && !player.hasJumped)
             {
@@ -49,14 +49,14 @@ public class AirParentState : State
     }
     private void ToDashAirState(PlayerNetwork player)
     {
-        if (player.canDash && player.inputBuffer.CurrentInput().pressed)
+        if (player.canDoubleJump && player.inputBuffer.CurrentTrigger().pressed)
         {
-            if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.ForwardDash)
+            if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.ForwardDash)
             {
                 player.dashDirection = 1;
                 EnterState(player, "DashAir");
             }
-            else if (player.inputBuffer.CurrentInput().inputEnum == InputEnum.BackDash)
+            else if (player.inputBuffer.CurrentTrigger().inputEnum == InputEnum.BackDash)
             {
                 player.dashDirection = -1;
                 EnterState(player, "DashAir");
@@ -65,14 +65,14 @@ public class AirParentState : State
     }
     private void ToRedFrenzyState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             RedFrenzy(player);
         }
     }
     public bool ToAttackState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             Attack(player, true);
             return true;
@@ -81,33 +81,25 @@ public class AirParentState : State
     }
     public void ToArcanaState(PlayerNetwork player)
     {
-        if (player.inputBuffer.CurrentInput().pressed)
+        if (player.inputBuffer.CurrentTrigger().pressed)
         {
             Arcana(player, true);
         }
     }
-    private void ToHurtState(PlayerNetwork player)
+    protected void ToHurtState(PlayerNetwork player)
     {
-        if (IsColliding(player))
+        if (player.attackHurtNetwork.attackType != AttackTypeEnum.Throw)
         {
-            if (player.attackHurtNetwork.moveName == "Shadowbreak")
+            if (IsColliding(player))
             {
-                EnterState(player, "Knockback");
-                return;
-            }
-            if (IsBlocking(player))
-            {
-                EnterState(player, "BlockAir");
-            }
-            else
-            {
-                if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.softKnockdown && player.position.y > DemonicsPhysics.GROUND_POINT)
-                {
-                    EnterState(player, "Airborne");
-                }
+                if (IsBlocking(player))
+                    EnterState(player, "BlockAir");
                 else
                 {
-                    EnterState(player, "HurtAir");
+                    if (player.attackHurtNetwork.hardKnockdown || player.attackHurtNetwork.moveName == "Shadowbreak" || player.attackHurtNetwork.softKnockdown && player.position.y > DemonicsPhysics.GROUND_POINT)
+                        EnterState(player, "Airborne");
+                    else
+                        EnterState(player, "HurtAir");
                 }
             }
         }

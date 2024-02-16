@@ -23,13 +23,26 @@ public class CpuController : BaseController
         {
             if (!TrainingSettings.CpuOff || !SceneSettings.IsTrainingMode)
             {
+                NetworkInput.ONE_LIGHT_INPUT = false;
+                NetworkInput.ONE_MEDIUM_INPUT = false;
+                NetworkInput.ONE_HEAVY_INPUT = false;
+                NetworkInput.ONE_ARCANA_INPUT = false;
+                NetworkInput.ONE_GRAB_INPUT = false;
+                NetworkInput.ONE_SHADOW_INPUT = false;
+                NetworkInput.TWO_LIGHT_INPUT = false;
+                NetworkInput.TWO_MEDIUM_INPUT = false;
+                NetworkInput.TWO_HEAVY_INPUT = false;
+                NetworkInput.TWO_ARCANA_INPUT = false;
+                NetworkInput.TWO_GRAB_INPUT = false;
+                NetworkInput.TWO_SHADOW_INPUT = false;
                 _reset = false;
                 Movement();
+                bool attacked = true;
                 if (_distance <= 80)
-                {
                     Attack();
-                }
-                Specials();
+                if (!attacked)
+                    Specials();
+
             }
             else
             {
@@ -242,7 +255,7 @@ public class CpuController : BaseController
                         }
                     }
                 }
-                else if (attackRandom <= 4)
+                else if (attackRandom <= 4 && attackRandom > 2)
                 {
                     if (lowRandom == 0)
                     {
@@ -271,7 +284,7 @@ public class CpuController : BaseController
                         }
                     }
                 }
-                else if (attackRandom <= 6)
+                else if (attackRandom <= 6 && attackRandom > 4)
                 {
                     if (lowRandom == 0)
                     {

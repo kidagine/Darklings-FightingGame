@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
+  m_Name: 2A
+  m_EditorClassIdentifier: 
+  damage: 300
+  attackTypeEnum: 2
+  hitStun: 25
+  blockStun: 18
+  travelDistance: {x: 1, y: 0}
+  knockbackForce: {x: 30, y: 0}
+  knockbackDuration: 12
+  knockbackArc: 20
+  superArmor: 0
+  isAirAttack: 0
+  isProjectile: 0
+  isArcana: 1
+  jumpCancelable: 0
+  causesKnockdown: 0
+  causesSoftKnockdown: 0
+  attackSound: Hit
+  impactSound: Impact5
+  hitstop: 13
+  hitEffect: {fileID: 0}
+  hitEffectPosition: {x: 4, y: 0.1}
+  hitEffectRotation: 0
+  hurtEffect: HurtHeavy
+  hurtEffectPosition: {x: -1.4919434, y: -2.4848633}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: 84aadf3764a04334eae5102f731ca6e0, type: 2}
+  moveName: Wild Dance
+  moveDescription: Moves forward while spinning hitting twice, useful for chaining
+    combos.
+  moveVideo: {fileID: 32900000, guid: f933c04cb319a5943b1bc39815fa0709, type: 3}
+  airOk: 0
+  reversal: 0
+  projectileSpeed: 0
+  projectilePriority: 0
+  projectileDestroyOnHit: 0

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class BlockAirState : BlockParentState
 {
+    private readonly int _extraLandBlockStun = 4;
+
     public override void UpdateLogic(PlayerNetwork player)
     {
         base.UpdateLogic(player);
@@ -17,20 +19,19 @@ public class BlockAirState : BlockParentState
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.attackHurtNetwork.knockbackArc > 0 && player.knockback <= 1)
-        {
             return;
-        }
-        if ((DemonicsFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
+        if ((DemonFloat)player.position.y <= DemonicsPhysics.GROUND_POINT)
         {
             player.player.StopShakeCoroutine();
+            CheckTrainingComboEnd(player);
             if (player.stunFrames <= 0)
             {
                 EnterState(player, "Idle");
             }
             else
             {
-                player.stunFrames = player.attackHurtNetwork.hitStun;
-                player.velocity = DemonicsVector2.Zero;
+                player.stunFrames = player.attackHurtNetwork.blockStun + _extraLandBlockStun;
+                player.velocity = DemonVector2.Zero;
                 player.animationFrames = 0;
                 EnterState(player, "Block");
             }

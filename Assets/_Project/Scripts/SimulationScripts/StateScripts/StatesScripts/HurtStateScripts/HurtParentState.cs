@@ -1,31 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
+using Demonics;
 using UnityEngine;
 
 public class HurtParentState : State
 {
     public override void UpdateLogic(PlayerNetwork player)
     {
-        if (!player.enter)
-        {
-            OnEnter(player);
-        }
         if (!player.hitstop)
         {
             AfterHitstop(player);
         }
+        if (SceneSettings.IsTrainingMode)
+            player.framedataEnum = FramedataTypesEnum.Hurt;
     }
     protected virtual void OnEnter(PlayerNetwork player)
     {
+        player.soundGroup = "Hurt";
+        player.otherPlayer.ArcanaGain(ArcanaGainTypes.AttackOnHit);
+        player.ArcanaGain(ArcanaGainTypes.DefendOnHit);
         CheckTrainingGauges(player);
         player.shadow.isOnScreen = false;
-        player.velocity = DemonicsVector2.Zero;
+        player.velocity = DemonVector2.Zero;
         player.animationFrames = 0;
         if (player.combo == 0)
         {
             player.comboTimerStarter = player.attackHurtNetwork.comboTimerStarter;
             player.comboTimer = ComboTimerStarterTypes.GetComboTimerStarterValue(player.comboTimerStarter);
         }
+        if (player.attackHurtNetwork.moveMaterial == "Fire")
+            player.player.PlayerAnimator.FireMaterial();
         player.player.OtherPlayerUI.SetComboTimerActive(true);
         player.combo++;
         player.health -= CalculateDamage(player, player.attackHurtNetwork.damage, player.playerStats.Defense);
@@ -37,21 +39,19 @@ public class HurtParentState : State
         player.otherPlayer.canChainAttack = true;
         player.sound = player.attackHurtNetwork.impactSound;
         if (!player.wasWallSplatted)
-        {
-            player.SetEffect(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
-        }
+            player.SetParticle(player.attackHurtNetwork.hurtEffect, player.hurtPosition);
         if (player.attackHurtNetwork.cameraShakerNetwork.timer > 0)
-        {
             CameraShake.Instance.Shake(player.attackHurtNetwork.cameraShakerNetwork);
-        }
         player.stunFrames = player.attackHurtNetwork.hitStun;
         player.knockback = 0;
         player.pushbackStart = player.position;
-        player.pushbackEnd = new DemonicsVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
+        player.pushbackEnd = new DemonVector2(player.position.x + (player.attackHurtNetwork.knockbackForce * -player.flip), DemonicsPhysics.GROUND_POINT);
         if (player.health <= 0)
         {
+            player.soundGroup = "Death";
+            CameraShake.Instance.Zoom(30, 0.2f);
             player.invincible = true;
-            CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 30, timer = 0.4f });
+            CameraShake.Instance.Shake(new CameraShakerNetwork() { intensity = 30, timer = 0.5f });
             if (!SceneSettings.IsTrainingMode)
             {
                 GameSimulation.GlobalHitstop = 4;
@@ -59,6 +59,8 @@ public class HurtParentState : State
                 GameSimulation.Timer = GameSimulation._timerMax;
             }
         }
+        if (SceneSettings.IsTrainingMode)
+            player.framedataEnum = FramedataTypesEnum.Hurt;
     }
 
     protected virtual void AfterHitstop(PlayerNetwork player)
@@ -70,7 +72,7 @@ public class HurtParentState : State
         }
         else
         {
-            player.velocity = new DemonicsVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
+            player.velocity = new DemonVector2(player.velocity.x, player.velocity.y - DemonicsPhysics.GRAVITY);
         }
         if (!player.comboLocked)
         {
@@ -78,8 +80,8 @@ public class HurtParentState : State
         }
         player.stunFrames--;
         player.player.OtherPlayerUI.SetComboTimer
-       (DemonicsFloat.Lerp((DemonicsFloat)0, (DemonicsFloat)1,
-        (DemonicsFloat)player.comboTimer / (DemonicsFloat)ComboTimerStarterTypes.GetComboTimerStarterValue(player.comboTimerStarter)), ComboTimerStarterTypes.GetComboTimerStarterColor(player.comboTimerStarter));
+       (DemonFloat.Lerp((DemonFloat)0, (DemonFloat)1,
+        (DemonFloat)player.comboTimer / (DemonFloat)ComboTimerStarterTypes.GetComboTimerStarterValue(player.comboTimerStarter)), ComboTimerStarterTypes.GetComboTimerStarterColor(player.comboTimerStarter));
     }
 
     protected virtual void Knockback(PlayerNetwork player)

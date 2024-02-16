@@ -538,7 +538,7 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
 --- !u!95 &8631281197934860811
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -555,7 +555,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1066403493200634883
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,7 +970,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 16375
 --- !u!114 &1260952192020572879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -984,32 +985,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lostLivesAnimator: []
   _healthSlider: {fileID: 1604159752376004839}
+  _healthDamagedSlider: {fileID: 0}
+  _healthRecoverableSlider: {fileID: 0}
   _arcanaSlider: {fileID: 0}
   _assistSlider: {fileID: 0}
   _portraitImage: {fileID: 3707602403031938593}
-  _arcanaFillRectTransform: {fileID: 0}
+  _assistBorder: {fileID: 0}
+  _notification: {fileID: 0}
   _characterName: {fileID: 1604159752663817567}
   _playerName: {fileID: 6044207841894367826}
   _assistName: {fileID: 0}
-  _notificationText: {fileID: 0}
-  _comboText: {fileID: 0}
-  _winsText: {fileID: 0}
-  _whoPausedText: {fileID: 0}
-  _whoPausedTrainingText: {fileID: 0}
   _arcanaAmountText: {fileID: 0}
+  _hitsNumberText: {fileID: 0}
   _arcanaAnimator: {fileID: 0}
-  _healthDividerPivot: {fileID: 3915933149156680349}
-  _healthDividerPrefab: {fileID: 5592667340369626980, guid: c8e765c1947768d429ca00f98abcdea5, type: 3}
   _arcanaDividerPivot: {fileID: 0}
   _arcanaDividerPrefab: {fileID: 0}
   _pauseSlider: {fileID: 0}
+  _comboTimerSlider: {fileID: 0}
+  _comboTimerImage: {fileID: 0}
+  _comboTimerLock: {fileID: 0}
+  _borderHealth: {fileID: 0}
+  _borderPortrait: {fileID: 0}
+  _assistEmpty: {fileID: 0}
+  _assistHalf: {fileID: 0}
+  _assistFull: {fileID: 0}
   _pauseMenu: {fileID: 0}
   _trainingPauseMenu: {fileID: 0}
+  _replayPauseMenu: {fileID: 0}
   _trainingMenu: {fileID: 0}
+  _disconnectMenu: {fileID: 0}
+  _healthNormalColor: {r: 0, g: 0, b: 0, a: 0}
+  _healthLimitColor: {r: 0, g: 0, b: 0, a: 0}
+  _healthDamagedColor: {r: 0, g: 0, b: 0, a: 0}
   _healthImage: {fileID: 0}
-  _arcanaImage: {fileID: 0}
-  _assistImage: {fileID: 0}
-  _heartImages: []
 --- !u!225 &7796490837188691190
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1024,7 +1032,7 @@ CanvasGroup:
   m_IgnoreParentGroups: 0
 --- !u!95 &1939431748219472702
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1041,7 +1049,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &3279332729760061273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1812,7 +1821,7 @@ MonoBehaviour:
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!95 &3084069287409044628
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1829,7 +1838,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3320892015413500859
 GameObject:
   m_ObjectHideFlags: 0
@@ -2522,7 +2532,7 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
 --- !u!95 &3997173470159436933
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2539,7 +2549,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6757425501034223834
 GameObject:
   m_ObjectHideFlags: 0

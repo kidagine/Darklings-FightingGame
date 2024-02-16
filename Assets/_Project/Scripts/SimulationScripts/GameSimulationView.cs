@@ -26,25 +26,31 @@ public class GameSimulationView : MonoBehaviour, IGameView
         GameInfo gameInfo = runner.GameInfo;
         var playersGss = GameSimulation._players;
         if (playerViews.Length != playersGss.Length)
-        {
             SetGame(game);
-        }
         if (GameSimulation.Start)
         {
             GameplayManager.Instance.SetupGame();
             GameSimulation.Start = false;
         }
+        GameplayManager.Instance.SetCountdown(GameSimulation.Timer);
         for (int i = 0; i < playersGss.Length; ++i)
         {
-            GameplayManager.Instance.SetCountdown(GameSimulation.Timer);
             playerViews[i].PlayerSimulation.Simulate(playersGss[i], gameInfo.players[i]);
             UpdateEffects(i, playersGss[i].effects);
             UpdateProjectiles(i, playersGss[i].projectiles);
             UpdateAssists(i, playersGss[i].shadow);
-            _trainingMenu.SetState(true, playersGss[0].state);
-            _trainingMenu.SetState(false, playersGss[1].state);
-            _trainingMenu.FramedataValue(true, playersGss[0].resultAttack);
-            _trainingMenu.FramedataValue(false, playersGss[1].resultAttack);
+            if (SceneSettings.IsTrainingMode)
+            {
+                _trainingMenu.SetState(i, playersGss[i].state);
+                _trainingMenu.FramedataValue(i, playersGss[i].resultAttack);
+                if (!playersGss[i].hitstop)
+                    _trainingMenu.FramedataMeterValue(i, playersGss[i].framedataEnum);
+            }
+        }
+        if (SceneSettings.IsTrainingMode)
+        {
+            if (!playersGss[0].hitstop && !playersGss[1].hitstop)
+                _trainingMenu.FramedataMeterRun();
         }
     }
     private void UpdateEffects(int index, EffectNetwork[] effects)
@@ -73,6 +79,25 @@ public class GameSimulationView : MonoBehaviour, IGameView
                             effectObjects[j].GetComponent<DemonicsAnimator>().SetAnimation("Idle", effects[i].effectGroups[j].animationFrames);
                         }
                     }
+                }
+            }
+        }
+    }
+
+    public static void UpdateParticles(int index, EffectNetwork particle, DemonVector2 position, Vector3 flip = default)
+    {
+        GameObject[] particlesObjects = ObjectPoolingManager.Instance.GetParticlePool(index, particle.name);
+        if (particlesObjects.Length > 0)
+        {
+            for (int i = 0; i < particlesObjects.Length; i++)
+            {
+                if (!particlesObjects[i].activeSelf)
+                {
+                    particlesObjects[i].SetActive(true);
+                    particlesObjects[i].transform.position = new Vector2((int)position.x, (int)position.y);
+                    if (flip != default)
+                        particlesObjects[i].transform.localRotation = Quaternion.Euler(flip.x, flip.y, flip.z);
+                    return;
                 }
             }
         }
@@ -117,8 +142,6 @@ public class GameSimulationView : MonoBehaviour, IGameView
     private void Update()
     {
         if (gameManager.IsRunning)
-        {
             UpdateGameView(gameManager.Runner);
-        }
     }
 }

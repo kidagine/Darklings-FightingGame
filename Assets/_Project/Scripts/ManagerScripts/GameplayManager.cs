@@ -1,6 +1,7 @@
 using Cinemachine;
 using Demonics.Manager;
 using SharedGame;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,7 @@ public class GameplayManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] private ConnectionWidget _connectionWidget = default;
     [SerializeField] private CinemachineTargetGroup _targetGroup = default;
-    [SerializeField] private GameSimulationView _gameSimulationView = default;
+    [SerializeField] private DisconnectMenu _disconnectMenu = default;
     [SerializeField] private IntroUI _introUI = default;
     [SerializeField] private FadeHandler _fadeHandler = default;
     [SerializeField] protected PlayerUI _playerOneUI = default;
@@ -50,7 +51,6 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private PlayerDialogue _playerTwoDialogue = default;
     [SerializeField] private Animator _timerAnimator = default;
     [SerializeField] private Animator _timerMainAnimator = default;
-    [SerializeField] private Animator _introAnimator = default;
     [SerializeField] protected TextMeshProUGUI _countdownText = default;
     [SerializeField] protected TextMeshProUGUI _readyText = default;
     [SerializeField] protected TextMeshProUGUI _winnerNameText = default;
@@ -60,7 +60,6 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] protected GameObject _xboxPrompts = default;
     [SerializeField] protected GameObject[] _readyObjects = default;
     [SerializeField] protected GameObject[] _arcanaObjects = default;
-    [SerializeField] protected GameObject _playerLocal = default;
     [SerializeField] protected GameObject _debugNetwork = default;
     [SerializeField] protected GameObject _networkCanvas = default;
     [SerializeField] protected GameObject _infiniteTime = default;
@@ -69,6 +68,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private GameObject _trainingPrompts = default;
     [SerializeField] private MusicMenu _musicMenu = default;
     [SerializeField] private InputHistory[] _inputHistories = default;
+    [SerializeField] private InputDisplay[] _inputDisplays = default;
     [SerializeField] private PlayerStatsSO[] _playerStats = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
     [SerializeField] private GameObject[] _stages = default;
@@ -77,11 +77,10 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private BaseMenu _matchOverReplayMenu = default;
     [SerializeField] private BaseMenu _matchOverOnlineMenu = default;
     [SerializeField] private Animator _readyAnimator = default;
-    [SerializeField] private CinemachineTargetGroup _cinemachineTargetGroup = default;
     [SerializeField] private Audio _musicAudio = default;
     [SerializeField] private Audio _uiAudio = default;
-    protected BrainController _playerOneController;
-    protected BrainController _playerTwoController;
+    public BrainController PlayerOneController { get; set; }
+    public BrainController PlayerTwoController { get; set; }
     private PlayerAnimator _playerOneAnimator;
     private PlayerAnimator _playerTwoAnimator;
     private PlayerInput _playerOneInput;
@@ -89,10 +88,9 @@ public class GameplayManager : MonoBehaviour
     private Coroutine _roundOverTrainingCoroutine;
     private GameObject _currentStage;
     private List<IHitstop> _hitstopList = new();
-    private DemonicsVector2 _cachedOneResetPosition;
-    private DemonicsVector2 _cachedTwoResetPosition;
+    private DemonVector2 _cachedOneResetPosition;
+    private DemonVector2 _cachedTwoResetPosition;
     private int _countdown;
-    private int _countdownFrames = 60;
     private int _currentRound = 1;
     private bool _reverseReset;
     private bool _hasSwitchedCharacters;
@@ -109,6 +107,7 @@ public class GameplayManager : MonoBehaviour
     public bool InfiniteAssist { get; set; }
     public Player PlayerOne { get; private set; }
     public Player PlayerTwo { get; private set; }
+    public CinemachineTargetGroup TargetGroup { get { return _targetGroup; } private set { } }
     public PauseMenu PauseMenu { get; set; }
     public static GameplayManager Instance { get; private set; }
     public BrainController PausedController { get; set; }
@@ -116,15 +115,8 @@ public class GameplayManager : MonoBehaviour
     private Keyboard keyboardTwo;
     void Awake()
     {
+        MouseSetup.Instance.SetLock(true);
         keyboardTwo = InputSystem.AddDevice<Keyboard>("KeyboardTwo");
-        if (InputSystem.devices.Count > 1)
-        {
-            if (InputSystem.devices[1].name == "Mouse")
-            {
-                InputSystem.RemoveDevice(InputSystem.devices[1]);
-            }
-        }
-
         HasGameStarted = false;
         GameSpeed = _gameSpeed;
         CheckInstance();
@@ -169,11 +161,22 @@ public class GameplayManager : MonoBehaviour
                 _isTrainingMode = false;
                 _connectionWidget.StartGGPO(SceneSettings.OnlineOneIp, SceneSettings.OnlineTwoIp, SceneSettings.PrivateOneIp, SceneSettings.PrivateTwoIp,
                 SceneSettings.PortOne, SceneSettings.PortTwo, SceneSettings.OnlineIndex);
+                StartCoroutine(CheckIfConnectedCoroutine());
             }
         }
         CheckSceneSettings();
     }
 
+    IEnumerator CheckIfConnectedCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+        if (!_uiInput.gameObject.activeSelf)
+        {
+            DisableAllInput(true, true);
+            _uiInput.gameObject.SetActive(true);
+            _disconnectMenu.Show();
+        }
+    }
 
     public PlayerStatsSO[] GetPlayerStats()
     {
@@ -200,12 +203,11 @@ public class GameplayManager : MonoBehaviour
 
     public void InitializePlayers(GameObject playerOneObject, GameObject playerTwoObject)
     {
-        _fadeHandler.StartFadeTransition(true);
         playerOneObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerOne];
         playerTwoObject.GetComponent<Player>().playerStats = _playerStats[SceneSettings.PlayerTwo];
         Time.timeScale = GameplayManager.Instance.GameSpeed;
-        _playerOneController = playerOneObject.GetComponent<BrainController>();
-        _playerTwoController = playerTwoObject.GetComponent<BrainController>();
+        PlayerOneController = playerOneObject.GetComponent<BrainController>();
+        PlayerTwoController = playerTwoObject.GetComponent<BrainController>();
         PlayerOne = playerOneObject.GetComponent<Player>();
         PlayerTwo = playerTwoObject.GetComponent<Player>();
         playerOneObject.GetComponent<CpuController>().SetOtherPlayer(playerTwoObject.transform);
@@ -214,19 +216,19 @@ public class GameplayManager : MonoBehaviour
         playerTwoObject.SetActive(true);
         if (SceneSettings.ControllerOne != null && _controllerOneType != ControllerTypeEnum.Cpu)
         {
-            _playerOneController.SetControllerToPlayer(0);
+            PlayerOneController.SetControllerToPlayer(0);
         }
         else
         {
-            _playerOneController.SetControllerToCpu(0);
+            PlayerOneController.SetControllerToCpu(0);
         }
         if (SceneSettings.ControllerTwo != null && _controllerTwoType != ControllerTypeEnum.Cpu)
         {
-            _playerTwoController.SetControllerToPlayer(1);
+            PlayerTwoController.SetControllerToPlayer(1);
         }
         else
         {
-            _playerTwoController.SetControllerToCpu(1);
+            PlayerTwoController.SetControllerToCpu(1);
         }
         PlayerOne.SetController();
         PlayerTwo.SetController();
@@ -246,7 +248,7 @@ public class GameplayManager : MonoBehaviour
         }
         _playerTwoAnimator.SetSpriteLibraryAsset(SceneSettings.ColorTwo);
         _trainingMenu.ConfigurePlayers(PlayerOne, PlayerTwo);
-        _playerOneController.IsPlayerOne = true;
+        PlayerOneController.IsPlayerOne = true;
         PlayerOne.SetPlayerUI(_playerOneUI);
         PlayerTwo.SetPlayerUI(_playerTwoUI);
         PlayerOne.SetAssist(_assists[SceneSettings.AssistOne]);
@@ -255,37 +257,35 @@ public class GameplayManager : MonoBehaviour
         PlayerOne.IsPlayerOne = true;
         if (SceneSettings.ControllerOne != null && _controllerOneType != ControllerTypeEnum.Cpu)
         {
-            _playerOneController.ControllerInputName = SceneSettings.ControllerOne.displayName;
-            _playerOneController.InputDevice = SceneSettings.ControllerOne;
+            PlayerOneController.ControllerInputName = SceneSettings.ControllerOne.displayName;
+            PlayerOneController.InputDevice = SceneSettings.ControllerOne;
         }
         else
-        {
-            _playerOneController.ControllerInputName = "Cpu";
-        }
+            PlayerOneController.ControllerInputName = ControllerTypeEnum.Cpu.ToString();
         PlayerTwo.SetOtherPlayer(PlayerOne);
         PlayerTwo.IsPlayerOne = false;
         if (SceneSettings.ControllerTwo != null && _controllerTwoType != ControllerTypeEnum.Cpu)
         {
-            _playerTwoController.ControllerInputName = SceneSettings.ControllerTwo.displayName;
-            _playerTwoController.InputDevice = SceneSettings.ControllerTwo;
+            PlayerTwoController.ControllerInputName = SceneSettings.ControllerTwo.displayName;
+            PlayerTwoController.InputDevice = SceneSettings.ControllerTwo;
         }
         else
-        {
-            _playerTwoController.ControllerInputName = "Cpu";
-        }
+            PlayerTwoController.ControllerInputName = ControllerTypeEnum.Cpu.ToString();
         PlayerOne.name = $"{_playerStats[SceneSettings.PlayerOne].name}({SceneSettings.ControllerOne})_player";
         PlayerTwo.name = $"{_playerStats[SceneSettings.PlayerTwo].name}({SceneSettings.ControllerTwo})_player";
-        PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0]);
-        PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1]);
+        PlayerOne.GetComponent<InputBuffer>().Initialize(_inputHistories[0], _inputDisplays[0]);
+        PlayerTwo.GetComponent<InputBuffer>().Initialize(_inputHistories[1], _inputDisplays[1]);
         string inputSchemeOne = "";
         string inputSchemeTwo = "";
         if (SceneSettings.ControllerOne != null && SceneSettings.ControllerOneScheme != ControllerTypeEnum.Cpu.ToString())
         {
-            inputSchemeOne = _playerOneController.InputDevice.displayName;
+            if (PlayerOneController.InputDevice != null)
+                inputSchemeOne = PlayerOneController.InputDevice.displayName;
         }
         if (SceneSettings.ControllerTwo != null && SceneSettings.ControllerTwoScheme != ControllerTypeEnum.Cpu.ToString())
         {
-            inputSchemeTwo = _playerTwoController.InputDevice.displayName;
+            if (PlayerTwoController.InputDevice != null)
+                inputSchemeTwo = PlayerTwoController.InputDevice.displayName;
         }
         if (inputSchemeOne.Contains("Keyboard"))
         {
@@ -308,41 +308,60 @@ public class GameplayManager : MonoBehaviour
         _playerOneInput = PlayerOne.GetComponent<PlayerInput>();
         _playerTwoInput = PlayerTwo.GetComponent<PlayerInput>();
         if (SceneSettings.ControllerOneScheme == "Keyboard" && SceneSettings.ControllerTwoScheme == "Keyboard"
-        && _playerOneController.ControllerInputName == "Keyboard" && _playerTwoController.ControllerInputName == "Keyboard")
+        && PlayerOneController.ControllerInputName == "Keyboard" && PlayerTwoController.ControllerInputName == "Keyboard")
         {
             SceneSettings.ControllerOneScheme = "Keyboard";
             SceneSettings.ControllerTwoScheme = "KeyboardTwo";
-            _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
-            _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
+            _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, PlayerOneController.InputDevice);
+            _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, PlayerTwoController.InputDevice);
         }
         else
         {
-            if (_playerOneController.InputDevice != null && _controllerOneType != ControllerTypeEnum.Cpu)
+            if (PlayerOneController.InputDevice != null && _controllerOneType != ControllerTypeEnum.Cpu)
             {
-                _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
+                _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, PlayerOneController.InputDevice);
             }
-            if (_playerTwoController.InputDevice != null && _controllerTwoType != ControllerTypeEnum.Cpu)
+            if (PlayerTwoController.InputDevice != null && _controllerTwoType != ControllerTypeEnum.Cpu)
             {
-                _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
+                _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, PlayerTwoController.InputDevice);
             }
         }
         _inputHistories[0].PlayerController = PlayerOne.GetComponent<PlayerController>();
         _inputHistories[1].PlayerController = PlayerTwo.GetComponent<PlayerController>();
-        _cinemachineTargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
-        _cinemachineTargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
-        ReplayManager.Instance.Setup();
+        TargetGroup.AddMember(PlayerOne.CameraPoint, 0.5f, 0.5f);
+        TargetGroup.AddMember(PlayerTwo.CameraPoint, 0.5f, 0.5f);
+    }
+
+    public void SetCameraTargets(float targetOne, float targetTwo, float time = 0.12f)
+    {
+        _targetGroup.m_Targets[0].weight = targetOne;
+        StartCoroutine(SetCameraTargetsCoroutine(targetOne, targetTwo, time));
+    }
+
+    private IEnumerator SetCameraTargetsCoroutine(float targetOne, float targetTwo, float time)
+    {
+        float elapsedTime = 0;
+        float waitTime = time;
+        float currentTargetOne = _targetGroup.m_Targets[0].weight;
+        float currentTargetTwo = _targetGroup.m_Targets[1].weight;
+        while (elapsedTime < waitTime)
+        {
+            _targetGroup.m_Targets[0].weight = Mathf.Lerp(currentTargetOne, targetOne, elapsedTime / waitTime);
+            _targetGroup.m_Targets[1].weight = Mathf.Lerp(currentTargetTwo, targetTwo, elapsedTime / waitTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        _targetGroup.m_Targets[0].weight = targetOne;
+        _targetGroup.m_Targets[1].weight = targetTwo;
+        yield return null;
     }
 
     private void CheckInstance()
     {
         if (Instance != null && Instance != this)
-        {
             Destroy(gameObject);
-        }
         else
-        {
             Instance = this;
-        }
     }
 
     public void CheckSceneSettings()
@@ -358,11 +377,6 @@ public class GameplayManager : MonoBehaviour
         }
         _currentStage.SetActive(true);
         int stageColorIndex = SceneSettings.Bit1 ? 1 : 0;
-        if (SceneSettings.Bit1)
-        {
-            _playerOneUI.Turn1BitVisuals();
-            _playerTwoUI.Turn1BitVisuals();
-        }
         _currentStage.transform.GetChild(stageColorIndex).gameObject.SetActive(true);
     }
 
@@ -370,8 +384,8 @@ public class GameplayManager : MonoBehaviour
     {
         if (IsTrainingMode && PlayerOne != null)
         {
-            _playerOneController.ActivateCpu();
-            _playerTwoController.ActivateCpu();
+            PlayerOneController.ActivateCpu();
+            PlayerTwoController.ActivateCpu();
         }
     }
 
@@ -379,8 +393,8 @@ public class GameplayManager : MonoBehaviour
     {
         if (IsTrainingMode && PlayerOne != null)
         {
-            _playerOneController.DeactivateCpu();
-            _playerTwoController.DeactivateCpu();
+            PlayerOneController.DeactivateCpu();
+            PlayerTwoController.DeactivateCpu();
         }
     }
 
@@ -396,7 +410,6 @@ public class GameplayManager : MonoBehaviour
 
     public void SetupGame()
     {
-        _fadeHandler.StartFadeTransition(false);
         GameSimulation._players[0].player = GameplayManager.Instance.PlayerOne;
         GameSimulation._players[1].player = GameplayManager.Instance.PlayerTwo;
         _uiInput.gameObject.SetActive(true);
@@ -411,10 +424,7 @@ public class GameplayManager : MonoBehaviour
         }
         if (_isTrainingMode)
         {
-            if (!NetworkInput.IS_LOCAL)
-            {
-                _networkCanvas.SetActive(true);
-            }
+            _networkCanvas.SetActive(!NetworkInput.IS_LOCAL);
             _cachedOneResetPosition = PlayerOne.GetComponent<PlayerMovement>().Physics.Position;
             _cachedTwoResetPosition = PlayerTwo.GetComponent<PlayerMovement>().Physics.Position;
             _countdownText.gameObject.SetActive(false);
@@ -449,6 +459,7 @@ public class GameplayManager : MonoBehaviour
         RunReady();
         RunRoundOver();
     }
+
     public void SetCountdown(int timer)
     {
         if (!_isTrainingMode && GameSimulation.Run)
@@ -460,12 +471,9 @@ public class GameplayManager : MonoBehaviour
                 RoundOver(true);
             }
             else if (timer <= 10)
-            {
                 _timerMainAnimator.SetTrigger("TimerLow");
-            }
         }
     }
-
 
     public void SkipIntro()
     {
@@ -500,9 +508,10 @@ public class GameplayManager : MonoBehaviour
         _winnerNameText.text = "";
         _readyText.text = "";
         _currentRound = 1;
+        MouseSetup.Instance.SetCursor(true);
         if (SceneSettings.ReplayMode)
         {
-            GameplayManager.Instance.PausedController = _playerOneController;
+            GameplayManager.Instance.PausedController = PlayerOneController;
             DisableAllInput(true);
             _matchOverReplayMenu.Show();
         }
@@ -514,13 +523,13 @@ public class GameplayManager : MonoBehaviour
                 {
                     // GameManager.Instance.Shutdown();
                 }
-                GameplayManager.Instance.PausedController = _playerOneController;
+                GameplayManager.Instance.PausedController = PlayerOneController;
                 DisableAllInput(true);
                 _matchOverOnlineMenu.Show();
             }
             else
             {
-                GameplayManager.Instance.PausedController = _playerOneController;
+                GameplayManager.Instance.PausedController = PlayerOneController;
                 DisableAllInput(true);
                 _matchOverMenu.Show();
             }
@@ -560,15 +569,11 @@ public class GameplayManager : MonoBehaviour
 
     public virtual void StartRound()
     {
-        if (!NetworkInput.IS_LOCAL)
-        {
-            _networkCanvas.SetActive(true);
-        }
-        _fadeHandler.StartFadeTransition(false);
+        _networkCanvas.SetActive(!NetworkInput.IS_LOCAL);
+        if (!IsDialogueRunning)
+            _fadeHandler.StartFadeTransition(false);
         if (SceneSettings.ReplayMode)
-        {
             ReplayManager.Instance.ShowReplayPrompts();
-        }
         _timerMainAnimator.Rebind();
         IsDialogueRunning = false;
         for (int i = 0; i < _arcanaObjects.Length; i++)
@@ -648,6 +653,12 @@ public class GameplayManager : MonoBehaviour
                     _playerTwoUI.FadeIn();
                     _timerAnimator.SetTrigger("FadeIn");
                     _readyEnd = true;
+                    if (_currentRound == 1)
+                        if (SceneSettings.IsOnline)
+                            if (SceneSettings.OnlineIndex == 0)
+                                _playerOneUI.ShowYouOverhead();
+                            else
+                                _playerTwoUI.ShowYouOverhead();
                 }
                 if (_readyEnd)
                 {
@@ -659,8 +670,8 @@ public class GameplayManager : MonoBehaviour
                             _readyObjects[i].SetActive(false);
                         }
                         _readyText.text = "";
-                        _playerOneController.ActivateInput();
-                        _playerTwoController.ActivateInput();
+                        PlayerOneController.ActivateInput();
+                        PlayerTwoController.ActivateInput();
                         HasGameStarted = true;
                         if (_currentRound == 1)
                         {
@@ -738,7 +749,7 @@ public class GameplayManager : MonoBehaviour
                     if (PlayerOne.PlayerStats.maxHealth == GameSimulation._players[0].health && GameSimulation._players[1].health <= 0
                         || PlayerTwo.PlayerStats.maxHealth == GameSimulation._players[1].health && GameSimulation._players[0].health <= 0)
                     {
-                        roundOverCause = "PERFECT KO";
+                        roundOverCause = "PERFECT\nKO";
                     }
                     else
                     {
@@ -773,7 +784,7 @@ public class GameplayManager : MonoBehaviour
                 _roundOver = true;
                 _roundOverSecondFrame = 120;
                 _roundOverThirdFrame = 120;
-                _roundOverFourthFrame = 120;
+                _roundOverFourthFrame = 130;
                 _roundOverSecond = false;
                 _roundOverThird = false;
                 _startRoundOver = false;
@@ -781,15 +792,15 @@ public class GameplayManager : MonoBehaviour
                 HasGameStarted = false;
                 _uiAudio.Sound("Round").Play();
                 _startRoundOver = true;
-                _playerOneController.DeactivateInput();
-                _playerTwoController.DeactivateInput();
+                PlayerOneController.DeactivateInput();
+                PlayerTwoController.DeactivateInput();
             }
         }
     }
 
     private int _roundOverSecondFrame = 60;
     private int _roundOverThirdFrame = 120;
-    private int _roundOverFourthFrame = 120;
+    private int _roundOverFourthFrame = 130;
     private bool _roundOver;
     private bool _roundOverSecond;
     private bool _roundOverThird;
@@ -829,15 +840,9 @@ public class GameplayManager : MonoBehaviour
                     if (DemonicsWorld.WaitFramesOnce(ref _roundOverThirdFrame))
                     {
                         if (_playerOneWon)
-                        {
                             StartCoroutine(CameraCenterCoroutine(1));
-
-                        }
                         else if (_playerTwoWon)
-                        {
                             StartCoroutine(CameraCenterCoroutine(0));
-
-                        }
                         else
                         {
 
@@ -859,7 +864,7 @@ public class GameplayManager : MonoBehaviour
                                 if (PlayerTwo.Lives == 0)
                                 {
                                     _playerOneWins++;
-                                    _winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
+                                    _winsText.text = $"{_playerOneWins} - {_playerTwoWins}";
                                     MatchOver();
                                 }
                                 else
@@ -873,7 +878,7 @@ public class GameplayManager : MonoBehaviour
                                 if (PlayerOne.Lives == 0)
                                 {
                                     _playerTwoWins++;
-                                    _winsText.text = $"{_playerOneWins}-{_playerTwoWins}";
+                                    _winsText.text = $"{_playerOneWins} - {_playerTwoWins}";
                                     MatchOver();
                                 }
                                 else
@@ -932,9 +937,7 @@ public class GameplayManager : MonoBehaviour
     public void SwitchCharacters()
     {
         if (IsTrainingMode && _canCallSwitchCharacter && Time.timeScale > 0)
-        {
             StartCoroutine(SwitchCharactersCoroutine());
-        }
     }
 
     IEnumerator SwitchCharactersCoroutine()
@@ -942,67 +945,67 @@ public class GameplayManager : MonoBehaviour
         PlayerStatsSO playerStatsOneTemp = PlayerOne.PlayerStats;
         PlayerOne.PlayerStats = PlayerTwo.PlayerStats;
         PlayerTwo.PlayerStats = playerStatsOneTemp;
-        _playerTwoController.IsPlayerOne = !_playerTwoController.IsPlayerOne;
-        _playerOneController.IsPlayerOne = !_playerOneController.IsPlayerOne;
+        PlayerTwoController.IsPlayerOne = !PlayerTwoController.IsPlayerOne;
+        PlayerOneController.IsPlayerOne = !PlayerOneController.IsPlayerOne;
         _playerOneUI.ShowPlayerIcon();
         _playerTwoUI.ShowPlayerIcon();
         _canCallSwitchCharacter = false;
         if (_hasSwitchedCharacters)
         {
-            if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
+            if (PlayerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && PlayerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToCpu(0);
-                _playerTwoController.SetControllerToPlayer(1);
+                PlayerOneController.SetControllerToCpu(0);
+                PlayerTwoController.SetControllerToPlayer(1);
                 _playerOneInput.enabled = false;
                 _playerTwoInput.enabled = true;
             }
-            else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
+            else if (PlayerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && PlayerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToPlayer(0);
-                _playerTwoController.SetControllerToCpu(1);
+                PlayerOneController.SetControllerToPlayer(0);
+                PlayerTwoController.SetControllerToCpu(1);
                 _playerOneInput.enabled = true;
                 _playerTwoInput.enabled = false;
             }
-            string a = _playerOneController.ControllerInputName;
-            string b = _playerTwoController.ControllerInputName;
-            _playerOneController.ControllerInputName = b;
-            _playerTwoController.ControllerInputName = a;
+            string a = PlayerOneController.ControllerInputName;
+            string b = PlayerTwoController.ControllerInputName;
+            PlayerOneController.ControllerInputName = b;
+            PlayerTwoController.ControllerInputName = a;
             if (SceneSettings.ControllerOne != null && _playerOneInput.enabled)
             {
-                _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
+                _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, PlayerOneController.InputDevice);
             }
             if (SceneSettings.ControllerTwo != null && _playerTwoInput.enabled)
             {
-                _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
+                _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, PlayerTwoController.InputDevice);
             }
         }
         else
         {
-            if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
+            if (PlayerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && PlayerTwoController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToCpu(0);
-                _playerTwoController.SetControllerToPlayer(1);
+                PlayerOneController.SetControllerToCpu(0);
+                PlayerTwoController.SetControllerToPlayer(1);
                 _playerOneInput.enabled = false;
                 _playerTwoInput.enabled = true;
             }
-            else if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && _playerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
+            else if (PlayerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString() && PlayerOneController.ControllerInputName == ControllerTypeEnum.Cpu.ToString())
             {
-                _playerOneController.SetControllerToPlayer(0);
-                _playerTwoController.SetControllerToCpu(1);
+                PlayerOneController.SetControllerToPlayer(0);
+                PlayerTwoController.SetControllerToCpu(1);
                 _playerOneInput.enabled = true;
                 _playerTwoInput.enabled = false;
             }
-            string a = _playerOneController.ControllerInputName;
-            string b = _playerTwoController.ControllerInputName;
-            _playerOneController.ControllerInputName = b;
-            _playerTwoController.ControllerInputName = a;
+            string a = PlayerOneController.ControllerInputName;
+            string b = PlayerTwoController.ControllerInputName;
+            PlayerOneController.ControllerInputName = b;
+            PlayerTwoController.ControllerInputName = a;
             if (SceneSettings.ControllerTwo != null && _playerOneInput.enabled)
             {
-                _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
+                _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, PlayerTwoController.InputDevice);
             }
             if (SceneSettings.ControllerOne != null && _playerTwoInput.enabled)
             {
-                _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
+                _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, PlayerOneController.InputDevice);
             }
         }
 
@@ -1026,29 +1029,29 @@ public class GameplayManager : MonoBehaviour
                 }
                 PlayerOne.ResetLives();
                 PlayerTwo.ResetLives();
-                if (_cachedOneResetPosition == DemonicsVector2.Zero)
+                if (_cachedOneResetPosition == DemonVector2.Zero)
                 {
-                    _cachedOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0], DemonicsPhysics.GROUND_POINT);
-                    _cachedTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1], DemonicsPhysics.GROUND_POINT);
+                    _cachedOneResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[0], DemonicsPhysics.GROUND_POINT);
+                    _cachedTwoResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[1], DemonicsPhysics.GROUND_POINT);
                 }
-                DemonicsVector2 playerOneResetPosition = _cachedOneResetPosition;
-                DemonicsVector2 playerTwoResetPosition = _cachedTwoResetPosition;
+                DemonVector2 playerOneResetPosition = _cachedOneResetPosition;
+                DemonVector2 playerTwoResetPosition = _cachedTwoResetPosition;
                 ObjectPoolingManager.Instance.DisableAllObjects();
 
                 if (movementInput.y == -1)
                 {
-                    playerOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0], DemonicsPhysics.GROUND_POINT);
-                    playerTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1], DemonicsPhysics.GROUND_POINT);
+                    playerOneResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[0], DemonicsPhysics.GROUND_POINT);
+                    playerTwoResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[1], DemonicsPhysics.GROUND_POINT);
                 }
                 else if (movementInput.x == 1)
                 {
-                    playerOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0] + _leftSpawn, DemonicsPhysics.GROUND_POINT);
-                    playerTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1] + _rightSpawn, DemonicsPhysics.GROUND_POINT);
+                    playerOneResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[0] + _leftSpawn, DemonicsPhysics.GROUND_POINT);
+                    playerTwoResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[1] + _rightSpawn, DemonicsPhysics.GROUND_POINT);
                 }
                 else if (movementInput.x == -1)
                 {
-                    playerOneResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[0] - _rightSpawn, DemonicsPhysics.GROUND_POINT);
-                    playerTwoResetPosition = new DemonicsVector2((DemonicsFloat)_spawnPositionsX[1] - _leftSpawn, DemonicsPhysics.GROUND_POINT);
+                    playerOneResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[0] - _rightSpawn, DemonicsPhysics.GROUND_POINT);
+                    playerTwoResetPosition = new DemonVector2((DemonFloat)_spawnPositionsX[1] - _leftSpawn, DemonicsPhysics.GROUND_POINT);
                 }
                 else if (movementInput.y == 1)
                 {
@@ -1076,12 +1079,13 @@ public class GameplayManager : MonoBehaviour
 
     public void StartMatch()
     {
+        MouseSetup.Instance.SetCursor(false);
         Time.timeScale = 1;
         GameplayManager.Instance.EnableAllInput();
         if (SceneSettings.RandomStage)
         {
             _currentStage.SetActive(false);
-            int randomStageIndex = Random.Range(0, _stages.Length);
+            int randomStageIndex = UnityEngine.Random.Range(0, _stages.Length);
             _currentStage = _stages[randomStageIndex];
             _currentStage.SetActive(true);
         }
@@ -1116,12 +1120,12 @@ public class GameplayManager : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene(index);
     }
-    public void DisableAllInput(bool isPlayerOne = false)
+    public void DisableAllInput(bool isPlayerOne = false, bool skipSwitch = false)
     {
         PlayerInput = _uiInput;
         if (_playerOneInput.enabled)
         {
-            if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+            if (PlayerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
             {
                 _playerOneInput.enabled = false;
             }
@@ -1129,18 +1133,20 @@ public class GameplayManager : MonoBehaviour
 
         if (_playerTwoInput.enabled)
         {
-            if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+            if (PlayerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
             {
                 _playerTwoInput.enabled = false;
             }
         }
+        if (skipSwitch)
+            return;
         if (isPlayerOne)
         {
-            _uiInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
+            _uiInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, PlayerOneController.InputDevice);
         }
         else
         {
-            _uiInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
+            _uiInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, PlayerTwoController.InputDevice);
         }
     }
     public PlayerInput PlayerInput { get; set; }
@@ -1148,32 +1154,32 @@ public class GameplayManager : MonoBehaviour
     {
         if (!_playerOneInput.enabled)
         {
-            if (_playerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+            if (PlayerOneController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
             {
                 _playerOneInput.enabled = true;
                 if (_hasSwitchedCharacters)
                 {
-                    _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
+                    _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, PlayerTwoController.InputDevice);
                 }
                 else
                 {
-                    _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
+                    _playerOneInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, PlayerOneController.InputDevice);
                 }
             }
         }
 
         if (!_playerTwoInput.enabled)
         {
-            if (_playerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
+            if (PlayerTwoController.ControllerInputName != ControllerTypeEnum.Cpu.ToString())
             {
                 _playerTwoInput.enabled = true;
                 if (_hasSwitchedCharacters)
                 {
-                    _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, _playerOneController.InputDevice);
+                    _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerOneScheme, PlayerOneController.InputDevice);
                 }
                 else
                 {
-                    _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, _playerTwoController.InputDevice);
+                    _playerTwoInput.SwitchCurrentControlScheme(SceneSettings.ControllerTwoScheme, PlayerTwoController.InputDevice);
                 }
             }
         }
@@ -1241,6 +1247,8 @@ public class GameplayManager : MonoBehaviour
         {
             InputSystem.RemoveDevice(keyboardTwo);
         }
+        GameSimulation.Run = false;
+        ObjectPoolingManager.Instance.DestroyAllObjects();
     }
 
     void OnApplicationQuit()

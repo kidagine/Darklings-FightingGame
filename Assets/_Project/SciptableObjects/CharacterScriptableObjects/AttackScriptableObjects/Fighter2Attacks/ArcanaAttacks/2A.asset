@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6448fdf3faf4314292664f7dcc25452, type: 3}
+  m_Name: 2A
+  m_EditorClassIdentifier: 
+  damage: 225
+  attackTypeEnum: 2
+  hitStun: 30
+  blockStun: 15
+  travelDistance: {x: -0.8, y: 3.4}
+  knockbackForce: {x: 14, y: 0}
+  knockbackDuration: 15
+  knockbackArc: 16
+  superArmor: 0
+  isAirAttack: 0
+  isProjectile: 0
+  isArcana: 1
+  jumpCancelable: 0
+  causesKnockdown: 0
+  causesSoftKnockdown: 0
+  attackSound: Hit
+  impactSound: Impact5
+  hitstop: 14
+  hitEffect: {fileID: 186600171355987556, guid: 547867d1b46bb89428c594bb21fd73a8, type: 3}
+  hitEffectPosition: {x: 4, y: 0.1}
+  hitEffectRotation: 0
+  hurtEffect: HurtHeavy
+  hurtEffectPosition: {x: 8.801757, y: -2.9988635}
+  hurtEffectRotation: 0
+  cameraShaker: {fileID: 11400000, guid: c395b25290cca7344a2deb1aa45f16df, type: 2}
+  moveName: Null Cut
+  moveDescription: Reversal move kicking the opponent and jump backwards to gain
+    distance for zoning.
+  moveVideo: {fileID: 32900000, guid: 7c68810c113b5b3449b72747a7856482, type: 3}
+  airOk: 0
+  reversal: 0
+  projectileSpeed: 0
+  projectilePriority: 0
+  projectileDestroyOnHit: 0
+  teleport: 0
+  teleportPosition: {x: 0, y: 0}

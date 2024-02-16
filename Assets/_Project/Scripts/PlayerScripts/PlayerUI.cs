@@ -2,7 +2,6 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -14,6 +13,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Slider _healthRecoverableSlider = default;
     [SerializeField] private Slider _arcanaSlider = default;
     [SerializeField] private Slider _assistSlider = default;
+    [SerializeField] private Image _arcanaBackground = default;
     [SerializeField] private Image _portraitImage = default;
     [SerializeField] private Image _assistBorder = default;
     [SerializeField] private Notification _notification = default;
@@ -22,12 +22,13 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _assistName = default;
     [SerializeField] private TextMeshProUGUI _arcanaAmountText = default;
     [SerializeField] private TextMeshProUGUI _hitsNumberText = default;
+    [SerializeField] private TextMeshProUGUI _maxArcanaText = default;
     [SerializeField] private Animator _arcanaAnimator = default;
-    [SerializeField] private Transform _arcanaDividerPivot = default;
-    [SerializeField] private GameObject _arcanaDividerPrefab = default;
+    [SerializeField] private Animator _comboAnimator = default;
     [SerializeField] private Slider _pauseSlider = default;
     [SerializeField] private Slider _comboTimerSlider = default;
     [SerializeField] private Image _comboTimerImage = default;
+    [SerializeField] private Image _arcanaFill = default;
     [SerializeField] private Image _comboTimerLock = default;
     [SerializeField] private Image _borderHealth = default;
     [SerializeField] private Image _borderPortrait = default;
@@ -39,15 +40,19 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private PauseMenu _replayPauseMenu = default;
     [SerializeField] private TrainingMenu _trainingMenu = default;
     [SerializeField] private DisconnectMenu _disconnectMenu = default;
+    [SerializeField] private TextMeshProUGUI _overheadText = default;
+    [SerializeField] private Audio _audio = default;
     [SerializeField] private Color _healthNormalColor = default;
     [SerializeField] private Color _healthLimitColor = default;
     [SerializeField] private Color _healthDamagedColor = default;
+    [SerializeField] private Color _arcanaAvailableColor = default;
+    [SerializeField] private Color _arcanaUnavailableColor = default;
+    [SerializeField] private Color _arcanaMeterBackColor = default;
+    [SerializeField] private Color _arcanaMeter1Color = default;
+    [SerializeField] private Color _arcanaMeter2Color = default;
+    [SerializeField] private Color _arcanaMeter3Color = default;
     [Header("1BitVisuals")]
     [SerializeField] private Image _healthImage = default;
-    [SerializeField] private Image _arcanaImage = default;
-    [SerializeField] private Image _assistImage = default;
-    [SerializeField] private Image[] _heartImages = default;
-    private GameObject[] _playerIcons;
     private Coroutine _openPauseHoldCoroutine;
     private Coroutine _notificiationCoroutine;
     private Coroutine _resetComboCoroutine;
@@ -55,6 +60,7 @@ public class PlayerUI : MonoBehaviour
     private Coroutine _healthCoroutine;
     private Coroutine _damagedHealthCoroutine;
     private Coroutine _damagedCoroutine;
+    private Coroutine _arcanaCoroutine;
     private Animator _animator;
     private BrainController _controller;
     private RectTransform _comboGroup;
@@ -71,20 +77,20 @@ public class PlayerUI : MonoBehaviour
     void Awake()
     {
         _animator = GetComponent<Animator>();
-        _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
+        _hitsNumberText.transform.parent.parent.gameObject.SetActive(false);
         _notification.gameObject.SetActive(false);
         _comboTimerSlider.transform.GetChild(0).gameObject.SetActive(false);
         _comboTimerSlider.transform.GetChild(1).gameObject.SetActive(false);
-        _comboGroup = _hitsNumberText.transform.parent.parent.parent.GetComponent<RectTransform>();
+        _comboGroup = _hitsNumberText.transform.parent.parent.GetComponent<RectTransform>();
     }
 
-    public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, GameObject[] playerIcons)
+    public void InitializeUI(PlayerStatsSO playerStats, BrainController controller, TextMeshProUGUI overhead)
     {
+        _overheadText = overhead;
         _borderHealth.color = Color.white;
         _borderPortrait.color = Color.white;
         _healthCurrentColor = _healthNormalColor;
         _healthImage.color = _healthCurrentColor;
-        _playerIcons = playerIcons;
         _controller = controller;
         if (!_initializedStats)
         {
@@ -143,7 +149,7 @@ public class PlayerUI : MonoBehaviour
                 SetPortrait(playerStats.portraits[SceneSettings.ColorTwo]);
             }
             SetMaxHealth(playerStats.maxHealth);
-            SetMaxArcana(playerStats.Arcana);
+            SetMaxArcana(PlayerStatsSO.ARCANA_MULTIPLIER);
             _initializedStats = true;
         }
     }
@@ -177,14 +183,6 @@ public class PlayerUI : MonoBehaviour
     {
         float arcanaSliderWidth = _arcanaSlider.GetComponent<RectTransform>().sizeDelta.x;
         _arcanaSlider.maxValue = value;
-        float increaseValue = arcanaSliderWidth / (value / PlayerStatsSO.ARCANA_MULTIPLIER);
-        float currentPositionX = increaseValue;
-        for (int i = 0; i < (value / PlayerStatsSO.ARCANA_MULTIPLIER) - 1; i++)
-        {
-            GameObject arcanaDivider = Instantiate(_arcanaDividerPrefab, _arcanaDividerPivot);
-            arcanaDivider.GetComponent<RectTransform>().anchoredPosition = new Vector2(currentPositionX, 0.0f);
-            currentPositionX += increaseValue;
-        }
     }
 
     public void FadeIn()
@@ -202,26 +200,65 @@ public class PlayerUI : MonoBehaviour
         _arcanaAnimator.SetTrigger("Decrease");
     }
 
-    public void SetArcana(float value)
+    public void ShowYouOverhead()
     {
-        _arcanaSlider.value = value;
-        _arcanaAmountText.text = Mathf.Floor(value / PlayerStatsSO.ARCANA_MULTIPLIER).ToString();
+        StartCoroutine(ShowYouOverheadCoroutine());
     }
 
-    public void SetAssist(int value)
+    private IEnumerator ShowYouOverheadCoroutine()
     {
-        if (value >= 2000)
+        _overheadText.text = "You";
+        _overheadText.gameObject.SetActive(true);
+        yield return new WaitForSecondsRealtime(2.5f);
+        _overheadText.gameObject.SetActive(false);
+    }
+
+    public void SetArcana(float value)
+    {
+        int arcana = Mathf.FloorToInt(value / PlayerStatsSO.ARCANA_MULTIPLIER);
+        if (value != 3000)
         {
-            _assistBorder.sprite = _assistFull;
+            value = value - (PlayerStatsSO.ARCANA_MULTIPLIER * arcana);
+            _maxArcanaText.gameObject.SetActive(false);
         }
-        else if (value >= 1000)
+        else if (!_maxArcanaText.gameObject.activeSelf)
         {
-            _assistBorder.sprite = _assistHalf;
+            _arcanaBackground.color = _arcanaMeter2Color;
+            _arcanaFill.color = _arcanaMeter3Color;
+            _audio.Sound("MaxArcana").Play();
+            _maxArcanaText.gameObject.SetActive(true);
+        }
+        _arcanaSlider.value = value;
+        _arcanaAmountText.text = arcana.ToString();
+        if (arcana == 0)
+        {
+            _arcanaAmountText.color = _arcanaUnavailableColor;
+            _arcanaBackground.color = _arcanaMeterBackColor;
+            _arcanaFill.color = _arcanaMeter1Color;
         }
         else
         {
-            _assistBorder.sprite = _assistEmpty;
+            _arcanaAmountText.color = _arcanaAvailableColor;
+            if (arcana == 1)
+            {
+                _arcanaBackground.color = _arcanaMeter1Color;
+                _arcanaFill.color = _arcanaMeter2Color;
+            }
+            else if (arcana == 2)
+            {
+                _arcanaBackground.color = _arcanaMeter2Color;
+                _arcanaFill.color = _arcanaMeter3Color;
+            }
         }
+    }
+    public void SetAssist(int value)
+    {
+        if (value >= GameSimulation.maxShadowGauge)
+            _assistBorder.sprite = _assistFull;
+        else if (value >= GameSimulation.maxShadowGauge / 2)
+            _assistBorder.sprite = _assistHalf;
+        else
+            _assistBorder.sprite = _assistEmpty;
         _assistSlider.value = value;
     }
 
@@ -298,9 +335,7 @@ public class PlayerUI : MonoBehaviour
     public void Damaged()
     {
         if (_damagedCoroutine != null)
-        {
             StopCoroutine(_damagedCoroutine);
-        }
         _damagedCoroutine = StartCoroutine(DamagedCoroutine());
     }
 
@@ -316,17 +351,13 @@ public class PlayerUI : MonoBehaviour
     public void ResetHealthDamaged()
     {
         if (_damagedHealthCoroutine != null)
-        {
             StopCoroutine(_damagedHealthCoroutine);
-        }
         _healthDamagedSlider.value = _healthSlider.maxValue;
     }
     public void SetHealthDamaged(float value)
     {
         if (_damagedHealthCoroutine != null)
-        {
             StopCoroutine(_damagedHealthCoroutine);
-        }
         _healthDamagedSlider.value = value;
     }
 
@@ -334,9 +365,7 @@ public class PlayerUI : MonoBehaviour
     {
         SetRecoverableHealth(healthRecoverable);
         if (_damagedHealthCoroutine != null)
-        {
             StopCoroutine(_damagedHealthCoroutine);
-        }
         _damagedHealthCoroutine = StartCoroutine(SetHealthDamagedCoroutine(_healthRecoverableSlider.value));
     }
 
@@ -362,9 +391,8 @@ public class PlayerUI : MonoBehaviour
         _currentLifeIndex++;
     }
 
-    public void SetComboTimer(DemonicsFloat value, Color color)
+    public void SetComboTimer(DemonFloat value, Color color)
     {
-        _hitsNumberText.color = color;
         _comboTimerImage.color = color;
         _comboTimerSlider.value = (float)value;
     }
@@ -375,10 +403,7 @@ public class PlayerUI : MonoBehaviour
         _comboTimerSlider.transform.GetChild(1).gameObject.SetActive(state);
     }
 
-    public void SetComboTimerLock(bool state)
-    {
-        _comboTimerLock.gameObject.SetActive(state);
-    }
+    public void SetComboTimerLock(bool state) => _comboTimerLock.gameObject.SetActive(state);
 
     public void ResetLives()
     {
@@ -422,7 +447,7 @@ public class PlayerUI : MonoBehaviour
         Time.timeScale = 1.0f;
         SceneSettings.SceneSettingsDecide = false;
         SceneSettings.ChangeCharacter = true;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     public void QuitMatch()
@@ -432,11 +457,12 @@ public class PlayerUI : MonoBehaviour
         SceneSettings.SceneSettingsDecide = false;
         SceneSettings.ChangeCharacter = false;
         SceneSettings.ReplayMode = false;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     public void OpenPause(bool isPlayerOne)
     {
+        MouseSetup.Instance.SetLock(false);
         _pauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
         GameplayManager.Instance.PausedController = _controller;
@@ -448,6 +474,7 @@ public class PlayerUI : MonoBehaviour
 
     public void OpenTrainingPause(bool isPlayerOne)
     {
+        MouseSetup.Instance.SetLock(false);
         _trainingPauseMenu.SetWhoPaused(isPlayerOne);
         Time.timeScale = 0;
         GameplayManager.Instance.PausedController = _controller;
@@ -459,6 +486,7 @@ public class PlayerUI : MonoBehaviour
 
     public void ClosePause()
     {
+        MouseSetup.Instance.SetLock(true);
         Time.timeScale = GameplayManager.Instance.GameSpeed;
         GameplayManager.Instance.EnableAllInput();
         GameplayManager.Instance.PlayMusic();
@@ -471,9 +499,10 @@ public class PlayerUI : MonoBehaviour
     {
         if (_hasComboEnded)
         {
+            _comboAnimator.Rebind();
             StopCoroutine(_resetComboCoroutine);
             _hasComboEnded = false;
-            _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
+            _hitsNumberText.transform.parent.parent.gameObject.SetActive(false);
             _hitsNumberText.text = "0 Hits";
             if (_comboGroup.anchoredPosition.x == -110.0f)
             {
@@ -483,8 +512,8 @@ public class PlayerUI : MonoBehaviour
         _hitsNumberText.text = combo.ToString();
         if (combo > 1)
         {
-            _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
-            _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(true);
+            _hitsNumberText.transform.parent.parent.gameObject.SetActive(false);
+            _hitsNumberText.transform.parent.parent.gameObject.SetActive(true);
         }
         if (combo >= 10 && _comboGroup.anchoredPosition.x == -40.0f)
         {
@@ -504,9 +533,7 @@ public class PlayerUI : MonoBehaviour
         _notification.gameObject.SetActive(false);
         _notification.gameObject.SetActive(true);
         if (_notificiationCoroutine != null)
-        {
             StopCoroutine(_notificiationCoroutine);
-        }
         _notificiationCoroutine = StartCoroutine(ResetDisplayNotificationCoroutine());
     }
 
@@ -518,20 +545,20 @@ public class PlayerUI : MonoBehaviour
 
     IEnumerator ResetComboCoroutine()
     {
+        _comboAnimator.Play("ComboEnded");
         yield return new WaitForSeconds(1.0f);
-        _hitsNumberText.transform.parent.parent.parent.gameObject.SetActive(false);
+        _hitsNumberText.transform.parent.parent.gameObject.SetActive(false);
         CurrentComboCount = 0;
         _hitsNumberText.text = "";
     }
 
     public void ShowPlayerIcon()
     {
+        if (!SceneSettings.IsTrainingMode)
+            return;
         if (_showPlayerIconCoroutine != null)
         {
-            for (int i = 0; i < _playerIcons.Length; i++)
-            {
-                _playerIcons[i].SetActive(false);
-            }
+            _overheadText.gameObject.SetActive(false);
             StopCoroutine(_showPlayerIconCoroutine);
         }
         _showPlayerIconCoroutine = StartCoroutine(ShowPlayerIconCoroutine());
@@ -540,20 +567,9 @@ public class PlayerUI : MonoBehaviour
     IEnumerator ShowPlayerIconCoroutine()
     {
         int index = _controller.IsPlayerOne == true ? 0 : 1;
-        _playerIcons[index].SetActive(true);
+        _overheadText.text = $"P{index + 1}";
+        _overheadText.gameObject.SetActive(true);
         yield return new WaitForSeconds(1.0f);
-        _playerIcons[index].SetActive(false);
-    }
-
-    public void Turn1BitVisuals()
-    {
-        _healthImage.color = Color.white;
-        _arcanaImage.color = Color.white;
-        _assistImage.color = Color.white;
-        _hitsNumberText.color = Color.white;
-        for (int i = 0; i < _heartImages.Length; i++)
-        {
-            _heartImages[i].color = Color.white;
-        }
+        _overheadText.gameObject.SetActive(false);
     }
 }

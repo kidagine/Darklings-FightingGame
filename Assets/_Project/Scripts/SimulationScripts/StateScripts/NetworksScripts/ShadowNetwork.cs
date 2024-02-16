@@ -6,13 +6,15 @@ using UnityEngine;
 public struct ShadowNetwork
 {
     public AttackSO attack;
-    public DemonicsVector2 position;
-    public DemonicsVector2 spawnPoint;
-    public DemonicsVector2 spawnRotation;
+    public DemonVector2 position;
+    public DemonVector2 spawnPoint;
+    public DemonVector2 spawnRotation;
     public bool isOnScreen;
     public int flip;
     public int animationFrames;
     public ProjectileNetwork projectile;
+    public bool usedInCombo;
+
     public void Serialize(BinaryWriter bw)
     {
         bw.Write((float)position.x);
@@ -22,6 +24,7 @@ public struct ShadowNetwork
         bw.Write((float)spawnRotation.x);
         bw.Write((float)spawnRotation.y);
         bw.Write(isOnScreen);
+        bw.Write(usedInCombo);
         bw.Write(flip);
         bw.Write(animationFrames);
         projectile.Serialize(bw);
@@ -29,13 +32,14 @@ public struct ShadowNetwork
 
     public void Deserialize(BinaryReader br)
     {
-        position.x = (DemonicsFloat)br.ReadSingle();
-        position.y = (DemonicsFloat)br.ReadSingle();
-        spawnPoint.x = (DemonicsFloat)br.ReadSingle();
-        spawnPoint.y = (DemonicsFloat)br.ReadSingle();
-        spawnRotation.x = (DemonicsFloat)br.ReadSingle();
-        spawnRotation.y = (DemonicsFloat)br.ReadSingle();
+        position.x = (DemonFloat)br.ReadSingle();
+        position.y = (DemonFloat)br.ReadSingle();
+        spawnPoint.x = (DemonFloat)br.ReadSingle();
+        spawnPoint.y = (DemonFloat)br.ReadSingle();
+        spawnRotation.x = (DemonFloat)br.ReadSingle();
+        spawnRotation.y = (DemonFloat)br.ReadSingle();
         isOnScreen = br.ReadBoolean();
+        usedInCombo = br.ReadBoolean();
         flip = br.ReadInt32();
         animationFrames = br.ReadInt32();
         projectile.Deserialize(br);
