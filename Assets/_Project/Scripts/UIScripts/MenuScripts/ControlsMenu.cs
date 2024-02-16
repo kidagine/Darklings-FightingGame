@@ -6,7 +6,6 @@ public class ControlsMenu : BaseMenu
 {
     [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private GameObject[] _controlSchemes = default;
-    [SerializeField] private Selectable _firstSelectable = default;
     private Audio _audio;
     private int _currentControlSchemeIndex;
 

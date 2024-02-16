@@ -7,7 +7,6 @@ public class OptionsMenu : BaseMenu
 {
     [SerializeField] private InputManager _inputManager = default;
     [SerializeField] private AudioMixer _audioMixer = default;
-    [SerializeField] private Selectable _firstSelectable = default;
     [SerializeField] private PauseMenu _pauseMenu = default;
     [SerializeField] private PauseMenu _pauseTrainingMenu = default;
     public PauseMenu CurrentPauseMenu { get; private set; }

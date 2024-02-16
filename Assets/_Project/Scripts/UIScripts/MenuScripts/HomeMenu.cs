@@ -5,7 +5,6 @@ using Unity.Services.Core;
 
 public class HomeMenu : BaseMenu
 {
-    [SerializeField] private TopBarMenu _topBarMenu = default;
     [SerializeField] private PlayerUIRender _playerUIRender = default;
     [SerializeField] private PlayerUIRender _playerOnlineUIRender = default;
     [SerializeField] private TextMeshProUGUI _playerName = default;

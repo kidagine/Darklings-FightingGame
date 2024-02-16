@@ -9,7 +9,6 @@ public class PatchNotesMenu : BaseMenu
     [SerializeField] private RectTransform _scrollView = default;
     [SerializeField] private RectTransform _patchNotes = default;
     [SerializeField] private Vector2 _boundaries = default;
-    [SerializeField] private Selectable _firstSelectable = default;
     private readonly int _scrollSpeed = 350;
 
     void Update() => Scroll(_inputManager.NavigationInput.y * 4);

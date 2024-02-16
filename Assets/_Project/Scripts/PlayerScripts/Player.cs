@@ -11,7 +11,6 @@ public class Player : MonoBehaviour, IHitstop
     [SerializeField] protected Transform _effectsParent = default;
     [SerializeField] private Transform _cameraPoint = default;
     [SerializeField] private Transform _keepFlip = default;
-    [SerializeField] private GameObject _throwTechPrefab = default;
     [SerializeField] private TextMeshProUGUI _overheadText = default;
     protected PlayerUI _playerUI;
     private PlayerMovement _playerMovement;

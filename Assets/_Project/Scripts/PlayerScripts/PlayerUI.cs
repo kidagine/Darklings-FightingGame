@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class PlayerUI : MonoBehaviour
 {
     [SerializeField] private Animator[] _lostLivesAnimator = default;
+    [SerializeField] private GameObject _overlayUI = default;
+    [SerializeField] private GameObject _otherOverlayUI = default;
     [SerializeField] private Slider _healthSlider = default;
     [SerializeField] private Slider _healthDamagedSlider = default;
     [SerializeField] private Slider _healthRecoverableSlider = default;
@@ -32,6 +34,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Image _comboTimerLock = default;
     [SerializeField] private Image _borderHealth = default;
     [SerializeField] private Image _borderPortrait = default;
+    [SerializeField] private Image _darkScreen = default;
     [SerializeField] private Sprite _assistEmpty = default;
     [SerializeField] private Sprite _assistHalf = default;
     [SerializeField] private Sprite _assistFull = default;
@@ -152,6 +155,14 @@ public class PlayerUI : MonoBehaviour
             SetMaxArcana(PlayerStatsSO.ARCANA_MULTIPLIER);
             _initializedStats = true;
         }
+    }
+
+    public void SetDarkScreen(bool state)
+    {
+        _darkScreen.gameObject.SetActive(state);
+        _overlayUI.gameObject.SetActive(!state);
+        _otherOverlayUI.gameObject.SetActive(!state);
+        _trainingMenu.CanvasGroup.alpha = state ? 0 : 1;
     }
 
     public void SetPlayerName(string name)

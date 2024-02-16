@@ -11,11 +11,13 @@ public class ArcanaState : State
                 return;
             SetTopPriority(player);
             player.dashFrames = 0;
-            if (player.attackNetwork.name.Contains("R"))
+            if (player.attackNetwork.name.Contains("AR"))
             {
                 player.arcanaGauge -= PlayerStatsSO.ARCANA_MULTIPLIER;
                 DemonVector2 effectPosition = new(player.position.x, player.position.y + 20);
                 player.SetParticle("Arcana", effectPosition);
+                player.player.PlayerUI.SetDarkScreen(true);
+                GameSimulation.GlobalFreezeFrames = 8;
             }
             player.enter = true;
             player.canChainAttack = false;
@@ -47,6 +49,19 @@ public class ArcanaState : State
             }
             player.animationFrames++;
             player.attackFrames--;
+        }
+        if (player.animationFrames % 3 == 0)
+        {
+            if (player.flip > 0)
+            {
+                DemonVector2 effectPosition = new DemonVector2(player.position.x - 1, player.position.y);
+                player.SetEffect("GhostArcana", player.position, false);
+            }
+            else
+            {
+                DemonVector2 effectPosition = new DemonVector2(player.position.x + 1, player.position.y);
+                player.SetEffect("GhostArcana", player.position, true);
+            }
         }
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
         player.invincible = player.player.PlayerAnimator.GetInvincible(player.animation, player.animationFrames);
@@ -88,6 +103,8 @@ public class ArcanaState : State
     {
         if (player.isAir && player.position.y <= DemonicsPhysics.GROUND_POINT && (DemonFloat)player.velocity.y <= (DemonFloat)0)
         {
+            player.player.PlayerUI.SetDarkScreen(false);
+            GameSimulation.GlobalFreezeFrames = 0;
             player.canChainAttack = false;
             player.SetParticle("Fall", player.position);
             player.sound = "Landed";
@@ -100,25 +117,12 @@ public class ArcanaState : State
         }
     }
 
-    private void AttackCancel(PlayerNetwork player)
-    {
-        if (player.canChainAttack)
-        {
-            // InputItemNetwork input = player.inputBuffer.CurrentTrigger();
-            // if (input.frame != 0)
-            // {
-            //     if ((DemonFloat)player.position.y > DemonicsPhysics.GROUND_POINT)
-            //         player.isAir = true;
-            //     if (input.inputEnum == InputEnum.Special)
-            //         Arcana(player, player.isAir);
-            // }
-        }
-    }
-
     private void ToIdleState(PlayerNetwork player)
     {
         if (player.attackFrames <= 0)
         {
+            player.player.PlayerUI.SetDarkScreen(false);
+            GameSimulation.GlobalFreezeFrames = 0;
             player.canChainAttack = false;
             CheckTrainingGauges(player);
             player.dashFrames = 0;
@@ -147,6 +151,8 @@ public class ArcanaState : State
     {
         if (IsColliding(player))
         {
+            player.player.PlayerUI.SetDarkScreen(false);
+            GameSimulation.GlobalFreezeFrames = 0;
             player.canChainAttack = false;
             if (player.attackNetwork.superArmor > 0 && !player.player.PlayerAnimator.InRecovery(player.animation, player.animationFrames))
             {

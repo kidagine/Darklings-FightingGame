@@ -17,8 +17,6 @@ public class TopBarMenu : MonoBehaviour
     [SerializeField] private BaseMenu _previousMenu = default;
     [SerializeField] private GameObject _backgroundImage = default;
     [SerializeField] private InputManager _inputManager = default;
-    [SerializeField] private GameObject _menuTitle = default;
-    [SerializeField] private TextMeshProUGUI _menuTitleText = default;
     [SerializeField] private Animator _animator;
     [SerializeField] private Canvas _canvas;
     [SerializeField] private GameObject _previousSelectable;

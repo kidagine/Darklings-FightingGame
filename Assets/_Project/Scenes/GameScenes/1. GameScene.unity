@@ -19073,8 +19073,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 0
-  _characterOne: 2
-  _characterTwo: 4
+  _characterOne: 4
+  _characterTwo: 0
   _assistOne: 3
   _assistTwo: 0
   _controllerOne: 0
@@ -24286,6 +24286,7 @@ MonoBehaviour:
   _framedataMeterGroup: {fileID: 1829256919}
   _inputDisplayOne: {fileID: 1967854379}
   _inputDisplayTwo: {fileID: 1809298404}
+  _canvasGroup: {fileID: 0}
   _frameMeterSystem: {fileID: 594993154}
   _inputHistoryOne: {fileID: 1607718335}
   _inputHistoryTwo: {fileID: 446620529}
@@ -35745,6 +35746,7 @@ MonoBehaviour:
   _framedataMeterGroup: {fileID: 1829256919}
   _inputDisplayOne: {fileID: 1967854379}
   _inputDisplayTwo: {fileID: 1809298404}
+  _canvasGroup: {fileID: 1256044255}
   _frameMeterSystem: {fileID: 594993154}
   _inputHistoryOne: {fileID: 1607718335}
   _inputHistoryTwo: {fileID: 446620529}
@@ -63364,6 +63366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1256044254}
+  - component: {fileID: 1256044255}
   m_Layer: 5
   m_Name: Training_group
   m_TagString: Untagged
@@ -63399,6 +63402,18 @@ Transform:
   m_Father: {fileID: 1451676273}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!225 &1256044255
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1256044253}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1260644281
 GameObject:
   m_ObjectHideFlags: 0
@@ -73424,7 +73439,6 @@ GameObject:
   - component: {fileID: 1442515869}
   - component: {fileID: 1442515872}
   - component: {fileID: 1442515871}
-  - component: {fileID: 1442515870}
   m_Layer: 5
   m_Name: Name_text
   m_TagString: Untagged
@@ -73452,18 +73466,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 400, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1442515870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1442515868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b829383902dc9db4a96bf689b6a55349, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1442515871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93171,6 +93173,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 587683964}
     - target: {fileID: 4469017394256721310, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+      propertyPath: _otherOverlayUI
+      value: 
+      objectReference: {fileID: 661996216}
+    - target: {fileID: 4469017394256721310, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+      propertyPath: _mainCanvasGroup
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4469017394256721310, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
       propertyPath: _replayPauseMenu
       value: 
       objectReference: {fileID: 242059569}
@@ -96174,7 +96184,6 @@ GameObject:
   - component: {fileID: 1869095864}
   - component: {fileID: 1869095867}
   - component: {fileID: 1869095866}
-  - component: {fileID: 1869095865}
   m_Layer: 5
   m_Name: RollbackFrames_text
   m_TagString: Untagged
@@ -96202,18 +96211,6 @@ RectTransform:
   m_AnchoredPosition: {x: 420, y: -35}
   m_SizeDelta: {x: 500, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1869095865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1869095863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b829383902dc9db4a96bf689b6a55349, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1869095866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98567,7 +98564,6 @@ GameObject:
   - component: {fileID: 1917942168}
   - component: {fileID: 1917942170}
   - component: {fileID: 1917942169}
-  - component: {fileID: 1917942171}
   m_Layer: 5
   m_Name: Ping_text
   m_TagString: Untagged
@@ -98693,18 +98689,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1917942167}
   m_CullTransparentMesh: 1
---- !u!114 &1917942171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1917942167}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b829383902dc9db4a96bf689b6a55349, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1918936788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -110932,6 +110916,14 @@ PrefabInstance:
       propertyPath: _disconnectMenu
       value: 
       objectReference: {fileID: 587683964}
+    - target: {fileID: 4469017394256721310, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+      propertyPath: _otherOverlayUI
+      value: 
+      objectReference: {fileID: 1598642914}
+    - target: {fileID: 4469017394256721310, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
+      propertyPath: _mainCanvasGroup
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4469017394256721310, guid: 1ecaad49240f76547b478c7a4b3b12f8, type: 3}
       propertyPath: _replayPauseMenu
       value: 
