@@ -11,14 +11,14 @@ public class ArcanaState : State
                 return;
             SetTopPriority(player);
             player.dashFrames = 0;
-            if (player.attackNetwork.name.Contains("R"))
+            if (player.attackNetwork.name.Contains("AR"))
             {
                 player.arcanaGauge -= PlayerStatsSO.ARCANA_MULTIPLIER;
                 DemonVector2 effectPosition = new(player.position.x, player.position.y + 20);
                 player.SetParticle("Arcana", effectPosition);
+                player.player.PlayerUI.SetDarkScreen(true);
+                GameSimulation.GlobalFreezeFrames = 8;
             }
-            player.player.PlayerUI.SetDarkScreen(true);
-            GameSimulation.GlobalFreezeFrames = 10;
             player.enter = true;
             player.canChainAttack = false;
             player.animation = player.attackNetwork.name;

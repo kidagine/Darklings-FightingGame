@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PlayersMenu : BaseMenu
 {
-    [SerializeField] private TopBarMenu _topBarMenu = default;
     [SerializeField] private HomeMenu _homeMenu = default;
     [SerializeField] private CharacterMenu _characterMenu = default;
     [SerializeField] private PlayerIcon[] _playerIcons = default;

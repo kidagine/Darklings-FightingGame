@@ -65,7 +65,7 @@ public class HurtParentState : State
 
     protected virtual void AfterHitstop(PlayerNetwork player)
     {
-        if (player.attackHurtNetwork.name.Contains("A"))
+        if (player.attackHurtNetwork.name.Contains("AR"))
         {
             player.otherPlayer.player.PlayerUI.SetDarkScreen(false);
             GameSimulation.GlobalFreezeFrames = 0;
