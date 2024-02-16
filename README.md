@@ -2,12 +2,12 @@
 
 <b>PLAY AT:</b> [Darklings GameJolt](https://gamejolt.com/games/darklings/640842)
 
-Darklings is a free to play 2D fighting game with the intention of being an accessible fighter, that will keep getting updated periodically.
+Darklings is a free-to-play 2D fighting game with the intention of being an accessible fighter, that will keep getting updated periodically.
 <div align="center">
 
 [![GitHub](https://img.shields.io/badge/unity_version-2021.3.24-blue)](https://unity3d.com/get-unity/download/archive)
-[![GitHub](https://img.shields.io/badge/game_version-0.2.12-brightgreen)](https://gamejolt.com/games/darklings/640842)
-[![GitHub](https://img.shields.io/badge/game_views-2.8k-orange)](https://gamejolt.com/games/darklings/640842)
+[![GitHub](https://img.shields.io/badge/game_version-0.2.13-brightgreen)](https://gamejolt.com/games/darklings/640842)
+[![GitHub](https://img.shields.io/badge/game_views-3.0k-orange)](https://gamejolt.com/games/darklings/640842)
 </div>
 
 <p align="center">
@@ -18,7 +18,7 @@ Darklings is a free to play 2D fighting game with the intention of being an acce
 <br />
 <br />
 Check the <b>production</b> branch for stable releases. <br />
-Check the <b>development</b> or latest numbered version branch for the latest releases.
+Check the <b>development</b> or the latest numbered version branch for the latest releases.
 
 ## Mechanical Features
 These features do not include everything in the game but rather more mechanically interesting things to point out from a developer's perspective. 
@@ -42,7 +42,7 @@ Rollback Implementation|Lobby System|
 Optional: use Clumsy (https://github.com/jagt/clumsy) to simulate lag.
 
 ## Sub Repositories
-These are the sub-repositories that help in one way or another to make Darklings.
+These are the sub-repositories that help make Darklings in one way or another.
 
  * [Website repository](https://github.com/kidagine/Darklings-Website) <br>
  * [Launcher repository](https://github.com/kidagine/Darklings-FightingGame-Launcher) <br>
